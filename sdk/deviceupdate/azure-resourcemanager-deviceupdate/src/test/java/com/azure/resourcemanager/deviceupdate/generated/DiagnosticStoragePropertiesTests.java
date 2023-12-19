@@ -8,31 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.AuthenticationType;
 import com.azure.resourcemanager.deviceupdate.models.DiagnosticStorageProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticStoragePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DiagnosticStorageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"authenticationType\":\"KeyBased\",\"connectionString\":\"sfqpteehz\",\"resourceId\":\"vypyqrimzinpv\"}")
-                .toObject(DiagnosticStorageProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DiagnosticStorageProperties model = BinaryData
+            .fromString(
+                "{\"authenticationType\":\"KeyBased\",\"connectionString\":\"sflnrosfqp\",\"resourceId\":\"eeh\"}")
+            .toObject(DiagnosticStorageProperties.class);
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("sfqpteehz", model.connectionString());
-        Assertions.assertEquals("vypyqrimzinpv", model.resourceId());
+        Assertions.assertEquals("sflnrosfqp", model.connectionString());
+        Assertions.assertEquals("eeh", model.resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        DiagnosticStorageProperties model =
-            new DiagnosticStorageProperties()
-                .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withConnectionString("sfqpteehz")
-                .withResourceId("vypyqrimzinpv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DiagnosticStorageProperties model
+            = new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
+                .withConnectionString("sflnrosfqp").withResourceId("eeh");
         model = BinaryData.fromObject(model).toObject(DiagnosticStorageProperties.class);
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("sfqpteehz", model.connectionString());
-        Assertions.assertEquals("vypyqrimzinpv", model.resourceId());
+        Assertions.assertEquals("sflnrosfqp", model.connectionString());
+        Assertions.assertEquals("eeh", model.resourceId());
     }
 }
