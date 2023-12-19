@@ -82,7 +82,7 @@ stages:
             options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavadocSafeJavaVersion) # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
+            jdkVersionOption: $(JavadocSafeJavaBuildVersion) # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
             goals: 'javadoc:aggregate'

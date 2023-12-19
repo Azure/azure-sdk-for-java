@@ -4,7 +4,7 @@ variables:
   JavaBuildVersion: '1.21'
   # This is the highest Java version we can write our Javadocs with.
   # TODO (vcolin7): Remove and use JavaBuildVersion in templates once Javadoc migration to Java 21 is complete.
-  JavadocSafeJavaVersion: '1.20'
+  JavadocSafeJavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.21'
   # This is the latest Java version released. It's used to run a non-failing job to validate the latest Java version.
