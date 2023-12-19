@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.servicefabric.generated;
 
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ClusterGetOperation_example.json
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterGetOperation_example.json
      */
     /**
      * Sample code: Get a cluster.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
