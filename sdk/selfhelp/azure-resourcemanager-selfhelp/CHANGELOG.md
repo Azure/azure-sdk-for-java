@@ -1,14 +1,75 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2023-12-19)
 
-### Features Added
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package tag package-2023-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.SolutionResourceProperties` was removed
 
-### Other Changes
+#### `models.SolutionResource$Definition` was modified
+
+* `withProperties(models.SolutionResourceProperties)` was removed
+
+#### `models.SolutionResource$Update` was modified
+
+* `withProperties(models.SolutionResourceProperties)` was removed
+
+#### `models.StepInput` was modified
+
+* `withQuestionType(java.lang.String)` was removed
+* `java.lang.String questionType()` -> `models.QuestionType questionType()`
+
+#### `models.SolutionPatchRequestBody` was modified
+
+* `properties()` was removed
+* `withProperties(models.SolutionResourceProperties)` was removed
+
+#### `models.SolutionResource` was modified
+
+* `properties()` was removed
+
+### Features Added
+
+#### `models.SolutionResource$Definition` was modified
+
+* `withParameters(java.util.Map)` was added
+* `withTriggerCriteria(java.util.List)` was added
+
+#### `models.SolutionResource$Update` was modified
+
+* `withTriggerCriteria(java.util.List)` was added
+* `withParameters(java.util.Map)` was added
+
+#### `models.StepInput` was modified
+
+* `withQuestionType(models.QuestionType)` was added
+
+#### `models.SolutionPatchRequestBody` was modified
+
+* `title()` was added
+* `replacementMaps()` was added
+* `withTriggerCriteria(java.util.List)` was added
+* `withParameters(java.util.Map)` was added
+* `solutionId()` was added
+* `parameters()` was added
+* `provisioningState()` was added
+* `triggerCriteria()` was added
+* `sections()` was added
+* `content()` was added
+
+#### `models.SolutionResource` was modified
+
+* `parameters()` was added
+* `title()` was added
+* `content()` was added
+* `systemData()` was added
+* `triggerCriteria()` was added
+* `replacementMaps()` was added
+* `provisioningState()` was added
+* `solutionId()` was added
+* `sections()` was added
 
 ## 1.1.0-beta.1 (2023-10-23)
 

@@ -12,8 +12,7 @@ public final class RestartTroubleshooterResponseImpl implements RestartTroublesh
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    RestartTroubleshooterResponseImpl(
-        RestartTroubleshooterResponseInner innerObject,
+    RestartTroubleshooterResponseImpl(RestartTroubleshooterResponseInner innerObject,
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

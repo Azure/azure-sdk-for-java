@@ -11,7 +11,9 @@ import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metadata resource. */
+/**
+ * Metadata resource.
+ */
 @Fluent
 public final class SolutionMetadataResourceInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class SolutionMetadataResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SolutionMetadataResourceInner class. */
+    /**
+     * Creates an instance of SolutionMetadataResourceInner class.
+     */
     public SolutionMetadataResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Solution metadata Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private Solutions innerProperties() {
@@ -41,7 +45,7 @@ public final class SolutionMetadataResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class SolutionMetadataResourceInner extends ProxyResource {
 
     /**
      * Get the solutions property: List of metadata.
-     *
+     * 
      * @return the solutions value.
      */
     public List<SolutionMetadataProperties> solutions() {
@@ -59,7 +63,7 @@ public final class SolutionMetadataResourceInner extends ProxyResource {
 
     /**
      * Set the solutions property: List of metadata.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the SolutionMetadataResourceInner object itself.
      */
@@ -73,7 +77,7 @@ public final class SolutionMetadataResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
