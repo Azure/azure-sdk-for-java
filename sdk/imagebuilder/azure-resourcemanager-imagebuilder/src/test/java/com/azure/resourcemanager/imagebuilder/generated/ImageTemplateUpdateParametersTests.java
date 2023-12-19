@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.imagebuilder.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParameters;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParametersProperties;
 import com.azure.resourcemanager.imagebuilder.models.ResourceIdentityType;
 import com.azure.resourcemanager.imagebuilder.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,36 +19,38 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lryplwckbasyy\":{\"principalId\":\"niwpwcukj\",\"clientId\":\"giawx\"},\"nqgoulzndli\":{\"principalId\":\"ddhsgcbacphe\",\"clientId\":\"ot\"},\"qqedqytbciqfou\":{\"principalId\":\"yqkgfg\",\"clientId\":\"madgakeqsrxyb\"}}},\"tags\":{\"glougpbk\":\"mnkzsmod\",\"uqktap\":\"tmut\",\"kdosvqw\":\"pwgcuertu\"}}")
-                .toObject(ImageTemplateUpdateParameters.class);
+        ImageTemplateUpdateParameters model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kjfkg\":{\"principalId\":\"ozwyiftyhxhuro\",\"clientId\":\"tyxolniwpwc\"}}},\"tags\":{\"ckbasyypndd\":\"xklrypl\"},\"properties\":{\"distribute\":[{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"bacphejko\",\"artifactTags\":{\"i\":\"qgoulznd\",\"dgak\":\"wyqkgfgibm\",\"ytb\":\"qsrxybzqqed\"}},{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"iqfouflmmnkz\",\"artifactTags\":{\"b\":\"dmgloug\",\"ta\":\"wtmutduq\"}},{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"spwgcuertumkdosv\",\"artifactTags\":{\"bjf\":\"bmdg\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"}},{\"type\":\"ImageTemplateDistributor\",\"runOutputName\":\"algbquxigjyjg\",\"artifactTags\":{\"fhrtxilnerkujysv\":\"o\",\"fqawrlyxw\":\"eju\",\"xgjvtbv\":\"kcprbnw\",\"uouq\":\"ysszdnrujqguh\"}}]}}")
+            .toObject(ImageTemplateUpdateParameters.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));
+        Assertions.assertEquals("xklrypl", model.tags().get("ckbasyypndd"));
+        Assertions.assertEquals("bacphejko", model.properties().distribute().get(0).runOutputName());
+        Assertions.assertEquals("qgoulznd", model.properties().distribute().get(0).artifactTags().get("i"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateUpdateParameters model =
-            new ImageTemplateUpdateParameters()
-                .withIdentity(
-                    new ImageTemplateIdentity()
-                        .withType(ResourceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "lryplwckbasyy",
-                                new UserAssignedIdentity(),
-                                "nqgoulzndli",
-                                new UserAssignedIdentity(),
-                                "qqedqytbciqfou",
-                                new UserAssignedIdentity())))
-                .withTags(mapOf("glougpbk", "mnkzsmod", "uqktap", "tmut", "kdosvqw", "pwgcuertu"));
+        ImageTemplateUpdateParameters model = new ImageTemplateUpdateParameters()
+            .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("kjfkg", new UserAssignedIdentity())))
+            .withTags(mapOf("ckbasyypndd", "xklrypl"))
+            .withProperties(new ImageTemplateUpdateParametersProperties().withDistribute(Arrays.asList(
+                new ImageTemplateDistributor().withRunOutputName("bacphejko")
+                    .withArtifactTags(mapOf("i", "qgoulznd", "dgak", "wyqkgfgibm", "ytb", "qsrxybzqqed")),
+                new ImageTemplateDistributor().withRunOutputName("iqfouflmmnkz")
+                    .withArtifactTags(mapOf("b", "dmgloug", "ta", "wtmutduq")),
+                new ImageTemplateDistributor().withRunOutputName("spwgcuertumkdosv")
+                    .withArtifactTags(mapOf("bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq")),
+                new ImageTemplateDistributor().withRunOutputName("algbquxigjyjg").withArtifactTags(mapOf(
+                    "fhrtxilnerkujysv", "o", "fqawrlyxw", "eju", "xgjvtbv", "kcprbnw", "uouq", "ysszdnrujqguh")))));
         model = BinaryData.fromObject(model).toObject(ImageTemplateUpdateParameters.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mnkzsmod", model.tags().get("glougpbk"));
+        Assertions.assertEquals("xklrypl", model.tags().get("ckbasyypndd"));
+        Assertions.assertEquals("bacphejko", model.properties().distribute().get(0).runOutputName());
+        Assertions.assertEquals("qgoulznd", model.properties().distribute().get(0).artifactTags().get("i"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

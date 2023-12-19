@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Generates version number based on version number of source image. */
+/**
+ * Generates version number based on version number of source image.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scheme")
 @JsonTypeName("Source")
 @Immutable
 public final class DistributeVersionerSource extends DistributeVersioner {
-    /** Creates an instance of DistributeVersionerSource class. */
+    /**
+     * Creates an instance of DistributeVersionerSource class.
+     */
     public DistributeVersionerSource() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -21,34 +21,31 @@ public final class TriggersImpl implements Triggers {
 
     private final com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager;
 
-    public TriggersImpl(
-        TriggersClient innerClient, com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
+    public TriggersImpl(TriggersClient innerClient,
+        com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Trigger> listByImageTemplate(String resourceGroupName, String imageTemplateName) {
-        PagedIterable<TriggerInner> inner =
-            this.serviceClient().listByImageTemplate(resourceGroupName, imageTemplateName);
+        PagedIterable<TriggerInner> inner
+            = this.serviceClient().listByImageTemplate(resourceGroupName, imageTemplateName);
         return Utils.mapPage(inner, inner1 -> new TriggerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Trigger> listByImageTemplate(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        PagedIterable<TriggerInner> inner =
-            this.serviceClient().listByImageTemplate(resourceGroupName, imageTemplateName, context);
+    public PagedIterable<Trigger> listByImageTemplate(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        PagedIterable<TriggerInner> inner
+            = this.serviceClient().listByImageTemplate(resourceGroupName, imageTemplateName, context);
         return Utils.mapPage(inner, inner1 -> new TriggerImpl(inner1, this.manager()));
     }
 
-    public Response<Trigger> getWithResponse(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
-        Response<TriggerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, imageTemplateName, triggerName, context);
+    public Response<Trigger> getWithResponse(String resourceGroupName, String imageTemplateName, String triggerName,
+        Context context) {
+        Response<TriggerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, imageTemplateName, triggerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TriggerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,26 +72,18 @@ public final class TriggersImpl implements Triggers {
     public Trigger getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE).getValue();
     }
@@ -102,26 +91,18 @@ public final class TriggersImpl implements Triggers {
     public Response<Trigger> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, imageTemplateName, triggerName, context);
     }
@@ -129,26 +110,18 @@ public final class TriggersImpl implements Triggers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         this.delete(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
     }
@@ -156,26 +129,18 @@ public final class TriggersImpl implements Triggers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String imageTemplateName = Utils.getValueFromIdByName(id, "imageTemplates");
         if (imageTemplateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         this.delete(resourceGroupName, imageTemplateName, triggerName, context);
     }

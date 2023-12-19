@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TriggersClient.
+ */
 public final class TriggersClientImpl implements TriggersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ImageBuilderClientImpl client;
 
     /**
      * Initializes an instance of TriggersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TriggersClientImpl(ImageBuilderClientImpl client) {
@@ -57,108 +63,83 @@ public final class TriggersClientImpl implements TriggersClient {
     }
 
     /**
-     * The interface defining all the services for ImageBuilderClientTriggers to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for ImageBuilderClientTriggers to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ImageBuilderClientTr")
     public interface TriggersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TriggerCollection>> listByImageTemplate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TriggerCollection>> listByImageTemplate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TriggerInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TriggerInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @PathParam("triggerName") String triggerName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @PathParam("triggerName") String triggerName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("imageTemplateName") String imageTemplateName, @PathParam("triggerName") String triggerName,
+            @BodyParam("application/json") TriggerInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @PathParam("triggerName") String triggerName,
-            @BodyParam("application/json") TriggerInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("imageTemplateName") String imageTemplateName, @PathParam("triggerName") String triggerName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers/{triggerName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @PathParam("triggerName") String triggerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerCollection>> listByImageTemplateNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerInner>> listByImageTemplateSinglePageAsync(
-        String resourceGroupName, String imageTemplateName) {
+    private Mono<PagedResponse<TriggerInner>> listByImageTemplateSinglePageAsync(String resourceGroupName,
+        String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,55 +151,35 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByImageTemplate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
-            .<PagedResponse<TriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByImageTemplate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
+            .<PagedResponse<TriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerInner>> listByImageTemplateSinglePageAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<PagedResponse<TriggerInner>> listByImageTemplateSinglePageAsync(String resourceGroupName,
+        String imageTemplateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -231,28 +192,15 @@ public final class TriggersClientImpl implements TriggersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByImageTemplate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByImageTemplate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,14 +210,13 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TriggerInner> listByImageTemplateAsync(String resourceGroupName, String imageTemplateName) {
-        return new PagedFlux<>(
-            () -> listByImageTemplateSinglePageAsync(resourceGroupName, imageTemplateName),
+        return new PagedFlux<>(() -> listByImageTemplateSinglePageAsync(resourceGroupName, imageTemplateName),
             nextLink -> listByImageTemplateNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -279,16 +226,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the result of List triggers operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TriggerInner> listByImageTemplateAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        return new PagedFlux<>(
-            () -> listByImageTemplateSinglePageAsync(resourceGroupName, imageTemplateName, context),
+    private PagedFlux<TriggerInner> listByImageTemplateAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        return new PagedFlux<>(() -> listByImageTemplateSinglePageAsync(resourceGroupName, imageTemplateName, context),
             nextLink -> listByImageTemplateNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +249,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -313,14 +259,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the result of List triggers operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TriggerInner> listByImageTemplate(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    public PagedIterable<TriggerInner> listByImageTemplate(String resourceGroupName, String imageTemplateName,
+        Context context) {
         return new PagedIterable<>(listByImageTemplateAsync(resourceGroupName, imageTemplateName, context));
     }
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -328,22 +274,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified trigger for the specified image template resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerInner>> getWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName) {
+    private Mono<Response<TriggerInner>> getWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -358,24 +300,14 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            triggerName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -384,22 +316,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified trigger for the specified image template resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerInner>> getWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
+    private Mono<Response<TriggerInner>> getWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -414,21 +342,13 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                triggerName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, imageTemplateName, triggerName, accept, context);
     }
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -445,7 +365,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -456,14 +376,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the specified trigger for the specified image template resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerInner> getWithResponse(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
+    public Response<TriggerInner> getWithResponse(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context) {
         return getWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, context).block();
     }
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -479,7 +399,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -488,22 +408,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a trigger that can invoke an image template build along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,25 +439,15 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            triggerName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -551,26 +457,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a trigger that can invoke an image template build along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,22 +488,14 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                triggerName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, parameters, accept,
+            context);
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -616,19 +506,17 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, parameters);
-        return this
-            .client
-            .<TriggerInner, TriggerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TriggerInner.class, TriggerInner.class, this.client.getContext());
+    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, parameters);
+        return this.client.<TriggerInner, TriggerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TriggerInner.class, TriggerInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -640,24 +528,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context);
-        return this
-            .client
-            .<TriggerInner, TriggerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TriggerInner.class, TriggerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context);
+        return this.client.<TriggerInner, TriggerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TriggerInner.class, TriggerInner.class, context);
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -668,16 +550,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters)
+    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -689,20 +570,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context)
+    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -713,16 +589,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return represents a trigger that can invoke an image template build on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerInner> createOrUpdateAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters)
-            .last()
+    private Mono<TriggerInner> createOrUpdateAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName, TriggerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -734,20 +609,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return represents a trigger that can invoke an image template build on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context)
-            .last()
+    private Mono<TriggerInner> createOrUpdateAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName, TriggerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -758,14 +628,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerInner createOrUpdate(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters) {
+    public TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
+        TriggerInner parameters) {
         return createOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters).block();
     }
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -777,18 +647,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerInner createOrUpdate(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context) {
+    public TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
+        TriggerInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, imageTemplateName, triggerName, parameters, context).block();
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -798,19 +664,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -825,24 +687,14 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            triggerName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -853,19 +705,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -880,21 +728,13 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                triggerName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, imageTemplateName, triggerName, accept, context);
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -904,19 +744,17 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, imageTemplateName, triggerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, imageTemplateName, triggerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -927,19 +765,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, imageTemplateName, triggerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -949,14 +786,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String imageTemplateName, String triggerName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
+        String triggerName) {
         return this.beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName).getSyncPoller();
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -967,14 +804,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName, context).getSyncPoller();
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -985,14 +822,13 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String imageTemplateName, String triggerName) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -1003,16 +839,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String imageTemplateName, String triggerName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, imageTemplateName, triggerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -1027,7 +862,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -1043,14 +878,15 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TriggerInner>> listByImageTemplateNextSinglePageAsync(String nextLink) {
@@ -1058,38 +894,30 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByImageTemplateNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the result of List triggers operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TriggerInner>> listByImageTemplateNextSinglePageAsync(String nextLink, Context context) {
@@ -1097,23 +925,13 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByImageTemplateNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByImageTemplateNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
