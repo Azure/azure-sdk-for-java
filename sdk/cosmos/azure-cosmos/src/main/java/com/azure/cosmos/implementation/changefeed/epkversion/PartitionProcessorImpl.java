@@ -4,8 +4,8 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
-import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -55,7 +55,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
-    private final ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange;
+    private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -63,7 +63,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                   PartitionCheckpointer checkpointer,
                                   Lease lease,
                                   Class<T> itemType,
-                                  ChangeFeedMode changeFeedMode) {
+                                  ChangeFeedMode changeFeedMode,
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -77,7 +78,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getStartState(),
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
-        this.throughputControlGroupConfigForFeedRange = enableLocalThroughputControlForFeedRangeIfApplicable(settings, lease);
+        this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
     @Override
@@ -87,6 +88,15 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
 
+        // We only calculate/get the throughput control group config for the feed range at the beginning
+        // Only split/merge will impact the leases <-> partitionKeyRange mapping
+        // When split/merge happens, the current processor will be closed
+        // and a new processor will be created during load balancing stage
+        return this.tryGetThroughputControlConfigForFeedRange(this.lease)
+            .flatMap(configValueHolder -> processFeedRange(cancellationToken, configValueHolder.v));
+    }
+
+    private Mono<Void> processFeedRange(CancellationToken cancellationToken, ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange) {
         return Flux.just(this)
             .flatMap(value -> {
                 if (cancellationToken.isCancellationRequested()) {
@@ -109,12 +119,12 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
             })
             .flatMap(value -> {
-                if (this.throughputControlGroupConfigForFeedRange != null) {
-                    this.options.setThroughputControlGroupName(this.throughputControlGroupConfigForFeedRange.getGroupName());
+                if (throughputControlGroupConfigForFeedRange != null) {
+                    this.options.setThroughputControlGroupName(throughputControlGroupConfigForFeedRange.getGroupName());
                 }
 
                 return this.documentClient.createDocumentChangeFeedQuery(
-                    this.settings.getCollectionSelfLink(),
+                        this.settings.getCollectionSelfLink(),
                         this.options,
                         itemType)
                     .limitRequest(1);
@@ -285,6 +295,16 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             });
     }
 
+    private Mono<Utils.ValueHolder<ThroughputControlGroupConfig>> tryGetThroughputControlConfigForFeedRange(Lease lease) {
+        if (this.feedRangeThroughputControlConfigManager == null) {
+            return Mono.just(new Utils.ValueHolder<>(null));
+        }
+
+        return this.feedRangeThroughputControlConfigManager
+            .getThroughputControlConfigForLeaseFeedRange(lease)
+            .map(config -> new Utils.ValueHolder<>(config));
+    }
+
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
@@ -301,35 +321,5 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             this.checkpointer);
 
         return this.observer.processChanges(context, response.getResults());
-    }
-
-    private ThroughputControlGroupConfig enableLocalThroughputControlForFeedRangeIfApplicable(ProcessorSettings settings, Lease lease) {
-        ThroughputControlGroupConfig configToBeCloned = settings.getFeedPollThroughputControlConfig();
-        if (configToBeCloned != null) {
-            // For each feedRange, we create a local throughput control group
-            // We choose to start from local throughput control based on the idea that usually each CFP instance will only process a unique subset of partitions
-            // NOTE: this method will not work after merge happens. Further changes will need to make to also allow support for merge
-            ThroughputControlGroupConfigBuilder throughputControlGroupConfigForFeedRangeBuilder =
-                new ThroughputControlGroupConfigBuilder()
-                    .groupName(configToBeCloned.getGroupName() + "-" + lease.getLeaseToken())
-                    .continueOnInitError(configToBeCloned.continueOnInitError());
-
-            if (configToBeCloned.getTargetThroughput() != null) {
-                throughputControlGroupConfigForFeedRangeBuilder.targetThroughput(configToBeCloned.getTargetThroughput());
-            }
-            if (configToBeCloned.getTargetThroughputThreshold() != null) {
-                throughputControlGroupConfigForFeedRangeBuilder.targetThroughputThreshold(configToBeCloned.getTargetThroughputThreshold());
-            }
-            if (configToBeCloned.getPriorityLevel() != null) {
-                throughputControlGroupConfigForFeedRangeBuilder.priorityLevel(configToBeCloned.getPriorityLevel());
-            }
-
-            ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange = throughputControlGroupConfigForFeedRangeBuilder.build();
-            this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForFeedRange);
-
-            return throughputControlGroupConfigForFeedRange;
-        }
-
-        return null;
     }
 }
