@@ -3147,13 +3147,13 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> fileEncodingSupplier() {
         return Stream.of(
-//            Arguments.of("file"),
-            Arguments.of("test%test")
-//            Arguments.of("test%25test"),
-//            Arguments.of("path%2Fto%5Da%20file"),
-//            Arguments.of("path/to]a file"),
-//            Arguments.of("斑點"),
-//            Arguments.of("%E6%96%91%E9%BB%9E")
+            Arguments.of("file"),
+            Arguments.of("test%test"),
+            Arguments.of("test%25test"),
+            Arguments.of("path%2Fto%5Da%20file"),
+            Arguments.of("path/to]a file"),
+            Arguments.of("斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E")
         );
     }
 
