@@ -622,6 +622,40 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
     return content;
 }
 ```
+### Using Azure Cosmos Client through Spring Data Cosmos
+- Azure-spring-data-cosmos supports using Azure Cosmos Client through Spring Data Cosmos. 
+- Users can get `CosmosClient` or `AsyncCosmosClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos Client.
+- Example:
+```java readme-sample-CosmosClientBeanCodeSnippet
+@SpringBootApplication
+public class CosmosClientBeanCodeSnippet {
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    public void cosmosClientBean() {
+        CosmosClient cosmosClient = applicationContext.getBean(CosmosClient.class);
+        CosmosContainer myContainer = cosmosClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions());
+        //  Reading a stored procedure
+        myContainer.getScripts().getStoredProcedure("storedProcedureId").read();
+    }
+
+    public void asyncCosmosClientBean() {
+        CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
+        CosmosAsyncContainer myAsyncContainer = cosmosAsyncClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myAsyncContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions()).subscribe();
+        //  Reading a stored procedure
+        myAsyncContainer.getScripts().getStoredProcedure("storedProcedureId").read().subscribe();
+    }
+}
+```
 
 ### Spring Boot Starter Data Rest
 - Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://spring.io/projects/spring-data-rest).
