@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0 (2024-01-09)
 
 ### Features Added
 
@@ -16,8 +16,6 @@
   Please call e.g. `new WebPubSubClientCredential(() -> serviceClient.getClientAccessToken(...).getUrl())`.
 - Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
 - Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
-
-### Bugs Fixed
 
 ### Other Changes
 
