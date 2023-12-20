@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The managed server family capability. */
+/**
+ * The managed server family capability.
+ */
 @Fluent
 public final class ManagedInstanceFamilyCapability {
     /*
@@ -22,6 +24,12 @@ public final class ManagedInstanceFamilyCapability {
      */
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private String sku;
+
+    /*
+     * Whether or not zone redundancy is supported for the family.
+     */
+    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zoneRedundant;
 
     /*
      * List of supported license types.
@@ -47,13 +55,15 @@ public final class ManagedInstanceFamilyCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceFamilyCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceFamilyCapability class.
+     */
     public ManagedInstanceFamilyCapability() {
     }
 
     /**
      * Get the name property: Family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +72,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the sku property: SKU name.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -70,8 +80,17 @@ public final class ManagedInstanceFamilyCapability {
     }
 
     /**
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the family.
+     * 
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -80,7 +99,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the supportedVcoresValues property: List of supported virtual cores values.
-     *
+     * 
      * @return the supportedVcoresValues value.
      */
     public List<ManagedInstanceVcoresCapability> supportedVcoresValues() {
@@ -89,7 +108,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -98,7 +117,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -107,7 +126,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceFamilyCapability object itself.
      */
@@ -118,7 +137,7 @@ public final class ManagedInstanceFamilyCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

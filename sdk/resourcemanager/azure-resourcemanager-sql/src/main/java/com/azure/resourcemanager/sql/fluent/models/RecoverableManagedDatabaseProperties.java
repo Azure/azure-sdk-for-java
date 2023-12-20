@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The recoverable managed database's properties. */
+/**
+ * The recoverable managed database's properties.
+ */
 @Immutable
 public final class RecoverableManagedDatabaseProperties {
     /*
@@ -16,13 +18,15 @@ public final class RecoverableManagedDatabaseProperties {
     @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAvailableBackupDate;
 
-    /** Creates an instance of RecoverableManagedDatabaseProperties class. */
+    /**
+     * Creates an instance of RecoverableManagedDatabaseProperties class.
+     */
     public RecoverableManagedDatabaseProperties() {
     }
 
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
-     *
+     * 
      * @return the lastAvailableBackupDate value.
      */
     public String lastAvailableBackupDate() {
@@ -31,7 +35,7 @@ public final class RecoverableManagedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

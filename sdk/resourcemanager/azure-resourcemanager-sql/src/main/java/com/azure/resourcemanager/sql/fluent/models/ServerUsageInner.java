@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Usage metric of a server. */
+/**
+ * Usage metric of a server.
+ */
 @Immutable
 public final class ServerUsageInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ServerUsageInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerUsageProperties innerProperties;
 
-    /** Creates an instance of ServerUsageInner class. */
+    /**
+     * Creates an instance of ServerUsageInner class.
+     */
     public ServerUsageInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerUsageProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ServerUsageInner extends ProxyResource {
 
     /**
      * Get the displayName property: User-readable name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +45,7 @@ public final class ServerUsageInner extends ProxyResource {
 
     /**
      * Get the currentValue property: Current value of the metric.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -50,7 +54,7 @@ public final class ServerUsageInner extends ProxyResource {
 
     /**
      * Get the limit property: Boundary value of the metric.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -59,7 +63,7 @@ public final class ServerUsageInner extends ProxyResource {
 
     /**
      * Get the unit property: Unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -68,7 +72,7 @@ public final class ServerUsageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

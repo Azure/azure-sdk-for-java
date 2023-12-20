@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for InstancePools List. */
+/**
+ * Samples for InstancePools List.
+ */
 public final class InstancePoolsListSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolsBySubscriptionId.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/
+     * ListInstancePoolsBySubscriptionId.json
      */
     /**
      * Sample code: List instance pools in the subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listInstancePoolsInTheSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getInstancePools().list(Context.NONE);
+        azure.sqlServers().manager().serviceClient().getInstancePools().list(com.azure.core.util.Context.NONE);
     }
 }

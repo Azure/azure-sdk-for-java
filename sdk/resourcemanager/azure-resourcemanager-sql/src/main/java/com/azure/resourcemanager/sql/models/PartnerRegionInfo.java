@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Partner region information for the failover group. */
+/**
+ * Partner region information for the failover group.
+ */
 @Fluent
 public final class PartnerRegionInfo {
     /*
@@ -22,13 +24,15 @@ public final class PartnerRegionInfo {
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceFailoverGroupReplicationRole replicationRole;
 
-    /** Creates an instance of PartnerRegionInfo class. */
+    /**
+     * Creates an instance of PartnerRegionInfo class.
+     */
     public PartnerRegionInfo() {
     }
 
     /**
      * Get the location property: Geo location of the partner managed instances.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -37,7 +41,7 @@ public final class PartnerRegionInfo {
 
     /**
      * Set the location property: Geo location of the partner managed instances.
-     *
+     * 
      * @param location the location value to set.
      * @return the PartnerRegionInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class PartnerRegionInfo {
 
     /**
      * Get the replicationRole property: Replication role of the partner managed instances.
-     *
+     * 
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
@@ -57,7 +61,7 @@ public final class PartnerRegionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

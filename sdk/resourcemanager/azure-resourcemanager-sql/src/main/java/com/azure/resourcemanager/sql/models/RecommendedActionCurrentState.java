@@ -19,51 +19,88 @@ import java.util.Collection;
  * recommended action on user database. Ignored -&gt; user explicitly ignored/discarded the recommended action.
  */
 public final class RecommendedActionCurrentState extends ExpandableStringEnum<RecommendedActionCurrentState> {
-    /** Static value Active for RecommendedActionCurrentState. */
+    /**
+     * Static value Active for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState ACTIVE = fromString("Active");
 
-    /** Static value Pending for RecommendedActionCurrentState. */
+    /**
+     * Static value Pending for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState PENDING = fromString("Pending");
 
-    /** Static value Executing for RecommendedActionCurrentState. */
+    /**
+     * Static value Executing for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState EXECUTING = fromString("Executing");
 
-    /** Static value Verifying for RecommendedActionCurrentState. */
+    /**
+     * Static value Verifying for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState VERIFYING = fromString("Verifying");
 
-    /** Static value PendingRevert for RecommendedActionCurrentState. */
+    /**
+     * Static value PendingRevert for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState PENDING_REVERT = fromString("PendingRevert");
 
-    /** Static value RevertCancelled for RecommendedActionCurrentState. */
+    /**
+     * Static value RevertCancelled for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState REVERT_CANCELLED = fromString("RevertCancelled");
 
-    /** Static value Reverting for RecommendedActionCurrentState. */
+    /**
+     * Static value Reverting for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState REVERTING = fromString("Reverting");
 
-    /** Static value Reverted for RecommendedActionCurrentState. */
+    /**
+     * Static value Reverted for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState REVERTED = fromString("Reverted");
 
-    /** Static value Ignored for RecommendedActionCurrentState. */
+    /**
+     * Static value Ignored for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState IGNORED = fromString("Ignored");
 
-    /** Static value Expired for RecommendedActionCurrentState. */
+    /**
+     * Static value Expired for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState EXPIRED = fromString("Expired");
 
-    /** Static value Monitoring for RecommendedActionCurrentState. */
+    /**
+     * Static value Monitoring for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState MONITORING = fromString("Monitoring");
 
-    /** Static value Resolved for RecommendedActionCurrentState. */
+    /**
+     * Static value Resolved for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState RESOLVED = fromString("Resolved");
 
-    /** Static value Success for RecommendedActionCurrentState. */
+    /**
+     * Static value Success for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState SUCCESS = fromString("Success");
 
-    /** Static value Error for RecommendedActionCurrentState. */
+    /**
+     * Static value Error for RecommendedActionCurrentState.
+     */
     public static final RecommendedActionCurrentState ERROR = fromString("Error");
 
     /**
+     * Creates a new instance of RecommendedActionCurrentState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendedActionCurrentState() {
+    }
+
+    /**
      * Creates or finds a RecommendedActionCurrentState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecommendedActionCurrentState.
      */
@@ -74,7 +111,7 @@ public final class RecommendedActionCurrentState extends ExpandableStringEnum<Re
 
     /**
      * Gets known RecommendedActionCurrentState values.
-     *
+     * 
      * @return known RecommendedActionCurrentState values.
      */
     public static Collection<RecommendedActionCurrentState> values() {

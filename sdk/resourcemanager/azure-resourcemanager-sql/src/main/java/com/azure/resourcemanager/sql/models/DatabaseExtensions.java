@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseExtensionsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Import, Export, or PolybaseImport resource. */
+/**
+ * An Import, Export, or PolybaseImport resource.
+ */
 @Fluent
 public final class DatabaseExtensions extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class DatabaseExtensions extends ProxyResource {
     @JsonProperty(value = "properties")
     private DatabaseExtensionsProperties innerProperties;
 
-    /** Creates an instance of DatabaseExtensions class. */
+    /**
+     * Creates an instance of DatabaseExtensions class.
+     */
     public DatabaseExtensions() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseExtensionsProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @return the operationMode value.
      */
     public OperationMode operationMode() {
@@ -42,7 +46,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @param operationMode the operationMode value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -56,7 +60,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -65,7 +69,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -79,7 +83,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -88,7 +92,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -102,7 +106,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -111,7 +115,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -125,7 +129,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -134,7 +138,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -148,7 +152,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -157,7 +161,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -171,7 +175,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -180,7 +184,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -195,7 +199,7 @@ public final class DatabaseExtensions extends ProxyResource {
     /**
      * Get the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @return the databaseEdition value.
      */
     public String databaseEdition() {
@@ -205,7 +209,7 @@ public final class DatabaseExtensions extends ProxyResource {
     /**
      * Set the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @param databaseEdition the databaseEdition value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -220,7 +224,7 @@ public final class DatabaseExtensions extends ProxyResource {
     /**
      * Get the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
@@ -230,7 +234,7 @@ public final class DatabaseExtensions extends ProxyResource {
     /**
      * Set the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @param serviceObjectiveName the serviceObjectiveName value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -243,9 +247,9 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
+     * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an
+     * import operation.
+     * 
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -253,9 +257,9 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
+     * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an
+     * import operation.
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -269,7 +273,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -278,7 +282,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -292,7 +296,7 @@ public final class DatabaseExtensions extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

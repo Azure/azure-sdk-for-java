@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload group definition. For more information look at sys.workload_management_workload_groups (DMV). */
+/**
+ * Workload group definition. For more information look at sys.workload_management_workload_groups (DMV).
+ */
 @Fluent
 public final class WorkloadGroupProperties {
     /*
@@ -46,13 +48,15 @@ public final class WorkloadGroupProperties {
     @JsonProperty(value = "queryExecutionTimeout")
     private Integer queryExecutionTimeout;
 
-    /** Creates an instance of WorkloadGroupProperties class. */
+    /**
+     * Creates an instance of WorkloadGroupProperties class.
+     */
     public WorkloadGroupProperties() {
     }
 
     /**
      * Get the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @return the minResourcePercent value.
      */
     public int minResourcePercent() {
@@ -61,7 +65,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @param minResourcePercent the minResourcePercent value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @return the maxResourcePercent value.
      */
     public int maxResourcePercent() {
@@ -81,7 +85,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @param maxResourcePercent the maxResourcePercent value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -92,7 +96,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @return the minResourcePercentPerRequest value.
      */
     public double minResourcePercentPerRequest() {
@@ -101,7 +105,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @param minResourcePercentPerRequest the minResourcePercentPerRequest value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -112,7 +116,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @return the maxResourcePercentPerRequest value.
      */
     public Double maxResourcePercentPerRequest() {
@@ -121,7 +125,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @param maxResourcePercentPerRequest the maxResourcePercentPerRequest value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -132,7 +136,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the importance property: The workload group importance level.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -141,7 +145,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the importance property: The workload group importance level.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -152,7 +156,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Get the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @return the queryExecutionTimeout value.
      */
     public Integer queryExecutionTimeout() {
@@ -161,7 +165,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Set the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @param queryExecutionTimeout the queryExecutionTimeout value to set.
      * @return the WorkloadGroupProperties object itself.
      */
@@ -172,7 +176,7 @@ public final class WorkloadGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

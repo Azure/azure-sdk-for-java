@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The steps of a managed instance operation. */
+/**
+ * The steps of a managed instance operation.
+ */
 @Immutable
 public final class ManagedInstanceOperationSteps {
     /*
@@ -29,13 +31,15 @@ public final class ManagedInstanceOperationSteps {
     @JsonProperty(value = "stepsList", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList;
 
-    /** Creates an instance of ManagedInstanceOperationSteps class. */
+    /**
+     * Creates an instance of ManagedInstanceOperationSteps class.
+     */
     public ManagedInstanceOperationSteps() {
     }
 
     /**
      * Get the totalSteps property: The total number of operation steps.
-     *
+     * 
      * @return the totalSteps value.
      */
     public String totalSteps() {
@@ -44,7 +48,7 @@ public final class ManagedInstanceOperationSteps {
 
     /**
      * Get the currentStep property: The number of current operation steps.
-     *
+     * 
      * @return the currentStep value.
      */
     public Integer currentStep() {
@@ -53,7 +57,7 @@ public final class ManagedInstanceOperationSteps {
 
     /**
      * Get the stepsList property: The operation steps list.
-     *
+     * 
      * @return the stepsList value.
      */
     public List<UpsertManagedServerOperationStepWithEstimatesAndDuration> stepsList() {
@@ -62,7 +66,7 @@ public final class ManagedInstanceOperationSteps {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

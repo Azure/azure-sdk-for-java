@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.SensitivityLabelUpdateKind;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A sensitivity label update operation. */
+/**
+ * A sensitivity label update operation.
+ */
 @Fluent
 public final class SensitivityLabelUpdateInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SensitivityLabelUpdatePropertiesInner innerProperties;
 
-    /** Creates an instance of SensitivityLabelUpdateInner class. */
+    /**
+     * Creates an instance of SensitivityLabelUpdateInner class.
+     */
     public SensitivityLabelUpdateInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SensitivityLabelUpdatePropertiesInner innerProperties() {
@@ -33,7 +37,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Get the op property: The op property.
-     *
+     * 
      * @return the op value.
      */
     public SensitivityLabelUpdateKind op() {
@@ -42,7 +46,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Set the op property: The op property.
-     *
+     * 
      * @param op the op value to set.
      * @return the SensitivityLabelUpdateInner object itself.
      */
@@ -56,7 +60,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Get the schema property: Schema name of the column to update.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -65,7 +69,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Set the schema property: Schema name of the column to update.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SensitivityLabelUpdateInner object itself.
      */
@@ -79,7 +83,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Get the table property: Table name of the column to update.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -88,7 +92,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Set the table property: Table name of the column to update.
-     *
+     * 
      * @param table the table value to set.
      * @return the SensitivityLabelUpdateInner object itself.
      */
@@ -102,7 +106,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Get the column property: Column name to update.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -111,7 +115,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Set the column property: Column name to update.
-     *
+     * 
      * @param column the column value to set.
      * @return the SensitivityLabelUpdateInner object itself.
      */
@@ -125,7 +129,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Get the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @return the sensitivityLabel value.
      */
     public SensitivityLabelInner sensitivityLabel() {
@@ -134,7 +138,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Set the sensitivityLabel property: The sensitivity label information to apply on a column.
-     *
+     * 
      * @param sensitivityLabel the sensitivityLabel value to set.
      * @return the SensitivityLabelUpdateInner object itself.
      */
@@ -148,7 +152,7 @@ public final class SensitivityLabelUpdateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

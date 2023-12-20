@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The managed server capability. */
+/**
+ * The managed server capability.
+ */
 @Fluent
 public final class ManagedInstanceEditionCapability {
     /*
@@ -16,6 +18,12 @@ public final class ManagedInstanceEditionCapability {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+
+    /*
+     * Whether or not this is a GPv2 variant of General Purpose edition.
+     */
+    @JsonProperty(value = "isGeneralPurposeV2", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isGeneralPurposeV2;
 
     /*
      * The supported families.
@@ -30,12 +38,6 @@ public final class ManagedInstanceEditionCapability {
     private List<StorageCapability> supportedStorageCapabilities;
 
     /*
-     * Whether or not zone redundancy is supported for the edition.
-     */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean zoneRedundant;
-
-    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -47,13 +49,15 @@ public final class ManagedInstanceEditionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceEditionCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceEditionCapability class.
+     */
     public ManagedInstanceEditionCapability() {
     }
 
     /**
      * Get the name property: The managed server version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,8 +65,17 @@ public final class ManagedInstanceEditionCapability {
     }
 
     /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     * 
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.isGeneralPurposeV2;
+    }
+
+    /**
      * Get the supportedFamilies property: The supported families.
-     *
+     * 
      * @return the supportedFamilies value.
      */
     public List<ManagedInstanceFamilyCapability> supportedFamilies() {
@@ -71,7 +84,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the supportedStorageCapabilities property: The list of supported storage capabilities for this edition.
-     *
+     * 
      * @return the supportedStorageCapabilities value.
      */
     public List<StorageCapability> supportedStorageCapabilities() {
@@ -79,17 +92,8 @@ public final class ManagedInstanceEditionCapability {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
-     *
-     * @return the zoneRedundant value.
-     */
-    public Boolean zoneRedundant() {
-        return this.zoneRedundant;
-    }
-
-    /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -98,7 +102,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -107,7 +111,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceEditionCapability object itself.
      */
@@ -118,7 +122,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstancePrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private endpoint connection under a managed instance. */
+/**
+ * A private endpoint connection under a managed instance.
+ */
 @Immutable
 public final class ManagedInstancePecProperty {
     /*
@@ -23,13 +25,15 @@ public final class ManagedInstancePecProperty {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedInstancePrivateEndpointConnectionProperties properties;
 
-    /** Creates an instance of ManagedInstancePecProperty class. */
+    /**
+     * Creates an instance of ManagedInstancePecProperty class.
+     */
     public ManagedInstancePecProperty() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +42,7 @@ public final class ManagedInstancePecProperty {
 
     /**
      * Get the properties property: Private endpoint connection properties.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedInstancePrivateEndpointConnectionProperties properties() {
@@ -47,7 +51,7 @@ public final class ManagedInstancePecProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

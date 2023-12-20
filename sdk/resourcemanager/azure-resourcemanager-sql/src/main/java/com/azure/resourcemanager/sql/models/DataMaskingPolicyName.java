@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataMaskingPolicyName. */
+/**
+ * Defines values for DataMaskingPolicyName.
+ */
 public final class DataMaskingPolicyName extends ExpandableStringEnum<DataMaskingPolicyName> {
-    /** Static value Default for DataMaskingPolicyName. */
+    /**
+     * Static value Default for DataMaskingPolicyName.
+     */
     public static final DataMaskingPolicyName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of DataMaskingPolicyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataMaskingPolicyName() {
+    }
+
+    /**
      * Creates or finds a DataMaskingPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataMaskingPolicyName.
      */
@@ -26,7 +39,7 @@ public final class DataMaskingPolicyName extends ExpandableStringEnum<DataMaskin
 
     /**
      * Gets known DataMaskingPolicyName values.
-     *
+     * 
      * @return known DataMaskingPolicyName values.
      */
     public static Collection<DataMaskingPolicyName> values() {

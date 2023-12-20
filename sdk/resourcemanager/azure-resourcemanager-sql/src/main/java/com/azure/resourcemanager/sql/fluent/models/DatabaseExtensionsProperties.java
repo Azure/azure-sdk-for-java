@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.OperationMode;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the database information after a successful Import, Export, or PolybaseImport. */
+/**
+ * Contains the database information after a successful Import, Export, or PolybaseImport.
+ */
 @Fluent
 public final class DatabaseExtensionsProperties {
     /*
@@ -80,13 +82,15 @@ public final class DatabaseExtensionsProperties {
     @JsonProperty(value = "networkIsolation")
     private NetworkIsolationSettings networkIsolation;
 
-    /** Creates an instance of DatabaseExtensionsProperties class. */
+    /**
+     * Creates an instance of DatabaseExtensionsProperties class.
+     */
     public DatabaseExtensionsProperties() {
     }
 
     /**
      * Get the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @return the operationMode value.
      */
     public OperationMode operationMode() {
@@ -95,7 +99,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * 
      * @param operationMode the operationMode value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -115,7 +119,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -135,7 +139,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageKey property: Storage key for the storage account.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -155,7 +159,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the storageUri property: Storage Uri for the storage account.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -166,7 +170,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -175,7 +179,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -186,7 +190,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -195,7 +199,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -206,7 +210,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -215,7 +219,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Get the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @return the databaseEdition value.
      */
     public String databaseEdition() {
@@ -237,7 +241,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Set the databaseEdition property: Database edition for the newly created database in the case of an import
      * operation.
-     *
+     * 
      * @param databaseEdition the databaseEdition value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -249,7 +253,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Get the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
@@ -259,7 +263,7 @@ public final class DatabaseExtensionsProperties {
     /**
      * Set the serviceObjectiveName property: Database service level objective for the newly created database in the
      * case of an import operation.
-     *
+     * 
      * @param serviceObjectiveName the serviceObjectiveName value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -269,9 +273,9 @@ public final class DatabaseExtensionsProperties {
     }
 
     /**
-     * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
+     * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an
+     * import operation.
+     * 
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -279,9 +283,9 @@ public final class DatabaseExtensionsProperties {
     }
 
     /**
-     * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
+     * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an
+     * import operation.
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -292,7 +296,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -301,7 +305,7 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the DatabaseExtensionsProperties object itself.
      */
@@ -312,33 +316,25 @@ public final class DatabaseExtensionsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operationMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operationMode in model DatabaseExtensionsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operationMode in model DatabaseExtensionsProperties"));
         }
         if (storageKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKeyType in model DatabaseExtensionsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageKeyType in model DatabaseExtensionsProperties"));
         }
         if (storageKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKey in model DatabaseExtensionsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageKey in model DatabaseExtensionsProperties"));
         }
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageUri in model DatabaseExtensionsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageUri in model DatabaseExtensionsProperties"));
         }
         if (networkIsolation() != null) {
             networkIsolation().validate();

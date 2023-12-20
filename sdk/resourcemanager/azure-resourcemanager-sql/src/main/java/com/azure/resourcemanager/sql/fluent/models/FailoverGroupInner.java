@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.FailoverGroupDatabasesSecondaryType;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
 import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
@@ -15,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A failover group. */
+/**
+ * A failover group.
+ */
 @Fluent
 public final class FailoverGroupInner extends ProxyResource {
     /*
@@ -37,13 +40,15 @@ public final class FailoverGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private FailoverGroupProperties innerProperties;
 
-    /** Creates an instance of FailoverGroupInner class. */
+    /**
+     * Creates an instance of FailoverGroupInner class.
+     */
     public FailoverGroupInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -52,7 +57,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -61,7 +66,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -72,7 +77,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FailoverGroupProperties innerProperties() {
@@ -81,7 +86,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -90,7 +95,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -104,7 +109,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -113,7 +118,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -127,7 +132,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the replicationRole property: Local replication role of the failover group instance.
-     *
+     * 
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
@@ -136,7 +141,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the replicationState property: Replication state of the failover group instance.
-     *
+     * 
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -145,7 +150,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @return the partnerServers value.
      */
     public List<PartnerInfo> partnerServers() {
@@ -154,7 +159,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @param partnerServers the partnerServers value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -168,7 +173,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     *
+     * 
      * @return the databases value.
      */
     public List<String> databases() {
@@ -177,7 +182,7 @@ public final class FailoverGroupInner extends ProxyResource {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the FailoverGroupInner object itself.
      */
@@ -190,8 +195,31 @@ public final class FailoverGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupInner object itself.
+     */
+    public FailoverGroupInner withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

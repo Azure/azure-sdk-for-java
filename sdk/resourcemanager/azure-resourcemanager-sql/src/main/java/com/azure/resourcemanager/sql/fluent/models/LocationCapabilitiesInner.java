@@ -6,12 +6,15 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.CapabilityStatus;
+import com.azure.resourcemanager.sql.models.JobAgentVersionCapability;
 import com.azure.resourcemanager.sql.models.ManagedInstanceVersionCapability;
 import com.azure.resourcemanager.sql.models.ServerVersionCapability;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The location capability. */
+/**
+ * The location capability.
+ */
 @Fluent
 public final class LocationCapabilitiesInner {
     /*
@@ -33,6 +36,12 @@ public final class LocationCapabilitiesInner {
     private List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions;
 
     /*
+     * The list of supported job agent versions.
+     */
+    @JsonProperty(value = "supportedJobAgentVersions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<JobAgentVersionCapability> supportedJobAgentVersions;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -44,13 +53,15 @@ public final class LocationCapabilitiesInner {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of LocationCapabilitiesInner class. */
+    /**
+     * Creates an instance of LocationCapabilitiesInner class.
+     */
     public LocationCapabilitiesInner() {
     }
 
     /**
      * Get the name property: The location name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +70,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the supportedServerVersions property: The list of supported server versions.
-     *
+     * 
      * @return the supportedServerVersions value.
      */
     public List<ServerVersionCapability> supportedServerVersions() {
@@ -68,7 +79,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the supportedManagedInstanceVersions property: The list of supported managed instance versions.
-     *
+     * 
      * @return the supportedManagedInstanceVersions value.
      */
     public List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions() {
@@ -76,8 +87,17 @@ public final class LocationCapabilitiesInner {
     }
 
     /**
+     * Get the supportedJobAgentVersions property: The list of supported job agent versions.
+     * 
+     * @return the supportedJobAgentVersions value.
+     */
+    public List<JobAgentVersionCapability> supportedJobAgentVersions() {
+        return this.supportedJobAgentVersions;
+    }
+
+    /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -86,7 +106,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -95,7 +115,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the LocationCapabilitiesInner object itself.
      */
@@ -106,7 +126,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -115,6 +135,9 @@ public final class LocationCapabilitiesInner {
         }
         if (supportedManagedInstanceVersions() != null) {
             supportedManagedInstanceVersions().forEach(e -> e.validate());
+        }
+        if (supportedJobAgentVersions() != null) {
+            supportedJobAgentVersions().forEach(e -> e.validate());
         }
     }
 }

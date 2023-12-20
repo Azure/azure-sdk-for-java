@@ -8,9 +8,11 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/**
+ * Azure Active Directory identity configuration for a resource.
+ */
 @Immutable
-public class UserIdentity {
+public final class UserIdentity {
     /*
      * The Azure Active Directory principal id.
      */
@@ -23,13 +25,15 @@ public class UserIdentity {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     public UserIdentity() {
     }
 
     /**
      * Get the principalId property: The Azure Active Directory principal id.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -38,7 +42,7 @@ public class UserIdentity {
 
     /**
      * Get the clientId property: The Azure Active Directory client id.
-     *
+     * 
      * @return the clientId value.
      */
     public UUID clientId() {
@@ -47,7 +51,7 @@ public class UserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

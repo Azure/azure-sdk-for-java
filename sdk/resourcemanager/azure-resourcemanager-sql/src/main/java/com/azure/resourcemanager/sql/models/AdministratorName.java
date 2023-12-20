@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AdministratorName. */
+/**
+ * Defines values for AdministratorName.
+ */
 public final class AdministratorName extends ExpandableStringEnum<AdministratorName> {
-    /** Static value ActiveDirectory for AdministratorName. */
+    /**
+     * Static value ActiveDirectory for AdministratorName.
+     */
     public static final AdministratorName ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
+     * Creates a new instance of AdministratorName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdministratorName() {
+    }
+
+    /**
      * Creates or finds a AdministratorName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdministratorName.
      */
@@ -26,7 +39,7 @@ public final class AdministratorName extends ExpandableStringEnum<AdministratorN
 
     /**
      * Gets known AdministratorName values.
-     *
+     * 
      * @return known AdministratorName values.
      */
     public static Collection<AdministratorName> values() {

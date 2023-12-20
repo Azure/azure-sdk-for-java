@@ -4,15 +4,17 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.ReplicationLinkType;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of a replication link. */
-@Immutable
+/**
+ * Properties of a replication link.
+ */
+@Fluent
 public final class ReplicationLinkProperties {
     /*
      * Resource partner server.
@@ -25,6 +27,12 @@ public final class ReplicationLinkProperties {
      */
     @JsonProperty(value = "partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerDatabase;
+
+    /*
+     * Resource partner database Id.
+     */
+    @JsonProperty(value = "partnerDatabaseId", access = JsonProperty.Access.WRITE_ONLY)
+    private String partnerDatabaseId;
 
     /*
      * Resource partner location.
@@ -75,18 +83,20 @@ public final class ReplicationLinkProperties {
     private Boolean isTerminationAllowed;
 
     /*
-     * Link type (GEO, NAMED, STANDBY).
+     * Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
      */
-    @JsonProperty(value = "linkType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "linkType")
     private ReplicationLinkType linkType;
 
-    /** Creates an instance of ReplicationLinkProperties class. */
+    /**
+     * Creates an instance of ReplicationLinkProperties class.
+     */
     public ReplicationLinkProperties() {
     }
 
     /**
      * Get the partnerServer property: Resource partner server.
-     *
+     * 
      * @return the partnerServer value.
      */
     public String partnerServer() {
@@ -95,7 +105,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the partnerDatabase property: Resource partner database.
-     *
+     * 
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
@@ -103,8 +113,17 @@ public final class ReplicationLinkProperties {
     }
 
     /**
+     * Get the partnerDatabaseId property: Resource partner database Id.
+     * 
+     * @return the partnerDatabaseId value.
+     */
+    public String partnerDatabaseId() {
+        return this.partnerDatabaseId;
+    }
+
+    /**
      * Get the partnerLocation property: Resource partner location.
-     *
+     * 
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
@@ -113,7 +132,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the role property: Local replication role.
-     *
+     * 
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -122,7 +141,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the partnerRole property: Partner replication role.
-     *
+     * 
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
@@ -131,7 +150,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the replicationMode property: Replication mode.
-     *
+     * 
      * @return the replicationMode value.
      */
     public String replicationMode() {
@@ -140,7 +159,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the startTime property: Time at which the link was created.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -149,7 +168,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the percentComplete property: Seeding completion percentage for the link.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -158,7 +177,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the replicationState property: Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
-     *
+     * 
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
@@ -167,7 +186,7 @@ public final class ReplicationLinkProperties {
 
     /**
      * Get the isTerminationAllowed property: Whether the user is currently allowed to terminate the link.
-     *
+     * 
      * @return the isTerminationAllowed value.
      */
     public Boolean isTerminationAllowed() {
@@ -175,8 +194,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
-     *
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+     * 
      * @return the linkType value.
      */
     public ReplicationLinkType linkType() {
@@ -184,8 +203,19 @@ public final class ReplicationLinkProperties {
     }
 
     /**
+     * Set the linkType property: Link type (GEO, NAMED, STANDBY). Update operation does not support NAMED.
+     * 
+     * @param linkType the linkType value to set.
+     * @return the ReplicationLinkProperties object itself.
+     */
+    public ReplicationLinkProperties withLinkType(ReplicationLinkType linkType) {
+        this.linkType = linkType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

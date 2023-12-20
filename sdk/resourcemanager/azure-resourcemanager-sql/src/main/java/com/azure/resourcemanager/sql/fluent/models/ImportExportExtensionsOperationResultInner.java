@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** An Extension operation result resource. */
+/**
+ * An Extension operation result resource.
+ */
 @Immutable
 public final class ImportExportExtensionsOperationResultInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
     @JsonProperty(value = "properties")
     private ImportExportExtensionsOperationResultProperties innerProperties;
 
-    /** Creates an instance of ImportExportExtensionsOperationResultInner class. */
+    /**
+     * Creates an instance of ImportExportExtensionsOperationResultInner class.
+     */
     public ImportExportExtensionsOperationResultInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImportExportExtensionsOperationResultProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -44,7 +48,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the requestType property: Request type.
-     *
+     * 
      * @return the requestType value.
      */
     public String requestType() {
@@ -53,7 +57,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the lastModifiedTime property: Last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public String lastModifiedTime() {
@@ -62,7 +66,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the serverName property: Server name.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -71,7 +75,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the databaseName property: Database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -80,7 +84,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -89,7 +93,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -98,7 +102,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the queuedTime property: Queued time.
-     *
+     * 
      * @return the queuedTime value.
      */
     public String queuedTime() {
@@ -107,7 +111,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the blobUri property: Blob URI.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -116,7 +120,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Get the privateEndpointConnections property: Gets the status of private endpoints associated with this request.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionRequestStatus> privateEndpointConnections() {
@@ -125,7 +129,7 @@ public final class ImportExportExtensionsOperationResultInner extends ProxyResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

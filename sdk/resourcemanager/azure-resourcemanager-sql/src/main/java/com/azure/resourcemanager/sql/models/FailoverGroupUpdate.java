@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A failover group update request. */
+/**
+ * A failover group update request.
+ */
 @Fluent
 public final class FailoverGroupUpdate {
     /*
@@ -27,13 +29,15 @@ public final class FailoverGroupUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of FailoverGroupUpdate class. */
+    /**
+     * Creates an instance of FailoverGroupUpdate class.
+     */
     public FailoverGroupUpdate() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FailoverGroupUpdateProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +55,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -62,7 +66,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -71,7 +75,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -85,7 +89,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -94,7 +98,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -108,7 +112,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     *
+     * 
      * @return the databases value.
      */
     public List<String> databases() {
@@ -117,7 +121,7 @@ public final class FailoverGroupUpdate {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -130,8 +134,54 @@ public final class FailoverGroupUpdate {
     }
 
     /**
+     * Get the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @return the partnerServers value.
+     */
+    public List<PartnerInfo> partnerServers() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerServers();
+    }
+
+    /**
+     * Set the partnerServers property: List of partner server information for the failover group.
+     * 
+     * @param partnerServers the partnerServers value to set.
+     * @return the FailoverGroupUpdate object itself.
+     */
+    public FailoverGroupUpdate withPartnerServers(List<PartnerInfo> partnerServers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withPartnerServers(partnerServers);
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @return the secondaryType value.
+     */
+    public FailoverGroupDatabasesSecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: Databases secondary type on partner server.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the FailoverGroupUpdate object itself.
+     */
+    public FailoverGroupUpdate withSecondaryType(FailoverGroupDatabasesSecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FailoverGroupUpdateProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

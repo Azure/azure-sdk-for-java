@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The UpsertManagedServerOperationStepWithEstimatesAndDuration model. */
+/**
+ * The UpsertManagedServerOperationStepWithEstimatesAndDuration model.
+ */
 @Fluent
 public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
     /*
@@ -47,13 +49,15 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
     @JsonProperty(value = "status")
     private Status status;
 
-    /** Creates an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration class. */
+    /**
+     * Creates an instance of UpsertManagedServerOperationStepWithEstimatesAndDuration class.
+     */
     public UpsertManagedServerOperationStepWithEstimatesAndDuration() {
     }
 
     /**
      * Get the stepStartTime property: The stepStartTime property.
-     *
+     * 
      * @return the stepStartTime value.
      */
     public OffsetDateTime stepStartTime() {
@@ -62,7 +66,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the stepStartTime property: The stepStartTime property.
-     *
+     * 
      * @param stepStartTime the stepStartTime value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -73,7 +77,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the stepEndTime property: The stepEndTime property.
-     *
+     * 
      * @return the stepEndTime value.
      */
     public OffsetDateTime stepEndTime() {
@@ -82,7 +86,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the stepEndTime property: The stepEndTime property.
-     *
+     * 
      * @param stepEndTime the stepEndTime value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -93,7 +97,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the timeElapsed property: The timeElapsed property.
-     *
+     * 
      * @return the timeElapsed value.
      */
     public String timeElapsed() {
@@ -102,7 +106,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the timeElapsed property: The timeElapsed property.
-     *
+     * 
      * @param timeElapsed the timeElapsed value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -113,7 +117,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the order property: The order property.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -122,7 +126,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the order property: The order property.
-     *
+     * 
      * @param order the order value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -133,7 +137,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -142,7 +146,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -153,7 +157,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -162,7 +166,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the UpsertManagedServerOperationStepWithEstimatesAndDuration object itself.
      */
@@ -173,7 +177,7 @@ public final class UpsertManagedServerOperationStepWithEstimatesAndDuration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

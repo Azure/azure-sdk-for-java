@@ -4,25 +4,22 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LedgerDigestUploadsOperation ListByDatabase. */
+/**
+ * Samples for LedgerDigestUploadsOperation ListByDatabase.
+ */
 public final class LedgerDigestUploadsOperationListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LedgerDigestUploadsList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/LedgerDigestUploadsList.json
      */
     /**
      * Sample code: Gets list of ledger digest upload settings on a database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getsListOfLedgerDigestUploadSettingsOnADatabase(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
-            .manager()
-            .serviceClient()
-            .getLedgerDigestUploadsOperations()
-            .listByDatabase("ledgertestrg", "ledgertestserver", "testdb", Context.NONE);
+    public static void
+        getsListOfLedgerDigestUploadSettingsOnADatabase(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers().manager().serviceClient().getLedgerDigestUploadsOperations().listByDatabase("ledgertestrg",
+            "ledgertestserver", "testdb", com.azure.core.util.Context.NONE);
     }
 }

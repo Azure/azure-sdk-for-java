@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** An update request for an Azure SQL Database managed instance. */
+/**
+ * An update request for an Azure SQL Database managed instance.
+ */
 @Fluent
 public final class ManagedInstanceUpdate {
     /*
@@ -40,13 +42,15 @@ public final class ManagedInstanceUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ManagedInstanceUpdate class. */
+    /**
+     * Creates an instance of ManagedInstanceUpdate class.
+     */
     public ManagedInstanceUpdate() {
     }
 
     /**
      * Get the sku property: Managed instance sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -55,7 +59,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the sku property: Managed instance sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -66,7 +70,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the identity property: Managed instance identity.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -75,7 +79,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the identity property: Managed instance identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -86,7 +90,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceProperties innerProperties() {
@@ -95,7 +99,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -104,7 +108,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -114,22 +118,22 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
-     *
+     * Get the provisioningState property: Provisioning state of managed instance.
+     * 
      * @return the provisioningState value.
      */
-    public ManagedInstancePropertiesProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @return the managedInstanceCreateMode value.
      */
     public ManagedServerCreateMode managedInstanceCreateMode() {
@@ -138,12 +142,12 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @param managedInstanceCreateMode the managedInstanceCreateMode value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -157,7 +161,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the managed instance.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -165,9 +169,32 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
+     * Get the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     * 
+     * @return the isGeneralPurposeV2 value.
+     */
+    public Boolean isGeneralPurposeV2() {
+        return this.innerProperties() == null ? null : this.innerProperties().isGeneralPurposeV2();
+    }
+
+    /**
+     * Set the isGeneralPurposeV2 property: Whether or not this is a GPv2 variant of General Purpose edition.
+     * 
+     * @param isGeneralPurposeV2 the isGeneralPurposeV2 value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withIsGeneralPurposeV2(Boolean isGeneralPurposeV2) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withIsGeneralPurposeV2(isGeneralPurposeV2);
+        return this;
+    }
+
+    /**
      * Get the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -177,7 +204,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -192,7 +219,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -202,7 +229,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -216,7 +243,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -225,7 +252,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -239,7 +266,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the state property: The state of the managed instance.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -247,9 +274,9 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
-     * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive
+     * of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
+     * 
      * @return the licenseType value.
      */
     public ManagedInstanceLicenseType licenseType() {
@@ -257,9 +284,9 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
-     * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive
+     * of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -272,8 +299,44 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
+     * Get the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     * 
+     * @return the hybridSecondaryUsage value.
+     */
+    public HybridSecondaryUsage hybridSecondaryUsage() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridSecondaryUsage();
+    }
+
+    /**
+     * Set the hybridSecondaryUsage property: Hybrid secondary usage. Possible values are 'Active' (default value) and
+     * 'Passive' (customer uses the secondary as Passive DR).
+     * 
+     * @param hybridSecondaryUsage the hybridSecondaryUsage value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withHybridSecondaryUsage(HybridSecondaryUsage hybridSecondaryUsage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withHybridSecondaryUsage(hybridSecondaryUsage);
+        return this;
+    }
+
+    /**
+     * Get the hybridSecondaryUsageDetected property: Hybrid secondary usage detected. Possible values are 'Active'
+     * (customer does not meet the requirements to use the secondary as Passive DR) and 'Passive' (customer meets the
+     * requirements to use the secondary as Passive DR).
+     * 
+     * @return the hybridSecondaryUsageDetected value.
+     */
+    public HybridSecondaryUsageDetected hybridSecondaryUsageDetected() {
+        return this.innerProperties() == null ? null : this.innerProperties().hybridSecondaryUsageDetected();
+    }
+
+    /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -282,7 +345,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -297,7 +360,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
      * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
-     *
+     * 
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
@@ -307,7 +370,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
      * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
-     *
+     * 
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -320,8 +383,58 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
+     * Get the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @return the storageIOps value.
+     */
+    public Integer storageIOps() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageIOps();
+    }
+
+    /**
+     * Set the storageIOps property: Storage IOps. Minimum value: 120. Maximum value: 120000. Increments of 1 IOps
+     * allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @param storageIOps the storageIOps value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withStorageIOps(Integer storageIOps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageIOps(storageIOps);
+        return this;
+    }
+
+    /**
+     * Get the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @return the storageThroughputMBps value.
+     */
+    public Integer storageThroughputMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageThroughputMBps();
+    }
+
+    /**
+     * Set the storageThroughputMBps property: Storage throughput in MBps. Minimum value: 25. Maximum value: 4000.
+     * Increments of 1 MBps allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
+     * @param storageThroughputMBps the storageThroughputMBps value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withStorageThroughputMBps(Integer storageThroughputMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageThroughputMBps(storageThroughputMBps);
+        return this;
+    }
+
+    /**
      * Get the collation property: Collation of the managed instance.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -330,7 +443,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the collation property: Collation of the managed instance.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -344,7 +457,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the dnsZone property: The Dns Zone that the managed instance is in.
-     *
+     * 
      * @return the dnsZone value.
      */
     public String dnsZone() {
@@ -352,9 +465,9 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
-     * will share after creation.
-     *
+     * Get the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed
+     * instance will share after creation.
+     * 
      * @return the dnsZonePartner value.
      */
     public String dnsZonePartner() {
@@ -362,9 +475,9 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
-     * will share after creation.
-     *
+     * Set the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed
+     * instance will share after creation.
+     * 
      * @param dnsZonePartner the dnsZonePartner value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -378,7 +491,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @return the publicDataEndpointEnabled value.
      */
     public Boolean publicDataEndpointEnabled() {
@@ -387,7 +500,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @param publicDataEndpointEnabled the publicDataEndpointEnabled value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -402,7 +515,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @return the sourceManagedInstanceId value.
      */
     public String sourceManagedInstanceId() {
@@ -412,7 +525,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @param sourceManagedInstanceId the sourceManagedInstanceId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -427,7 +540,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -437,7 +550,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -451,7 +564,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @return the proxyOverride value.
      */
     public ManagedInstanceProxyOverride proxyOverride() {
@@ -460,7 +573,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @param proxyOverride the proxyOverride value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -473,13 +586,13 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @return the timezoneId value.
      */
     public String timezoneId() {
@@ -487,13 +600,13 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @param timezoneId the timezoneId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -507,7 +620,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @return the instancePoolId value.
      */
     public String instancePoolId() {
@@ -516,7 +629,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @param instancePoolId the instancePoolId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -531,7 +644,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
      * instance.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -541,7 +654,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
      * instance.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -555,7 +668,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ManagedInstancePecProperty> privateEndpointConnections() {
@@ -564,7 +677,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -573,7 +686,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -587,9 +700,9 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
-     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
-     * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo
+     * (GeoRedundantStorage) and GeoZone(GeoZoneRedundantStorage).
+     * 
      * @return the currentBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy currentBackupStorageRedundancy() {
@@ -598,9 +711,9 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
-     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
-     * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo
+     * (GeoRedundantStorage) and GeoZone(GeoZoneRedundantStorage).
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -609,14 +722,14 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
-     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
-     * and GeoZone(GeoZoneRedundantStorage).
-     *
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo
+     * (GeoRedundantStorage) and GeoZone(GeoZoneRedundantStorage).
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
-    public ManagedInstanceUpdate withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public ManagedInstanceUpdate
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstanceProperties();
         }
@@ -626,7 +739,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the zoneRedundant property: Whether or not the multi-az is enabled.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -635,7 +748,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the zoneRedundant property: Whether or not the multi-az is enabled.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -650,7 +763,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -660,7 +773,7 @@ public final class ManagedInstanceUpdate {
     /**
      * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -674,7 +787,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -683,7 +796,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -696,8 +809,10 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Get the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
+     * 
      * @return the administrators value.
      */
     public ManagedInstanceExternalAdministrator administrators() {
@@ -705,8 +820,10 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Set the administrators property: The Azure Active Directory administrator of the instance. This can only be used
+     * at instance create time. If used for instance update, it will be ignored or it will result in an error. For
+     * updates individual APIs will need to be used.
+     * 
      * @param administrators the administrators value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -720,7 +837,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Get the servicePrincipal property: The managed instance's service principal.
-     *
+     * 
      * @return the servicePrincipal value.
      */
     public ServicePrincipal servicePrincipal() {
@@ -729,7 +846,7 @@ public final class ManagedInstanceUpdate {
 
     /**
      * Set the servicePrincipal property: The managed instance's service principal.
-     *
+     * 
      * @param servicePrincipal the servicePrincipal value to set.
      * @return the ManagedInstanceUpdate object itself.
      */
@@ -742,8 +859,106 @@ public final class ManagedInstanceUpdate {
     }
 
     /**
+     * Get the virtualClusterId property: Virtual cluster resource id for the Managed Instance.
+     * 
+     * @return the virtualClusterId value.
+     */
+    public String virtualClusterId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualClusterId();
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
+    }
+
+    /**
+     * Get the pricingModel property: Weather or not Managed Instance is freemium.
+     * 
+     * @return the pricingModel value.
+     */
+    public FreemiumType pricingModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().pricingModel();
+    }
+
+    /**
+     * Set the pricingModel property: Weather or not Managed Instance is freemium.
+     * 
+     * @param pricingModel the pricingModel value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withPricingModel(FreemiumType pricingModel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPricingModel(pricingModel);
+        return this;
+    }
+
+    /**
+     * Get the createTime property: Specifies the point in time (ISO8601 format) of the Managed Instance creation.
+     * 
+     * @return the createTime value.
+     */
+    public OffsetDateTime createTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createTime();
+    }
+
+    /**
+     * Get the authenticationMetadata property: The managed instance's authentication metadata lookup mode.
+     * 
+     * @return the authenticationMetadata value.
+     */
+    public AuthMetadataLookupModes authenticationMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationMetadata();
+    }
+
+    /**
+     * Set the authenticationMetadata property: The managed instance's authentication metadata lookup mode.
+     * 
+     * @param authenticationMetadata the authenticationMetadata value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withAuthenticationMetadata(AuthMetadataLookupModes authenticationMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAuthenticationMetadata(authenticationMetadata);
+        return this;
+    }
+
+    /**
+     * Get the databaseFormat property: Specifies the internal format of instance databases specific to the SQL engine
+     * version.
+     * 
+     * @return the databaseFormat value.
+     */
+    public ManagedInstanceDatabaseFormat databaseFormat() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseFormat();
+    }
+
+    /**
+     * Set the databaseFormat property: Specifies the internal format of instance databases specific to the SQL engine
+     * version.
+     * 
+     * @param databaseFormat the databaseFormat value to set.
+     * @return the ManagedInstanceUpdate object itself.
+     */
+    public ManagedInstanceUpdate withDatabaseFormat(ManagedInstanceDatabaseFormat databaseFormat) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withDatabaseFormat(databaseFormat);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

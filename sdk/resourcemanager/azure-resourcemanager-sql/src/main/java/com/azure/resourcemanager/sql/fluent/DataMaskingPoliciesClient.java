@@ -12,13 +12,15 @@ import com.azure.resourcemanager.sql.fluent.models.DataMaskingPolicyInner;
 import com.azure.resourcemanager.sql.models.DataMaskingPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient.
+ */
 public interface DataMaskingPoliciesClient {
     /**
      * Gets the database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -28,14 +30,14 @@ public interface DataMaskingPoliciesClient {
      * @return the database data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName);
+    Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName);
 
     /**
      * Gets the database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -45,14 +47,14 @@ public interface DataMaskingPoliciesClient {
      * @return the database data masking policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataMaskingPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName);
+    Mono<DataMaskingPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        DataMaskingPolicyName dataMaskingPolicyName);
 
     /**
      * Gets the database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -63,18 +65,14 @@ public interface DataMaskingPoliciesClient {
      * @return the database data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName,
-        Context context);
+    Response<DataMaskingPolicyInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        DataMaskingPolicyName dataMaskingPolicyName, Context context);
 
     /**
      * Gets the database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -84,14 +82,14 @@ public interface DataMaskingPoliciesClient {
      * @return the database data masking policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName);
+    DataMaskingPolicyInner get(String resourceGroupName, String serverName, String databaseName,
+        DataMaskingPolicyName dataMaskingPolicyName);
 
     /**
      * Creates or updates a database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -102,18 +100,14 @@ public interface DataMaskingPoliciesClient {
      * @return a database data masking policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName,
-        DataMaskingPolicyInner parameters);
+    Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters);
 
     /**
      * Creates or updates a database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -124,18 +118,14 @@ public interface DataMaskingPoliciesClient {
      * @return a database data masking policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataMaskingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName,
-        DataMaskingPolicyInner parameters);
+    Mono<DataMaskingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters);
 
     /**
      * Creates or updates a database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -147,19 +137,15 @@ public interface DataMaskingPoliciesClient {
      * @return a database data masking policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName,
-        DataMaskingPolicyInner parameters,
+    Response<DataMaskingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters,
         Context context);
 
     /**
      * Creates or updates a database data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
@@ -170,10 +156,6 @@ public interface DataMaskingPoliciesClient {
      * @return a database data masking policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataMaskingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DataMaskingPolicyName dataMaskingPolicyName,
-        DataMaskingPolicyInner parameters);
+    DataMaskingPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters);
 }

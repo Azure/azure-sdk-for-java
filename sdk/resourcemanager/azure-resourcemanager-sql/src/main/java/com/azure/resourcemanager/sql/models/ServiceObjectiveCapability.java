@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The service objectives capability. */
+/**
+ * The service objectives capability.
+ */
 @Fluent
 public final class ServiceObjectiveCapability {
     /*
@@ -85,6 +87,18 @@ public final class ServiceObjectiveCapability {
     private List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
 
     /*
+     * Whether or not zone pinning is supported.
+     */
+    @JsonProperty(value = "zonePinning", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean zonePinning;
+
+    /*
+     * List of supported free limit exhaustion behaviors
+     */
+    @JsonProperty(value = "supportedFreeLimitExhaustionBehaviors", access = JsonProperty.Access.WRITE_ONLY)
+    private List<FreeLimitExhaustionBehaviorCapability> supportedFreeLimitExhaustionBehaviors;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -96,13 +110,15 @@ public final class ServiceObjectiveCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ServiceObjectiveCapability class. */
+    /**
+     * Creates an instance of ServiceObjectiveCapability class.
+     */
     public ServiceObjectiveCapability() {
     }
 
     /**
      * Get the id property: The unique ID of the service objective.
-     *
+     * 
      * @return the id value.
      */
     public UUID id() {
@@ -111,7 +127,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the name property: The service objective name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -120,7 +136,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMaxSizes property: The list of supported maximum database sizes.
-     *
+     * 
      * @return the supportedMaxSizes value.
      */
     public List<MaxSizeRangeCapability> supportedMaxSizes() {
@@ -129,7 +145,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the performanceLevel property: The performance level.
-     *
+     * 
      * @return the performanceLevel value.
      */
     public PerformanceLevelCapability performanceLevel() {
@@ -138,7 +154,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -147,7 +163,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -156,7 +172,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the includedMaxSize property: The included (free) max size.
-     *
+     * 
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -165,7 +181,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the service objective.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -174,7 +190,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedAutoPauseDelay property: Supported time range for auto pause delay.
-     *
+     * 
      * @return the supportedAutoPauseDelay value.
      */
     public AutoPauseDelayTimeRange supportedAutoPauseDelay() {
@@ -183,7 +199,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMinCapacities property: List of supported min capacities.
-     *
+     * 
      * @return the supportedMinCapacities value.
      */
     public List<MinCapacityCapability> supportedMinCapacities() {
@@ -192,7 +208,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the computeModel property: The compute model.
-     *
+     * 
      * @return the computeModel value.
      */
     public String computeModel() {
@@ -201,7 +217,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
-     *
+     * 
      * @return the supportedMaintenanceConfigurations value.
      */
     public List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
@@ -209,8 +225,26 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
+     * Get the zonePinning property: Whether or not zone pinning is supported.
+     * 
+     * @return the zonePinning value.
+     */
+    public Boolean zonePinning() {
+        return this.zonePinning;
+    }
+
+    /**
+     * Get the supportedFreeLimitExhaustionBehaviors property: List of supported free limit exhaustion behaviors.
+     * 
+     * @return the supportedFreeLimitExhaustionBehaviors value.
+     */
+    public List<FreeLimitExhaustionBehaviorCapability> supportedFreeLimitExhaustionBehaviors() {
+        return this.supportedFreeLimitExhaustionBehaviors;
+    }
+
+    /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -219,7 +253,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -228,7 +262,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ServiceObjectiveCapability object itself.
      */
@@ -239,7 +273,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -266,6 +300,9 @@ public final class ServiceObjectiveCapability {
         }
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());
+        }
+        if (supportedFreeLimitExhaustionBehaviors() != null) {
+            supportedFreeLimitExhaustionBehaviors().forEach(e -> e.validate());
         }
     }
 }

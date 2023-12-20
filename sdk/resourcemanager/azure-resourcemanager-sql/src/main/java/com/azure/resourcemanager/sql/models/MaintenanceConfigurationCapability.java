@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The maintenance configuration capability. */
+/**
+ * The maintenance configuration capability.
+ */
 @Fluent
 public final class MaintenanceConfigurationCapability {
     /*
@@ -34,13 +36,15 @@ public final class MaintenanceConfigurationCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of MaintenanceConfigurationCapability class. */
+    /**
+     * Creates an instance of MaintenanceConfigurationCapability class.
+     */
     public MaintenanceConfigurationCapability() {
     }
 
     /**
      * Get the name property: Maintenance configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the maintenance configuration.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -58,7 +62,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -67,7 +71,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -76,7 +80,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the MaintenanceConfigurationCapability object itself.
      */
@@ -87,7 +91,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,35 +4,66 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.sql.models.JobAgentIdentity;
+import com.azure.resourcemanager.sql.models.JobAgentIdentityType;
 import com.azure.resourcemanager.sql.models.JobAgentUpdate;
+import com.azure.resourcemanager.sql.models.JobAgentUserAssignedIdentity;
+import com.azure.resourcemanager.sql.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for JobAgents Update. */
+/**
+ * Samples for JobAgents Update.
+ */
 public final class JobAgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateJobAgent.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/UpdateJobAgent.json
      */
     /**
      * Sample code: Update a job agent's tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAJobAgentSTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
-            .manager()
-            .serviceClient()
-            .getJobAgents()
-            .update(
-                "group1",
-                "server1",
-                "agent1",
-                new JobAgentUpdate().withTags(mapOf("mytag1", "myvalue1")),
-                Context.NONE);
+        azure.sqlServers().manager().serviceClient().getJobAgents().update("group1", "server1", "agent1",
+            new JobAgentUpdate().withTags(mapOf("mytag1", "myvalue1")), com.azure.core.util.Context.NONE);
     }
 
+    /*
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/UpdateJobAgentWithSku.json
+     */
+    /**
+     * Sample code: Update a job agent's sku.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateAJobAgentSSku(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers().manager().serviceClient().getJobAgents().update("group1", "server1", "agent1",
+            new JobAgentUpdate().withSku(new Sku().withName("JA200")), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/preview/2023-05-01-preview/examples/UpdateJobAgentWithIdentity.
+     * json
+     */
+    /**
+     * Sample code: Update a job agent's identity.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateAJobAgentSIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers().manager().serviceClient().getJobAgents().update("group1", "server1", "agent1",
+            new JobAgentUpdate().withIdentity(new JobAgentIdentity().withType(JobAgentIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/group1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi",
+                    new JobAgentUserAssignedIdentity()))),
+            com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

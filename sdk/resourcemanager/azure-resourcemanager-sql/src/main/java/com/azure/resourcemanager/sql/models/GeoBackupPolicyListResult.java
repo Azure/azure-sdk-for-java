@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.GeoBackupPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of geo backup policies. */
+/**
+ * The list of geo backup policies.
+ */
 @Immutable
 public final class GeoBackupPolicyListResult {
     /*
@@ -24,13 +26,15 @@ public final class GeoBackupPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GeoBackupPolicyListResult class. */
+    /**
+     * Creates an instance of GeoBackupPolicyListResult class.
+     */
     public GeoBackupPolicyListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<GeoBackupPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class GeoBackupPolicyListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class GeoBackupPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The managed instance virtual cores capability. */
+/**
+ * The managed instance virtual cores capability.
+ */
 @Fluent
 public final class ManagedInstanceVcoresCapability {
     /*
@@ -34,6 +36,60 @@ public final class ManagedInstanceVcoresCapability {
      */
     @JsonProperty(value = "supportedStorageSizes", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaxSizeRangeCapability> supportedStorageSizes;
+
+    /*
+     * Included storage IOps.
+     */
+    @JsonProperty(value = "includedStorageIOps", access = JsonProperty.Access.WRITE_ONLY)
+    private Long includedStorageIOps;
+
+    /*
+     * Storage IOps ranges.
+     */
+    @JsonProperty(value = "supportedStorageIOps", access = JsonProperty.Access.WRITE_ONLY)
+    private MaxLimitRangeCapability supportedStorageIOps;
+
+    /*
+     * Min IOps override factor per selected storage GB.
+     */
+    @JsonProperty(value = "iopsMinValueOverrideFactorPerSelectedStorageGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Double iopsMinValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included IOps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "iopsIncludedValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double iopsIncludedValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included storage throughput MBps.
+     */
+    @JsonProperty(value = "includedStorageThroughputMBps", access = JsonProperty.Access.WRITE_ONLY)
+    private Long includedStorageThroughputMBps;
+
+    /*
+     * Storage throughput MBps ranges.
+     */
+    @JsonProperty(value = "supportedStorageThroughputMBps", access = JsonProperty.Access.WRITE_ONLY)
+    private MaxLimitRangeCapability supportedStorageThroughputMBps;
+
+    /*
+     * Min throughput MBps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "throughputMBpsMinValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double throughputMBpsMinValueOverrideFactorPerSelectedStorageGB;
+
+    /*
+     * Included throughput MBps override factor per selected storage GB.
+     */
+    @JsonProperty(
+        value = "throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB",
+        access = JsonProperty.Access.WRITE_ONLY)
+    private Double throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB;
 
     /*
      * True if this service objective is supported for managed instances in an instance pool.
@@ -65,13 +121,15 @@ public final class ManagedInstanceVcoresCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceVcoresCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceVcoresCapability class.
+     */
     public ManagedInstanceVcoresCapability() {
     }
 
     /**
      * Get the name property: The virtual cores identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +138,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the value property: The virtual cores value.
-     *
+     * 
      * @return the value value.
      */
     public Integer value() {
@@ -89,7 +147,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the includedMaxSize property: Included size.
-     *
+     * 
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -98,7 +156,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the supportedStorageSizes property: Storage size ranges.
-     *
+     * 
      * @return the supportedStorageSizes value.
      */
     public List<MaxSizeRangeCapability> supportedStorageSizes() {
@@ -106,9 +164,85 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
+     * Get the includedStorageIOps property: Included storage IOps.
+     * 
+     * @return the includedStorageIOps value.
+     */
+    public Long includedStorageIOps() {
+        return this.includedStorageIOps;
+    }
+
+    /**
+     * Get the supportedStorageIOps property: Storage IOps ranges.
+     * 
+     * @return the supportedStorageIOps value.
+     */
+    public MaxLimitRangeCapability supportedStorageIOps() {
+        return this.supportedStorageIOps;
+    }
+
+    /**
+     * Get the iopsMinValueOverrideFactorPerSelectedStorageGB property: Min IOps override factor per selected storage
+     * GB.
+     * 
+     * @return the iopsMinValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double iopsMinValueOverrideFactorPerSelectedStorageGB() {
+        return this.iopsMinValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the iopsIncludedValueOverrideFactorPerSelectedStorageGB property: Included IOps override factor per selected
+     * storage GB.
+     * 
+     * @return the iopsIncludedValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double iopsIncludedValueOverrideFactorPerSelectedStorageGB() {
+        return this.iopsIncludedValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the includedStorageThroughputMBps property: Included storage throughput MBps.
+     * 
+     * @return the includedStorageThroughputMBps value.
+     */
+    public Long includedStorageThroughputMBps() {
+        return this.includedStorageThroughputMBps;
+    }
+
+    /**
+     * Get the supportedStorageThroughputMBps property: Storage throughput MBps ranges.
+     * 
+     * @return the supportedStorageThroughputMBps value.
+     */
+    public MaxLimitRangeCapability supportedStorageThroughputMBps() {
+        return this.supportedStorageThroughputMBps;
+    }
+
+    /**
+     * Get the throughputMBpsMinValueOverrideFactorPerSelectedStorageGB property: Min throughput MBps override factor
+     * per selected storage GB.
+     * 
+     * @return the throughputMBpsMinValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double throughputMBpsMinValueOverrideFactorPerSelectedStorageGB() {
+        return this.throughputMBpsMinValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
+     * Get the throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB property: Included throughput MBps
+     * override factor per selected storage GB.
+     * 
+     * @return the throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB value.
+     */
+    public Double throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB() {
+        return this.throughputMBpsIncludedValueOverrideFactorPerSelectedStorageGB;
+    }
+
+    /**
      * Get the instancePoolSupported property: True if this service objective is supported for managed instances in an
      * instance pool.
-     *
+     * 
      * @return the instancePoolSupported value.
      */
     public Boolean instancePoolSupported() {
@@ -118,7 +252,7 @@ public final class ManagedInstanceVcoresCapability {
     /**
      * Get the standaloneSupported property: True if this service objective is supported for standalone managed
      * instances.
-     *
+     * 
      * @return the standaloneSupported value.
      */
     public Boolean standaloneSupported() {
@@ -127,7 +261,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
-     *
+     * 
      * @return the supportedMaintenanceConfigurations value.
      */
     public List<ManagedInstanceMaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
@@ -136,7 +270,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -145,7 +279,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -154,7 +288,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceVcoresCapability object itself.
      */
@@ -165,7 +299,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,6 +308,12 @@ public final class ManagedInstanceVcoresCapability {
         }
         if (supportedStorageSizes() != null) {
             supportedStorageSizes().forEach(e -> e.validate());
+        }
+        if (supportedStorageIOps() != null) {
+            supportedStorageIOps().validate();
+        }
+        if (supportedStorageThroughputMBps() != null) {
+            supportedStorageThroughputMBps().validate();
         }
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());

@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A Geo backup policy. */
+/**
+ * A Geo backup policy.
+ */
 @Fluent
 public final class GeoBackupPolicyInner extends ProxyResource {
     /*
@@ -19,7 +21,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * Kind of geo backup policy.  This is metadata used for the Azure portal experience.
+     * Kind of geo backup policy. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
@@ -30,13 +32,15 @@ public final class GeoBackupPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GeoBackupPolicyProperties innerProperties;
 
-    /** Creates an instance of GeoBackupPolicyInner class. */
+    /**
+     * Creates an instance of GeoBackupPolicyInner class.
+     */
     public GeoBackupPolicyInner() {
     }
 
     /**
      * Get the location property: Backup policy location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -45,7 +49,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the kind property: Kind of geo backup policy. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -54,7 +58,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GeoBackupPolicyProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the state property: The state of the geo backup policy.
-     *
+     * 
      * @return the state value.
      */
     public GeoBackupPolicyState state() {
@@ -72,7 +76,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Set the state property: The state of the geo backup policy.
-     *
+     * 
      * @param state the state value to set.
      * @return the GeoBackupPolicyInner object itself.
      */
@@ -86,7 +90,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Get the storageType property: The storage type of the geo backup policy.
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -95,7 +99,7 @@ public final class GeoBackupPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

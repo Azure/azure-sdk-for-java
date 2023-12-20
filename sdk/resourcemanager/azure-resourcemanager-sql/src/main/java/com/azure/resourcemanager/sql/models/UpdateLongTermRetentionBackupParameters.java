@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.fluent.models.UpdateLongTermRetentionBackupParametersProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform long term retention backup update operation. */
+/**
+ * Contains the information necessary to perform long term retention backup update operation.
+ */
 @Fluent
 public final class UpdateLongTermRetentionBackupParameters {
     /*
@@ -17,13 +19,15 @@ public final class UpdateLongTermRetentionBackupParameters {
     @JsonProperty(value = "properties")
     private UpdateLongTermRetentionBackupParametersProperties innerProperties;
 
-    /** Creates an instance of UpdateLongTermRetentionBackupParameters class. */
+    /**
+     * Creates an instance of UpdateLongTermRetentionBackupParameters class.
+     */
     public UpdateLongTermRetentionBackupParameters() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateLongTermRetentionBackupParametersProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -41,12 +45,12 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the UpdateLongTermRetentionBackupParameters object itself.
      */
-    public UpdateLongTermRetentionBackupParameters withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public UpdateLongTermRetentionBackupParameters
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateLongTermRetentionBackupParametersProperties();
         }
@@ -56,7 +60,7 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

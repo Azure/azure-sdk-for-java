@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure SQL DB Server Outbound Firewall Rule. */
+/**
+ * An Azure SQL DB Server Outbound Firewall Rule.
+ */
 @Immutable
 public final class OutboundFirewallRuleInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class OutboundFirewallRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private OutboundFirewallRuleProperties innerProperties;
 
-    /** Creates an instance of OutboundFirewallRuleInner class. */
+    /**
+     * Creates an instance of OutboundFirewallRuleInner class.
+     */
     public OutboundFirewallRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OutboundFirewallRuleProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class OutboundFirewallRuleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The state of the outbound rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -41,7 +45,7 @@ public final class OutboundFirewallRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

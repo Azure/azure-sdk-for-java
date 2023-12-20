@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.SqlAgentConfigurationPropertiesState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A recoverable managed database resource. */
+/**
+ * A recoverable managed database resource.
+ */
 @Fluent
 public final class SqlAgentConfigurationInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class SqlAgentConfigurationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SqlAgentConfigurationProperties innerProperties;
 
-    /** Creates an instance of SqlAgentConfigurationInner class. */
+    /**
+     * Creates an instance of SqlAgentConfigurationInner class.
+     */
     public SqlAgentConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlAgentConfigurationProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class SqlAgentConfigurationInner extends ProxyResource {
 
     /**
      * Get the state property: The state of Sql Agent.
-     *
+     * 
      * @return the state value.
      */
     public SqlAgentConfigurationPropertiesState state() {
@@ -42,7 +46,7 @@ public final class SqlAgentConfigurationInner extends ProxyResource {
 
     /**
      * Set the state property: The state of Sql Agent.
-     *
+     * 
      * @param state the state value to set.
      * @return the SqlAgentConfigurationInner object itself.
      */
@@ -56,7 +60,7 @@ public final class SqlAgentConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

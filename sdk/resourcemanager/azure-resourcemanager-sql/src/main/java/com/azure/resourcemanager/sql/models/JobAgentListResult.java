@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.JobAgentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Azure SQL job agents. */
+/**
+ * A list of Azure SQL job agents.
+ */
 @Immutable
 public final class JobAgentListResult {
     /*
@@ -24,13 +26,15 @@ public final class JobAgentListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of JobAgentListResult class. */
+    /**
+     * Creates an instance of JobAgentListResult class.
+     */
     public JobAgentListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<JobAgentInner> value() {
@@ -39,7 +43,7 @@ public final class JobAgentListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class JobAgentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

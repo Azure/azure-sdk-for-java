@@ -5,13 +5,23 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsBackupSetProperties;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsUnrestorableFileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The managed database's restore details properties. */
+/**
+ * The managed database's restore details properties.
+ */
 @Immutable
 public final class ManagedDatabaseRestoreDetailsProperties {
+    /*
+     * Restore type.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
     /*
      * Restore status.
      */
@@ -19,10 +29,22 @@ public final class ManagedDatabaseRestoreDetailsProperties {
     private String status;
 
     /*
-     * Current restoring file name.
+     * The reason why restore is in Blocked state.
      */
-    @JsonProperty(value = "currentRestoringFileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentRestoringFileName;
+    @JsonProperty(value = "blockReason", access = JsonProperty.Access.WRITE_ONLY)
+    private String blockReason;
+
+    /*
+     * Last uploaded file name.
+     */
+    @JsonProperty(value = "lastUploadedFileName", access = JsonProperty.Access.WRITE_ONLY)
+    private String lastUploadedFileName;
+
+    /*
+     * Last uploaded file time.
+     */
+    @JsonProperty(value = "lastUploadedFileTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastUploadedFileTime;
 
     /*
      * Last restored file name.
@@ -40,45 +62,110 @@ public final class ManagedDatabaseRestoreDetailsProperties {
      * Percent completed.
      */
     @JsonProperty(value = "percentCompleted", access = JsonProperty.Access.WRITE_ONLY)
-    private Double percentCompleted;
+    private Integer percentCompleted;
 
     /*
-     * List of unrestorable files.
+     * Current restored size MB.
      */
-    @JsonProperty(value = "unrestorableFiles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> unrestorableFiles;
+    @JsonProperty(value = "currentRestoredSizeMB", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentRestoredSizeMB;
+
+    /*
+     * Current restore plan size MB.
+     */
+    @JsonProperty(value = "currentRestorePlanSizeMB", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentRestorePlanSizeMB;
+
+    /*
+     * Current backup type.
+     */
+    @JsonProperty(value = "currentBackupType", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentBackupType;
+
+    /*
+     * Current restoring file name.
+     */
+    @JsonProperty(value = "currentRestoringFileName", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentRestoringFileName;
 
     /*
      * Number of files detected.
      */
     @JsonProperty(value = "numberOfFilesDetected", access = JsonProperty.Access.WRITE_ONLY)
-    private Long numberOfFilesDetected;
+    private Integer numberOfFilesDetected;
 
     /*
-     * Last uploaded file name.
+     * Number of files queued.
      */
-    @JsonProperty(value = "lastUploadedFileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastUploadedFileName;
+    @JsonProperty(value = "numberOfFilesQueued", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfFilesQueued;
 
     /*
-     * Last uploaded file time.
+     * Number of files skipped.
      */
-    @JsonProperty(value = "lastUploadedFileTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastUploadedFileTime;
+    @JsonProperty(value = "numberOfFilesSkipped", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfFilesSkipped;
 
     /*
-     * The reason why restore is in Blocked state.
+     * Number of files restoring.
      */
-    @JsonProperty(value = "blockReason", access = JsonProperty.Access.WRITE_ONLY)
-    private String blockReason;
+    @JsonProperty(value = "numberOfFilesRestoring", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfFilesRestoring;
 
-    /** Creates an instance of ManagedDatabaseRestoreDetailsProperties class. */
+    /*
+     * Number of files restored.
+     */
+    @JsonProperty(value = "numberOfFilesRestored", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfFilesRestored;
+
+    /*
+     * Number of files unrestorable.
+     */
+    @JsonProperty(value = "numberOfFilesUnrestorable", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfFilesUnrestorable;
+
+    /*
+     * Full backup sets.
+     */
+    @JsonProperty(value = "fullBackupSets", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets;
+
+    /*
+     * Diff backup sets.
+     */
+    @JsonProperty(value = "diffBackupSets", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets;
+
+    /*
+     * Log backup sets.
+     */
+    @JsonProperty(value = "logBackupSets", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets;
+
+    /*
+     * Unrestorable files.
+     */
+    @JsonProperty(value = "unrestorableFiles", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles;
+
+    /**
+     * Creates an instance of ManagedDatabaseRestoreDetailsProperties class.
+     */
     public ManagedDatabaseRestoreDetailsProperties() {
     }
 
     /**
+     * Get the type property: Restore type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the status property: Restore status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -86,62 +173,17 @@ public final class ManagedDatabaseRestoreDetailsProperties {
     }
 
     /**
-     * Get the currentRestoringFileName property: Current restoring file name.
-     *
-     * @return the currentRestoringFileName value.
+     * Get the blockReason property: The reason why restore is in Blocked state.
+     * 
+     * @return the blockReason value.
      */
-    public String currentRestoringFileName() {
-        return this.currentRestoringFileName;
-    }
-
-    /**
-     * Get the lastRestoredFileName property: Last restored file name.
-     *
-     * @return the lastRestoredFileName value.
-     */
-    public String lastRestoredFileName() {
-        return this.lastRestoredFileName;
-    }
-
-    /**
-     * Get the lastRestoredFileTime property: Last restored file time.
-     *
-     * @return the lastRestoredFileTime value.
-     */
-    public OffsetDateTime lastRestoredFileTime() {
-        return this.lastRestoredFileTime;
-    }
-
-    /**
-     * Get the percentCompleted property: Percent completed.
-     *
-     * @return the percentCompleted value.
-     */
-    public Double percentCompleted() {
-        return this.percentCompleted;
-    }
-
-    /**
-     * Get the unrestorableFiles property: List of unrestorable files.
-     *
-     * @return the unrestorableFiles value.
-     */
-    public List<String> unrestorableFiles() {
-        return this.unrestorableFiles;
-    }
-
-    /**
-     * Get the numberOfFilesDetected property: Number of files detected.
-     *
-     * @return the numberOfFilesDetected value.
-     */
-    public Long numberOfFilesDetected() {
-        return this.numberOfFilesDetected;
+    public String blockReason() {
+        return this.blockReason;
     }
 
     /**
      * Get the lastUploadedFileName property: Last uploaded file name.
-     *
+     * 
      * @return the lastUploadedFileName value.
      */
     public String lastUploadedFileName() {
@@ -150,7 +192,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the lastUploadedFileTime property: Last uploaded file time.
-     *
+     * 
      * @return the lastUploadedFileTime value.
      */
     public OffsetDateTime lastUploadedFileTime() {
@@ -158,19 +200,175 @@ public final class ManagedDatabaseRestoreDetailsProperties {
     }
 
     /**
-     * Get the blockReason property: The reason why restore is in Blocked state.
-     *
-     * @return the blockReason value.
+     * Get the lastRestoredFileName property: Last restored file name.
+     * 
+     * @return the lastRestoredFileName value.
      */
-    public String blockReason() {
-        return this.blockReason;
+    public String lastRestoredFileName() {
+        return this.lastRestoredFileName;
+    }
+
+    /**
+     * Get the lastRestoredFileTime property: Last restored file time.
+     * 
+     * @return the lastRestoredFileTime value.
+     */
+    public OffsetDateTime lastRestoredFileTime() {
+        return this.lastRestoredFileTime;
+    }
+
+    /**
+     * Get the percentCompleted property: Percent completed.
+     * 
+     * @return the percentCompleted value.
+     */
+    public Integer percentCompleted() {
+        return this.percentCompleted;
+    }
+
+    /**
+     * Get the currentRestoredSizeMB property: Current restored size MB.
+     * 
+     * @return the currentRestoredSizeMB value.
+     */
+    public Integer currentRestoredSizeMB() {
+        return this.currentRestoredSizeMB;
+    }
+
+    /**
+     * Get the currentRestorePlanSizeMB property: Current restore plan size MB.
+     * 
+     * @return the currentRestorePlanSizeMB value.
+     */
+    public Integer currentRestorePlanSizeMB() {
+        return this.currentRestorePlanSizeMB;
+    }
+
+    /**
+     * Get the currentBackupType property: Current backup type.
+     * 
+     * @return the currentBackupType value.
+     */
+    public String currentBackupType() {
+        return this.currentBackupType;
+    }
+
+    /**
+     * Get the currentRestoringFileName property: Current restoring file name.
+     * 
+     * @return the currentRestoringFileName value.
+     */
+    public String currentRestoringFileName() {
+        return this.currentRestoringFileName;
+    }
+
+    /**
+     * Get the numberOfFilesDetected property: Number of files detected.
+     * 
+     * @return the numberOfFilesDetected value.
+     */
+    public Integer numberOfFilesDetected() {
+        return this.numberOfFilesDetected;
+    }
+
+    /**
+     * Get the numberOfFilesQueued property: Number of files queued.
+     * 
+     * @return the numberOfFilesQueued value.
+     */
+    public Integer numberOfFilesQueued() {
+        return this.numberOfFilesQueued;
+    }
+
+    /**
+     * Get the numberOfFilesSkipped property: Number of files skipped.
+     * 
+     * @return the numberOfFilesSkipped value.
+     */
+    public Integer numberOfFilesSkipped() {
+        return this.numberOfFilesSkipped;
+    }
+
+    /**
+     * Get the numberOfFilesRestoring property: Number of files restoring.
+     * 
+     * @return the numberOfFilesRestoring value.
+     */
+    public Integer numberOfFilesRestoring() {
+        return this.numberOfFilesRestoring;
+    }
+
+    /**
+     * Get the numberOfFilesRestored property: Number of files restored.
+     * 
+     * @return the numberOfFilesRestored value.
+     */
+    public Integer numberOfFilesRestored() {
+        return this.numberOfFilesRestored;
+    }
+
+    /**
+     * Get the numberOfFilesUnrestorable property: Number of files unrestorable.
+     * 
+     * @return the numberOfFilesUnrestorable value.
+     */
+    public Integer numberOfFilesUnrestorable() {
+        return this.numberOfFilesUnrestorable;
+    }
+
+    /**
+     * Get the fullBackupSets property: Full backup sets.
+     * 
+     * @return the fullBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets() {
+        return this.fullBackupSets;
+    }
+
+    /**
+     * Get the diffBackupSets property: Diff backup sets.
+     * 
+     * @return the diffBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets() {
+        return this.diffBackupSets;
+    }
+
+    /**
+     * Get the logBackupSets property: Log backup sets.
+     * 
+     * @return the logBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets() {
+        return this.logBackupSets;
+    }
+
+    /**
+     * Get the unrestorableFiles property: Unrestorable files.
+     * 
+     * @return the unrestorableFiles value.
+     */
+    public List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles() {
+        return this.unrestorableFiles;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (fullBackupSets() != null) {
+            fullBackupSets().forEach(e -> e.validate());
+        }
+        if (diffBackupSets() != null) {
+            diffBackupSets().forEach(e -> e.validate());
+        }
+        if (logBackupSets() != null) {
+            logBackupSets().forEach(e -> e.validate());
+        }
+        if (unrestorableFiles() != null) {
+            unrestorableFiles().forEach(e -> e.validate());
+        }
     }
 }

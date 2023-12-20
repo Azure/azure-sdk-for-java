@@ -19,13 +19,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorePointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorePointsClient.
+ */
 public interface RestorePointsClient {
     /**
      * Gets a list of database restore points.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,9 +40,9 @@ public interface RestorePointsClient {
 
     /**
      * Gets a list of database restore points.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,9 +55,9 @@ public interface RestorePointsClient {
 
     /**
      * Gets a list of database restore points.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -65,14 +67,14 @@ public interface RestorePointsClient {
      * @return a list of database restore points as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorePointInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<RestorePointInner> listByDatabase(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -82,17 +84,14 @@ public interface RestorePointsClient {
      * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        CreateDatabaseRestorePointDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, CreateDatabaseRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -102,17 +101,14 @@ public interface RestorePointsClient {
      * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        CreateDatabaseRestorePointDefinition parameters);
+    PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(String resourceGroupName,
+        String serverName, String databaseName, CreateDatabaseRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -122,17 +118,14 @@ public interface RestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        CreateDatabaseRestorePointDefinition parameters);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String serverName, String databaseName, CreateDatabaseRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -143,18 +136,14 @@ public interface RestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        CreateDatabaseRestorePointDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String serverName, String databaseName, CreateDatabaseRestorePointDefinition parameters, Context context);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -164,17 +153,14 @@ public interface RestorePointsClient {
      * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RestorePointInner> createAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    Mono<RestorePointInner> createAsync(String resourceGroupName, String serverName, String databaseName,
         CreateDatabaseRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -184,17 +170,14 @@ public interface RestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    RestorePointInner create(String resourceGroupName, String serverName, String databaseName,
         CreateDatabaseRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The definition for creating the restore point of this database.
@@ -205,18 +188,14 @@ public interface RestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        CreateDatabaseRestorePointDefinition parameters,
-        Context context);
+    RestorePointInner create(String resourceGroupName, String serverName, String databaseName,
+        CreateDatabaseRestorePointDefinition parameters, Context context);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -226,14 +205,14 @@ public interface RestorePointsClient {
      * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RestorePointInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointName);
+    Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String restorePointName);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -243,14 +222,14 @@ public interface RestorePointsClient {
      * @return a restore point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RestorePointInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointName);
+    Mono<RestorePointInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String restorePointName);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -261,14 +240,14 @@ public interface RestorePointsClient {
      * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RestorePointInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String restorePointName, Context context);
+    Response<RestorePointInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String restorePointName, Context context);
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -282,9 +261,9 @@ public interface RestorePointsClient {
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -294,14 +273,14 @@ public interface RestorePointsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String restorePointName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
+        String restorePointName);
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -315,9 +294,9 @@ public interface RestorePointsClient {
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.
@@ -328,14 +307,14 @@ public interface RestorePointsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String restorePointName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String restorePointName, Context context);
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param restorePointName The name of the restore point.

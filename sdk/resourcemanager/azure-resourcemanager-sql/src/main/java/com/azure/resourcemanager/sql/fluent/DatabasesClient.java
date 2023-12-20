@@ -24,13 +24,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasesClient.
+ */
 public interface DatabasesClient {
     /**
      * Gets a list of databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param skipToken The skipToken parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,9 +45,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,9 +59,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,9 +73,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
@@ -83,30 +85,32 @@ public interface DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByServer(
-        String resourceGroupName, String serverName, String skipToken, Context context);
+    PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, String skipToken,
+        Context context);
 
     /**
      * Gets a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
+        String expand, String filter);
 
     /**
      * Gets a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,11 +123,13 @@ public interface DatabasesClient {
 
     /**
      * Gets a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param expand The child resources to include in the response.
+     * @param filter An OData filter expression that filters elements in the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,14 +137,14 @@ public interface DatabasesClient {
      * @return a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String expand, String filter, Context context);
 
     /**
      * Gets a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,9 +157,9 @@ public interface DatabasesClient {
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -163,14 +169,14 @@ public interface DatabasesClient {
      * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -180,14 +186,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -197,14 +203,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -215,14 +221,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -232,14 +238,14 @@ public interface DatabasesClient {
      * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    Mono<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -249,14 +255,14 @@ public interface DatabasesClient {
      * @return a database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -267,14 +273,14 @@ public interface DatabasesClient {
      * @return a database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,14 +289,14 @@ public interface DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,14 +305,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -319,9 +325,9 @@ public interface DatabasesClient {
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -331,14 +337,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,9 +357,9 @@ public interface DatabasesClient {
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,9 +371,9 @@ public interface DatabasesClient {
 
     /**
      * Deletes the database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -380,9 +386,9 @@ public interface DatabasesClient {
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -392,14 +398,14 @@ public interface DatabasesClient {
      * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -409,14 +415,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
+    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -426,14 +432,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String serverName,
+        String databaseName, DatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -444,14 +450,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String serverName,
+        String databaseName, DatabaseUpdate parameters, Context context);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -461,14 +467,14 @@ public interface DatabasesClient {
      * @return a database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseInner> updateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters);
+    Mono<DatabaseInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        DatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -482,9 +488,9 @@ public interface DatabasesClient {
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -495,32 +501,32 @@ public interface DatabasesClient {
      * @return a database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner update(
-        String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters, Context context);
+    DatabaseInner update(String resourceGroupName, String serverName, String databaseName, DatabaseUpdate parameters,
+        Context context);
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ExportDatabaseDefinition parameters);
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -535,9 +541,9 @@ public interface DatabasesClient {
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -552,9 +558,9 @@ public interface DatabasesClient {
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -566,17 +572,14 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExport(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExportDatabaseDefinition parameters,
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters,
         Context context);
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -586,14 +589,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImportExportOperationResultInner> exportAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters);
+    Mono<ImportExportOperationResultInner> exportAsync(String resourceGroupName, String serverName, String databaseName,
+        ExportDatabaseDefinition parameters);
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -603,14 +606,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner export(
-        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters);
+    ImportExportOperationResultInner export(String resourceGroupName, String serverName, String databaseName,
+        ExportDatabaseDefinition parameters);
 
     /**
      * Exports a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database export request parameters.
@@ -621,18 +624,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner export(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExportDatabaseDefinition parameters,
-        Context context);
+    ImportExportOperationResultInner export(String resourceGroupName, String serverName, String databaseName,
+        ExportDatabaseDefinition parameters, Context context);
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
@@ -642,14 +641,14 @@ public interface DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
+    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ReplicaType replicaType);
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
@@ -659,14 +658,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String databaseName, ReplicaType replicaType);
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,14 +674,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,9 +694,9 @@ public interface DatabasesClient {
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
@@ -708,14 +707,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFailover(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName, String databaseName,
+        ReplicaType replicaType, Context context);
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
@@ -729,9 +728,9 @@ public interface DatabasesClient {
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -744,9 +743,9 @@ public interface DatabasesClient {
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,9 +757,9 @@ public interface DatabasesClient {
 
     /**
      * Failovers a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to failover.
      * @param replicaType The type of replica to be failed over.
@@ -770,32 +769,32 @@ public interface DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void failover(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context);
+    void failover(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType,
+        Context context);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, ImportExistingDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -810,9 +809,9 @@ public interface DatabasesClient {
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -827,9 +826,9 @@ public interface DatabasesClient {
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -841,17 +840,14 @@ public interface DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportMethod(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ImportExistingDatabaseDefinition parameters,
+        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters,
         Context context);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -861,14 +857,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImportExportOperationResultInner> importMethodAsync(
-        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters);
+    Mono<ImportExportOperationResultInner> importMethodAsync(String resourceGroupName, String serverName,
+        String databaseName, ImportExistingDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -878,14 +874,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner importMethod(
-        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters);
+    ImportExportOperationResultInner importMethod(String resourceGroupName, String serverName, String databaseName,
+        ImportExistingDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database import request parameters.
@@ -896,18 +892,14 @@ public interface DatabasesClient {
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner importMethod(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ImportExistingDatabaseDefinition parameters,
-        Context context);
+    ImportExportOperationResultInner importMethod(String resourceGroupName, String serverName, String databaseName,
+        ImportExistingDatabaseDefinition parameters, Context context);
 
     /**
      * Renames a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
      * @param parameters The resource move definition for renaming this database.
@@ -917,14 +909,14 @@ public interface DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters);
+    Mono<Response<Void>> renameWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
+        ResourceMoveDefinition parameters);
 
     /**
      * Renames a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
      * @param parameters The resource move definition for renaming this database.
@@ -934,14 +926,14 @@ public interface DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> renameAsync(
-        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters);
+    Mono<Void> renameAsync(String resourceGroupName, String serverName, String databaseName,
+        ResourceMoveDefinition parameters);
 
     /**
      * Renames a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
      * @param parameters The resource move definition for renaming this database.
@@ -952,18 +944,14 @@ public interface DatabasesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ResourceMoveDefinition parameters,
-        Context context);
+    Response<Void> renameWithResponse(String resourceGroupName, String serverName, String databaseName,
+        ResourceMoveDefinition parameters, Context context);
 
     /**
      * Renames a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to rename.
      * @param parameters The resource move definition for renaming this database.
@@ -976,9 +964,9 @@ public interface DatabasesClient {
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,14 +975,14 @@ public interface DatabasesClient {
      * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1003,14 +991,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginPauseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginPauseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1019,14 +1007,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
-        String resourceGroupName, String serverName, String databaseName);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @param context The context to associate with this operation.
@@ -1036,14 +1024,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginPause(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1056,9 +1044,9 @@ public interface DatabasesClient {
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1071,9 +1059,9 @@ public interface DatabasesClient {
 
     /**
      * Pauses a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be paused.
      * @param context The context to associate with this operation.
@@ -1087,9 +1075,9 @@ public interface DatabasesClient {
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1098,14 +1086,14 @@ public interface DatabasesClient {
      * @return a database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1114,14 +1102,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginResumeAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginResumeAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1130,14 +1118,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
-        String resourceGroupName, String serverName, String databaseName);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @param context The context to associate with this operation.
@@ -1147,14 +1135,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of a database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginResume(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1167,9 +1155,9 @@ public interface DatabasesClient {
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,9 +1170,9 @@ public interface DatabasesClient {
 
     /**
      * Resumes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be resumed.
      * @param context The context to associate with this operation.
@@ -1198,9 +1186,9 @@ public interface DatabasesClient {
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1209,14 +1197,14 @@ public interface DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouseWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> upgradeDataWarehouseWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1225,14 +1213,14 @@ public interface DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginUpgradeDataWarehouseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1241,14 +1229,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
-        String resourceGroupName, String serverName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @param context The context to associate with this operation.
@@ -1258,14 +1246,14 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeDataWarehouse(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1278,9 +1266,9 @@ public interface DatabasesClient {
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1292,9 +1280,9 @@ public interface DatabasesClient {
 
     /**
      * Upgrades a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to be upgraded.
      * @param context The context to associate with this operation.
@@ -1307,9 +1295,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of databases in an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,14 +1306,14 @@ public interface DatabasesClient {
      * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseInner> listByElasticPoolAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    PagedFlux<DatabaseInner> listByElasticPoolAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Gets a list of databases in an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1338,9 +1326,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of databases in an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param context The context to associate with this operation.
@@ -1350,14 +1338,14 @@ public interface DatabasesClient {
      * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByElasticPool(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context);
+    PagedIterable<DatabaseInner> listByElasticPool(String resourceGroupName, String serverName, String elasticPoolName,
+        Context context);
 
     /**
      * Gets a list of inaccessible databases in a logical server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1369,9 +1357,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of inaccessible databases in a logical server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1383,9 +1371,9 @@ public interface DatabasesClient {
 
     /**
      * Gets a list of inaccessible databases in a logical server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

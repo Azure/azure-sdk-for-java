@@ -9,9 +9,23 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An update to an Azure SQL job agent. */
+/**
+ * An update to an Azure SQL job agent.
+ */
 @Fluent
 public final class JobAgentUpdate {
+    /*
+     * Managed identity assigned to job agent
+     */
+    @JsonProperty(value = "identity")
+    private JobAgentIdentity identity;
+
+    /*
+     * The name and tier of the SKU.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
     /*
      * Resource tags.
      */
@@ -19,13 +33,55 @@ public final class JobAgentUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of JobAgentUpdate class. */
+    /**
+     * Creates an instance of JobAgentUpdate class.
+     */
     public JobAgentUpdate() {
     }
 
     /**
+     * Get the identity property: Managed identity assigned to job agent.
+     * 
+     * @return the identity value.
+     */
+    public JobAgentIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity assigned to job agent.
+     * 
+     * @param identity the identity value to set.
+     * @return the JobAgentUpdate object itself.
+     */
+    public JobAgentUpdate withIdentity(JobAgentIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The name and tier of the SKU.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The name and tier of the SKU.
+     * 
+     * @param sku the sku value to set.
+     * @return the JobAgentUpdate object itself.
+     */
+    public JobAgentUpdate withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +90,7 @@ public final class JobAgentUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the JobAgentUpdate object itself.
      */
@@ -45,9 +101,15 @@ public final class JobAgentUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

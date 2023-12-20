@@ -6,12 +6,15 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.JobAgentIdentity;
 import com.azure.resourcemanager.sql.models.JobAgentState;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure SQL job agent. */
+/**
+ * An Azure SQL job agent.
+ */
 @Fluent
 public final class JobAgentInner extends Resource {
     /*
@@ -21,18 +24,26 @@ public final class JobAgentInner extends Resource {
     private Sku sku;
 
     /*
+     * The identity of the job agent.
+     */
+    @JsonProperty(value = "identity")
+    private JobAgentIdentity identity;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private JobAgentProperties innerProperties;
 
-    /** Creates an instance of JobAgentInner class. */
+    /**
+     * Creates an instance of JobAgentInner class.
+     */
     public JobAgentInner() {
     }
 
     /**
      * Get the sku property: The name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -41,7 +52,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Set the sku property: The name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the JobAgentInner object itself.
      */
@@ -51,22 +62,46 @@ public final class JobAgentInner extends Resource {
     }
 
     /**
+     * Get the identity property: The identity of the job agent.
+     * 
+     * @return the identity value.
+     */
+    public JobAgentIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the job agent.
+     * 
+     * @param identity the identity value to set.
+     * @return the JobAgentInner object itself.
+     */
+    public JobAgentInner withIdentity(JobAgentIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobAgentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobAgentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobAgentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +110,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Get the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @return the databaseId value.
      */
     public String databaseId() {
@@ -84,7 +119,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Set the databaseId property: Resource ID of the database to store job metadata in.
-     *
+     * 
      * @param databaseId the databaseId value to set.
      * @return the JobAgentInner object itself.
      */
@@ -98,7 +133,7 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Get the state property: The state of the job agent.
-     *
+     * 
      * @return the state value.
      */
     public JobAgentState state() {
@@ -107,12 +142,15 @@ public final class JobAgentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();
