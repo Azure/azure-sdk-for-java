@@ -1316,9 +1316,8 @@ public final class OpenAIAsyncClient {
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+    Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
@@ -1423,9 +1422,8 @@ public final class OpenAIAsyncClient {
      * @return english language transcribed text and associated metadata from provided spoken audio data along with
      * {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+    Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
@@ -1448,7 +1446,7 @@ public final class OpenAIAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranscriptionAsPlainText(String deploymentOrModelName,
+    Mono<String> getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
@@ -1472,7 +1470,7 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranslationAsPlainText(String deploymentOrModelName,
+    Mono<String> getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,

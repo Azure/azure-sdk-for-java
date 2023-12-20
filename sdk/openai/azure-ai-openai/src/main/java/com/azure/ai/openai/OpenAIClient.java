@@ -1274,9 +1274,8 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+    Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
@@ -1381,9 +1380,8 @@ public final class OpenAIClient {
      * @return english language transcribed text and associated metadata from provided spoken audio data along with
      * {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+    Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
@@ -1405,7 +1403,7 @@ public final class OpenAIClient {
      * @return transcribed text and associated metadata from provided spoken audio data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getAudioTranscriptionAsPlainText(String deploymentOrModelName,
+    String getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
@@ -1427,7 +1425,7 @@ public final class OpenAIClient {
      * @return english language transcribed text and associated metadata from provided spoken audio data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getAudioTranslationAsPlainText(String deploymentOrModelName,
+    String getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,

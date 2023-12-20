@@ -6,6 +6,11 @@
 
 ### Breaking Changes
 
+- Removed methods `getAudioTranscriptionAsPlainText` and `getAudioTranscriptionAsPlainTextWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
+Use `getAudioTranscriptionText` or `getAudioTranscriptionTextWithResponse` methods from respective classes.
+- Removed methods `getAudioTranslationAsPlainText` and `getAudioTranslationAsPlainTextWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
+Use `getAudioTranslationText` or `getAudioTranslationTextWithResponse` methods from respective classes.
+
 ### Bugs Fixed
 
 ### Other Changes
