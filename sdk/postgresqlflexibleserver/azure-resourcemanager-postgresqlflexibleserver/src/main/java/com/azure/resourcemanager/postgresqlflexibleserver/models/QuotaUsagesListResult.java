@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.QuotaUsa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capability for the PostgreSQL server. */
+/**
+ * Capability for the PostgreSQL server.
+ */
 @Immutable
 public final class QuotaUsagesListResult {
     /*
@@ -24,13 +26,15 @@ public final class QuotaUsagesListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of QuotaUsagesListResult class. */
+    /**
+     * Creates an instance of QuotaUsagesListResult class.
+     */
     public QuotaUsagesListResult() {
     }
 
     /**
      * Get the value property: A list of quota usages.
-     *
+     * 
      * @return the value value.
      */
     public List<QuotaUsageInner> value() {
@@ -39,7 +43,7 @@ public final class QuotaUsagesListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class QuotaUsagesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

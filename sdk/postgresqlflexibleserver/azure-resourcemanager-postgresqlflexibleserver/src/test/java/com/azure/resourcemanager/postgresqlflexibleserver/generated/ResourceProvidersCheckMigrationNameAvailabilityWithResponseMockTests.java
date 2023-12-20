@@ -12,7 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.FirewallRule;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailabilityResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,15 +24,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class FirewallRulesGetWithResponseMockTests {
+public final class ResourceProvidersCheckMigrationNameAvailabilityWithResponseMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testCheckMigrationNameAvailabilityWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"pibudqwyxebeybpm\",\"endIpAddress\":\"znrtffyaqit\"},\"id\":\"heioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}";
+            = "{\"name\":\"tshi\",\"type\":\"xgvelfclduccbird\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"b\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,10 +49,13 @@ public final class FirewallRulesGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FirewallRule response = manager.firewallRules()
-            .getWithResponse("tad", "jaeukmrsieekpn", "zaapmudqmeqwi", com.azure.core.util.Context.NONE).getValue();
+        MigrationNameAvailabilityResource response = manager.resourceProviders()
+            .checkMigrationNameAvailabilityWithResponse("nptfujgi", "gaao", "pttaqutd",
+                new MigrationNameAvailabilityResourceInner().withName("wemxswvruunzz").withType("gehkfkimrtixokff"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("pibudqwyxebeybpm", response.startIpAddress());
-        Assertions.assertEquals("znrtffyaqit", response.endIpAddress());
+        Assertions.assertEquals("tshi", response.name());
+        Assertions.assertEquals("xgvelfclduccbird", response.type());
     }
 }

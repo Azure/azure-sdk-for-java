@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replica properties of a server. */
+/**
+ * Replica properties of a server.
+ */
 @Fluent
 public final class Replica {
     /*
@@ -41,13 +43,15 @@ public final class Replica {
     @JsonProperty(value = "promoteOption")
     private ReplicationPromoteOption promoteOption;
 
-    /** Creates an instance of Replica class. */
+    /**
+     * Creates an instance of Replica class.
+     */
     public Replica() {
     }
 
     /**
      * Get the role property: Used to indicate role of the server in replication set.
-     *
+     * 
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -56,7 +60,7 @@ public final class Replica {
 
     /**
      * Set the role property: Used to indicate role of the server in replication set.
-     *
+     * 
      * @param role the role value to set.
      * @return the Replica object itself.
      */
@@ -67,7 +71,7 @@ public final class Replica {
 
     /**
      * Get the capacity property: Replicas allowed for a server.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -75,9 +79,9 @@ public final class Replica {
     }
 
     /**
-     * Get the replicationState property: Gets the replication state of a replica server. This property is returned only
-     * for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
-     *
+     * Get the replicationState property: Gets the replication state of a replica server. This property is returned
+     * only for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
+     * 
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
@@ -86,7 +90,7 @@ public final class Replica {
 
     /**
      * Get the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
-     *
+     * 
      * @return the promoteMode value.
      */
     public ReadReplicaPromoteMode promoteMode() {
@@ -95,7 +99,7 @@ public final class Replica {
 
     /**
      * Set the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
-     *
+     * 
      * @param promoteMode the promoteMode value to set.
      * @return the Replica object itself.
      */
@@ -106,7 +110,7 @@ public final class Replica {
 
     /**
      * Get the promoteOption property: Sets the promote options for a replica server. This is a write only property.
-     *
+     * 
      * @return the promoteOption value.
      */
     public ReplicationPromoteOption promoteOption() {
@@ -115,7 +119,7 @@ public final class Replica {
 
     /**
      * Set the promoteOption property: Sets the promote options for a replica server. This is a write only property.
-     *
+     * 
      * @param promoteOption the promoteOption value to set.
      * @return the Replica object itself.
      */
@@ -126,7 +130,7 @@ public final class Replica {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

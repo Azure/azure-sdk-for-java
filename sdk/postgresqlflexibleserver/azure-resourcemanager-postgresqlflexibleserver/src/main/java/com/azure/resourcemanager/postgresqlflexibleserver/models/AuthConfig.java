@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication configuration properties of a server. */
+/**
+ * Authentication configuration properties of a server.
+ */
 @Fluent
 public final class AuthConfig {
     /*
@@ -28,13 +30,15 @@ public final class AuthConfig {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of AuthConfig class. */
+    /**
+     * Creates an instance of AuthConfig class.
+     */
     public AuthConfig() {
     }
 
     /**
      * Get the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
-     *
+     * 
      * @return the activeDirectoryAuth value.
      */
     public ActiveDirectoryAuthEnum activeDirectoryAuth() {
@@ -43,7 +47,7 @@ public final class AuthConfig {
 
     /**
      * Set the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
-     *
+     * 
      * @param activeDirectoryAuth the activeDirectoryAuth value to set.
      * @return the AuthConfig object itself.
      */
@@ -54,7 +58,7 @@ public final class AuthConfig {
 
     /**
      * Get the passwordAuth property: If Enabled, Password authentication is enabled.
-     *
+     * 
      * @return the passwordAuth value.
      */
     public PasswordAuthEnum passwordAuth() {
@@ -63,7 +67,7 @@ public final class AuthConfig {
 
     /**
      * Set the passwordAuth property: If Enabled, Password authentication is enabled.
-     *
+     * 
      * @param passwordAuth the passwordAuth value to set.
      * @return the AuthConfig object itself.
      */
@@ -74,7 +78,7 @@ public final class AuthConfig {
 
     /**
      * Get the tenantId property: Tenant id of the server.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -83,7 +87,7 @@ public final class AuthConfig {
 
     /**
      * Set the tenantId property: Tenant id of the server.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AuthConfig object itself.
      */
@@ -94,7 +98,7 @@ public final class AuthConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -19,8 +19,7 @@ public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabil
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public LocationBasedCapabilitiesImpl(
-        LocationBasedCapabilitiesClient innerClient,
+    public LocationBasedCapabilitiesImpl(LocationBasedCapabilitiesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

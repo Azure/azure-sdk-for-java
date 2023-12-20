@@ -19,8 +19,7 @@ public final class ReplicasImpl implements Replicas {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public ReplicasImpl(
-        ReplicasClient innerClient,
+    public ReplicasImpl(ReplicasClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ServerCapabilities. */
+/**
+ * Resource collection API of ServerCapabilities.
+ */
 public interface ServerCapabilities {
     /**
      * Get capabilities for a flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface ServerCapabilities {
 
     /**
      * Get capabilities for a flexible server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
