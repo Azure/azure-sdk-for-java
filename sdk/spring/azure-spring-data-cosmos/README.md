@@ -624,7 +624,7 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
 ```
 ### Using Azure Cosmos Client through Spring Data Cosmos
 - Azure-spring-data-cosmos supports using Azure Cosmos Client through Spring Data Cosmos. 
-- Users can get `CosmosClient` or `AsyncCosmosClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos Client.
+- Users can get `CosmosClient` or `CosmosAsyncClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos Client.
 - Example:
 ```java readme-sample-CosmosClientBeanCodeSnippet
 @SpringBootApplication
