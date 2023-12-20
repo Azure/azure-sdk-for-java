@@ -57,7 +57,7 @@ public class FeedRangeThroughputControlConfigManagerTests {
         Mockito.doReturn(Mono.just(pkRanges)).when(documentClientMock).getOverlappingRanges(feedRangeEpk.getRange(), false);
 
         ThroughputControlGroupConfig pkRangeThroughputControlConfig =
-            throughputControlConfigManager.getThroughputControlConfigForFeedRange(feedRangeEpk).block();
+            throughputControlConfigManager.getOrCreateThroughputControlConfigForFeedRange(feedRangeEpk).block();
 
         assertThat(pkRangeThroughputControlConfig).isNotNull();
         String expectedGroupName = throughputControlGroupConfig.getGroupName() + "-" + feedRangeEpk;

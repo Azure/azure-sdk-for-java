@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -14,7 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,8 @@ public class FeedRangeThroughputControlConfigManager {
     private final ThroughputControlGroupConfig throughputControlGroupConfig;
     private final ChangeFeedContextClient documentClient;
     private final AtomicReference<List<FeedRangeEpkImpl>> leaseTokens; // epk leases
+    private final Map<PartitionKeyRange, List<FeedRange>> pkRangeToFeedRangeMap;
+    private final Map<FeedRange, ThroughputControlGroupConfig> feedRangeToThroughputControlGroupConfigMap;
 
     public FeedRangeThroughputControlConfigManager(
         ThroughputControlGroupConfig throughputControlGroupConfig,
@@ -39,6 +45,8 @@ public class FeedRangeThroughputControlConfigManager {
         this.throughputControlGroupConfig = throughputControlGroupConfig;
         this.documentClient = documentClient;
         this.leaseTokens = new AtomicReference<>();
+        this.pkRangeToFeedRangeMap = new ConcurrentHashMap<>();
+        this.feedRangeToThroughputControlGroupConfigMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -53,7 +61,24 @@ public class FeedRangeThroughputControlConfigManager {
             this.leaseTokens.set(leases.stream().map(lease -> (FeedRangeEpkImpl)lease.getFeedRange()).collect(Collectors.toList()));
         }
 
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, false)
+            .doOnNext(pkRanges -> {
+                if (!pkRanges.isEmpty()) {
+                    // Go through the pkRangeToFeedRangeMap,
+                    // if the tracked pkRange does not exist any longer,
+                    // then remove it from the map and also remove the mapped feedRanges presents from feedRangeToThroughputControlGroupConfigMap
+                    // empty entry in feedRangeToThroughputControlGroupConfigMap will trigger a recreation the throughputControlGroupConfig
+                    for (PartitionKeyRange pkRange : pkRangeToFeedRangeMap.keySet()) {
+                        if (!pkRanges.contains(pkRange)) {
+                            List<FeedRange> feedRanges = pkRangeToFeedRangeMap.remove(pkRange);
+                            logger.debug("PkRange {} does not exist any more, remove it from map. ", pkRange.getId());
+                            for (FeedRange feedRange : feedRanges) {
+                                this.feedRangeToThroughputControlGroupConfigMap.remove(feedRange);
+                            }
+                        }
+                    }
+                }
+            })
             .onErrorResume(throwable -> {
                 logger.warn("Refresh pkRanges failed", throwable);
                 return Mono.empty();
@@ -61,7 +86,20 @@ public class FeedRangeThroughputControlConfigManager {
             .then();
     }
 
-    public Mono<ThroughputControlGroupConfig> getThroughputControlConfigForFeedRange(FeedRangeEpkImpl feedRange) {
+    public Mono<ThroughputControlGroupConfig> getOrCreateThroughputControlConfigForFeedRange(FeedRangeEpkImpl feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
+        ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange =
+            this.feedRangeToThroughputControlGroupConfigMap.get(feedRange);
+
+        if (throughputControlGroupConfigForFeedRange != null) {
+            return Mono.just(throughputControlGroupConfigForFeedRange);
+        }
+
+        return this.createThroughputControlConfigForFeedRange(feedRange);
+
+    }
+
+    public Mono<ThroughputControlGroupConfig> createThroughputControlConfigForFeedRange(FeedRangeEpkImpl feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' can not be null");
 
         // for epk leases, it is used to support both split and merge
@@ -78,6 +116,17 @@ public class FeedRangeThroughputControlConfigManager {
                     return Mono.error(new IllegalStateException("There are more than one partition key ranges mapped to the lease feed range. This should never happen"));
                 }
 
+                // add pkRange -> feedRange mapping so next time during refresh
+                // so when we detect the pkRange does not exists any more, we can trigger a proper throughputControlGroup recreation for the feedRange
+                this.pkRangeToFeedRangeMap.compute(partitionKeyRanges.get(0), (key, feedRangeList) -> {
+                    if (feedRangeList == null) {
+                        feedRangeList = new ArrayList<>();
+                    }
+
+                    feedRangeList.add(feedRange);
+                    return feedRangeList;
+                });
+
                 // find all leases overlapping with the partition key range
                 long leasesBelongToSamePartitionKeyRange =
                     this.leaseTokens
@@ -88,10 +137,12 @@ public class FeedRangeThroughputControlConfigManager {
                             && leaseToken.getRange().getMax().compareTo(partitionKeyRanges.get(0).getMaxExclusive()) <= 0)
                         .count();
 
+                ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange =
+                    this.getThroughputControlGroupConfigInternal(feedRange, leasesBelongToSamePartitionKeyRange);
+
                 return Mono.just(
-                    getThroughputControlGroupConfigInternal(
-                        feedRange,
-                        leasesBelongToSamePartitionKeyRange));
+                    this.feedRangeToThroughputControlGroupConfigMap.compute(feedRange, (key, config) -> throughputControlGroupConfigForFeedRange)
+                );
             })
             .onErrorResume(throwable -> {
                 // Throughput control flow should not break the normal request flow
