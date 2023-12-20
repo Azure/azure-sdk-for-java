@@ -30,7 +30,7 @@ public class CosmosClientBeanCodeSnippet {
         myContainer.getScripts().getStoredProcedure("storedProcedureId").read();
     }
 
-    public void asyncCosmosClientBean() {
+    public void cosmosAsyncClientBean() {
         CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
         CosmosAsyncContainer myAsyncContainer = cosmosAsyncClient.getDatabase("myDatabase").getContainer("myContainer");
         //  Creating a stored procedure
