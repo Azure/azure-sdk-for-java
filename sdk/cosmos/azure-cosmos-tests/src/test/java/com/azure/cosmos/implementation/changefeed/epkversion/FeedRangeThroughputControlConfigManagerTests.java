@@ -42,7 +42,7 @@ public class FeedRangeThroughputControlConfigManagerTests {
         Mockito.doNothing().when(containerMock).enableLocalThroughputControlGroup(Mockito.any());
         List<PartitionKeyRange> pkRanges = Arrays.asList(
             new PartitionKeyRange("1", "AA", "DD"));
-        Mockito.doReturn(Mono.just(pkRanges)).when(documentClientMock).getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true);
+        Mockito.doReturn(Mono.just(pkRanges)).when(documentClientMock).getOverlappingRanges(PartitionKeyInternalHelper.FullRange, false);
 
         FeedRangeThroughputControlConfigManager throughputControlConfigManager =
             new FeedRangeThroughputControlConfigManager(throughputControlGroupConfig,documentClientMock);
