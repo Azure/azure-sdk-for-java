@@ -272,7 +272,7 @@ com.azure.resourcemanager:azure-resourcemanager-redis;2.32.0;2.33.0
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.32.0;2.33.0
 com.azure.resourcemanager:azure-resourcemanager-servicebus;2.32.0;2.33.0
-com.azure.resourcemanager:azure-resourcemanager-sql;2.32.0;2.33.0
+com.azure.resourcemanager:azure-resourcemanager-sql;2.32.0;2.34.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storage;2.32.0;2.33.0
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.32.0;2.33.0
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
