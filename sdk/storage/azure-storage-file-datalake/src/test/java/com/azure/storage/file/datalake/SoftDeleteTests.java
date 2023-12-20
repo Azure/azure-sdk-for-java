@@ -4,7 +4,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestMode;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -97,7 +96,6 @@ public class SoftDeleteTests extends DataLakeTestBase {
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
         " my cool directory ", "directory"})
     public void restorePathSpecialCharacters(String name) {
-        name = Utility.urlEncode(name);
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient("dir" + name);
         dir.create();
         dir.delete();
@@ -111,13 +109,13 @@ public class SoftDeleteTests extends DataLakeTestBase {
         String dirDeletionId = paths.next().getDeletionId();
         String fileDeletionId = paths.next().getDeletionId();
 
-        DataLakePathClient returnedClient = fileSystemClient.undeletePath(Utility.urlEncode(dir.getDirectoryName()),
+        DataLakePathClient returnedClient = fileSystemClient.undeletePath(dir.getDirectoryName(),
             dirDeletionId);
 
         assertInstanceOf(DataLakeDirectoryClient.class, returnedClient);
         assertNotNull(dir.getProperties());
 
-        returnedClient = fileSystemClient.undeletePath(Utility.urlEncode(file.getFileName()), fileDeletionId);
+        returnedClient = fileSystemClient.undeletePath(file.getFileName(), fileDeletionId);
 
         assertInstanceOf(DataLakeFileClient.class, returnedClient);
         assertNotNull(file.getProperties());
