@@ -34,7 +34,7 @@ import java.time.Duration;
 public class KeyTests extends KeyVaultManagementTest {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDKey() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -109,7 +109,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canImportKey() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -130,7 +130,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canBackupAndRestore() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -167,7 +167,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canEncryptAndDecrypt() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -202,7 +202,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canSignAndVerify() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -234,7 +234,7 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canWrapAndUnwrap() throws Exception {
         if (skipInPlayback()) {
             return;

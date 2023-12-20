@@ -13,23 +13,20 @@ public final class CheckDomainAvailabilityParameterTests {
     public void testDeserialize() throws Exception {
         CheckDomainAvailabilityParameter model =
             BinaryData
-                .fromString("{\"subdomainName\":\"bpvjymjhx\",\"type\":\"j\",\"kind\":\"gudivkrtswbxqz\"}")
+                .fromString("{\"subdomainName\":\"kcvqvpke\",\"type\":\"dcvd\",\"kind\":\"vo\"}")
                 .toObject(CheckDomainAvailabilityParameter.class);
-        Assertions.assertEquals("bpvjymjhx", model.subdomainName());
-        Assertions.assertEquals("j", model.type());
-        Assertions.assertEquals("gudivkrtswbxqz", model.kind());
+        Assertions.assertEquals("kcvqvpke", model.subdomainName());
+        Assertions.assertEquals("dcvd", model.type());
+        Assertions.assertEquals("vo", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckDomainAvailabilityParameter model =
-            new CheckDomainAvailabilityParameter()
-                .withSubdomainName("bpvjymjhx")
-                .withType("j")
-                .withKind("gudivkrtswbxqz");
+            new CheckDomainAvailabilityParameter().withSubdomainName("kcvqvpke").withType("dcvd").withKind("vo");
         model = BinaryData.fromObject(model).toObject(CheckDomainAvailabilityParameter.class);
-        Assertions.assertEquals("bpvjymjhx", model.subdomainName());
-        Assertions.assertEquals("j", model.type());
-        Assertions.assertEquals("gudivkrtswbxqz", model.kind());
+        Assertions.assertEquals("kcvqvpke", model.subdomainName());
+        Assertions.assertEquals("dcvd", model.type());
+        Assertions.assertEquals("vo", model.kind());
     }
 }

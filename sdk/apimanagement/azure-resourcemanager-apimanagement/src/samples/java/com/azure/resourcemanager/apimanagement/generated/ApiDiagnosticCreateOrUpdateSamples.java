@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for ApiDiagnostic CreateOrUpdate. */
 public final class ApiDiagnosticCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiDiagnostic.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiDiagnostic.json
      */
     /**
      * Sample code: ApiManagementCreateApiDiagnostic.
@@ -30,7 +30,7 @@ public final class ApiDiagnosticCreateOrUpdateSamples {
             .withExistingApi("rg1", "apimService1", "57d1f7558aa04f15146d9d8a")
             .withAlwaysLog(AlwaysLog.ALL_ERRORS)
             .withLoggerId("/loggers/applicationinsights")
-            .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0))
+            .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
             .withFrontend(
                 new PipelineDiagnosticSettings()
                     .withRequest(

@@ -20,7 +20,7 @@ public final class UserAccount {
     /*
      * The password for the user account.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*

@@ -13,7 +13,7 @@ public final class ResourceUsagesListResultTests {
         ResourceUsagesListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"qbzvddntwnd\",\"value\":[{\"limit\":1638817627,\"unit\":\"npzaoq\",\"currentValue\":2037494020,\"name\":{\"value\":\"cffcyddglmj\",\"localizedValue\":\"jqkwpyeicx\"}},{\"limit\":1788510913,\"unit\":\"wqvhkhixuigdt\",\"currentValue\":588882350,\"name\":{\"value\":\"joghmewuama\",\"localizedValue\":\"rzayv\"}},{\"limit\":1120285230,\"unit\":\"vdfgiotk\",\"currentValue\":1980414786,\"name\":{\"value\":\"xlngx\",\"localizedValue\":\"fgugnxkrxdqmid\"}},{\"limit\":1583346323,\"unit\":\"rvqdra\",\"currentValue\":1546969178,\"name\":{\"value\":\"igeho\",\"localizedValue\":\"bowsk\"}}]}")
+                    "{\"nextLink\":\"conuqszfkbeype\",\"value\":[{\"limit\":1769488182,\"unit\":\"vvjektcxsenhwlrs\",\"currentValue\":1160903159,\"name\":{\"value\":\"wvlqdqgb\",\"localizedValue\":\"ylihkaetckt\"}},{\"limit\":1161915494,\"unit\":\"vf\",\"currentValue\":1439839130,\"name\":{\"value\":\"uctqhjfbe\",\"localizedValue\":\"jcxerfuwu\"}},{\"limit\":743526122,\"unit\":\"fvjrbirphxepcy\",\"currentValue\":1901169400,\"name\":{\"value\":\"ljkyqxjvuuj\",\"localizedValue\":\"idokgjlj\"}}]}")
                 .toObject(ResourceUsagesListResult.class);
     }
 

@@ -17,26 +17,27 @@ public final class SignalRFeatureTests {
         SignalRFeature model =
             BinaryData
                 .fromString(
-                    "{\"flag\":\"EnableMessagingLogs\",\"value\":\"wxosowzxcug\",\"properties\":{\"wfvovbv\":\"ooxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}}")
+                    "{\"flag\":\"EnableLiveTrace\",\"value\":\"nvrk\",\"properties\":{\"ixqtn\":\"uaibrebqaaysj\"}}")
                 .toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
+        Assertions.assertEquals("nvrk", model.value());
+        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SignalRFeature model =
             new SignalRFeature()
-                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
-                .withValue("wxosowzxcug")
-                .withProperties(mapOf("wfvovbv", "ooxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"));
+                .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
+                .withValue("nvrk")
+                .withProperties(mapOf("ixqtn", "uaibrebqaaysj"));
         model = BinaryData.fromObject(model).toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
+        Assertions.assertEquals("nvrk", model.value());
+        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

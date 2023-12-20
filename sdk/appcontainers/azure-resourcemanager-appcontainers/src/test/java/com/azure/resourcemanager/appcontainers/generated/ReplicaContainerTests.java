@@ -14,29 +14,29 @@ public final class ReplicaContainerTests {
         ReplicaContainer model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"u\",\"containerId\":\"prafwgckhoc\",\"ready\":false,\"started\":false,\"restartCount\":2112438286,\"logStreamEndpoint\":\"fqroudas\",\"execEndpoint\":\"vehhrvkbunzozu\"}")
+                    "{\"name\":\"cgpik\",\"containerId\":\"imejzanl\",\"ready\":false,\"started\":false,\"restartCount\":1297052787,\"runningState\":\"Terminated\",\"runningStateDetails\":\"onok\",\"logStreamEndpoint\":\"rjqc\",\"execEndpoint\":\"gzpfrla\"}")
                 .toObject(ReplicaContainer.class);
-        Assertions.assertEquals("u", model.name());
-        Assertions.assertEquals("prafwgckhoc", model.containerId());
+        Assertions.assertEquals("cgpik", model.name());
+        Assertions.assertEquals("imejzanl", model.containerId());
         Assertions.assertEquals(false, model.ready());
         Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(2112438286, model.restartCount());
+        Assertions.assertEquals(1297052787, model.restartCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicaContainer model =
             new ReplicaContainer()
-                .withName("u")
-                .withContainerId("prafwgckhoc")
+                .withName("cgpik")
+                .withContainerId("imejzanl")
                 .withReady(false)
                 .withStarted(false)
-                .withRestartCount(2112438286);
+                .withRestartCount(1297052787);
         model = BinaryData.fromObject(model).toObject(ReplicaContainer.class);
-        Assertions.assertEquals("u", model.name());
-        Assertions.assertEquals("prafwgckhoc", model.containerId());
+        Assertions.assertEquals("cgpik", model.name());
+        Assertions.assertEquals("imejzanl", model.containerId());
         Assertions.assertEquals(false, model.ready());
         Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(2112438286, model.restartCount());
+        Assertions.assertEquals(1297052787, model.restartCount());
     }
 }

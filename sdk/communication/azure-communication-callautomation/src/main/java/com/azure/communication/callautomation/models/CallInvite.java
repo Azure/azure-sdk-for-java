@@ -5,25 +5,23 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.util.HashMap;
+
 /**
- *  Call invitee details.
+ *  Call invite details.
  */
 @Fluent
 public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
-    private final PhoneNumberIdentifier sourceCallerIdNumber;
+    private PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;
-    private final Map<String, String> sipHeaders;
-    private final Map<String, String> voipHeaders;
+    private final CustomCallingContext customCallingContext;
 
     /**
      *  Create a CallInvite object with PhoneNumberIdentifierr
@@ -31,23 +29,9 @@ public final class CallInvite {
      * @param callerIdNumber Caller's phone number identifier
      */
     public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber) {
-        targetParticipant = targetIdentity;
-        sourceCallerIdNumber = callerIdNumber;
-        sipHeaders = new HashMap<String, String>();
-        voipHeaders = null;
-    }
-
-    /**
-     *  Create a CallInvite object with PhoneNumberIdentifierr
-     * @param targetIdentity Target's PhoneNumberIdentifier
-     * @param callerIdNumber Caller's phone number identifier
-     * @param sipHeaders custom context for pstn
-     */
-    public CallInvite(PhoneNumberIdentifier targetIdentity, PhoneNumberIdentifier callerIdNumber, Map<String, String> sipHeaders) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = callerIdNumber;
-        this.sipHeaders = sipHeaders;
-        this.voipHeaders = null;
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null);
     }
 
     /**
@@ -57,20 +41,7 @@ public final class CallInvite {
     public CallInvite(CommunicationUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.sipHeaders = null;
-        this.voipHeaders = new HashMap<String, String>();
-    }
-
-    /**
-     * Create a CallInvite object with CommunicationUserIdentifier
-     * @param targetIdentity Target's CommunicationUserIdentifier
-     * @param voipHeaders custom context for voip
-     */
-    public CallInvite(CommunicationUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = null;
-        this.sipHeaders = null;
-        this.voipHeaders = voipHeaders;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -80,20 +51,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.sipHeaders = null;
-        this.voipHeaders = new HashMap<String, String>();
-    }
-
-    /**
-     * Create a CallInvite object with MicrosoftTeamsUserIdentifier
-     * @param targetIdentity Target's MicrosoftTeamsUserIdentifier
-     * @param voipHeaders custom context for voip
-     */
-    public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity, Map<String, String> voipHeaders) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = null;
-        this.sipHeaders = null;
-        this.voipHeaders = voipHeaders;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -123,19 +81,11 @@ public final class CallInvite {
     }
 
     /**
-     *  get list of custom context to pstn target
-     * @return list of custom context to pstn target
+     *  get custom calling context
+     * @return custom calling context
      */
-    public Map<String, String> getSipHeaders() {
-        return sipHeaders;
-    }
-
-    /**
-     *  get list of custom context to voip target
-     * @return list of custom context to voip target
-     */
-    public Map<String, String> getVoipHeaders() {
-        return voipHeaders;
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
     }
 
     /**
@@ -144,5 +94,15 @@ public final class CallInvite {
      */
     public PhoneNumberIdentifier getSourceCallerIdNumber() {
         return sourceCallerIdNumber;
+    }
+
+    /**
+     * set PhoneNumberIdentifier for PSTN caller
+     * @param sourceCallerIdNumber PhoneNumberIdentifier for PSTN caller
+     * @return the CallInvite object itself
+     */
+    public CallInvite setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
+        return this;
     }
 }

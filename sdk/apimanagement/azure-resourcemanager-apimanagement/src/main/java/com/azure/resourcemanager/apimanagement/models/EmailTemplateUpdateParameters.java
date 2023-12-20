@@ -18,6 +18,10 @@ public final class EmailTemplateUpdateParameters {
     @JsonProperty(value = "properties")
     private EmailTemplateUpdateParameterProperties innerProperties;
 
+    /** Creates an instance of EmailTemplateUpdateParameters class. */
+    public EmailTemplateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Email Template Update contract properties.
      *

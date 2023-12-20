@@ -19,6 +19,7 @@ import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyModification;
 import com.azure.security.attestation.models.PolicyResult;
+import com.azure.security.attestation.models.TpmAttestationResult;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -294,7 +295,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        String tpmResponse = client.attestTpm(attestInitialPayload);
+        TpmAttestationResult tpmResponse = client.attestTpm(BinaryData.fromString(attestInitialPayload));
         // END: com.azure.security.attestation.AttestationClient.attestTpm
     }
 
@@ -331,7 +332,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Response<String> tpmResponse = client.attestTpmWithResponse(attestInitialPayload, Context.NONE);
+        Response<TpmAttestationResult> tpmResponse = client.attestTpmWithResponse(BinaryData.fromString(attestInitialPayload), Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.attestTpmWithResponse
     }
 
@@ -368,7 +369,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Mono<String> tpmResponse = client.attestTpm(attestInitialPayload);
+        Mono<TpmAttestationResult> tpmResponse = client.attestTpm(BinaryData.fromString(attestInitialPayload));
         // END: com.azure.security.attestation.AttestationAsyncClient.attestTpm
         tpmResponse.subscribe();
     }
@@ -406,7 +407,7 @@ public class AttestationSamples {
         // containing an object with a property named "type" whose value is "aikcert".
 
         String attestInitialPayload = "{\"payload\": { \"type\": \"aikcert\" } }";
-        Mono<Response<String>> responseMono = client.attestTpmWithResponse(attestInitialPayload);
+        Mono<Response<TpmAttestationResult>> responseMono = client.attestTpmWithResponse(BinaryData.fromString(attestInitialPayload));
         // END: com.azure.security.attestation.AttestationAsyncClient.attestTpmWithResponse
         responseMono.subscribe();
     }

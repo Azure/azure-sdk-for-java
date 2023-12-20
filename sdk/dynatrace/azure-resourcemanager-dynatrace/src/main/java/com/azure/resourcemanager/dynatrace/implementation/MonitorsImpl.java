@@ -10,18 +10,21 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dynatrace.fluent.MonitorsClient;
-import com.azure.resourcemanager.dynatrace.fluent.models.AccountInfoSecureInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.AppServiceInfoInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.LinkableEnvironmentResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MarketplaceSaaSResourceDetailsResponseInner;
+import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.SsoDetailsResponseInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMExtensionPayloadInner;
 import com.azure.resourcemanager.dynatrace.fluent.models.VMInfoInner;
-import com.azure.resourcemanager.dynatrace.models.AccountInfoSecure;
 import com.azure.resourcemanager.dynatrace.models.AppServiceInfo;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentRequest;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentResponse;
+import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetailsRequest;
+import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetailsResponse;
+import com.azure.resourcemanager.dynatrace.models.MetricsStatusResponse;
 import com.azure.resourcemanager.dynatrace.models.MonitorResource;
 import com.azure.resourcemanager.dynatrace.models.MonitoredResource;
 import com.azure.resourcemanager.dynatrace.models.Monitors;
@@ -43,30 +46,6 @@ public final class MonitorsImpl implements Monitors {
         this.serviceManager = serviceManager;
     }
 
-    public AccountInfoSecure getAccountCredentials(String resourceGroupName, String monitorName) {
-        AccountInfoSecureInner inner = this.serviceClient().getAccountCredentials(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new AccountInfoSecureImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AccountInfoSecure> getAccountCredentialsWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<AccountInfoSecureInner> inner =
-            this.serviceClient().getAccountCredentialsWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccountInfoSecureImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName) {
         PagedIterable<MonitoredResourceInner> inner =
             this.serviceClient().listMonitoredResources(resourceGroupName, monitorName);
@@ -78,15 +57,6 @@ public final class MonitorsImpl implements Monitors {
         PagedIterable<MonitoredResourceInner> inner =
             this.serviceClient().listMonitoredResources(resourceGroupName, monitorName, context);
         return Utils.mapPage(inner, inner1 -> new MonitoredResourceImpl(inner1, this.manager()));
-    }
-
-    public VMExtensionPayload getVMHostPayload(String resourceGroupName, String monitorName) {
-        VMExtensionPayloadInner inner = this.serviceClient().getVMHostPayload(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new VMExtensionPayloadImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VMExtensionPayload> getVMHostPayloadWithResponse(
@@ -104,10 +74,10 @@ public final class MonitorsImpl implements Monitors {
         }
     }
 
-    public MonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
-        MonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
+    public VMExtensionPayload getVMHostPayload(String resourceGroupName, String monitorName) {
+        VMExtensionPayloadInner inner = this.serviceClient().getVMHostPayload(resourceGroupName, monitorName);
         if (inner != null) {
-            return new MonitorResourceImpl(inner, this.manager());
+            return new VMExtensionPayloadImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -123,6 +93,15 @@ public final class MonitorsImpl implements Monitors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MonitorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
+        MonitorResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new MonitorResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -157,6 +136,32 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new MonitorResourceImpl(inner1, this.manager()));
     }
 
+    public Response<MarketplaceSaaSResourceDetailsResponse> getMarketplaceSaaSResourceDetailsWithResponse(
+        MarketplaceSaaSResourceDetailsRequest request, Context context) {
+        Response<MarketplaceSaaSResourceDetailsResponseInner> inner =
+            this.serviceClient().getMarketplaceSaaSResourceDetailsWithResponse(request, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new MarketplaceSaaSResourceDetailsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MarketplaceSaaSResourceDetailsResponse getMarketplaceSaaSResourceDetails(
+        MarketplaceSaaSResourceDetailsRequest request) {
+        MarketplaceSaaSResourceDetailsResponseInner inner =
+            this.serviceClient().getMarketplaceSaaSResourceDetails(request);
+        if (inner != null) {
+            return new MarketplaceSaaSResourceDetailsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName) {
         PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName);
         return Utils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
@@ -165,6 +170,30 @@ public final class MonitorsImpl implements Monitors {
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, Context context) {
         PagedIterable<VMInfoInner> inner = this.serviceClient().listHosts(resourceGroupName, monitorName, context);
         return Utils.mapPage(inner, inner1 -> new VMInfoImpl(inner1, this.manager()));
+    }
+
+    public Response<MetricsStatusResponse> getMetricStatusWithResponse(
+        String resourceGroupName, String monitorName, Context context) {
+        Response<MetricsStatusResponseInner> inner =
+            this.serviceClient().getMetricStatusWithResponse(resourceGroupName, monitorName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new MetricsStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MetricsStatusResponse getMetricStatus(String resourceGroupName, String monitorName) {
+        MetricsStatusResponseInner inner = this.serviceClient().getMetricStatus(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new MetricsStatusResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName) {
@@ -179,15 +208,6 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
     }
 
-    public SsoDetailsResponse getSsoDetails(String resourceGroupName, String monitorName) {
-        SsoDetailsResponseInner inner = this.serviceClient().getSsoDetails(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new SsoDetailsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SsoDetailsResponse> getSsoDetailsWithResponse(
         String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context) {
         Response<SsoDetailsResponseInner> inner =
@@ -198,6 +218,15 @@ public final class MonitorsImpl implements Monitors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SsoDetailsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SsoDetailsResponse getSsoDetails(String resourceGroupName, String monitorName) {
+        SsoDetailsResponseInner inner = this.serviceClient().getSsoDetails(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new SsoDetailsResponseImpl(inner, this.manager());
         } else {
             return null;
         }

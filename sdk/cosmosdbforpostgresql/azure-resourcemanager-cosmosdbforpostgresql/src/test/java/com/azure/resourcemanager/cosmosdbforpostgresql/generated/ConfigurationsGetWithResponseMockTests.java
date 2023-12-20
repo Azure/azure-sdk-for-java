@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Configuration;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class ConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"c\",\"dataType\":\"Boolean\",\"allowedValues\":\"ualaexqpvfadmw\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[],\"provisioningState\":\"Canceled\"},\"id\":\"pv\",\"name\":\"omzlfmi\",\"type\":\"gwb\"}";
+            "{\"properties\":{\"description\":\"i\",\"dataType\":\"Enumeration\",\"allowedValues\":\"pjzu\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"ultskzbbtdz\",\"defaultValue\":\"veekgpwozuhkfp\",\"source\":\"jyofdxluusdtto\"},{\"role\":\"Coordinator\",\"value\":\"aboekqv\",\"defaultValue\":\"lns\",\"source\":\"bxwyjsflhhcaa\"}],\"provisioningState\":\"Failed\"},\"id\":\"xisxyawjoyaqcsl\",\"name\":\"jpkiidzyexznelix\",\"type\":\"nr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +63,11 @@ public final class ConfigurationsGetWithResponseMockTests {
         Configuration response =
             manager
                 .configurations()
-                .getWithResponse("tslhspkdeem", "ofmxagkvtmelmqkr", "ahvljuaha", com.azure.core.util.Context.NONE)
+                .getWithResponse("qzcjrvxdj", "lmwlxkvugfhzo", "awjvzunluthnnp", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.requiresRestart());
+        Assertions.assertEquals(ServerRole.COORDINATOR, response.serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("ultskzbbtdz", response.serverRoleGroupConfigurations().get(0).value());
     }
 }

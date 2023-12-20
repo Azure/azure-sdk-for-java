@@ -8,29 +8,27 @@ import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DiskAccesses Update. */
+/**
+ * Samples for DiskAccesses Update.
+ */
 public final class DiskAccessesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_Update.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskAccessExamples/
+     * DiskAccess_Update.json
      */
     /**
      * Sample code: Update a disk access resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getDiskAccesses()
-            .update(
-                "myResourceGroup",
-                "myDiskAccess",
-                new DiskAccessUpdate().withTags(mapOf("department", "Development", "project", "PrivateEndpoints")),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getDiskAccesses().update("myResourceGroup", "myDiskAccess",
+            new DiskAccessUpdate().withTags(mapOf("department", "Development", "project", "PrivateEndpoints")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

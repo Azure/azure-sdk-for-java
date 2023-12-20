@@ -246,7 +246,7 @@ public class RntbdClientChannelHealthCheckerTests {
             Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
             assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
-            assertThat(healthyResult.getNow().contains("health check failed due to transit timeout on write threshold hit"));
+            assertThat(healthyResult.getNow()).contains("health check failed due to transit timeout on write threshold hit");
         } else {
             Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
             assertThat(healthyResult.isSuccess()).isTrue();
@@ -307,4 +307,109 @@ public class RntbdClientChannelHealthCheckerTests {
             }
         }
     }
+
+    @Test(groups = { "unit" },  dataProvider = "isHealthyWithReasonArgs")
+    public void cancellationPronenessOfChannel_Test(boolean withFailureReason) throws InterruptedException {
+        SslContext sslContextMock = Mockito.mock(SslContext.class);
+
+        RntbdEndpoint.Config config = new RntbdEndpoint.Config(
+            new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
+            sslContextMock,
+            LogLevel.INFO);
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        Channel channelMock = Mockito.mock(Channel.class);
+        ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
+        RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
+        SingleThreadEventLoop eventLoopMock = new DefaultEventLoop();
+        RntbdClientChannelHealthChecker.Timestamps timestampsMock = Mockito.mock(RntbdClientChannelHealthChecker.Timestamps.class);
+
+        Mockito.when(channelMock.pipeline()).thenReturn(channelPipelineMock);
+        Mockito.when(channelPipelineMock.get(RntbdRequestManager.class)).thenReturn(rntbdRequestManagerMock);
+        Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
+        Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
+        ChannelPromise defaultChannelPromise = new DefaultChannelPromise(channelMock);
+        defaultChannelPromise.setSuccess();
+        Mockito.when(channelMock.writeAndFlush(RntbdHealthCheckRequest.MESSAGE)).thenReturn(defaultChannelPromise);
+
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(5 * config.nonRespondingChannelReadDelayTimeLimitInNanos());
+        Instant lastChannelWriteTime = current.plusSeconds(1);
+        Instant lastChannelWriteAttemptTime = lastChannelWriteTime;
+
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteAttemptTime);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(0);
+        Mockito.when(timestampsMock.cancellationCount()).thenReturn(config.cancellationCountSinceLastReadThreshold());
+
+        try(MockedStatic<CpuMemoryMonitor> cpuMemoryMonitorMock = Mockito.mockStatic(CpuMemoryMonitor.class)) {
+            CpuLoadHistory cpuLoadHistoryMock = Mockito.mock(CpuLoadHistory.class);
+            cpuMemoryMonitorMock.when(CpuMemoryMonitor::getCpuLoad).thenReturn(cpuLoadHistoryMock);
+            Mockito.when(cpuLoadHistoryMock.isCpuOverThreshold(config.timeoutDetectionDisableCPUThreshold())).thenReturn(false);
+
+            if (withFailureReason) {
+                Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isNotEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+                assertThat(healthyResult.getNow()).contains("health check failed due to channel being cancellation prone");
+            } else {
+                Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isFalse();
+            }
+        }
+    }
+
+    @Test(groups = { "unit" },  dataProvider = "isHealthyWithReasonArgs")
+    public void cancellationPronenessOfChannelWithHighCpuLoad_Test(boolean withFailureReason) throws InterruptedException {
+        SslContext sslContextMock = Mockito.mock(SslContext.class);
+
+        RntbdEndpoint.Config config = new RntbdEndpoint.Config(
+            new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
+            sslContextMock,
+            LogLevel.INFO);
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+        Channel channelMock = Mockito.mock(Channel.class);
+        ChannelPipeline channelPipelineMock = Mockito.mock(ChannelPipeline.class);
+        RntbdRequestManager rntbdRequestManagerMock = Mockito.mock(RntbdRequestManager.class);
+        SingleThreadEventLoop eventLoopMock = new DefaultEventLoop();
+        RntbdClientChannelHealthChecker.Timestamps timestampsMock = Mockito.mock(RntbdClientChannelHealthChecker.Timestamps.class);
+
+        Mockito.when(channelMock.pipeline()).thenReturn(channelPipelineMock);
+        Mockito.when(channelPipelineMock.get(RntbdRequestManager.class)).thenReturn(rntbdRequestManagerMock);
+        Mockito.when(channelMock.eventLoop()).thenReturn(eventLoopMock);
+        Mockito.when(rntbdRequestManagerMock.snapshotTimestamps()).thenReturn(timestampsMock);
+        ChannelPromise defaultChannelPromise = new DefaultChannelPromise(channelMock);
+        defaultChannelPromise.setSuccess();
+        Mockito.when(channelMock.writeAndFlush(RntbdHealthCheckRequest.MESSAGE)).thenReturn(defaultChannelPromise);
+
+        Instant current = Instant.now();
+        Instant lastChannelReadTime = current.minusNanos(config.nonRespondingChannelReadDelayTimeLimitInNanos());
+        Instant lastChannelWriteTime = current.plusSeconds(1);
+
+        Mockito.when(timestampsMock.lastChannelReadTime()).thenReturn(lastChannelReadTime);
+        Mockito.when(timestampsMock.lastChannelWriteTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.lastChannelWriteAttemptTime()).thenReturn(lastChannelWriteTime);
+        Mockito.when(timestampsMock.transitTimeoutCount()).thenReturn(0);
+        Mockito.when(timestampsMock.cancellationCount()).thenReturn(config.cancellationCountSinceLastReadThreshold());
+
+        try(MockedStatic<CpuMemoryMonitor> cpuMemoryMonitorMock = Mockito.mockStatic(CpuMemoryMonitor.class)) {
+            CpuLoadHistory cpuLoadHistoryMock = Mockito.mock(CpuLoadHistory.class);
+            cpuMemoryMonitorMock.when(CpuMemoryMonitor::getCpuLoad).thenReturn(cpuLoadHistoryMock);
+            Mockito.when(cpuLoadHistoryMock.isCpuOverThreshold(config.timeoutDetectionDisableCPUThreshold())).thenReturn(true);
+
+            if (withFailureReason) {
+                Future<String> healthyResult = healthChecker.isHealthyWithFailureReason(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isEqualTo(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            } else {
+                Future<Boolean> healthyResult = healthChecker.isHealthy(channelMock).sync();
+                assertThat(healthyResult.isSuccess()).isTrue();
+                assertThat(healthyResult.getNow()).isTrue();
+            }
+        }
+    }
+
 }

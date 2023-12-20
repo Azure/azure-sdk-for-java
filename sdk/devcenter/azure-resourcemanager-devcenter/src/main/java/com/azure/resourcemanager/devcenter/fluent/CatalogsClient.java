@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogInner;
+import com.azure.resourcemanager.devcenter.fluent.models.SyncErrorDetailsInner;
 import com.azure.resourcemanager.devcenter.models.CatalogUpdate;
 
 /** An instance of this class provides access to all the operations defined in CatalogsClient. */
@@ -263,6 +264,36 @@ public interface CatalogsClient {
     void delete(String resourceGroupName, String devCenterName, String catalogName, Context context);
 
     /**
+     * Gets catalog synchronization error details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SyncErrorDetailsInner> getSyncErrorDetailsWithResponse(
+        String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Gets catalog synchronization error details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return catalog synchronization error details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncErrorDetailsInner getSyncErrorDetails(String resourceGroupName, String devCenterName, String catalogName);
+
+    /**
      * Syncs templates for a template source.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -318,4 +349,61 @@ public interface CatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void sync(String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConnect(String resourceGroupName, String devCenterName, String catalogName);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConnect(
+        String resourceGroupName, String devCenterName, String catalogName, Context context);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void connect(String resourceGroupName, String devCenterName, String catalogName);
+
+    /**
+     * Connects a catalog to enable syncing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param devCenterName The name of the devcenter.
+     * @param catalogName The name of the Catalog.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void connect(String resourceGroupName, String devCenterName, String catalogName, Context context);
 }

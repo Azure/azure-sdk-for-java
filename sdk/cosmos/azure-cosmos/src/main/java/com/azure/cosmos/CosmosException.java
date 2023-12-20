@@ -354,7 +354,8 @@ public class CosmosException extends AzureException {
      * requests.
      */
     public Duration getRetryAfterDuration() {
-        long retryIntervalInMilliseconds = 0;
+        // if retry after is not being returned, use -1, so to differentiate with server returned 0
+        long retryIntervalInMilliseconds = -1;
 
         if (this.responseHeaders != null) {
             String header = this.responseHeaders.get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
@@ -432,6 +433,10 @@ public class CosmosException extends AzureException {
 
     @Override
     public String toString() {
+        return toString(true);
+    }
+
+    String toString(boolean includeDiagnostics) {
         try {
             ObjectNode exceptionMessageNode = mapper.createObjectNode();
             exceptionMessageNode.put("ClassName", getClass().getSimpleName());
@@ -457,7 +462,7 @@ public class CosmosException extends AzureException {
                 exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
             }
 
-            if(this.cosmosDiagnostics != null) {
+            if(includeDiagnostics && this.cosmosDiagnostics != null) {
                 cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
             }
 

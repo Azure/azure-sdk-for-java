@@ -3,20 +3,15 @@
 
 package com.azure.analytics.purview.catalog;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
-public class PurviewCatalogClientTestBase extends TestBase {
+public class PurviewCatalogClientTestBase extends TestProxyTestBase {
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -26,19 +21,24 @@ public class PurviewCatalogClientTestBase extends TestBase {
     }
 
     GlossaryClientBuilder builderSetUp() {
-        GlossaryClientBuilder builder =
-            new GlossaryClientBuilder()
+        GlossaryClientBuilder builder = new GlossaryClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder
+                .httpClient(interceptorManager.getPlaybackClient())
+                .credential(new MockTokenCredential());
+        } else {
+            builder
                 .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.httpClient(interceptorManager.getPlaybackClient())
-                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        builder.endpoint(getEndpoint());
+
         return Objects.requireNonNull(builder);
     }
 }

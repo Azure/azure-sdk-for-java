@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiskRestorePointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiskRestorePointsClient.
+ */
 public final class DiskRestorePointsClientImpl implements DiskRestorePointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DiskRestorePointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of DiskRestorePointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DiskRestorePointsClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DiskRestorePointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DiskRestorePointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,84 +71,67 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface DiskRestorePointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskRestorePointInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiskRestorePointInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("restorePointCollectionName") String restorePointCollectionName,
+            @PathParam("vmRestorePointName") String vmRestorePointName,
+            @PathParam("diskRestorePointName") String diskRestorePointName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<DiskRestorePointList>> listByRestorePoint(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("restorePointCollectionName") String restorePointCollectionName,
+            @PathParam("vmRestorePointName") String vmRestorePointName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> grantAccess(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("restorePointCollectionName") String restorePointCollectionName,
             @PathParam("vmRestorePointName") String vmRestorePointName,
             @PathParam("diskRestorePointName") String diskRestorePointName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GrantAccessData grantAccessData, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/endGetAccess")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskRestorePointList>> listByRestorePoint(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("restorePointCollectionName") String restorePointCollectionName,
-            @PathParam("vmRestorePointName") String vmRestorePointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> grantAccess(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> revokeAccess(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("restorePointCollectionName") String restorePointCollectionName,
             @PathParam("vmRestorePointName") String vmRestorePointName,
             @PathParam("diskRestorePointName") String diskRestorePointName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GrantAccessData grantAccessData,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/endGetAccess")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> revokeAccess(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("restorePointCollectionName") String restorePointCollectionName,
-            @PathParam("vmRestorePointName") String vmRestorePointName,
-            @PathParam("diskRestorePointName") String diskRestorePointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskRestorePointList>> listByRestorePointNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get disk restorePoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -153,32 +142,23 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return disk restorePoint resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiskRestorePointInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
+    public Mono<Response<DiskRestorePointInner>> getWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -188,28 +168,18 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            restorePointCollectionName,
-                            vmRestorePointName,
-                            diskRestorePointName,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get disk restorePoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -221,33 +191,23 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return disk restorePoint resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiskRestorePointInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
+    private Mono<Response<DiskRestorePointInner>> getWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -257,25 +217,16 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion, accept, context);
     }
 
     /**
      * Get disk restorePoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -286,19 +237,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return disk restorePoint resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskRestorePointInner> getAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return getWithResponseAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<DiskRestorePointInner> getAsync(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName) {
+        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get disk restorePoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -310,20 +257,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return disk restorePoint resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiskRestorePointInner> getWithResponse(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
-            .block();
+    public Response<DiskRestorePointInner> getWithResponse(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, Context context) {
+        return getWithResponseAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, context).block();
     }
 
     /**
      * Get disk restorePoint resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -334,19 +276,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return disk restorePoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskRestorePointInner get(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return getWithResponse(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, Context.NONE)
-            .getValue();
+    public DiskRestorePointInner get(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName) {
+        return getWithResponse(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName,
+            Context.NONE).getValue();
     }
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -354,67 +292,45 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName) {
+    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByRestorePoint(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            restorePointCollectionName,
-                            vmRestorePointName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DiskRestorePointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByRestorePoint(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, restorePointCollectionName, vmRestorePointName, apiVersion, accept, context))
+            .<PagedResponse<DiskRestorePointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -423,64 +339,44 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName, Context context) {
+    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter vmRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByRestorePoint(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByRestorePoint(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                restorePointCollectionName, vmRestorePointName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -490,8 +386,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DiskRestorePointInner> listByRestorePointAsync(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName) {
+    public PagedFlux<DiskRestorePointInner> listByRestorePointAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName) {
         return new PagedFlux<>(
             () -> listByRestorePointSinglePageAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName),
             nextLink -> listByRestorePointNextSinglePageAsync(nextLink));
@@ -499,7 +395,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -510,18 +406,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiskRestorePointInner> listByRestorePointAsync(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByRestorePointSinglePageAsync(
-                    resourceGroupName, restorePointCollectionName, vmRestorePointName, context),
-            nextLink -> listByRestorePointNextSinglePageAsync(nextLink, context));
+    private PagedFlux<DiskRestorePointInner> listByRestorePointAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, Context context) {
+        return new PagedFlux<>(() -> listByRestorePointSinglePageAsync(resourceGroupName, restorePointCollectionName,
+            vmRestorePointName, context), nextLink -> listByRestorePointNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -531,15 +424,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiskRestorePointInner> listByRestorePoint(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName) {
+    public PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName) {
         return new PagedIterable<>(
             listByRestorePointAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName));
     }
 
     /**
      * Lists diskRestorePoints under a vmRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -550,15 +443,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiskRestorePointInner> listByRestorePoint(
-        String resourceGroupName, String restorePointCollectionName, String vmRestorePointName, Context context) {
+    public PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, Context context) {
         return new PagedIterable<>(
             listByRestorePointAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, context));
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -570,33 +463,24 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
+    public Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -612,29 +496,18 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .grantAccess(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            restorePointCollectionName,
-                            vmRestorePointName,
-                            diskRestorePointName,
-                            apiVersion,
-                            grantAccessData,
-                            accept,
-                            context))
+            .withContext(context -> service.grantAccess(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion,
+                grantAccessData, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -647,34 +520,24 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
+        GrantAccessData grantAccessData, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -690,26 +553,17 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .grantAccess(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                apiVersion,
-                grantAccessData,
-                accept,
-                context);
+        return service.grantAccess(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion, grantAccessData, accept,
+            context);
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -721,32 +575,18 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
+    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AccessUriInner.class,
-                AccessUriInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = grantAccessWithResponseAsync(resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData);
+        return this.client.<AccessUriInner, AccessUriInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessUriInner.class, AccessUriInner.class, this.client.getContext());
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -759,31 +599,19 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData,
-        Context context) {
+    private PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
+        GrantAccessData grantAccessData, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData,
-                context);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = grantAccessWithResponseAsync(resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, grantAccessData, context);
+        return this.client.<AccessUriInner, AccessUriInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessUriInner.class, AccessUriInner.class, context);
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -795,25 +623,16 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
         GrantAccessData grantAccessData) {
-        return this
-            .beginGrantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData)
-            .getSyncPoller();
+        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, grantAccessData).getSyncPoller();
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -826,27 +645,16 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData,
-        Context context) {
-        return this
-            .beginGrantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName,
+        GrantAccessData grantAccessData, Context context) {
+        return this.beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, grantAccessData, context).getSyncPoller();
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -858,25 +666,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessUriInner> grantAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData) {
-        return beginGrantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<AccessUriInner> grantAccessAsync(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, GrantAccessData grantAccessData) {
+        return beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, grantAccessData).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -889,27 +687,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessUriInner> grantAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData,
-        Context context) {
-        return beginGrantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AccessUriInner> grantAccessAsync(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, GrantAccessData grantAccessData, Context context) {
+        return beginGrantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, grantAccessData, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -921,24 +707,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessUriInner grantAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData) {
-        return grantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData)
-            .block();
+    public AccessUriInner grantAccess(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, GrantAccessData grantAccessData) {
+        return grantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName,
+            grantAccessData).block();
     }
 
     /**
      * Grants access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -951,26 +728,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessUriInner grantAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        GrantAccessData grantAccessData,
-        Context context) {
-        return grantAccessAsync(
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                grantAccessData,
-                context)
-            .block();
+    public AccessUriInner grantAccess(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, GrantAccessData grantAccessData, Context context) {
+        return grantAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName,
+            grantAccessData, context).block();
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -981,32 +747,23 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> revokeAccessWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
+    public Mono<Response<Flux<ByteBuffer>>> revokeAccessWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -1016,28 +773,18 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .revokeAccess(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            restorePointCollectionName,
-                            vmRestorePointName,
-                            diskRestorePointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.revokeAccess(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1049,33 +796,23 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> revokeAccessWithResponseAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> revokeAccessWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (restorePointCollectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorePointCollectionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorePointCollectionName is required and cannot be null."));
         }
         if (vmRestorePointName == null) {
             return Mono
@@ -1085,25 +822,16 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter diskRestorePointName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-02";
+        final String apiVersion = "2023-04-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .revokeAccess(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                restorePointCollectionName,
-                vmRestorePointName,
-                diskRestorePointName,
-                apiVersion,
-                accept,
-                context);
+        return service.revokeAccess(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, apiVersion, accept, context);
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1114,23 +842,17 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            revokeAccessWithResponseAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1142,24 +864,18 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            revokeAccessWithResponseAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName,
+            restorePointCollectionName, vmRestorePointName, diskRestorePointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1170,20 +886,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return this
-            .beginRevokeAccessAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName) {
+        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName).getSyncPoller();
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1195,21 +906,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
-        return this
-            .beginRevokeAccessAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName,
+        String restorePointCollectionName, String vmRestorePointName, String diskRestorePointName, Context context) {
+        return this.beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, context).getSyncPoller();
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1220,20 +925,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revokeAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName) {
-        return beginRevokeAccessAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<Void> revokeAccessAsync(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName) {
+        return beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1245,21 +945,15 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revokeAccessAsync(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
-        return beginRevokeAccessAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> revokeAccessAsync(String resourceGroupName, String restorePointCollectionName,
+        String vmRestorePointName, String diskRestorePointName, Context context) {
+        return beginRevokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName,
+            diskRestorePointName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1269,10 +963,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revokeAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
+    public void revokeAccess(String resourceGroupName, String restorePointCollectionName, String vmRestorePointName,
         String diskRestorePointName) {
         revokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName)
             .block();
@@ -1280,7 +971,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
     /**
      * Revokes access to a diskRestorePoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param restorePointCollectionName The name of the restore point collection that the disk restore point belongs.
      * @param vmRestorePointName The name of the vm restore point that the disk disk restore point belongs.
@@ -1291,27 +982,23 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revokeAccess(
-        String resourceGroupName,
-        String restorePointCollectionName,
-        String vmRestorePointName,
-        String diskRestorePointName,
-        Context context) {
-        revokeAccessAsync(
-                resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName, context)
-            .block();
+    public void revokeAccess(String resourceGroupName, String restorePointCollectionName, String vmRestorePointName,
+        String diskRestorePointName, Context context) {
+        revokeAccessAsync(resourceGroupName, restorePointCollectionName, vmRestorePointName, diskRestorePointName,
+            context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointNextSinglePageAsync(String nextLink) {
@@ -1319,63 +1006,45 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByRestorePointNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DiskRestorePointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DiskRestorePointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByRestorePointNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByRestorePointNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

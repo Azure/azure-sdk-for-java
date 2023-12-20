@@ -9,21 +9,20 @@ import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuTests {
-    @Test
-    public void testDeserialize() {
-        Sku model = BinaryData.fromString("{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"}").toObject(Sku.class);
-        Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Sku model = BinaryData.fromString("{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.PREMIUM_LRS, model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }
 
-    @Test
-    public void testSerialize() {
-        Sku model = new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Sku model = new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());
+        Assertions.assertEquals(SkuName.PREMIUM_LRS, model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }
 }

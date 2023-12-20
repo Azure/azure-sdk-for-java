@@ -66,6 +66,13 @@ public interface CognitiveServicesManagementClient {
     ResourceSkusClient getResourceSkus();
 
     /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    UsagesClient getUsages();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -85,6 +92,13 @@ public interface CognitiveServicesManagementClient {
      * @return the CommitmentTiersClient object.
      */
     CommitmentTiersClient getCommitmentTiers();
+
+    /**
+     * Gets the ModelsClient object to access its operations.
+     *
+     * @return the ModelsClient object.
+     */
+    ModelsClient getModels();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.

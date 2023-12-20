@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConnectionMonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectionMonitorsClient.
+ */
 public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConnectionMonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ConnectionMonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConnectionMonitorsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ConnectionMonitorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ConnectionMonitorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,132 +75,98 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface ConnectionMonitorsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("migrate") String migrate,
-            @BodyParam("application/json") ConnectionMonitorInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("migrate") String migrate, @BodyParam("application/json") ConnectionMonitorInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorResultInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConnectionMonitorResultInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorResultInner>> updateTags(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConnectionMonitorResultInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> query(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> query(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @PathParam("connectionMonitorName") String connectionMonitorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectionMonitorListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConnectionMonitorListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkWatcherName") String networkWatcherName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkWatcherName") String networkWatcherName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -203,21 +175,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the connection monitor along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters, String migrate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,39 +198,26 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            migrate,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                networkWatcherName, connectionMonitorName, apiVersion, this.client.getSubscriptionId(), migrate,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -274,22 +227,16 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the connection monitor along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters, String migrate,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -304,36 +251,24 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                migrate,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+            connectionMonitorName, apiVersion, this.client.getSubscriptionId(), migrate, parameters, accept, context);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -346,27 +281,18 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate);
-        return this
-            .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class,
-                this.client.getContext());
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        ConnectionMonitorInner parameters, String migrate) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName,
+            connectionMonitorName, parameters, migrate);
+        return this.client.<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionMonitorResultInner.class, ConnectionMonitorResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -378,27 +304,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         ConnectionMonitorInner parameters) {
         final String migrate = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate);
-        return this
-            .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName,
+            connectionMonitorName, parameters, migrate);
+        return this.client.<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionMonitorResultInner.class, ConnectionMonitorResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -412,29 +330,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate,
-        Context context) {
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        ConnectionMonitorInner parameters, String migrate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context);
-        return this
-            .client
-            .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorResultInner.class,
-                ConnectionMonitorResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName,
+            connectionMonitorName, parameters, migrate, context);
+        return this.client.<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionMonitorResultInner.class, ConnectionMonitorResultInner.class,
+            context);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -446,9 +354,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         ConnectionMonitorInner parameters) {
         final String migrate = null;
         return this
@@ -458,7 +364,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -472,21 +378,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
-            .getSyncPoller();
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        ConnectionMonitorInner parameters, String migrate, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            migrate, context).getSyncPoller();
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -498,21 +398,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, ConnectionMonitorInner parameters, String migrate) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            migrate).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -523,21 +417,16 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
+    public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, ConnectionMonitorInner parameters) {
         final String migrate = null;
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            migrate).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -550,22 +439,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, ConnectionMonitorInner parameters, String migrate, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            migrate, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -576,11 +458,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner createOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
+    public ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, ConnectionMonitorInner parameters) {
         final String migrate = null;
         return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
             .block();
@@ -588,7 +467,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Create or update a connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -601,21 +480,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner createOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        ConnectionMonitorInner parameters,
-        String migrate,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
-            .block();
+    public ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, ConnectionMonitorInner parameters, String migrate, Context context) {
+        return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate,
+            context).block();
     }
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -625,13 +498,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return a connection monitor by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -646,32 +517,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -682,13 +541,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return a connection monitor by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -703,29 +560,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -735,15 +582,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return a connection monitor by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> getAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<ConnectionMonitorResultInner> getAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return getWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -754,14 +601,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return a connection monitor by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionMonitorResultInner> getWithResponse(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    public Response<ConnectionMonitorResultInner> getWithResponse(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**
      * Gets a connection monitor by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -771,14 +618,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return a connection monitor by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner get(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public ConnectionMonitorResultInner get(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return getWithResponse(resourceGroupName, networkWatcherName, connectionMonitorName, Context.NONE).getValue();
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -788,13 +635,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -809,32 +654,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -845,13 +678,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -866,29 +697,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -898,19 +719,17 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -921,19 +740,18 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -943,14 +761,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return this.beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -961,16 +779,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -981,14 +798,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -999,16 +815,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1023,7 +838,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Deletes the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1033,14 +848,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    public void delete(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
         deleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1048,17 +863,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the connection monitor along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectionMonitorResultInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, TagsObject parameters) {
+    public Mono<Response<ConnectionMonitorResultInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1073,38 +886,25 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1113,21 +913,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about the connection monitor along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectionMonitorResultInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        TagsObject parameters,
-        Context context) {
+    private Mono<Response<ConnectionMonitorResultInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1142,35 +936,24 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+            connectionMonitorName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1181,15 +964,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorResultInner> updateTagsAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, TagsObject parameters) {
+    public Mono<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1201,20 +984,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectionMonitorResultInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String networkWatcherName,
-        String connectionMonitorName,
-        TagsObject parameters,
-        Context context) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
-            .block();
+    public Response<ConnectionMonitorResultInner> updateTagsWithResponse(String resourceGroupName,
+        String networkWatcherName, String connectionMonitorName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            context).block();
     }
 
     /**
      * Update tags of the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1225,16 +1003,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorResultInner updateTags(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, TagsObject parameters) {
-        return updateTagsWithResponse(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, Context.NONE)
-            .getValue();
+    public ConnectionMonitorResultInner updateTags(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, networkWatcherName, connectionMonitorName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1244,13 +1021,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,32 +1040,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1301,13 +1064,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1322,29 +1083,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1354,19 +1105,17 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1377,19 +1126,18 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1399,14 +1147,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1417,16 +1165,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return this
-            .beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
+        return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1437,14 +1184,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .last()
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1455,16 +1201,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .last()
+    private Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
+        return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1479,7 +1224,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Stops the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1489,14 +1234,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stop(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    public void stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
         stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1506,13 +1251,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1527,32 +1270,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1563,13 +1294,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1584,29 +1313,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1616,19 +1335,17 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1639,19 +1356,18 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1661,14 +1377,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return this.beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1679,16 +1395,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return this
-            .beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
+        return this.beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1699,14 +1414,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .last()
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1717,16 +1431,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .last()
+    private Mono<Void> startAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
+        return beginStartAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1741,7 +1454,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Starts the specified connection monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -1751,14 +1464,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    public void start(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+        Context context) {
         startAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1768,13 +1481,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1789,32 +1500,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .query(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            connectionMonitorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.query(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                connectionMonitorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1825,13 +1524,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1846,29 +1543,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .query(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                connectionMonitorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.query(this.client.getEndpoint(), resourceGroupName, networkWatcherName, connectionMonitorName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1878,23 +1565,18 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this
-            .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner>
+        beginQueryAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
+        return this.client.<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionMonitorQueryResultInner.class,
+            ConnectionMonitorQueryResultInner.class, this.client.getContext());
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1906,24 +1588,19 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner>
-        beginQueryAsync(
-            String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        beginQueryAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this
-            .client
-            .<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConnectionMonitorQueryResultInner.class,
-                ConnectionMonitorQueryResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = queryWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
+        return this.client.<ConnectionMonitorQueryResultInner, ConnectionMonitorQueryResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionMonitorQueryResultInner.class,
+            ConnectionMonitorQueryResultInner.class, context);
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1933,14 +1610,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner>
+        beginQuery(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         return this.beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1951,16 +1628,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return this
-            .beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
+    public SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner>
+        beginQuery(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+        return this.beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1970,16 +1646,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectionMonitorQueryResultInner> queryAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
-        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName)
-            .last()
+    public Mono<ConnectionMonitorQueryResultInner> queryAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -1990,16 +1665,15 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectionMonitorQueryResultInner> queryAsync(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
-        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
-            .last()
+    private Mono<ConnectionMonitorQueryResultInner> queryAsync(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
+        return beginQueryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -2009,14 +1683,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorQueryResultInner query(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public ConnectionMonitorQueryResultInner query(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName) {
         return queryAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
     }
 
     /**
      * Query a snapshot of the most recent connection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -2027,14 +1701,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectionMonitorQueryResultInner query(
-        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context) {
+    public ConnectionMonitorQueryResultInner query(String resourceGroupName, String networkWatcherName,
+        String connectionMonitorName, Context context) {
         return queryAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2043,13 +1717,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection monitors along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectionMonitorResultInner>> listSinglePageAsync(
-        String resourceGroupName, String networkWatcherName) {
+    private Mono<PagedResponse<ConnectionMonitorResultInner>> listSinglePageAsync(String resourceGroupName,
+        String networkWatcherName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2060,35 +1732,22 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkWatcherName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ConnectionMonitorResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkWatcherName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ConnectionMonitorResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -2098,13 +1757,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection monitors along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectionMonitorResultInner>> listSinglePageAsync(
-        String resourceGroupName, String networkWatcherName, Context context) {
+    private Mono<PagedResponse<ConnectionMonitorResultInner>> listSinglePageAsync(String resourceGroupName,
+        String networkWatcherName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2115,32 +1772,22 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkWatcherName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), resourceGroupName, networkWatcherName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2155,7 +1802,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -2165,14 +1812,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection monitors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectionMonitorResultInner> listAsync(
-        String resourceGroupName, String networkWatcherName, Context context) {
+    private PagedFlux<ConnectionMonitorResultInner> listAsync(String resourceGroupName, String networkWatcherName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkWatcherName, context));
     }
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2187,7 +1834,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -2197,8 +1844,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return list of connection monitors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectionMonitorResultInner> list(
-        String resourceGroupName, String networkWatcherName, Context context) {
+    public PagedIterable<ConnectionMonitorResultInner> list(String resourceGroupName, String networkWatcherName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkWatcherName, context));
     }
 }

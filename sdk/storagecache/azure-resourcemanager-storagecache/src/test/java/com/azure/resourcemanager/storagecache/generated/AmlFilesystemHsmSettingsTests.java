@@ -14,23 +14,23 @@ public final class AmlFilesystemHsmSettingsTests {
         AmlFilesystemHsmSettings model =
             BinaryData
                 .fromString(
-                    "{\"container\":\"dyhtozfikdowwquu\",\"loggingContainer\":\"xzxcl\",\"importPrefix\":\"thhqzonosggbh\"}")
+                    "{\"container\":\"jgzjaoyfhrtx\",\"loggingContainer\":\"lnerkujysvleju\",\"importPrefix\":\"qawrlyxwj\"}")
                 .toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("dyhtozfikdowwquu", model.container());
-        Assertions.assertEquals("xzxcl", model.loggingContainer());
-        Assertions.assertEquals("thhqzonosggbh", model.importPrefix());
+        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
+        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
+        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmlFilesystemHsmSettings model =
             new AmlFilesystemHsmSettings()
-                .withContainer("dyhtozfikdowwquu")
-                .withLoggingContainer("xzxcl")
-                .withImportPrefix("thhqzonosggbh");
+                .withContainer("jgzjaoyfhrtx")
+                .withLoggingContainer("lnerkujysvleju")
+                .withImportPrefix("qawrlyxwj");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("dyhtozfikdowwquu", model.container());
-        Assertions.assertEquals("xzxcl", model.loggingContainer());
-        Assertions.assertEquals("thhqzonosggbh", model.importPrefix());
+        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
+        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
+        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
     }
 }

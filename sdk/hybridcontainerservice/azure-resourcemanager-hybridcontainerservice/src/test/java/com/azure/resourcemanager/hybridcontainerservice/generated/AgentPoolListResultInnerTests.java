@@ -7,9 +7,14 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner;
-import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolExtendedLocation;
-import com.azure.resourcemanager.hybridcontainerservice.models.Mode;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusOperationStatus;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusOperationStatusError;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolUpdateProfile;
+import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocation;
+import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocationTypes;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
+import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,123 +23,80 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"count\":282783230,\"availabilityZones\":[],\"maxCount\":960001198,\"maxPods\":668336306,\"minCount\":953152084,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"apkteoellwptfdyg\",\"vmSize\":\"qbuaceopzfqr\"},\"extendedLocation\":{\"type\":\"pppcqeqxo\",\"name\":\"dahzxctobg\"},\"location\":\"kdmoi\",\"tags\":{\"kxbpvj\":\"stmgrcfbunrmfqjh\",\"xjyngudivk\":\"mjh\"},\"id\":\"tswb\",\"name\":\"qzvszjf\",\"type\":\"uvjfdxxive\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"count\":928990245,\"availabilityZones\":[],\"maxCount\":1493412527,\"maxPods\":608754752,\"minCount\":1242839577,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Windows\",\"nodeImageVersion\":\"lqbhsf\",\"vmSize\":\"blytk\"},\"extendedLocation\":{\"type\":\"wwwfbkr\",\"name\":\"nsvs\"},\"location\":\"q\",\"tags\":{\"sbfov\":\"xc\"},\"id\":\"srruvwbhsqfsubcg\",\"name\":\"birx\",\"type\":\"pybsrfbjfdtw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"count\":1553831435,\"availabilityZones\":[],\"maxCount\":1616367631,\"maxPods\":1933405011,\"minCount\":1057432086,\"mode\":\"System\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"nvwpmqtaruouj\",\"vmSize\":\"cjhwq\"},\"extendedLocation\":{\"type\":\"bnw\",\"name\":\"wgdrjervnaenqp\"},\"location\":\"hin\",\"tags\":{\"dslgnayqigynduh\":\"gmifthnzd\"},\"id\":\"vhqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"count\":1277939729,\"availabilityZones\":[],\"maxCount\":1148330667,\"maxPods\":532112858,\"minCount\":242994282,\"mode\":\"LB\",\"nodeLabels\":{},\"nodeTaints\":[],\"osType\":\"Linux\",\"nodeImageVersion\":\"cwyhzdxssa\",\"vmSize\":\"zmnvdfznudaod\"},\"extendedLocation\":{\"type\":\"cblylpstdbhhxsr\",\"name\":\"zucerscdntnev\"},\"location\":\"iwjmygtdssls\",\"tags\":{\"abnetshh\":\"weriofzpyqsem\",\"bmwmbesldnkw\":\"zhedplvwiw\",\"gaokonzmnsikv\":\"tppjflcx\"},\"id\":\"kqze\",\"name\":\"qkdltfz\",\"type\":\"mhhv\"}],\"nextLink\":\"ur\"}")
-                .toObject(AgentPoolListResultInner.class);
-        Assertions.assertEquals("kdmoi", model.value().get(0).location());
-        Assertions.assertEquals("stmgrcfbunrmfqjh", model.value().get(0).tags().get("kxbpvj"));
-        Assertions.assertEquals("pppcqeqxo", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("dahzxctobg", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(282783230, model.value().get(0).count());
-        Assertions.assertEquals(960001198, model.value().get(0).maxCount());
-        Assertions.assertEquals(668336306, model.value().get(0).maxPods());
-        Assertions.assertEquals(953152084, model.value().get(0).minCount());
-        Assertions.assertEquals(Mode.LB, model.value().get(0).mode());
+        AgentPoolListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"count\":194894857,\"vmSize\":\"z\",\"provisioningState\":\"Succeeded\",\"status\":{\"errorMessage\":\"h\",\"operationStatus\":{\"error\":{},\"operationId\":\"flnrosfqpteehzz\",\"status\":\"pyqr\"},\"readyReplicas\":[{}]},\"availabilityZones\":[\"pvswjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\"],\"osType\":\"Windows\",\"osSKU\":\"Windows2019\",\"nodeImageVersion\":\"norcjxvsnbyxqab\"},\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"ysh\"},\"location\":\"rzafbljjgpbtoqcj\",\"tags\":{\"ulpkudjkrl\":\"javbqidtqajz\",\"gqexzlocxs\":\"hbzhfepg\"},\"id\":\"paierh\",\"name\":\"bcsglumma\",\"type\":\"tjaodxobnb\"},{\"properties\":{\"count\":515992017,\"vmSize\":\"xo\",\"provisioningState\":\"Deleting\",\"status\":{\"errorMessage\":\"npime\",\"operationStatus\":{\"error\":{},\"operationId\":\"xgcp\",\"status\":\"gmaajrm\"},\"readyReplicas\":[{},{}]},\"availabilityZones\":[\"rlovmclwhijcoej\",\"tbzaqsqsycbkbfk\",\"ukdkexxppofmxa\",\"c\"],\"osType\":\"Windows\",\"osSKU\":\"Windows2019\",\"nodeImageVersion\":\"toc\"},\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"mouexhdzx\"},\"location\":\"bqe\",\"tags\":{\"icbtwnpzao\":\"xqbzvddntwnd\",\"jthjqkwpyei\":\"vuhrhcffcyddgl\",\"q\":\"xmqci\"},\"id\":\"hkh\",\"name\":\"xuigdtopbobj\",\"type\":\"ghmewuam\"}],\"nextLink\":\"hrzayvvtpgvdf\"}")
+            .toObject(AgentPoolListResultInner.class);
+        Assertions.assertEquals("rzafbljjgpbtoqcj", model.value().get(0).location());
+        Assertions.assertEquals("javbqidtqajz", model.value().get(0).tags().get("ulpkudjkrl"));
+        Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ysh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(194894857, model.value().get(0).count());
+        Assertions.assertEquals("z", model.value().get(0).vmSize());
+        Assertions.assertEquals("h", model.value().get(0).status().errorMessage());
+        Assertions.assertEquals("flnrosfqpteehzz", model.value().get(0).status().operationStatus().operationId());
+        Assertions.assertEquals("pyqr", model.value().get(0).status().operationStatus().status());
+        Assertions.assertEquals("pvswjdkirso", model.value().get(0).availabilityZones().get(0));
         Assertions.assertEquals(OsType.WINDOWS, model.value().get(0).osType());
-        Assertions.assertEquals("apkteoellwptfdyg", model.value().get(0).nodeImageVersion());
-        Assertions.assertEquals("qbuaceopzfqr", model.value().get(0).vmSize());
-        Assertions.assertEquals("ur", model.nextLink());
+        Assertions.assertEquals(Ossku.WINDOWS2019, model.value().get(0).osSku());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.value().get(0).nodeImageVersion());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolListResultInner model =
-            new AgentPoolListResultInner()
+        AgentPoolListResultInner model
+            = new AgentPoolListResultInner()
                 .withValue(
                     Arrays
                         .asList(
-                            new AgentPoolInner()
-                                .withLocation("kdmoi")
-                                .withTags(mapOf("kxbpvj", "stmgrcfbunrmfqjh", "xjyngudivk", "mjh"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("pppcqeqxo").withName("dahzxctobg"))
-                                .withCount(282783230)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(960001198)
-                                .withMaxPods(668336306)
-                                .withMinCount(953152084)
-                                .withMode(Mode.LB)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("apkteoellwptfdyg")
-                                .withVmSize("qbuaceopzfqr"),
-                            new AgentPoolInner()
-                                .withLocation("q")
-                                .withTags(mapOf("sbfov", "xc"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("wwwfbkr").withName("nsvs"))
-                                .withCount(928990245)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1493412527)
-                                .withMaxPods(608754752)
-                                .withMinCount(1242839577)
-                                .withMode(Mode.SYSTEM)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.WINDOWS)
-                                .withNodeImageVersion("lqbhsf")
-                                .withVmSize("blytk"),
-                            new AgentPoolInner()
-                                .withLocation("hin")
-                                .withTags(mapOf("dslgnayqigynduh", "gmifthnzd"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation().withType("bnw").withName("wgdrjervnaenqp"))
-                                .withCount(1553831435)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1616367631)
-                                .withMaxPods(1933405011)
-                                .withMinCount(1057432086)
-                                .withMode(Mode.SYSTEM)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.LINUX)
-                                .withNodeImageVersion("nvwpmqtaruouj")
-                                .withVmSize("cjhwq"),
-                            new AgentPoolInner()
-                                .withLocation("iwjmygtdssls")
+                            new AgentPoolInner().withLocation("rzafbljjgpbtoqcj")
+                                .withTags(mapOf("ulpkudjkrl", "javbqidtqajz", "gqexzlocxs", "hbzhfepg"))
+                                .withExtendedLocation(new ExtendedLocation()
+                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ysh"))
+                                .withCount(194894857).withVmSize("z")
+                                .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("h")
+                                    .withOperationStatus(new AgentPoolProvisioningStatusOperationStatus()
+                                        .withError(new AgentPoolProvisioningStatusOperationStatusError())
+                                        .withOperationId("flnrosfqpteehzz").withStatus("pyqr"))
+                                    .withReadyReplicas(Arrays.asList(new AgentPoolUpdateProfile())))
+                                .withAvailabilityZones(
+                                    Arrays.asList("pvswjdkirso", "dqxhcrmnohjtckwh", "soifiyipjxsqw"))
+                                .withOsType(OsType.WINDOWS).withOsSku(Ossku.WINDOWS2019)
+                                .withNodeImageVersion("norcjxvsnbyxqab"),
+                            new AgentPoolInner().withLocation("bqe")
                                 .withTags(
-                                    mapOf(
-                                        "abnetshh",
-                                        "weriofzpyqsem",
-                                        "bmwmbesldnkw",
-                                        "zhedplvwiw",
-                                        "gaokonzmnsikv",
-                                        "tppjflcx"))
-                                .withExtendedLocation(
-                                    new AgentPoolExtendedLocation()
-                                        .withType("cblylpstdbhhxsr")
-                                        .withName("zucerscdntnev"))
-                                .withCount(1277939729)
-                                .withAvailabilityZones(Arrays.asList())
-                                .withMaxCount(1148330667)
-                                .withMaxPods(532112858)
-                                .withMinCount(242994282)
-                                .withMode(Mode.LB)
-                                .withNodeLabels(mapOf())
-                                .withNodeTaints(Arrays.asList())
-                                .withOsType(OsType.LINUX)
-                                .withNodeImageVersion("cwyhzdxssa")
-                                .withVmSize("zmnvdfznudaod")))
-                .withNextLink("ur");
+                                    mapOf("icbtwnpzao", "xqbzvddntwnd", "jthjqkwpyei", "vuhrhcffcyddgl", "q", "xmqci"))
+                                .withExtendedLocation(new ExtendedLocation()
+                                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("mouexhdzx"))
+                                .withCount(515992017).withVmSize("xo")
+                                .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("npime")
+                                    .withOperationStatus(new AgentPoolProvisioningStatusOperationStatus()
+                                        .withError(new AgentPoolProvisioningStatusOperationStatusError())
+                                        .withOperationId("xgcp").withStatus("gmaajrm"))
+                                    .withReadyReplicas(
+                                        Arrays.asList(new AgentPoolUpdateProfile(), new AgentPoolUpdateProfile())))
+                                .withAvailabilityZones(
+                                    Arrays.asList("rlovmclwhijcoej", "tbzaqsqsycbkbfk", "ukdkexxppofmxa", "c"))
+                                .withOsType(OsType.WINDOWS).withOsSku(Ossku.WINDOWS2019).withNodeImageVersion("toc")))
+                .withNextLink("hrzayvvtpgvdf");
         model = BinaryData.fromObject(model).toObject(AgentPoolListResultInner.class);
-        Assertions.assertEquals("kdmoi", model.value().get(0).location());
-        Assertions.assertEquals("stmgrcfbunrmfqjh", model.value().get(0).tags().get("kxbpvj"));
-        Assertions.assertEquals("pppcqeqxo", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("dahzxctobg", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals(282783230, model.value().get(0).count());
-        Assertions.assertEquals(960001198, model.value().get(0).maxCount());
-        Assertions.assertEquals(668336306, model.value().get(0).maxPods());
-        Assertions.assertEquals(953152084, model.value().get(0).minCount());
-        Assertions.assertEquals(Mode.LB, model.value().get(0).mode());
+        Assertions.assertEquals("rzafbljjgpbtoqcj", model.value().get(0).location());
+        Assertions.assertEquals("javbqidtqajz", model.value().get(0).tags().get("ulpkudjkrl"));
+        Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ysh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals(194894857, model.value().get(0).count());
+        Assertions.assertEquals("z", model.value().get(0).vmSize());
+        Assertions.assertEquals("h", model.value().get(0).status().errorMessage());
+        Assertions.assertEquals("flnrosfqpteehzz", model.value().get(0).status().operationStatus().operationId());
+        Assertions.assertEquals("pyqr", model.value().get(0).status().operationStatus().status());
+        Assertions.assertEquals("pvswjdkirso", model.value().get(0).availabilityZones().get(0));
         Assertions.assertEquals(OsType.WINDOWS, model.value().get(0).osType());
-        Assertions.assertEquals("apkteoellwptfdyg", model.value().get(0).nodeImageVersion());
-        Assertions.assertEquals("qbuaceopzfqr", model.value().get(0).vmSize());
-        Assertions.assertEquals("ur", model.nextLink());
+        Assertions.assertEquals(Ossku.WINDOWS2019, model.value().get(0).osSku());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.value().get(0).nodeImageVersion());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

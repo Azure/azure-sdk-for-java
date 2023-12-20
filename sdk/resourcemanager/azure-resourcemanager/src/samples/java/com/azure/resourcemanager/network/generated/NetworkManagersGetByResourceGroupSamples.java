@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkManagers GetByResourceGroup. */
+/**
+ * Samples for NetworkManagers GetByResourceGroup.
+ */
 public final class NetworkManagersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkManagerGet.json
      */
     /**
      * Sample code: NetworkManagersGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManagersGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkManagers()
-            .getByResourceGroupWithResponse("rg1", "testNetworkManager", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkManagers().getByResourceGroupWithResponse("rg1",
+            "testNetworkManager", com.azure.core.util.Context.NONE);
     }
 }

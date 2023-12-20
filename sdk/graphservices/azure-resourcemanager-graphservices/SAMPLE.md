@@ -1,32 +1,27 @@
 # Code snippets and samples
 
 
-## AccountOperation
-
-- [CreateAndUpdate](#accountoperation_createandupdate)
-- [Delete](#accountoperation_delete)
-- [GetByResourceGroup](#accountoperation_getbyresourcegroup)
-- [Update](#accountoperation_update)
-
 ## Accounts
 
+- [CreateAndUpdate](#accounts_createandupdate)
+- [Delete](#accounts_delete)
+- [GetByResourceGroup](#accounts_getbyresourcegroup)
 - [List](#accounts_list)
 - [ListByResourceGroup](#accounts_listbyresourcegroup)
+- [Update](#accounts_update)
 
-## Operation
+## Operations
 
-- [List](#operation_list)
-### AccountOperation_CreateAndUpdate
+- [List](#operations_list)
+### Accounts_CreateAndUpdate
 
 ```java
 import com.azure.resourcemanager.graphservices.models.AccountResourceProperties;
-import java.util.HashMap;
-import java.util.Map;
 
-/** Samples for AccountOperation CreateAndUpdate. */
-public final class AccountOperationCreateAndUpdateSamples {
+/** Samples for Accounts CreateAndUpdate. */
+public final class AccountsCreateAndUpdateSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Create.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Create.json
      */
     /**
      * Sample code: Create Account resource.
@@ -35,35 +30,23 @@ public final class AccountOperationCreateAndUpdateSamples {
      */
     public static void createAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         manager
-            .accountOperations()
+            .accounts()
             .define("11111111-aaaa-1111-bbbb-1111111111111")
             .withRegion((String) null)
             .withExistingResourceGroup("testResourceGroupGRAM")
             .withProperties(new AccountResourceProperties().withAppId("11111111-aaaa-1111-bbbb-111111111111"))
-            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .create();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
 ```
 
-### AccountOperation_Delete
+### Accounts_Delete
 
 ```java
-/** Samples for AccountOperation Delete. */
-public final class AccountOperationDeleteSamples {
+/** Samples for Accounts Delete. */
+public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Delete.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Delete.json
      */
     /**
      * Sample code: Delete account resource.
@@ -72,20 +55,20 @@ public final class AccountOperationDeleteSamples {
      */
     public static void deleteAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         manager
-            .accountOperations()
+            .accounts()
             .deleteByResourceGroupWithResponse(
                 "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### AccountOperation_GetByResourceGroup
+### Accounts_GetByResourceGroup
 
 ```java
-/** Samples for AccountOperation GetByResourceGroup. */
-public final class AccountOperationGetByResourceGroupSamples {
+/** Samples for Accounts GetByResourceGroup. */
+public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Get.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Get.json
      */
     /**
      * Sample code: Get accounts.
@@ -94,49 +77,9 @@ public final class AccountOperationGetByResourceGroupSamples {
      */
     public static void getAccounts(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
         manager
-            .accountOperations()
+            .accounts()
             .getByResourceGroupWithResponse(
                 "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AccountOperation_Update
-
-```java
-import com.azure.resourcemanager.graphservices.models.AccountResource;
-import java.util.HashMap;
-import java.util.Map;
-
-/** Samples for AccountOperation Update. */
-public final class AccountOperationUpdateSamples {
-    /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_Update.json
-     */
-    /**
-     * Sample code: Update account resource.
-     *
-     * @param manager Entry point to GraphServicesManager.
-     */
-    public static void updateAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
-        AccountResource resource =
-            manager
-                .accountOperations()
-                .getByResourceGroupWithResponse(
-                    "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
 ```
@@ -147,7 +90,7 @@ public final class AccountOperationUpdateSamples {
 /** Samples for Accounts List. */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_List_Sub.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_List_Sub.json
      */
     /**
      * Sample code: Get list of accounts by subscription.
@@ -167,7 +110,7 @@ public final class AccountsListSamples {
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Accounts_List.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_List.json
      */
     /**
      * Sample code: Create or update account resource.
@@ -181,13 +124,53 @@ public final class AccountsListByResourceGroupSamples {
 }
 ```
 
-### Operation_List
+### Accounts_Update
 
 ```java
-/** Samples for Operation List. */
-public final class OperationListSamples {
+import com.azure.resourcemanager.graphservices.models.AccountResource;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Samples for Accounts Update. */
+public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/preview/2022-09-22-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Accounts_Update.json
+     */
+    /**
+     * Sample code: Update account resource.
+     *
+     * @param manager Entry point to GraphServicesManager.
+     */
+    public static void updateAccountResource(com.azure.resourcemanager.graphservices.GraphServicesManager manager) {
+        AccountResource resource =
+            manager
+                .accounts()
+                .getByResourceGroupWithResponse(
+                    "testResourceGroupGRAM", "11111111-aaaa-1111-bbbb-111111111111", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Operations_List
+
+```java
+/** Samples for Operations List. */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/graphservicesprod/resource-manager/Microsoft.GraphServices/stable/2023-04-13/examples/Operations_List.json
      */
     /**
      * Sample code: Get list of operations.

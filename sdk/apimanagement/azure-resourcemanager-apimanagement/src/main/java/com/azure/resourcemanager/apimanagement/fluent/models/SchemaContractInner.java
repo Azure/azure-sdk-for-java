@@ -17,6 +17,10 @@ public final class SchemaContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SchemaContractProperties innerProperties;
 
+    /** Creates an instance of SchemaContractInner class. */
+    public SchemaContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the API Schema.
      *

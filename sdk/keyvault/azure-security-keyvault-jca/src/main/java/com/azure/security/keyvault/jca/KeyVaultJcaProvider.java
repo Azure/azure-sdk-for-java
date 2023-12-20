@@ -3,11 +3,13 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
-import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha384Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSsaPssSignature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivilegedAction;
@@ -97,10 +99,12 @@ public final class KeyVaultJcaProvider extends Provider {
                 )
             );
             Stream.of(
-                KeyVaultKeyLessRsaSignature.class,
-                KeyVaultKeyLessEcSha256Signature.class,
-                KeyVaultKeyLessEcSha384Signature.class,
-                KeyVaultKeyLessEcSha512Signature.class)
+                KeyVaultKeylessRsaSsaPssSignature.class,
+                KeyVaultKeylessRsa256Signature.class,
+                KeyVaultKeylessRsa512Signature.class,
+                KeyVaultKeylessEcSha256Signature.class,
+                KeyVaultKeylessEcSha384Signature.class,
+                KeyVaultKeylessEcSha512Signature.class)
                 .forEach(c -> putService(
                     new Service(
                         this,
@@ -116,7 +120,7 @@ public final class KeyVaultJcaProvider extends Provider {
     }
 
 
-    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
+    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeylessSignature> c) {
         try {
             return c.getDeclaredConstructor().newInstance().getAlgorithmName();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

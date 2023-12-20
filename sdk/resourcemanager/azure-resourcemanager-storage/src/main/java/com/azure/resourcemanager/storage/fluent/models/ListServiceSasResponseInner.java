@@ -16,6 +16,10 @@ public final class ListServiceSasResponseInner {
     @JsonProperty(value = "serviceSasToken", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceSasToken;
 
+    /** Creates an instance of ListServiceSasResponseInner class. */
+    public ListServiceSasResponseInner() {
+    }
+
     /**
      * Get the serviceSasToken property: List service SAS credentials of specific resource.
      *

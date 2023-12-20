@@ -31,7 +31,7 @@ public final class SignalRsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"vc\",\"message\":\"y\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"moy\",\"message\":\"lwigdivbkbx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class SignalRsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .signalRs()
                 .checkNameAvailabilityWithResponse(
-                    "lla",
-                    new NameAvailabilityParameters().withType("melwuipiccjz").withName("z"),
+                    "qlkzme",
+                    new NameAvailabilityParameters().withType("nitgvkxlz").withName("qdrfegcealzxwhc"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("vc", response.reason());
-        Assertions.assertEquals("y", response.message());
+        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals("moy", response.reason());
+        Assertions.assertEquals("lwigdivbkbx", response.message());
     }
 }

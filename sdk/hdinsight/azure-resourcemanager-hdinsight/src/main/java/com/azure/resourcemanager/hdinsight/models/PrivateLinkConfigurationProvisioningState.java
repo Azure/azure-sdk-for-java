@@ -27,6 +27,15 @@ public final class PrivateLinkConfigurationProvisioningState
     public static final PrivateLinkConfigurationProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of PrivateLinkConfigurationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkConfigurationProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkConfigurationProvisioningState from its string representation.
      *
      * @param name a name to look for.

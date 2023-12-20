@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Customer-initiated diagnostic log collection storage properties. */
+/**
+ * Customer-initiated diagnostic log collection storage properties.
+ */
 @Fluent
 public final class DiagnosticStorageProperties {
     /*
@@ -30,8 +32,14 @@ public final class DiagnosticStorageProperties {
     private String resourceId;
 
     /**
+     * Creates an instance of DiagnosticStorageProperties class.
+     */
+    public DiagnosticStorageProperties() {
+    }
+
+    /**
      * Get the authenticationType property: Authentication Type.
-     *
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -40,7 +48,7 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Set the authenticationType property: Authentication Type.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DiagnosticStorageProperties object itself.
      */
@@ -51,7 +59,7 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Get the connectionString property: ConnectionString of the diagnostic storage account.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -60,7 +68,7 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Set the connectionString property: ConnectionString of the diagnostic storage account.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the DiagnosticStorageProperties object itself.
      */
@@ -71,7 +79,7 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Get the resourceId property: ResourceId of the diagnostic storage account.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -80,7 +88,7 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Set the resourceId property: ResourceId of the diagnostic storage account.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DiagnosticStorageProperties object itself.
      */
@@ -91,21 +99,17 @@ public final class DiagnosticStorageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model DiagnosticStorageProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authenticationType in model DiagnosticStorageProperties"));
         }
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model DiagnosticStorageProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceId in model DiagnosticStorageProperties"));
         }
     }
 

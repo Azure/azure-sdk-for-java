@@ -17,7 +17,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * credentials. The identity provider then issues a security token that contains information about the user and their
  * permissions. This security token is then passed to Azure, which uses it to authenticate the user or application and
  * grant them access to the requested resource.
- * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for an AAD application
+ * The OnBehalfOfCredential acquires a token with a client secret/certificate and user assertion for a Microsoft Entra application
  * on behalf of a user principal.</p>
  *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.OnBehalfOfCredential},
@@ -32,6 +32,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;
  *     .clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
  *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
+ *     .tenantId&#40;&quot;&lt;app-tenant-ID&gt;&quot;&#41;
  *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
  * </pre>
@@ -49,7 +50,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
 
     /**
      * Sets the client secret for the authentication.
-     * @param clientSecret the secret value of the AAD application.
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.
      */
     public OnBehalfOfCredentialBuilder clientSecret(String clientSecret) {
@@ -72,7 +73,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
-     * Sets the path of the PEM certificate for authenticating to AAD.
+     * Sets the path of the PEM certificate for authenticating to Microsoft Entra ID.
      *
      * @param pemCertificatePath the PEM file containing the certificate
      * @return An updated instance of this builder.
@@ -83,7 +84,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
-     * Sets the path and password of the PFX certificate for authenticating to AAD.
+     * Sets the path and password of the PFX certificate for authenticating to Microsoft Entra ID.
      *
      * @param pfxCertificatePath the password protected PFX file containing the certificate
      * @return An updated instance of this builder.
@@ -94,7 +95,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
-     * Sets the password of the client certificate for authenticating to AAD.
+     * Sets the password of the client certificate for authenticating to Microsoft Entra ID.
      *
      * @param clientCertificatePassword the password protecting the certificate
      * @return An updated instance of this builder.

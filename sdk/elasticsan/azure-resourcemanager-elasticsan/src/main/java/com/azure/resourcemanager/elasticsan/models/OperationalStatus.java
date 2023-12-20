@@ -35,6 +35,15 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
     public static final OperationalStatus STOPPED_DEALLOCATED = fromString("Stopped (deallocated)");
 
     /**
+     * Creates a new instance of OperationalStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationalStatus() {
+    }
+
+    /**
      * Creates or finds a OperationalStatus from its string representation.
      *
      * @param name a name to look for.

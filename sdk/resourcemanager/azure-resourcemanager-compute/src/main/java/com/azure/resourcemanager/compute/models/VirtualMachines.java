@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -337,4 +339,56 @@ public interface VirtualMachines
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion);
+
+    /**
+     * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.
+     *
+     * <p>Note: This method is for {@link OrchestrationMode#FLEXIBLE} virtual machine scale set.
+     * For {@link OrchestrationMode#UNIFORM} scale sets, use {@link VirtualMachineScaleSet#virtualMachines()}.
+     * </p>
+     *
+     * @param vmssId resource ID of the virtual machine scale set
+     * @return A {@link PagedIterable} of virtual machines
+     * @see VirtualMachineScaleSet#virtualMachines()
+     */
+    PagedIterable<VirtualMachine> listByVirtualMachineScaleSetId(String vmssId);
+
+    /**
+     * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.
+     *
+     * <p>Note: This method is for {@link OrchestrationMode#FLEXIBLE} virtual machine scale set.
+     * For {@link OrchestrationMode#UNIFORM} scale sets, use {@link VirtualMachineScaleSet#virtualMachines()}.
+     * </p>
+     *
+     * @param vmssId resource ID of the virtual machine scale set
+     * @return A {@link PagedFlux} of virtual machines
+     * @see VirtualMachineScaleSet#virtualMachines()
+     */
+    PagedFlux<VirtualMachine> listByVirtualMachineScaleSetIdAsync(String vmssId);
+
+    /**
+     * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.
+     *
+     * <p>Note: This method is for {@link OrchestrationMode#FLEXIBLE} virtual machine scale set.
+     * For {@link OrchestrationMode#UNIFORM} scale sets, use {@link VirtualMachineScaleSet#virtualMachines()}.
+     * </p>
+     *
+     * @param vmss virtual machine scale set
+     * @return A {@link PagedIterable} of virtual machines
+     * @see VirtualMachineScaleSet#virtualMachines()
+     */
+    PagedIterable<VirtualMachine> listByVirtualMachineScaleSet(VirtualMachineScaleSet vmss);
+
+    /**
+     * Lists all the virtual machines by a certain virtual machine scale set with orchestration mode {@link OrchestrationMode#FLEXIBLE}.
+     *
+     * <p>Note: This method is for {@link OrchestrationMode#FLEXIBLE} virtual machine scale set.
+     * For {@link OrchestrationMode#UNIFORM} scale sets, use {@link VirtualMachineScaleSet#virtualMachines()}.
+     * </p>
+     *
+     * @param vmss virtual machine scale set
+     * @return A {@link PagedFlux} of virtual machines
+     * @see VirtualMachineScaleSet#virtualMachines()
+     */
+    PagedFlux<VirtualMachine> listByVirtualMachineScaleSetAsync(VirtualMachineScaleSet vmss);
 }

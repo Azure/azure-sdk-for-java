@@ -41,6 +41,15 @@ public final class UrlFileExtensionOperator extends ExpandableStringEnum<UrlFile
     public static final UrlFileExtensionOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of UrlFileExtensionOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UrlFileExtensionOperator() {
+    }
+
+    /**
      * Creates or finds a UrlFileExtensionOperator from its string representation.
      *
      * @param name a name to look for.

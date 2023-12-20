@@ -29,7 +29,11 @@ public final class NamedValuesGetResponse extends ResponseBase<NamedValuesGetHea
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public NamedValueContractInner getValue() {
         return super.getValue();

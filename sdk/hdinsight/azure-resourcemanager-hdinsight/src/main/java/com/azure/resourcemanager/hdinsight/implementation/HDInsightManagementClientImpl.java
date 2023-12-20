@@ -122,18 +122,6 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         return this.defaultPollInterval;
     }
 
-    /** The ClustersClient object to access its operations. */
-    private final ClustersClient clusters;
-
-    /**
-     * Gets the ClustersClient object to access its operations.
-     *
-     * @return the ClustersClient object.
-     */
-    public ClustersClient getClusters() {
-        return this.clusters;
-    }
-
     /** The ApplicationsClient object to access its operations. */
     private final ApplicationsClient applications;
 
@@ -146,16 +134,16 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         return this.applications;
     }
 
-    /** The LocationsClient object to access its operations. */
-    private final LocationsClient locations;
+    /** The ClustersClient object to access its operations. */
+    private final ClustersClient clusters;
 
     /**
-     * Gets the LocationsClient object to access its operations.
+     * Gets the ClustersClient object to access its operations.
      *
-     * @return the LocationsClient object.
+     * @return the ClustersClient object.
      */
-    public LocationsClient getLocations() {
-        return this.locations;
+    public ClustersClient getClusters() {
+        return this.clusters;
     }
 
     /** The ConfigurationsClient object to access its operations. */
@@ -182,28 +170,16 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         return this.extensions;
     }
 
-    /** The ScriptActionsClient object to access its operations. */
-    private final ScriptActionsClient scriptActions;
+    /** The LocationsClient object to access its operations. */
+    private final LocationsClient locations;
 
     /**
-     * Gets the ScriptActionsClient object to access its operations.
+     * Gets the LocationsClient object to access its operations.
      *
-     * @return the ScriptActionsClient object.
+     * @return the LocationsClient object.
      */
-    public ScriptActionsClient getScriptActions() {
-        return this.scriptActions;
-    }
-
-    /** The ScriptExecutionHistoriesClient object to access its operations. */
-    private final ScriptExecutionHistoriesClient scriptExecutionHistories;
-
-    /**
-     * Gets the ScriptExecutionHistoriesClient object to access its operations.
-     *
-     * @return the ScriptExecutionHistoriesClient object.
-     */
-    public ScriptExecutionHistoriesClient getScriptExecutionHistories() {
-        return this.scriptExecutionHistories;
+    public LocationsClient getLocations() {
+        return this.locations;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -216,18 +192,6 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
      */
     public OperationsClient getOperations() {
         return this.operations;
-    }
-
-    /** The VirtualMachinesClient object to access its operations. */
-    private final VirtualMachinesClient virtualMachines;
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -254,6 +218,42 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         return this.privateLinkResources;
     }
 
+    /** The ScriptActionsClient object to access its operations. */
+    private final ScriptActionsClient scriptActions;
+
+    /**
+     * Gets the ScriptActionsClient object to access its operations.
+     *
+     * @return the ScriptActionsClient object.
+     */
+    public ScriptActionsClient getScriptActions() {
+        return this.scriptActions;
+    }
+
+    /** The ScriptExecutionHistoriesClient object to access its operations. */
+    private final ScriptExecutionHistoriesClient scriptExecutionHistories;
+
+    /**
+     * Gets the ScriptExecutionHistoriesClient object to access its operations.
+     *
+     * @return the ScriptExecutionHistoriesClient object.
+     */
+    public ScriptExecutionHistoriesClient getScriptExecutionHistories() {
+        return this.scriptExecutionHistories;
+    }
+
+    /** The VirtualMachinesClient object to access its operations. */
+    private final VirtualMachinesClient virtualMachines;
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    public VirtualMachinesClient getVirtualMachines() {
+        return this.virtualMachines;
+    }
+
     /**
      * Initializes an instance of HDInsightManagementClient client.
      *
@@ -277,18 +277,18 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-01";
-        this.clusters = new ClustersClientImpl(this);
+        this.apiVersion = "2023-04-15-preview";
         this.applications = new ApplicationsClientImpl(this);
-        this.locations = new LocationsClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
         this.extensions = new ExtensionsClientImpl(this);
-        this.scriptActions = new ScriptActionsClientImpl(this);
-        this.scriptExecutionHistories = new ScriptExecutionHistoriesClientImpl(this);
+        this.locations = new LocationsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.scriptActions = new ScriptActionsClientImpl(this);
+        this.scriptExecutionHistories = new ScriptExecutionHistoriesClientImpl(this);
+        this.virtualMachines = new VirtualMachinesClientImpl(this);
     }
 
     /**

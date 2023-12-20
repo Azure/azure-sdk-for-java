@@ -126,7 +126,7 @@ public abstract class TestTemplate<
 
         // Verify getting
         this.resource = verifyGetting();
-        Assertions.assertTrue(this.resource != null);
+        Assertions.assertNotNull(this.resource);
         System.out.println("\n------------\nRetrieved resource:\n");
         print(this.resource);
 
@@ -135,62 +135,7 @@ public abstract class TestTemplate<
         // Verify update
         try {
             this.resource = updateResource(this.resource);
-            Assertions.assertTrue(this.resource != null);
-            System.out.println("\n------------\nUpdated resource:\n");
-            message = "Print failed";
-            print(this.resource);
-        } catch (Exception e) {
-            e.printStackTrace();
-            failedUpdate = true;
-        }
-
-        // Verify deletion
-        boolean failedDelete = false;
-        try {
-            message = "Delete failed";
-            verifyDeleting();
-        } catch (Exception e) {
-            e.printStackTrace();
-            failedDelete = true;
-        }
-        Assertions.assertFalse(failedUpdate, message);
-        Assertions.assertFalse(failedDelete, message);
-    }
-
-    /**
-     * Runs the test.
-     *
-     * @param collection collection of resources to test
-     * @param resourceGroups the resource groups collection
-     * @throws Exception if anything goes wrong
-     */
-    public void runTest(CollectionT collection, ResourceGroups resourceGroups, String subscription) throws Exception {
-        this.collection = collection;
-        this.resourceGroups = resourceGroups;
-
-        // Initial listing
-        verifyListing();
-
-        // Verify creation
-        this.resource = createResource(collection);
-        System.out.println("\n------------\nAfter creation:\n");
-        print(this.resource);
-
-        // Verify listing
-        verifyListing();
-
-        // Verify getting
-        this.resource = verifyGetting();
-        Assertions.assertTrue(this.resource != null);
-        System.out.println("\n------------\nRetrieved resource:\n");
-        print(this.resource);
-
-        boolean failedUpdate = false;
-        String message = "Update Failed";
-        // Verify update
-        try {
-            this.resource = updateResource(this.resource);
-            Assertions.assertTrue(this.resource != null);
+            Assertions.assertNotNull(this.resource);
             System.out.println("\n------------\nUpdated resource:\n");
             message = "Print failed";
             print(this.resource);

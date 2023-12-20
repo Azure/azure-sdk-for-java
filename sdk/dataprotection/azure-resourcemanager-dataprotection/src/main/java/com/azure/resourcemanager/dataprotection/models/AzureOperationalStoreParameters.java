@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Parameters for Operational-Tier DataStore. */
+/**
+ * Parameters for Operational-Tier DataStore.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureOperationalStoreParameters")
 @Fluent
@@ -20,13 +22,15 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
     @JsonProperty(value = "resourceGroupId")
     private String resourceGroupId;
 
-    /** Creates an instance of AzureOperationalStoreParameters class. */
+    /**
+     * Creates an instance of AzureOperationalStoreParameters class.
+     */
     public AzureOperationalStoreParameters() {
     }
 
     /**
      * Get the resourceGroupId property: Gets or sets the Snapshot Resource Group Uri.
-     *
+     * 
      * @return the resourceGroupId value.
      */
     public String resourceGroupId() {
@@ -35,7 +39,7 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
 
     /**
      * Set the resourceGroupId property: Gets or sets the Snapshot Resource Group Uri.
-     *
+     * 
      * @param resourceGroupId the resourceGroupId value to set.
      * @return the AzureOperationalStoreParameters object itself.
      */
@@ -44,7 +48,9 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureOperationalStoreParameters withDataStoreType(DataStoreTypes dataStoreType) {
         super.withDataStoreType(dataStoreType);
@@ -53,7 +59,7 @@ public final class AzureOperationalStoreParameters extends DataStoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

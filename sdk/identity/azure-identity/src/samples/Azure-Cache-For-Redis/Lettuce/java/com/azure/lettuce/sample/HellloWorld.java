@@ -23,8 +23,8 @@ public class HellloWorld {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Fetch an Azure AD token to be used for authentication. The Azure AD token will be used as password.
-        // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+        // Fetch a Microsoft Entra token to be used for authentication. The Microsoft Entra token will be used as password.
+        // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
                 .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();

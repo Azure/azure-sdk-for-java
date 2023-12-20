@@ -9,18 +9,17 @@ import com.azure.resourcemanager.batch.models.DiffDiskPlacement;
 import com.azure.resourcemanager.batch.models.DiffDiskSettings;
 import com.azure.resourcemanager.batch.models.OSDisk;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OSDiskTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OSDisk model =
             BinaryData.fromString("{\"ephemeralOSDiskSettings\":{\"placement\":\"CacheDisk\"}}").toObject(OSDisk.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.ephemeralOSDiskSettings().placement());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OSDisk model =
             new OSDisk()
                 .withEphemeralOSDiskSettings(new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK));

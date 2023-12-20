@@ -118,11 +118,13 @@ public interface SimGroup {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The SimGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the SimGroup definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SimGroup definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -141,6 +143,7 @@ public interface SimGroup {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the SimGroup definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -151,6 +154,7 @@ public interface SimGroup {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the SimGroup definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -175,6 +179,7 @@ public interface SimGroup {
              */
             SimGroup create(Context context);
         }
+
         /** The stage of the SimGroup definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -185,6 +190,7 @@ public interface SimGroup {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SimGroup definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -195,6 +201,7 @@ public interface SimGroup {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the SimGroup definition allowing to specify encryptionKey. */
         interface WithEncryptionKey {
             /**
@@ -205,6 +212,7 @@ public interface SimGroup {
              */
             WithCreate withEncryptionKey(KeyVaultKey encryptionKey);
         }
+
         /** The stage of the SimGroup definition allowing to specify mobileNetwork. */
         interface WithMobileNetwork {
             /**
@@ -218,6 +226,7 @@ public interface SimGroup {
             WithCreate withMobileNetwork(MobileNetworkResourceId mobileNetwork);
         }
     }
+
     /**
      * Begins update for the SimGroup resource.
      *
@@ -226,7 +235,7 @@ public interface SimGroup {
     SimGroup.Update update();
 
     /** The template for SimGroup update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          *
@@ -242,6 +251,7 @@ public interface SimGroup {
          */
         SimGroup apply(Context context);
     }
+
     /** The SimGroup update stages. */
     interface UpdateStages {
         /** The stage of the SimGroup update allowing to specify tags. */
@@ -254,7 +264,19 @@ public interface SimGroup {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the SimGroup update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identity associated with this resource..
+             *
+             * @param identity The managed service identity associated with this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

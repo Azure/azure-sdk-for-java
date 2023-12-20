@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.CustomDomainParameters;
 
 /** Samples for CustomDomains Create. */
 public final class CustomDomainsCreateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/CustomDomains_Create.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/CustomDomains_Create.json
      */
     /**
      * Sample code: CustomDomains_Create.
@@ -29,6 +28,6 @@ public final class CustomDomainsCreateSamples {
                 "endpoint1",
                 "www-someDomain-net",
                 new CustomDomainParameters().withHostname("www.someDomain.net"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

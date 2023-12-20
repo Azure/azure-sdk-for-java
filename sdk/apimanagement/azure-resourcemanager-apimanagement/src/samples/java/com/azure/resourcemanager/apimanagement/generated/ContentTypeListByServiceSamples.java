@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContentType ListByService. */
 public final class ContentTypeListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListContentTypes.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListContentTypes.json
      */
     /**
      * Sample code: ApiManagementListContentTypes.
@@ -18,6 +16,6 @@ public final class ContentTypeListByServiceSamples {
      */
     public static void apiManagementListContentTypes(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.contentTypes().listByService("rg1", "apimService1", Context.NONE);
+        manager.contentTypes().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

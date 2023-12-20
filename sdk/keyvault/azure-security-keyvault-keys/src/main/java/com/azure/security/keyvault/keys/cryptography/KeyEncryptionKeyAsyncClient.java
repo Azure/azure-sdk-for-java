@@ -23,7 +23,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
 
     /**
-     * Creates a {@link KeyEncryptionKeyAsyncClient} that uses {@code pipeline} to service requests
+     * Creates a {@link KeyEncryptionKeyAsyncClient} that uses {@code pipeline} to service requests.
      *
      * @param keyId The identifier of the key to use for cryptography operations.
      * @param pipeline The {@link HttpPipeline} that the HTTP requests and responses flow through.
@@ -34,7 +34,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     }
 
     /**
-     * Creates a KeyEncryptionKeyAsyncClient that uses {@code pipeline} to service requests
+     * Creates a {@link KeyEncryptionKeyAsyncClient} that uses {@code pipeline} to service requests.
      *
      * @param jsonWebKey The {@link JsonWebKey} to use for local cryptography operations.
      */
@@ -49,7 +49,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
      */
     @Override
     public Mono<String> getKeyId() {
-        return super.getKeyId();
+        return Mono.defer(() -> Mono.just(this.keyId));
     }
 
     /**

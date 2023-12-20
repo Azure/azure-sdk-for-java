@@ -40,7 +40,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.traffic.implementation.TrafficClientImpl;
 import com.azure.maps.traffic.implementation.TrafficClientImplBuilder;
 
-/** A builder for creating a new instance of the TrafficClient type. 
+/** A builder for creating a new instance of the TrafficClient type.
  * Builder class used to instantiate both synchronous and asynchronous {@link TrafficClient} clients.
  * <p><b>Example usage</b></p>
  * Creating a sync client using a {@link AzureKeyCredential}:
@@ -64,18 +64,20 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
     TokenCredentialTrait<TrafficClientBuilder>, HttpTrait<TrafficClientBuilder>,
     ConfigurationTrait<TrafficClientBuilder>, EndpointTrait<TrafficClientBuilder> {
 
+    // constants
+    private static final ClientLogger LOGGER = new ClientLogger(TrafficClientBuilder.class);
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+
+    // subscription-key
+    static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
-    // constants
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
-
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(TrafficClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
+
     private String endpoint;
     private TrafficServiceVersion serviceVersion;
     /*
@@ -112,7 +114,7 @@ public final class TrafficClientBuilder implements AzureKeyCredentialTrait<Traff
     public TrafficClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
-    
+
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.

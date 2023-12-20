@@ -9,7 +9,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateVMGroup. */
 public final class WorkloadNetworksCreateVMGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateVMGroup.

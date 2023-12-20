@@ -31,7 +31,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -455,7 +457,7 @@ class NetworkInterfaceImpl
 
     @Override
     protected void initializeChildrenFromInner() {
-        this.nicIPConfigurations = new TreeMap<>();
+        this.nicIPConfigurations = new TreeMap<>(Comparator.comparing(key -> key.toLowerCase(Locale.ROOT)));
         List<NetworkInterfaceIpConfigurationInner> inners = this.innerModel().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIpConfigurationInner inner : inners) {

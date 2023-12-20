@@ -9,11 +9,10 @@ import com.azure.resourcemanager.hdinsight.models.NetworkProperties;
 import com.azure.resourcemanager.hdinsight.models.PrivateLink;
 import com.azure.resourcemanager.hdinsight.models.ResourceProviderConnection;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NetworkProperties model =
             BinaryData
                 .fromString("{\"resourceProviderConnection\":\"Inbound\",\"privateLink\":\"Disabled\"}")
@@ -22,8 +21,8 @@ public final class NetworkPropertiesTests {
         Assertions.assertEquals(PrivateLink.DISABLED, model.privateLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NetworkProperties model =
             new NetworkProperties()
                 .withResourceProviderConnection(ResourceProviderConnection.INBOUND)

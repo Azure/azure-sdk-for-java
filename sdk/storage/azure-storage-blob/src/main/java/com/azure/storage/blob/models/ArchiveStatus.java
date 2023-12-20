@@ -16,6 +16,9 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
     /** Static value rehydrate-pending-to-cool for ArchiveStatus. */
     public static final ArchiveStatus REHYDRATE_PENDING_TO_COOL = fromString("rehydrate-pending-to-cool");
 
+    /** Static value rehydrate-pending-to-cold for ArchiveStatus. */
+    public static final ArchiveStatus REHYDRATE_PENDING_TO_COLD = fromString("rehydrate-pending-to-cold");
+
     /**
      * Creates a new instance of ArchiveStatus value.
      *

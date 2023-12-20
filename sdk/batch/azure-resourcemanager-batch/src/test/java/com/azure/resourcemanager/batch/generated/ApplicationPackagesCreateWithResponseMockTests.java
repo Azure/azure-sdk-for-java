@@ -30,7 +30,7 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"Pending\",\"format\":\"wkqnyhg\",\"storageUrl\":\"j\",\"storageUrlExpiry\":\"2021-03-05T18:22:33Z\",\"lastActivationTime\":\"2021-01-15T08:47:59Z\"},\"etag\":\"zs\",\"id\":\"ab\",\"name\":\"bsystawfsdjpvk\",\"type\":\"p\"}";
+            "{\"properties\":{\"state\":\"Active\",\"format\":\"mtdh\",\"storageUrl\":\"dvypgikdgsz\",\"storageUrlExpiry\":\"2021-09-09T14:02:20Z\",\"lastActivationTime\":\"2021-01-23T14:08:39Z\"},\"etag\":\"ryuzh\",\"id\":\"hkjoqr\",\"name\":\"qqaatjinrvgou\",\"type\":\"mfiibfggj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
         ApplicationPackage response =
             manager
                 .applicationPackages()
-                .define("unyowxwl")
-                .withExistingApplication("nhltiugcxn", "vvwxqi", "y")
+                .define("rypqlmfeo")
+                .withExistingApplication("apfcqdpsq", "qvpsvuoymg", "celve")
                 .create();
     }
 }

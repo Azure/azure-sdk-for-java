@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.test.implementation;
 
-import com.azure.cosmos.test.implementation.faultinjection.IFaultInjectionRuleInternal;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.implementation.faultinjection.IFaultInjectionRuleInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,44 @@ public class ImplementationBridgeHelpers {
 
         public interface FaultInjectionRuleAccessor {
             void setEffectiveFaultInjectionRule(FaultInjectionRule rule, IFaultInjectionRuleInternal ruleInternal);
+        }
+    }
+
+    public static final class FaultInjectionConditionHelper {
+        private static final AtomicBoolean faultInjectionConditionClassLoaded = new AtomicBoolean(false);
+        private static final AtomicReference<FaultInjectionConditionAccessor> accessor = new AtomicReference<>();
+
+        private FaultInjectionConditionHelper() {
+        }
+
+        public static FaultInjectionConditionAccessor getFaultInjectionConditionAccessor() {
+            if (!faultInjectionConditionClassLoaded.get()) {
+                logger.debug("Initializing FaultInjectionConditionAccessor...");
+            }
+
+            FaultInjectionConditionAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("FaultInjectionConditionAccessor is not initialized yet!");
+                System.exit(8701); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setFaultInjectionConditionAccessor(final FaultInjectionConditionAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("FaultInjectionConditionAccessor already initialized!");
+            } else {
+                logger.debug("Setting FaultInjectionConditionAccessor...");
+                faultInjectionConditionClassLoaded.set(true);
+            }
+        }
+
+        public interface FaultInjectionConditionAccessor {
+            boolean isMetadataOperationType(FaultInjectionCondition faultInjectionCondition);
         }
     }
 }

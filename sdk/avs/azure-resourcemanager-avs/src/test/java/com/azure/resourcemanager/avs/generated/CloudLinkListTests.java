@@ -13,7 +13,7 @@ public final class CloudLinkListTests {
         CloudLinkList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"status\":\"Building\",\"linkedCloud\":\"n\"},\"id\":\"a\",\"name\":\"vxwc\",\"type\":\"elpcirelsfeaenwa\"}],\"nextLink\":\"atklddxbjhwuaa\"}")
+                    "{\"value\":[{\"properties\":{\"status\":\"Deleting\",\"linkedCloud\":\"ccsnjvcdwxlpq\"},\"id\":\"kftnkhtjsyin\",\"name\":\"wfqatmtd\",\"type\":\"tmdvypgikdgs\"},{\"properties\":{\"status\":\"Active\",\"linkedCloud\":\"irryuzhlh\"},\"id\":\"joqrvqqaatj\",\"name\":\"nrvgoupmfiibfgg\",\"type\":\"ioolvrwxkvtkkgll\"},{\"properties\":{\"status\":\"Deleting\",\"linkedCloud\":\"vjayvblmhvkzu\"},\"id\":\"bxvvyhg\",\"name\":\"opbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"status\":\"Disconnected\",\"linkedCloud\":\"mctlpdngitv\"},\"id\":\"bmhrixkwmyijejv\",\"name\":\"grhbpn\",\"type\":\"ixexcc\"}],\"nextLink\":\"reaxhcexdr\"}")
                 .toObject(CloudLinkList.class);
     }
 

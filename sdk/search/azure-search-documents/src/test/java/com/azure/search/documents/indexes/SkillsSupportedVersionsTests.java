@@ -7,6 +7,8 @@ import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.SentimentSkill;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests that multi-version skills throw an exception when an unsupported property is set.
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SkillsSupportedVersionsTests {
     @ParameterizedTest
     @MethodSource("throwsAsExpectedSupplier")
@@ -25,6 +28,7 @@ public class SkillsSupportedVersionsTests {
         assertThrows(IllegalArgumentException.class, executable);
     }
 
+    @SuppressWarnings("deprecation")
     static Stream<Executable> throwsAsExpectedSupplier() {
         return Stream.of(
             // V1 doesn't support setting a model version.
@@ -38,7 +42,7 @@ public class SkillsSupportedVersionsTests {
             () -> new SentimentSkill(null, null).setModelVersion(""),
 
             // V1 doesn't support setting include opinion mining.
-            () -> new SentimentSkill(null, null).setIncludeOpinionMining(false)
+            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(false)
         );
     }
 
@@ -48,6 +52,7 @@ public class SkillsSupportedVersionsTests {
         assertDoesNotThrow(executable);
     }
 
+    @SuppressWarnings("deprecation")
     static Stream<Executable> doesNotThrowAsExpectedSupplier() {
         // Setting null values are fine.
         return Stream.of(
@@ -62,7 +67,7 @@ public class SkillsSupportedVersionsTests {
             () -> new SentimentSkill(null, null).setModelVersion(null),
 
             // V1 doesn't support setting include opinion mining.
-            () -> new SentimentSkill(null, null).setIncludeOpinionMining(null)
+            () -> new SentimentSkill(null, null).setOpinionMiningIncluded(null)
         );
     }
 }

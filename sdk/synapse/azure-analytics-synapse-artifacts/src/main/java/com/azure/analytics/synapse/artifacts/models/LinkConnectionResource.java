@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkConnectionResource model. */
+/**
+ * The LinkConnectionResource model.
+ */
 @Fluent
 public final class LinkConnectionResource {
     /*
@@ -40,12 +42,15 @@ public final class LinkConnectionResource {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of LinkConnectionResource class. */
-    public LinkConnectionResource() {}
+    /**
+     * Creates an instance of LinkConnectionResource class.
+     */
+    public LinkConnectionResource() {
+    }
 
     /**
      * Get the id property: Link connection id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -54,7 +59,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the id property: Link connection id.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -65,7 +70,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the name property: Link connection name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -74,7 +79,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the name property: Link connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -85,7 +90,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the type property: Link connection type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -94,7 +99,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the type property: Link connection type.
-     *
+     * 
      * @param type the type value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -105,7 +110,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the properties property: Properties of link connection.
-     *
+     * 
      * @return the properties value.
      */
     public LinkConnection getProperties() {
@@ -114,7 +119,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the properties property: Properties of link connection.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -125,7 +130,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the description property: Link connection description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -134,7 +139,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the description property: Link connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LinkConnectionResource object itself.
      */

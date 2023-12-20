@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.BareMetalMachinesClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineList;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachinePatchParameters;
@@ -43,7 +44,6 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunCommandParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineValidateHardwareParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -159,7 +159,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/cordon")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> cordon(
             @HostParam("$host") String endpoint,
@@ -174,7 +174,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/powerOff")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> powerOff(
             @HostParam("$host") String endpoint,
@@ -189,7 +189,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/reimage")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reimage(
             @HostParam("$host") String endpoint,
@@ -203,7 +203,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/replace")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> replace(
             @HostParam("$host") String endpoint,
@@ -218,7 +218,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/restart")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
             @HostParam("$host") String endpoint,
@@ -232,7 +232,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runCommand")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runCommand(
             @HostParam("$host") String endpoint,
@@ -247,7 +247,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runDataExtracts")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runDataExtracts(
             @HostParam("$host") String endpoint,
@@ -263,7 +263,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/runReadCommands")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> runReadCommands(
             @HostParam("$host") String endpoint,
@@ -279,7 +279,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/start")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
             @HostParam("$host") String endpoint,
@@ -293,7 +293,7 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/uncordon")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> uncordon(
             @HostParam("$host") String endpoint,
@@ -301,22 +301,6 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("bareMetalMachineName") String bareMetalMachineName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}/validateHardware")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateHardware(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bareMetalMachineName") String bareMetalMachineName,
-            @BodyParam("application/json")
-                BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1808,7 +1792,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cordonWithResponseAsync(
@@ -1867,7 +1852,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> cordonWithResponseAsync(
@@ -1923,10 +1909,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCordonAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordonAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters) {
@@ -1934,8 +1920,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             cordonWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1948,17 +1938,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCordonAsync(String resourceGroupName, String bareMetalMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordonAsync(
+        String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             cordonWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1973,10 +1968,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCordonAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordonAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -1986,7 +1981,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             cordonWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -1999,10 +1999,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCordon(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
+        String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
         return this
             .beginCordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters)
@@ -2021,10 +2022,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCordon(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -2045,10 +2046,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cordonAsync(
+    private Mono<OperationStatusResultInner> cordonAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters) {
@@ -2067,10 +2068,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cordonAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> cordonAsync(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
         return beginCordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters)
             .last()
@@ -2089,10 +2090,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cordonAsync(
+    private Mono<OperationStatusResultInner> cordonAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -2112,11 +2113,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cordon(String resourceGroupName, String bareMetalMachineName) {
+    public OperationStatusResultInner cordon(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineCordonParameters bareMetalMachineCordonParameters = null;
-        cordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters).block();
+        return cordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters).block();
     }
 
     /**
@@ -2131,14 +2133,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cordon(
+    public OperationStatusResultInner cordon(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
         Context context) {
-        cordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, context).block();
+        return cordonAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineCordonParameters, context).block();
     }
 
     /**
@@ -2152,7 +2155,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -2211,7 +2215,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -2267,10 +2272,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters) {
@@ -2278,8 +2283,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             powerOffWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2292,18 +2301,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
         String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             powerOffWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2318,10 +2331,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -2332,7 +2345,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2345,10 +2363,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
+        String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
         return this
             .beginPowerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters)
@@ -2367,10 +2386,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPowerOff(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -2391,10 +2410,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(
+    private Mono<OperationStatusResultInner> powerOffAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters) {
@@ -2413,10 +2432,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> powerOffAsync(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
         return beginPowerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters)
             .last()
@@ -2435,10 +2454,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(
+    private Mono<OperationStatusResultInner> powerOffAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -2458,11 +2477,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void powerOff(String resourceGroupName, String bareMetalMachineName) {
+    public OperationStatusResultInner powerOff(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters = null;
-        powerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters).block();
+        return powerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters).block();
     }
 
     /**
@@ -2477,14 +2497,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void powerOff(
+    public OperationStatusResultInner powerOff(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
         Context context) {
-        powerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, context).block();
+        return powerOffAsync(resourceGroupName, bareMetalMachineName, bareMetalMachinePowerOffParameters, context)
+            .block();
     }
 
     /**
@@ -2497,7 +2519,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
@@ -2549,7 +2572,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
@@ -2597,16 +2621,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimageAsync(
         String resourceGroupName, String bareMetalMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, bareMetalMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2620,17 +2648,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimageAsync(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageWithResponseAsync(resourceGroupName, bareMetalMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2643,10 +2676,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
+        String resourceGroupName, String bareMetalMachineName) {
         return this.beginReimageAsync(resourceGroupName, bareMetalMachineName).getSyncPoller();
     }
 
@@ -2661,10 +2695,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         return this.beginReimageAsync(resourceGroupName, bareMetalMachineName, context).getSyncPoller();
     }
@@ -2679,10 +2713,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> reimageAsync(String resourceGroupName, String bareMetalMachineName) {
         return beginReimageAsync(resourceGroupName, bareMetalMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2699,10 +2733,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
+    private Mono<OperationStatusResultInner> reimageAsync(
+        String resourceGroupName, String bareMetalMachineName, Context context) {
         return beginReimageAsync(resourceGroupName, bareMetalMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2718,10 +2753,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String bareMetalMachineName) {
-        reimageAsync(resourceGroupName, bareMetalMachineName).block();
+    public OperationStatusResultInner reimage(String resourceGroupName, String bareMetalMachineName) {
+        return reimageAsync(resourceGroupName, bareMetalMachineName).block();
     }
 
     /**
@@ -2735,10 +2771,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String bareMetalMachineName, Context context) {
-        reimageAsync(resourceGroupName, bareMetalMachineName, context).block();
+    public OperationStatusResultInner reimage(String resourceGroupName, String bareMetalMachineName, Context context) {
+        return reimageAsync(resourceGroupName, bareMetalMachineName, context).block();
     }
 
     /**
@@ -2752,7 +2789,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceWithResponseAsync(
@@ -2811,7 +2849,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceWithResponseAsync(
@@ -2867,10 +2906,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReplaceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplaceAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters) {
@@ -2878,8 +2917,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             replaceWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2892,18 +2935,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReplaceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplaceAsync(
         String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             replaceWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2918,10 +2965,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReplaceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplaceAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -2932,7 +2979,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2945,10 +2997,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReplace(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
+        String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
         return this
             .beginReplaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters)
@@ -2967,10 +3020,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReplace(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -2991,10 +3044,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> replaceAsync(
+    private Mono<OperationStatusResultInner> replaceAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters) {
@@ -3013,10 +3066,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> replaceAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> replaceAsync(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
         return beginReplaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters)
             .last()
@@ -3035,10 +3088,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> replaceAsync(
+    private Mono<OperationStatusResultInner> replaceAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -3058,11 +3111,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replace(String resourceGroupName, String bareMetalMachineName) {
+    public OperationStatusResultInner replace(String resourceGroupName, String bareMetalMachineName) {
         final BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters = null;
-        replaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters).block();
+        return replaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters).block();
     }
 
     /**
@@ -3077,14 +3131,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replace(
+    public OperationStatusResultInner replace(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
         Context context) {
-        replaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, context).block();
+        return replaceAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineReplaceParameters, context)
+            .block();
     }
 
     /**
@@ -3097,7 +3153,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -3149,7 +3206,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -3197,16 +3255,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartAsync(
         String resourceGroupName, String bareMetalMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, bareMetalMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3220,17 +3282,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartAsync(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, bareMetalMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -3243,10 +3310,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
+        String resourceGroupName, String bareMetalMachineName) {
         return this.beginRestartAsync(resourceGroupName, bareMetalMachineName).getSyncPoller();
     }
 
@@ -3261,10 +3329,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         return this.beginRestartAsync(resourceGroupName, bareMetalMachineName, context).getSyncPoller();
     }
@@ -3279,10 +3347,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> restartAsync(String resourceGroupName, String bareMetalMachineName) {
         return beginRestartAsync(resourceGroupName, bareMetalMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3299,10 +3367,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
+    private Mono<OperationStatusResultInner> restartAsync(
+        String resourceGroupName, String bareMetalMachineName, Context context) {
         return beginRestartAsync(resourceGroupName, bareMetalMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3318,10 +3387,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String bareMetalMachineName) {
-        restartAsync(resourceGroupName, bareMetalMachineName).block();
+    public OperationStatusResultInner restart(String resourceGroupName, String bareMetalMachineName) {
+        return restartAsync(resourceGroupName, bareMetalMachineName).block();
     }
 
     /**
@@ -3335,10 +3405,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String bareMetalMachineName, Context context) {
-        restartAsync(resourceGroupName, bareMetalMachineName, context).block();
+    public OperationStatusResultInner restart(String resourceGroupName, String bareMetalMachineName, Context context) {
+        return restartAsync(resourceGroupName, bareMetalMachineName, context).block();
     }
 
     /**
@@ -3353,7 +3424,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
@@ -3418,7 +3490,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
@@ -3480,10 +3553,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunCommandAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommandAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
@@ -3491,8 +3564,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
             runCommandWithResponseAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3508,10 +3585,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunCommandAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommandAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -3522,7 +3599,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -3537,10 +3619,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunCommand(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
@@ -3562,10 +3644,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunCommand(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -3588,10 +3670,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runCommandAsync(
+    private Mono<OperationStatusResultInner> runCommandAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
@@ -3613,10 +3695,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runCommandAsync(
+    private Mono<OperationStatusResultInner> runCommandAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -3639,13 +3721,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runCommand(
+    public OperationStatusResultInner runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
-        runCommandAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters).block();
+        return runCommandAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters).block();
     }
 
     /**
@@ -3661,14 +3744,16 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runCommand(
+    public OperationStatusResultInner runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
         Context context) {
-        runCommandAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, context).block();
+        return runCommandAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters, context)
+            .block();
     }
 
     /**
@@ -3684,7 +3769,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runDataExtractsWithResponseAsync(
@@ -3750,7 +3836,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runDataExtractsWithResponseAsync(
@@ -3813,10 +3900,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunDataExtractsAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
@@ -3825,8 +3912,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3843,10 +3934,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunDataExtractsAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -3857,7 +3948,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -3873,10 +3969,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunDataExtracts(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
@@ -3900,10 +3996,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunDataExtracts(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -3927,10 +4023,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runDataExtractsAsync(
+    private Mono<OperationStatusResultInner> runDataExtractsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
@@ -3954,10 +4050,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runDataExtractsAsync(
+    private Mono<OperationStatusResultInner> runDataExtractsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -3981,13 +4077,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runDataExtracts(
+    public OperationStatusResultInner runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
-        runDataExtractsAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters)
+        return runDataExtractsAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters)
             .block();
     }
 
@@ -4005,14 +4102,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runDataExtracts(
+    public OperationStatusResultInner runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
         Context context) {
-        runDataExtractsAsync(
+        return runDataExtractsAsync(
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters, context)
             .block();
     }
@@ -4030,7 +4128,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(
@@ -4096,7 +4195,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(
@@ -4159,10 +4259,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunReadCommandsAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommandsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
@@ -4171,8 +4271,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -4189,10 +4293,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunReadCommandsAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommandsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -4203,7 +4307,12 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -4219,10 +4328,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
@@ -4246,10 +4355,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -4273,10 +4382,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runReadCommandsAsync(
+    private Mono<OperationStatusResultInner> runReadCommandsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
@@ -4300,10 +4409,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runReadCommandsAsync(
+    private Mono<OperationStatusResultInner> runReadCommandsAsync(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -4327,13 +4436,14 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runReadCommands(
+    public OperationStatusResultInner runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
-        runReadCommandsAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters)
+        return runReadCommandsAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters)
             .block();
     }
 
@@ -4351,14 +4461,15 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runReadCommands(
+    public OperationStatusResultInner runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
         Context context) {
-        runReadCommandsAsync(
+        return runReadCommandsAsync(
                 resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters, context)
             .block();
     }
@@ -4373,7 +4484,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -4425,7 +4537,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -4473,15 +4586,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String bareMetalMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
+        String resourceGroupName, String bareMetalMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, bareMetalMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -4495,17 +4613,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, bareMetalMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -4518,10 +4641,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+        String resourceGroupName, String bareMetalMachineName) {
         return this.beginStartAsync(resourceGroupName, bareMetalMachineName).getSyncPoller();
     }
 
@@ -4536,10 +4660,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         return this.beginStartAsync(resourceGroupName, bareMetalMachineName, context).getSyncPoller();
     }
@@ -4554,10 +4678,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> startAsync(String resourceGroupName, String bareMetalMachineName) {
         return beginStartAsync(resourceGroupName, bareMetalMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4574,10 +4698,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
+    private Mono<OperationStatusResultInner> startAsync(
+        String resourceGroupName, String bareMetalMachineName, Context context) {
         return beginStartAsync(resourceGroupName, bareMetalMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4593,10 +4718,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String bareMetalMachineName) {
-        startAsync(resourceGroupName, bareMetalMachineName).block();
+    public OperationStatusResultInner start(String resourceGroupName, String bareMetalMachineName) {
+        return startAsync(resourceGroupName, bareMetalMachineName).block();
     }
 
     /**
@@ -4610,10 +4736,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String bareMetalMachineName, Context context) {
-        startAsync(resourceGroupName, bareMetalMachineName, context).block();
+    public OperationStatusResultInner start(String resourceGroupName, String bareMetalMachineName, Context context) {
+        return startAsync(resourceGroupName, bareMetalMachineName, context).block();
     }
 
     /**
@@ -4626,7 +4753,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> uncordonWithResponseAsync(
@@ -4678,7 +4806,8 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> uncordonWithResponseAsync(
@@ -4726,16 +4855,20 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUncordonAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordonAsync(
         String resourceGroupName, String bareMetalMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = uncordonWithResponseAsync(resourceGroupName, bareMetalMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -4749,17 +4882,22 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUncordonAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordonAsync(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             uncordonWithResponseAsync(resourceGroupName, bareMetalMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -4772,10 +4910,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUncordon(String resourceGroupName, String bareMetalMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
+        String resourceGroupName, String bareMetalMachineName) {
         return this.beginUncordonAsync(resourceGroupName, bareMetalMachineName).getSyncPoller();
     }
 
@@ -4790,10 +4929,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUncordon(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
         String resourceGroupName, String bareMetalMachineName, Context context) {
         return this.beginUncordonAsync(resourceGroupName, bareMetalMachineName, context).getSyncPoller();
     }
@@ -4808,10 +4947,10 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> uncordonAsync(String resourceGroupName, String bareMetalMachineName) {
+    private Mono<OperationStatusResultInner> uncordonAsync(String resourceGroupName, String bareMetalMachineName) {
         return beginUncordonAsync(resourceGroupName, bareMetalMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4828,10 +4967,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> uncordonAsync(String resourceGroupName, String bareMetalMachineName, Context context) {
+    private Mono<OperationStatusResultInner> uncordonAsync(
+        String resourceGroupName, String bareMetalMachineName, Context context) {
         return beginUncordonAsync(resourceGroupName, bareMetalMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -4847,10 +4987,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uncordon(String resourceGroupName, String bareMetalMachineName) {
-        uncordonAsync(resourceGroupName, bareMetalMachineName).block();
+    public OperationStatusResultInner uncordon(String resourceGroupName, String bareMetalMachineName) {
+        return uncordonAsync(resourceGroupName, bareMetalMachineName).block();
     }
 
     /**
@@ -4864,336 +5005,11 @@ public final class BareMetalMachinesClientImpl implements BareMetalMachinesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uncordon(String resourceGroupName, String bareMetalMachineName, Context context) {
-        uncordonAsync(resourceGroupName, bareMetalMachineName, context).block();
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateHardwareWithResponseAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bareMetalMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bareMetalMachineName is required and cannot be null."));
-        }
-        if (bareMetalMachineValidateHardwareParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter bareMetalMachineValidateHardwareParameters is required and cannot be null."));
-        } else {
-            bareMetalMachineValidateHardwareParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateHardware(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            bareMetalMachineName,
-                            bareMetalMachineValidateHardwareParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateHardwareWithResponseAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (bareMetalMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter bareMetalMachineName is required and cannot be null."));
-        }
-        if (bareMetalMachineValidateHardwareParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter bareMetalMachineValidateHardwareParameters is required and cannot be null."));
-        } else {
-            bareMetalMachineValidateHardwareParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .validateHardware(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                bareMetalMachineName,
-                bareMetalMachineValidateHardwareParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateHardwareAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateHardwareWithResponseAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateHardwareAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateHardwareWithResponseAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters) {
-        return this
-            .beginValidateHardwareAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context) {
-        return this
-            .beginValidateHardwareAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateHardwareAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters) {
-        return beginValidateHardwareAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateHardwareAsync(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context) {
-        return beginValidateHardwareAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters) {
-        validateHardwareAsync(resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters)
-            .block();
-    }
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context) {
-        validateHardwareAsync(
-                resourceGroupName, bareMetalMachineName, bareMetalMachineValidateHardwareParameters, context)
-            .block();
+    public OperationStatusResultInner uncordon(String resourceGroupName, String bareMetalMachineName, Context context) {
+        return uncordonAsync(resourceGroupName, bareMetalMachineName, context).block();
     }
 
     /**

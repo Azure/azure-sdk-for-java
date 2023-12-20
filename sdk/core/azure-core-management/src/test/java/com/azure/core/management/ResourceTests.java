@@ -6,9 +6,9 @@ package com.azure.core.management;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import wiremock.com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 

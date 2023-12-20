@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/managednetworkfabric/ci.yml
+      - sdk/managednetworkfabric/azure-resourcemanager-managednetworkfabric/
+    exclude:
+      - sdk/managednetworkfabric/pom.xml
+      - sdk/managednetworkfabric/azure-resourcemanager-managednetworkfabric/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/managednetworkfabric/ci.yml
+      - sdk/managednetworkfabric/azure-resourcemanager-managednetworkfabric/
+    exclude:
+      - sdk/managednetworkfabric/pom.xml
+      - sdk/managednetworkfabric/azure-resourcemanager-managednetworkfabric/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagermanagednetworkfabric
+    displayName: azure-resourcemanager-managednetworkfabric
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: managednetworkfabric
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-managednetworkfabric
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermanagednetworkfabric
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermanagednetworkfabric }}

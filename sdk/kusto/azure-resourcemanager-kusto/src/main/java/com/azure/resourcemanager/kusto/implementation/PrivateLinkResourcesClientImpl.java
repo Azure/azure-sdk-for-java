@@ -59,8 +59,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public interface PrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> list(
@@ -74,8 +73,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/privateLinkResources/{privateLinkResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateLinkResources/{privateLinkResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(
@@ -92,7 +90,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -145,7 +143,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +194,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,7 +209,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +226,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,7 +241,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Returns the list of private link resources.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +257,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a private link resource.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +312,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a private link resource.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
      * @param context The context to associate with this operation.
@@ -367,7 +365,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a private link resource.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -385,7 +383,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a private link resource.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
      * @param context The context to associate with this operation.
@@ -403,7 +401,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     /**
      * Gets a private link resource.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

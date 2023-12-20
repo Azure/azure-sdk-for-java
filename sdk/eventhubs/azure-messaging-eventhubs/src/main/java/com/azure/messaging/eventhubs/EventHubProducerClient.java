@@ -16,67 +16,124 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * A <b>synchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
+ * <p>A <b>synchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
  * together in batches. Depending on the {@link CreateBatchOptions options} specified when creating an
  * {@link EventDataBatch}, the events may be automatically routed to an available partition or specific to a partition.
+ * More information and specific recommendations for strategies to use when publishing events is in:
+ * <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/event-hubs/partitioning-in-event-hubs-and-kafka#distribute-events-to-partitions">
+ *     Distribute events to partitions</a></p>
  *
- * <p>
- * Allowing automatic routing of partitions is recommended when:
+ * <p>Allowing automatic routing of partitions is recommended when:</p>
  * <ul>
- * <li>The sending of events needs to be highly available.</li>
- * <li>The event data should be evenly distributed among all available partitions.</li>
+ *   <li>The sending of events needs to be highly available.</li>
+ *   <li>The event data should be evenly distributed among all available partitions.</li>
  * </ul>
  *
- * <p>
- * If no partition id is specified, the following rules are used for automatically selecting one:
- *
+ * <p>If no partition id is specified, the following rules are used for automatically selecting one:</p>
  * <ol>
- * <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
- * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
- * message to another available partition.</li>
+ *      <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
+ *      <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
+ *      message to another available partition.</li>
  * </ol>
  *
- * <p><strong>Create a producer and publish events to any partition</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a {@link EventHubProducerClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link EventHubProducerClient}.
+ * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the "Essentials"
+ * panel after navigating to the Event Hubs Namespace via Azure Portal. </p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.construct -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .buildProducerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.construct -->
+ *
+ * <p><strong>Sample: Create a producer and publish events to any partition</strong></p>
+ *
+ * <p>The following code sample demonstrates publishing events and allowing the service to distribute the events
+ * round-robin between all partitions.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch -->
  * <pre>
- * &#47;&#47; The required parameter is a way to authenticate with Event Hubs using credentials.
- * &#47;&#47; The connectionString provides a way to authenticate with Event Hub.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
  * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;
- *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;,
- *         &quot;event-hub-name&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
  *     .buildProducerClient&#40;&#41;;
- * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;test-event-1&quot;&#41;, new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *
- * &#47;&#47; Creating a batch without options set, will allow for automatic routing of events to any partition.
- * EventDataBatch batch = producer.createBatch&#40;&#41;;
- * for &#40;EventData event : events&#41; &#123;
- *     if &#40;batch.tryAdd&#40;event&#41;&#41; &#123;
- *         continue;
- *     &#125;
+ * List&lt;EventData&gt; allEvents = Arrays.asList&#40;new EventData&#40;&quot;Foo&quot;&#41;, new EventData&#40;&quot;Bar&quot;&#41;&#41;;
+ * EventDataBatch eventDataBatch = producer.createBatch&#40;&#41;;
  *
- *     producer.send&#40;batch&#41;;
- *     batch = producer.createBatch&#40;&#41;;
- *     if &#40;!batch.tryAdd&#40;event&#41;&#41; &#123;
- *         throw new IllegalArgumentException&#40;&quot;Event is too large for an empty batch.&quot;&#41;;
+ * for &#40;EventData eventData : allEvents&#41; &#123;
+ *     if &#40;!eventDataBatch.tryAdd&#40;eventData&#41;&#41; &#123;
+ *         producer.send&#40;eventDataBatch&#41;;
+ *         eventDataBatch = producer.createBatch&#40;&#41;;
+ *
+ *         &#47;&#47; Try to add that event that couldn't fit before.
+ *         if &#40;!eventDataBatch.tryAdd&#40;eventData&#41;&#41; &#123;
+ *             throw new IllegalArgumentException&#40;&quot;Event is too large for an empty batch. Max size: &quot;
+ *                 + eventDataBatch.getMaxSizeInBytes&#40;&#41;&#41;;
+ *         &#125;
  *     &#125;
  * &#125;
+ *
+ * &#47;&#47; send the last batch of remaining events
+ * if &#40;eventDataBatch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *     producer.send&#40;eventDataBatch&#41;;
+ * &#125;
+ *
+ * &#47;&#47; Clients are expected to be long-lived objects.
+ * &#47;&#47; Dispose of the producer to close any underlying resources when we are finished with it.
+ * producer.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch -->
  *
- * <p><strong>Publish events to partition "foo"</strong></p>
+ * <p><strong>Sample: Publish events to partition "0"</strong></p>
+ *
+ *  <p>The following code sample demonstrates publishing events to a specific partition.  In the scenario below, all
+ * events are sent to partition "0".</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId -->
  * <pre>
- * &#47;&#47; Creating a batch with partitionId set will route all events in that batch to partition `foo`.
- * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionId&#40;&quot;foo&quot;&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  *
+ * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .buildProducerClient&#40;&#41;;
+ *
+ * &#47;&#47; Creating a batch with partitionId set will route all events in that batch to partition `0`.
+ * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionId&#40;&quot;0&quot;&#41;;
  * EventDataBatch batch = producer.createBatch&#40;options&#41;;
- * batch.tryAdd&#40;new EventData&#40;&quot;data-to-partition-foo&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Add events to batch and when you want to send the batch, send it using the producer.
  * producer.send&#40;batch&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId -->
  *
- * <p><strong>Publish events to the same partition, grouped together using partition key</strong></p>
+ * <p><strong>Sample: Publish events to the same partition, grouped together using partition key</strong></p>
+ *
+ * <p>The sample code below uses {@link CreateBatchOptions#setPartitionKey(String)} when creating the
+ * {@link EventDataBatch}.  All events added to this batch will be published to the same partition.  In general, events
+ * with the same {@code partitionKey} end up in the same partition.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey -->
  * <pre>
  * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;sourdough&quot;&#41;, new EventData&#40;&quot;rye&quot;&#41;,
@@ -92,7 +149,12 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey -->
  *
- * <p><strong>Publish events using a size-limited {@link EventDataBatch}</strong></p>
+ * <p><strong>Sample: Publish events using a size-limited {@link EventDataBatch}</strong></p>
+ *
+ * <p>The sample code below uses {@link CreateBatchOptions#setMaximumSizeInBytes(int)} when creating the
+ * {@link EventDataBatch}.  In the example, it limits the size of the batch to 256 bytes.  This is useful for scenarios
+ * where there are constraints like network throughput, memory, etc.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int -->
  * <pre>
  * List&lt;EventData&gt; telemetryEvents = Arrays.asList&#40;firstEvent, secondEvent, thirdEvent&#41;;
@@ -119,7 +181,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int -->
  *
- * @see EventHubClientBuilder#buildProducerClient()
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubProducerAsyncClient.
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
@@ -249,9 +312,9 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * <p>Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
+     * size is the max amount allowed on the link.</p>
      *
      * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable -->
      * <pre>
@@ -276,14 +339,22 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * <p>Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
+     * size is the max amount allowed on the link.</p>
      *
      * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions -->
      * <pre>
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
+     *     .buildProducerClient&#40;&#41;;
+     *
      * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;Melbourne&quot;&#41;, new EventData&#40;&quot;London&quot;&#41;,
      *     new EventData&#40;&quot;New York&quot;&#41;&#41;;
+     *
      * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
      * producer.send&#40;events, sendOptions&#41;;
      * </pre>

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for PublicIpAddresses DdosProtectionStatus. */
+/**
+ * Samples for PublicIpAddresses DdosProtectionStatus.
+ */
 public final class PublicIpAddressesDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PublicIpAddressGetDdosProtectionStatus.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * PublicIpAddressGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Public IP Address.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDdosProtectionStatusOfAPublicIPAddress(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getPublicIpAddresses()
-            .ddosProtectionStatus("rg1", "test-pip", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getPublicIpAddresses().ddosProtectionStatus("rg1", "test-pip",
+            com.azure.core.util.Context.NONE);
     }
 }

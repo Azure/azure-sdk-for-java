@@ -16,7 +16,7 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class PrivateDnsZoneCnameRecordSetTests extends ResourceManagerTestBase {
+public class PrivateDnsZoneCnameRecordSetTests extends ResourceManagerTestProxyTestBase {
     private String rgName = "";
 
     protected ResourceManager resourceManager;

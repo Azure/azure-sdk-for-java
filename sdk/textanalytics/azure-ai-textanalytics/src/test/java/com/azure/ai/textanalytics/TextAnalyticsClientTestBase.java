@@ -3,11 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
@@ -30,6 +31,8 @@ import com.azure.ai.textanalytics.models.ExtractiveSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryActionResult;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -52,9 +55,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
-import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
-import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -76,11 +76,8 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
@@ -735,6 +732,12 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(
         HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void beginAbstractSummaryStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginAbstractSummaryMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -1081,7 +1084,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
-                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
@@ -1095,7 +1097,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
-                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
         );
     }
@@ -1129,9 +1130,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
-                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
-                .setExtractiveSummaryActions(new ExtractiveSummaryAction().setActionName(CUSTOM_ACTION_NAME))
             // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
 
 //                .setRecognizeCustomEntitiesActions(
@@ -1329,7 +1328,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     }
 
     String getApiKey(boolean isStaticSource) {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+        return interceptorManager.isPlaybackMode() ? FAKE_API_KEY
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
@@ -1337,16 +1336,11 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
+            .credential(new AzureKeyCredential(getApiKey(isStaticResource)))
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else {
-            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
         }
         return builder;
     }

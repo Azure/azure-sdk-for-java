@@ -22,8 +22,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,9 +34,6 @@ import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,17 +43,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
     private FormTrainingAsyncClient client;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,
                                                                FormRecognizerServiceVersion serviceVersion) {
@@ -86,28 +73,6 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown for null model Id parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getCustomModel(null)).verifyError();
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
-    }
-
-    /**
      * Verifies custom model info returned with response for a valid model Id.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -127,6 +92,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateCustomModelData(syncPoller.getFinalResult(), false, false);
                 });
+                // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+                //  subscribing to the reactive API call.
+//                .expectComplete()
+//                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -146,6 +115,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
                     false, false));
+                // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+                //  subscribing to the reactive API call.
+//                .expectComplete()
+//                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -166,6 +139,10 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
                 .assertNext(customFormModel -> validateCustomModelData(syncPoller.getFinalResult(),
                     true, false));
+                // TODO (alzimmer): This test needs to be recorded again as it was never verifying, therefore never
+                //  subscribing to the reactive API call.
+//                .expectComplete()
+//                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -180,7 +157,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
             .assertNext(FormTrainingClientTestBase::validateAccountProperties)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -195,20 +173,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
             .assertNext(FormTrainingClientTestBase::validateAccountProperties)
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.deleteModel(INVALID_MODEL_ID))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
-            .verify();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -225,15 +191,17 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
                 .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
-                .verifyErrorSatisfies(throwable -> {
+                .expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
                         ((HttpResponseException) throwable).getValue();
                     assertEquals(MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -251,15 +219,17 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
                 .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
-                .verifyErrorSatisfies(throwable -> {
+                .expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
                         ((HttpResponseException) throwable).getValue();
                     assertEquals(MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
         });
     }
 
@@ -276,22 +246,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             .thenConsumeWhile(customFormModelInfo -> customFormModelInfo.getModelId() != null
                 && customFormModelInfo.getTrainingStartedOn() != null
                 && customFormModelInfo.getTrainingCompletedOn() != null && customFormModelInfo.getStatus() != null)
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that an exception is thrown for null source url input.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> client.beginTraining(null, false,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-
-        assertEquals(NULL_SOURCE_URL_ERROR, thrown.getMessage());
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -405,8 +361,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.getCopyAuthorization(resourceId, resourceRegion))
                 .assertNext(copyAuthorization ->
                     validateCopyAuthorizationResult(resourceId, resourceRegion, copyAuthorization))
-                .verifyComplete()
-        );
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT));
     }
 
     /**
@@ -688,10 +644,11 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 modelIdList,
                 new CreateComposedModelOptions()).setPollInterval(durationTestMode))
                 .thenAwait()
-                .verifyErrorSatisfies(throwable -> {
+                .expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     assertEquals(BAD_REQUEST.code(), ((HttpResponseException) throwable).getResponse().getStatusCode());
-                });
+                })
+                .verify(DEFAULT_TIMEOUT);
 
             client.deleteModel(model1.getModelId()).block();
             client.deleteModel(model2.getModelId()).block();
@@ -766,7 +723,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     //                 assertEquals("composedModelDisplayName", customFormModelInfo.getModelDisplayName());
     //                 assertTrue(customFormModelInfo.getCustomModelProperties().isComposed());
     //             })
-    //             .verifyComplete();
+    //             .expectComplete()
+    //             .verify(DEFAULT_TIMEOUT);
     //
     //         client.deleteModel(model1.getModelId()).block();
     //         client.deleteModel(model2.getModelId()).block();
@@ -792,7 +750,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
                 .assertNext(response -> assertEquals("modelDisplayName", response.getModelName()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             validateCustomModelData(createdModel, false, false);
         });
@@ -815,9 +774,11 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModel(createdModel.getModelId()))
                 .assertNext(response -> assertEquals("model trained with labels", response.getModelName()))
-                .verifyComplete();
+                .expectComplete()
+                .verify(DEFAULT_TIMEOUT);
 
             validateCustomModelData(createdModel, true, false);
+            // TODO (alzimmer): This is never subscribed to and does nothing.
             client.deleteModel(createdModel.getModelId());
         });
     }

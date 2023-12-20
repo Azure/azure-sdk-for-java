@@ -10,13 +10,14 @@ import com.azure.resourcemanager.dynatrace.models.MetricRules;
 import com.azure.resourcemanager.dynatrace.models.SendAadLogsStatus;
 import com.azure.resourcemanager.dynatrace.models.SendActivityLogsStatus;
 import com.azure.resourcemanager.dynatrace.models.SendSubscriptionLogsStatus;
+import com.azure.resourcemanager.dynatrace.models.SendingMetricsStatus;
 import com.azure.resourcemanager.dynatrace.models.TagAction;
 import java.util.Arrays;
 
 /** Samples for TagRules CreateOrUpdate. */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MaximumSet_Gen.
@@ -47,6 +48,7 @@ public final class TagRulesCreateOrUpdateSamples {
                                     .withAction(TagAction.EXCLUDE))))
             .withMetricRules(
                 new MetricRules()
+                    .withSendingMetrics(SendingMetricsStatus.ENABLED)
                     .withFilteringTags(
                         Arrays
                             .asList(
@@ -58,7 +60,7 @@ public final class TagRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MinimumSet_Gen.

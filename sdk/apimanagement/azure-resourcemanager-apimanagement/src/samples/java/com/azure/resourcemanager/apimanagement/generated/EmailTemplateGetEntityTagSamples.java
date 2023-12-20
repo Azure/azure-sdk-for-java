@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.TemplateName;
 
 /** Samples for EmailTemplate GetEntityTag. */
 public final class EmailTemplateGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadEmailTemplate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadEmailTemplate.json
      */
     /**
      * Sample code: ApiManagementHeadEmailTemplate.
@@ -21,6 +20,7 @@ public final class EmailTemplateGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .emailTemplates()
-            .getEntityTagWithResponse("rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE, Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE, com.azure.core.util.Context.NONE);
     }
 }

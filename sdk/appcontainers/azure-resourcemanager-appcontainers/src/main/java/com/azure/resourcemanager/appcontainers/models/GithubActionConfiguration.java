@@ -29,6 +29,12 @@ public final class GithubActionConfiguration {
     private String contextPath;
 
     /*
+     * One time Github PAT to configure github environment
+     */
+    @JsonProperty(value = "githubPersonalAccessToken")
+    private String githubPersonalAccessToken;
+
+    /*
      * Image name
      */
     @JsonProperty(value = "image")
@@ -119,6 +125,26 @@ public final class GithubActionConfiguration {
      */
     public GithubActionConfiguration withContextPath(String contextPath) {
         this.contextPath = contextPath;
+        return this;
+    }
+
+    /**
+     * Get the githubPersonalAccessToken property: One time Github PAT to configure github environment.
+     *
+     * @return the githubPersonalAccessToken value.
+     */
+    public String githubPersonalAccessToken() {
+        return this.githubPersonalAccessToken;
+    }
+
+    /**
+     * Set the githubPersonalAccessToken property: One time Github PAT to configure github environment.
+     *
+     * @param githubPersonalAccessToken the githubPersonalAccessToken value to set.
+     * @return the GithubActionConfiguration object itself.
+     */
+    public GithubActionConfiguration withGithubPersonalAccessToken(String githubPersonalAccessToken) {
+        this.githubPersonalAccessToken = githubPersonalAccessToken;
         return this;
     }
 

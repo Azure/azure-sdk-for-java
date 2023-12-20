@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VpnSites Delete. */
+/**
+ * Samples for VpnSites Delete.
+ */
 public final class VpnSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnSiteDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VpnSiteDelete.json
      */
     /**
      * Sample code: VpnSiteDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVpnSites()
-            .delete("rg1", "vpnSite1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVpnSites().delete("rg1", "vpnSite1",
+            com.azure.core.util.Context.NONE);
     }
 }

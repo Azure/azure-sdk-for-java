@@ -33,6 +33,8 @@ The following sections provide several code snippets covering some of the most c
 - [HTTP client with proxy option][proxy_option]
 - [Feature Flag configuration setting][sample_feature_flag_setting]
 - [Secret Reference configuration setting][sample_secret_reference_setting]
+- [Create/Retrieve/Update a snapshot and retrieve settings in a snapshot][sample_snapshot_CRU_usage]
+- [Retrieve multiple snapshots][sample_list_snapshots]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -59,5 +61,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_aad]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/AadAuthentication.java
 [sample_feature_flag_setting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/FeatureFlagConfigurationSettingSample.java
 [sample_secret_reference_setting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/SecretReferenceConfigurationSettingSample.java
+[sample_snapshot_CRU_usage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/CreateSnapshot.java
+[sample_list_snapshots]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ListSnapshots.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2Fsrc%2Fsamples%2FREADME.png)

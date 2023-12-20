@@ -15,18 +15,22 @@ public final class EnvironmentTypeUpdateTests {
     public void testDeserialize() throws Exception {
         EnvironmentTypeUpdate model =
             BinaryData
-                .fromString("{\"tags\":{\"jzicwifsjt\":\"qjsdpydnfyhxdeo\"}}")
+                .fromString("{\"properties\":{\"displayName\":\"p\"},\"tags\":{\"nfyhx\":\"drqjsdpy\"}}")
                 .toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("qjsdpydnfyhxdeo", model.tags().get("jzicwifsjt"));
+        Assertions.assertEquals("drqjsdpy", model.tags().get("nfyhx"));
+        Assertions.assertEquals("p", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentTypeUpdate model = new EnvironmentTypeUpdate().withTags(mapOf("jzicwifsjt", "qjsdpydnfyhxdeo"));
+        EnvironmentTypeUpdate model =
+            new EnvironmentTypeUpdate().withTags(mapOf("nfyhx", "drqjsdpy")).withDisplayName("p");
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("qjsdpydnfyhxdeo", model.tags().get("jzicwifsjt"));
+        Assertions.assertEquals("drqjsdpy", model.tags().get("nfyhx"));
+        Assertions.assertEquals("p", model.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

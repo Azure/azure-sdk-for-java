@@ -5,39 +5,47 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the extracted table contained in a page. */
+/**
+ * Information about the extracted table contained in a page.
+ */
 @Fluent
-public final class DataTable {
+public final class DataTable implements JsonSerializable<DataTable> {
     /*
      * Number of rows.
      */
-    @JsonProperty(value = "rows", required = true)
     private int rows;
 
     /*
      * Number of columns.
      */
-    @JsonProperty(value = "columns", required = true)
     private int columns;
 
     /*
      * List of cells contained in the table.
      */
-    @JsonProperty(value = "cells", required = true)
     private List<DataTableCell> cells;
 
     /*
      * Bounding box of the table.
      */
-    @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
     /**
+     * Creates an instance of DataTable class.
+     */
+    public DataTable() {
+    }
+
+    /**
      * Get the rows property: Number of rows.
-     *
+     * 
      * @return the rows value.
      */
     public int getRows() {
@@ -46,7 +54,7 @@ public final class DataTable {
 
     /**
      * Set the rows property: Number of rows.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the DataTable object itself.
      */
@@ -57,7 +65,7 @@ public final class DataTable {
 
     /**
      * Get the columns property: Number of columns.
-     *
+     * 
      * @return the columns value.
      */
     public int getColumns() {
@@ -66,7 +74,7 @@ public final class DataTable {
 
     /**
      * Set the columns property: Number of columns.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the DataTable object itself.
      */
@@ -77,7 +85,7 @@ public final class DataTable {
 
     /**
      * Get the cells property: List of cells contained in the table.
-     *
+     * 
      * @return the cells value.
      */
     public List<DataTableCell> getCells() {
@@ -86,7 +94,7 @@ public final class DataTable {
 
     /**
      * Set the cells property: List of cells contained in the table.
-     *
+     * 
      * @param cells the cells value to set.
      * @return the DataTable object itself.
      */
@@ -97,7 +105,7 @@ public final class DataTable {
 
     /**
      * Get the boundingBox property: Bounding box of the table.
-     *
+     * 
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -106,12 +114,57 @@ public final class DataTable {
 
     /**
      * Set the boundingBox property: Bounding box of the table.
-     *
+     * 
      * @param boundingBox the boundingBox value to set.
      * @return the DataTable object itself.
      */
     public DataTable setBoundingBox(List<Float> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("rows", this.rows);
+        jsonWriter.writeIntField("columns", this.columns);
+        jsonWriter.writeArrayField("cells", this.cells, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("boundingBox", this.boundingBox, (writer, element) -> writer.writeFloat(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataTable if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataTable.
+     */
+    public static DataTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataTable deserializedDataTable = new DataTable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rows".equals(fieldName)) {
+                    deserializedDataTable.rows = reader.getInt();
+                } else if ("columns".equals(fieldName)) {
+                    deserializedDataTable.columns = reader.getInt();
+                } else if ("cells".equals(fieldName)) {
+                    List<DataTableCell> cells = reader.readArray(reader1 -> DataTableCell.fromJson(reader1));
+                    deserializedDataTable.cells = cells;
+                } else if ("boundingBox".equals(fieldName)) {
+                    List<Float> boundingBox = reader.readArray(reader1 -> reader1.getFloat());
+                    deserializedDataTable.boundingBox = boundingBox;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataTable;
+        });
     }
 }

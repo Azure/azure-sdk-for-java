@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Define user session identifier group by clauses. */
+/**
+ * Define user session identifier group by clauses.
+ */
 @Fluent
 public final class GroupByUserSession {
     /*
@@ -18,13 +20,15 @@ public final class GroupByUserSession {
     @JsonProperty(value = "groupByVariables", required = true)
     private List<GroupByVariable> groupByVariables;
 
-    /** Creates an instance of GroupByUserSession class. */
+    /**
+     * Creates an instance of GroupByUserSession class.
+     */
     public GroupByUserSession() {
     }
 
     /**
      * Get the groupByVariables property: List of group by clause variables.
-     *
+     * 
      * @return the groupByVariables value.
      */
     public List<GroupByVariable> groupByVariables() {
@@ -33,7 +37,7 @@ public final class GroupByUserSession {
 
     /**
      * Set the groupByVariables property: List of group by clause variables.
-     *
+     * 
      * @param groupByVariables the groupByVariables value to set.
      * @return the GroupByUserSession object itself.
      */
@@ -44,15 +48,13 @@ public final class GroupByUserSession {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupByVariables() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupByVariables in model GroupByUserSession"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property groupByVariables in model GroupByUserSession"));
         } else {
             groupByVariables().forEach(e -> e.validate());
         }

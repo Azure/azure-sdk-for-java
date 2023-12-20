@@ -7,10 +7,12 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
@@ -20,8 +22,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
- * authenticate with <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active
- * Directory (Azure AD)</a> and obtain an authorization code that can be used to request an access token to access
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * and obtain an authorization code that can be used to request an access token to access
  * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
  * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure
  * resources.
@@ -57,6 +59,10 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final URI redirectUri;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private boolean isCaeEnabledRequestCached;
+    private boolean isCaeDisabledRequestCached;
+    private boolean isCachePopulated;
+    private final boolean useConfidentialClient;
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -65,7 +71,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
      * @param clientSecret the client secret of the application
      * @param tenantId the tenant ID of the application
      * @param authCode the Oauth 2.0 authorization code grant
-     * @param redirectUri the redirect URI used to authenticate to Azure Active Directory
+     * @param redirectUri the redirect URI used to authenticate to Microsoft Entra ID
      * @param identityClientOptions the options for configuring the identity client
      */
     AuthorizationCodeCredential(String clientId, String clientSecret, String tenantId, String authCode,
@@ -79,14 +85,21 @@ public class AuthorizationCodeCredential implements TokenCredential {
         this.cachedToken = new AtomicReference<>();
         this.authCode = authCode;
         this.redirectUri = redirectUri;
+        this.useConfidentialClient = !CoreUtils.isNullOrEmpty(clientSecret);
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-            if (cachedToken.get() != null) {
-                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
-                    .onErrorResume(t -> Mono.empty());
+            isCachePopulated = isCachePopulated(request);
+            if (isCachePopulated) {
+                if (useConfidentialClient) {
+                    return identityClient.authenticateWithConfidentialClientCache(request, cachedToken.get())
+                        .map(accessToken -> (MsalToken) accessToken);
+                } else {
+                    return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
+                        .onErrorResume(t -> Mono.empty());
+                }
             } else {
                 return Mono.empty();
             }
@@ -96,10 +109,20 @@ public class AuthorizationCodeCredential implements TokenCredential {
                    cachedToken.set(new MsalAuthenticationAccount(
                                 new AuthenticationRecord(msalToken.getAuthenticationResult(),
                                         identityClient.getTenantId(), identityClient.getClientId())));
+                   if (request.isCaeEnabled()) {
+                       isCaeEnabledRequestCached = true;
+                   } else {
+                       isCaeDisabledRequestCached = true;
+                   }
                    return (AccessToken) msalToken;
                })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
+    }
+
+    private boolean isCachePopulated(TokenRequestContext request) {
+        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

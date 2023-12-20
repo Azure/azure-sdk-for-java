@@ -92,11 +92,13 @@ public interface DynatraceSingleSignOnResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The DynatraceSingleSignOnResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DynatraceSingleSignOnResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DynatraceSingleSignOnResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -108,6 +110,7 @@ public interface DynatraceSingleSignOnResource {
              */
             WithCreate withExistingMonitor(String resourceGroupName, String monitorName);
         }
+
         /**
          * The stage of the DynatraceSingleSignOnResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -132,6 +135,7 @@ public interface DynatraceSingleSignOnResource {
              */
             DynatraceSingleSignOnResource create(Context context);
         }
+
         /** The stage of the DynatraceSingleSignOnResource definition allowing to specify singleSignOnState. */
         interface WithSingleSignOnState {
             /**
@@ -142,6 +146,7 @@ public interface DynatraceSingleSignOnResource {
              */
             WithCreate withSingleSignOnState(SingleSignOnStates singleSignOnState);
         }
+
         /** The stage of the DynatraceSingleSignOnResource definition allowing to specify enterpriseAppId. */
         interface WithEnterpriseAppId {
             /**
@@ -152,6 +157,7 @@ public interface DynatraceSingleSignOnResource {
              */
             WithCreate withEnterpriseAppId(String enterpriseAppId);
         }
+
         /** The stage of the DynatraceSingleSignOnResource definition allowing to specify singleSignOnUrl. */
         interface WithSingleSignOnUrl {
             /**
@@ -162,6 +168,7 @@ public interface DynatraceSingleSignOnResource {
              */
             WithCreate withSingleSignOnUrl(String singleSignOnUrl);
         }
+
         /** The stage of the DynatraceSingleSignOnResource definition allowing to specify aadDomains. */
         interface WithAadDomains {
             /**
@@ -173,6 +180,7 @@ public interface DynatraceSingleSignOnResource {
             WithCreate withAadDomains(List<String> aadDomains);
         }
     }
+
     /**
      * Begins update for the DynatraceSingleSignOnResource resource.
      *
@@ -201,6 +209,7 @@ public interface DynatraceSingleSignOnResource {
          */
         DynatraceSingleSignOnResource apply(Context context);
     }
+
     /** The DynatraceSingleSignOnResource update stages. */
     interface UpdateStages {
         /** The stage of the DynatraceSingleSignOnResource update allowing to specify singleSignOnState. */
@@ -213,6 +222,7 @@ public interface DynatraceSingleSignOnResource {
              */
             Update withSingleSignOnState(SingleSignOnStates singleSignOnState);
         }
+
         /** The stage of the DynatraceSingleSignOnResource update allowing to specify enterpriseAppId. */
         interface WithEnterpriseAppId {
             /**
@@ -223,6 +233,7 @@ public interface DynatraceSingleSignOnResource {
              */
             Update withEnterpriseAppId(String enterpriseAppId);
         }
+
         /** The stage of the DynatraceSingleSignOnResource update allowing to specify singleSignOnUrl. */
         interface WithSingleSignOnUrl {
             /**
@@ -233,6 +244,7 @@ public interface DynatraceSingleSignOnResource {
              */
             Update withSingleSignOnUrl(String singleSignOnUrl);
         }
+
         /** The stage of the DynatraceSingleSignOnResource update allowing to specify aadDomains. */
         interface WithAadDomains {
             /**
@@ -244,6 +256,7 @@ public interface DynatraceSingleSignOnResource {
             Update withAadDomains(List<String> aadDomains);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

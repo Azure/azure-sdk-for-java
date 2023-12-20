@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NameAvailabilityParameters {
     /*
-     * The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
+     * The resource type. Can be "Microsoft.SignalRService/SignalR", "Microsoft.SignalRService/WebPubSub",
+     * "Microsoft.SignalRService/SignalR/replicas" or "Microsoft.SignalRService/WebPubSub/replicas"
      */
     @JsonProperty(value = "type", required = true)
     private String type;
@@ -28,8 +29,9 @@ public final class NameAvailabilityParameters {
     }
 
     /**
-     * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or
-     * "Microsoft.SignalRService/webPubSub".
+     * Get the type property: The resource type. Can be "Microsoft.SignalRService/SignalR",
+     * "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas" or
+     * "Microsoft.SignalRService/WebPubSub/replicas".
      *
      * @return the type value.
      */
@@ -38,8 +40,9 @@ public final class NameAvailabilityParameters {
     }
 
     /**
-     * Set the type property: The resource type. Can be "Microsoft.SignalRService/SignalR" or
-     * "Microsoft.SignalRService/webPubSub".
+     * Set the type property: The resource type. Can be "Microsoft.SignalRService/SignalR",
+     * "Microsoft.SignalRService/WebPubSub", "Microsoft.SignalRService/SignalR/replicas" or
+     * "Microsoft.SignalRService/WebPubSub/replicas".
      *
      * @param type the type value to set.
      * @return the NameAvailabilityParameters object itself.

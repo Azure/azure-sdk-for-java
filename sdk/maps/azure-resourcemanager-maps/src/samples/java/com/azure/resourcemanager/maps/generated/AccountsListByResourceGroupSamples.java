@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maps.generated;
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/ListAccountsByResourceGroup.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts By Resource Group.

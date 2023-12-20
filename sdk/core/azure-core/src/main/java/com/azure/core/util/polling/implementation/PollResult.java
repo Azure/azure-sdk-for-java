@@ -41,8 +41,10 @@ public final class PollResult {
             this.status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         } else if (PollingConstants.STATUS_FAILED.equalsIgnoreCase(status)) {
             this.status = LongRunningOperationStatus.FAILED;
+        } else if (PollingConstants.STATUS_CANCELLED.equalsIgnoreCase(status)) {
+            this.status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            this.status = LongRunningOperationStatus.fromString(status, true);
+            this.status = LongRunningOperationStatus.fromString(status, false);
         }
         return this;
     }

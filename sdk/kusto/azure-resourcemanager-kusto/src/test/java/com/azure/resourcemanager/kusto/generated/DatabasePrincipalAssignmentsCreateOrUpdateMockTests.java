@@ -33,7 +33,7 @@ public final class DatabasePrincipalAssignmentsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"r\",\"role\":\"Viewer\",\"tenantId\":\"riypoqeyhlqhyk\",\"principalType\":\"App\",\"tenantName\":\"pyznuciqd\",\"principalName\":\"ex\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"fuxtyasiibmiybnn\"},\"id\":\"stgnl\",\"name\":\"hnmgixhcm\",\"type\":\"vmqfoud\"}";
+            "{\"properties\":{\"principalId\":\"mkoisqcssf\",\"role\":\"Ingestor\",\"tenantId\":\"ifmcsypobkdqzr\",\"principalType\":\"App\",\"tenantName\":\"ylollgtrczzydmxz\",\"principalName\":\"jpvuaurkihcirld\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"dcoxnbk\"},\"id\":\"ja\",\"name\":\"urnnqbnqbpiz\",\"type\":\"qltgrd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class DatabasePrincipalAssignmentsCreateOrUpdateMockTests {
         DatabasePrincipalAssignment response =
             manager
                 .databasePrincipalAssignments()
-                .define("yhsgz")
-                .withExistingDatabase("i", "absnmfpp", "ojeevy")
-                .withPrincipalId("zbgomfgbeg")
-                .withRole(DatabasePrincipalRole.VIEWER)
-                .withTenantId("leohibetnluankr")
-                .withPrincipalType(PrincipalType.USER)
+                .define("xtwbta")
+                .withExistingDatabase("dlrgms", "lzgaufcshhvnew", "nxkympqanxrjk")
+                .withPrincipalId("pnyghs")
+                .withRole(DatabasePrincipalRole.INGESTOR)
+                .withTenantId("ylhk")
+                .withPrincipalType(PrincipalType.GROUP)
                 .create();
 
-        Assertions.assertEquals("r", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, response.role());
-        Assertions.assertEquals("riypoqeyhlqhyk", response.tenantId());
+        Assertions.assertEquals("mkoisqcssf", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.role());
+        Assertions.assertEquals("ifmcsypobkdqzr", response.tenantId());
         Assertions.assertEquals(PrincipalType.APP, response.principalType());
     }
 }

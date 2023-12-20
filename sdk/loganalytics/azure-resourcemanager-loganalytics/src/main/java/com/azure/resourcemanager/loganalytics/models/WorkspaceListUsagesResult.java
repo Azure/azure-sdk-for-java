@@ -18,6 +18,10 @@ public final class WorkspaceListUsagesResult {
     @JsonProperty(value = "value")
     private List<UsageMetricInner> value;
 
+    /** Creates an instance of WorkspaceListUsagesResult class. */
+    public WorkspaceListUsagesResult() {
+    }
+
     /**
      * Get the value property: Gets or sets a list of usage metrics for a workspace.
      *

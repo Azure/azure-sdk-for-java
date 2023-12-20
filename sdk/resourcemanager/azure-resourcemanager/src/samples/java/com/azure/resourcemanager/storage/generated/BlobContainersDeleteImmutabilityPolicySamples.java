@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobContainers DeleteImmutabilityPolicy. */
 public final class BlobContainersDeleteImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersDeleteImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersDeleteImmutabilityPolicy.json
      */
     /**
      * Sample code: DeleteImmutabilityPolicy.
@@ -23,6 +21,6 @@ public final class BlobContainersDeleteImmutabilityPolicySamples {
             .serviceClient()
             .getBlobContainers()
             .deleteImmutabilityPolicyWithResponse(
-                "res1581", "sto9621", "container4910", "\"8d59f81a7fa7be0\"", Context.NONE);
+                "res1581", "sto9621", "container4910", "8d59f81a7fa7be0", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ConnectivityConfiguration
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The network manager effective connectivity configuration. */
+/**
+ * The network manager effective connectivity configuration.
+ */
 @Fluent
 public class EffectiveConnectivityConfiguration {
     /*
@@ -30,13 +32,15 @@ public class EffectiveConnectivityConfiguration {
     @JsonProperty(value = "configurationGroups")
     private List<ConfigurationGroup> configurationGroups;
 
-    /** Creates an instance of EffectiveConnectivityConfiguration class. */
+    /**
+     * Creates an instance of EffectiveConnectivityConfiguration class.
+     */
     public EffectiveConnectivityConfiguration() {
     }
 
     /**
      * Get the id property: Connectivity configuration ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +49,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the id property: Connectivity configuration ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -56,7 +60,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the innerProperties property: Properties of a network manager connectivity configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectivityConfigurationProperties innerProperties() {
@@ -65,7 +69,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the configurationGroups property: Effective configuration groups.
-     *
+     * 
      * @return the configurationGroups value.
      */
     public List<ConfigurationGroup> configurationGroups() {
@@ -74,7 +78,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the configurationGroups property: Effective configuration groups.
-     *
+     * 
      * @param configurationGroups the configurationGroups value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -85,7 +89,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the description property: A description of the connectivity configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +98,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the description property: A description of the connectivity configuration.
-     *
+     * 
      * @param description the description value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -108,7 +112,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the connectivityTopology property: Connectivity topology type.
-     *
+     * 
      * @return the connectivityTopology value.
      */
     public ConnectivityTopology connectivityTopology() {
@@ -117,7 +121,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the connectivityTopology property: Connectivity topology type.
-     *
+     * 
      * @param connectivityTopology the connectivityTopology value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -131,7 +135,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the hubs property: List of hubItems.
-     *
+     * 
      * @return the hubs value.
      */
     public List<Hub> hubs() {
@@ -140,7 +144,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the hubs property: List of hubItems.
-     *
+     * 
      * @param hubs the hubs value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -154,7 +158,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the isGlobal property: Flag if global mesh is supported.
-     *
+     * 
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -163,7 +167,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the isGlobal property: Flag if global mesh is supported.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -177,7 +181,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @return the appliesToGroups value.
      */
     public List<ConnectivityGroupItem> appliesToGroups() {
@@ -186,7 +190,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -200,7 +204,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -209,7 +213,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     *
+     * 
      * @return the deleteExistingPeering value.
      */
     public DeleteExistingPeering deleteExistingPeering() {
@@ -218,7 +222,7 @@ public class EffectiveConnectivityConfiguration {
 
     /**
      * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     *
+     * 
      * @param deleteExistingPeering the deleteExistingPeering value to set.
      * @return the EffectiveConnectivityConfiguration object itself.
      */
@@ -231,8 +235,17 @@ public class EffectiveConnectivityConfiguration {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

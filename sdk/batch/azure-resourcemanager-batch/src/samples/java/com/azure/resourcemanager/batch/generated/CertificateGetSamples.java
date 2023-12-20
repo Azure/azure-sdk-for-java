@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificate Get. */
 public final class CertificateGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/CertificateGetWithDeletionError.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGetWithDeletionError.json
      */
     /**
      * Sample code: Get Certificate with Deletion Error.
@@ -23,11 +21,11 @@ public final class CertificateGetSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/CertificateGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateGet.json
      */
     /**
      * Sample code: Get Certificate.
@@ -41,6 +39,6 @@ public final class CertificateGetSamples {
                 "default-azurebatch-japaneast",
                 "sampleacct",
                 "sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

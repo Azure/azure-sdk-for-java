@@ -4,18 +4,23 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ReadingOrder. */
+/**
+ * Defines values for ReadingOrder.
+ */
 public enum ReadingOrder {
-    /** Enum value basic. */
+    /**
+     * Enum value basic.
+     */
     BASIC("basic"),
 
-    /** Enum value natural. */
+    /**
+     * Enum value natural.
+     */
     NATURAL("natural");
 
-    /** The actual serialized value for a ReadingOrder instance. */
+    /**
+     * The actual serialized value for a ReadingOrder instance.
+     */
     private final String value;
 
     ReadingOrder(String value) {
@@ -24,12 +29,14 @@ public enum ReadingOrder {
 
     /**
      * Parses a serialized value to a ReadingOrder instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ReadingOrder object, or null if unable to parse.
      */
-    @JsonCreator
     public static ReadingOrder fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ReadingOrder[] items = ReadingOrder.values();
         for (ReadingOrder item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum ReadingOrder {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

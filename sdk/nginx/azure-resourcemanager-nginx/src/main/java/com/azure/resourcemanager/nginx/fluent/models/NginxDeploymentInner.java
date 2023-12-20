@@ -13,7 +13,9 @@ import com.azure.resourcemanager.nginx.models.ResourceSku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The NginxDeployment model. */
+/**
+ * The NginxDeployment model.
+ */
 @Fluent
 public final class NginxDeploymentInner extends Resource {
     /*
@@ -40,13 +42,15 @@ public final class NginxDeploymentInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NginxDeploymentInner class. */
+    /**
+     * Creates an instance of NginxDeploymentInner class.
+     */
     public NginxDeploymentInner() {
     }
 
     /**
      * Get the identity property: The identity property.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -55,7 +59,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the identity property: The identity property.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -66,7 +70,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxDeploymentProperties properties() {
@@ -75,7 +79,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -86,7 +90,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -95,7 +99,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -106,21 +110,25 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NginxDeploymentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NginxDeploymentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -129,7 +137,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

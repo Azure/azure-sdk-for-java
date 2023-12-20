@@ -17,6 +17,15 @@ public final class LogModule extends ExpandableStringEnum<LogModule> {
     public static final LogModule DISABLED = fromString("DISABLED");
 
     /**
+     * Creates a new instance of LogModule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogModule() {
+    }
+
+    /**
      * Creates or finds a LogModule from its string representation.
      *
      * @param name a name to look for.

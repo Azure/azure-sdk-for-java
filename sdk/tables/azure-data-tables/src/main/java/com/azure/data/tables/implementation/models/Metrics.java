@@ -13,7 +13,9 @@ import com.azure.xml.XmlWriter;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** The Metrics model. */
+/**
+ * The Metrics model.
+ */
 @Fluent
 public final class Metrics implements XmlSerializable<Metrics> {
     /*
@@ -36,12 +38,15 @@ public final class Metrics implements XmlSerializable<Metrics> {
      */
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of Metrics class. */
-    public Metrics() {}
+    /**
+     * Creates an instance of Metrics class.
+     */
+    public Metrics() {
+    }
 
     /**
      * Get the version property: The version of Analytics to configure.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -50,7 +55,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Set the version property: The version of Analytics to configure.
-     *
+     * 
      * @param version the version value to set.
      * @return the Metrics object itself.
      */
@@ -61,7 +66,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Get the enabled property: Indicates whether metrics are enabled for the Table service.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean isEnabled() {
@@ -70,7 +75,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Set the enabled property: Indicates whether metrics are enabled for the Table service.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Metrics object itself.
      */
@@ -82,7 +87,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
     /**
      * Get the includeAPIs property: Indicates whether metrics should generate summary statistics for called API
      * operations.
-     *
+     * 
      * @return the includeAPIs value.
      */
     public Boolean isIncludeAPIs() {
@@ -92,7 +97,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
     /**
      * Set the includeAPIs property: Indicates whether metrics should generate summary statistics for called API
      * operations.
-     *
+     * 
      * @param includeAPIs the includeAPIs value to set.
      * @return the Metrics object itself.
      */
@@ -103,7 +108,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Get the retentionPolicy property: The retention policy.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy getRetentionPolicy() {
@@ -112,7 +117,7 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Set the retentionPolicy property: The retention policy.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Metrics object itself.
      */
@@ -139,10 +144,10 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Reads an instance of Metrics from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of Metrics if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     *     XML null.
+     * XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the Metrics.
      */
@@ -152,38 +157,36 @@ public final class Metrics implements XmlSerializable<Metrics> {
 
     /**
      * Reads an instance of Metrics from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of Metrics if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     *     XML null.
+     * XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the Metrics.
      */
     public static Metrics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Metrics" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    Metrics deserializedMetrics = new Metrics();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            Metrics deserializedMetrics = new Metrics();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("Version".equals(elementName.getLocalPart())) {
-                            deserializedMetrics.version = reader.getStringElement();
-                        } else if ("Enabled".equals(elementName.getLocalPart())) {
-                            deserializedMetrics.enabled = reader.getBooleanElement();
-                        } else if ("IncludeAPIs".equals(elementName.getLocalPart())) {
-                            deserializedMetrics.includeAPIs = reader.getNullableElement(Boolean::parseBoolean);
-                        } else if ("RetentionPolicy".equals(elementName.getLocalPart())) {
-                            deserializedMetrics.retentionPolicy = RetentionPolicy.fromXml(reader, "RetentionPolicy");
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("Version".equals(elementName.getLocalPart())) {
+                    deserializedMetrics.version = reader.getStringElement();
+                } else if ("Enabled".equals(elementName.getLocalPart())) {
+                    deserializedMetrics.enabled = reader.getBooleanElement();
+                } else if ("IncludeAPIs".equals(elementName.getLocalPart())) {
+                    deserializedMetrics.includeAPIs = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("RetentionPolicy".equals(elementName.getLocalPart())) {
+                    deserializedMetrics.retentionPolicy = RetentionPolicy.fromXml(reader, "RetentionPolicy");
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedMetrics;
-                });
+            return deserializedMetrics;
+        });
     }
 }

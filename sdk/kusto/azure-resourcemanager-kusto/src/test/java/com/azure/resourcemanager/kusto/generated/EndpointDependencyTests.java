@@ -16,26 +16,23 @@ public final class EndpointDependencyTests {
         EndpointDependency model =
             BinaryData
                 .fromString(
-                    "{\"domainName\":\"mquxvypo\",\"endpointDetails\":[{\"port\":11863753},{\"port\":1364703724},{\"port\":1321769346},{\"port\":10985850}]}")
+                    "{\"domainName\":\"lhflsjcdhszfjvf\",\"endpointDetails\":[{\"port\":1130233947,\"ipAddress\":\"jagrqmqhldvr\"}]}")
                 .toObject(EndpointDependency.class);
-        Assertions.assertEquals("mquxvypo", model.domainName());
-        Assertions.assertEquals(11863753, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.domainName());
+        Assertions.assertEquals(1130233947, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("jagrqmqhldvr", model.endpointDetails().get(0).ipAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointDependency model =
             new EndpointDependency()
-                .withDomainName("mquxvypo")
+                .withDomainName("lhflsjcdhszfjvf")
                 .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail().withPort(11863753),
-                            new EndpointDetail().withPort(1364703724),
-                            new EndpointDetail().withPort(1321769346),
-                            new EndpointDetail().withPort(10985850)));
+                    Arrays.asList(new EndpointDetail().withPort(1130233947).withIpAddress("jagrqmqhldvr")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("mquxvypo", model.domainName());
-        Assertions.assertEquals(11863753, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.domainName());
+        Assertions.assertEquals(1130233947, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("jagrqmqhldvr", model.endpointDetails().get(0).ipAddress());
     }
 }

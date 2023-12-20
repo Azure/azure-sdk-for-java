@@ -41,22 +41,13 @@ public final class CachesImpl implements Caches {
         return Utils.mapPage(inner, inner1 -> new CacheContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String cacheId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, cacheId);
-    }
-
     public CachesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String cacheId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, cacheId, context);
     }
 
-    public CacheContract get(String resourceGroupName, String serviceName, String cacheId) {
-        CacheContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, cacheId);
-        if (inner != null) {
-            return new CacheContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String cacheId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, cacheId);
     }
 
     public Response<CacheContract> getWithResponse(
@@ -74,13 +65,22 @@ public final class CachesImpl implements Caches {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String cacheId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, cacheId, ifMatch);
+    public CacheContract get(String resourceGroupName, String serviceName, String cacheId) {
+        CacheContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, cacheId);
+        if (inner != null) {
+            return new CacheContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String cacheId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, cacheId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String cacheId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, cacheId, ifMatch);
     }
 
     public CacheContract getById(String id) {

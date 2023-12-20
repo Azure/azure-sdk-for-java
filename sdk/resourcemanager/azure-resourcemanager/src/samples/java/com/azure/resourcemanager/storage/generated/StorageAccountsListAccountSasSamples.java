@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.AccountSasParameters;
 import com.azure.resourcemanager.storage.models.HttpProtocol;
 import com.azure.resourcemanager.storage.models.Permissions;
@@ -15,7 +14,7 @@ import java.time.OffsetDateTime;
 /** Samples for StorageAccounts ListAccountSas. */
 public final class StorageAccountsListAccountSasSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListAccountSAS.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListAccountSAS.json
      */
     /**
      * Sample code: StorageAccountListAccountSAS.
@@ -38,7 +37,7 @@ public final class StorageAccountsListAccountSasSamples {
                     .withProtocols(HttpProtocol.HTTPS_HTTP)
                     .withSharedAccessStartTime(OffsetDateTime.parse("2017-05-24T10:42:03.1567373Z"))
                     .withSharedAccessExpiryTime(OffsetDateTime.parse("2017-05-24T11:42:03.1567373Z"))
-                    .withKeyToSign("key1"),
-                Context.NONE);
+                    .withKeyToSign("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

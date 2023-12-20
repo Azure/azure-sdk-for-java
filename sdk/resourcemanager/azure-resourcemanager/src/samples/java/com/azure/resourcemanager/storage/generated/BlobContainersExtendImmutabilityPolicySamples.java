@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
 
 /** Samples for BlobContainers ExtendImmutabilityPolicy. */
 public final class BlobContainersExtendImmutabilityPolicySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersExtendImmutabilityPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersExtendImmutabilityPolicy.json
      */
     /**
      * Sample code: ExtendImmutabilityPolicy.
@@ -27,8 +26,8 @@ public final class BlobContainersExtendImmutabilityPolicySamples {
                 "res6238",
                 "sto232",
                 "container5023",
-                "\"8d59f830d0c3bf9\"",
+                "8d59f830d0c3bf9",
                 new ImmutabilityPolicyInner().withImmutabilityPeriodSinceCreationInDays(100),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

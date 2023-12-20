@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for P2SVpnGateways Reset. */
+/**
+ * Samples for P2SVpnGateways Reset.
+ */
 public final class P2SVpnGatewaysResetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/P2SVpnGatewayReset.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/P2SVpnGatewayReset.json
      */
     /**
      * Sample code: ResetP2SVpnGateway.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetP2SVpnGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getP2SVpnGateways()
-            .reset("rg1", "p2sVpnGateway1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getP2SVpnGateways().reset("rg1", "p2sVpnGateway1",
+            com.azure.core.util.Context.NONE);
     }
 }

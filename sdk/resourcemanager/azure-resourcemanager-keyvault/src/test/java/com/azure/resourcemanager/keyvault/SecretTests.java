@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class SecretTests extends KeyVaultManagementTest {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canCRUDSecret() throws Exception {
         if (skipInPlayback()) {
             return;
@@ -69,7 +69,7 @@ public class SecretTests extends KeyVaultManagementTest {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canDisableSecret() throws Exception {
         if (skipInPlayback()) {
             return;

@@ -47,6 +47,10 @@ public final class TagDescriptionContractImpl
         return this.innerModel().externalDocsDescription();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TagDescriptionContractInner innerModel() {
         return this.innerObject;
     }

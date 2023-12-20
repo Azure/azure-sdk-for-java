@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -54,7 +55,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                     virtualMachines.manager().resourceManager().internalContext().randomResourceName("pip", 20))
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword("fakePasswordPlaceholder")
+                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withNewStorageAccount(storageCreatable)
                 .withNewAvailabilitySet(virtualMachines.manager().resourceManager().internalContext().randomResourceName("avset", 10))

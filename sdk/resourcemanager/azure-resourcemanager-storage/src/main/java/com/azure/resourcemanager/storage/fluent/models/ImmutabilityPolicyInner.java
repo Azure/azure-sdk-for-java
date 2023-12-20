@@ -19,6 +19,10 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     @JsonProperty(value = "properties", required = true)
     private ImmutabilityPolicyProperty innerProperties = new ImmutabilityPolicyProperty();
 
+    /** Creates an instance of ImmutabilityPolicyInner class. */
+    public ImmutabilityPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
      *

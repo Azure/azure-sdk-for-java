@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HubRouteTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HubRouteTablesClient.
+ */
 public interface HubRouteTablesClient {
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -30,19 +32,16 @@ public interface HubRouteTablesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return routeTable resource in a virtual hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return routeTable resource in a virtual hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        HubRouteTableInner routeTableParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName, HubRouteTableInner routeTableParameters);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -53,15 +52,12 @@ public interface HubRouteTablesClient {
      * @return the {@link PollerFlux} for polling of routeTable resource in a virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        HubRouteTableInner routeTableParameters);
+    PollerFlux<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualHubName, String routeTableName, HubRouteTableInner routeTableParameters);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -72,15 +68,12 @@ public interface HubRouteTablesClient {
      * @return the {@link SyncPoller} for polling of routeTable resource in a virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        HubRouteTableInner routeTableParameters);
+    SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routeTableName, HubRouteTableInner routeTableParameters);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -92,16 +85,12 @@ public interface HubRouteTablesClient {
      * @return the {@link SyncPoller} for polling of routeTable resource in a virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        HubRouteTableInner routeTableParameters,
-        Context context);
+    SyncPoller<PollResult<HubRouteTableInner>, HubRouteTableInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routeTableName, HubRouteTableInner routeTableParameters, Context context);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -112,15 +101,12 @@ public interface HubRouteTablesClient {
      * @return routeTable resource in a virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<HubRouteTableInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
+    Mono<HubRouteTableInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName, String routeTableName,
         HubRouteTableInner routeTableParameters);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -131,15 +117,12 @@ public interface HubRouteTablesClient {
      * @return routeTable resource in a virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HubRouteTableInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
+    HubRouteTableInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeTableName,
         HubRouteTableInner routeTableParameters);
 
     /**
      * Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -151,32 +134,28 @@ public interface HubRouteTablesClient {
      * @return routeTable resource in a virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HubRouteTableInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        HubRouteTableInner routeTableParameters,
-        Context context);
+    HubRouteTableInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeTableName,
+        HubRouteTableInner routeTableParameters, Context context);
 
     /**
      * Retrieves the details of a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return routeTable resource in a virtual hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return routeTable resource in a virtual hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<HubRouteTableInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName);
+    Mono<Response<HubRouteTableInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName);
 
     /**
      * Retrieves the details of a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -190,7 +169,7 @@ public interface HubRouteTablesClient {
 
     /**
      * Retrieves the details of a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -201,12 +180,12 @@ public interface HubRouteTablesClient {
      * @return routeTable resource in a virtual hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubRouteTableInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context);
+    Response<HubRouteTableInner> getWithResponse(String resourceGroupName, String virtualHubName, String routeTableName,
+        Context context);
 
     /**
      * Retrieves the details of a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -220,7 +199,7 @@ public interface HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -230,12 +209,12 @@ public interface HubRouteTablesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName);
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -245,12 +224,12 @@ public interface HubRouteTablesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName);
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -260,12 +239,12 @@ public interface HubRouteTablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeTableName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routeTableName);
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -276,12 +255,12 @@ public interface HubRouteTablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routeTableName, Context context);
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -295,7 +274,7 @@ public interface HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -308,7 +287,7 @@ public interface HubRouteTablesClient {
 
     /**
      * Deletes a RouteTable.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteTable.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the RouteTable.
@@ -322,43 +301,43 @@ public interface HubRouteTablesClient {
 
     /**
      * Retrieves the details of all RouteTables.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<HubRouteTableInner> listAsync(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RouteTables.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubRouteTableInner> list(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RouteTables.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of RouteTables and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HubRouteTableInner> list(String resourceGroupName, String virtualHubName, Context context);

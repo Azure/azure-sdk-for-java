@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections ListByService. */
 public final class PrivateEndpointConnectionsListByServiceSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/ListPrivateEndpointConnectionsByService.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/ListPrivateEndpointConnectionsByService.json
      */
     /**
      * Sample code: ListPrivateEndpointConnectionsByService.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsListByServiceSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .listByService("rg1", "mysearchservice", null, Context.NONE);
+            .listByService("rg1", "mysearchservice", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -3,15 +3,6 @@
 
 package com.azure.maps.weather;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
 import com.azure.core.test.TestBase;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -34,8 +25,16 @@ import com.azure.maps.weather.models.StormForecastResult;
 import com.azure.maps.weather.models.StormLocationsResult;
 import com.azure.maps.weather.models.StormSearchResult;
 import com.azure.maps.weather.models.WeatherAlongRouteResult;
-
 import org.junit.jupiter.params.provider.Arguments;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class TestUtils {
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";
@@ -257,7 +256,7 @@ public class TestUtils {
     }
 
 
-    // Code referenced from 
+    // Code referenced from
     // https://www.techiedelight.com/convert-inputstream-byte-array-java/#:~:text=Convert%20InputStream%20to%20byte%20array%20in%20Java%201,Commons%20IO%20...%204%204.%20Using%20sun.misc.IOUtils%20
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();

@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The NfsMountEndpointUpdateProperties model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeName("NfsMount")
 @Fluent
 public final class NfsMountEndpointUpdateProperties extends EndpointBaseUpdateProperties {
     /** Creates an instance of NfsMountEndpointUpdateProperties class. */

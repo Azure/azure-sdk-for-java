@@ -74,6 +74,14 @@ public interface CloudServicesNetwork {
     List<EgressEndpoint> additionalEgressEndpoints();
 
     /**
+     * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    List<String> associatedResourceIds();
+
+    /**
      * Gets the clusterId property: The resource ID of the Network Cloud cluster this cloud services network is
      * associated with.
      *
@@ -112,8 +120,8 @@ public interface CloudServicesNetwork {
     List<EgressEndpoint> enabledEgressEndpoints();
 
     /**
-     * Gets the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource IDs that are associated
-     * with this cloud services network.
+     * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource IDs that are associated with this cloud services network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -135,8 +143,9 @@ public interface CloudServicesNetwork {
     CloudServicesNetworkProvisioningState provisioningState();
 
     /**
-     * Gets the virtualMachinesAssociatedIds property: The list of virtual machine resource IDs, excluding any Hybrid
-     * AKS virtual machines, that are currently using this cloud services network.
+     * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
+     * services network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */
@@ -178,11 +187,13 @@ public interface CloudServicesNetwork {
             DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithCreate {
     }
+
     /** The CloudServicesNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the CloudServicesNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -201,6 +212,7 @@ public interface CloudServicesNetwork {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -211,6 +223,7 @@ public interface CloudServicesNetwork {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -226,6 +239,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /**
          * The stage of the CloudServicesNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -249,6 +263,7 @@ public interface CloudServicesNetwork {
              */
             CloudServicesNetwork create(Context context);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -259,6 +274,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify additionalEgressEndpoints. */
         interface WithAdditionalEgressEndpoints {
             /**
@@ -271,6 +287,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify enableDefaultEgressEndpoints. */
         interface WithEnableDefaultEgressEndpoints {
             /**
@@ -285,6 +302,7 @@ public interface CloudServicesNetwork {
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
         }
     }
+
     /**
      * Begins update for the CloudServicesNetwork resource.
      *
@@ -312,6 +330,7 @@ public interface CloudServicesNetwork {
          */
         CloudServicesNetwork apply(Context context);
     }
+
     /** The CloudServicesNetwork update stages. */
     interface UpdateStages {
         /** The stage of the CloudServicesNetwork update allowing to specify tags. */
@@ -324,6 +343,7 @@ public interface CloudServicesNetwork {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the CloudServicesNetwork update allowing to specify additionalEgressEndpoints. */
         interface WithAdditionalEgressEndpoints {
             /**
@@ -336,6 +356,7 @@ public interface CloudServicesNetwork {
              */
             Update withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
+
         /** The stage of the CloudServicesNetwork update allowing to specify enableDefaultEgressEndpoints. */
         interface WithEnableDefaultEgressEndpoints {
             /**
@@ -350,6 +371,7 @@ public interface CloudServicesNetwork {
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

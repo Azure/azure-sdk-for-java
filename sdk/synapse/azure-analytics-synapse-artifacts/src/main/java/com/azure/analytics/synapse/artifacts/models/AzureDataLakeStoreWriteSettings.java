@@ -9,26 +9,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure data lake store write settings. */
+/**
+ * Azure data lake store write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeStoreWriteSettings")
 @Fluent
 public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
     /*
      * Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of
-     * "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with resultType integer).
+     * "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "expiryDateTime")
     private Object expiryDateTime;
 
-    /** Creates an instance of AzureDataLakeStoreWriteSettings class. */
-    public AzureDataLakeStoreWriteSettings() {}
+    /**
+     * Creates an instance of AzureDataLakeStoreWriteSettings class.
+     */
+    public AzureDataLakeStoreWriteSettings() {
+    }
 
     /**
      * Get the expiryDateTime property: Specifies the expiry time of the written files. The time is applied to the UTC
-     * time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with
-     * resultType integer).
-     *
+     * time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the expiryDateTime value.
      */
     public Object getExpiryDateTime() {
@@ -37,9 +42,9 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
 
     /**
      * Set the expiryDateTime property: Specifies the expiry time of the written files. The time is applied to the UTC
-     * time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with
-     * resultType integer).
-     *
+     * time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param expiryDateTime the expiryDateTime value to set.
      * @return the AzureDataLakeStoreWriteSettings object itself.
      */
@@ -48,14 +53,18 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);

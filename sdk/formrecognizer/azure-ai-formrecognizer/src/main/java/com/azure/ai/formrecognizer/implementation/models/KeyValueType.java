@@ -5,29 +5,46 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KeyValueType. */
+/**
+ * Semantic data type of the key value element.
+ */
 public final class KeyValueType extends ExpandableStringEnum<KeyValueType> {
-    /** Static value string for KeyValueType. */
+    /**
+     * Static value string for KeyValueType.
+     */
     public static final KeyValueType STRING = fromString("string");
 
-    /** Static value selectionMark for KeyValueType. */
+    /**
+     * Static value selectionMark for KeyValueType.
+     */
     public static final KeyValueType SELECTION_MARK = fromString("selectionMark");
 
     /**
+     * Creates a new instance of KeyValueType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KeyValueType() {
+    }
+
+    /**
      * Creates or finds a KeyValueType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyValueType.
      */
-    @JsonCreator
     public static KeyValueType fromString(String name) {
         return fromString(name, KeyValueType.class);
     }
 
-    /** @return known KeyValueType values. */
+    /**
+     * Gets known KeyValueType values.
+     * 
+     * @return known KeyValueType values.
+     */
     public static Collection<KeyValueType> values() {
         return values(KeyValueType.class);
     }

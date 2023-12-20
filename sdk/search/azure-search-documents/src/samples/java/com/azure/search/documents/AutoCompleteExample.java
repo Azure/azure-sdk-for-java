@@ -14,7 +14,7 @@ import com.azure.search.documents.util.AutocompletePagedResponse;
 
 /**
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/azure/search/search-get-started-portal
  */
 public class AutoCompleteExample {
 

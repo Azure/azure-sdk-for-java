@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Origins ListByEndpoint. */
 public final class OriginsListByEndpointSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Origins_ListByEndpoint.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Origins_ListByEndpoint.json
      */
     /**
      * Sample code: Origins_ListByEndpoint.
@@ -22,6 +20,6 @@ public final class OriginsListByEndpointSamples {
             .manager()
             .serviceClient()
             .getOrigins()
-            .listByEndpoint("RG", "profile1", "endpoint1", Context.NONE);
+            .listByEndpoint("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }
 }

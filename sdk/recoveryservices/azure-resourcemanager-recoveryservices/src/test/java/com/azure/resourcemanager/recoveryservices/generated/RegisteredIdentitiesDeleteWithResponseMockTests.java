@@ -58,6 +58,6 @@ public final class RegisteredIdentitiesDeleteWithResponseMockTests {
 
         manager
             .registeredIdentities()
-            .deleteWithResponse("wpr", "qlveualupjmkh", "xobbcswsrt", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("qtayri", "wroyqbexrmcq", "bycnojvkn", com.azure.core.util.Context.NONE);
     }
 }

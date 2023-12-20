@@ -13,17 +13,21 @@ public final class Network {
     /*
      * public network access is enabled or not
      */
-    @JsonProperty(value = "publicNetworkAccess", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicNetworkAccess")
     private ServerPublicNetworkAccessState publicNetworkAccess;
 
     /*
-     * delegated subnet arm resource id.
+     * Delegated subnet arm resource id. This is required to be passed during create, in case we want the server to be
+     * VNET injected, i.e. Private access server. During update, pass this only if we want to update the value for
+     * Private DNS zone.
      */
     @JsonProperty(value = "delegatedSubnetResourceId")
     private String delegatedSubnetResourceId;
 
     /*
-     * private dns zone arm resource id.
+     * Private dns zone arm resource id. This is required to be passed during create, in case we want the server to be
+     * VNET injected, i.e. Private access server. During update, pass this only if we want to update the value for
+     * Private DNS zone.
      */
     @JsonProperty(value = "privateDnsZoneArmResourceId")
     private String privateDnsZoneArmResourceId;
@@ -42,7 +46,20 @@ public final class Network {
     }
 
     /**
-     * Get the delegatedSubnetResourceId property: delegated subnet arm resource id.
+     * Set the publicNetworkAccess property: public network access is enabled or not.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the Network object itself.
+     */
+    public Network withPublicNetworkAccess(ServerPublicNetworkAccessState publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
+     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
+     * this only if we want to update the value for Private DNS zone.
      *
      * @return the delegatedSubnetResourceId value.
      */
@@ -51,7 +68,9 @@ public final class Network {
     }
 
     /**
-     * Set the delegatedSubnetResourceId property: delegated subnet arm resource id.
+     * Set the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
+     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
+     * this only if we want to update the value for Private DNS zone.
      *
      * @param delegatedSubnetResourceId the delegatedSubnetResourceId value to set.
      * @return the Network object itself.
@@ -62,7 +81,9 @@ public final class Network {
     }
 
     /**
-     * Get the privateDnsZoneArmResourceId property: private dns zone arm resource id.
+     * Get the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
+     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
+     * this only if we want to update the value for Private DNS zone.
      *
      * @return the privateDnsZoneArmResourceId value.
      */
@@ -71,7 +92,9 @@ public final class Network {
     }
 
     /**
-     * Set the privateDnsZoneArmResourceId property: private dns zone arm resource id.
+     * Set the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
+     * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
+     * this only if we want to update the value for Private DNS zone.
      *
      * @param privateDnsZoneArmResourceId the privateDnsZoneArmResourceId value to set.
      * @return the Network object itself.

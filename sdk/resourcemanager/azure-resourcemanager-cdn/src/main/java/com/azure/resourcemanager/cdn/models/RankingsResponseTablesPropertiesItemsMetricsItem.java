@@ -28,6 +28,10 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
     @JsonProperty(value = "percentage")
     private Float percentage;
 
+    /** Creates an instance of RankingsResponseTablesPropertiesItemsMetricsItem class. */
+    public RankingsResponseTablesPropertiesItemsMetricsItem() {
+    }
+
     /**
      * Get the metric property: The metric property.
      *

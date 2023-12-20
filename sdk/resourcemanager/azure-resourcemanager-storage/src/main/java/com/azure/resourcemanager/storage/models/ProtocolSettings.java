@@ -16,6 +16,10 @@ public final class ProtocolSettings {
     @JsonProperty(value = "smb")
     private SmbSetting smb;
 
+    /** Creates an instance of ProtocolSettings class. */
+    public ProtocolSettings() {
+    }
+
     /**
      * Get the smb property: Setting for SMB protocol.
      *

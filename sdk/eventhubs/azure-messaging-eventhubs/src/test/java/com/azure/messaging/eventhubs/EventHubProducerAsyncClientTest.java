@@ -41,10 +41,8 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -114,6 +112,7 @@ class EventHubProducerAsyncClientTest {
         .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final ClientLogger LOGGER = new ClientLogger(EventHubProducerAsyncClient.class);
     private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, HOSTNAME, EVENT_HUB_NAME);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -148,16 +147,6 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup(TestInfo testInfo) {
@@ -216,7 +205,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData, options))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -244,7 +234,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData, options))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink, times(1)).send(any(Message.class));
@@ -383,7 +374,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(asyncProducer.send(testData, sendOptions))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         //Assert
         verify(tracer1, times(1))
@@ -438,7 +430,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(asyncProducer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         //Assert
         verify(tracer1, times(1))
@@ -490,11 +483,13 @@ class EventHubProducerAsyncClientTest {
         // Act
         StepVerifier.create(asyncProducer.getEventHubProperties())
             .consumeNextWith(p -> assertSame(ehProperties, p))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(asyncProducer.getPartitionProperties("0"))
             .consumeNextWith(p -> assertSame(partitionProperties, p))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         //Assert
         verify(tracer1, times(1))
@@ -589,8 +584,9 @@ class EventHubProducerAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(producer.send(testData))
-            .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+            .expectErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED)
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(0)).send(any(Message.class));
     }
@@ -627,14 +623,16 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(2)).getLinkSize();
     }
@@ -703,7 +701,8 @@ class EventHubProducerAsyncClientTest {
                     assertEquals("1", data1.getProperties().get(DIAGNOSTIC_ID_KEY));
                     return asyncProducer.send(batch);
                 }))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(tracer1, times(2))
             .start(eq("EventHubs.message"), any(), any(Context.class));
@@ -743,7 +742,8 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -768,7 +768,7 @@ class EventHubProducerAsyncClientTest {
         // Act & Assert
         StepVerifier.create(producer.createBatch(options))
             .expectError(IllegalArgumentException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -806,14 +806,16 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch(options))
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -823,10 +825,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((EventData) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -836,10 +840,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((Iterable<EventData>) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -849,10 +855,12 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions();
 
         StepVerifier.create(producer.send(event, null))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send((Flux<EventData>) null, sendOptions))
-            .verifyError(NullPointerException.class);
+            .expectError(NullPointerException.class)
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -876,7 +884,8 @@ class EventHubProducerAsyncClientTest {
                 options.setPartitionKey("something-else");
                 Assertions.assertEquals(originalKey, batch.getPartitionKey());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -907,14 +916,16 @@ class EventHubProducerAsyncClientTest {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertTrue(batch.tryAdd(event));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.createBatch())
             .assertNext(batch -> {
                 Assertions.assertNull(batch.getPartitionKey());
                 Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, times(2)).getLinkSize();
     }
@@ -958,7 +969,8 @@ class EventHubProducerAsyncClientTest {
                     batch.tryAdd(new EventData("3"));
                     return producer2.send(batch);
                 })))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
         assertNotNull(eventCounter);
@@ -990,7 +1002,7 @@ class EventHubProducerAsyncClientTest {
 
         StepVerifier.create(producer.send(new EventData("1")))
             .expectErrorMessage("foo")
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
         assertNotNull(eventCounter);
@@ -1020,7 +1032,8 @@ class EventHubProducerAsyncClientTest {
 
         SendOptions options = new SendOptions().setPartitionId(partitionId);
         StepVerifier.create(producer.send(new EventData("1"), options))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
         assertNotNull(eventCounter);
@@ -1073,7 +1086,8 @@ class EventHubProducerAsyncClientTest {
         }).when(tracer).injectContext(any(), any(Context.class));
 
         StepVerifier.create(producer.send(new EventData("1")))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         TestCounter eventCounter = meter.getCounters().get("messaging.eventhubs.events.sent");
         assertNotNull(eventCounter);
@@ -1102,7 +1116,8 @@ class EventHubProducerAsyncClientTest {
             connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.send(new EventData("1")))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertFalse(meter.getCounters().containsKey("messaging.eventhubs.events.sent"));
     }
@@ -1120,7 +1135,8 @@ class EventHubProducerAsyncClientTest {
             connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         StepVerifier.create(producer.send(new EventData("1")))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -1162,13 +1178,16 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData, new SendOptions()))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId1)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData, new SendOptions().setPartitionId(partitionId2)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -1292,14 +1311,16 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like a server busy condition.
         endpointSink.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
             new AmqpErrorContext("test-namespace")));
 
         StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -1364,7 +1385,8 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Send in an error signal like authorization failure.
         endpointSink.error(nonTransientError);
@@ -1434,15 +1456,14 @@ class EventHubProducerAsyncClientTest {
 
         // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
         // This simulates when a link is closed.
-        when(sendLink.send(argThat((Message message) -> {
-            return message.getApplicationProperties().getValue().containsKey(failureKey);
-        }))).thenAnswer(mock -> {
-            final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
-                new AmqpErrorContext("test-namespace"));
+        when(sendLink.send(argThat((Message message) -> message.getApplicationProperties().getValue().containsKey(failureKey))))
+            .thenAnswer(mock -> {
+                final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+                    new AmqpErrorContext("test-namespace"));
 
-            endpointSink.error(error);
-            return Mono.error(error);
-        });
+                endpointSink.error(error);
+                return Mono.error(error);
+            });
 
         final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
         when(connection2.getEndpointStates()).thenReturn(connectionState2);
@@ -1452,10 +1473,12 @@ class EventHubProducerAsyncClientTest {
 
         // Act
         StepVerifier.create(producer.send(testData))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());

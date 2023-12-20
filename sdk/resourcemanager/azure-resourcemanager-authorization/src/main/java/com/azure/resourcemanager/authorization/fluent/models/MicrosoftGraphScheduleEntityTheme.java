@@ -50,6 +50,15 @@ public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnu
     public static final MicrosoftGraphScheduleEntityTheme UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphScheduleEntityTheme value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphScheduleEntityTheme() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphScheduleEntityTheme from its string representation.
      *
      * @param name a name to look for.

@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.4.7</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 
@@ -124,8 +124,11 @@ System.out.println("User id: " + user.getId());
 ### Getting a token for an existing user
 Use the `getToken` function to get a token for an existing user. The function
 also takes in a list of `CommunicationTokenScope`. Scope options include:
-- `chat` (Chat)
-- `voip` (Voice over IP)
+- `CHAT` (Use this for full access to Chat APIs)
+- `VOIP` (Use this for full access to Calling APIs)
+- `CHAT_JOIN` (Access to Chat APIs but without the authorization to create, delete or update chat threads)
+- `CHAT_JOIN_LIMITED` (A more limited version of CHAT_JOIN that doesn't allow to add or remove participants)
+- `VOIP_JOIN` (Access to Calling APIs but without the authorization to start new calls)
 
 ```java readme-sample-issueUserToken
  // Define a list of communication token scopes
@@ -231,7 +234,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://search.maven.org/artifact/com.azure/azure-communication-identity
+[package]: https://central.sonatype.com/artifact/com.azure/azure-communication-identity
 [api_documentation]: https://aka.ms/java-docs
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-identity/src/samples/java/com/azure/communication/identity/ReadmeSamples.java
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-identity/src

@@ -17,6 +17,10 @@ public final class OriginUpdateParameters {
     @JsonProperty(value = "properties")
     private OriginUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of OriginUpdateParameters class. */
+    public OriginUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
      *

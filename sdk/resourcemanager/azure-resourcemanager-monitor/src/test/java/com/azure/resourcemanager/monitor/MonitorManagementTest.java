@@ -22,8 +22,11 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
@@ -31,7 +34,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for Monitor manager tests. */
-public class MonitorManagementTest extends ResourceManagerTestBase {
+public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected MonitorManager monitorManager;
     protected ComputeManager computeManager;
@@ -39,6 +42,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
     protected EventHubsManager eventHubManager;
     protected AppServiceManager appServiceManager;
     protected KeyVaultManager keyVaultManager;
+    protected SqlServerManager sqlServerManager;
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -70,6 +74,7 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
         eventHubManager = buildManager(EventHubsManager.class, httpPipeline, profile);
         resourceManager = monitorManager.resourceManager();
         keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
+        sqlServerManager = buildManager(SqlServerManager.class, httpPipeline, profile);
         setInternalContext(internalContext, computeManager);
     }
 
@@ -98,5 +103,25 @@ public class MonitorManagementTest extends ResourceManagerTestBase {
             .withExistingResourceGroup(rgName)
             .withEmptyAccessPolicy()
             .create();
+    }
+
+    protected SqlElasticPool ensureElasticPoolWithWhiteSpace(Region region, String rgName) {
+        String sqlServerName = generateRandomResourceName("JMonitorSql-", 18);
+
+        SqlServer sqlServer = sqlServerManager
+            .sqlServers()
+            .define(sqlServerName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin("admin123")
+            .withAdministratorPassword(password())
+            .create();
+
+        // white space in pool name
+        SqlElasticPool pool = sqlServer.elasticPools()
+            .define("name with space")
+            .withBasicPool()
+            .create();
+        return pool;
     }
 }

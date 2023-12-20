@@ -7,31 +7,30 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.Usage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsageTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Usage model =
             BinaryData
                 .fromString(
-                    "{\"unit\":\"uvarmywdmjsjq\",\"currentValue\":7543119596845628167,\"limit\":1070182178135164646,\"name\":{\"value\":\"lyc\",\"localizedValue\":\"uhpkxkgymar\"}}")
+                    "{\"unit\":\"mciodhkhazxkhn\",\"currentValue\":1031605542268068469,\"limit\":5106824512288532592,\"name\":{\"value\":\"egokdwbwhkszzcmr\",\"localizedValue\":\"xztvbtqgsfraoyzk\"}}")
                 .toObject(Usage.class);
-        Assertions.assertEquals("uvarmywdmjsjq", model.unit());
-        Assertions.assertEquals(7543119596845628167L, model.currentValue());
-        Assertions.assertEquals(1070182178135164646L, model.limit());
+        Assertions.assertEquals("mciodhkhazxkhn", model.unit());
+        Assertions.assertEquals(1031605542268068469L, model.currentValue());
+        Assertions.assertEquals(5106824512288532592L, model.limit());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Usage model =
             new Usage()
-                .withUnit("uvarmywdmjsjq")
-                .withCurrentValue(7543119596845628167L)
-                .withLimit(1070182178135164646L);
+                .withUnit("mciodhkhazxkhn")
+                .withCurrentValue(1031605542268068469L)
+                .withLimit(5106824512288532592L);
         model = BinaryData.fromObject(model).toObject(Usage.class);
-        Assertions.assertEquals("uvarmywdmjsjq", model.unit());
-        Assertions.assertEquals(7543119596845628167L, model.currentValue());
-        Assertions.assertEquals(1070182178135164646L, model.limit());
+        Assertions.assertEquals("mciodhkhazxkhn", model.unit());
+        Assertions.assertEquals(1031605542268068469L, model.currentValue());
+        Assertions.assertEquals(5106824512288532592L, model.limit());
     }
 }

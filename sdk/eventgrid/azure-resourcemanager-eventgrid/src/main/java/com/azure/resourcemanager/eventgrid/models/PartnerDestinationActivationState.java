@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Activation state of the partner destination. */
+/**
+ * Activation state of the partner destination.
+ */
 public final class PartnerDestinationActivationState extends ExpandableStringEnum<PartnerDestinationActivationState> {
-    /** Static value NeverActivated for PartnerDestinationActivationState. */
+    /**
+     * Static value NeverActivated for PartnerDestinationActivationState.
+     */
     public static final PartnerDestinationActivationState NEVER_ACTIVATED = fromString("NeverActivated");
 
-    /** Static value Activated for PartnerDestinationActivationState. */
+    /**
+     * Static value Activated for PartnerDestinationActivationState.
+     */
     public static final PartnerDestinationActivationState ACTIVATED = fromString("Activated");
 
     /**
      * Creates a new instance of PartnerDestinationActivationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PartnerDestinationActivationState extends ExpandableStringEnu
 
     /**
      * Creates or finds a PartnerDestinationActivationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PartnerDestinationActivationState.
      */
@@ -38,7 +44,7 @@ public final class PartnerDestinationActivationState extends ExpandableStringEnu
 
     /**
      * Gets known PartnerDestinationActivationState values.
-     *
+     * 
      * @return known PartnerDestinationActivationState values.
      */
     public static Collection<PartnerDestinationActivationState> values() {

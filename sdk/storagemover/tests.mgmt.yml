@@ -1,0 +1,16 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: storagemover
+      Artifacts:
+        - name: azure-resourcemanager-storagemover
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerstoragemover
+      Clouds: 'Public'
+      # Only run tests on Windows to save cost.
+      MatrixFilters:
+        - pool=.*(win).*

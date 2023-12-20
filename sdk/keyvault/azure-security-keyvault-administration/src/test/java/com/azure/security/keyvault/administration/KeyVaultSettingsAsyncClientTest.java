@@ -18,7 +18,6 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }

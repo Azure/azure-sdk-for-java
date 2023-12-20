@@ -33,7 +33,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"sxnkjzkdeslpvlo\",\"provisioningState\":\"Succeeded\"},\"location\":\"ighxpk\",\"tags\":{\"upedeojnabckhs\":\"baiuebbaumny\"},\"id\":\"txp\",\"name\":\"ie\",\"type\":\"tfhvpesapskrdqmh\"}";
+            "{\"properties\":{\"description\":\"qmhjjdhtld\",\"provisioningState\":\"Succeeded\"},\"location\":\"xuutkncwscwsv\",\"tags\":{\"rupqsxvnmicy\":\"togt\",\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,20 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
         StorageMover response =
             manager
                 .storageMovers()
-                .define("hdwbavxbniwdjs")
-                .withRegion("nxytxh")
-                .withExistingResourceGroup("ux")
-                .withTags(mapOf("lcuhxwtctyqiklb", "bzpfzab", "bhvgy", "ovplw"))
-                .withDescription("s")
+                .define("xbzpfzab")
+                .withRegion("bhvgy")
+                .withExistingResourceGroup("dbpgnxytxhp")
+                .withTags(
+                    mapOf("ss", "osvmk", "gmgsxnkjzkde", "qukkfp", "yighxpk", "lpvlopw", "baumnyqupedeoj", "wzbaiue"))
+                .withDescription("uhxwtctyqiklbbov")
                 .create();
 
-        Assertions.assertEquals("ighxpk", response.location());
-        Assertions.assertEquals("baiuebbaumny", response.tags().get("upedeojnabckhs"));
-        Assertions.assertEquals("sxnkjzkdeslpvlo", response.description());
+        Assertions.assertEquals("xuutkncwscwsv", response.location());
+        Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));
+        Assertions.assertEquals("qmhjjdhtld", response.description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -3,15 +3,6 @@
 
 package com.azure.maps.search;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
@@ -19,10 +10,10 @@ import com.azure.core.models.GeoObject;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
 import com.azure.maps.search.models.FuzzySearchOptions;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.ReverseSearchAddressOptions;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
@@ -37,9 +28,18 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
-
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MapsSearchClientTest extends MapsSearchClientTestBase {
 
@@ -458,6 +458,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     }
 
     // Test search along route
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchAlongRoute(HttpClient httpClient, MapsSearchServiceVersion serviceVersion)
@@ -472,6 +473,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
 
     // Test search along route with response
     // Case 1: 200
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchAlongRouteWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion)

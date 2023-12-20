@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
 /** Samples for Deployments GenerateThreadDump. */
 public final class DeploymentsGenerateThreadDumpSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Deployments_GenerateThreadDump.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Deployments_GenerateThreadDump.json
      */
     /**
      * Sample code: Deployments_GenerateHeapDump.

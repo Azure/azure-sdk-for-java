@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualRouterPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualRouterPeeringsClient.
+ */
 public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeringsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualRouterPeeringsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualRouterPeeringsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualRouterPeeringsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VirtualRouterPeeringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualRouterPeeringsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,80 +70,58 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VirtualRouterPeeringsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("virtualRouterName") String virtualRouterName, @PathParam("peeringName") String peeringName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<Response<VirtualRouterPeeringInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualRouterName") String virtualRouterName, @PathParam("peeringName") String peeringName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualRouterName") String virtualRouterName, @PathParam("peeringName") String peeringName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") VirtualRouterPeeringInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterPeeringInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualRouterPeeringListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualRouterName") String virtualRouterName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings/{peeringName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualRouterPeeringInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}/peerings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualRouterPeeringListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualRouterName") String virtualRouterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<VirtualRouterPeeringListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -148,13 +131,11 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,32 +149,20 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualRouterName,
+                peeringName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -204,13 +173,11 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -224,29 +191,19 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, virtualRouterName, peeringName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -256,19 +213,17 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -279,19 +234,18 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -301,14 +255,14 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualRouterName, String peeringName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName,
+        String peeringName) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).getSyncPoller();
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -319,14 +273,14 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName,
+        String peeringName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -337,14 +291,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -355,16 +308,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualRouterName, String peeringName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -379,7 +331,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
 
     /**
      * Deletes the specified peering from a Virtual Router.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the peering.
@@ -395,24 +347,22 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
 
     /**
      * Gets the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified Virtual Router Peering along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualRouterPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName) {
+    public Mono<Response<VirtualRouterPeeringInner>> getWithResponseAsync(String resourceGroupName,
+        String virtualRouterName, String peeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -426,32 +376,20 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualRouterName,
+                peeringName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -459,17 +397,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Router Peering along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified Virtual Router Peering along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualRouterPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+    private Mono<Response<VirtualRouterPeeringInner>> getWithResponseAsync(String resourceGroupName,
+        String virtualRouterName, String peeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,29 +419,19 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, virtualRouterName, peeringName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -515,15 +441,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the specified Virtual Router Peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualRouterPeeringInner> getAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName) {
+    public Mono<VirtualRouterPeeringInner> getAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName) {
         return getWithResponseAsync(resourceGroupName, virtualRouterName, peeringName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -534,14 +460,14 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return the specified Virtual Router Peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualRouterPeeringInner> getWithResponse(
-        String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+    public Response<VirtualRouterPeeringInner> getWithResponse(String resourceGroupName, String virtualRouterName,
+        String peeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, context).block();
     }
 
     /**
      * Gets the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -557,7 +483,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -568,13 +494,11 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -588,38 +512,26 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualRouterName,
+                    peeringName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -631,17 +543,11 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualRouterName,
-        String peeringName,
-        VirtualRouterPeeringInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -655,35 +561,24 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualRouterName, peeringName,
+            apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -696,21 +591,16 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters);
-        return this
-            .client
-            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualRouterPeeringInner.class,
-                VirtualRouterPeeringInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters);
+        return this.client.<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualRouterPeeringInner.class, VirtualRouterPeeringInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -723,27 +613,18 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualRouterName,
-        String peeringName,
-        VirtualRouterPeeringInner parameters,
+        String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context);
-        return this
-            .client
-            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualRouterPeeringInner.class,
-                VirtualRouterPeeringInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context);
+        return this.client.<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualRouterPeeringInner.class, VirtualRouterPeeringInner.class, context);
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -756,14 +637,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -776,19 +656,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualRouterName,
-        String peeringName,
-        VirtualRouterPeeringInner parameters,
+        String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -799,16 +675,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualRouterPeeringInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters)
-            .last()
+    public Mono<VirtualRouterPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName, VirtualRouterPeeringInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -820,20 +695,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualRouterPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualRouterName,
-        String peeringName,
-        VirtualRouterPeeringInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context)
-            .last()
+    private Mono<VirtualRouterPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualRouterName,
+        String peeringName, VirtualRouterPeeringInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -844,14 +714,14 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualRouterPeeringInner createOrUpdate(
-        String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
+    public VirtualRouterPeeringInner createOrUpdate(String resourceGroupName, String virtualRouterName,
+        String peeringName, VirtualRouterPeeringInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters).block();
     }
 
     /**
      * Creates or updates the specified Virtual Router Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param peeringName The name of the Virtual Router Peering.
@@ -863,34 +733,28 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return virtual Router Peering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualRouterPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String virtualRouterName,
-        String peeringName,
-        VirtualRouterPeeringInner parameters,
-        Context context) {
+    public VirtualRouterPeeringInner createOrUpdate(String resourceGroupName, String virtualRouterName,
+        String peeringName, VirtualRouterPeeringInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context).block();
     }
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListVirtualRouterPeerings API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualRouterPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualRouterName) {
+    private Mono<PagedResponse<VirtualRouterPeeringInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualRouterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -901,40 +765,22 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualRouterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<VirtualRouterPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualRouterName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<VirtualRouterPeeringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param context The context to associate with this operation.
@@ -942,16 +788,14 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListVirtualRouterPeerings API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualRouterPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualRouterName, Context context) {
+    private Mono<PagedResponse<VirtualRouterPeeringInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualRouterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -962,37 +806,22 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 .error(new IllegalArgumentException("Parameter virtualRouterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualRouterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, virtualRouterName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,14 +831,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualRouterPeeringInner> listAsync(String resourceGroupName, String virtualRouterName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualRouterName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualRouterName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param context The context to associate with this operation.
@@ -1019,16 +847,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return response for ListVirtualRouterPeerings API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualRouterPeeringInner> listAsync(
-        String resourceGroupName, String virtualRouterName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualRouterName, context),
+    private PagedFlux<VirtualRouterPeeringInner> listAsync(String resourceGroupName, String virtualRouterName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualRouterName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1043,7 +870,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
 
     /**
      * Lists all Virtual Router Peerings in a Virtual Router resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
      * @param context The context to associate with this operation.
@@ -1053,21 +880,22 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @return response for ListVirtualRouterPeerings API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualRouterPeeringInner> list(
-        String resourceGroupName, String virtualRouterName, Context context) {
+    public PagedIterable<VirtualRouterPeeringInner> list(String resourceGroupName, String virtualRouterName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualRouterName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListVirtualRouterPeerings API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualRouterPeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -1075,37 +903,28 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualRouterPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualRouterPeeringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListVirtualRouterPeerings API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualRouterPeeringInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1113,23 +932,13 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -13,7 +13,7 @@ public final class ProjectListTests {
         ProjectList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"rcjxvsnbyxqabn\",\"provisioningState\":\"Succeeded\"},\"id\":\"cyshurzafbljjgp\",\"name\":\"toqcjmklja\",\"type\":\"bqidtqaj\"},{\"properties\":{\"description\":\"l\",\"provisioningState\":\"Succeeded\"},\"id\":\"jkrlkhbzhfepg\",\"name\":\"gqexzlocxs\",\"type\":\"paierh\"}],\"nextLink\":\"csglum\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"kdosvqw\",\"provisioningState\":\"Succeeded\"},\"id\":\"gbbjfddgmbmbe\",\"name\":\"ppbhtqqrolfp\",\"type\":\"psalgbqux\"},{\"properties\":{\"description\":\"yjgzjaoyfhrtxiln\",\"provisioningState\":\"Succeeded\"},\"id\":\"jysvl\",\"name\":\"juvf\",\"type\":\"awrlyx\"},{\"properties\":{\"description\":\"cpr\",\"provisioningState\":\"Succeeded\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"description\":\"wzwbnguitn\",\"provisioningState\":\"Succeeded\"},\"id\":\"gazxuf\",\"name\":\"zuckyfi\",\"type\":\"rfidfvzwdz\"}],\"nextLink\":\"tymw\"}")
                 .toObject(ProjectList.class);
     }
 

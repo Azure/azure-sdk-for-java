@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualNetworkTaps GetByResourceGroup. */
+/**
+ * Samples for VirtualNetworkTaps GetByResourceGroup.
+ */
 public final class VirtualNetworkTapsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkTapGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkTapGet.json
      */
     /**
      * Sample code: Get Virtual Network Tap.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkTap(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVirtualNetworkTaps()
-            .getByResourceGroupWithResponse("rg1", "testvtap", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVirtualNetworkTaps().getByResourceGroupWithResponse("rg1",
+            "testvtap", com.azure.core.util.Context.NONE);
     }
 }

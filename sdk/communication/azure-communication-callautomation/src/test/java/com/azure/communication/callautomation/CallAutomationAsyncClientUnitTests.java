@@ -20,9 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,7 +31,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201)
             )));
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
@@ -46,7 +44,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201)
             )));
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
@@ -59,23 +57,21 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 201)
             )));
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        Map<String, String> sipHeaders = new HashMap<String, String>();
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
-        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
-            .setSipHeaders(sipHeaders)
-            .setVoipHeaders(voipHeaders);
+        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createGroupCallWithResponse(callOptions).block();
 
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
-        assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+        assertEquals(MEDIA_SUBSCRIPTION_ID, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+        assertEquals(DATA_SUBSCRIPTION_ID, createCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 
     @Test
@@ -83,14 +79,13 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 201)
             )));
-        //List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), voipHeaders);
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         CreateCallOptions callOptions = new CreateCallOptions(callInvite, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
 
@@ -105,7 +100,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL,  null), 200)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL,  null, null), 200)
             )));
 
         AnswerCallResult answerCallResult = callAutomationAsyncClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL).block();
@@ -118,18 +113,21 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200)
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
+            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
             answerCallOptions).block();
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
-        assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+        assertEquals(MEDIA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+        assertEquals(DATA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 
     @Test
@@ -140,8 +138,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             ))
         );
 
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), voipHeaders);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         callAutomationAsyncClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
     }

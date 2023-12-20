@@ -17,6 +17,15 @@ public final class Tier extends ExpandableStringEnum<Tier> {
     public static final Tier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of Tier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Tier() {
+    }
+
+    /**
      * Creates or finds a Tier from its string representation.
      *
      * @param name a name to look for.

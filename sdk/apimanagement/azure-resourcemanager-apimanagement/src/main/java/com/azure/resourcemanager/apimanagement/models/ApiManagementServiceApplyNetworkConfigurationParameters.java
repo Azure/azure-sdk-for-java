@@ -11,12 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiManagementServiceApplyNetworkConfigurationParameters {
     /*
-     * Location of the Api Management service to update for a multi-region
-     * service. For a service deployed in a single region, this parameter is
-     * not required.
+     * Location of the Api Management service to update for a multi-region service. For a service deployed in a single
+     * region, this parameter is not required.
      */
     @JsonProperty(value = "location")
     private String location;
+
+    /** Creates an instance of ApiManagementServiceApplyNetworkConfigurationParameters class. */
+    public ApiManagementServiceApplyNetworkConfigurationParameters() {
+    }
 
     /**
      * Get the location property: Location of the Api Management service to update for a multi-region service. For a

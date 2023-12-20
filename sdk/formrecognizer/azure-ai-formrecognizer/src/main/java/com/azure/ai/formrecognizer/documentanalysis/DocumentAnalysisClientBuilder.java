@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
@@ -36,8 +35,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClients}
- * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClients}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClient}
+ * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
@@ -103,6 +102,12 @@ public final class DocumentAnalysisClientBuilder implements
     TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
+    /**
+     * Create a DocumentAnalysisClientBuilder instance.
+     */
+    public DocumentAnalysisClientBuilder() {
+    }
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
@@ -153,13 +158,8 @@ public final class DocumentAnalysisClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentAnalysisClient(formRecognizerAPI);
+        return new DocumentAnalysisClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()));
     }
 
     /**
@@ -197,13 +197,8 @@ public final class DocumentAnalysisClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentAnalysisAsyncClient(formRecognizerAPI, serviceVersion);
+        return new DocumentAnalysisAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
@@ -332,7 +327,7 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentAnalysisClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualRouterPeerings Get. */
+/**
+ * Samples for VirtualRouterPeerings Get.
+ */
 public final class VirtualRouterPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualRouterPeeringGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualRouterPeeringGet.json
      */
     /**
      * Sample code: Get Virtual Router Peering.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualRouterPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVirtualRouterPeerings()
-            .getWithResponse("rg1", "virtualRouter", "peering1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVirtualRouterPeerings().getWithResponse("rg1", "virtualRouter",
+            "peering1", com.azure.core.util.Context.NONE);
     }
 }

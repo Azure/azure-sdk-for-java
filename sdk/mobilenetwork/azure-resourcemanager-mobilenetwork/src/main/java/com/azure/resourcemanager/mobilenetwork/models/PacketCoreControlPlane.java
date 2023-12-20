@@ -99,11 +99,18 @@ public interface PacketCoreControlPlane {
     CoreNetworkType coreNetworkTechnology();
 
     /**
-     * Gets the version property: The version of the packet core software that is deployed.
+     * Gets the version property: The desired version of the packet core software.
      *
      * @return the version value.
      */
     String version();
+
+    /**
+     * Gets the installedVersion property: The currently installed version of the packet core software.
+     *
+     * @return the installedVersion value.
+     */
+    String installedVersion();
 
     /**
      * Gets the rollbackVersion property: The previous version of the packet core software that was deployed. Used when
@@ -120,6 +127,16 @@ public interface PacketCoreControlPlane {
      * @return the controlPlaneAccessInterface value.
      */
     InterfaceProperties controlPlaneAccessInterface();
+
+    /**
+     * Gets the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @return the controlPlaneAccessVirtualIpv4Addresses value.
+     */
+    List<String> controlPlaneAccessVirtualIpv4Addresses();
 
     /**
      * Gets the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
@@ -145,6 +162,27 @@ public interface PacketCoreControlPlane {
      * @return the localDiagnosticsAccess value.
      */
     LocalDiagnosticsAccessConfiguration localDiagnosticsAccess();
+
+    /**
+     * Gets the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @return the diagnosticsUpload value.
+     */
+    DiagnosticsUploadConfiguration diagnosticsUpload();
+
+    /**
+     * Gets the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @return the eventHub value.
+     */
+    EventHubConfiguration eventHub();
+
+    /**
+     * Gets the signaling property: Signaling configuration for the packet core.
+     *
+     * @return the signaling value.
+     */
+    SignalingConfiguration signaling();
 
     /**
      * Gets the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
@@ -194,11 +232,13 @@ public interface PacketCoreControlPlane {
             DefinitionStages.WithLocalDiagnosticsAccess,
             DefinitionStages.WithCreate {
     }
+
     /** The PacketCoreControlPlane definition stages. */
     interface DefinitionStages {
         /** The first stage of the PacketCoreControlPlane definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -217,6 +257,7 @@ public interface PacketCoreControlPlane {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -227,6 +268,7 @@ public interface PacketCoreControlPlane {
              */
             WithSites withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify sites. */
         interface WithSites {
             /**
@@ -239,6 +281,7 @@ public interface PacketCoreControlPlane {
              */
             WithPlatform withSites(List<SiteResourceId> sites);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify platform. */
         interface WithPlatform {
             /**
@@ -249,6 +292,7 @@ public interface PacketCoreControlPlane {
              */
             WithControlPlaneAccessInterface withPlatform(PlatformConfiguration platform);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify controlPlaneAccessInterface. */
         interface WithControlPlaneAccessInterface {
             /**
@@ -261,6 +305,7 @@ public interface PacketCoreControlPlane {
              */
             WithSku withControlPlaneAccessInterface(InterfaceProperties controlPlaneAccessInterface);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -273,6 +318,7 @@ public interface PacketCoreControlPlane {
              */
             WithLocalDiagnosticsAccess withSku(BillingSku sku);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify localDiagnosticsAccess. */
         interface WithLocalDiagnosticsAccess {
             /**
@@ -285,6 +331,7 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withLocalDiagnosticsAccess(LocalDiagnosticsAccessConfiguration localDiagnosticsAccess);
         }
+
         /**
          * The stage of the PacketCoreControlPlane definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -292,9 +339,14 @@ public interface PacketCoreControlPlane {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
+                DefinitionStages.WithInstallation,
                 DefinitionStages.WithCoreNetworkTechnology,
                 DefinitionStages.WithVersion,
+                DefinitionStages.WithControlPlaneAccessVirtualIpv4Addresses,
                 DefinitionStages.WithUeMtu,
+                DefinitionStages.WithDiagnosticsUpload,
+                DefinitionStages.WithEventHub,
+                DefinitionStages.WithSignaling,
                 DefinitionStages.WithInteropSettings {
             /**
              * Executes the create request.
@@ -311,6 +363,7 @@ public interface PacketCoreControlPlane {
              */
             PacketCoreControlPlane create(Context context);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -321,6 +374,7 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -332,6 +386,18 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify installation. */
+        interface WithInstallation {
+            /**
+             * Specifies the installation property: The installation state of the packet core control plane resource..
+             *
+             * @param installation The installation state of the packet core control plane resource.
+             * @return the next definition stage.
+             */
+            WithCreate withInstallation(Installation installation);
+        }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify coreNetworkTechnology. */
         interface WithCoreNetworkTechnology {
             /**
@@ -343,16 +409,38 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withCoreNetworkTechnology(CoreNetworkType coreNetworkTechnology);
         }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify version. */
         interface WithVersion {
             /**
-             * Specifies the version property: The version of the packet core software that is deployed..
+             * Specifies the version property: The desired version of the packet core software..
              *
-             * @param version The version of the packet core software that is deployed.
+             * @param version The desired version of the packet core software.
              * @return the next definition stage.
              */
             WithCreate withVersion(String version);
         }
+
+        /**
+         * The stage of the PacketCoreControlPlane definition allowing to specify
+         * controlPlaneAccessVirtualIpv4Addresses.
+         */
+        interface WithControlPlaneAccessVirtualIpv4Addresses {
+            /**
+             * Specifies the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control
+             * plane on the access network in a High Availability (HA) system. In an HA deployment the access network
+             * router should be configured to anycast traffic for this address to the control plane access interfaces on
+             * the active and standby nodes. In non-HA system this list should be omitted or empty..
+             *
+             * @param controlPlaneAccessVirtualIpv4Addresses The virtual IP address(es) for the control plane on the
+             *     access network in a High Availability (HA) system. In an HA deployment the access network router
+             *     should be configured to anycast traffic for this address to the control plane access interfaces on
+             *     the active and standby nodes. In non-HA system this list should be omitted or empty.
+             * @return the next definition stage.
+             */
+            WithCreate withControlPlaneAccessVirtualIpv4Addresses(List<String> controlPlaneAccessVirtualIpv4Addresses);
+        }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify ueMtu. */
         interface WithUeMtu {
             /**
@@ -367,6 +455,40 @@ public interface PacketCoreControlPlane {
              */
             WithCreate withUeMtu(Integer ueMtu);
         }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify diagnosticsUpload. */
+        interface WithDiagnosticsUpload {
+            /**
+             * Specifies the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+             *
+             * @param diagnosticsUpload Configuration for uploading packet core diagnostics.
+             * @return the next definition stage.
+             */
+            WithCreate withDiagnosticsUpload(DiagnosticsUploadConfiguration diagnosticsUpload);
+        }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify eventHub. */
+        interface WithEventHub {
+            /**
+             * Specifies the eventHub property: Configuration for sending packet core events to an Azure Event Hub..
+             *
+             * @param eventHub Configuration for sending packet core events to an Azure Event Hub.
+             * @return the next definition stage.
+             */
+            WithCreate withEventHub(EventHubConfiguration eventHub);
+        }
+
+        /** The stage of the PacketCoreControlPlane definition allowing to specify signaling. */
+        interface WithSignaling {
+            /**
+             * Specifies the signaling property: Signaling configuration for the packet core..
+             *
+             * @param signaling Signaling configuration for the packet core.
+             * @return the next definition stage.
+             */
+            WithCreate withSignaling(SignalingConfiguration signaling);
+        }
+
         /** The stage of the PacketCoreControlPlane definition allowing to specify interopSettings. */
         interface WithInteropSettings {
             /**
@@ -379,6 +501,7 @@ public interface PacketCoreControlPlane {
             WithCreate withInteropSettings(Object interopSettings);
         }
     }
+
     /**
      * Begins update for the PacketCoreControlPlane resource.
      *
@@ -387,7 +510,7 @@ public interface PacketCoreControlPlane {
     PacketCoreControlPlane.Update update();
 
     /** The template for PacketCoreControlPlane update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          *
@@ -403,6 +526,7 @@ public interface PacketCoreControlPlane {
          */
         PacketCoreControlPlane apply(Context context);
     }
+
     /** The PacketCoreControlPlane update stages. */
     interface UpdateStages {
         /** The stage of the PacketCoreControlPlane update allowing to specify tags. */
@@ -415,7 +539,19 @@ public interface PacketCoreControlPlane {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the PacketCoreControlPlane update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identity associated with this resource..
+             *
+             * @param identity The managed service identity associated with this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

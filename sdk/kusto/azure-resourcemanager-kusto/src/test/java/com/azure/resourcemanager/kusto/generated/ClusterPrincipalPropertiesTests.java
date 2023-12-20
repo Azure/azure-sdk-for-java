@@ -16,11 +16,11 @@ public final class ClusterPrincipalPropertiesTests {
         ClusterPrincipalProperties model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"hwxmnteiwa\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"km\",\"principalType\":\"Group\",\"tenantName\":\"mmxdcu\",\"principalName\":\"fsrpymzidnse\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"bzsgfyccsne\"}")
+                    "{\"principalId\":\"jcmmxdcufufsrp\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"idnsezcxtb\",\"principalType\":\"Group\",\"tenantName\":\"fycc\",\"principalName\":\"ewmdw\",\"provisioningState\":\"Running\",\"aadObjectId\":\"ac\"}")
                 .toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("hwxmnteiwa", model.principalId());
+        Assertions.assertEquals("jcmmxdcufufsrp", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("km", model.tenantId());
+        Assertions.assertEquals("idnsezcxtb", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
@@ -28,14 +28,14 @@ public final class ClusterPrincipalPropertiesTests {
     public void testSerialize() throws Exception {
         ClusterPrincipalProperties model =
             new ClusterPrincipalProperties()
-                .withPrincipalId("hwxmnteiwa")
+                .withPrincipalId("jcmmxdcufufsrp")
                 .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                .withTenantId("km")
+                .withTenantId("idnsezcxtb")
                 .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("hwxmnteiwa", model.principalId());
+        Assertions.assertEquals("jcmmxdcufufsrp", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("km", model.tenantId());
+        Assertions.assertEquals("idnsezcxtb", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

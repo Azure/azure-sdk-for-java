@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util.logging;
 
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
@@ -7,8 +10,12 @@ import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
  */
 public interface Logger {
 
+    /**
+     * Returns the singleton instance of {@link Logger}.
+     * @return The singleton instance of {@link Logger}.
+     */
     static Logger getInstance() {
-        if (AzureSdkMojo.MOJO == null) {
+        if (AzureSdkMojo.getMojo() == null) {
             return ConsoleLogger.getInstance();
         } else {
             return MojoLogger.getInstance();

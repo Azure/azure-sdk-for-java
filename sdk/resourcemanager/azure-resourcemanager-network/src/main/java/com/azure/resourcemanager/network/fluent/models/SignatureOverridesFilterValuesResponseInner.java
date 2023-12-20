@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the list of all possible values for a specific filter value. */
+/**
+ * Describes the list of all possible values for a specific filter value.
+ */
 @Fluent
 public final class SignatureOverridesFilterValuesResponseInner {
     /*
@@ -17,13 +19,15 @@ public final class SignatureOverridesFilterValuesResponseInner {
     @JsonProperty(value = "filterValues")
     private List<String> filterValues;
 
-    /** Creates an instance of SignatureOverridesFilterValuesResponseInner class. */
+    /**
+     * Creates an instance of SignatureOverridesFilterValuesResponseInner class.
+     */
     public SignatureOverridesFilterValuesResponseInner() {
     }
 
     /**
      * Get the filterValues property: Describes the possible values.
-     *
+     * 
      * @return the filterValues value.
      */
     public List<String> filterValues() {
@@ -32,7 +36,7 @@ public final class SignatureOverridesFilterValuesResponseInner {
 
     /**
      * Set the filterValues property: Describes the possible values.
-     *
+     * 
      * @param filterValues the filterValues value to set.
      * @return the SignatureOverridesFilterValuesResponseInner object itself.
      */
@@ -43,7 +47,7 @@ public final class SignatureOverridesFilterValuesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

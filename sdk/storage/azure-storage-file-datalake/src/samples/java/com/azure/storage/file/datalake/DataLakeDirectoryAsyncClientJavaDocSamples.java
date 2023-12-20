@@ -45,8 +45,10 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeDirectoryAsyncClient#delete()} and
-     * {@link DataLakeDirectoryAsyncClient#deleteWithResponse(boolean, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakeDirectoryAsyncClient#delete()},
+     * {@link DataLakeDirectoryAsyncClient#deleteWithResponse(boolean, DataLakeRequestConditions)},
+     * {@link DataLakeDirectoryAsyncClient#deleteRecursively()} and
+     * {@link DataLakeDirectoryAsyncClient#deleteRecursivelyWithResponse(DataLakeRequestConditions)}
      */
     public void deleteCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete
@@ -62,6 +64,18 @@ public class DataLakeDirectoryAsyncClientJavaDocSamples {
         client.deleteWithResponse(recursive, requestConditions)
             .subscribe(response -> System.out.println("Delete request completed"));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursively
+        client.deleteRecursively().subscribe(response ->
+            System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursively
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursivelyWithResponse#DataLakeRequestConditions
+        DataLakeRequestConditions deleteRequestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        client.deleteRecursivelyWithResponse(deleteRequestConditions)
+            .subscribe(response -> System.out.println("Delete request completed"));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursivelyWithResponse#DataLakeRequestConditions
     }
 
     /**

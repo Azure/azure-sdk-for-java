@@ -33,6 +33,12 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    @JsonProperty(value = "osUpgradeVersion")
+    private String osUpgradeVersion;
+
     /** Creates an instance of HyperVReplicaAzureTestFailoverInput class. */
     public HyperVReplicaAzureTestFailoverInput() {
     }
@@ -96,6 +102,26 @@ public final class HyperVReplicaAzureTestFailoverInput extends TestFailoverProvi
      */
     public HyperVReplicaAzureTestFailoverInput withRecoveryPointId(String recoveryPointId) {
         this.recoveryPointId = recoveryPointId;
+        return this;
+    }
+
+    /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     *
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the HyperVReplicaAzureTestFailoverInput object itself.
+     */
+    public HyperVReplicaAzureTestFailoverInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
         return this;
     }
 

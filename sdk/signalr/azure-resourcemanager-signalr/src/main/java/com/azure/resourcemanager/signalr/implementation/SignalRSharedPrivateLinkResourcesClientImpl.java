@@ -144,8 +144,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -203,8 +202,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,8 +258,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,8 +274,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,8 +293,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,8 +308,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     /**
      * List shared private link resources.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,8 +326,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Get the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,8 +383,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Get the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,8 +438,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Get the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -465,8 +456,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Get the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,8 +474,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Get the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -502,8 +491,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,8 +558,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -637,8 +624,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,8 +655,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -705,8 +690,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,8 +713,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -756,8 +739,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -780,8 +762,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -807,8 +788,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,8 +809,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Create or update a shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The shared private link resource.
      * @param context The context to associate with this operation.
@@ -854,8 +833,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -911,8 +889,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -966,8 +943,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -989,8 +965,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1013,8 +988,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,8 +1005,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,8 +1025,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1072,8 +1044,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1093,8 +1064,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,8 +1079,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * Delete the specified shared private link resource.
      *
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

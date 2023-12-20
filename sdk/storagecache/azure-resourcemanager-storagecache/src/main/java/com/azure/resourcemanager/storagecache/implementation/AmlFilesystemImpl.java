@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemInner;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystem;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemArchiveInfo;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemClientInfo;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemHealth;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemIdentity;
@@ -91,16 +92,8 @@ public final class AmlFilesystemImpl implements AmlFilesystem, AmlFilesystem.Def
         return this.innerModel().filesystemSubnet();
     }
 
-    public String mgsAddress() {
-        return this.innerModel().mgsAddress();
-    }
-
-    public String mountCommand() {
-        return this.innerModel().mountCommand();
-    }
-
-    public String lustreVersion() {
-        return this.innerModel().lustreVersion();
+    public AmlFilesystemClientInfo clientInfo() {
+        return this.innerModel().clientInfo();
     }
 
     public Integer throughputProvisionedMBps() {

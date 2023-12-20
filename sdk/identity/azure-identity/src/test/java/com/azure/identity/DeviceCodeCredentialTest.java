@@ -10,8 +10,8 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -29,7 +29,6 @@ import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
 public class DeviceCodeCredentialTest {
-
     private final String clientId = UUID.randomUUID().toString();
 
     @Test
@@ -68,7 +67,7 @@ public class DeviceCodeCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -90,13 +89,82 @@ public class DeviceCodeCredentialTest {
                 new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testValidDeviceCodeCAE() throws Exception {
+        // setup
+        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+            when(identityClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                        && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            DeviceCodeCredential credential =
+                new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            StepVerifier.create(credential.getToken(request2))
+                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+            when(identitySyncClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
+                .thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0)) && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+        })) {
+            // test
+            DeviceCodeCredential credential =
+                new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
+
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+
+            accessToken = credential.getTokenSync(request2);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -123,7 +191,7 @@ public class DeviceCodeCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -151,7 +219,7 @@ public class DeviceCodeCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 

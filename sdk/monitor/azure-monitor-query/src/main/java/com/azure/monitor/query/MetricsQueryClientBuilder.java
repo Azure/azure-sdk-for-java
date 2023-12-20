@@ -19,6 +19,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
+import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
@@ -54,6 +55,8 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
             new MetricsDefinitionsClientImplBuilder();
     private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
             new MetricsNamespacesClientImplBuilder();
+
+    private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
     private MetricsQueryServiceVersion serviceVersion;
 
@@ -67,6 +70,8 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.host(endpoint);
         innerMetricsDefinitionsBuilder.host(endpoint);
         innerMetricsNamespaceBuilder.host(endpoint);
+        // TODO (srnagar): what should be the metrics batch endpoint if the customer sets the endpoint?
+        innerMetricsBatchBuilder.endpoint(endpoint);
         return this;
     }
 
@@ -80,6 +85,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
         innerMetricsNamespaceBuilder.pipeline(pipeline);
+        innerMetricsBatchBuilder.pipeline(pipeline);
         return this;
     }
 
@@ -93,6 +99,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
         innerMetricsNamespaceBuilder.httpClient(httpClient);
+        innerMetricsBatchBuilder.httpClient(httpClient);
         return this;
     }
 
@@ -106,6 +113,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.configuration(configuration);
         innerMetricsDefinitionsBuilder.configuration(configuration);
         innerMetricsNamespaceBuilder.configuration(configuration);
+        innerMetricsBatchBuilder.configuration(configuration);
         return this;
     }
 
@@ -119,6 +127,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsNamespaceBuilder.httpLogOptions(httpLogOptions);
+        innerMetricsBatchBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
 
@@ -131,6 +140,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.retryPolicy(retryPolicy);
         innerMetricsDefinitionsBuilder.retryPolicy(retryPolicy);
         innerMetricsNamespaceBuilder.retryPolicy(retryPolicy);
+        innerMetricsBatchBuilder.retryPolicy(retryPolicy);
         return this;
     }
 
@@ -144,6 +154,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.retryOptions(retryOptions);
         innerMetricsDefinitionsBuilder.retryOptions(retryOptions);
         innerMetricsNamespaceBuilder.retryOptions(retryOptions);
+        innerMetricsBatchBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -157,6 +168,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
         innerMetricsNamespaceBuilder.addPolicy(customPolicy);
+        innerMetricsBatchBuilder.addPolicy(customPolicy);
         return this;
     }
 
@@ -170,6 +182,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
         innerMetricsNamespaceBuilder.credential(tokenCredential);
+        innerMetricsBatchBuilder.credential(tokenCredential);
         return this;
     }
 
@@ -183,6 +196,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
         innerMetricsBuilder.clientOptions(clientOptions);
         innerMetricsDefinitionsBuilder.clientOptions(clientOptions);
         innerMetricsNamespaceBuilder.clientOptions(clientOptions);
+        innerMetricsBatchBuilder.clientOptions(clientOptions);
         return this;
     }
 
@@ -193,6 +207,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     public MetricsQueryClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+        // TODO(srnagar): How to set the service version for two different service?
         return this;
     }
 

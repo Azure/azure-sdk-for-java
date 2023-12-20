@@ -4,27 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteCircuitConnections Delete. */
+/**
+ * Samples for ExpressRouteCircuitConnections Delete.
+ */
 public final class ExpressRouteCircuitConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ExpressRouteCircuitConnectionDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteExpressRouteCircuit(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteCircuitConnections()
-            .delete(
-                "rg1",
-                "ExpressRouteARMCircuitA",
-                "AzurePrivatePeering",
-                "circuitConnectionUSAUS",
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteCircuitConnections().delete("rg1",
+            "ExpressRouteARMCircuitA", "AzurePrivatePeering", "circuitConnectionUSAUS",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -20,7 +20,7 @@ public interface ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,7 +34,7 @@ public interface ScriptsClient {
     /**
      * Returns the list of database scripts for given database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -50,7 +50,7 @@ public interface ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -67,7 +67,7 @@ public interface ScriptsClient {
     /**
      * Gets a Kusto cluster database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -82,7 +82,7 @@ public interface ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -99,7 +99,7 @@ public interface ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -122,7 +122,7 @@ public interface ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -139,7 +139,7 @@ public interface ScriptsClient {
     /**
      * Creates a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -162,7 +162,7 @@ public interface ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -179,7 +179,7 @@ public interface ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -202,7 +202,7 @@ public interface ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -219,7 +219,7 @@ public interface ScriptsClient {
     /**
      * Updates a database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -240,9 +240,9 @@ public interface ScriptsClient {
         Context context);
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -256,9 +256,9 @@ public interface ScriptsClient {
         String resourceGroupName, String clusterName, String databaseName, String scriptName);
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -273,9 +273,9 @@ public interface ScriptsClient {
         String resourceGroupName, String clusterName, String databaseName, String scriptName, Context context);
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -287,9 +287,9 @@ public interface ScriptsClient {
     void delete(String resourceGroupName, String clusterName, String databaseName, String scriptName);
 
     /**
-     * Deletes a Kusto principalAssignment.
+     * Deletes a Kusto database script.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the Kusto database script.
@@ -304,7 +304,7 @@ public interface ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.
@@ -325,7 +325,7 @@ public interface ScriptsClient {
     /**
      * Checks that the script name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param scriptName The name of the script.

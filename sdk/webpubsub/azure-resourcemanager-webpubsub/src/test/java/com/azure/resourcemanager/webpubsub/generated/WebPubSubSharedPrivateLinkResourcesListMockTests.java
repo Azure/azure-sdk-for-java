@@ -32,7 +32,7 @@ public final class WebPubSubSharedPrivateLinkResourcesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"xbjxyfwnylrcools\",\"privateLinkResourceId\":\"tpkiwkkbnujry\",\"provisioningState\":\"Updating\",\"requestMessage\":\"lbfpncurd\",\"status\":\"Disconnected\"},\"id\":\"iithtywu\",\"name\":\"xcbihw\",\"type\":\"knfd\"}]}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"jirwgdnqzbrfk\",\"privateLinkResourceId\":\"pzhz\",\"provisioningState\":\"Running\",\"requestMessage\":\"jcitdigsxcdglj\",\"status\":\"Timeout\"},\"id\":\"ua\",\"name\":\"htomflrytswfp\",\"type\":\"mdgycxn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,12 @@ public final class WebPubSubSharedPrivateLinkResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SharedPrivateLinkResource> response =
-            manager.webPubSubSharedPrivateLinkResources().list("xhojuj", "ypelmcu", com.azure.core.util.Context.NONE);
+            manager
+                .webPubSubSharedPrivateLinkResources()
+                .list("klbyulidwcw", "mzegjon", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xbjxyfwnylrcools", response.iterator().next().groupId());
-        Assertions.assertEquals("tpkiwkkbnujry", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("lbfpncurd", response.iterator().next().requestMessage());
+        Assertions.assertEquals("jirwgdnqzbrfk", response.iterator().next().groupId());
+        Assertions.assertEquals("pzhz", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("jcitdigsxcdglj", response.iterator().next().requestMessage());
     }
 }

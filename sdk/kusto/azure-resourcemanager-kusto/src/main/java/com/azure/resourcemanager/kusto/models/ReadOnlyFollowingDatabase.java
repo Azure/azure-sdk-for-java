@@ -150,6 +150,16 @@ public final class ReadOnlyFollowingDatabase extends DatabaseInner {
     }
 
     /**
+     * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
+     * contains information related to the database's suspension state.
+     *
+     * @return the suspensionDetails value.
+     */
+    public SuspensionDetails suspensionDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().suspensionDetails();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

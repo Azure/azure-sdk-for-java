@@ -30,6 +30,10 @@ public final class RegionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RegionListResult class. */
+    public RegionListResult() {
+    }
+
     /**
      * Get the value property: Lists of Regions.
      *

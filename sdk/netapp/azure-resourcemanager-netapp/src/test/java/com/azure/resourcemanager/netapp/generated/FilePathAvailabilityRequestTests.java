@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FilePathAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilePathAvailabilityRequest model =
-            BinaryData
-                .fromString("{\"name\":\"pku\",\"subnetId\":\"jkrlkhbzhfepg\"}")
-                .toObject(FilePathAvailabilityRequest.class);
-        Assertions.assertEquals("pku", model.name());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.subnetId());
+        FilePathAvailabilityRequest model = BinaryData.fromString("{\"name\":\"ovm\",\"subnetId\":\"okacspk\"}")
+            .toObject(FilePathAvailabilityRequest.class);
+        Assertions.assertEquals("ovm", model.name());
+        Assertions.assertEquals("okacspk", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilePathAvailabilityRequest model =
-            new FilePathAvailabilityRequest().withName("pku").withSubnetId("jkrlkhbzhfepg");
+        FilePathAvailabilityRequest model = new FilePathAvailabilityRequest().withName("ovm").withSubnetId("okacspk");
         model = BinaryData.fromObject(model).toObject(FilePathAvailabilityRequest.class);
-        Assertions.assertEquals("pku", model.name());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.subnetId());
+        Assertions.assertEquals("ovm", model.name());
+        Assertions.assertEquals("okacspk", model.subnetId());
     }
 }

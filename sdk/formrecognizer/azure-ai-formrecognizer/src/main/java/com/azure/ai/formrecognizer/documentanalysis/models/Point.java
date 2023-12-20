@@ -12,6 +12,12 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class Point {
 
+    /**
+     * Creates a Point object.
+     */
+    public Point() {
+    }
+
     /*
      * The x-axis point coordinate.
      */

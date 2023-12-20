@@ -6,15 +6,18 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
-import reactor.core.publisher.Mono;
 
 /**
  * A class that contains {@link EventData} and the partition information the event belongs to. This is given to the
- * {@link EventProcessorClientBuilder#processEvent(Consumer) processEvent} handler each time an event is received from
- * the Event Hub. This class also includes methods to update checkpoint in {@link CheckpointStore} and retrieve the last
- * enqueued event information.
+ * {@link EventProcessorClientBuilder#processEvent(Consumer) processEvent} and
+ * {@link EventProcessorClientBuilder#processEvent(Consumer, Duration)} handlers each time an event is received from
+ * the Event Hub or when the {@code maxWaitTime} duration has elapsed. This class also includes methods to update
+ * checkpoint in {@link CheckpointStore} and retrieve the last enqueued event information.
  */
 public class EventContext {
 
@@ -52,9 +55,11 @@ public class EventContext {
     }
 
     /**
-     * Returns the event data received from Event Hub.
+     * Returns the event data received from Event Hub.  Can be {@code null} if
+     * {@link EventProcessorClientBuilder#processEvent(Consumer, Duration)} was used to construct the processor.  This
+     * means that no event was received during the specified duration.
      *
-     * @return The event data received from Event Hub.
+     * @return The event data received from Event Hub or {@code null}.
      */
     public EventData getEventData() {
         return eventData;
@@ -77,7 +82,7 @@ public class EventContext {
      * Updates the checkpoint asynchronously for this partition using the event data in this {@link EventContext}. This
      * will serve as the last known successfully processed event in this partition if the update is successful.
      *
-     * @return a representation of deferred execution of this call.
+     * @return A representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpointAsync() {
         if (eventData == null) {

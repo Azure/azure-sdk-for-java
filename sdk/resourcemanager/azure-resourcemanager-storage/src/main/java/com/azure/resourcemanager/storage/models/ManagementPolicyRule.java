@@ -36,6 +36,10 @@ public final class ManagementPolicyRule {
     @JsonProperty(value = "definition", required = true)
     private ManagementPolicyDefinition definition;
 
+    /** Creates an instance of ManagementPolicyRule class. */
+    public ManagementPolicyRule() {
+    }
+
     /**
      * Get the enabled property: Rule is enabled if set to true.
      *

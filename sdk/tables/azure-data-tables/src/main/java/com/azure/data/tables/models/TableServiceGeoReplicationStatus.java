@@ -26,13 +26,14 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      */
     public static final TableServiceGeoReplicationStatus UNAVAILABLE = fromString("unavailable");
 
+    // empty constructor necessary due to Javadoc warnings
     /**
-     * Creates a new instance of TableServiceGeoReplicationStatus value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * Creates an instance of {@link TableServiceGeoReplicationStatus}.
+     * @deprecated Empty constructor. Use {@link TableServiceGeoReplicationStatus#fromString} to instantiate.
      */
     @Deprecated
-    public TableServiceGeoReplicationStatus() {}
+    public TableServiceGeoReplicationStatus() {
+    }
 
     /**
      * Creates or finds a {@link TableServiceGeoReplicationStatus} from its string representation.

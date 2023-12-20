@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-08-22)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2023-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.PrivateCloud$Update` was modified
+
+* `withExtendedNetworkBlocks(java.util.List)` was added
+
+#### `models.PrivateCloudUpdate` was modified
+
+* `extendedNetworkBlocks()` was added
+* `withExtendedNetworkBlocks(java.util.List)` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withExtendedNetworkBlocks(java.util.List)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `extendedNetworkBlocks()` was added
 
 ## 1.0.0 (2023-02-24)
 

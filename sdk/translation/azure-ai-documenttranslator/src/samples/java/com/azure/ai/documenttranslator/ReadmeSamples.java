@@ -7,10 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
 public class ReadmeSamples {
@@ -23,11 +19,11 @@ public class ReadmeSamples {
             "<document-translator-resource-name>");
         String apiKey = "<document-translator-api-key>";
 
-        BatchDocumentTranslationRestClient client = new BatchDocumentTranslationClientBuilder()
+        BatchDocumentTranslationClient client = new BatchDocumentTranslationClientBuilder()
             .credential(new AzureKeyCredential(apiKey))
             .endpoint(endpoint)
             .httpClient(new NettyAsyncHttpClientBuilder().build())
-            .buildRestClient();
+            .buildClient();
         // END: readme-sample-createBatchDocumentTranslationRestClient
     }
 }

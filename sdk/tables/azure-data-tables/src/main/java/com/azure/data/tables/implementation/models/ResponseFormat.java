@@ -7,25 +7,32 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines values for ResponseFormat. */
+/**
+ * Defines values for ResponseFormat.
+ */
 public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
-    /** Static value return-no-content for ResponseFormat. */
+    /**
+     * Static value return-no-content for ResponseFormat.
+     */
     public static final ResponseFormat RETURN_NO_CONTENT = fromString("return-no-content");
 
-    /** Static value return-content for ResponseFormat. */
+    /**
+     * Static value return-content for ResponseFormat.
+     */
     public static final ResponseFormat RETURN_CONTENT = fromString("return-content");
 
     /**
      * Creates a new instance of ResponseFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ResponseFormat() {}
+    public ResponseFormat() {
+    }
 
     /**
      * Creates or finds a ResponseFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResponseFormat.
      */
@@ -35,7 +42,7 @@ public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
 
     /**
      * Gets known ResponseFormat values.
-     *
+     * 
      * @return known ResponseFormat values.
      */
     public static Collection<ResponseFormat> values() {

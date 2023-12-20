@@ -28,8 +28,23 @@ public final class Status extends ExpandableStringEnum<Status> {
     /** Static value PreparingForUpgrade for Status. */
     public static final Status PREPARING_FOR_UPGRADE = fromString("PreparingForUpgrade");
 
+    /** Static value ETCDSnapshotFailed for Status. */
+    public static final Status ETCDSNAPSHOT_FAILED = fromString("ETCDSnapshotFailed");
+
     /** Static value UpgradePrerequisitesCompleted for Status. */
     public static final Status UPGRADE_PREREQUISITES_COMPLETED = fromString("UpgradePrerequisitesCompleted");
+
+    /** Static value ValidatingSFSConnectivity for Status. */
+    public static final Status VALIDATING_SFSCONNECTIVITY = fromString("ValidatingSFSConnectivity");
+
+    /** Static value ValidatingImageDownload for Status. */
+    public static final Status VALIDATING_IMAGE_DOWNLOAD = fromString("ValidatingImageDownload");
+
+    /** Static value ValidatingImageUpload for Status. */
+    public static final Status VALIDATING_IMAGE_UPLOAD = fromString("ValidatingImageUpload");
+
+    /** Static value ValidatingETCDHealth for Status. */
+    public static final Status VALIDATING_ETCDHEALTH = fromString("ValidatingETCDHealth");
 
     /** Static value PreUpgrade for Status. */
     public static final Status PRE_UPGRADE = fromString("PreUpgrade");

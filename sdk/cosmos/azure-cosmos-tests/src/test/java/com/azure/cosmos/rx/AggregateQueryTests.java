@@ -88,7 +88,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = { "query" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void queryDocumentsWithAggregates(Boolean qmEnabled) throws Exception {
 
@@ -229,7 +229,7 @@ public class AggregateQueryTests extends TestSuiteBase {
                                                                         + ",'min_field':" + min + "}")));
     }
 
-    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 2 * TIMEOUT)
     public void queryDocumentsWithMultipleAggregates() {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
@@ -259,12 +259,12 @@ public class AggregateQueryTests extends TestSuiteBase {
         return obj;
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_AggregateQueryTests() throws Throwable {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

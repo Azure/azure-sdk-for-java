@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for IpAllocations List. */
+/**
+ * Samples for IpAllocations List.
+ */
 public final class IpAllocationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/IpAllocationList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/IpAllocationList.json
      */
     /**
      * Sample code: List all IpAllocations.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllIpAllocations(com.azure.resourcemanager.AzureResourceManager azure) {

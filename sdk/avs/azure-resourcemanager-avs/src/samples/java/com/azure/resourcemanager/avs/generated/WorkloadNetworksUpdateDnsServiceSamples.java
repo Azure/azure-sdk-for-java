@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateDnsService. */
 public final class WorkloadNetworksUpdateDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsService.

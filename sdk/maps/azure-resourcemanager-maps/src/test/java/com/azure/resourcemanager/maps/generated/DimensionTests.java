@@ -14,13 +14,13 @@ public final class DimensionTests {
         Dimension model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"oifiyipjxsqwpgr\",\"displayName\":\"znorcj\",\"internalName\":\"snb\",\"internalMetricName\":\"qabnmoc\",\"sourceMdmNamespace\":\"ysh\",\"toBeExportedToShoebox\":false}")
+                    "{\"name\":\"bfs\",\"displayName\":\"nehmpvecx\",\"internalName\":\"debfqkkrbmpukgri\",\"internalMetricName\":\"lzlfbxzpuz\",\"sourceMdmNamespace\":\"ispnqzahmgkbrp\",\"toBeExportedToShoebox\":false}")
                 .toObject(Dimension.class);
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.name());
-        Assertions.assertEquals("znorcj", model.displayName());
-        Assertions.assertEquals("snb", model.internalName());
-        Assertions.assertEquals("qabnmoc", model.internalMetricName());
-        Assertions.assertEquals("ysh", model.sourceMdmNamespace());
+        Assertions.assertEquals("bfs", model.name());
+        Assertions.assertEquals("nehmpvecx", model.displayName());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.internalName());
+        Assertions.assertEquals("lzlfbxzpuz", model.internalMetricName());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.sourceMdmNamespace());
         Assertions.assertEquals(false, model.toBeExportedToShoebox());
     }
 
@@ -28,18 +28,18 @@ public final class DimensionTests {
     public void testSerialize() throws Exception {
         Dimension model =
             new Dimension()
-                .withName("oifiyipjxsqwpgr")
-                .withDisplayName("znorcj")
-                .withInternalName("snb")
-                .withInternalMetricName("qabnmoc")
-                .withSourceMdmNamespace("ysh")
+                .withName("bfs")
+                .withDisplayName("nehmpvecx")
+                .withInternalName("debfqkkrbmpukgri")
+                .withInternalMetricName("lzlfbxzpuz")
+                .withSourceMdmNamespace("ispnqzahmgkbrp")
                 .withToBeExportedToShoebox(false);
         model = BinaryData.fromObject(model).toObject(Dimension.class);
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.name());
-        Assertions.assertEquals("znorcj", model.displayName());
-        Assertions.assertEquals("snb", model.internalName());
-        Assertions.assertEquals("qabnmoc", model.internalMetricName());
-        Assertions.assertEquals("ysh", model.sourceMdmNamespace());
+        Assertions.assertEquals("bfs", model.name());
+        Assertions.assertEquals("nehmpvecx", model.displayName());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.internalName());
+        Assertions.assertEquals("lzlfbxzpuz", model.internalMetricName());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.sourceMdmNamespace());
         Assertions.assertEquals(false, model.toBeExportedToShoebox());
     }
 }

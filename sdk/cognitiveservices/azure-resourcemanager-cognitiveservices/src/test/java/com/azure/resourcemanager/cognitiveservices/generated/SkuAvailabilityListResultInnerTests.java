@@ -16,14 +16,14 @@ public final class SkuAvailabilityListResultInnerTests {
         SkuAvailabilityListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"ljuahaquhcdh\",\"type\":\"ualaexqpvfadmw\",\"skuName\":\"crgvxpvgom\",\"skuAvailable\":false,\"reason\":\"isgwbnbbeldawkz\",\"message\":\"liourqhak\"},{\"kind\":\"hashsfwxosow\",\"type\":\"cugicjoox\",\"skuName\":\"ebwpucwwfvo\",\"skuAvailable\":false,\"reason\":\"euecivyhzceuoj\",\"message\":\"rw\"},{\"kind\":\"eiotwmcdytdx\",\"type\":\"txnrjaw\",\"skuName\":\"wgxhn\",\"skuAvailable\":true,\"reason\":\"fbkp\",\"message\":\"gklwn\"}]}")
+                    "{\"value\":[{\"kind\":\"x\",\"type\":\"zxbzpfzabglc\",\"skuName\":\"xwtctyqiklbbovpl\",\"skuAvailable\":false,\"reason\":\"vgyuguos\",\"message\":\"kfssxqukkf\"},{\"kind\":\"gmgsxnkjzkde\",\"type\":\"pvlopwiyighxpkd\",\"skuName\":\"baiuebbaumny\",\"skuAvailable\":false,\"reason\":\"deoj\",\"message\":\"bckhsmtxpsi\"}]}")
                 .toObject(SkuAvailabilityListResultInner.class);
-        Assertions.assertEquals("ljuahaquhcdh", model.value().get(0).kind());
-        Assertions.assertEquals("ualaexqpvfadmw", model.value().get(0).type());
-        Assertions.assertEquals("crgvxpvgom", model.value().get(0).skuName());
+        Assertions.assertEquals("x", model.value().get(0).kind());
+        Assertions.assertEquals("zxbzpfzabglc", model.value().get(0).type());
+        Assertions.assertEquals("xwtctyqiklbbovpl", model.value().get(0).skuName());
         Assertions.assertEquals(false, model.value().get(0).skuAvailable());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.value().get(0).reason());
-        Assertions.assertEquals("liourqhak", model.value().get(0).message());
+        Assertions.assertEquals("vgyuguos", model.value().get(0).reason());
+        Assertions.assertEquals("kfssxqukkf", model.value().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,32 +34,25 @@ public final class SkuAvailabilityListResultInnerTests {
                     Arrays
                         .asList(
                             new SkuAvailability()
-                                .withKind("ljuahaquhcdh")
-                                .withType("ualaexqpvfadmw")
-                                .withSkuName("crgvxpvgom")
+                                .withKind("x")
+                                .withType("zxbzpfzabglc")
+                                .withSkuName("xwtctyqiklbbovpl")
                                 .withSkuAvailable(false)
-                                .withReason("isgwbnbbeldawkz")
-                                .withMessage("liourqhak"),
+                                .withReason("vgyuguos")
+                                .withMessage("kfssxqukkf"),
                             new SkuAvailability()
-                                .withKind("hashsfwxosow")
-                                .withType("cugicjoox")
-                                .withSkuName("ebwpucwwfvo")
+                                .withKind("gmgsxnkjzkde")
+                                .withType("pvlopwiyighxpkd")
+                                .withSkuName("baiuebbaumny")
                                 .withSkuAvailable(false)
-                                .withReason("euecivyhzceuoj")
-                                .withMessage("rw"),
-                            new SkuAvailability()
-                                .withKind("eiotwmcdytdx")
-                                .withType("txnrjaw")
-                                .withSkuName("wgxhn")
-                                .withSkuAvailable(true)
-                                .withReason("fbkp")
-                                .withMessage("gklwn")));
+                                .withReason("deoj")
+                                .withMessage("bckhsmtxpsi")));
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityListResultInner.class);
-        Assertions.assertEquals("ljuahaquhcdh", model.value().get(0).kind());
-        Assertions.assertEquals("ualaexqpvfadmw", model.value().get(0).type());
-        Assertions.assertEquals("crgvxpvgom", model.value().get(0).skuName());
+        Assertions.assertEquals("x", model.value().get(0).kind());
+        Assertions.assertEquals("zxbzpfzabglc", model.value().get(0).type());
+        Assertions.assertEquals("xwtctyqiklbbovpl", model.value().get(0).skuName());
         Assertions.assertEquals(false, model.value().get(0).skuAvailable());
-        Assertions.assertEquals("isgwbnbbeldawkz", model.value().get(0).reason());
-        Assertions.assertEquals("liourqhak", model.value().get(0).message());
+        Assertions.assertEquals("vgyuguos", model.value().get(0).reason());
+        Assertions.assertEquals("kfssxqukkf", model.value().get(0).message());
     }
 }

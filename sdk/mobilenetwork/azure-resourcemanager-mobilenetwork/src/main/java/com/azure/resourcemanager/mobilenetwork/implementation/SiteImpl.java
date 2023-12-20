@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Site;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
 import java.util.List;
@@ -172,6 +173,14 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
                 .getWithResponse(resourceGroupName, mobileNetworkName, siteName, context)
                 .getValue();
         return this;
+    }
+
+    public void deletePacketCore(SiteDeletePacketCore parameters) {
+        serviceManager.sites().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters);
+    }
+
+    public void deletePacketCore(SiteDeletePacketCore parameters, Context context) {
+        serviceManager.sites().deletePacketCore(resourceGroupName, mobileNetworkName, siteName, parameters, context);
     }
 
     public SiteImpl withRegion(Region location) {

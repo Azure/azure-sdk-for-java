@@ -6,26 +6,22 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.fluent.models.DiskAccessInner;
 
-/** Samples for DiskAccesses CreateOrUpdate. */
+/**
+ * Samples for DiskAccesses CreateOrUpdate.
+ */
 public final class DiskAccessesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccess_Create.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskAccessExamples/
+     * DiskAccess_Create.json
      */
     /**
      * Sample code: Create a disk access resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getDiskAccesses()
-            .createOrUpdate(
-                "myResourceGroup",
-                "myDiskAccess",
-                new DiskAccessInner().withLocation("West US"),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getDiskAccesses().createOrUpdate("myResourceGroup",
+            "myDiskAccess", new DiskAccessInner().withLocation("West US"), com.azure.core.util.Context.NONE);
     }
 }

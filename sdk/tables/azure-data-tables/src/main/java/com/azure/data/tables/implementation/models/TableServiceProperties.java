@@ -15,7 +15,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** Table Service Properties. */
+/**
+ * Table Service Properties.
+ */
 @Fluent
 public final class TableServiceProperties implements XmlSerializable<TableServiceProperties> {
     /*
@@ -36,14 +38,17 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
     /*
      * The set of CORS rules.
      */
-    private List<CorsRule> cors = new ArrayList<>();
+    private List<CorsRule> cors;
 
-    /** Creates an instance of TableServiceProperties class. */
-    public TableServiceProperties() {}
+    /**
+     * Creates an instance of TableServiceProperties class.
+     */
+    public TableServiceProperties() {
+    }
 
     /**
      * Get the logging property: Azure Analytics Logging settings.
-     *
+     * 
      * @return the logging value.
      */
     public Logging getLogging() {
@@ -52,7 +57,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Set the logging property: Azure Analytics Logging settings.
-     *
+     * 
      * @param logging the logging value to set.
      * @return the TableServiceProperties object itself.
      */
@@ -63,7 +68,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for tables.
-     *
+     * 
      * @return the hourMetrics value.
      */
     public Metrics getHourMetrics() {
@@ -72,7 +77,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for tables.
-     *
+     * 
      * @param hourMetrics the hourMetrics value to set.
      * @return the TableServiceProperties object itself.
      */
@@ -83,7 +88,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Get the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for tables.
-     *
+     * 
      * @return the minuteMetrics value.
      */
     public Metrics getMinuteMetrics() {
@@ -92,7 +97,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Set the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for tables.
-     *
+     * 
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the TableServiceProperties object itself.
      */
@@ -103,7 +108,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Get the cors property: The set of CORS rules.
-     *
+     * 
      * @return the cors value.
      */
     public List<CorsRule> getCors() {
@@ -115,7 +120,7 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Set the cors property: The set of CORS rules.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the TableServiceProperties object itself.
      */
@@ -148,10 +153,10 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Reads an instance of TableServiceProperties from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of TableServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     *     was pointing to XML null.
+     * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceProperties.
      */
     public static TableServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -160,49 +165,47 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
 
     /**
      * Reads an instance of TableServiceProperties from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of TableServiceProperties if the XmlReader was pointing to an instance of it, or null if it
-     *     was pointing to XML null.
+     * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceProperties.
      */
     public static TableServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
-            throws XMLStreamException {
-        String finalRootElementName =
-                CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    TableServiceProperties deserializedTableServiceProperties = new TableServiceProperties();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        throws XMLStreamException {
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            TableServiceProperties deserializedTableServiceProperties = new TableServiceProperties();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("Logging".equals(elementName.getLocalPart())) {
-                            deserializedTableServiceProperties.logging = Logging.fromXml(reader, "Logging");
-                        } else if ("HourMetrics".equals(elementName.getLocalPart())) {
-                            deserializedTableServiceProperties.hourMetrics = Metrics.fromXml(reader, "HourMetrics");
-                        } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
-                            deserializedTableServiceProperties.minuteMetrics = Metrics.fromXml(reader, "MinuteMetrics");
-                        } else if ("Cors".equals(elementName.getLocalPart())) {
+                if ("Logging".equals(elementName.getLocalPart())) {
+                    deserializedTableServiceProperties.logging = Logging.fromXml(reader, "Logging");
+                } else if ("HourMetrics".equals(elementName.getLocalPart())) {
+                    deserializedTableServiceProperties.hourMetrics = Metrics.fromXml(reader, "HourMetrics");
+                } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
+                    deserializedTableServiceProperties.minuteMetrics = Metrics.fromXml(reader, "MinuteMetrics");
+                } else if ("Cors".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("CorsRule".equals(elementName.getLocalPart())) {
                             if (deserializedTableServiceProperties.cors == null) {
                                 deserializedTableServiceProperties.cors = new ArrayList<>();
                             }
-                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                                elementName = reader.getElementName();
-                                if ("CorsRule".equals(elementName.getLocalPart())) {
-                                    deserializedTableServiceProperties.cors.add(CorsRule.fromXml(reader, "CorsRule"));
-                                } else {
-                                    reader.skipElement();
-                                }
-                            }
+                            deserializedTableServiceProperties.cors.add(CorsRule.fromXml(reader, "CorsRule"));
                         } else {
                             reader.skipElement();
                         }
                     }
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedTableServiceProperties;
-                });
+            return deserializedTableServiceProperties;
+        });
     }
 }

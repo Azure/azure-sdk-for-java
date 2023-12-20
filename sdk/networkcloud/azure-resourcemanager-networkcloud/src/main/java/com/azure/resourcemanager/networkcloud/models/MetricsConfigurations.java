@@ -11,24 +11,24 @@ import com.azure.core.util.Context;
 /** Resource collection API of MetricsConfigurations. */
 public interface MetricsConfigurations {
     /**
-     * List metrics configurations of the cluster in the resource group.
+     * List metrics configurations of the cluster.
      *
-     * <p>Get a list of metrics configurations of the clusters in the provided resource group.
+     * <p>Get a list of metrics configurations for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations of the clusters in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<ClusterMetricsConfiguration> listByResourceGroup(String resourceGroupName, String clusterName);
+    PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List metrics configurations of the cluster in the resource group.
+     * List metrics configurations of the cluster.
      *
-     * <p>Get a list of metrics configurations of the clusters in the provided resource group.
+     * <p>Get a list of metrics configurations for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -36,10 +36,10 @@ public interface MetricsConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations of the clusters in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of metrics configurations for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<ClusterMetricsConfiguration> listByResourceGroup(
+    PagedIterable<ClusterMetricsConfiguration> listByCluster(
         String resourceGroupName, String clusterName, Context context);
 
     /**

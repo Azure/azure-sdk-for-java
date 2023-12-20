@@ -34,7 +34,7 @@ public final class DatabasesListPrincipalsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"role\":\"Admin\",\"name\":\"qxihhrmooi\",\"type\":\"Group\",\"fqn\":\"eypxiutcxapzhyr\",\"email\":\"togebjoxsl\",\"appId\":\"nhl\",\"tenantName\":\"rqnkkzjcjbtr\"}]}";
+            "{\"value\":[{\"role\":\"UnrestrictedViewer\",\"name\":\"pfpubcpzgpx\",\"type\":\"User\",\"fqn\":\"hjknidibg\",\"email\":\"xgpnr\",\"appId\":\"ov\",\"tenantName\":\"pikqmh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class DatabasesListPrincipalsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatabasePrincipal> response =
-            manager.databases().listPrincipals("bl", "qcuubgqibrta", "metttwgd", com.azure.core.util.Context.NONE);
+            manager.databases().listPrincipals("vxlx", "aglqivbgkcvkh", "zvuqdflvon", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, response.iterator().next().role());
-        Assertions.assertEquals("qxihhrmooi", response.iterator().next().name());
-        Assertions.assertEquals(DatabasePrincipalType.GROUP, response.iterator().next().type());
-        Assertions.assertEquals("eypxiutcxapzhyr", response.iterator().next().fqn());
-        Assertions.assertEquals("togebjoxsl", response.iterator().next().email());
-        Assertions.assertEquals("nhl", response.iterator().next().appId());
+        Assertions.assertEquals(DatabasePrincipalRole.UNRESTRICTED_VIEWER, response.iterator().next().role());
+        Assertions.assertEquals("pfpubcpzgpx", response.iterator().next().name());
+        Assertions.assertEquals(DatabasePrincipalType.USER, response.iterator().next().type());
+        Assertions.assertEquals("hjknidibg", response.iterator().next().fqn());
+        Assertions.assertEquals("xgpnr", response.iterator().next().email());
+        Assertions.assertEquals("ov", response.iterator().next().appId());
     }
 }

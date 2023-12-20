@@ -16,9 +16,9 @@ public interface ApplyUpdates {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -30,9 +30,9 @@ public interface ApplyUpdates {
      */
     Response<ApplyUpdate> getParentWithResponse(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName,
@@ -44,9 +44,9 @@ public interface ApplyUpdates {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -57,9 +57,9 @@ public interface ApplyUpdates {
      */
     ApplyUpdate getParent(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName);

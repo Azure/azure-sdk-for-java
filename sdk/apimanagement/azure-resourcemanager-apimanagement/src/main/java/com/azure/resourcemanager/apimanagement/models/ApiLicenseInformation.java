@@ -22,6 +22,10 @@ public final class ApiLicenseInformation {
     @JsonProperty(value = "url")
     private String url;
 
+    /** Creates an instance of ApiLicenseInformation class. */
+    public ApiLicenseInformation() {
+    }
+
     /**
      * Get the name property: The license name used for the API.
      *

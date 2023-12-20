@@ -13,7 +13,10 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
@@ -115,6 +118,8 @@ public final class ManageApplicationGateway {
             PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(pipName)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
+                    .withSku(PublicIPSkuType.STANDARD)
+                    .withStaticIP()
                     .create();
 
             System.out.println("Created a public IP address");
@@ -159,7 +164,9 @@ public final class ManageApplicationGateway {
                             .define(String.format("%s-%d", linuxVMNamePrefix, j))
                             .withRegion(regions[i])
                             .withExistingResourceGroup(resourceGroup)
-                            .withLeafDomainLabel(String.format("%s-%d", linuxVMNamePrefix, j));
+                            .withLeafDomainLabel(String.format("%s-%d", linuxVMNamePrefix, j))
+                            .withSku(PublicIPSkuType.STANDARD)
+                            .withStaticIP();
 
                     publicIpCreatableKeys[i][j] = publicIPAddressCreatable.key();
 
@@ -243,6 +250,8 @@ public final class ManageApplicationGateway {
                     .toBackendIPAddress(ipAddresses[0][3])
                     .attach()
 
+                    .withTier(ApplicationGatewayTier.WAF_V2)
+                    .withSize(ApplicationGatewaySkuName.WAF_V2)
                     .withExistingPublicIpAddress(publicIPAddress)
                     .create();
 

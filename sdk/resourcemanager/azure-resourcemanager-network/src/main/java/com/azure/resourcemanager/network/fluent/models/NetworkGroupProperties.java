@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of network group. */
+/**
+ * Properties of network group.
+ */
 @Fluent
 public final class NetworkGroupProperties {
     /*
@@ -23,13 +25,21 @@ public final class NetworkGroupProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkGroupProperties class. */
+    /*
+     * Unique identifier for this resource.
+     */
+    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGuid;
+
+    /**
+     * Creates an instance of NetworkGroupProperties class.
+     */
     public NetworkGroupProperties() {
     }
 
     /**
      * Get the description property: A description of the network group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -38,7 +48,7 @@ public final class NetworkGroupProperties {
 
     /**
      * Set the description property: A description of the network group.
-     *
+     * 
      * @param description the description value to set.
      * @return the NetworkGroupProperties object itself.
      */
@@ -49,7 +59,7 @@ public final class NetworkGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -57,8 +67,17 @@ public final class NetworkGroupProperties {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.resourceGuid;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

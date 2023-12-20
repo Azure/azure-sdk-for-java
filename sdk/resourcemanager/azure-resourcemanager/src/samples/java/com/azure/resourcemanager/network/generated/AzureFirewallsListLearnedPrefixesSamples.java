@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for AzureFirewalls ListLearnedPrefixes. */
+/**
+ * Samples for AzureFirewalls ListLearnedPrefixes.
+ */
 public final class AzureFirewallsListLearnedPrefixesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureFirewallListLearnedIPPrefixes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * AzureFirewallListLearnedIPPrefixes.json
      */
     /**
      * Sample code: AzureFirewallListLearnedPrefixes.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void azureFirewallListLearnedPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getAzureFirewalls()
-            .listLearnedPrefixes("rg1", "azureFirewall1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getAzureFirewalls().listLearnedPrefixes("rg1", "azureFirewall1",
+            com.azure.core.util.Context.NONE);
     }
 }

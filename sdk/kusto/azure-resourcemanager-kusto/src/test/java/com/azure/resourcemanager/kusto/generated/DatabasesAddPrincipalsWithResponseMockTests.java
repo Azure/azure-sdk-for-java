@@ -36,7 +36,7 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"role\":\"User\",\"name\":\"hwahfbousn\",\"type\":\"User\",\"fqn\":\"gfewetwlyxgnc\",\"email\":\"kxhdjhlimmbcx\",\"appId\":\"bcporxvxcjzhqizx\",\"tenantName\":\"xtgqscjavftjuh\"},{\"role\":\"User\",\"name\":\"azkmtgguwp\",\"type\":\"User\",\"fqn\":\"ajc\",\"email\":\"m\",\"appId\":\"hfcf\",\"tenantName\":\"rxgkne\"}]}";
+            "{\"value\":[{\"role\":\"User\",\"name\":\"iibakcl\",\"type\":\"User\",\"fqn\":\"fr\",\"email\":\"ousxauzlwvsgmw\",\"appId\":\"qf\",\"tenantName\":\"zvuxm\"},{\"role\":\"Admin\",\"name\":\"jsvthnwpzteko\",\"type\":\"User\",\"fqn\":\"ibiattg\",\"email\":\"ucfotangcf\",\"appId\":\"ykzcugswvxwl\",\"tenantName\":\"qwm\"},{\"role\":\"User\",\"name\":\"xnjmxm\",\"type\":\"App\",\"fqn\":\"udtc\",\"email\":\"lxynpdkvgf\",\"appId\":\"uiyjib\",\"tenantName\":\"phdu\"},{\"role\":\"Admin\",\"name\":\"eiknpgo\",\"type\":\"User\",\"fqn\":\"iuqhibtozipqwj\",\"email\":\"mur\",\"appId\":\"x\",\"tenantName\":\"wpktvqylkmqpzoyh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,35 +68,28 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
             manager
                 .databases()
                 .addPrincipalsWithResponse(
-                    "aehvvibrxjjstoq",
-                    "eitpkxztmo",
-                    "bklftidgfcwqmpim",
+                    "ao",
+                    "jrmzvupor",
+                    "zdfuydzvkfvxcnqm",
                     new DatabasePrincipalListRequest()
                         .withValue(
                             Arrays
                                 .asList(
                                     new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.USER)
-                                        .withName("hemjy")
-                                        .withType(DatabasePrincipalType.GROUP)
-                                        .withFqn("uj")
-                                        .withEmail("t")
-                                        .withAppId("ozzwculkba"),
-                                    new DatabasePrincipalInner()
                                         .withRole(DatabasePrincipalRole.INGESTOR)
-                                        .withName("lhsnvkcdmx")
-                                        .withType(DatabasePrincipalType.USER)
-                                        .withFqn("oaimlnw")
-                                        .withEmail("aomylwea")
-                                        .withAppId("lcsethwwnpj"))),
+                                        .withName("wokmvkhlggd")
+                                        .withType(DatabasePrincipalType.APP)
+                                        .withFqn("mzqkz")
+                                        .withEmail("uwiwtglxxhljfpg")
+                                        .withAppId("crmnzhrgmqgjs"))),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(DatabasePrincipalRole.USER, response.value().get(0).role());
-        Assertions.assertEquals("hwahfbousn", response.value().get(0).name());
+        Assertions.assertEquals("iibakcl", response.value().get(0).name());
         Assertions.assertEquals(DatabasePrincipalType.USER, response.value().get(0).type());
-        Assertions.assertEquals("gfewetwlyxgnc", response.value().get(0).fqn());
-        Assertions.assertEquals("kxhdjhlimmbcx", response.value().get(0).email());
-        Assertions.assertEquals("bcporxvxcjzhqizx", response.value().get(0).appId());
+        Assertions.assertEquals("fr", response.value().get(0).fqn());
+        Assertions.assertEquals("ousxauzlwvsgmw", response.value().get(0).email());
+        Assertions.assertEquals("qf", response.value().get(0).appId());
     }
 }

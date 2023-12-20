@@ -18,14 +18,14 @@ public final class AccountSkuListResultInnerTests {
         AccountSkuListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"utqxlngx\",\"sku\":{\"name\":\"fgugnxkrxdqmid\",\"tier\":\"Basic\",\"size\":\"rvqdra\",\"family\":\"jybige\",\"capacity\":1279126864}},{\"resourceType\":\"bowsk\",\"sku\":{\"name\":\"yktz\",\"tier\":\"Basic\",\"size\":\"y\",\"family\":\"qyw\",\"capacity\":1211142115}},{\"resourceType\":\"vynhzgpphrcg\",\"sku\":{\"name\":\"cocpecfvmmcoofsx\",\"tier\":\"Enterprise\",\"size\":\"gbmqjqabcypmiv\",\"family\":\"lzu\",\"capacity\":211064208}},{\"resourceType\":\"wnfnbacf\",\"sku\":{\"name\":\"nlebxetqgtzxd\",\"tier\":\"Enterprise\",\"size\":\"qqwx\",\"family\":\"feallnwsu\",\"capacity\":141642169}}]}")
+                    "{\"value\":[{\"resourceType\":\"bdlwtgrhpdjpj\",\"sku\":{\"name\":\"asxazjpqyegualhb\",\"tier\":\"Free\",\"size\":\"jj\",\"family\":\"v\",\"capacity\":303390013}}]}")
                 .toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("utqxlngx", model.value().get(0).resourceType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("rvqdra", model.value().get(0).sku().size());
-        Assertions.assertEquals("jybige", model.value().get(0).sku().family());
-        Assertions.assertEquals(1279126864, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
+        Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("jj", model.value().get(0).sku().size());
+        Assertions.assertEquals("v", model.value().get(0).sku().family());
+        Assertions.assertEquals(303390013, model.value().get(0).sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,47 +36,20 @@ public final class AccountSkuListResultInnerTests {
                     Arrays
                         .asList(
                             new AccountSku()
-                                .withResourceType("utqxlngx")
+                                .withResourceType("bdlwtgrhpdjpj")
                                 .withSku(
                                     new Sku()
-                                        .withName("fgugnxkrxdqmid")
-                                        .withTier(SkuTier.BASIC)
-                                        .withSize("rvqdra")
-                                        .withFamily("jybige")
-                                        .withCapacity(1279126864)),
-                            new AccountSku()
-                                .withResourceType("bowsk")
-                                .withSku(
-                                    new Sku()
-                                        .withName("yktz")
-                                        .withTier(SkuTier.BASIC)
-                                        .withSize("y")
-                                        .withFamily("qyw")
-                                        .withCapacity(1211142115)),
-                            new AccountSku()
-                                .withResourceType("vynhzgpphrcg")
-                                .withSku(
-                                    new Sku()
-                                        .withName("cocpecfvmmcoofsx")
-                                        .withTier(SkuTier.ENTERPRISE)
-                                        .withSize("gbmqjqabcypmiv")
-                                        .withFamily("lzu")
-                                        .withCapacity(211064208)),
-                            new AccountSku()
-                                .withResourceType("wnfnbacf")
-                                .withSku(
-                                    new Sku()
-                                        .withName("nlebxetqgtzxd")
-                                        .withTier(SkuTier.ENTERPRISE)
-                                        .withSize("qqwx")
-                                        .withFamily("feallnwsu")
-                                        .withCapacity(141642169))));
+                                        .withName("asxazjpqyegualhb")
+                                        .withTier(SkuTier.FREE)
+                                        .withSize("jj")
+                                        .withFamily("v")
+                                        .withCapacity(303390013))));
         model = BinaryData.fromObject(model).toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("utqxlngx", model.value().get(0).resourceType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("rvqdra", model.value().get(0).sku().size());
-        Assertions.assertEquals("jybige", model.value().get(0).sku().family());
-        Assertions.assertEquals(1279126864, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
+        Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("jj", model.value().get(0).sku().size());
+        Assertions.assertEquals("v", model.value().get(0).sku().family());
+        Assertions.assertEquals(303390013, model.value().get(0).sku().capacity());
     }
 }

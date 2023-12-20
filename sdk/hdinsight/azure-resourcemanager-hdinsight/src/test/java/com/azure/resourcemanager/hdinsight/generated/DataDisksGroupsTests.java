@@ -7,23 +7,21 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.DataDisksGroups;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataDisksGroupsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataDisksGroups model =
             BinaryData
-                .fromString(
-                    "{\"disksPerNode\":913932124,\"storageAccountType\":\"dosvqwhbmdgbbjf\",\"diskSizeGB\":763703494}")
+                .fromString("{\"disksPerNode\":1173289641,\"storageAccountType\":\"qyud\",\"diskSizeGB\":2120884016}")
                 .toObject(DataDisksGroups.class);
-        Assertions.assertEquals(913932124, model.disksPerNode());
+        Assertions.assertEquals(1173289641, model.disksPerNode());
     }
 
-    @Test
-    public void testSerialize() {
-        DataDisksGroups model = new DataDisksGroups().withDisksPerNode(913932124);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataDisksGroups model = new DataDisksGroups().withDisksPerNode(1173289641);
         model = BinaryData.fromObject(model).toObject(DataDisksGroups.class);
-        Assertions.assertEquals(913932124, model.disksPerNode());
+        Assertions.assertEquals(1173289641, model.disksPerNode());
     }
 }

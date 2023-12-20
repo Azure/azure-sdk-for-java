@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
@@ -22,11 +23,11 @@ import reactor.core.publisher.Mono;
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 
 public class RxGatewayStoreModelTest {
@@ -246,6 +247,7 @@ public class RxGatewayStoreModelTest {
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
@@ -263,7 +265,13 @@ public class RxGatewayStoreModelTest {
             "/fakeResourceFullName",
             ResourceType.Document);
 
-        storeModel.performRequest(dsr, HttpMethod.POST);
+        try {
+            storeModel.performRequest(dsr, HttpMethod.POST).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            //no-op
+        }
+
         Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
         HttpRequest httpRequest = httpClientRequestCaptor.getValue();
         HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);

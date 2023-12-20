@@ -5,33 +5,42 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Response to the list custom models operation. */
+/**
+ * Response to the list custom models operation.
+ */
 @Fluent
-public final class Models {
+public final class Models implements JsonSerializable<Models> {
     /*
      * Summary of all trained custom models.
      */
-    @JsonProperty(value = "summary")
     private ModelsSummary summary;
 
     /*
      * Collection of trained custom models.
      */
-    @JsonProperty(value = "modelList")
     private List<ModelInfo> modelList;
 
     /*
      * Link to the next page of custom models.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of Models class.
+     */
+    public Models() {
+    }
+
+    /**
      * Get the summary property: Summary of all trained custom models.
-     *
+     * 
      * @return the summary value.
      */
     public ModelsSummary getSummary() {
@@ -40,7 +49,7 @@ public final class Models {
 
     /**
      * Set the summary property: Summary of all trained custom models.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the Models object itself.
      */
@@ -51,7 +60,7 @@ public final class Models {
 
     /**
      * Get the modelList property: Collection of trained custom models.
-     *
+     * 
      * @return the modelList value.
      */
     public List<ModelInfo> getModelList() {
@@ -60,7 +69,7 @@ public final class Models {
 
     /**
      * Set the modelList property: Collection of trained custom models.
-     *
+     * 
      * @param modelList the modelList value to set.
      * @return the Models object itself.
      */
@@ -71,7 +80,7 @@ public final class Models {
 
     /**
      * Get the nextLink property: Link to the next page of custom models.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -80,12 +89,52 @@ public final class Models {
 
     /**
      * Set the nextLink property: Link to the next page of custom models.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the Models object itself.
      */
     public Models setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("summary", this.summary);
+        jsonWriter.writeArrayField("modelList", this.modelList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Models from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Models if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Models.
+     */
+    public static Models fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Models deserializedModels = new Models();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedModels.summary = ModelsSummary.fromJson(reader);
+                } else if ("modelList".equals(fieldName)) {
+                    List<ModelInfo> modelList = reader.readArray(reader1 -> ModelInfo.fromJson(reader1));
+                    deserializedModels.modelList = modelList;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedModels.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModels;
+        });
     }
 }

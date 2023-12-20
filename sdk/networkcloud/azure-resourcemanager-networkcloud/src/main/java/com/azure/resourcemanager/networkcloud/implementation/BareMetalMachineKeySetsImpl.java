@@ -28,16 +28,16 @@ public final class BareMetalMachineKeySetsImpl implements BareMetalMachineKeySet
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BareMetalMachineKeySet> listByResourceGroup(String resourceGroupName, String clusterName) {
+    public PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<BareMetalMachineKeySetInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, clusterName);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new BareMetalMachineKeySetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BareMetalMachineKeySet> listByResourceGroup(
+    public PagedIterable<BareMetalMachineKeySet> listByCluster(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<BareMetalMachineKeySetInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, clusterName, context);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new BareMetalMachineKeySetImpl(inner1, this.manager()));
     }
 

@@ -30,6 +30,10 @@ public final class IssueCommentContractProperties {
     @JsonProperty(value = "userId", required = true)
     private String userId;
 
+    /** Creates an instance of IssueCommentContractProperties class. */
+    public IssueCommentContractProperties() {
+    }
+
     /**
      * Get the text property: Comment text.
      *

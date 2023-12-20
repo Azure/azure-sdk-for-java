@@ -56,6 +56,6 @@ public final class CreatorsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.creators().deleteWithResponse("kix", "bin", "eputtmrywnuzoqf", com.azure.core.util.Context.NONE);
+        manager.creators().deleteWithResponse("stkwqqtch", "alm", "mtdaa", com.azure.core.util.Context.NONE);
     }
 }

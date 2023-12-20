@@ -66,11 +66,10 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiSchemasService {
+    public interface ApiSchemasService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/schemas")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SchemaCollection>> listByApi(
@@ -88,8 +87,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiSchemasGetEntityTagResponse> getEntityTag(
@@ -105,8 +103,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiSchemasGetResponse> get(
@@ -122,8 +119,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -141,8 +137,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -172,7 +167,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -244,7 +239,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -320,7 +315,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -345,7 +340,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -367,7 +362,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -399,7 +394,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -419,7 +414,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -449,7 +444,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -509,7 +504,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -567,7 +562,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -581,30 +576,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String schemaId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId)
-            .flatMap((ApiSchemasGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String schemaId) {
-        getEntityTagAsync(resourceGroupName, serviceName, apiId, schemaId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the schema specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -622,9 +600,26 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the schema specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String schemaId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, apiId, schemaId, Context.NONE);
+    }
+
+    /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -683,7 +678,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -740,7 +735,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -754,38 +749,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     private Mono<SchemaContractInner> getAsync(
         String resourceGroupName, String serviceName, String apiId, String schemaId) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId)
-            .flatMap(
-                (ApiSchemasGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the schema configuration at the API level.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema configuration at the API level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaContractInner get(String resourceGroupName, String serviceName, String apiId, String schemaId) {
-        return getAsync(resourceGroupName, serviceName, apiId, schemaId).block();
-    }
-
-    /**
-     * Get the schema configuration at the API level.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -803,9 +773,27 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     }
 
     /**
+     * Get the schema configuration at the API level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the schema configuration at the API level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaContractInner get(String resourceGroupName, String serviceName, String apiId, String schemaId) {
+        return getWithResponse(resourceGroupName, serviceName, apiId, schemaId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -878,7 +866,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -950,7 +938,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -985,7 +973,37 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
+     * @param parameters The schema contents to apply.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of aPI Schema Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch);
+        return this
+            .client
+            .<SchemaContractInner, SchemaContractInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SchemaContractInner.class,
+                SchemaContractInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates schema configuration for the API.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1020,13 +1038,12 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1034,20 +1051,17 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
+        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
+        final String ifMatch = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1069,14 +1083,15 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
         SchemaContractInner parameters,
         String ifMatch,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1104,7 +1119,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1127,7 +1142,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1157,33 +1172,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @param parameters The schema contents to apply.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Schema Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates or updates schema configuration for the API.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1204,7 +1193,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Creates or updates schema configuration for the API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1233,7 +1222,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Deletes the schema configuration at the Api.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1300,7 +1289,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Deletes the schema configuration at the Api.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1371,30 +1360,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Deletes the schema configuration at the Api.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param force If true removes all references to the schema before deleting it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch, Boolean force) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the schema configuration at the Api.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1411,33 +1377,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
         String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
         final Boolean force = null;
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the schema configuration at the Api.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
-        final Boolean force = null;
-        deleteAsync(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force).block();
-    }
-
-    /**
-     * Deletes the schema configuration at the Api.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1465,9 +1411,30 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     }
 
     /**
+     * Deletes the schema configuration at the Api.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
+        final Boolean force = null;
+        deleteWithResponse(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1503,7 +1470,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

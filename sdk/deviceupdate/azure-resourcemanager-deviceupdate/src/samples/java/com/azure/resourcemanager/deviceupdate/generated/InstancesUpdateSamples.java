@@ -4,26 +4,31 @@
 
 package com.azure.resourcemanager.deviceupdate.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceupdate.models.Instance;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Instances Update. */
+/**
+ * Samples for Instances Update.
+ */
 public final class InstancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Update.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Instances/
+     * Instances_Update.json
      */
     /**
      * Sample code: Updates Instance.
-     *
+     * 
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void updatesInstance(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        Instance resource = manager.instances().getWithResponse("test-rg", "contoso", "blue", Context.NONE).getValue();
-        resource.update().withTags(mapOf("tagKey", "tagValue")).apply();
+        Instance resource = manager.instances()
+            .getWithResponse("test-rg", "contoso", "blue", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

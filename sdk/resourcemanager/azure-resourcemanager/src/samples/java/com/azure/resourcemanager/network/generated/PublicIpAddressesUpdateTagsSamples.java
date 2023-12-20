@@ -8,29 +8,26 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PublicIpAddresses UpdateTags. */
+/**
+ * Samples for PublicIpAddresses UpdateTags.
+ */
 public final class PublicIpAddressesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PublicIpAddressUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/PublicIpAddressUpdateTags.
+     * json
      */
     /**
      * Sample code: Update public IP address tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatePublicIPAddressTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getPublicIpAddresses()
-            .updateTagsWithResponse(
-                "rg1",
-                "test-ip",
-                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getPublicIpAddresses().updateTagsWithResponse("rg1", "test-ip",
+            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

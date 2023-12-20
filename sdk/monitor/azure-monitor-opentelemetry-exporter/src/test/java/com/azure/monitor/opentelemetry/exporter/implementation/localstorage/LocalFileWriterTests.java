@@ -54,7 +54,7 @@ public class LocalFileWriterTests {
         assertThat(byteBuffers.size()).isEqualTo(10);
 
         LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
-        writer.writeToDisk(CONNECTION_STRING, byteBuffers);
+        writer.writeToDisk(CONNECTION_STRING, byteBuffers, "original error message");
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
     }
 
@@ -62,7 +62,7 @@ public class LocalFileWriterTests {
     public void testWriteRawByteArray() throws IOException {
         LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, null, false);
         byte[] content = Resources.readBytes("write-transmission.txt");
-        writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap(content)));
+        writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap(content)), "original error message");
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
     }
 
@@ -79,7 +79,9 @@ public class LocalFileWriterTests {
                         LocalFileWriter writer =
                             new LocalFileWriter(50, localFileCache, tempFolder, null, false);
                         writer.writeToDisk(
-                            CONNECTION_STRING, singletonList(ByteBuffer.wrap(telemetry.getBytes(UTF_8))));
+                            CONNECTION_STRING,
+                            singletonList(ByteBuffer.wrap(telemetry.getBytes(UTF_8))),
+                            "original error message");
                     }
                 });
         }

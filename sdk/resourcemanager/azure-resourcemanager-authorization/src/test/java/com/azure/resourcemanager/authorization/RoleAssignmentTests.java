@@ -44,7 +44,10 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
             Assertions.assertEquals(1, roleAssignments.size());
             RoleAssignment roleAssignment1 = roleAssignments.iterator().next();
             Assertions.assertEquals(roleAssignment.id(), roleAssignment1.id());
-            Assertions.assertEquals(roleAssignment.scope(), roleAssignment1.scope());
+            if (!isPlaybackMode()) {
+                // subscriptionId redacted
+                Assertions.assertEquals(roleAssignment.scope(), roleAssignment1.scope());
+            }
             Assertions.assertEquals(roleAssignment.roleDefinitionId(), roleAssignment1.roleDefinitionId());
             Assertions.assertEquals(roleAssignment.principalId(), roleAssignment1.principalId());
             Assertions.assertEquals("contributor role", roleAssignment1.description());

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.hybridnetwork.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkFunctions List. */
+/**
+ * Samples for NetworkFunctions List.
+ */
 public final class NetworkFunctionsListSamples {
     /*
-     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionListBySubscription.json
+     * x-ms-original-file:
+     * specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/
+     * NetworkFunctionListBySubscription.json
      */
     /**
      * Sample code: List all network function resources in subscription.
-     *
+     * 
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void listAllNetworkFunctionResourcesInSubscription(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctions().list(Context.NONE);
+        manager.networkFunctions().list(com.azure.core.util.Context.NONE);
     }
 }

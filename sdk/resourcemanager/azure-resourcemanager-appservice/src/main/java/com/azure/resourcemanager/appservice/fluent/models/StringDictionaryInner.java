@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** String dictionary resource. */
+/**
+ * String dictionary resource.
+ */
 @Fluent
 public final class StringDictionaryInner extends ProxyOnlyResource {
     /*
@@ -20,13 +22,15 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of StringDictionaryInner class. */
+    /**
+     * Creates an instance of StringDictionaryInner class.
+     */
     public StringDictionaryInner() {
     }
 
     /**
      * Get the properties property: Settings.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -35,7 +39,7 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
 
     /**
      * Set the properties property: Settings.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the StringDictionaryInner object itself.
      */
@@ -44,7 +48,9 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringDictionaryInner withKind(String kind) {
         super.withKind(kind);
@@ -53,7 +59,7 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

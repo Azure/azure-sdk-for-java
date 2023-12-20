@@ -23,8 +23,7 @@ public final class CacheUpdateProperties {
     private String connectionString;
 
     /*
-     * Location identifier to use cache from (should be either 'default' or
-     * valid Azure region identifier)
+     * Location identifier to use cache from (should be either 'default' or valid Azure region identifier)
      */
     @JsonProperty(value = "useFromLocation")
     private String useFromLocation;
@@ -34,6 +33,10 @@ public final class CacheUpdateProperties {
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of CacheUpdateProperties class. */
+    public CacheUpdateProperties() {
+    }
 
     /**
      * Get the description property: Cache description.

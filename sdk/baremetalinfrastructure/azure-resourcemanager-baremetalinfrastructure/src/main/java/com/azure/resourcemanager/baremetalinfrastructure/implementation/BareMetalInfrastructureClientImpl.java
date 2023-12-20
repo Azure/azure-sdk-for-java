@@ -23,6 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.AzureBareMetalInstancesClient;
+import com.azure.resourcemanager.baremetalinfrastructure.fluent.AzureBareMetalStorageInstancesClient;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.BareMetalInfrastructureClient;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.OperationsClient;
 import java.io.IOException;
@@ -37,11 +38,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the BareMetalInfrastructureClientImpl type. */
 @ServiceClient(builder = BareMetalInfrastructureClientBuilder.class)
 public final class BareMetalInfrastructureClientImpl implements BareMetalInfrastructureClient {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -133,6 +134,18 @@ public final class BareMetalInfrastructureClientImpl implements BareMetalInfrast
         return this.operations;
     }
 
+    /** The AzureBareMetalStorageInstancesClient object to access its operations. */
+    private final AzureBareMetalStorageInstancesClient azureBareMetalStorageInstances;
+
+    /**
+     * Gets the AzureBareMetalStorageInstancesClient object to access its operations.
+     *
+     * @return the AzureBareMetalStorageInstancesClient object.
+     */
+    public AzureBareMetalStorageInstancesClient getAzureBareMetalStorageInstances() {
+        return this.azureBareMetalStorageInstances;
+    }
+
     /**
      * Initializes an instance of BareMetalInfrastructureClient client.
      *
@@ -140,7 +153,7 @@ public final class BareMetalInfrastructureClientImpl implements BareMetalInfrast
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     BareMetalInfrastructureClientImpl(
@@ -155,9 +168,10 @@ public final class BareMetalInfrastructureClientImpl implements BareMetalInfrast
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-08-09";
+        this.apiVersion = "2023-08-04-preview";
         this.azureBareMetalInstances = new AzureBareMetalInstancesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.azureBareMetalStorageInstances = new AzureBareMetalStorageInstancesClientImpl(this);
     }
 
     /**

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.netapp.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"50b2753d-620a-468a-8f8c-7b34ab4ac85e\",\"clientId\":\"e3964be5-e0d2-498d-bbf6-bea7ded58949\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"d1734cd8-b673-4e87-b4ee-6f00cca9fcf0\",\"clientId\":\"5845f0d8-3244-4e1d-9dab-23b1e56ee2c8\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

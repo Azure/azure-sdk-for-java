@@ -62,7 +62,6 @@ final class QuickPulseCoordinator implements Runnable {
             if (t instanceof Error) {
                 throw (Error) t;
             }
-            // chomp
         }
     }
 

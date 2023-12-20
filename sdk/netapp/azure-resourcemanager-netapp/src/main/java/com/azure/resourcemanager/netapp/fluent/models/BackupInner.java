@@ -12,15 +12,11 @@ import com.azure.resourcemanager.netapp.models.BackupType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Backup of a Volume. */
+/**
+ * Backup under a Backup Vault.
+ */
 @Fluent
 public final class BackupInner extends ProxyResource {
-    /*
-     * Resource location
-     */
-    @JsonProperty(value = "location", required = true)
-    private String location;
-
     /*
      * Backup Properties
      */
@@ -33,33 +29,15 @@ public final class BackupInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of BackupInner class. */
+    /**
+     * Creates an instance of BackupInner class.
+     */
     public BackupInner() {
     }
 
     /**
-     * Get the location property: Resource location.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: Resource location.
-     *
-     * @param location the location value to set.
-     * @return the BackupInner object itself.
-     */
-    public BackupInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
      * Get the innerProperties property: Backup Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupProperties innerProperties() {
@@ -68,7 +46,7 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -77,9 +55,9 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the backupId property: backupId
-     *
-     * <p>UUID v4 used to identify the Backup.
-     *
+     * 
+     * UUID v4 used to identify the Backup.
+     * 
      * @return the backupId value.
      */
     public String backupId() {
@@ -88,9 +66,9 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the creationDate property: creationDate
-     *
-     * <p>The creation date of the backup.
-     *
+     * 
+     * The creation date of the backup.
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -99,7 +77,7 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -107,8 +85,8 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the size property: Size of backup.
-     *
+     * Get the size property: Size of backup in bytes.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -117,7 +95,7 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the label property: Label for backup.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -126,7 +104,7 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Set the label property: Label for backup.
-     *
+     * 
      * @param label the label value to set.
      * @return the BackupInner object itself.
      */
@@ -140,9 +118,9 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the backupType property: backupType
-     *
-     * <p>Type of backup Manual or Scheduled.
-     *
+     * 
+     * Type of backup Manual or Scheduled.
+     * 
      * @return the backupType value.
      */
     public BackupType backupType() {
@@ -151,7 +129,7 @@ public final class BackupInner extends ProxyResource {
 
     /**
      * Get the failureReason property: Failure reason.
-     *
+     * 
      * @return the failureReason value.
      */
     public String failureReason() {
@@ -159,18 +137,32 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
-     * Get the volumeName property: Volume name.
-     *
-     * @return the volumeName value.
+     * Get the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @return the volumeResourceId value.
      */
-    public String volumeName() {
-        return this.innerProperties() == null ? null : this.innerProperties().volumeName();
+    public String volumeResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().volumeResourceId();
+    }
+
+    /**
+     * Set the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @param volumeResourceId the volumeResourceId value to set.
+     * @return the BackupInner object itself.
+     */
+    public BackupInner withVolumeResourceId(String volumeResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupProperties();
+        }
+        this.innerProperties().withVolumeResourceId(volumeResourceId);
+        return this;
     }
 
     /**
      * Get the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
      * scheduled backups and true/false for manual backups.
-     *
+     * 
      * @return the useExistingSnapshot value.
      */
     public Boolean useExistingSnapshot() {
@@ -180,7 +172,7 @@ public final class BackupInner extends ProxyResource {
     /**
      * Set the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
      * scheduled backups and true/false for manual backups.
-     *
+     * 
      * @param useExistingSnapshot the useExistingSnapshot value to set.
      * @return the BackupInner object itself.
      */
@@ -193,20 +185,46 @@ public final class BackupInner extends ProxyResource {
     }
 
     /**
+     * Get the snapshotName property: The name of the snapshot.
+     * 
+     * @return the snapshotName value.
+     */
+    public String snapshotName() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotName();
+    }
+
+    /**
+     * Set the snapshotName property: The name of the snapshot.
+     * 
+     * @param snapshotName the snapshotName value to set.
+     * @return the BackupInner object itself.
+     */
+    public BackupInner withSnapshotName(String snapshotName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupProperties();
+        }
+        this.innerProperties().withSnapshotName(snapshotName);
+        return this;
+    }
+
+    /**
+     * Get the backupPolicyResourceId property: ResourceId used to identify the backup policy.
+     * 
+     * @return the backupPolicyResourceId value.
+     */
+    public String backupPolicyResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupPolicyResourceId();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model BackupInner"));
-        }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model BackupInner"));
         } else {
             innerProperties().validate();
         }

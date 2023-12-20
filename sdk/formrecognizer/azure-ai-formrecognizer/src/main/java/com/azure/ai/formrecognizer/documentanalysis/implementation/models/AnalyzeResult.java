@@ -5,95 +5,85 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** Document analysis result. */
+/**
+ * Document analysis result.
+ */
 @Fluent
-public final class AnalyzeResult {
+public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * API version used to produce this result.
      */
-    @JsonProperty(value = "apiVersion", required = true)
-    private String apiVersion;
+    private final String apiVersion;
 
     /*
      * Document model ID used to produce this result.
      */
-    @JsonProperty(value = "modelId", required = true)
-    private String modelId;
+    private final String modelId;
 
     /*
      * Method used to compute string offset and length.
      */
-    @JsonProperty(value = "stringIndexType", required = true)
-    private StringIndexType stringIndexType;
+    private final StringIndexType stringIndexType;
 
     /*
      * Concatenate string representation of all textual and visual elements in reading order.
      */
-    @JsonProperty(value = "content", required = true)
-    private String content;
+    private final String content;
 
     /*
      * Analyzed pages.
      */
-    @JsonProperty(value = "pages", required = true)
-    private List<DocumentPage> pages;
+    private final List<DocumentPage> pages;
 
     /*
      * Extracted paragraphs.
      */
-    @JsonProperty(value = "paragraphs")
     private List<DocumentParagraph> paragraphs;
 
     /*
      * Extracted tables.
      */
-    @JsonProperty(value = "tables")
     private List<DocumentTable> tables;
 
     /*
      * Extracted key-value pairs.
      */
-    @JsonProperty(value = "keyValuePairs")
     private List<DocumentKeyValuePair> keyValuePairs;
 
     /*
      * Extracted font styles.
      */
-    @JsonProperty(value = "styles")
     private List<DocumentStyle> styles;
 
     /*
      * Detected languages.
      */
-    @JsonProperty(value = "languages")
     private List<DocumentLanguage> languages;
 
     /*
      * Extracted documents.
      */
-    @JsonProperty(value = "documents")
     private List<Document> documents;
 
     /**
      * Creates an instance of AnalyzeResult class.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @param modelId the modelId value to set.
      * @param stringIndexType the stringIndexType value to set.
      * @param content the content value to set.
      * @param pages the pages value to set.
      */
-    @JsonCreator
-    public AnalyzeResult(
-            @JsonProperty(value = "apiVersion", required = true) String apiVersion,
-            @JsonProperty(value = "modelId", required = true) String modelId,
-            @JsonProperty(value = "stringIndexType", required = true) StringIndexType stringIndexType,
-            @JsonProperty(value = "content", required = true) String content,
-            @JsonProperty(value = "pages", required = true) List<DocumentPage> pages) {
+    public AnalyzeResult(String apiVersion, String modelId, StringIndexType stringIndexType, String content,
+        List<DocumentPage> pages) {
         this.apiVersion = apiVersion;
         this.modelId = modelId;
         this.stringIndexType = stringIndexType;
@@ -103,7 +93,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the apiVersion property: API version used to produce this result.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -112,7 +102,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the modelId property: Document model ID used to produce this result.
-     *
+     * 
      * @return the modelId value.
      */
     public String getModelId() {
@@ -121,7 +111,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the stringIndexType property: Method used to compute string offset and length.
-     *
+     * 
      * @return the stringIndexType value.
      */
     public StringIndexType getStringIndexType() {
@@ -130,7 +120,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the content property: Concatenate string representation of all textual and visual elements in reading order.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -139,7 +129,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the pages property: Analyzed pages.
-     *
+     * 
      * @return the pages value.
      */
     public List<DocumentPage> getPages() {
@@ -148,7 +138,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the paragraphs property: Extracted paragraphs.
-     *
+     * 
      * @return the paragraphs value.
      */
     public List<DocumentParagraph> getParagraphs() {
@@ -157,7 +147,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the paragraphs property: Extracted paragraphs.
-     *
+     * 
      * @param paragraphs the paragraphs value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -168,7 +158,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the tables property: Extracted tables.
-     *
+     * 
      * @return the tables value.
      */
     public List<DocumentTable> getTables() {
@@ -177,7 +167,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the tables property: Extracted tables.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -188,7 +178,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the keyValuePairs property: Extracted key-value pairs.
-     *
+     * 
      * @return the keyValuePairs value.
      */
     public List<DocumentKeyValuePair> getKeyValuePairs() {
@@ -197,7 +187,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the keyValuePairs property: Extracted key-value pairs.
-     *
+     * 
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -208,7 +198,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the styles property: Extracted font styles.
-     *
+     * 
      * @return the styles value.
      */
     public List<DocumentStyle> getStyles() {
@@ -217,7 +207,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the styles property: Extracted font styles.
-     *
+     * 
      * @param styles the styles value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -228,7 +218,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the languages property: Detected languages.
-     *
+     * 
      * @return the languages value.
      */
     public List<DocumentLanguage> getLanguages() {
@@ -237,7 +227,7 @@ public final class AnalyzeResult {
 
     /**
      * Set the languages property: Detected languages.
-     *
+     * 
      * @param languages the languages value to set.
      * @return the AnalyzeResult object itself.
      */
@@ -248,7 +238,7 @@ public final class AnalyzeResult {
 
     /**
      * Get the documents property: Extracted documents.
-     *
+     * 
      * @return the documents value.
      */
     public List<Document> getDocuments() {
@@ -257,12 +247,126 @@ public final class AnalyzeResult {
 
     /**
      * Set the documents property: Extracted documents.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the AnalyzeResult object itself.
      */
     public AnalyzeResult setDocuments(List<Document> documents) {
         this.documents = documents;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("stringIndexType",
+            this.stringIndexType == null ? null : this.stringIndexType.toString());
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("pages", this.pages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("paragraphs", this.paragraphs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyValuePairs", this.keyValuePairs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("styles", this.styles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeResult.
+     */
+    public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean apiVersionFound = false;
+            String apiVersion = null;
+            boolean modelIdFound = false;
+            String modelId = null;
+            boolean stringIndexTypeFound = false;
+            StringIndexType stringIndexType = null;
+            boolean contentFound = false;
+            String content = null;
+            boolean pagesFound = false;
+            List<DocumentPage> pages = null;
+            List<DocumentParagraph> paragraphs = null;
+            List<DocumentTable> tables = null;
+            List<DocumentKeyValuePair> keyValuePairs = null;
+            List<DocumentStyle> styles = null;
+            List<DocumentLanguage> languages = null;
+            List<Document> documents = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                    apiVersionFound = true;
+                } else if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                    modelIdFound = true;
+                } else if ("stringIndexType".equals(fieldName)) {
+                    stringIndexType = StringIndexType.fromString(reader.getString());
+                    stringIndexTypeFound = true;
+                } else if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                    contentFound = true;
+                } else if ("pages".equals(fieldName)) {
+                    pages = reader.readArray(reader1 -> DocumentPage.fromJson(reader1));
+                    pagesFound = true;
+                } else if ("paragraphs".equals(fieldName)) {
+                    paragraphs = reader.readArray(reader1 -> DocumentParagraph.fromJson(reader1));
+                } else if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> DocumentTable.fromJson(reader1));
+                } else if ("keyValuePairs".equals(fieldName)) {
+                    keyValuePairs = reader.readArray(reader1 -> DocumentKeyValuePair.fromJson(reader1));
+                } else if ("styles".equals(fieldName)) {
+                    styles = reader.readArray(reader1 -> DocumentStyle.fromJson(reader1));
+                } else if ("languages".equals(fieldName)) {
+                    languages = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
+                } else if ("documents".equals(fieldName)) {
+                    documents = reader.readArray(reader1 -> Document.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (apiVersionFound && modelIdFound && stringIndexTypeFound && contentFound && pagesFound) {
+                AnalyzeResult deserializedAnalyzeResult
+                    = new AnalyzeResult(apiVersion, modelId, stringIndexType, content, pages);
+                deserializedAnalyzeResult.paragraphs = paragraphs;
+                deserializedAnalyzeResult.tables = tables;
+                deserializedAnalyzeResult.keyValuePairs = keyValuePairs;
+                deserializedAnalyzeResult.styles = styles;
+                deserializedAnalyzeResult.languages = languages;
+                deserializedAnalyzeResult.documents = documents;
+
+                return deserializedAnalyzeResult;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!apiVersionFound) {
+                missingProperties.add("apiVersion");
+            }
+            if (!modelIdFound) {
+                missingProperties.add("modelId");
+            }
+            if (!stringIndexTypeFound) {
+                missingProperties.add("stringIndexType");
+            }
+            if (!contentFound) {
+                missingProperties.add("content");
+            }
+            if (!pagesFound) {
+                missingProperties.add("pages");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

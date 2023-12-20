@@ -33,7 +33,7 @@ public final class VaultCertificatesCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"gjrwjueiotwmcdyt\",\"issuer\":\"wit\",\"resourceId\":4599897838164298418,\"subject\":\"wgqwgxhn\",\"thumbprint\":\"kxfbkpycgklwndn\",\"validFrom\":\"2021-06-18T07:43:59Z\",\"validTo\":\"2021-02-14T21:50:58Z\"},\"id\":\"whvylw\",\"name\":\"btdhxujznbm\",\"type\":\"ow\"}";
+            "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"c\",\"issuer\":\"xzvlvqhjkbegib\",\"resourceId\":6232281043746114213,\"subject\":\"ebwwaloayqc\",\"thumbprint\":\"rtzju\",\"validFrom\":\"2021-08-18T20:27:18Z\",\"validTo\":\"2021-09-03T04:43:16Z\"},\"id\":\"mhtxongmtsavjcb\",\"name\":\"wxqpsrknftguvri\",\"type\":\"hprwmdyv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class VaultCertificatesCreateWithResponseMockTests {
         VaultCertificateResponse response =
             manager
                 .vaultCertificates()
-                .define("ovbvmeueciv")
-                .withExistingVault("hsfwxosowzxcug", "cjooxdjebwpucwwf")
-                .withProperties(new RawCertificateData().withAuthType(AuthType.ACCESS_CONTROL_SERVICE))
+                .define("wsrtjriplrbpbe")
+                .withExistingVault("eualupjmkhf", "obbc")
+                .withProperties(new RawCertificateData().withAuthType(AuthType.ACS))
                 .create();
 
-        Assertions.assertEquals("gjrwjueiotwmcdyt", response.properties().friendlyName());
-        Assertions.assertEquals("wit", response.properties().issuer());
-        Assertions.assertEquals(4599897838164298418L, response.properties().resourceId());
-        Assertions.assertEquals("wgqwgxhn", response.properties().subject());
-        Assertions.assertEquals("kxfbkpycgklwndn", response.properties().thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T07:43:59Z"), response.properties().validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T21:50:58Z"), response.properties().validTo());
+        Assertions.assertEquals("c", response.properties().friendlyName());
+        Assertions.assertEquals("xzvlvqhjkbegib", response.properties().issuer());
+        Assertions.assertEquals(6232281043746114213L, response.properties().resourceId());
+        Assertions.assertEquals("ebwwaloayqc", response.properties().subject());
+        Assertions.assertEquals("rtzju", response.properties().thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T20:27:18Z"), response.properties().validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T04:43:16Z"), response.properties().validTo());
     }
 }

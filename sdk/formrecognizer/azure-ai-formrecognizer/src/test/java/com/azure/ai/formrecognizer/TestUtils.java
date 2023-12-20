@@ -13,8 +13,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.test.StepVerifier;
@@ -39,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 final class TestUtils {
     private static final String REDACTED_VALUE = "REDACTED";
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     // Duration
     static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files
@@ -110,10 +107,6 @@ final class TestUtils {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         }
-    }
-
-    static SerializerAdapter getSerializerAdapter() {
-        return JacksonAdapter.createDefaultSerializerAdapter();
     }
 
     /**

@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool;
 
 import com.azure.sdk.build.tool.models.OutdatedDependency;
 import com.azure.sdk.build.tool.util.MavenUtils;
-import com.azure.sdk.build.tool.util.logging.Logger;
 import org.apache.maven.artifact.Artifact;
 
 import java.util.Arrays;
@@ -17,7 +19,6 @@ import java.util.stream.Collectors;
  * Contains the mapping for outdated dependencies and it's replacement.
  */
 public class AzureDependencyMapping {
-    private static Logger LOGGER = Logger.getInstance();
 
     private static final String TRACK_ONE_GROUP_ID = "com.microsoft.azure";
     private static final String TRACK_TWO_GROUP_ID = "com.azure";

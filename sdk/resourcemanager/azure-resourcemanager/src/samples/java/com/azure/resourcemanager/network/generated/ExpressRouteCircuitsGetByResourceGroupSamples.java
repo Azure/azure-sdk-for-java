@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteCircuits GetByResourceGroup. */
+/**
+ * Samples for ExpressRouteCircuits GetByResourceGroup.
+ */
 public final class ExpressRouteCircuitsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ExpressRouteCircuitGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCircuit(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteCircuits()
-            .getByResourceGroupWithResponse("rg1", "circuitName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteCircuits().getByResourceGroupWithResponse("rg1",
+            "circuitName", com.azure.core.util.Context.NONE);
     }
 }

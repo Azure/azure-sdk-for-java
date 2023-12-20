@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
-/** The TablesInsertEntityHeaders model. */
+/**
+ * The TablesInsertEntityHeaders model.
+ */
 @Fluent
 public final class TablesInsertEntityHeaders {
     /*
@@ -55,7 +57,7 @@ public final class TablesInsertEntityHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesInsertEntityHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesInsertEntityHeaders(HttpHeaders rawHeaders) {
@@ -73,7 +75,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -82,7 +84,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -93,7 +95,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -102,7 +104,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -113,7 +115,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -122,7 +124,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -133,7 +135,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -142,7 +144,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -153,7 +155,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -165,7 +167,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -180,7 +182,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the preferenceApplied property: The Preference-Applied property.
-     *
+     * 
      * @return the preferenceApplied value.
      */
     public String getPreferenceApplied() {
@@ -189,7 +191,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the preferenceApplied property: The Preference-Applied property.
-     *
+     * 
      * @param preferenceApplied the preferenceApplied value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */
@@ -200,7 +202,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -209,7 +211,7 @@ public final class TablesInsertEntityHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the TablesInsertEntityHeaders object itself.
      */

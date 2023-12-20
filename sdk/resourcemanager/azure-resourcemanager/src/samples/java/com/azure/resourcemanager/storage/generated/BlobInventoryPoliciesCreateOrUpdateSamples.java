@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
+import com.azure.resourcemanager.storage.models.BlobInventoryCreationTime;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyDefinition;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyFilter;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 /** Samples for BlobInventoryPolicies CreateOrUpdate. */
 public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForNonHnsAccount.
@@ -118,11 +118,11 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
                                                                 "Version",
                                                                 "DeletedTime",
                                                                 "RemainingRetentionDays")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicy.
@@ -157,12 +157,12 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
                                                         new BlobInventoryPolicyFilter()
                                                             .withPrefixMatch(
                                                                 Arrays.asList("inventoryprefix1", "inventoryprefix2"))
-                                                            .withExcludePrefix(
-                                                                Arrays.asList("excludeprefix1", "excludeprefix2"))
                                                             .withBlobTypes(
                                                                 Arrays.asList("blockBlob", "appendBlob", "pageBlob"))
                                                             .withIncludeBlobVersions(true)
-                                                            .withIncludeSnapshots(true))
+                                                            .withIncludeSnapshots(true)
+                                                            .withCreationTime(
+                                                                new BlobInventoryCreationTime().withLastNDays(1000)))
                                                     .withFormat(Format.CSV)
                                                     .withSchedule(Schedule.DAILY)
                                                     .withObjectType(ObjectType.BLOB)
@@ -202,11 +202,11 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
                                                                 "PublicAccess",
                                                                 "HasImmutabilityPolicy",
                                                                 "HasLegalHold")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicyIncludeDeleteAndNewSchemaForHnsAccount.
@@ -305,6 +305,6 @@ public final class BlobInventoryPoliciesCreateOrUpdateSamples {
                                                                 "Version",
                                                                 "DeletedTime",
                                                                 "RemainingRetentionDays")))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

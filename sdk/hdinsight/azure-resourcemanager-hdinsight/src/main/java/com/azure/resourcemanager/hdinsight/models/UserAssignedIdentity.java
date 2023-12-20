@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The User Assigned Identity. */
 @Fluent
-public class UserAssignedIdentity {
+public final class UserAssignedIdentity {
     /*
      * The principal id of user assigned identity.
      */

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the admin rule collection. */
+/**
+ * Defines the admin rule collection.
+ */
 @Fluent
 public final class AdminRuleCollectionInner extends ChildResource {
     /*
@@ -27,13 +29,15 @@ public final class AdminRuleCollectionInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AdminRuleCollectionInner class. */
+    /**
+     * Creates an instance of AdminRuleCollectionInner class.
+     */
     public AdminRuleCollectionInner() {
     }
 
     /**
      * Get the innerProperties property: Indicates the properties for the network manager admin rule collection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdminRuleCollectionPropertiesFormat innerProperties() {
@@ -42,7 +46,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Get the description property: A description of the admin rule collection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +64,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Set the description property: A description of the admin rule collection.
-     *
+     * 
      * @param description the description value to set.
      * @return the AdminRuleCollectionInner object itself.
      */
@@ -74,7 +78,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @return the appliesToGroups value.
      */
     public List<NetworkManagerSecurityGroupItem> appliesToGroups() {
@@ -83,7 +87,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the AdminRuleCollectionInner object itself.
      */
@@ -97,7 +101,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -105,8 +109,17 @@ public final class AdminRuleCollectionInner extends ChildResource {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

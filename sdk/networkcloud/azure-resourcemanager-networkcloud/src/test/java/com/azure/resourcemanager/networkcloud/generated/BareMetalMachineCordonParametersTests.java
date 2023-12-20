@@ -13,15 +13,15 @@ public final class BareMetalMachineCordonParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BareMetalMachineCordonParameters model =
-            BinaryData.fromString("{\"evacuate\":\"True\"}").toObject(BareMetalMachineCordonParameters.class);
-        Assertions.assertEquals(BareMetalMachineEvacuate.TRUE, model.evacuate());
+            BinaryData.fromString("{\"evacuate\":\"False\"}").toObject(BareMetalMachineCordonParameters.class);
+        Assertions.assertEquals(BareMetalMachineEvacuate.FALSE, model.evacuate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineCordonParameters model =
-            new BareMetalMachineCordonParameters().withEvacuate(BareMetalMachineEvacuate.TRUE);
+            new BareMetalMachineCordonParameters().withEvacuate(BareMetalMachineEvacuate.FALSE);
         model = BinaryData.fromObject(model).toObject(BareMetalMachineCordonParameters.class);
-        Assertions.assertEquals(BareMetalMachineEvacuate.TRUE, model.evacuate());
+        Assertions.assertEquals(BareMetalMachineEvacuate.FALSE, model.evacuate());
     }
 }

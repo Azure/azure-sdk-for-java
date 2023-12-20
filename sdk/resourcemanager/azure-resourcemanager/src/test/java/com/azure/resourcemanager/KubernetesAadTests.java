@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -20,7 +19,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +28,7 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class KubernetesAadTests extends ResourceManagerTestBase {
+public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
 
     private AzureResourceManager azureResourceManager;
     private String rgName;
@@ -151,26 +150,16 @@ public class KubernetesAadTests extends ResourceManagerTestBase {
             Assertions.assertEquals(0, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertTrue(kubernetesCluster.isLocalAccountsEnabled());
 
+            // Since kubernetes version 1.25, disableLocalAccounts can only be set on Azure AD integration enabled cluster.
             kubernetesCluster.update()
+                .withAzureActiveDirectoryGroup(group.id())
                 .disableLocalAccounts()
                 .apply();
 
-            Assertions.assertEquals(0, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
-
-            // failed to get credential due to lack of permission
-            KubernetesCluster kubernetesCluster1 = kubernetesCluster;
-            Assertions.assertThrows(ManagementException.class, () -> {
-                List<CredentialResult> credentialResults1 = kubernetesCluster1.userKubeConfigs();
-            });
-
-            kubernetesCluster.update()
-                .withAzureActiveDirectoryGroup(group.id())
-                .apply();
 
             Assertions.assertEquals(1, kubernetesCluster.azureActiveDirectoryGroupIds().size());
             Assertions.assertEquals(group.id(), kubernetesCluster.azureActiveDirectoryGroupIds().get(0));
-            Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
 
             // admin group
             credentialResults = kubernetesCluster.userKubeConfigs();

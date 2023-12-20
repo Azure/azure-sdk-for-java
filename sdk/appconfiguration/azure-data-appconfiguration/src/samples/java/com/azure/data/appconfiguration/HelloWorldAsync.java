@@ -41,17 +41,17 @@ public class HelloWorldAsync {
         client.setConfigurationSetting(key, null, value).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
             },
             error -> System.err.println("There was an error adding the setting: " + error),
-            () -> System.out.printf(String.format("Set setting with key=%s and value=%s added or updated.", key, value)));
+            () -> System.out.printf("Set setting with key=%s and value=%s added or updated.", key, value));
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
         client.getConfigurationSetting(key, null, null).subscribe(
             result -> {
                 final ConfigurationSetting setting = result;
-                System.out.printf(String.format("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+                System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
             },
             error -> System.err.println("There was an error getting the setting: " + error),
             () -> {

@@ -12,8 +12,7 @@ public final class ExportJobsResultImpl implements ExportJobsResult {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    ExportJobsResultImpl(
-        ExportJobsResultInner innerObject,
+    ExportJobsResultImpl(ExportJobsResultInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

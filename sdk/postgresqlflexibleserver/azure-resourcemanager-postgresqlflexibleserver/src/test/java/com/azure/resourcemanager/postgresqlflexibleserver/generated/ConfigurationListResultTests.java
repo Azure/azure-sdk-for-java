@@ -16,11 +16,11 @@ public final class ConfigurationListResultTests {
         ConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"cocpecfvmmcoofsx\",\"description\":\"evgbmqjq\",\"defaultValue\":\"c\",\"dataType\":\"Integer\",\"allowedValues\":\"vkwlzuvccfwnf\",\"source\":\"acfi\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"qgtz\",\"documentationLink\":\"pnqbqqwxrjfe\"},\"id\":\"lnwsubisn\",\"name\":\"ampmngnz\",\"type\":\"c\"},{\"properties\":{\"value\":\"wooc\",\"description\":\"bonqvpkvlrxnjeas\",\"defaultValue\":\"pheoflokeyy\",\"dataType\":\"Boolean\",\"allowedValues\":\"bdlwtgrhpdjpj\",\"source\":\"asxazjpqyegualhb\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"v\",\"documentationLink\":\"dgwdslfhot\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"},{\"properties\":{\"value\":\"uesnzwdejbavo\",\"description\":\"zdmohctbqvu\",\"defaultValue\":\"xdn\",\"dataType\":\"Boolean\",\"allowedValues\":\"w\",\"source\":\"jjugwdkcglhslaz\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"ixhbkuofqweykhm\",\"documentationLink\":\"evfyexfwhybcib\"},\"id\":\"vdcsitynn\",\"name\":\"amdecte\",\"type\":\"f\"},{\"properties\":{\"value\":\"cj\",\"description\":\"pvhez\",\"defaultValue\":\"gqhcjrefovg\",\"dataType\":\"Boolean\",\"allowedValues\":\"leyyvx\",\"source\":\"jpkcattpng\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"pjhvmdajvnys\",\"documentationLink\":\"nqecanoaeup\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"}],\"nextLink\":\"puozmyzydag\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"zyiuokk\",\"description\":\"hrdxwzywqsmbs\",\"defaultValue\":\"exim\",\"dataType\":\"Boolean\",\"allowedValues\":\"cfsf\",\"source\":\"ymddys\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"yudxorrqnbp\",\"documentationLink\":\"zvyifqrvkdvj\"},\"id\":\"lrmv\",\"name\":\"d\",\"type\":\"watkpnpulexxb\"},{\"properties\":{\"value\":\"truwiqzb\",\"description\":\"vsovmyokac\",\"defaultValue\":\"kwlhzdo\",\"dataType\":\"Numeric\",\"allowedValues\":\"mflbv\",\"source\":\"chrkcciwwzjuqk\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"uo\",\"documentationLink\":\"skghsauuimj\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"},{\"properties\":{\"value\":\"sonpclhocohs\",\"description\":\"ev\",\"defaultValue\":\"ggzfbu\",\"dataType\":\"Enumeration\",\"allowedValues\":\"faxkffeii\",\"source\":\"lvmezyvshxmzsbbz\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"burvjxxjnspy\",\"documentationLink\":\"tko\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"value\":\"iucgygevqzn\",\"description\":\"pmr\",\"defaultValue\":\"izcdrqjsd\",\"dataType\":\"Enumeration\",\"allowedValues\":\"fyhxde\",\"source\":\"jzicwifsjt\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"cbkhajdeyeamdph\",\"documentationLink\":\"alpbuxwgipwhon\"},\"id\":\"kgshwa\",\"name\":\"kix\",\"type\":\"bin\"}],\"nextLink\":\"pu\"}")
                 .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,14 +30,14 @@ public final class ConfigurationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ConfigurationInner().withValue("cocpecfvmmcoofsx").withSource("acfi"),
-                            new ConfigurationInner().withValue("wooc").withSource("asxazjpqyegualhb"),
-                            new ConfigurationInner().withValue("uesnzwdejbavo").withSource("jjugwdkcglhslaz"),
-                            new ConfigurationInner().withValue("cj").withSource("jpkcattpng")))
-                .withNextLink("puozmyzydag");
+                            new ConfigurationInner().withValue("zyiuokk").withSource("ymddys"),
+                            new ConfigurationInner().withValue("truwiqzb").withSource("chrkcciwwzjuqk"),
+                            new ConfigurationInner().withValue("sonpclhocohs").withSource("lvmezyvshxmzsbbz"),
+                            new ConfigurationInner().withValue("iucgygevqzn").withSource("jzicwifsjt")))
+                .withNextLink("pu");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 }

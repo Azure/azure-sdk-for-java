@@ -9,23 +9,23 @@ import com.azure.resourcemanager.hdinsight.models.ClusterPatchParameters;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPatchParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterPatchParameters model =
             BinaryData
-                .fromString("{\"tags\":{\"hajdeyeamdpha\":\"ifsjttgzfbishcb\"}}")
+                .fromString("{\"tags\":{\"cers\":\"ylpstdbhhxsrzdz\",\"wjmy\":\"dntnevf\"}}")
                 .toObject(ClusterPatchParameters.class);
-        Assertions.assertEquals("ifsjttgzfbishcb", model.tags().get("hajdeyeamdpha"));
+        Assertions.assertEquals("ylpstdbhhxsrzdz", model.tags().get("cers"));
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterPatchParameters model = new ClusterPatchParameters().withTags(mapOf("hajdeyeamdpha", "ifsjttgzfbishcb"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterPatchParameters model =
+            new ClusterPatchParameters().withTags(mapOf("cers", "ylpstdbhhxsrzdz", "wjmy", "dntnevf"));
         model = BinaryData.fromObject(model).toObject(ClusterPatchParameters.class);
-        Assertions.assertEquals("ifsjttgzfbishcb", model.tags().get("hajdeyeamdpha"));
+        Assertions.assertEquals("ylpstdbhhxsrzdz", model.tags().get("cers"));
     }
 
     @SuppressWarnings("unchecked")

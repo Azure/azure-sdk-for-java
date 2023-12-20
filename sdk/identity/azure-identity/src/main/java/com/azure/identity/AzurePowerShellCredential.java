@@ -17,13 +17,13 @@ import reactor.core.publisher.Mono;
 /**
  * <p>The Azure Powershell is a command-line tool that allows users to manage Azure resources from their local machine
  * or terminal. It allows users to
- * <a href="https://learn.microsoft.com/en-us/powershell/azure/authenticate-azureps">authenticate interactively</a>
+ * <a href="https://learn.microsoft.com/powershell/azure/authenticate-azureps">authenticate interactively</a>
  * as a user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>. The AzurePowershellCredential authenticates in a development environment and acquires a token on behalf of the
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * The AzurePowershellCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure Powershell. It acts as the Azure Powershell logged in user or
  * service principal and executes an Azure Powershell command underneath to authenticate the application against
- * Azure Active Directory.</p>
+ * Microsoft Entra ID.</p>
  *
  * <h2>Configure AzurePowershellCredential</h2>
  *
@@ -75,6 +75,13 @@ public class AzurePowerShellCredential implements TokenCredential {
         return identityClient.authenticateWithAzurePowerShell(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+                error))
+            .onErrorMap(error -> {
+                if (identityClient.getIdentityClientOptions().isChained()) {
+                    return new CredentialUnavailableException(error.getMessage(), error);
+                } else {
+                    return error;
+                }
+            });
     }
 }

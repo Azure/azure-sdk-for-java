@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/playwrighttesting/ci.yml
+      - sdk/playwrighttesting/azure-resourcemanager-playwrighttesting/
+    exclude:
+      - sdk/playwrighttesting/pom.xml
+      - sdk/playwrighttesting/azure-resourcemanager-playwrighttesting/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/playwrighttesting/ci.yml
+      - sdk/playwrighttesting/azure-resourcemanager-playwrighttesting/
+    exclude:
+      - sdk/playwrighttesting/pom.xml
+      - sdk/playwrighttesting/azure-resourcemanager-playwrighttesting/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerplaywrighttesting
+    displayName: azure-resourcemanager-playwrighttesting
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: playwrighttesting
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-playwrighttesting
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerplaywrighttesting
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerplaywrighttesting }}

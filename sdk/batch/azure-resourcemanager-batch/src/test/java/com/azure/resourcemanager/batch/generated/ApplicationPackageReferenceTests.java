@@ -7,22 +7,24 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationPackageReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationPackageReference model =
-            BinaryData.fromString("{\"id\":\"ywggx\",\"version\":\"lla\"}").toObject(ApplicationPackageReference.class);
-        Assertions.assertEquals("ywggx", model.id());
-        Assertions.assertEquals("lla", model.version());
+            BinaryData
+                .fromString("{\"id\":\"infwjlfltkacjve\",\"version\":\"dlfoakggkfp\"}")
+                .toObject(ApplicationPackageReference.class);
+        Assertions.assertEquals("infwjlfltkacjve", model.id());
+        Assertions.assertEquals("dlfoakggkfp", model.version());
     }
 
-    @Test
-    public void testSerialize() {
-        ApplicationPackageReference model = new ApplicationPackageReference().withId("ywggx").withVersion("lla");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ApplicationPackageReference model =
+            new ApplicationPackageReference().withId("infwjlfltkacjve").withVersion("dlfoakggkfp");
         model = BinaryData.fromObject(model).toObject(ApplicationPackageReference.class);
-        Assertions.assertEquals("ywggx", model.id());
-        Assertions.assertEquals("lla", model.version());
+        Assertions.assertEquals("infwjlfltkacjve", model.id());
+        Assertions.assertEquals("dlfoakggkfp", model.version());
     }
 }

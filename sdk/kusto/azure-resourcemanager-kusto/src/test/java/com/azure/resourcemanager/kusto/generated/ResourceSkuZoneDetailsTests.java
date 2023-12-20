@@ -12,7 +12,8 @@ public final class ResourceSkuZoneDetailsTests {
     public void testDeserialize() throws Exception {
         ResourceSkuZoneDetails model =
             BinaryData
-                .fromString("{\"name\":[\"cxy\",\"ny\"],\"capabilities\":[{\"name\":\"yn\",\"value\":\"idybyxczf\"}]}")
+                .fromString(
+                    "{\"name\":[\"dxxiv\",\"tvtc\",\"aqtdoqmcbx\",\"wvxysl\"],\"capabilities\":[{\"name\":\"fxoblytkb\",\"value\":\"pe\"},{\"name\":\"wfbkrvrns\",\"value\":\"hqjohxcrsbfova\"},{\"name\":\"ruvw\",\"value\":\"sqfsubcgjbirxb\"}]}")
                 .toObject(ResourceSkuZoneDetails.class);
     }
 

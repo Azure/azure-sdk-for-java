@@ -10,7 +10,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 /** Samples for ApiOperationPolicy CreateOrUpdate. */
 public final class ApiOperationPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiOperationPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiOperationPolicy.json
      */
     /**
      * Sample code: ApiManagementCreateApiOperationPolicy.

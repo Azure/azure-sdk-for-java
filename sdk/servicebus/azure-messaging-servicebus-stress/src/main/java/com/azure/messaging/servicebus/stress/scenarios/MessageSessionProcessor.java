@@ -3,22 +3,20 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.messaging.servicebus.stress.util.EntityType;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.CountDownLatch;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.getSessionProcessorBuilder;
 
 /**
  * Test ServiceBusSessionProcessorClient
  */
 @Component("MessageSessionProcessor")
 public class MessageSessionProcessor extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionProcessor.class);
 
     @Value("${MAX_CONCURRENT_SESSIONS:1}")
     private int maxConcurrentSessions;
@@ -31,57 +29,23 @@ public class MessageSessionProcessor extends ServiceBusScenario {
 
     @Override
     public void run() {
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        String subscriptionName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusSessionQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
-            subscriptionName = options.getServicebusSessionSubscriptionName();
-        }
-
-        ServiceBusProcessorClient client = new ServiceBusClientBuilder()
-                .connectionString(connectionString)
-                .sessionProcessor()
-                .queueName(queueName)
-                .topicName(topicName)
-                .subscriptionName(subscriptionName)
+        ServiceBusProcessorClient processor = toClose(getSessionProcessorBuilder(options)
                 .maxConcurrentSessions(maxConcurrentSessions)
                 .maxConcurrentCalls(maxConcurrentCalls)
                 .prefetchCount(prefetchCount)
-                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                .disableAutoComplete()
-                .processMessage(messageContext -> {
-                    LOGGER.verbose("Before complete. messageId: {}, sessionId: {}",
-                            messageContext.getMessage().getMessageId(),
-                            messageContext.getMessage().getSessionId());
-                    messageContext.complete();
-                    LOGGER.verbose("After complete. messageId: {}, sessionId: {}",
-                            messageContext.getMessage().getMessageId(),
-                            messageContext.getMessage().getSessionId());
-                })
-                .processError(err -> {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(err.getException()));
-                })
-                .buildProcessorClient();
+                .processMessage(messageContext -> messageContext.complete())
+                .processError(err -> recordError(err.getException().getClass().getName(), err.getException(), "processError"))
+                .buildProcessorClient());
+        processor.start();
 
-        client.start();
+        blockingWait(options.getTestDuration());
+    }
 
-        // When the connection is recovering, there is a gap between the creation of new reactor-executor thread and
-        // the disposal of old reactor-executor thread. Since only the daemon threads are running, the program ends.
-        // Here we add a 'CountDownLatch' to block main thread and keep the processor running forever.
-        // In the future, we can add wait time as test parameter so that we can control the testing time.
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // We won't hit here unless we add a wait time for the 'CountDownLatch'.
-        client.close();
+    @Override
+    public void recordRunOptions(Span span) {
+        super.recordRunOptions(span);
+        span.setAttribute(AttributeKey.longKey("maxConcurrentSessions"), maxConcurrentSessions);
+        span.setAttribute(AttributeKey.longKey("maxConcurrentCalls"), maxConcurrentCalls);
+        span.setAttribute(AttributeKey.longKey("prefetchCount"), prefetchCount);
     }
 }

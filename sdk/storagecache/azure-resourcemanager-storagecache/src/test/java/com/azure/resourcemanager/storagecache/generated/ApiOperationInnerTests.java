@@ -17,15 +17,15 @@ public final class ApiOperationInnerTests {
         ApiOperationInner model =
             BinaryData
                 .fromString(
-                    "{\"display\":{\"operation\":\"parcry\",\"provider\":\"nzwuxzd\",\"resource\":\"a\",\"description\":\"lhmwhfpmrqobm\"},\"origin\":\"kknryrtihf\",\"isDataAction\":true,\"name\":\"bpzvgn\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
+                    "{\"display\":{\"operation\":\"po\",\"provider\":\"maajrmvdjwzrlo\",\"resource\":\"clwhijcoejctbz\",\"description\":\"s\"},\"origin\":\"y\",\"isDataAction\":false,\"name\":\"fkgukdkexxppof\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
                 .toObject(ApiOperationInner.class);
-        Assertions.assertEquals("parcry", model.display().operation());
-        Assertions.assertEquals("nzwuxzd", model.display().provider());
-        Assertions.assertEquals("a", model.display().resource());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.display().description());
-        Assertions.assertEquals("kknryrtihf", model.origin());
-        Assertions.assertEquals(true, model.isDataAction());
-        Assertions.assertEquals("bpzvgn", model.name());
+        Assertions.assertEquals("po", model.display().operation());
+        Assertions.assertEquals("maajrmvdjwzrlo", model.display().provider());
+        Assertions.assertEquals("clwhijcoejctbz", model.display().resource());
+        Assertions.assertEquals("s", model.display().description());
+        Assertions.assertEquals("y", model.origin());
+        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("fkgukdkexxppof", model.name());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,24 +34,24 @@ public final class ApiOperationInnerTests {
             new ApiOperationInner()
                 .withDisplay(
                     new ApiOperationDisplay()
-                        .withOperation("parcry")
-                        .withProvider("nzwuxzd")
-                        .withResource("a")
-                        .withDescription("lhmwhfpmrqobm"))
-                .withOrigin("kknryrtihf")
-                .withIsDataAction(true)
-                .withName("bpzvgn")
+                        .withOperation("po")
+                        .withProvider("maajrmvdjwzrlo")
+                        .withResource("clwhijcoejctbz")
+                        .withDescription("s"))
+                .withOrigin("y")
+                .withIsDataAction(false)
+                .withName("fkgukdkexxppof")
                 .withServiceSpecification(
                     new ApiOperationPropertiesServiceSpecification()
                         .withMetricSpecifications(Arrays.asList())
                         .withLogSpecifications(Arrays.asList()));
         model = BinaryData.fromObject(model).toObject(ApiOperationInner.class);
-        Assertions.assertEquals("parcry", model.display().operation());
-        Assertions.assertEquals("nzwuxzd", model.display().provider());
-        Assertions.assertEquals("a", model.display().resource());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.display().description());
-        Assertions.assertEquals("kknryrtihf", model.origin());
-        Assertions.assertEquals(true, model.isDataAction());
-        Assertions.assertEquals("bpzvgn", model.name());
+        Assertions.assertEquals("po", model.display().operation());
+        Assertions.assertEquals("maajrmvdjwzrlo", model.display().provider());
+        Assertions.assertEquals("clwhijcoejctbz", model.display().resource());
+        Assertions.assertEquals("s", model.display().description());
+        Assertions.assertEquals("y", model.origin());
+        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("fkgukdkexxppof", model.name());
     }
 }

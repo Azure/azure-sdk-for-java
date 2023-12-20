@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for AzureFirewallFqdnTags List. */
+/**
+ * Samples for AzureFirewallFqdnTags List.
+ */
 public final class AzureFirewallFqdnTagsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureFirewallFqdnTagsListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * AzureFirewallFqdnTagsListBySubscription.json
      */
     /**
      * Sample code: List all Azure Firewall FQDN Tags for a given subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listAllAzureFirewallFQDNTagsForAGivenSubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void
+        listAllAzureFirewallFQDNTagsForAGivenSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.networks().manager().serviceClient().getAzureFirewallFqdnTags().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -8,9 +8,10 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.models.AnswerResult;
+import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.models.SemanticSearchResults;
 
 import java.util.List;
 import java.util.Map;
@@ -117,14 +118,16 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
     }
 
     /**
-     * The answer results based on the search request.
+     * The semantic search results based on the search request.
      * <p>
-     * If {@code answers} wasn't supplied in the request this will be null.
+     * If semantic search wasn't requested this will return a {@link SemanticSearchResults} with no values.
      *
-     * @return The answer results if {@code answers} were supplied in the request, otherwise null.
+     * @return The semantic search results if semantic search was requested, otherwise an empty
+     * {@link SemanticSearchResults}.
      */
-    public List<AnswerResult> getAnswers() {
-        return metadataSupplier != null ?  metadataSupplier.get().getFirstPageResponse().getAnswers()
-            : pagedFlux.getAnswers().block();
+    public SemanticSearchResults getSemanticResults() {
+        return metadataSupplier != null
+            ? SemanticSearchResultsAccessHelper.create(metadataSupplier.get().getFirstPageResponse())
+            : pagedFlux.getSemanticResults().block();
     }
 }

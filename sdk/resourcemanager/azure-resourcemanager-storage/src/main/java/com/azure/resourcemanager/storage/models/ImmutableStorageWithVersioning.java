@@ -29,6 +29,10 @@ public final class ImmutableStorageWithVersioning {
     @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState migrationState;
 
+    /** Creates an instance of ImmutableStorageWithVersioning class. */
+    public ImmutableStorageWithVersioning() {
+    }
+
     /**
      * Get the enabled property: This is an immutable property, when set to true it enables object level immutability at
      * the container level.

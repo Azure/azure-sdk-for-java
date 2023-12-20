@@ -19,7 +19,7 @@ public interface ApiIssueCommentsClient {
     /**
      * Lists all comments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -35,7 +35,7 @@ public interface ApiIssueCommentsClient {
     /**
      * Lists all comments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -65,22 +65,7 @@ public interface ApiIssueCommentsClient {
     /**
      * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param commentId Comment identifier within an Issue. Must be unique in the current Issue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
-
-    /**
-     * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -96,9 +81,9 @@ public interface ApiIssueCommentsClient {
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
 
     /**
-     * Gets the details of the issue Comment for an API specified by its identifier.
+     * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -106,16 +91,14 @@ public interface ApiIssueCommentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueCommentContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
 
     /**
      * Gets the details of the issue Comment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -131,32 +114,26 @@ public interface ApiIssueCommentsClient {
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
 
     /**
-     * Creates a new Comment for the Issue in an API or updates an existing one.
+     * Gets the details of the issue Comment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param commentId Comment identifier within an Issue. Must be unique in the current Issue.
-     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Comment Contract details.
+     * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueCommentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String commentId,
-        IssueCommentContractInner parameters);
+    IssueCommentContractInner get(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
 
     /**
      * Creates a new Comment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -181,27 +158,32 @@ public interface ApiIssueCommentsClient {
         Context context);
 
     /**
-     * Deletes the specified comment from an Issue.
+     * Creates a new Comment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param commentId Comment identifier within an Issue. Must be unique in the current Issue.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return issue Comment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch);
+    IssueCommentContractInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String issueId,
+        String commentId,
+        IssueCommentContractInner parameters);
 
     /**
      * Deletes the specified comment from an Issue.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -223,4 +205,22 @@ public interface ApiIssueCommentsClient {
         String commentId,
         String ifMatch,
         Context context);
+
+    /**
+     * Deletes the specified comment from an Issue.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param commentId Comment identifier within an Issue. Must be unique in the current Issue.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch);
 }

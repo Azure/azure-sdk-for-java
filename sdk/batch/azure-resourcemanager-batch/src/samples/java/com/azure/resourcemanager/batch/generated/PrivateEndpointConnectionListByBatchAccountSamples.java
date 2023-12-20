@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection ListByBatchAccount. */
 public final class PrivateEndpointConnectionListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PrivateEndpointConnectionsList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateEndpointConnectionsList.json
      */
     /**
      * Sample code: ListPrivateEndpointConnections.
@@ -19,6 +17,6 @@ public final class PrivateEndpointConnectionListByBatchAccountSamples {
     public static void listPrivateEndpointConnections(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .privateEndpointConnections()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, Context.NONE);
+            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }

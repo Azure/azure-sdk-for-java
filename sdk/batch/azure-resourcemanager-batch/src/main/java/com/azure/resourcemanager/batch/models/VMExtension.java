@@ -45,6 +45,13 @@ public final class VMExtension {
     private Boolean autoUpgradeMinorVersion;
 
     /*
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
+     * the extension available.
+     */
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
+
+    /*
      * JSON formatted public settings for the extension.
      */
     @JsonProperty(value = "settings")
@@ -170,6 +177,28 @@ public final class VMExtension {
      */
     public VMExtension withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the VMExtension object itself.
+     */
+    public VMExtension withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

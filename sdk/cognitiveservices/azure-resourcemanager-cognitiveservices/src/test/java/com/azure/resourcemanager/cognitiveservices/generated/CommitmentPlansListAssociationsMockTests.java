@@ -32,7 +32,7 @@ public final class CommitmentPlansListAssociationsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"etag\":\"lnzonzlrpiqywn\",\"properties\":{\"accountId\":\"tszcofizehtdhgb\"},\"id\":\"k\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}]}";
+            "{\"value\":[{\"etag\":\"er\",\"properties\":{\"accountId\":\"vs\"},\"id\":\"xhlw\",\"name\":\"tsjgqrsx\",\"type\":\"p\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class CommitmentPlansListAssociationsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CommitmentPlanAccountAssociation> response =
-            manager.commitmentPlans().listAssociations("ujrtrhqvwr", "vk", com.azure.core.util.Context.NONE);
+            manager.commitmentPlans().listAssociations("punj", "ikczvvitacgxmf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tszcofizehtdhgb", response.iterator().next().accountId());
+        Assertions.assertEquals("vs", response.iterator().next().accountId());
     }
 }

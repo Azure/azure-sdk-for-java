@@ -12,6 +12,7 @@ import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -231,13 +232,14 @@ class DiagnosticSettingImpl
             .manager()
             .serviceClient()
             .getDiagnosticSettingsOperations()
-            .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
+            .createOrUpdateAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettingsOperations()
+            .getAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name());
     }
 
     @Override

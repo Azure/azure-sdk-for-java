@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobContainers Delete. */
 public final class BlobContainersDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersDelete.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersDelete.json
      */
     /**
      * Sample code: DeleteContainers.
@@ -22,6 +20,6 @@ public final class BlobContainersDeleteSamples {
             .manager()
             .serviceClient()
             .getBlobContainers()
-            .deleteWithResponse("res4079", "sto4506", "container9689", Context.NONE);
+            .deleteWithResponse("res4079", "sto4506", "container9689", com.azure.core.util.Context.NONE);
     }
 }

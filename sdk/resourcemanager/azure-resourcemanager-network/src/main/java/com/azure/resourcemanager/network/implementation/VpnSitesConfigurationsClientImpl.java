@@ -31,52 +31,53 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnSitesConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VpnSitesConfigurationsClient.
+ */
 public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VpnSitesConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VpnSitesConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VpnSitesConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VpnSitesConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VpnSitesConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVpnSitesConfigurations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientVpnSitesConfigurations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VpnSitesConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnConfiguration")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnConfiguration")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> download(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> download(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWANName") String virtualWanName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("virtualWANName") String virtualWanName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GetVpnSitesConfigurationRequest request,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -86,19 +87,15 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+    public Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,27 +109,17 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .download(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualWanName,
-                            apiVersion,
-                            request,
-                            accept,
-                            context))
+            .withContext(context -> service.download(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualWanName, apiVersion, request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -143,19 +130,15 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,24 +152,16 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .download(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualWanName,
-                apiVersion,
-                request,
-                accept,
-                context);
+        return service.download(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualWanName, apiVersion, request, accept, context);
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -196,18 +171,16 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+    public PollerFlux<PollResult<Void>, Void> beginDownloadAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono = downloadWithResponseAsync(resourceGroupName, virtualWanName, request);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -218,19 +191,18 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDownloadAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            downloadWithResponseAsync(resourceGroupName, virtualWanName, request, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = downloadWithResponseAsync(resourceGroupName, virtualWanName, request, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -240,14 +212,14 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDownload(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+    public SyncPoller<PollResult<Void>, Void> beginDownload(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request) {
         return this.beginDownloadAsync(resourceGroupName, virtualWanName, request).getSyncPoller();
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -258,14 +230,14 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDownload(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDownload(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request, Context context) {
         return this.beginDownloadAsync(resourceGroupName, virtualWanName, request, context).getSyncPoller();
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -275,16 +247,15 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
-        return beginDownloadAsync(resourceGroupName, virtualWanName, request)
-            .last()
+    public Mono<Void> downloadAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request) {
+        return beginDownloadAsync(resourceGroupName, virtualWanName, request).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -295,16 +266,15 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> downloadAsync(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
-        return beginDownloadAsync(resourceGroupName, virtualWanName, request, context)
-            .last()
+    private Mono<Void> downloadAsync(String resourceGroupName, String virtualWanName,
+        GetVpnSitesConfigurationRequest request, Context context) {
+        return beginDownloadAsync(resourceGroupName, virtualWanName, request, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -319,7 +289,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -329,8 +299,8 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void download(
-        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+    public void download(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request,
+        Context context) {
         downloadAsync(resourceGroupName, virtualWanName, request, context).block();
     }
 }

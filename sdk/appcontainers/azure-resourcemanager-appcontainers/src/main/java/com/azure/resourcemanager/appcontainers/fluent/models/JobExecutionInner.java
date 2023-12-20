@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Container Apps Jobs execution. */
+/** Container Apps Job execution. */
 @Fluent
 public final class JobExecutionInner {
     /*
@@ -44,7 +44,7 @@ public final class JobExecutionInner {
     private OffsetDateTime startTime;
 
     /*
-     * Job execution start time.
+     * Job execution end time.
      */
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
@@ -149,7 +149,7 @@ public final class JobExecutionInner {
     }
 
     /**
-     * Get the endTime property: Job execution start time.
+     * Get the endTime property: Job execution end time.
      *
      * @return the endTime value.
      */
@@ -158,7 +158,7 @@ public final class JobExecutionInner {
     }
 
     /**
-     * Set the endTime property: Job execution start time.
+     * Set the endTime property: Job execution end time.
      *
      * @param endTime the endTime value to set.
      * @return the JobExecutionInner object itself.

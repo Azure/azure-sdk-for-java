@@ -1,3 +1,17 @@
+# Azure Purview Catalog Service for Java
+> see https://aka.ms/autorest
+
+### Setup
+```ps
+npm install -g autorest
+```
+
+### Generation
+```ps
+cd <swagger-folder>
+autorest
+```
+
 ## Generate autorest code
 ```yaml
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/ccbe894f6b012ca2000184307ed453fd68797b86/specification/purview/data-plane/Azure.Analytics.Purview.Catalog/preview/2022-03-01-preview/purviewcatalog.json

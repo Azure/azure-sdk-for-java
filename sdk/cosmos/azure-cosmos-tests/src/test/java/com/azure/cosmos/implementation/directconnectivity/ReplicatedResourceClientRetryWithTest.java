@@ -115,7 +115,7 @@ public class ReplicatedResourceClientRetryWithTest {
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
             authorizationTokenProvider,
             false,
-            false);
+            null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs", ResourceType.Document);

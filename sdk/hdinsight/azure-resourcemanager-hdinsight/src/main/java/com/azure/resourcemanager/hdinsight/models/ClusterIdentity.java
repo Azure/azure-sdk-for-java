@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the cluster. */
 @Fluent
-public class ClusterIdentity {
+public final class ClusterIdentity {
     /*
      * The principal id of cluster identity. This property will only be provided for a system assigned identity.
      */

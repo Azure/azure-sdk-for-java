@@ -17,6 +17,10 @@ public final class AssociationContractProperties {
     @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of AssociationContractProperties class. */
+    public AssociationContractProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state.
      *

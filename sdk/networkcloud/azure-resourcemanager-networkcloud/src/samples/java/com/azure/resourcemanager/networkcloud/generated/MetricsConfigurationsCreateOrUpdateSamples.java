@@ -12,14 +12,14 @@ import java.util.Map;
 /** Samples for MetricsConfigurations CreateOrUpdate. */
 public final class MetricsConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterMetricsConfigurations_Update.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterMetricsConfigurations_Create.json
      */
     /**
-     * Sample code: Update metrics configuration of cluster.
+     * Sample code: Create or update metrics configuration of cluster.
      *
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void updateMetricsConfigurationOfCluster(
+    public static void createOrUpdateMetricsConfigurationOfCluster(
         com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         manager
             .metricsConfigurations()
@@ -29,14 +29,15 @@ public final class MetricsConfigurationsCreateOrUpdateSamples {
             .withExtendedLocation(
                 new ExtendedLocation()
                     .withName(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName")
                     .withType("CustomLocation"))
             .withCollectionInterval(15L)
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withEnabledMetrics(Arrays.asList("metric1", "metric2"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

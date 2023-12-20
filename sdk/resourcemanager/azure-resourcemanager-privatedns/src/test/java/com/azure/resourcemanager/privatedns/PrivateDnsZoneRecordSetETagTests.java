@@ -21,7 +21,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
+public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestProxyTestBase {
     private String rgName = "";
 
     protected ResourceManager resourceManager;

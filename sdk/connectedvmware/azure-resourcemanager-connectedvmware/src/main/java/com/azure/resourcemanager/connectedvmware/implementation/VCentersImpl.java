@@ -27,15 +27,6 @@ public final class VCentersImpl implements VCenters {
         this.serviceManager = serviceManager;
     }
 
-    public VCenter getByResourceGroup(String resourceGroupName, String vcenterName) {
-        VCenterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vcenterName);
-        if (inner != null) {
-            return new VCenterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VCenter> getByResourceGroupWithResponse(
         String resourceGroupName, String vcenterName, Context context) {
         Response<VCenterInner> inner =
@@ -51,8 +42,13 @@ public final class VCentersImpl implements VCenters {
         }
     }
 
-    public void delete(String resourceGroupName, String vcenterName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, vcenterName, force);
+    public VCenter getByResourceGroup(String resourceGroupName, String vcenterName) {
+        VCenterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vcenterName);
+        if (inner != null) {
+            return new VCenterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String vcenterName) {

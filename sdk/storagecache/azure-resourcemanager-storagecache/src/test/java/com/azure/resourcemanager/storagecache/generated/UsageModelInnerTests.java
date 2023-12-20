@@ -15,23 +15,23 @@ public final class UsageModelInnerTests {
         UsageModelInner model =
             BinaryData
                 .fromString(
-                    "{\"display\":{\"description\":\"locx\"},\"modelName\":\"paierh\",\"targetType\":\"csglum\"}")
+                    "{\"display\":{\"description\":\"yp\"},\"modelName\":\"bpizcdrqjsdpydn\",\"targetType\":\"hxdeoejz\"}")
                 .toObject(UsageModelInner.class);
-        Assertions.assertEquals("locx", model.display().description());
-        Assertions.assertEquals("paierh", model.modelName());
-        Assertions.assertEquals("csglum", model.targetType());
+        Assertions.assertEquals("yp", model.display().description());
+        Assertions.assertEquals("bpizcdrqjsdpydn", model.modelName());
+        Assertions.assertEquals("hxdeoejz", model.targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsageModelInner model =
             new UsageModelInner()
-                .withDisplay(new UsageModelDisplay().withDescription("locx"))
-                .withModelName("paierh")
-                .withTargetType("csglum");
+                .withDisplay(new UsageModelDisplay().withDescription("yp"))
+                .withModelName("bpizcdrqjsdpydn")
+                .withTargetType("hxdeoejz");
         model = BinaryData.fromObject(model).toObject(UsageModelInner.class);
-        Assertions.assertEquals("locx", model.display().description());
-        Assertions.assertEquals("paierh", model.modelName());
-        Assertions.assertEquals("csglum", model.targetType());
+        Assertions.assertEquals("yp", model.display().description());
+        Assertions.assertEquals("bpizcdrqjsdpydn", model.modelName());
+        Assertions.assertEquals("hxdeoejz", model.targetType());
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmResource;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -48,6 +49,13 @@ public final class ManagedHsmInner extends ManagedHsmResource {
     @Override
     public ManagedHsmInner withSku(ManagedHsmSku sku) {
         super.withSku(sku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedHsmInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
         return this;
     }
 

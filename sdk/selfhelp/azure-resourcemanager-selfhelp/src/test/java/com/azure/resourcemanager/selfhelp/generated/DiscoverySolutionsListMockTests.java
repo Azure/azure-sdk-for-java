@@ -31,43 +31,27 @@ public final class DiscoverySolutionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"solutionId\":\"hrhcffcyddglmjth\",\"solutionType\":\"kw\",\"description\":\"eicxmqciwqvhkhi\",\"requiredParameterSets\":[[\"dtopbob\",\"og\",\"m\"],[\"u\"],[\"a\"]]},\"id\":\"rzayv\",\"name\":\"t\",\"type\":\"gvdfgiotkftutq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"solutions\":[{\"solutionId\":\"s\",\"solutionType\":\"Diagnostics\",\"description\":\"wabm\",\"requiredInputs\":[\"fkifr\",\"tpuqujmq\"]}]},\"id\":\"kfbtndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SelfHelpManager manager =
-            SelfHelpManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SelfHelpManager manager = SelfHelpManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SolutionMetadataResource> response =
-            manager
-                .discoverySolutions()
-                .list("zxibqeoj", "xqbzvddntwnd", "icbtwnpzao", com.azure.core.util.Context.NONE);
+        PagedIterable<SolutionMetadataResource> response
+            = manager.discoverySolutions().list("c", "rauwjuetaebu", "u", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().solutionId());
-        Assertions.assertEquals("kw", response.iterator().next().solutionType());
-        Assertions.assertEquals("eicxmqciwqvhkhi", response.iterator().next().description());
-        Assertions.assertEquals("dtopbob", response.iterator().next().requiredParameterSets().get(0).get(0));
+        Assertions.assertEquals("s", response.iterator().next().solutions().get(0).solutionId());
     }
 }

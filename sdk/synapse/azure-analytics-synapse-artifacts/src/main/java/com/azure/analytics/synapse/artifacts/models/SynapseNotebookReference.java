@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Synapse notebook reference type. */
+/**
+ * Synapse notebook reference type.
+ */
 @Fluent
 public final class SynapseNotebookReference {
     /*
@@ -22,12 +24,15 @@ public final class SynapseNotebookReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of SynapseNotebookReference class. */
-    public SynapseNotebookReference() {}
+    /**
+     * Creates an instance of SynapseNotebookReference class.
+     */
+    public SynapseNotebookReference() {
+    }
 
     /**
      * Get the type property: Synapse notebook reference type.
-     *
+     * 
      * @return the type value.
      */
     public NotebookReferenceType getType() {
@@ -36,7 +41,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Set the type property: Synapse notebook reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SynapseNotebookReference object itself.
      */
@@ -47,7 +52,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Get the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object getReferenceName() {
@@ -56,7 +61,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Set the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SynapseNotebookReference object itself.
      */

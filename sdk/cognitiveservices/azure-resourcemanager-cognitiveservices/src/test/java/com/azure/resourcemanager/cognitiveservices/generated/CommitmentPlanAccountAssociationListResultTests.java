@@ -14,16 +14,16 @@ public final class CommitmentPlanAccountAssociationListResultTests {
         CommitmentPlanAccountAssociationListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"eburu\",\"value\":[{\"etag\":\"s\",\"properties\":{\"accountId\":\"xwabmqoe\"},\"id\":\"kif\",\"name\":\"vtpuqujmqlgk\",\"type\":\"btndo\"},{\"etag\":\"gbjcntujitcjed\",\"properties\":{\"accountId\":\"waezkojvd\"},\"id\":\"pzfoqoui\",\"name\":\"ybxarzgszu\",\"type\":\"oxciqopidoamcio\"},{\"etag\":\"haz\",\"properties\":{\"accountId\":\"nz\"},\"id\":\"onlwntoeg\",\"name\":\"kdwbwhkszz\",\"type\":\"mrv\"},{\"etag\":\"tvb\",\"properties\":{\"accountId\":\"sfraoyzko\"},\"id\":\"wtl\",\"name\":\"nguxawqaldsy\",\"type\":\"uximerqfobw\"}]}")
+                    "{\"nextLink\":\"lwfffi\",\"value\":[{\"etag\":\"qqmtedltmmji\",\"properties\":{\"accountId\":\"ozphvwauyqncygu\"},\"id\":\"kvi\",\"name\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\"},{\"etag\":\"c\",\"properties\":{\"accountId\":\"ixbjx\"},\"id\":\"fw\",\"name\":\"yl\",\"type\":\"coolsttpkiwkkb\"},{\"etag\":\"rywvtylbfpn\",\"properties\":{\"accountId\":\"doiwi\"},\"id\":\"thtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"etag\":\"wct\",\"properties\":{\"accountId\":\"zj\"},\"id\":\"uu\",\"name\":\"fdlwg\",\"type\":\"ytsbwtovv\"}]}")
                 .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("eburu", model.nextLink());
+        Assertions.assertEquals("lwfffi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model =
-            new CommitmentPlanAccountAssociationListResult().withNextLink("eburu");
+            new CommitmentPlanAccountAssociationListResult().withNextLink("lwfffi");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("eburu", model.nextLink());
+        Assertions.assertEquals("lwfffi", model.nextLink());
     }
 }

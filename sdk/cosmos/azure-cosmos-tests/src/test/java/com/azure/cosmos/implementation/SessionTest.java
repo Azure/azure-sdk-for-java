@@ -42,7 +42,7 @@ public class SessionTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
-    private String collectionId = "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~";
+    private String collectionId = "+ -_,:.|~" + UUID.randomUUID() + " +-_,:.|~";
     private SpyClientUnderTestFactory.SpyBaseClass<HttpRequest> spyClient;
     private AsyncDocumentClient houseKeepingClient;
     private ConnectionMode connectionMode;
@@ -63,7 +63,7 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple", "multi-master" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
 
@@ -95,14 +95,14 @@ public class SessionTest extends TestSuiteBase {
         options.setPartitionKey(PartitionKey.NONE);
     }
 
-    @AfterClass(groups = { "simple", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(houseKeepingClient, createdCollection);
         safeClose(houseKeepingClient);
         safeClose(spyClient);
     }
 
-    @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void beforeTest(Method method) {
         spyClient.clearCapturedRequests();
     }
@@ -116,7 +116,7 @@ public class SessionTest extends TestSuiteBase {
             .collect(Collectors.toList());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
@@ -143,7 +143,7 @@ public class SessionTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void partitionedSessionToken(boolean isNameBased) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
@@ -188,7 +188,15 @@ public class SessionTest extends TestSuiteBase {
         String query = "select * from c";
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setPartitionKey(new PartitionKey(documentCreated.getId()));
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests()).hasSize(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -196,17 +204,29 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for cross partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
         // Session token validation for feed ranges query
         spyClient.clearCapturedRequests();
-        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased)).block();
+        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased), true).block();
         queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setFeedRange(feedRanges.get(0));
-        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            queryRequestOptions,
+            spyClient
+        );
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -214,10 +234,16 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for readAll with partition query
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
         spyClient.readAllDocuments(
             getCollectionLink(isNameBased),
             new PartitionKey(documentCreated.getId()),
-            queryRequestOptions,
+            dummyState,
             Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
@@ -226,7 +252,15 @@ public class SessionTest extends TestSuiteBase {
         // Session token validation for readAll with cross partition
         spyClient.clearCapturedRequests();
         queryRequestOptions = new CosmosQueryRequestOptions();
-        spyClient.readDocuments(getCollectionLink(isNameBased), queryRequestOptions, Document.class).blockFirst();
+
+        dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            queryRequestOptions,
+            spyClient
+        );
+
+        spyClient.readDocuments(getCollectionLink(isNameBased), dummyState, Document.class).blockFirst();
         assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -237,7 +271,11 @@ public class SessionTest extends TestSuiteBase {
         CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         cosmosItemIdentities.add(cosmosItemIdentity);
-        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, InternalObjectNode.class).block();
+        spyClient.readMany(
+            cosmosItemIdentities,
+            getCollectionLink(isNameBased),
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, queryRequestOptions, spyClient),
+            InternalObjectNode.class).block();
         assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -268,7 +306,7 @@ public class SessionTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         // No session token set for the master resource related request
@@ -346,7 +384,7 @@ public class SessionTest extends TestSuiteBase {
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
@@ -375,7 +413,7 @@ public class SessionTest extends TestSuiteBase {
         assertThat(documentReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionTokenRemovedForMasterResource(boolean isNameBased) throws UnsupportedEncodingException {
         if (connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException("Master resource access is only through gateway");

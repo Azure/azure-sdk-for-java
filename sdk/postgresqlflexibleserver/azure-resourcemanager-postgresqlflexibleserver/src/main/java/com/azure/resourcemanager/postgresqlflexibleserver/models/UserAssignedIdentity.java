@@ -21,10 +21,16 @@ public final class UserAssignedIdentity {
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * the types of identities associated with this resource; currently restricted to 'SystemAssigned and UserAssigned'
+     * the types of identities associated with this resource; currently restricted to 'None and UserAssigned'
      */
     @JsonProperty(value = "type", required = true)
     private IdentityType type;
+
+    /*
+     * Tenant id of the server.
+     */
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantId;
 
     /** Creates an instance of UserAssignedIdentity class. */
     public UserAssignedIdentity() {
@@ -51,8 +57,8 @@ public final class UserAssignedIdentity {
     }
 
     /**
-     * Get the type property: the types of identities associated with this resource; currently restricted to
-     * 'SystemAssigned and UserAssigned'.
+     * Get the type property: the types of identities associated with this resource; currently restricted to 'None and
+     * UserAssigned'.
      *
      * @return the type value.
      */
@@ -61,8 +67,8 @@ public final class UserAssignedIdentity {
     }
 
     /**
-     * Set the type property: the types of identities associated with this resource; currently restricted to
-     * 'SystemAssigned and UserAssigned'.
+     * Set the type property: the types of identities associated with this resource; currently restricted to 'None and
+     * UserAssigned'.
      *
      * @param type the type value to set.
      * @return the UserAssignedIdentity object itself.
@@ -70,6 +76,15 @@ public final class UserAssignedIdentity {
     public UserAssignedIdentity withType(IdentityType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Get the tenantId property: Tenant id of the server.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
     }
 
     /**

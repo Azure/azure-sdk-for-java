@@ -58,6 +58,6 @@ public final class DatabasePrincipalAssignmentsDeleteMockTests {
 
         manager
             .databasePrincipalAssignments()
-            .delete("dunqnd", "fpch", "qbnj", "rcgegydcwboxjum", com.azure.core.util.Context.NONE);
+            .delete("gvgovpbbttefjo", "nssqyzqed", "kdfrdbiqmrjgeihf", "lg", com.azure.core.util.Context.NONE);
     }
 }

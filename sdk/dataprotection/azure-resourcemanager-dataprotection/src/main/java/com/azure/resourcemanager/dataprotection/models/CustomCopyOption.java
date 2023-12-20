@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * CustomCopyOption
- *
- * <p>Duration based custom options to copy.
+ * 
+ * Duration based custom options to copy.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("CustomCopyOption")
@@ -24,13 +24,15 @@ public final class CustomCopyOption extends CopyOption {
     @JsonProperty(value = "duration")
     private String duration;
 
-    /** Creates an instance of CustomCopyOption class. */
+    /**
+     * Creates an instance of CustomCopyOption class.
+     */
     public CustomCopyOption() {
     }
 
     /**
      * Get the duration property: Data copied after given timespan.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -39,7 +41,7 @@ public final class CustomCopyOption extends CopyOption {
 
     /**
      * Set the duration property: Data copied after given timespan.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the CustomCopyOption object itself.
      */
@@ -50,7 +52,7 @@ public final class CustomCopyOption extends CopyOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

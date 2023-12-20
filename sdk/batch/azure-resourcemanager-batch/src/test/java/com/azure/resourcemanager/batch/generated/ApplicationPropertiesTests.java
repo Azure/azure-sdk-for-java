@@ -7,31 +7,26 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ApplicationProperties model =
             BinaryData
-                .fromString(
-                    "{\"displayName\":\"dtqajzyulpkudj\",\"allowUpdates\":false,\"defaultVersion\":\"hbzhfepg\"}")
+                .fromString("{\"displayName\":\"s\",\"allowUpdates\":false,\"defaultVersion\":\"zqqedq\"}")
                 .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.displayName());
+        Assertions.assertEquals("s", model.displayName());
         Assertions.assertEquals(false, model.allowUpdates());
-        Assertions.assertEquals("hbzhfepg", model.defaultVersion());
+        Assertions.assertEquals("zqqedq", model.defaultVersion());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ApplicationProperties model =
-            new ApplicationProperties()
-                .withDisplayName("dtqajzyulpkudj")
-                .withAllowUpdates(false)
-                .withDefaultVersion("hbzhfepg");
+            new ApplicationProperties().withDisplayName("s").withAllowUpdates(false).withDefaultVersion("zqqedq");
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.displayName());
+        Assertions.assertEquals("s", model.displayName());
         Assertions.assertEquals(false, model.allowUpdates());
-        Assertions.assertEquals("hbzhfepg", model.defaultVersion());
+        Assertions.assertEquals("zqqedq", model.defaultVersion());
     }
 }

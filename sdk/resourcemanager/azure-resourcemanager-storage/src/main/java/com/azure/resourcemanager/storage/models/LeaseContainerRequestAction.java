@@ -26,6 +26,15 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
     public static final LeaseContainerRequestAction BREAK = fromString("Break");
 
     /**
+     * Creates a new instance of LeaseContainerRequestAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseContainerRequestAction() {
+    }
+
+    /**
      * Creates or finds a LeaseContainerRequestAction from its string representation.
      *
      * @param name a name to look for.

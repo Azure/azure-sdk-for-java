@@ -10,6 +10,7 @@ import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.EngineType;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.MigrationClusterProperties;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.PublicIpType;
@@ -169,6 +170,12 @@ public final class ClusterProperties {
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * Properties of the peer cluster involved in a migration to/from this cluster.
+     */
+    @JsonProperty(value = "migrationCluster", access = JsonProperty.Access.WRITE_ONLY)
+    private MigrationClusterProperties migrationCluster;
 
     /** Creates an instance of ClusterProperties class. */
     public ClusterProperties() {
@@ -597,6 +604,15 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     *
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.migrationCluster;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -622,6 +638,9 @@ public final class ClusterProperties {
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (migrationCluster() != null) {
+            migrationCluster().validate();
         }
     }
 }

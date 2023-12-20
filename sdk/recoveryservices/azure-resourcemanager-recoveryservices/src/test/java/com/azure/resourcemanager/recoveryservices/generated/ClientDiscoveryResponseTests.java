@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.fluent.models.ClientDiscoveryValueForSingleApiInner;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryDisplay;
+import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForLogSpecification;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForProperties;
+import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForServiceSpecification;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryResponse;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -18,15 +20,15 @@ public final class ClientDiscoveryResponseTests {
         ClientDiscoveryResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"dcsi\",\"display\":{\"provider\":\"naamde\",\"resource\":\"eh\",\"operation\":\"qsc\",\"description\":\"ypvhezrkg\"},\"origin\":\"c\",\"properties\":{}},{\"name\":\"o\",\"display\":{\"provider\":\"kqsleyyvxy\",\"resource\":\"pkc\",\"operation\":\"tpngjcrcczsqpjh\",\"description\":\"daj\"},\"origin\":\"ysou\",\"properties\":{}},{\"name\":\"a\",\"display\":{\"provider\":\"eupfhyhltrpm\",\"resource\":\"jmcmatuokthfu\",\"operation\":\"aodsfcpkv\",\"description\":\"dpuozmyz\"},\"origin\":\"agfuaxbezyiu\",\"properties\":{}}],\"nextLink\":\"whrdxwzywqsmbsu\"}")
+                    "{\"value\":[{\"name\":\"uo\",\"display\":{\"provider\":\"kg\",\"resource\":\"auu\",\"operation\":\"jmvxie\",\"description\":\"ugidyjrr\"},\"origin\":\"y\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}]}}},{\"name\":\"csonpclhoco\",\"display\":{\"provider\":\"kevle\",\"resource\":\"zfbuhf\",\"operation\":\"faxkffeii\",\"description\":\"lvmezyvshxmzsbbz\"},\"origin\":\"gigr\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}]}}},{\"name\":\"jx\",\"display\":{\"provider\":\"spyd\",\"resource\":\"koen\",\"operation\":\"uknvudwti\",\"description\":\"bldngkpoc\"},\"origin\":\"azyxoegukg\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}]}}},{\"name\":\"gygev\",\"display\":{\"provider\":\"typmrbpizcdrqjsd\",\"resource\":\"dnfyhxdeoejzicwi\",\"operation\":\"jttgzf\",\"description\":\"shcbkhajdeyeamdp\"},\"origin\":\"g\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}]}}}],\"nextLink\":\"wgipwhono\"}")
                 .toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("dcsi", model.value().get(0).name());
-        Assertions.assertEquals("naamde", model.value().get(0).display().provider());
-        Assertions.assertEquals("eh", model.value().get(0).display().resource());
-        Assertions.assertEquals("qsc", model.value().get(0).display().operation());
-        Assertions.assertEquals("ypvhezrkg", model.value().get(0).display().description());
-        Assertions.assertEquals("c", model.value().get(0).origin());
-        Assertions.assertEquals("whrdxwzywqsmbsu", model.nextLink());
+        Assertions.assertEquals("uo", model.value().get(0).name());
+        Assertions.assertEquals("kg", model.value().get(0).display().provider());
+        Assertions.assertEquals("auu", model.value().get(0).display().resource());
+        Assertions.assertEquals("jmvxie", model.value().get(0).display().operation());
+        Assertions.assertEquals("ugidyjrr", model.value().get(0).display().description());
+        Assertions.assertEquals("y", model.value().get(0).origin());
+        Assertions.assertEquals("wgipwhono", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,43 +39,81 @@ public final class ClientDiscoveryResponseTests {
                     Arrays
                         .asList(
                             new ClientDiscoveryValueForSingleApiInner()
-                                .withName("dcsi")
+                                .withName("uo")
                                 .withDisplay(
                                     new ClientDiscoveryDisplay()
-                                        .withProvider("naamde")
-                                        .withResource("eh")
-                                        .withOperation("qsc")
-                                        .withDescription("ypvhezrkg"))
-                                .withOrigin("c")
-                                .withProperties(new ClientDiscoveryForProperties()),
+                                        .withProvider("kg")
+                                        .withResource("auu")
+                                        .withOperation("jmvxie")
+                                        .withDescription("ugidyjrr"))
+                                .withOrigin("y")
+                                .withProperties(
+                                    new ClientDiscoveryForProperties()
+                                        .withServiceSpecification(
+                                            new ClientDiscoveryForServiceSpecification()
+                                                .withLogSpecifications(
+                                                    Arrays.asList(new ClientDiscoveryForLogSpecification())))),
                             new ClientDiscoveryValueForSingleApiInner()
-                                .withName("o")
+                                .withName("csonpclhoco")
                                 .withDisplay(
                                     new ClientDiscoveryDisplay()
-                                        .withProvider("kqsleyyvxy")
-                                        .withResource("pkc")
-                                        .withOperation("tpngjcrcczsqpjh")
-                                        .withDescription("daj"))
-                                .withOrigin("ysou")
-                                .withProperties(new ClientDiscoveryForProperties()),
+                                        .withProvider("kevle")
+                                        .withResource("zfbuhf")
+                                        .withOperation("faxkffeii")
+                                        .withDescription("lvmezyvshxmzsbbz"))
+                                .withOrigin("gigr")
+                                .withProperties(
+                                    new ClientDiscoveryForProperties()
+                                        .withServiceSpecification(
+                                            new ClientDiscoveryForServiceSpecification()
+                                                .withLogSpecifications(
+                                                    Arrays.asList(new ClientDiscoveryForLogSpecification())))),
                             new ClientDiscoveryValueForSingleApiInner()
-                                .withName("a")
+                                .withName("jx")
                                 .withDisplay(
                                     new ClientDiscoveryDisplay()
-                                        .withProvider("eupfhyhltrpm")
-                                        .withResource("jmcmatuokthfu")
-                                        .withOperation("aodsfcpkv")
-                                        .withDescription("dpuozmyz"))
-                                .withOrigin("agfuaxbezyiu")
-                                .withProperties(new ClientDiscoveryForProperties())))
-                .withNextLink("whrdxwzywqsmbsu");
+                                        .withProvider("spyd")
+                                        .withResource("koen")
+                                        .withOperation("uknvudwti")
+                                        .withDescription("bldngkpoc"))
+                                .withOrigin("azyxoegukg")
+                                .withProperties(
+                                    new ClientDiscoveryForProperties()
+                                        .withServiceSpecification(
+                                            new ClientDiscoveryForServiceSpecification()
+                                                .withLogSpecifications(
+                                                    Arrays
+                                                        .asList(
+                                                            new ClientDiscoveryForLogSpecification(),
+                                                            new ClientDiscoveryForLogSpecification(),
+                                                            new ClientDiscoveryForLogSpecification())))),
+                            new ClientDiscoveryValueForSingleApiInner()
+                                .withName("gygev")
+                                .withDisplay(
+                                    new ClientDiscoveryDisplay()
+                                        .withProvider("typmrbpizcdrqjsd")
+                                        .withResource("dnfyhxdeoejzicwi")
+                                        .withOperation("jttgzf")
+                                        .withDescription("shcbkhajdeyeamdp"))
+                                .withOrigin("g")
+                                .withProperties(
+                                    new ClientDiscoveryForProperties()
+                                        .withServiceSpecification(
+                                            new ClientDiscoveryForServiceSpecification()
+                                                .withLogSpecifications(
+                                                    Arrays
+                                                        .asList(
+                                                            new ClientDiscoveryForLogSpecification(),
+                                                            new ClientDiscoveryForLogSpecification(),
+                                                            new ClientDiscoveryForLogSpecification()))))))
+                .withNextLink("wgipwhono");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryResponse.class);
-        Assertions.assertEquals("dcsi", model.value().get(0).name());
-        Assertions.assertEquals("naamde", model.value().get(0).display().provider());
-        Assertions.assertEquals("eh", model.value().get(0).display().resource());
-        Assertions.assertEquals("qsc", model.value().get(0).display().operation());
-        Assertions.assertEquals("ypvhezrkg", model.value().get(0).display().description());
-        Assertions.assertEquals("c", model.value().get(0).origin());
-        Assertions.assertEquals("whrdxwzywqsmbsu", model.nextLink());
+        Assertions.assertEquals("uo", model.value().get(0).name());
+        Assertions.assertEquals("kg", model.value().get(0).display().provider());
+        Assertions.assertEquals("auu", model.value().get(0).display().resource());
+        Assertions.assertEquals("jmvxie", model.value().get(0).display().operation());
+        Assertions.assertEquals("ugidyjrr", model.value().get(0).display().description());
+        Assertions.assertEquals("y", model.value().get(0).origin());
+        Assertions.assertEquals("wgipwhono", model.nextLink());
     }
 }

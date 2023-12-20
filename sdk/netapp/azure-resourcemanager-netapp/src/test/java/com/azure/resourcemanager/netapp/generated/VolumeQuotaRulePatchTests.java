@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeQuotaRulePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeQuotaRulePatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"ph\":\"ylhalnswhcc\",\"gwol\":\"aivwitqscywu\",\"zbwemh\":\"h\",\"sbrgz\":\"i\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":6841623833142002976,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"dxggicccnxqhuexm\"}}")
-                .toObject(VolumeQuotaRulePatch.class);
-        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
-        Assertions.assertEquals(6841623833142002976L, model.quotaSizeInKiBs());
+        VolumeQuotaRulePatch model = BinaryData.fromString(
+            "{\"tags\":{\"rfh\":\"sgaojfmwncot\",\"xoftpipiwyczu\":\"rctym\"},\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":5299678736839094769,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"hyus\"}}")
+            .toObject(VolumeQuotaRulePatch.class);
+        Assertions.assertEquals("sgaojfmwncot", model.tags().get("rfh"));
+        Assertions.assertEquals(5299678736839094769L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("dxggicccnxqhuexm", model.quotaTarget());
+        Assertions.assertEquals("hyus", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulePatch model =
-            new VolumeQuotaRulePatch()
-                .withTags(mapOf("ph", "ylhalnswhcc", "gwol", "aivwitqscywu", "zbwemh", "h", "sbrgz", "i"))
-                .withQuotaSizeInKiBs(6841623833142002976L)
-                .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-                .withQuotaTarget("dxggicccnxqhuexm");
+        VolumeQuotaRulePatch model = new VolumeQuotaRulePatch()
+            .withTags(mapOf("rfh", "sgaojfmwncot", "xoftpipiwyczu", "rctym")).withQuotaSizeInKiBs(5299678736839094769L)
+            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA).withQuotaTarget("hyus");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulePatch.class);
-        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
-        Assertions.assertEquals(6841623833142002976L, model.quotaSizeInKiBs());
+        Assertions.assertEquals("sgaojfmwncot", model.tags().get("rfh"));
+        Assertions.assertEquals(5299678736839094769L, model.quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("dxggicccnxqhuexm", model.quotaTarget());
+        Assertions.assertEquals("hyus", model.quotaTarget());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

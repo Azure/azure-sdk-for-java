@@ -97,11 +97,13 @@ public interface WorkloadNetworkPortMirroring {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkPortMirroring definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkPortMirroring definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -113,6 +115,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkPortMirroring definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -138,6 +141,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WorkloadNetworkPortMirroring create(Context context);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -148,6 +152,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify direction. */
         interface WithDirection {
             /**
@@ -158,6 +163,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WithCreate withDirection(PortMirroringDirectionEnum direction);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify source. */
         interface WithSource {
             /**
@@ -168,6 +174,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WithCreate withSource(String source);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify destination. */
         interface WithDestination {
             /**
@@ -178,6 +185,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             WithCreate withDestination(String destination);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring definition allowing to specify revision. */
         interface WithRevision {
             /**
@@ -189,6 +197,7 @@ public interface WorkloadNetworkPortMirroring {
             WithCreate withRevision(Long revision);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkPortMirroring resource.
      *
@@ -218,6 +227,7 @@ public interface WorkloadNetworkPortMirroring {
          */
         WorkloadNetworkPortMirroring apply(Context context);
     }
+
     /** The WorkloadNetworkPortMirroring update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkPortMirroring update allowing to specify displayName. */
@@ -230,6 +240,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring update allowing to specify direction. */
         interface WithDirection {
             /**
@@ -240,6 +251,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             Update withDirection(PortMirroringDirectionEnum direction);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring update allowing to specify source. */
         interface WithSource {
             /**
@@ -250,6 +262,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             Update withSource(String source);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring update allowing to specify destination. */
         interface WithDestination {
             /**
@@ -260,6 +273,7 @@ public interface WorkloadNetworkPortMirroring {
              */
             Update withDestination(String destination);
         }
+
         /** The stage of the WorkloadNetworkPortMirroring update allowing to specify revision. */
         interface WithRevision {
             /**
@@ -271,6 +285,7 @@ public interface WorkloadNetworkPortMirroring {
             Update withRevision(Long revision);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

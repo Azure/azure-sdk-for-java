@@ -60,7 +60,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             this.feedRangeContinuationFeedRangeGoneRetryPolicy = null;
             this.createRequestFunc = createRequestFunc;
         } else {
-            DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy();
+            // TODO @fabianm wire up clientContext - for now no availability strategy is wired up for ChangeFeed
+            // requests - and this is expected/by design for now. But it is certainly worth discussing/checking whether
+            // we should include change feed requests as well - there are a few challenges especially for multi master
+            // accounts depending on the consistency level - and usually change feed is not processed in OLTP
+            // scenarios, so, keeping it out of scope for now is a reasonable decision. But probably worth
+            // double checking this decision in a few months.
+            DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
             String collectionLink = PathsHelper.generatePath(
                 ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false);
             retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(

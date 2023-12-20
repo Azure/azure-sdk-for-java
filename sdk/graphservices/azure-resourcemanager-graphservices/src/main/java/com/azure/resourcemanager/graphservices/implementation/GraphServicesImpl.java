@@ -22,7 +22,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.graphservices.fluent.AccountOperationsClient;
 import com.azure.resourcemanager.graphservices.fluent.AccountsClient;
 import com.azure.resourcemanager.graphservices.fluent.GraphServices;
 import com.azure.resourcemanager.graphservices.fluent.OperationsClient;
@@ -122,18 +121,6 @@ public final class GraphServicesImpl implements GraphServices {
         return this.accounts;
     }
 
-    /** The AccountOperationsClient object to access its operations. */
-    private final AccountOperationsClient accountOperations;
-
-    /**
-     * Gets the AccountOperationsClient object to access its operations.
-     *
-     * @return the AccountOperationsClient object.
-     */
-    public AccountOperationsClient getAccountOperations() {
-        return this.accountOperations;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -168,9 +155,8 @@ public final class GraphServicesImpl implements GraphServices {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-09-22-preview";
+        this.apiVersion = "2023-04-13";
         this.accounts = new AccountsClientImpl(this);
-        this.accountOperations = new AccountOperationsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 

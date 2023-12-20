@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LogAnalytics GetLogAnalyticsLocations. */
 public final class LogAnalyticsGetLogAnalyticsLocationsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsLocations.
@@ -22,6 +20,6 @@ public final class LogAnalyticsGetLogAnalyticsLocationsSamples {
             .manager()
             .serviceClient()
             .getLogAnalytics()
-            .getLogAnalyticsLocationsWithResponse("RG", "profile1", Context.NONE);
+            .getLogAnalyticsLocationsWithResponse("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

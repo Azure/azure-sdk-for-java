@@ -7,7 +7,7 @@ import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
+import com.azure.core.credential.KeyCredential;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ClientCreationWithNonAzureOpenAIKeyCredentialSample {
         String apiKey = "{non-azure-open-ai-api-key}";
 
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential(apiKey));
+            .credential(new KeyCredential(apiKey));
 
         OpenAIClient client = builder.buildClient();
 
@@ -33,6 +33,6 @@ public class ClientCreationWithNonAzureOpenAIKeyCredentialSample {
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt));
-        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+        System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
     }
 }

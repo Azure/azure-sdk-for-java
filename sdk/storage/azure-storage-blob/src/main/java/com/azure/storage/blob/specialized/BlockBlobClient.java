@@ -219,9 +219,27 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
+        return getBlobOutputStream(options, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
+     *
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options, Context context) {
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
-        return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);
+        return BlobOutputStream.blockBlobOutputStream(blobClient, options, context);
     }
 
     /**
@@ -410,7 +428,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -477,7 +495,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -596,7 +614,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *
@@ -1042,7 +1060,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context -->
      * <pre>
      * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
-     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentMd5&#40;MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
      *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      *

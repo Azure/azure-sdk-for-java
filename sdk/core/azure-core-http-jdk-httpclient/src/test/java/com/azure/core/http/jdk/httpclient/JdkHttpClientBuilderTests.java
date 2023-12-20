@@ -7,21 +7,24 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,12 +49,37 @@ import static org.mockito.Mockito.when;
  * Tests {@link JdkHttpClientBuilder}.
  */
 @DisabledForJreRange(max = JRE.JAVA_11)
+@Execution(ExecutionMode.SAME_THREAD)
 public class JdkHttpClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
     private static final String SERVICE_ENDPOINT = "/default";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
+
+    private static LocalTestServer server;
+
+    @BeforeAll
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(path)) {
+                resp.setStatus(200);
+                resp.flushBuffer();
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            }
+        });
+
+        server.start();
+    }
+
+    @AfterAll
+    public static void stopTestServer() {
+        if (server != null) {
+            server.stop();
+        }
+    }
 
     /**
      * Tests that an {@link JdkHttpClient} is able to be built from an existing
@@ -63,6 +91,7 @@ public class JdkHttpClientBuilderTests {
         final java.net.http.HttpClient.Builder existingClientBuilder = java.net.http.HttpClient.newBuilder();
         existingClientBuilder.executor(new Executor() {
             private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
             @Override
             public void execute(Runnable command) {
                 marker[0] = "on_custom_executor";
@@ -72,28 +101,19 @@ public class JdkHttpClientBuilderTests {
 
         final JdkHttpClient client = (JdkHttpClient) new JdkHttpClientBuilder(existingClientBuilder).build();
 
-        final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        final String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
         assertNotNull(marker[0]);
         assertEquals(marker[0], "on_custom_executor");
     }
 
     /**
-     * Tests that instantiating an {@link JdkHttpClientBuilder} with a {@code null} {@link JdkHttpClient}
-     * will throw a {@link NullPointerException}.
+     * Tests that instantiating an {@link JdkHttpClientBuilder} with a {@code null} {@link JdkHttpClient} will throw a
+     * {@link NullPointerException}.
      */
     @Test
     public void startingWithNullClientThrows() {
@@ -109,6 +129,7 @@ public class JdkHttpClientBuilderTests {
         final HttpClient httpClient = new JdkHttpClientBuilder()
             .executor(new Executor() {
                 private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+
                 @Override
                 public void execute(Runnable command) {
                     marker[0] = "on_custom_executor";
@@ -117,28 +138,18 @@ public class JdkHttpClientBuilderTests {
             })
             .build();
 
-        final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        final String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
         assertNotNull(marker[0]);
         assertEquals(marker[0], "on_custom_executor");
     }
 
     /**
-     * Tests that passing a {@code null} {@code executor} to the builder will throw a
-     * {@link NullPointerException}.
+     * Tests that passing a {@code null} {@code executor} to the builder will throw a {@link NullPointerException}.
      */
     @Test
     public void nullExecutorThrows() {
@@ -151,8 +162,7 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxy() {
         final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
@@ -176,8 +186,7 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
         final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -196,7 +205,8 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
-        final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, new String[] {SERVICE_ENDPOINT});
+        final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -218,21 +228,11 @@ public class JdkHttpClientBuilderTests {
             .configuration(Configuration.NONE)
             .build();
 
-        final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        final String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -242,21 +242,11 @@ public class JdkHttpClientBuilderTests {
             .configuration(configuration)
             .build();
 
-        final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        final String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     private static Stream<Arguments> buildWithExplicitConfigurationProxySupplier() {
@@ -297,8 +287,8 @@ public class JdkHttpClientBuilderTests {
     @Test
     void testAllowedHeadersFromConfiguration() {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
-                EMPTY_SOURCE)
+            new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+            EMPTY_SOURCE)
             .build();
 
         JdkHttpClientBuilder jdkHttpClientBuilder = spy(
@@ -317,8 +307,8 @@ public class JdkHttpClientBuilderTests {
     @Test
     void testAllowedHeadersFromBoth() {
         Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
-                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
-                new TestConfigurationSource())
+            new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+            new TestConfigurationSource())
             .build();
 
         JdkHttpClientBuilder jdkHttpClientBuilder = spy(

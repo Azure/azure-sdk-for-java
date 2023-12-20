@@ -12,10 +12,7 @@ public class NotebookClientTest extends ArtifactsClientTestBase {
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new ArtifactsClientBuilder()
-            .endpoint(getEndpoint())
-            .pipeline(httpPipeline)
-            .buildNotebookClient());
+        client = getArtifactsClientBuilder().buildNotebookClient();
     }
 
     /**

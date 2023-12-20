@@ -4,9 +4,13 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationInner;
+import com.azure.resourcemanager.managedapplications.fluent.models.UpdateAccessDefinitionInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Application. */
@@ -61,11 +65,11 @@ public interface Application {
     Sku sku();
 
     /**
-     * Gets the identity property: The identity of the resource.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the identity value.
+     * @return the systemData value.
      */
-    Identity identity();
+    SystemData systemData();
 
     /**
      * Gets the plan property: The plan information.
@@ -80,6 +84,13 @@ public interface Application {
      * @return the kind value.
      */
     String kind();
+
+    /**
+     * Gets the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
 
     /**
      * Gets the managedResourceGroupId property: The managed resource group Id.
@@ -118,6 +129,79 @@ public interface Application {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the billingDetails property: The managed application billing details.
+     *
+     * @return the billingDetails value.
+     */
+    ApplicationBillingDetailsDefinition billingDetails();
+
+    /**
+     * Gets the jitAccessPolicy property: The managed application Jit access policy.
+     *
+     * @return the jitAccessPolicy value.
+     */
+    ApplicationJitAccessPolicy jitAccessPolicy();
+
+    /**
+     * Gets the publisherTenantId property: The publisher tenant Id.
+     *
+     * @return the publisherTenantId value.
+     */
+    String publisherTenantId();
+
+    /**
+     * Gets the authorizations property: The read-only authorizations property that is retrieved from the application
+     * package.
+     *
+     * @return the authorizations value.
+     */
+    List<ApplicationAuthorization> authorizations();
+
+    /**
+     * Gets the managementMode property: The managed application management mode.
+     *
+     * @return the managementMode value.
+     */
+    ApplicationManagementMode managementMode();
+
+    /**
+     * Gets the customerSupport property: The read-only customer support property that is retrieved from the application
+     * package.
+     *
+     * @return the customerSupport value.
+     */
+    ApplicationPackageContact customerSupport();
+
+    /**
+     * Gets the supportUrls property: The read-only support URLs property that is retrieved from the application
+     * package.
+     *
+     * @return the supportUrls value.
+     */
+    ApplicationPackageSupportUrls supportUrls();
+
+    /**
+     * Gets the artifacts property: The collection of managed application artifacts.
+     *
+     * @return the artifacts value.
+     */
+    List<ApplicationArtifact> artifacts();
+
+    /**
+     * Gets the createdBy property: The client entity that created the JIT request.
+     *
+     * @return the createdBy value.
+     */
+    ApplicationClientDetails createdBy();
+
+    /**
+     * Gets the updatedBy property: The client entity that last updated the JIT request.
+     *
+     * @return the updatedBy value.
+     */
+    ApplicationClientDetails updatedBy();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -151,14 +235,15 @@ public interface Application {
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithKind,
-            DefinitionStages.WithManagedResourceGroupId,
             DefinitionStages.WithCreate {
     }
+
     /** The Application definition stages. */
     interface DefinitionStages {
         /** The first stage of the Application definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Application definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -177,6 +262,7 @@ public interface Application {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Application definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -187,6 +273,7 @@ public interface Application {
              */
             WithKind withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Application definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -196,18 +283,9 @@ public interface Application {
              * @param kind The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
              * @return the next definition stage.
              */
-            WithManagedResourceGroupId withKind(String kind);
+            WithCreate withKind(String kind);
         }
-        /** The stage of the Application definition allowing to specify managedResourceGroupId. */
-        interface WithManagedResourceGroupId {
-            /**
-             * Specifies the managedResourceGroupId property: The managed resource group Id..
-             *
-             * @param managedResourceGroupId The managed resource group Id.
-             * @return the next definition stage.
-             */
-            WithCreate withManagedResourceGroupId(String managedResourceGroupId);
-        }
+
         /**
          * The stage of the Application definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -216,10 +294,12 @@ public interface Application {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithManagedBy,
                 DefinitionStages.WithSku,
-                DefinitionStages.WithIdentity,
                 DefinitionStages.WithPlan,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithManagedResourceGroupId,
                 DefinitionStages.WithApplicationDefinitionId,
-                DefinitionStages.WithParameters {
+                DefinitionStages.WithParameters,
+                DefinitionStages.WithJitAccessPolicy {
             /**
              * Executes the create request.
              *
@@ -235,6 +315,7 @@ public interface Application {
              */
             Application create(Context context);
         }
+
         /** The stage of the Application definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -245,6 +326,7 @@ public interface Application {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Application definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -255,6 +337,7 @@ public interface Application {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the Application definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -265,16 +348,7 @@ public interface Application {
              */
             WithCreate withSku(Sku sku);
         }
-        /** The stage of the Application definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(Identity identity);
-        }
+
         /** The stage of the Application definition allowing to specify plan. */
         interface WithPlan {
             /**
@@ -285,6 +359,29 @@ public interface Application {
              */
             WithCreate withPlan(Plan plan);
         }
+
+        /** The stage of the Application definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
+        }
+
+        /** The stage of the Application definition allowing to specify managedResourceGroupId. */
+        interface WithManagedResourceGroupId {
+            /**
+             * Specifies the managedResourceGroupId property: The managed resource group Id..
+             *
+             * @param managedResourceGroupId The managed resource group Id.
+             * @return the next definition stage.
+             */
+            WithCreate withManagedResourceGroupId(String managedResourceGroupId);
+        }
+
         /** The stage of the Application definition allowing to specify applicationDefinitionId. */
         interface WithApplicationDefinitionId {
             /**
@@ -296,6 +393,7 @@ public interface Application {
              */
             WithCreate withApplicationDefinitionId(String applicationDefinitionId);
         }
+
         /** The stage of the Application definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -308,7 +406,19 @@ public interface Application {
              */
             WithCreate withParameters(Object parameters);
         }
+
+        /** The stage of the Application definition allowing to specify jitAccessPolicy. */
+        interface WithJitAccessPolicy {
+            /**
+             * Specifies the jitAccessPolicy property: The managed application Jit access policy..
+             *
+             * @param jitAccessPolicy The managed application Jit access policy.
+             * @return the next definition stage.
+             */
+            WithCreate withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy);
+        }
     }
+
     /**
      * Begins update for the Application resource.
      *
@@ -321,12 +431,13 @@ public interface Application {
         extends UpdateStages.WithTags,
             UpdateStages.WithManagedBy,
             UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
             UpdateStages.WithPlan,
             UpdateStages.WithKind,
+            UpdateStages.WithIdentity,
             UpdateStages.WithManagedResourceGroupId,
             UpdateStages.WithApplicationDefinitionId,
-            UpdateStages.WithParameters {
+            UpdateStages.WithParameters,
+            UpdateStages.WithJitAccessPolicy {
         /**
          * Executes the update request.
          *
@@ -342,6 +453,7 @@ public interface Application {
          */
         Application apply(Context context);
     }
+
     /** The Application update stages. */
     interface UpdateStages {
         /** The stage of the Application update allowing to specify tags. */
@@ -354,6 +466,7 @@ public interface Application {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Application update allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -364,6 +477,7 @@ public interface Application {
              */
             Update withManagedBy(String managedBy);
         }
+
         /** The stage of the Application update allowing to specify sku. */
         interface WithSku {
             /**
@@ -374,16 +488,7 @@ public interface Application {
              */
             Update withSku(Sku sku);
         }
-        /** The stage of the Application update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(Identity identity);
-        }
+
         /** The stage of the Application update allowing to specify plan. */
         interface WithPlan {
             /**
@@ -392,8 +497,9 @@ public interface Application {
              * @param plan The plan information.
              * @return the next definition stage.
              */
-            Update withPlan(PlanPatchable plan);
+            Update withPlan(Plan plan);
         }
+
         /** The stage of the Application update allowing to specify kind. */
         interface WithKind {
             /**
@@ -405,6 +511,18 @@ public interface Application {
              */
             Update withKind(String kind);
         }
+
+        /** The stage of the Application update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the resource..
+             *
+             * @param identity The identity of the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
+
         /** The stage of the Application update allowing to specify managedResourceGroupId. */
         interface WithManagedResourceGroupId {
             /**
@@ -415,6 +533,7 @@ public interface Application {
              */
             Update withManagedResourceGroupId(String managedResourceGroupId);
         }
+
         /** The stage of the Application update allowing to specify applicationDefinitionId. */
         interface WithApplicationDefinitionId {
             /**
@@ -426,6 +545,7 @@ public interface Application {
              */
             Update withApplicationDefinitionId(String applicationDefinitionId);
         }
+
         /** The stage of the Application update allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -438,7 +558,19 @@ public interface Application {
              */
             Update withParameters(Object parameters);
         }
+
+        /** The stage of the Application update allowing to specify jitAccessPolicy. */
+        interface WithJitAccessPolicy {
+            /**
+             * Specifies the jitAccessPolicy property: The managed application Jit access policy..
+             *
+             * @param jitAccessPolicy The managed application Jit access policy.
+             * @return the next definition stage.
+             */
+            Update withJitAccessPolicy(ApplicationJitAccessPolicy jitAccessPolicy);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -453,4 +585,88 @@ public interface Application {
      * @return the refreshed resource.
      */
     Application refresh(Context context);
+
+    /**
+     * Refresh Permissions for application.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshPermissions();
+
+    /**
+     * Refresh Permissions for application.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshPermissions(Context context);
+
+    /**
+     * List allowed upgrade plans for application.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the array of plan along with {@link Response}.
+     */
+    Response<AllowedUpgradePlansResult> listAllowedUpgradePlansWithResponse(Context context);
+
+    /**
+     * List allowed upgrade plans for application.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the array of plan.
+     */
+    AllowedUpgradePlansResult listAllowedUpgradePlans();
+
+    /**
+     * Update access for application.
+     *
+     * @param parameters Request body parameters to list tokens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    UpdateAccessDefinition updateAccess(UpdateAccessDefinitionInner parameters);
+
+    /**
+     * Update access for application.
+     *
+     * @param parameters Request body parameters to list tokens.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    UpdateAccessDefinition updateAccess(UpdateAccessDefinitionInner parameters, Context context);
+
+    /**
+     * List tokens for application.
+     *
+     * @param parameters Request body parameters to list tokens.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the array of managed identity tokens along with {@link Response}.
+     */
+    Response<ManagedIdentityTokenResult> listTokensWithResponse(ListTokenRequest parameters, Context context);
+
+    /**
+     * List tokens for application.
+     *
+     * @param parameters Request body parameters to list tokens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the array of managed identity tokens.
+     */
+    ManagedIdentityTokenResult listTokens(ListTokenRequest parameters);
 }

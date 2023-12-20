@@ -32,7 +32,7 @@ public final class DatastoresGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Cancelled\",\"netAppVolume\":{\"id\":\"wqjnob\"},\"diskPoolVolume\":{\"targetId\":\"yhddvia\",\"lunName\":\"egfnmntfpmvmemfn\",\"mountOption\":\"MOUNT\",\"path\":\"vvbalx\"},\"status\":\"DeadOrError\"},\"id\":\"chp\",\"name\":\"db\",\"type\":\"evwrdnhfuk\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"netAppVolume\":{\"id\":\"dhgbjkvre\"},\"diskPoolVolume\":{\"targetId\":\"eamurvzmlo\",\"lunName\":\"uanashcxlp\",\"mountOption\":\"MOUNT\",\"path\":\"bdkelvidizo\"},\"status\":\"LostCommunication\"},\"id\":\"bccxjmonfdgn\",\"name\":\"n\",\"type\":\"ypuuwwltvuqjctze\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class DatastoresGetWithResponseMockTests {
         Datastore response =
             manager
                 .datastores()
-                .getWithResponse("yakk", "dzpxgwjpl", "agst", "yohpfkyrkdbdgiog", com.azure.core.util.Context.NONE)
+                .getWithResponse("khgn", "nzonzl", "piqywnc", "jtszcof", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("wqjnob", response.netAppVolume().id());
-        Assertions.assertEquals("yhddvia", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("egfnmntfpmvmemfn", response.diskPoolVolume().lunName());
+        Assertions.assertEquals("dhgbjkvre", response.netAppVolume().id());
+        Assertions.assertEquals("eamurvzmlo", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("uanashcxlp", response.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.MOUNT, response.diskPoolVolume().mountOption());
     }
 }

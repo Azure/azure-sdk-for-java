@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
 import java.util.List;
@@ -62,11 +63,11 @@ public interface ApplicationDefinition {
     Sku sku();
 
     /**
-     * Gets the identity property: The identity of the resource.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the identity value.
+     * @return the systemData value.
      */
-    Identity identity();
+    SystemData systemData();
 
     /**
      * Gets the lockLevel property: The managed application lock level.
@@ -87,14 +88,14 @@ public interface ApplicationDefinition {
      *
      * @return the isEnabled value.
      */
-    String isEnabled();
+    Boolean isEnabled();
 
     /**
      * Gets the authorizations property: The managed application provider authorizations.
      *
      * @return the authorizations value.
      */
-    List<ApplicationProviderAuthorization> authorizations();
+    List<ApplicationAuthorization> authorizations();
 
     /**
      * Gets the artifacts property: The collection of managed application artifacts. The portal will use the files
@@ -103,7 +104,7 @@ public interface ApplicationDefinition {
      *
      * @return the artifacts value.
      */
-    List<ApplicationArtifact> artifacts();
+    List<ApplicationDefinitionArtifact> artifacts();
 
     /**
      * Gets the description property: The managed application definition description.
@@ -120,6 +121,13 @@ public interface ApplicationDefinition {
     String packageFileUri();
 
     /**
+     * Gets the storageAccountId property: The storage account id for bring your own storage scenario.
+     *
+     * @return the storageAccountId value.
+     */
+    String storageAccountId();
+
+    /**
      * Gets the mainTemplate property: The inline main template json which has resources to be provisioned. It can be a
      * JObject or well-formed JSON string.
      *
@@ -134,6 +142,42 @@ public interface ApplicationDefinition {
      * @return the createUiDefinition value.
      */
     Object createUiDefinition();
+
+    /**
+     * Gets the notificationPolicy property: The managed application notification policy.
+     *
+     * @return the notificationPolicy value.
+     */
+    ApplicationNotificationPolicy notificationPolicy();
+
+    /**
+     * Gets the lockingPolicy property: The managed application locking policy.
+     *
+     * @return the lockingPolicy value.
+     */
+    ApplicationPackageLockingPolicyDefinition lockingPolicy();
+
+    /**
+     * Gets the deploymentPolicy property: The managed application deployment policy.
+     *
+     * @return the deploymentPolicy value.
+     */
+    ApplicationDeploymentPolicy deploymentPolicy();
+
+    /**
+     * Gets the managementPolicy property: The managed application management policy that determines publisher's access
+     * to the managed resource group.
+     *
+     * @return the managementPolicy value.
+     */
+    ApplicationManagementPolicy managementPolicy();
+
+    /**
+     * Gets the policies property: The managed application provider policies.
+     *
+     * @return the policies value.
+     */
+    List<ApplicationPolicy> policies();
 
     /**
      * Gets the region of the resource.
@@ -169,14 +213,15 @@ public interface ApplicationDefinition {
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithLockLevel,
-            DefinitionStages.WithAuthorizations,
             DefinitionStages.WithCreate {
     }
+
     /** The ApplicationDefinition definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApplicationDefinition definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -195,6 +240,7 @@ public interface ApplicationDefinition {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -205,6 +251,7 @@ public interface ApplicationDefinition {
              */
             WithLockLevel withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify lockLevel. */
         interface WithLockLevel {
             /**
@@ -213,18 +260,9 @@ public interface ApplicationDefinition {
              * @param lockLevel The managed application lock level.
              * @return the next definition stage.
              */
-            WithAuthorizations withLockLevel(ApplicationLockLevel lockLevel);
+            WithCreate withLockLevel(ApplicationLockLevel lockLevel);
         }
-        /** The stage of the ApplicationDefinition definition allowing to specify authorizations. */
-        interface WithAuthorizations {
-            /**
-             * Specifies the authorizations property: The managed application provider authorizations..
-             *
-             * @param authorizations The managed application provider authorizations.
-             * @return the next definition stage.
-             */
-            WithCreate withAuthorizations(List<ApplicationProviderAuthorization> authorizations);
-        }
+
         /**
          * The stage of the ApplicationDefinition definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -233,14 +271,20 @@ public interface ApplicationDefinition {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithManagedBy,
                 DefinitionStages.WithSku,
-                DefinitionStages.WithIdentity,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithIsEnabled,
+                DefinitionStages.WithAuthorizations,
                 DefinitionStages.WithArtifacts,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithPackageFileUri,
+                DefinitionStages.WithStorageAccountId,
                 DefinitionStages.WithMainTemplate,
-                DefinitionStages.WithCreateUiDefinition {
+                DefinitionStages.WithCreateUiDefinition,
+                DefinitionStages.WithNotificationPolicy,
+                DefinitionStages.WithLockingPolicy,
+                DefinitionStages.WithDeploymentPolicy,
+                DefinitionStages.WithManagementPolicy,
+                DefinitionStages.WithPolicies {
             /**
              * Executes the create request.
              *
@@ -256,6 +300,7 @@ public interface ApplicationDefinition {
              */
             ApplicationDefinition create(Context context);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -266,6 +311,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -276,6 +322,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -286,16 +333,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withSku(Sku sku);
         }
-        /** The stage of the ApplicationDefinition definition allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentity(Identity identity);
-        }
+
         /** The stage of the ApplicationDefinition definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -306,6 +344,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify isEnabled. */
         interface WithIsEnabled {
             /**
@@ -314,8 +353,20 @@ public interface ApplicationDefinition {
              * @param isEnabled A value indicating whether the package is enabled or not.
              * @return the next definition stage.
              */
-            WithCreate withIsEnabled(String isEnabled);
+            WithCreate withIsEnabled(Boolean isEnabled);
         }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify authorizations. */
+        interface WithAuthorizations {
+            /**
+             * Specifies the authorizations property: The managed application provider authorizations..
+             *
+             * @param authorizations The managed application provider authorizations.
+             * @return the next definition stage.
+             */
+            WithCreate withAuthorizations(List<ApplicationAuthorization> authorizations);
+        }
+
         /** The stage of the ApplicationDefinition definition allowing to specify artifacts. */
         interface WithArtifacts {
             /**
@@ -328,8 +379,9 @@ public interface ApplicationDefinition {
              *     application definition.
              * @return the next definition stage.
              */
-            WithCreate withArtifacts(List<ApplicationArtifact> artifacts);
+            WithCreate withArtifacts(List<ApplicationDefinitionArtifact> artifacts);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -340,6 +392,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify packageFileUri. */
         interface WithPackageFileUri {
             /**
@@ -351,6 +404,18 @@ public interface ApplicationDefinition {
              */
             WithCreate withPackageFileUri(String packageFileUri);
         }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify storageAccountId. */
+        interface WithStorageAccountId {
+            /**
+             * Specifies the storageAccountId property: The storage account id for bring your own storage scenario..
+             *
+             * @param storageAccountId The storage account id for bring your own storage scenario.
+             * @return the next definition stage.
+             */
+            WithCreate withStorageAccountId(String storageAccountId);
+        }
+
         /** The stage of the ApplicationDefinition definition allowing to specify mainTemplate. */
         interface WithMainTemplate {
             /**
@@ -363,6 +428,7 @@ public interface ApplicationDefinition {
              */
             WithCreate withMainTemplate(Object mainTemplate);
         }
+
         /** The stage of the ApplicationDefinition definition allowing to specify createUiDefinition. */
         interface WithCreateUiDefinition {
             /**
@@ -375,7 +441,65 @@ public interface ApplicationDefinition {
              */
             WithCreate withCreateUiDefinition(Object createUiDefinition);
         }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify notificationPolicy. */
+        interface WithNotificationPolicy {
+            /**
+             * Specifies the notificationPolicy property: The managed application notification policy..
+             *
+             * @param notificationPolicy The managed application notification policy.
+             * @return the next definition stage.
+             */
+            WithCreate withNotificationPolicy(ApplicationNotificationPolicy notificationPolicy);
+        }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify lockingPolicy. */
+        interface WithLockingPolicy {
+            /**
+             * Specifies the lockingPolicy property: The managed application locking policy..
+             *
+             * @param lockingPolicy The managed application locking policy.
+             * @return the next definition stage.
+             */
+            WithCreate withLockingPolicy(ApplicationPackageLockingPolicyDefinition lockingPolicy);
+        }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify deploymentPolicy. */
+        interface WithDeploymentPolicy {
+            /**
+             * Specifies the deploymentPolicy property: The managed application deployment policy..
+             *
+             * @param deploymentPolicy The managed application deployment policy.
+             * @return the next definition stage.
+             */
+            WithCreate withDeploymentPolicy(ApplicationDeploymentPolicy deploymentPolicy);
+        }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify managementPolicy. */
+        interface WithManagementPolicy {
+            /**
+             * Specifies the managementPolicy property: The managed application management policy that determines
+             * publisher's access to the managed resource group..
+             *
+             * @param managementPolicy The managed application management policy that determines publisher's access to
+             *     the managed resource group.
+             * @return the next definition stage.
+             */
+            WithCreate withManagementPolicy(ApplicationManagementPolicy managementPolicy);
+        }
+
+        /** The stage of the ApplicationDefinition definition allowing to specify policies. */
+        interface WithPolicies {
+            /**
+             * Specifies the policies property: The managed application provider policies..
+             *
+             * @param policies The managed application provider policies.
+             * @return the next definition stage.
+             */
+            WithCreate withPolicies(List<ApplicationPolicy> policies);
+        }
     }
+
     /**
      * Begins update for the ApplicationDefinition resource.
      *
@@ -384,20 +508,7 @@ public interface ApplicationDefinition {
     ApplicationDefinition.Update update();
 
     /** The template for ApplicationDefinition update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithManagedBy,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithLockLevel,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithIsEnabled,
-            UpdateStages.WithAuthorizations,
-            UpdateStages.WithArtifacts,
-            UpdateStages.WithDescription,
-            UpdateStages.WithPackageFileUri,
-            UpdateStages.WithMainTemplate,
-            UpdateStages.WithCreateUiDefinition {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -413,148 +524,21 @@ public interface ApplicationDefinition {
          */
         ApplicationDefinition apply(Context context);
     }
+
     /** The ApplicationDefinition update stages. */
     interface UpdateStages {
         /** The stage of the ApplicationDefinition update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Application definition tags.
              *
-             * @param tags Resource tags.
+             * @param tags Application definition tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the ApplicationDefinition update allowing to specify managedBy. */
-        interface WithManagedBy {
-            /**
-             * Specifies the managedBy property: ID of the resource that manages this resource..
-             *
-             * @param managedBy ID of the resource that manages this resource.
-             * @return the next definition stage.
-             */
-            Update withManagedBy(String managedBy);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The SKU of the resource..
-             *
-             * @param sku The SKU of the resource.
-             * @return the next definition stage.
-             */
-            Update withSku(Sku sku);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify identity. */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The identity of the resource..
-             *
-             * @param identity The identity of the resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(Identity identity);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify lockLevel. */
-        interface WithLockLevel {
-            /**
-             * Specifies the lockLevel property: The managed application lock level..
-             *
-             * @param lockLevel The managed application lock level.
-             * @return the next definition stage.
-             */
-            Update withLockLevel(ApplicationLockLevel lockLevel);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: The managed application definition display name..
-             *
-             * @param displayName The managed application definition display name.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(String displayName);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify isEnabled. */
-        interface WithIsEnabled {
-            /**
-             * Specifies the isEnabled property: A value indicating whether the package is enabled or not..
-             *
-             * @param isEnabled A value indicating whether the package is enabled or not.
-             * @return the next definition stage.
-             */
-            Update withIsEnabled(String isEnabled);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify authorizations. */
-        interface WithAuthorizations {
-            /**
-             * Specifies the authorizations property: The managed application provider authorizations..
-             *
-             * @param authorizations The managed application provider authorizations.
-             * @return the next definition stage.
-             */
-            Update withAuthorizations(List<ApplicationProviderAuthorization> authorizations);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify artifacts. */
-        interface WithArtifacts {
-            /**
-             * Specifies the artifacts property: The collection of managed application artifacts. The portal will use
-             * the files specified as artifacts to construct the user experience of creating a managed application from
-             * a managed application definition..
-             *
-             * @param artifacts The collection of managed application artifacts. The portal will use the files specified
-             *     as artifacts to construct the user experience of creating a managed application from a managed
-             *     application definition.
-             * @return the next definition stage.
-             */
-            Update withArtifacts(List<ApplicationArtifact> artifacts);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify description. */
-        interface WithDescription {
-            /**
-             * Specifies the description property: The managed application definition description..
-             *
-             * @param description The managed application definition description.
-             * @return the next definition stage.
-             */
-            Update withDescription(String description);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify packageFileUri. */
-        interface WithPackageFileUri {
-            /**
-             * Specifies the packageFileUri property: The managed application definition package file Uri. Use this
-             * element.
-             *
-             * @param packageFileUri The managed application definition package file Uri. Use this element.
-             * @return the next definition stage.
-             */
-            Update withPackageFileUri(String packageFileUri);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify mainTemplate. */
-        interface WithMainTemplate {
-            /**
-             * Specifies the mainTemplate property: The inline main template json which has resources to be provisioned.
-             * It can be a JObject or well-formed JSON string..
-             *
-             * @param mainTemplate The inline main template json which has resources to be provisioned. It can be a
-             *     JObject or well-formed JSON string.
-             * @return the next definition stage.
-             */
-            Update withMainTemplate(Object mainTemplate);
-        }
-        /** The stage of the ApplicationDefinition update allowing to specify createUiDefinition. */
-        interface WithCreateUiDefinition {
-            /**
-             * Specifies the createUiDefinition property: The createUiDefinition json for the backing template with
-             * Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string..
-             *
-             * @param createUiDefinition The createUiDefinition json for the backing template with
-             *     Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
-             * @return the next definition stage.
-             */
-            Update withCreateUiDefinition(Object createUiDefinition);
-        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

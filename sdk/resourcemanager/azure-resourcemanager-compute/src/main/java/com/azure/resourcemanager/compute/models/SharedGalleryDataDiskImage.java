@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the data disk image. */
+/**
+ * This is the data disk image.
+ */
 @Fluent
 public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
     /*
@@ -17,7 +19,9 @@ public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
     @JsonProperty(value = "lun", required = true)
     private int lun;
 
-    /** Creates an instance of SharedGalleryDataDiskImage class. */
+    /**
+     * Creates an instance of SharedGalleryDataDiskImage class.
+     */
     public SharedGalleryDataDiskImage() {
     }
 
@@ -25,7 +29,7 @@ public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
      * Get the lun property: This property specifies the logical unit number of the data disk. This value is used to
      * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
      * Virtual Machine.
-     *
+     * 
      * @return the lun value.
      */
     public int lun() {
@@ -36,7 +40,7 @@ public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
      * Set the lun property: This property specifies the logical unit number of the data disk. This value is used to
      * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
      * Virtual Machine.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the SharedGalleryDataDiskImage object itself.
      */
@@ -45,7 +49,9 @@ public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedGalleryDataDiskImage withHostCaching(SharedGalleryHostCaching hostCaching) {
         super.withHostCaching(hostCaching);
@@ -54,7 +60,7 @@ public final class SharedGalleryDataDiskImage extends SharedGalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

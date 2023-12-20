@@ -22,16 +22,22 @@ public final class TextSource extends PlaySource {
     private String sourceLocale;
 
     /*
-     * Voice gender type
+     * Voice kind type
      */
-    @JsonProperty(value = "voiceGender")
-    private GenderType voiceGender;
+    @JsonProperty(value = "voiceKind")
+    private VoiceKind voiceKind;
 
     /*
      * Voice name to be played
      */
     @JsonProperty(value = "voiceName")
     private String voiceName;
+
+    /*
+     * Endpoint where the custom voice was deployed.
+     */
+    @JsonProperty(value = "customVoiceEndpointId")
+    private String customVoiceEndpointId;
 
     /**
      * Get the text property: Text for the cognitive service to be played.
@@ -74,22 +80,22 @@ public final class TextSource extends PlaySource {
     }
 
     /**
-     * Get the voiceGender property: Voice gender type.
+     * Get the voiceKind property: Voice kind type.
      *
-     * @return the voiceGender value.
+     * @return the voiceKind value.
      */
-    public GenderType getVoiceGender() {
-        return this.voiceGender;
+    public VoiceKind getVoiceKind() {
+        return this.voiceKind;
     }
 
     /**
-     * Set the voiceGender property: Voice gender type.
+     * Set the voiceKind property: Voice kind type.
      *
-     * @param voiceGender the voiceGender value to set.
+     * @param voiceKind the voiceKind value to set.
      * @return the TextSource object itself.
      */
-    public TextSource setVoiceGender(GenderType voiceGender) {
-        this.voiceGender = voiceGender;
+    public TextSource setVoiceKind(VoiceKind voiceKind) {
+        this.voiceKind = voiceKind;
         return this;
     }
 
@@ -110,6 +116,26 @@ public final class TextSource extends PlaySource {
      */
     public TextSource setVoiceName(String voiceName) {
         this.voiceName = voiceName;
+        return this;
+    }
+
+    /**
+     * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @return the customVoiceEndpointId value.
+     */
+    public String getCustomVoiceEndpointId() {
+        return this.customVoiceEndpointId;
+    }
+
+    /**
+     * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @param customVoiceEndpointId the customVoiceEndpointId value to set.
+     * @return the TextSourceInternal object itself.
+     */
+    public TextSource setCustomVoiceEndpointId(String customVoiceEndpointId) {
+        this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
     }
 }

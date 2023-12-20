@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkInterfaceIpConfigurations List. */
+/**
+ * Samples for NetworkInterfaceIpConfigurations List.
+ */
 public final class NetworkInterfaceIpConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkInterfaceIPConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkInterfaceIPConfigurationList.json
      */
     /**
      * Sample code: NetworkInterfaceIPConfigurationList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkInterfaceIPConfigurationList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkInterfaceIpConfigurations()
-            .list("testrg", "nic1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkInterfaceIpConfigurations().list("testrg", "nic1",
+            com.azure.core.util.Context.NONE);
     }
 }

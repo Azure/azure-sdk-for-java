@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
-/** The TablesQueryHeaders model. */
+/**
+ * The TablesQueryHeaders model.
+ */
 @Fluent
 public final class TablesQueryHeaders {
     /*
@@ -42,13 +44,13 @@ public final class TablesQueryHeaders {
 
     private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
-    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_TABLE_NAME =
-            HttpHeaderName.fromString("x-ms-continuation-NextTableName");
+    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_TABLE_NAME
+        = HttpHeaderName.fromString("x-ms-continuation-NextTableName");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesQueryHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesQueryHeaders(HttpHeaders rawHeaders) {
@@ -64,7 +66,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -73,7 +75,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesQueryHeaders object itself.
      */
@@ -84,7 +86,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -93,7 +95,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesQueryHeaders object itself.
      */
@@ -104,7 +106,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -113,7 +115,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesQueryHeaders object itself.
      */
@@ -124,7 +126,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -136,7 +138,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesQueryHeaders object itself.
      */
@@ -151,7 +153,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Get the xMsContinuationNextTableName property: The x-ms-continuation-NextTableName property.
-     *
+     * 
      * @return the xMsContinuationNextTableName value.
      */
     public String getXMsContinuationNextTableName() {
@@ -160,7 +162,7 @@ public final class TablesQueryHeaders {
 
     /**
      * Set the xMsContinuationNextTableName property: The x-ms-continuation-NextTableName property.
-     *
+     * 
      * @param xMsContinuationNextTableName the xMsContinuationNextTableName value to set.
      * @return the TablesQueryHeaders object itself.
      */

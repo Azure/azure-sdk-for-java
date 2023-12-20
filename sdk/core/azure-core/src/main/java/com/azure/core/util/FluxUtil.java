@@ -284,7 +284,13 @@ public final class FluxUtil {
         // the FileInputStream to generated MappedByteBuffers which aren't loaded into memory until the content is
         // consumed. This at least defers the memory usage until later and may also provide downstream calls ways to
         // optimize if they have special cases for MappedByteBuffer.
-        if (inputStream instanceof FileInputStream) {
+        //
+        // NOTE: DO NOT use this logic in Windows! https://bugs.java.com/bugdatabase/view_bug?bug_id=6359560
+        // Java/Windows has a bad runtime behavior where when the MappedByteBuffer is garbage collected the underlying
+        // file may not be deletable. For Windows use the less favorable behavior by reading the file into memory.
+        // Ideally, we push users to using BinaryData.fromFile as that can leverage zero-copy, or low copy,
+        // functionality deeper in the stack.
+        if (inputStream instanceof FileInputStream && !System.getProperty("os.name").contains("Windows")) {
             FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
 
             return Flux.<ByteBuffer, FileChannel>generate(() -> fileChannel, (channel, sink) -> {

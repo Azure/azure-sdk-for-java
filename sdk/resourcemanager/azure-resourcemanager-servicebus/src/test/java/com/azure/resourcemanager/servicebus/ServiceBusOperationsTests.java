@@ -29,7 +29,7 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.resourcemanager.servicebus.models.TopicAuthorizationRule;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +39,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class ServiceBusOperationsTests extends ResourceManagerTestBase {
+public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase {
     private ResourceManager resourceManager;
     private ServiceBusManager serviceBusManager;
     private String rgName = "";

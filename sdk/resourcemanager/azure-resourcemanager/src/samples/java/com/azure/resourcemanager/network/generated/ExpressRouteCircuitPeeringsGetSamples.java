@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteCircuitPeerings Get. */
+/**
+ * Samples for ExpressRouteCircuitPeerings Get.
+ */
 public final class ExpressRouteCircuitPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitPeeringGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ExpressRouteCircuitPeeringGet
+     * .json
      */
     /**
      * Sample code: Get ExpressRouteCircuit Peering.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCircuitPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteCircuitPeerings()
-            .getWithResponse("rg1", "circuitName", "MicrosoftPeering", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteCircuitPeerings().getWithResponse("rg1",
+            "circuitName", "MicrosoftPeering", com.azure.core.util.Context.NONE);
     }
 }

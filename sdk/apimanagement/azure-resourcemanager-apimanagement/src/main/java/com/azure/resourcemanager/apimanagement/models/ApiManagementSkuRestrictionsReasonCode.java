@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ApiManagementSkuRestrictionsReasonCode. */
+/** The reason for restriction. */
 public enum ApiManagementSkuRestrictionsReasonCode {
     /** Enum value QuotaId. */
     QUOTA_ID("QuotaId"),
@@ -30,6 +30,9 @@ public enum ApiManagementSkuRestrictionsReasonCode {
      */
     @JsonCreator
     public static ApiManagementSkuRestrictionsReasonCode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApiManagementSkuRestrictionsReasonCode[] items = ApiManagementSkuRestrictionsReasonCode.values();
         for (ApiManagementSkuRestrictionsReasonCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ApiManagementSkuRestrictionsReasonCode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

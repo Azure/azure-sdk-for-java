@@ -13,7 +13,7 @@ public final class OperationDisplayTests {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"rqjbhckfrl\",\"resource\":\"xsbkyvpyca\",\"operation\":\"z\",\"description\":\"zka\"}")
+                    "{\"provider\":\"zywbiex\",\"resource\":\"eyueaxibxujwb\",\"operation\":\"walm\",\"description\":\"yoxa\"}")
                 .toObject(OperationDisplay.class);
     }
 

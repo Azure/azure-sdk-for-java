@@ -45,12 +45,28 @@ import java.util.function.Consumer;
  * requirement, using {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient} is recommended.
  * </p>
  *
- * <p><strong>Creating an {@link EventHubBufferedProducerClient}</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
+ * <p><strong>Sample: Creating an {@link EventHubBufferedProducerClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client
+ * {@link EventHubBufferedProducerClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host
+ * name. It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
+ * The producer is set to publish events every 60 seconds with a buffer size of 1500 events for each partition.  The
+ * examples shown in this document use a credential object named DefaultAzureCredential for
+ * authentication, which is appropriate for most scenarios, including local development and production
+ * environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation</a>.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.construct -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;event-hub-namespace-connection-string&quot;, &quot;event-hub-name&quot;&#41;
+ *     .credential&#40;&quot;fully-qualified-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
  *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
  *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
  *     &#125;&#41;
@@ -60,7 +76,48 @@ import java.util.function.Consumer;
  *     &#125;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.construct -->
+ *
+ * <p><strong>Sample: Enqueuing and publishing events</strong></p>
+ *
+ * <p>The following code sample demonstrates enqueuing a set of events in the buffered producer. The producer stores
+ * these events in an internal queue and publishes them when
+ * {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration)} has elapsed, the buffer is full, or no more
+ * events can fit into a batch.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;fully-qualified-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
+ *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .onSendBatchFailed&#40;failedContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Failed to published events to %s. Error: %s%n&quot;,
+ *             failedContext.getPartitionId&#40;&#41;, failedContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;maple&quot;&#41;, new EventData&#40;&quot;aspen&quot;&#41;,
+ *     new EventData&#40;&quot;oak&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Enqueues the events to be published.
+ * client.enqueueEvents&#40;events&#41;;
+ *
+ * &#47;&#47; Seconds later, enqueue another event.
+ * client.enqueueEvent&#40;new EventData&#40;&quot;bonsai&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Causes any buffered events to be flushed before closing underlying connection.
+ * client.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubBufferedProducerClientBuilder
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = false)
 public final class EventHubBufferedProducerClient implements Closeable {

@@ -14,8 +14,8 @@ public final class BackupStatusImpl implements BackupStatus {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    BackupStatusImpl(
-        BackupStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    BackupStatusImpl(BackupStatusInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -50,6 +50,10 @@ public final class BackupStatusImpl implements BackupStatus {
 
     public Long totalTransferBytes() {
         return this.innerModel().totalTransferBytes();
+    }
+
+    public Long transferProgressBytes() {
+        return this.innerModel().transferProgressBytes();
     }
 
     public BackupStatusInner innerModel() {

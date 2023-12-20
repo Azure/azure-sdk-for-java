@@ -30,47 +30,27 @@ public final class SnapshotsUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"wf\",\"properties\":{\"snapshotId\":\"b\",\"created\":\"2021-10-31T22:34:11Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"mdy\",\"name\":\"hdwdi\",\"type\":\"umbnraauzzp\"}";
+        String responseStr
+            = "{\"location\":\"azlnqnmcjngzqdqx\",\"properties\":{\"snapshotId\":\"wgnyfusfzsvtui\",\"created\":\"2021-03-01T07:50:01Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"fh\",\"name\":\"l\",\"type\":\"qryxyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Snapshot response =
-            manager
-                .snapshots()
-                .update(
-                    "gzuriglaecxndt",
-                    "cokpv",
-                    "mlqtmldgxob",
-                    "irclnpk",
-                    "iayz",
-                    "dataiykhy",
-                    com.azure.core.util.Context.NONE);
+        Snapshot response = manager.snapshots().update("jg", "yexaoguy", "i", "ids", "ault", "dataijjumfq",
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wf", response.location());
+        Assertions.assertEquals("azlnqnmcjngzqdqx", response.location());
     }
 }

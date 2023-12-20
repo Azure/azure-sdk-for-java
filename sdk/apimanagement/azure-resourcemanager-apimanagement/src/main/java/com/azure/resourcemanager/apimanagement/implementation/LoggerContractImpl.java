@@ -54,6 +54,10 @@ public final class LoggerContractImpl implements LoggerContract, LoggerContract.
         return this.innerModel().resourceId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LoggerContractInner innerModel() {
         return this.innerObject;
     }

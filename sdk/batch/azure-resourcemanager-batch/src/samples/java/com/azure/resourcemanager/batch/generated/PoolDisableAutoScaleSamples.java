@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pool DisableAutoScale. */
 public final class PoolDisableAutoScaleSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolDisableAutoScale.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDisableAutoScale.json
      */
     /**
      * Sample code: Disable AutoScale.
@@ -19,6 +17,7 @@ public final class PoolDisableAutoScaleSamples {
     public static void disableAutoScale(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .pools()
-            .disableAutoScaleWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+            .disableAutoScaleWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }

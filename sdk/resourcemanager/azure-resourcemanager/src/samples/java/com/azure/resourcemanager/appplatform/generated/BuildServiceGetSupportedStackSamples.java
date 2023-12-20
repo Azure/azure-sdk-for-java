@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BuildService GetSupportedStack. */
 public final class BuildServiceGetSupportedStackSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetSupportedStack.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/BuildService_GetSupportedStack.json
      */
     /**
      * Sample code: BuildService_GetSupportedStack.

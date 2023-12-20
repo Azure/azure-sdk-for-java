@@ -22,8 +22,10 @@ import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInt
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,6 +224,12 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                     .withNewStorageAccount(storageAccountName2)
                     .withNewStorageAccount(storageAccountName3)
                     .withCapacity(3)
+                    .create();
+
+            // VM may take some time to init its pkgs
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+            virtualMachineScaleSet.update()
                     // Use a VM extension to install Apache Web servers
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
@@ -231,7 +239,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                         .withPublicSetting("fileUris", fileUris)
                         .withPublicSetting("commandToExecute", installCommand)
                         .attach()
-                    .create();
+                    .apply();
 
             Date t2 = new Date();
             System.out.println("Created a virtual machine scale set with "

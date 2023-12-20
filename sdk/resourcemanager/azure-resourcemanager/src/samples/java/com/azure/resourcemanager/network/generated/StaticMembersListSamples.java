@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for StaticMembers List. */
+/**
+ * Samples for StaticMembers List.
+ */
 public final class StaticMembersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerStaticMemberList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkManagerStaticMemberList.json
      */
     /**
      * Sample code: StaticMembersList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void staticMembersList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getStaticMembers()
-            .list("rg1", "testNetworkManager", "testNetworkGroup", null, null, com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getStaticMembers().list("rg1", "testNetworkManager",
+            "testNetworkGroup", null, null, com.azure.core.util.Context.NONE);
     }
 }

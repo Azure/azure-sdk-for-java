@@ -32,7 +32,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class EventHubTests extends ResourceManagerTestBase {
+public class EventHubTests extends ResourceManagerTestProxyTestBase {
     protected EventHubsManager eventHubsManager;
     protected StorageManager storageManager;
     protected ResourceManager resourceManager;

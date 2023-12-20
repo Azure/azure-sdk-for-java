@@ -16,6 +16,10 @@ public final class NamedValueSecretContractInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of NamedValueSecretContractInner class. */
+    public NamedValueSecretContractInner() {
+    }
+
     /**
      * Get the value property: This is secret value of the NamedValue entity.
      *

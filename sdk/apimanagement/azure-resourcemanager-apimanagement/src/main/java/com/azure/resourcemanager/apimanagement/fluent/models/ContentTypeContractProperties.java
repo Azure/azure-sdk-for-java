@@ -40,6 +40,10 @@ public final class ContentTypeContractProperties {
     @JsonProperty(value = "version")
     private String version;
 
+    /** Creates an instance of ContentTypeContractProperties class. */
+    public ContentTypeContractProperties() {
+    }
+
     /**
      * Get the id property: Content type identifier.
      *

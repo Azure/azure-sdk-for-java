@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class KeySetUser {
     /*
-     * The Azure Active Directory user name (email name).
+     * The user name that will be used for access.
      */
     @JsonProperty(value = "azureUserName", required = true)
     private String azureUsername;
@@ -24,9 +24,10 @@ public final class KeySetUser {
     private String description;
 
     /*
-     * SshPublicKey represents the public key used to authenticate with the virtual machine through SSH.
+     * SshPublicKey represents the public key used to authenticate with a resource through SSH.
      *
-     * The SSH public key for this user.
+     * The SSH public key that will be provisioned for user access. The user is expected to have the corresponding SSH
+     * private key for logging in.
      */
     @JsonProperty(value = "sshPublicKey", required = true)
     private SshPublicKey sshPublicKey;
@@ -36,7 +37,7 @@ public final class KeySetUser {
     }
 
     /**
-     * Get the azureUsername property: The Azure Active Directory user name (email name).
+     * Get the azureUsername property: The user name that will be used for access.
      *
      * @return the azureUsername value.
      */
@@ -45,7 +46,7 @@ public final class KeySetUser {
     }
 
     /**
-     * Set the azureUsername property: The Azure Active Directory user name (email name).
+     * Set the azureUsername property: The user name that will be used for access.
      *
      * @param azureUsername the azureUsername value to set.
      * @return the KeySetUser object itself.
@@ -76,10 +77,11 @@ public final class KeySetUser {
     }
 
     /**
-     * Get the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the virtual
-     * machine through SSH.
+     * Get the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
+     * through SSH.
      *
-     * <p>The SSH public key for this user.
+     * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
+     * SSH private key for logging in.
      *
      * @return the sshPublicKey value.
      */
@@ -88,10 +90,11 @@ public final class KeySetUser {
     }
 
     /**
-     * Set the sshPublicKey property: SshPublicKey represents the public key used to authenticate with the virtual
-     * machine through SSH.
+     * Set the sshPublicKey property: SshPublicKey represents the public key used to authenticate with a resource
+     * through SSH.
      *
-     * <p>The SSH public key for this user.
+     * <p>The SSH public key that will be provisioned for user access. The user is expected to have the corresponding
+     * SSH private key for logging in.
      *
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the KeySetUser object itself.

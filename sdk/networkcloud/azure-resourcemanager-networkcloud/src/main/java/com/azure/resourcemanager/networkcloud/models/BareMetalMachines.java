@@ -134,8 +134,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void cordon(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult cordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Cordon the bare metal machine.
@@ -149,8 +150,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void cordon(
+    OperationStatusResult cordon(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -166,8 +168,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult powerOff(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Power off the bare metal machine.
@@ -181,8 +184,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(
+    OperationStatusResult powerOff(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -198,8 +202,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult reimage(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Reimage the bare metal machine.
@@ -212,8 +217,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResult reimage(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Replace (service) the bare metal machine.
@@ -225,8 +231,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void replace(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult replace(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Replace (service) the bare metal machine.
@@ -240,8 +247,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void replace(
+    OperationStatusResult replace(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -257,8 +265,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Restart the bare metal machine.
@@ -271,8 +280,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Run the command on the bare metal machine.
@@ -286,8 +296,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runCommand(
+    OperationStatusResult runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
@@ -305,8 +316,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runCommand(
+    OperationStatusResult runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -325,8 +337,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runDataExtracts(
+    OperationStatusResult runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
@@ -345,8 +358,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runDataExtracts(
+    OperationStatusResult runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -365,8 +379,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runReadCommands(
+    OperationStatusResult runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
@@ -385,8 +400,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runReadCommands(
+    OperationStatusResult runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -402,8 +418,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult start(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Start the bare metal machine.
@@ -416,8 +433,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResult start(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Uncordon the bare metal machine.
@@ -429,8 +447,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void uncordon(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Uncordon the bare metal machine.
@@ -443,44 +462,9 @@ public interface BareMetalMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void uncordon(String resourceGroupName, String bareMetalMachineName, Context context);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context);
+    OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Retrieve the bare metal machine.

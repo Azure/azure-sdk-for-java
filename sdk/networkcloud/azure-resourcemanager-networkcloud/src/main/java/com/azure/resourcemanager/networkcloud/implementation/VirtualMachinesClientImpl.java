@@ -34,11 +34,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.VirtualMachinesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineList;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParameters;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineVolumeParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -153,38 +153,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/attachVolume")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> attachVolume(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @BodyParam("application/json") VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/detachVolume")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> detachVolume(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @BodyParam("application/json") VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/powerOff")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> powerOff(
             @HostParam("$host") String endpoint,
@@ -199,7 +169,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/reimage")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reimage(
             @HostParam("$host") String endpoint,
@@ -213,7 +183,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/restart")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
             @HostParam("$host") String endpoint,
@@ -227,7 +197,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/start")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
             @HostParam("$host") String endpoint,
@@ -1701,646 +1671,6 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     }
 
     /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> attachVolumeWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
-        }
-        if (virtualMachineAttachVolumeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualMachineAttachVolumeParameters is required and cannot be null."));
-        } else {
-            virtualMachineAttachVolumeParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .attachVolume(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualMachineName,
-                            virtualMachineAttachVolumeParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> attachVolumeWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
-        }
-        if (virtualMachineAttachVolumeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualMachineAttachVolumeParameters is required and cannot be null."));
-        } else {
-            virtualMachineAttachVolumeParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .attachVolume(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualMachineName,
-                virtualMachineAttachVolumeParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAttachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            attachVolumeWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginAttachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            attachVolumeWithResponseAsync(
-                resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAttachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        return this
-            .beginAttachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginAttachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        return this
-            .beginAttachVolumeAsync(
-                resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> attachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        return beginAttachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> attachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        return beginAttachVolumeAsync(
-                resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        attachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters).block();
-    }
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        attachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context).block();
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachVolumeWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
-        }
-        if (virtualMachineDetachVolumeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualMachineDetachVolumeParameters is required and cannot be null."));
-        } else {
-            virtualMachineDetachVolumeParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .detachVolume(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualMachineName,
-                            virtualMachineDetachVolumeParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachVolumeWithResponseAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualMachineName is required and cannot be null."));
-        }
-        if (virtualMachineDetachVolumeParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualMachineDetachVolumeParameters is required and cannot be null."));
-        } else {
-            virtualMachineDetachVolumeParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .detachVolume(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualMachineName,
-                virtualMachineDetachVolumeParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachVolumeWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            detachVolumeWithResponseAsync(
-                resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        return this
-            .beginDetachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDetachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        return this
-            .beginDetachVolumeAsync(
-                resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        return beginDetachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachVolumeAsync(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        return beginDetachVolumeAsync(
-                resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        detachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters).block();
-    }
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        detachVolumeAsync(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context).block();
-    }
-
-    /**
      * Power off the virtual machine.
      *
      * <p>Power off the provided virtual machine.
@@ -2351,7 +1681,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -2410,7 +1741,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -2466,10 +1798,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters) {
@@ -2477,8 +1809,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             powerOffWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2491,17 +1827,22 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String virtualMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
+        String resourceGroupName, String virtualMachineName) {
         final VirtualMachinePowerOffParameters virtualMachinePowerOffParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             powerOffWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2516,10 +1857,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOffAsync(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -2529,7 +1870,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             powerOffWithResponseAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2542,10 +1888,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String virtualMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
+        String resourceGroupName, String virtualMachineName) {
         final VirtualMachinePowerOffParameters virtualMachinePowerOffParameters = null;
         return this
             .beginPowerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters)
@@ -2564,10 +1911,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPowerOff(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -2588,10 +1935,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(
+    private Mono<OperationStatusResultInner> powerOffAsync(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters) {
@@ -2610,10 +1957,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(String resourceGroupName, String virtualMachineName) {
+    private Mono<OperationStatusResultInner> powerOffAsync(String resourceGroupName, String virtualMachineName) {
         final VirtualMachinePowerOffParameters virtualMachinePowerOffParameters = null;
         return beginPowerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters)
             .last()
@@ -2632,10 +1979,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> powerOffAsync(
+    private Mono<OperationStatusResultInner> powerOffAsync(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -2655,11 +2002,12 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void powerOff(String resourceGroupName, String virtualMachineName) {
+    public OperationStatusResultInner powerOff(String resourceGroupName, String virtualMachineName) {
         final VirtualMachinePowerOffParameters virtualMachinePowerOffParameters = null;
-        powerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters).block();
+        return powerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters).block();
     }
 
     /**
@@ -2674,14 +2022,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void powerOff(
+    public OperationStatusResultInner powerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
         Context context) {
-        powerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context).block();
+        return powerOffAsync(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context).block();
     }
 
     /**
@@ -2694,7 +2043,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
@@ -2746,7 +2096,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
@@ -2794,15 +2145,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String virtualMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimageAsync(
+        String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, virtualMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2816,17 +2172,22 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimageAsync(
         String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             reimageWithResponseAsync(resourceGroupName, virtualMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2839,10 +2200,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String virtualMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
+        String resourceGroupName, String virtualMachineName) {
         return this.beginReimageAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
 
@@ -2857,10 +2219,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
         String resourceGroupName, String virtualMachineName, Context context) {
         return this.beginReimageAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
     }
@@ -2875,10 +2237,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String virtualMachineName) {
+    private Mono<OperationStatusResultInner> reimageAsync(String resourceGroupName, String virtualMachineName) {
         return beginReimageAsync(resourceGroupName, virtualMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2895,10 +2257,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String virtualMachineName, Context context) {
+    private Mono<OperationStatusResultInner> reimageAsync(
+        String resourceGroupName, String virtualMachineName, Context context) {
         return beginReimageAsync(resourceGroupName, virtualMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2914,10 +2277,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String virtualMachineName) {
-        reimageAsync(resourceGroupName, virtualMachineName).block();
+    public OperationStatusResultInner reimage(String resourceGroupName, String virtualMachineName) {
+        return reimageAsync(resourceGroupName, virtualMachineName).block();
     }
 
     /**
@@ -2931,10 +2295,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String virtualMachineName, Context context) {
-        reimageAsync(resourceGroupName, virtualMachineName, context).block();
+    public OperationStatusResultInner reimage(String resourceGroupName, String virtualMachineName, Context context) {
+        return reimageAsync(resourceGroupName, virtualMachineName, context).block();
     }
 
     /**
@@ -2947,7 +2312,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -2999,7 +2365,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -3047,15 +2414,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String virtualMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartAsync(
+        String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, virtualMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3069,17 +2441,22 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartAsync(
         String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, virtualMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -3092,10 +2469,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String virtualMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
+        String resourceGroupName, String virtualMachineName) {
         return this.beginRestartAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
 
@@ -3110,10 +2488,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
         String resourceGroupName, String virtualMachineName, Context context) {
         return this.beginRestartAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
     }
@@ -3128,10 +2506,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String virtualMachineName) {
+    private Mono<OperationStatusResultInner> restartAsync(String resourceGroupName, String virtualMachineName) {
         return beginRestartAsync(resourceGroupName, virtualMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3148,10 +2526,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> restartAsync(String resourceGroupName, String virtualMachineName, Context context) {
+    private Mono<OperationStatusResultInner> restartAsync(
+        String resourceGroupName, String virtualMachineName, Context context) {
         return beginRestartAsync(resourceGroupName, virtualMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3167,10 +2546,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String virtualMachineName) {
-        restartAsync(resourceGroupName, virtualMachineName).block();
+    public OperationStatusResultInner restart(String resourceGroupName, String virtualMachineName) {
+        return restartAsync(resourceGroupName, virtualMachineName).block();
     }
 
     /**
@@ -3184,10 +2564,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restart(String resourceGroupName, String virtualMachineName, Context context) {
-        restartAsync(resourceGroupName, virtualMachineName, context).block();
+    public OperationStatusResultInner restart(String resourceGroupName, String virtualMachineName, Context context) {
+        return restartAsync(resourceGroupName, virtualMachineName, context).block();
     }
 
     /**
@@ -3200,7 +2581,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -3252,7 +2634,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -3300,15 +2683,20 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String virtualMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
+        String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, virtualMachineName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3322,16 +2710,21 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
         String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, virtualMachineName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -3344,10 +2737,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String virtualMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+        String resourceGroupName, String virtualMachineName) {
         return this.beginStartAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
 
@@ -3362,10 +2756,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String virtualMachineName, Context context) {
         return this.beginStartAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
     }
@@ -3380,10 +2774,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String virtualMachineName) {
+    private Mono<OperationStatusResultInner> startAsync(String resourceGroupName, String virtualMachineName) {
         return beginStartAsync(resourceGroupName, virtualMachineName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3400,10 +2794,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startAsync(String resourceGroupName, String virtualMachineName, Context context) {
+    private Mono<OperationStatusResultInner> startAsync(
+        String resourceGroupName, String virtualMachineName, Context context) {
         return beginStartAsync(resourceGroupName, virtualMachineName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3419,10 +2814,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String virtualMachineName) {
-        startAsync(resourceGroupName, virtualMachineName).block();
+    public OperationStatusResultInner start(String resourceGroupName, String virtualMachineName) {
+        return startAsync(resourceGroupName, virtualMachineName).block();
     }
 
     /**
@@ -3436,10 +2832,11 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void start(String resourceGroupName, String virtualMachineName, Context context) {
-        startAsync(resourceGroupName, virtualMachineName, context).block();
+    public OperationStatusResultInner start(String resourceGroupName, String virtualMachineName, Context context) {
+        return startAsync(resourceGroupName, virtualMachineName, context).block();
     }
 
     /**

@@ -39,7 +39,7 @@ public interface Endpoint {
     EndpointBaseProperties properties();
 
     /**
-     * Gets the systemData property: Resource system metadata.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -66,11 +66,13 @@ public interface Endpoint {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The Endpoint definition stages. */
     interface DefinitionStages {
         /** The first stage of the Endpoint definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Endpoint definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -82,6 +84,7 @@ public interface Endpoint {
              */
             WithProperties withExistingStorageMover(String resourceGroupName, String storageMoverName);
         }
+
         /** The stage of the Endpoint definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -92,6 +95,7 @@ public interface Endpoint {
              */
             WithCreate withProperties(EndpointBaseProperties properties);
         }
+
         /**
          * The stage of the Endpoint definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -113,6 +117,7 @@ public interface Endpoint {
             Endpoint create(Context context);
         }
     }
+
     /**
      * Begins update for the Endpoint resource.
      *
@@ -137,6 +142,7 @@ public interface Endpoint {
          */
         Endpoint apply(Context context);
     }
+
     /** The Endpoint update stages. */
     interface UpdateStages {
         /** The stage of the Endpoint update allowing to specify properties. */
@@ -151,6 +157,7 @@ public interface Endpoint {
             Update withProperties(EndpointBaseUpdateProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

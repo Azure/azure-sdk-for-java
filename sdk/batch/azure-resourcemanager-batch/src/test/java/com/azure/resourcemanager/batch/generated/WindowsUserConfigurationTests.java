@@ -8,18 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.LoginMode;
 import com.azure.resourcemanager.batch.models.WindowsUserConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WindowsUserConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WindowsUserConfiguration model =
             BinaryData.fromString("{\"loginMode\":\"Batch\"}").toObject(WindowsUserConfiguration.class);
         Assertions.assertEquals(LoginMode.BATCH, model.loginMode());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WindowsUserConfiguration model = new WindowsUserConfiguration().withLoginMode(LoginMode.BATCH);
         model = BinaryData.fromObject(model).toObject(WindowsUserConfiguration.class);
         Assertions.assertEquals(LoginMode.BATCH, model.loginMode());

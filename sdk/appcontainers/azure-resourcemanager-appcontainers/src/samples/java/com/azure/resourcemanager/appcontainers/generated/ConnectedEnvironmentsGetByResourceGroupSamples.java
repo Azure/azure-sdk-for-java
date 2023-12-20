@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 /** Samples for ConnectedEnvironments GetByResourceGroup. */
 public final class ConnectedEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironments_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ConnectedEnvironments_Get.json
      */
     /**
      * Sample code: Get connected environment by connectedEnvironmentName.

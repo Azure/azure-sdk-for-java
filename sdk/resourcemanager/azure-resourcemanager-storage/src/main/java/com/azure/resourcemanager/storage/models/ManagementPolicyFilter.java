@@ -34,6 +34,10 @@ public final class ManagementPolicyFilter {
     @JsonProperty(value = "blobIndexMatch")
     private List<TagFilter> blobIndexMatch;
 
+    /** Creates an instance of ManagementPolicyFilter class. */
+    public ManagementPolicyFilter() {
+    }
+
     /**
      * Get the prefixMatch property: An array of strings for prefixes to be match.
      *

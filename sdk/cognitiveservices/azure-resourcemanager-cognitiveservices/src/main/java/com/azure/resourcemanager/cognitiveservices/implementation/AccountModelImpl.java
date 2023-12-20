@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cognitiveservices.models.CallRateLimit;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
+import com.azure.resourcemanager.cognitiveservices.models.ModelSku;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class AccountModelImpl implements AccountModel {
@@ -38,12 +40,29 @@ public final class AccountModelImpl implements AccountModel {
         return this.innerModel().version();
     }
 
+    public String source() {
+        return this.innerModel().source();
+    }
+
     public CallRateLimit callRateLimit() {
         return this.innerModel().callRateLimit();
     }
 
     public DeploymentModel baseModel() {
         return this.innerModel().baseModel();
+    }
+
+    public Boolean isDefaultVersion() {
+        return this.innerModel().isDefaultVersion();
+    }
+
+    public List<ModelSku> skus() {
+        List<ModelSku> inner = this.innerModel().skus();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Integer maxCapacity() {

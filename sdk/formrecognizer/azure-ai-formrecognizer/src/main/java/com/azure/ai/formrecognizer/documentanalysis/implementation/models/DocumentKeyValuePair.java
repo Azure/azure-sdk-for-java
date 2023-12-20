@@ -5,53 +5,48 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** An object representing a form field with distinct field label (key) and field value (may be empty). */
+/**
+ * An object representing a form field with distinct field label (key) and field value (may be empty).
+ */
 @Fluent
-public final class DocumentKeyValuePair {
+public final class DocumentKeyValuePair implements JsonSerializable<DocumentKeyValuePair> {
     /*
      * Field label of the key-value pair.
      */
-    @JsonProperty(value = "key", required = true)
-    private DocumentKeyValueElement key;
+    private final DocumentKeyValueElement key;
 
     /*
      * Field value of the key-value pair.
      */
-    @JsonProperty(value = "value")
     private DocumentKeyValueElement value;
-
-    /*
-     * Common name of the key-value pair.
-     */
-    @JsonProperty(value = "commonName")
-    private String commonName;
 
     /*
      * Confidence of correctly extracting the key-value pair.
      */
-    @JsonProperty(value = "confidence", required = true)
-    private float confidence;
+    private final float confidence;
 
     /**
      * Creates an instance of DocumentKeyValuePair class.
-     *
+     * 
      * @param key the key value to set.
      * @param confidence the confidence value to set.
      */
-    @JsonCreator
-    public DocumentKeyValuePair(
-            @JsonProperty(value = "key", required = true) DocumentKeyValueElement key,
-            @JsonProperty(value = "confidence", required = true) float confidence) {
+    public DocumentKeyValuePair(DocumentKeyValueElement key, float confidence) {
         this.key = key;
         this.confidence = confidence;
     }
 
     /**
      * Get the key property: Field label of the key-value pair.
-     *
+     * 
      * @return the key value.
      */
     public DocumentKeyValueElement getKey() {
@@ -60,7 +55,7 @@ public final class DocumentKeyValuePair {
 
     /**
      * Get the value property: Field value of the key-value pair.
-     *
+     * 
      * @return the value value.
      */
     public DocumentKeyValueElement getValue() {
@@ -69,7 +64,7 @@ public final class DocumentKeyValuePair {
 
     /**
      * Set the value property: Field value of the key-value pair.
-     *
+     * 
      * @param value the value value to set.
      * @return the DocumentKeyValuePair object itself.
      */
@@ -79,31 +74,71 @@ public final class DocumentKeyValuePair {
     }
 
     /**
-     * Get the commonName property: Common name of the key-value pair.
-     *
-     * @return the commonName value.
-     */
-    public String getCommonName() {
-        return this.commonName;
-    }
-
-    /**
-     * Set the commonName property: Common name of the key-value pair.
-     *
-     * @param commonName the commonName value to set.
-     * @return the DocumentKeyValuePair object itself.
-     */
-    public DocumentKeyValuePair setCommonName(String commonName) {
-        this.commonName = commonName;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the key-value pair.
-     *
+     * 
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("key", this.key);
+        jsonWriter.writeFloatField("confidence", this.confidence);
+        jsonWriter.writeJsonField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentKeyValuePair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentKeyValuePair if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentKeyValuePair.
+     */
+    public static DocumentKeyValuePair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean keyFound = false;
+            DocumentKeyValueElement key = null;
+            boolean confidenceFound = false;
+            float confidence = 0.0f;
+            DocumentKeyValueElement value = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    key = DocumentKeyValueElement.fromJson(reader);
+                    keyFound = true;
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getFloat();
+                    confidenceFound = true;
+                } else if ("value".equals(fieldName)) {
+                    value = DocumentKeyValueElement.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (keyFound && confidenceFound) {
+                DocumentKeyValuePair deserializedDocumentKeyValuePair = new DocumentKeyValuePair(key, confidence);
+                deserializedDocumentKeyValuePair.value = value;
+
+                return deserializedDocumentKeyValuePair;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!keyFound) {
+                missingProperties.add("key");
+            }
+            if (!confidenceFound) {
+                missingProperties.add("confidence");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -8,25 +8,31 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import reactor.core.publisher.Mono;
 
-class LoadTestingClientTestBase extends TestBase {
+class LoadTestingClientTestBase extends TestProxyTestBase {
     protected LoadTestAdministrationClientBuilder adminBuilder;
     protected LoadTestRunClientBuilder testRunBuilder;
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
+    private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
 
     protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
     protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
@@ -58,6 +64,19 @@ class LoadTestingClientTestBase extends TestBase {
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+        if (getTestMode() != TestMode.LIVE) {
+            List<TestProxySanitizer> sanitizers = new ArrayList<>();
+            sanitizers.add(new TestProxySanitizer("Location", "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}", "https://REDACTED", TestProxySanitizerType.HEADER));
+            interceptorManager.addSanitizers(sanitizers);
+        }
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+            matchers.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(matchers);
+        }
+
         if (getTestMode() == TestMode.PLAYBACK) {
             loadTestAdministrationClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())

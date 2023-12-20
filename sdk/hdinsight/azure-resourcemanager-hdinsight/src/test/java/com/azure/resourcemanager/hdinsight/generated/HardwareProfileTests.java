@@ -7,19 +7,18 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.HardwareProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class HardwareProfileTests {
-    @Test
-    public void testDeserialize() {
-        HardwareProfile model = BinaryData.fromString("{\"vmSize\":\"cph\"}").toObject(HardwareProfile.class);
-        Assertions.assertEquals("cph", model.vmSize());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HardwareProfile model = BinaryData.fromString("{\"vmSize\":\"trpmo\"}").toObject(HardwareProfile.class);
+        Assertions.assertEquals("trpmo", model.vmSize());
     }
 
-    @Test
-    public void testSerialize() {
-        HardwareProfile model = new HardwareProfile().withVmSize("cph");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        HardwareProfile model = new HardwareProfile().withVmSize("trpmo");
         model = BinaryData.fromObject(model).toObject(HardwareProfile.class);
-        Assertions.assertEquals("cph", model.vmSize());
+        Assertions.assertEquals("trpmo", model.vmSize());
     }
 }

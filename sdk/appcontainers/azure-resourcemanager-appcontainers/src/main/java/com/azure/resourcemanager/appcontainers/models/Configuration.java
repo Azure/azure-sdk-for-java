@@ -49,6 +49,12 @@ public final class Configuration {
     @JsonProperty(value = "maxInactiveRevisions")
     private Integer maxInactiveRevisions;
 
+    /*
+     * Container App to be a dev Container App Service
+     */
+    @JsonProperty(value = "service")
+    private Service service;
+
     /** Creates an instance of Configuration class. */
     public Configuration() {
     }
@@ -182,6 +188,26 @@ public final class Configuration {
     }
 
     /**
+     * Get the service property: Container App to be a dev Container App Service.
+     *
+     * @return the service value.
+     */
+    public Service service() {
+        return this.service;
+    }
+
+    /**
+     * Set the service property: Container App to be a dev Container App Service.
+     *
+     * @param service the service value to set.
+     * @return the Configuration object itself.
+     */
+    public Configuration withService(Service service) {
+        this.service = service;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,6 +224,9 @@ public final class Configuration {
         }
         if (dapr() != null) {
             dapr().validate();
+        }
+        if (service() != null) {
+            service().validate();
         }
     }
 }

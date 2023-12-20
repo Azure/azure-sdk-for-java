@@ -40,6 +40,7 @@ public class HeartbeatExporter {
      * Map to hold heartbeat properties.
      */
     private final ConcurrentMap<String, HeartBeatPropertyPayload> heartbeatProperties;
+
     /**
      * Telemetry item exporter used to send heartbeat.
      */

@@ -22,6 +22,10 @@ public final class X509CertificateName {
     @JsonProperty(value = "issuerCertificateThumbprint")
     private String issuerCertificateThumbprint;
 
+    /** Creates an instance of X509CertificateName class. */
+    public X509CertificateName() {
+    }
+
     /**
      * Get the name property: Common Name of the Certificate.
      *

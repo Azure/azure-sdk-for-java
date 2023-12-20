@@ -116,7 +116,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             for (HttpHeader header : headers) {
                 String name = header.getName();
 
-                connection.setRequestProperty(name, header.getValue());
+                header.getValuesList().forEach(value -> connection.addRequestProperty(name, value));
             }
         }
     }

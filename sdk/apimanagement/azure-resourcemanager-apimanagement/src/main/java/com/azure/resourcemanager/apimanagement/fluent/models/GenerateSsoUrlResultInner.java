@@ -16,6 +16,10 @@ public final class GenerateSsoUrlResultInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of GenerateSsoUrlResultInner class. */
+    public GenerateSsoUrlResultInner() {
+    }
+
     /**
      * Get the value property: Redirect Url containing the SSO URL value.
      *

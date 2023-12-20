@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ApplicationGateways Start. */
+/**
+ * Samples for ApplicationGateways Start.
+ */
 public final class ApplicationGatewaysStartSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayStart.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ApplicationGatewayStart.json
      */
     /**
      * Sample code: Start Application Gateway.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startApplicationGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getApplicationGateways()
-            .start("rg1", "appgw", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getApplicationGateways().start("rg1", "appgw",
+            com.azure.core.util.Context.NONE);
     }
 }

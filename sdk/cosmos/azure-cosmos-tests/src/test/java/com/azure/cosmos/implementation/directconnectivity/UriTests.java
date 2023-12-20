@@ -35,7 +35,7 @@ public class UriTests {
         }
 
         // if the status is unhealthy, it can only be overwritten to connected after some extended time
-        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
         healthStatus.set(Unhealthy);
 
@@ -51,7 +51,7 @@ public class UriTests {
     @Test(groups = "unit")
     public void setUnhealthyStatusTests() throws NoSuchFieldException, IllegalAccessException {
 
-        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
 
         // Unhealthy status can override any other status
@@ -138,7 +138,7 @@ public class UriTests {
         Field lastUnhealthyPendingTimestampField = Uri.class.getDeclaredField("lastUnhealthyPendingTimestamp");
         lastUnhealthyPendingTimestampField.setAccessible(true);
 
-        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
@@ -230,7 +230,7 @@ public class UriTests {
                     assertThat(testUri.shouldRefreshHealthStatus()).isFalse();
                     break;
                 case Unhealthy:
-                    Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+                    Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
                     lastUnhealthyTimestampField.setAccessible(true);
                     lastUnhealthyTimestampField.set(testUri, Instant.now());
                     assertThat(testUri.shouldRefreshHealthStatus()).isFalse();

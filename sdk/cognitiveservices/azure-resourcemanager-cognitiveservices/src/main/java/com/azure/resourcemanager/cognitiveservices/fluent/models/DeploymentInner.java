@@ -8,11 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cognitive Services account deployment. */
 @Fluent
 public final class DeploymentInner extends ProxyResource {
+    /*
+     * The resource model definition representing SKU
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -33,6 +40,26 @@ public final class DeploymentInner extends ProxyResource {
 
     /** Creates an instance of DeploymentInner class. */
     public DeploymentInner() {
+    }
+
+    /**
+     * Get the sku property: The resource model definition representing SKU.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The resource model definition representing SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the DeploymentInner object itself.
+     */
+    public DeploymentInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -79,6 +106,9 @@ public final class DeploymentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }

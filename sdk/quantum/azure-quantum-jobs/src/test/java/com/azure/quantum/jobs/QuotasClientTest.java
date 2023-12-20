@@ -41,6 +41,6 @@ public class QuotasClientTest extends QuantumClientTestBase {
             total.getAndIncrement();
         });
         // should be at least one in the list
-        assertTrue(total.intValue() >= 2);
+        assertTrue(total.intValue() >= 1);
     }
 }

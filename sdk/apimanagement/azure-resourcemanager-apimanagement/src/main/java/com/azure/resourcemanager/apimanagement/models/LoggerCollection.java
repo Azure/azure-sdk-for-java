@@ -30,6 +30,10 @@ public final class LoggerCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of LoggerCollection class. */
+    public LoggerCollection() {
+    }
+
     /**
      * Get the value property: Logger values.
      *

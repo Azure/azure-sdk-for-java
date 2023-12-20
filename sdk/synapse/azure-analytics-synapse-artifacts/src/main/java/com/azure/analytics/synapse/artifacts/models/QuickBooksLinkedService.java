@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** QuickBooks server linked service. */
+/**
+ * QuickBooks server linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("QuickBooks")
 @JsonFlatten
@@ -74,13 +76,16 @@ public class QuickBooksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of QuickBooksLinkedService class. */
-    public QuickBooksLinkedService() {}
+    /**
+     * Creates an instance of QuickBooksLinkedService class.
+     */
+    public QuickBooksLinkedService() {
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
      * any other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -90,7 +95,7 @@ public class QuickBooksLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
      * any other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -101,7 +106,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the endpoint property: The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -110,7 +115,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the endpoint property: The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -121,7 +126,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the companyId property: The company ID of the QuickBooks company to authorize.
-     *
+     * 
      * @return the companyId value.
      */
     public Object getCompanyId() {
@@ -130,7 +135,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the companyId property: The company ID of the QuickBooks company to authorize.
-     *
+     * 
      * @param companyId the companyId value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -141,7 +146,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the consumerKey property: The consumer key for OAuth 1.0 authentication.
-     *
+     * 
      * @return the consumerKey value.
      */
     public Object getConsumerKey() {
@@ -150,7 +155,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the consumerKey property: The consumer key for OAuth 1.0 authentication.
-     *
+     * 
      * @param consumerKey the consumerKey value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -161,7 +166,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
-     *
+     * 
      * @return the consumerSecret value.
      */
     public SecretBase getConsumerSecret() {
@@ -170,7 +175,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
-     *
+     * 
      * @param consumerSecret the consumerSecret value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -181,7 +186,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the accessToken property: The access token for OAuth 1.0 authentication.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase getAccessToken() {
@@ -190,7 +195,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the accessToken property: The access token for OAuth 1.0 authentication.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -201,7 +206,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Get the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
-     *
+     * 
      * @return the accessTokenSecret value.
      */
     public SecretBase getAccessTokenSecret() {
@@ -210,7 +215,7 @@ public class QuickBooksLinkedService extends LinkedService {
 
     /**
      * Set the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
-     *
+     * 
      * @param accessTokenSecret the accessTokenSecret value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -222,7 +227,7 @@ public class QuickBooksLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -232,7 +237,7 @@ public class QuickBooksLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -242,9 +247,9 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -252,9 +257,9 @@ public class QuickBooksLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickBooksLinkedService object itself.
      */
@@ -263,28 +268,36 @@ public class QuickBooksLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickBooksLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickBooksLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickBooksLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickBooksLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

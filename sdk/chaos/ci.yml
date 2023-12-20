@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/chaos/ci.yml
+      - sdk/chaos/azure-resourcemanager-chaos/
+    exclude:
+      - sdk/chaos/pom.xml
+      - sdk/chaos/azure-resourcemanager-chaos/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/chaos/ci.yml
+      - sdk/chaos/azure-resourcemanager-chaos/
+    exclude:
+      - sdk/chaos/pom.xml
+      - sdk/chaos/azure-resourcemanager-chaos/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerchaos
+    displayName: azure-resourcemanager-chaos
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: chaos
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-chaos
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerchaos
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerchaos }}

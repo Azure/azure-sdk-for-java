@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -94,6 +93,14 @@ public final class FormTrainingClientBuilder implements
     EndpointTrait<FormTrainingClientBuilder>,
     HttpTrait<FormTrainingClientBuilder>,
     TokenCredentialTrait<FormTrainingClientBuilder> {
+
+    /**
+     * Constructs a {@link FormTrainingClientBuilder} object.
+     */
+    public FormTrainingClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(FormTrainingClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -183,13 +190,8 @@ public final class FormTrainingClientBuilder implements
                 httpClient);
         }
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new FormTrainingAsyncClient(formRecognizerAPI, serviceVersion);
+        return new FormTrainingAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion);
     }
 
     /**
@@ -298,7 +300,7 @@ public final class FormTrainingClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormTrainingClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public FormTrainingClientBuilder clientOptions(ClientOptions clientOptions) {

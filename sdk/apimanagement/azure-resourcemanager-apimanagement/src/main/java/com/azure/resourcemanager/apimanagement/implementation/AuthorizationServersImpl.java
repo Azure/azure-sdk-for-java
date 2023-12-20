@@ -46,22 +46,13 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
         return Utils.mapPage(inner, inner1 -> new AuthorizationServerContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String authsid) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, authsid);
-    }
-
     public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String authsid, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, authsid, context);
     }
 
-    public AuthorizationServerContract get(String resourceGroupName, String serviceName, String authsid) {
-        AuthorizationServerContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, authsid);
-        if (inner != null) {
-            return new AuthorizationServerContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String authsid) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, authsid);
     }
 
     public Response<AuthorizationServerContract> getWithResponse(
@@ -79,8 +70,13 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String authsid, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, authsid, ifMatch);
+    public AuthorizationServerContract get(String resourceGroupName, String serviceName, String authsid) {
+        AuthorizationServerContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, authsid);
+        if (inner != null) {
+            return new AuthorizationServerContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -88,15 +84,8 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, authsid, ifMatch, context);
     }
 
-    public AuthorizationServerSecretsContract listSecrets(
-        String resourceGroupName, String serviceName, String authsid) {
-        AuthorizationServerSecretsContractInner inner =
-            this.serviceClient().listSecrets(resourceGroupName, serviceName, authsid);
-        if (inner != null) {
-            return new AuthorizationServerSecretsContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String authsid, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, authsid, ifMatch);
     }
 
     public Response<AuthorizationServerSecretsContract> listSecretsWithResponse(
@@ -109,6 +98,17 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AuthorizationServerSecretsContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AuthorizationServerSecretsContract listSecrets(
+        String resourceGroupName, String serviceName, String authsid) {
+        AuthorizationServerSecretsContractInner inner =
+            this.serviceClient().listSecrets(resourceGroupName, serviceName, authsid);
+        if (inner != null) {
+            return new AuthorizationServerSecretsContractImpl(inner, this.manager());
         } else {
             return null;
         }

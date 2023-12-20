@@ -9,8 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
 import com.azure.resourcemanager.selfhelp.models.Diagnostic;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticProvisioningState;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
-import com.azure.resourcemanager.selfhelp.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +20,8 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    DiagnosticResourceImpl(
-        DiagnosticResourceInner innerObject, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    DiagnosticResourceImpl(DiagnosticResourceInner innerObject,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -64,7 +64,7 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
         return this.innerModel().acceptedAt();
     }
 
-    public ProvisioningState provisioningState() {
+    public DiagnosticProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -95,20 +95,14 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
     }
 
     public DiagnosticResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiagnostics()
-                .create(scope, diagnosticsResourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDiagnostics().create(scope, diagnosticsResourceName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public DiagnosticResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiagnostics()
-                .create(scope, diagnosticsResourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getDiagnostics().create(scope, diagnosticsResourceName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -119,22 +113,14 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
     }
 
     public DiagnosticResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiagnostics()
-                .getWithResponse(scope, diagnosticsResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDiagnostics()
+            .getWithResponse(scope, diagnosticsResourceName, Context.NONE).getValue();
         return this;
     }
 
     public DiagnosticResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDiagnostics()
-                .getWithResponse(scope, diagnosticsResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDiagnostics()
+            .getWithResponse(scope, diagnosticsResourceName, context).getValue();
         return this;
     }
 

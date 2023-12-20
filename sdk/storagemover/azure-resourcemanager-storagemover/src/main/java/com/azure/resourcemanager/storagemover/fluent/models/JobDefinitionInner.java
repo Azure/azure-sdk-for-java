@@ -23,7 +23,7 @@ public final class JobDefinitionInner extends ProxyResource {
     private JobDefinitionProperties innerProperties = new JobDefinitionProperties();
 
     /*
-     * Resource system metadata.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -42,7 +42,7 @@ public final class JobDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Resource system metadata.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */

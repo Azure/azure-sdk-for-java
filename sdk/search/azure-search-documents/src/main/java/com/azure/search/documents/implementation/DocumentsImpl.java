@@ -30,27 +30,28 @@ import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.ScoringStatistics;
-import com.azure.search.documents.models.SearchMode;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Documents. */
+/**
+ * An instance of this class provides access to all the operations defined in Documents.
+ */
 public final class DocumentsImpl {
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DocumentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchIndexClientImpl client;
 
     /**
@@ -59,320 +60,114 @@ public final class DocumentsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DocumentsImpl(SearchIndexClientImpl client) {
-        this.service =
-                RestProxy.create(DocumentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
     @ServiceInterface(name = "SearchIndexClientDoc")
     public interface DocumentsService {
 
         @Get("/docs/$count")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Long>> count(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Long>> count(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/docs/$count")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<Long> countSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/docs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchDocumentsResult>> searchGet(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("search") String searchText,
-                @QueryParam("$count") Boolean includeTotalCount,
-                @QueryParam(value = "facet", multipleQueryParams = true) List<String> facets,
-                @QueryParam("$filter") String filter,
-                @QueryParam("highlight") String highlightFields,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("$orderby") String orderBy,
-                @QueryParam("queryType") QueryType queryType,
-                @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
-                @QueryParam("scoringProfile") String scoringProfile,
-                @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
-                @QueryParam("speller") QuerySpellerType speller,
-                @QueryParam("answers") String answers,
-                @QueryParam("searchMode") SearchMode searchMode,
-                @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
-                @QueryParam("sessionId") String sessionId,
-                @QueryParam("$select") String select,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$top") Integer top,
-                @QueryParam("captions") String captions,
-                @QueryParam("semanticFields") String semanticFields,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/docs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchDocumentsResult> searchGetSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("search") String searchText,
-                @QueryParam("$count") Boolean includeTotalCount,
-                @QueryParam(value = "facet", multipleQueryParams = true) List<String> facets,
-                @QueryParam("$filter") String filter,
-                @QueryParam("highlight") String highlightFields,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("$orderby") String orderBy,
-                @QueryParam("queryType") QueryType queryType,
-                @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
-                @QueryParam("scoringProfile") String scoringProfile,
-                @QueryParam("semanticConfiguration") String semanticConfiguration,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("queryLanguage") QueryLanguage queryLanguage,
-                @QueryParam("speller") QuerySpellerType speller,
-                @QueryParam("answers") String answers,
-                @QueryParam("searchMode") SearchMode searchMode,
-                @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
-                @QueryParam("sessionId") String sessionId,
-                @QueryParam("$select") String select,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$top") Integer top,
-                @QueryParam("captions") String captions,
-                @QueryParam("semanticFields") String semanticFields,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Long> countSync(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchDocumentsResult>> searchPost(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchRequest searchRequest,
-                Context context);
+        Mono<Response<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchRequest searchRequest, Context context);
 
         @Post("/docs/search.post.search")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchDocumentsResult> searchPostSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchRequest searchRequest,
-                Context context);
+        Response<SearchDocumentsResult> searchPostSync(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchRequest searchRequest, Context context);
 
         @Get("/docs('{key}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Object>> get(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @PathParam("key") String key,
-                @QueryParam("$select") String selectedFields,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Map<String, Object>>> get(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @PathParam("key") String key,
+            @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/docs('{key}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<Object> getSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @PathParam("key") String key,
-                @QueryParam("$select") String selectedFields,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/docs/search.suggest")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SuggestDocumentsResult>> suggestGet(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("search") String searchText,
-                @QueryParam("suggesterName") String suggesterName,
-                @QueryParam("$filter") String filter,
-                @QueryParam("fuzzy") Boolean useFuzzyMatching,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("$orderby") String orderBy,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("$select") String select,
-                @QueryParam("$top") Integer top,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/docs/search.suggest")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SuggestDocumentsResult> suggestGetSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("search") String searchText,
-                @QueryParam("suggesterName") String suggesterName,
-                @QueryParam("$filter") String filter,
-                @QueryParam("fuzzy") Boolean useFuzzyMatching,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("$orderby") String orderBy,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("$select") String select,
-                @QueryParam("$top") Integer top,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Map<String, Object>> getSync(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @PathParam("key") String key,
+            @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/docs/search.post.suggest")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SuggestDocumentsResult>> suggestPost(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SuggestRequest suggestRequest,
-                Context context);
+        Mono<Response<SuggestDocumentsResult>> suggestPost(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SuggestRequest suggestRequest, Context context);
 
         @Post("/docs/search.post.suggest")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SuggestDocumentsResult> suggestPostSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SuggestRequest suggestRequest,
-                Context context);
+        Response<SuggestDocumentsResult> suggestPostSync(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SuggestRequest suggestRequest, Context context);
 
         @Post("/docs/search.index")
-        @ExpectedResponses({200, 207})
+        @ExpectedResponses({ 200, 207 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<IndexDocumentsResult>> index(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") IndexBatch batch,
-                Context context);
+        Mono<Response<IndexDocumentsResult>> index(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IndexBatch batch, Context context);
 
         @Post("/docs/search.index")
-        @ExpectedResponses({200, 207})
+        @ExpectedResponses({ 200, 207 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<IndexDocumentsResult> indexSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") IndexBatch batch,
-                Context context);
-
-        @Get("/docs/search.autocomplete")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<AutocompleteResult>> autocompleteGet(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("search") String searchText,
-                @QueryParam("suggesterName") String suggesterName,
-                @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode,
-                @QueryParam("$filter") String filter,
-                @QueryParam("fuzzy") Boolean useFuzzyMatching,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("$top") Integer top,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/docs/search.autocomplete")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<AutocompleteResult> autocompleteGetSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("search") String searchText,
-                @QueryParam("suggesterName") String suggesterName,
-                @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode,
-                @QueryParam("$filter") String filter,
-                @QueryParam("fuzzy") Boolean useFuzzyMatching,
-                @QueryParam("highlightPostTag") String highlightPostTag,
-                @QueryParam("highlightPreTag") String highlightPreTag,
-                @QueryParam("minimumCoverage") Double minimumCoverage,
-                @QueryParam("searchFields") String searchFields,
-                @QueryParam("$top") Integer top,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<IndexDocumentsResult> indexSync(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IndexBatch batch, Context context);
 
         @Post("/docs/search.post.autocomplete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<AutocompleteResult>> autocompletePost(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") AutocompleteRequest autocompleteRequest,
-                Context context);
+        Mono<Response<AutocompleteResult>> autocompletePost(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AutocompleteRequest autocompleteRequest, Context context);
 
         @Post("/docs/search.post.autocomplete")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<AutocompleteResult> autocompletePostSync(
-                @HostParam("endpoint") String endpoint,
-                @HostParam("indexName") String indexName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") AutocompleteRequest autocompleteRequest,
-                Context context);
+        Response<AutocompleteResult> autocompletePostSync(@HostParam("endpoint") String endpoint,
+            @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AutocompleteRequest autocompleteRequest, Context context);
     }
 
     /**
@@ -392,15 +187,8 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.count(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.count(this.client.getEndpoint(), this.client.getIndexName(),
+            xMsClientRequestId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -421,13 +209,8 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.count(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.count(this.client.getEndpoint(), this.client.getIndexName(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -477,13 +260,8 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.countSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.countSync(this.client.getEndpoint(), this.client.getIndexName(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -509,27 +287,19 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
-            SearchRequest searchRequest, RequestOptions requestOptions) {
+    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.searchPost(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                this.client.getApiVersion(),
-                                xMsClientRequestId,
-                                accept,
-                                searchRequest,
-                                context));
+        return FluxUtil.withContext(context -> service.searchPost(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context));
     }
 
     /**
@@ -542,25 +312,19 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
-            SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.searchPost(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                searchRequest,
-                context);
+        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
+            xMsClientRequestId, accept, searchRequest, context);
     }
 
     /**
@@ -576,7 +340,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, RequestOptions requestOptions) {
         return searchPostWithResponseAsync(searchRequest, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -591,10 +355,10 @@ public final class DocumentsImpl {
      * @return response containing search results from an index on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchDocumentsResult> searchPostAsync(
-            SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+    public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, RequestOptions requestOptions,
+        Context context) {
         return searchPostWithResponseAsync(searchRequest, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -609,22 +373,16 @@ public final class DocumentsImpl {
      * @return response containing search results from an index along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchDocumentsResult> searchPostWithResponse(
-            SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
+    public Response<SearchDocumentsResult> searchPostWithResponse(SearchRequest searchRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.searchPostSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                searchRequest,
-                context);
+        return service.searchPostSync(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context);
     }
 
     /**
@@ -647,39 +405,27 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
-            String key, List<String> selectedFields, RequestOptions requestOptions) {
+    public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted =
-                (selectedFields == null)
-                        ? null
-                        : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                key,
-                                selectedFieldsConverted,
-                                this.client.getApiVersion(),
-                                xMsClientRequestId,
-                                accept,
-                                context));
+        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getIndexName(), key,
+            selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, accept, context));
     }
 
     /**
@@ -687,38 +433,28 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
-            String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted =
-                (selectedFields == null)
-                        ? null
-                        : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
-        return service.get(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                key,
-                selectedFieldsConverted,
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                context);
+        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        return service.get(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
+            this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }
 
     /**
@@ -726,17 +462,17 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
+    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions) {
         return getWithResponseAsync(key, selectedFields, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -744,19 +480,19 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(
-            String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields, RequestOptions requestOptions,
+        Context context) {
         return getWithResponseAsync(key, selectedFields, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -764,38 +500,27 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getWithResponse(
-            String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Response<Map<String, Object>> getWithResponse(String key, List<String> selectedFields,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted =
-                (selectedFields == null)
-                        ? null
-                        : selectedFields.stream()
-                                .map(value -> Objects.toString(value, ""))
-                                .collect(Collectors.joining(","));
-        return service.getSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                key,
-                selectedFieldsConverted,
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                context);
+        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        return service.getSync(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
+            this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }
 
     /**
@@ -803,15 +528,15 @@ public final class DocumentsImpl {
      *
      * @param key The key of the document to retrieve.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     *     from the returned document.
+     * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return a document retrieved via a document lookup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object get(String key, List<String> selectedFields, RequestOptions requestOptions) {
+    public Map<String, Object> get(String key, List<String> selectedFields, RequestOptions requestOptions) {
         return getWithResponse(key, selectedFields, requestOptions, Context.NONE).getValue();
     }
 
@@ -824,27 +549,20 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
-            SuggestRequest suggestRequest, RequestOptions requestOptions) {
+    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(SuggestRequest suggestRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.suggestPost(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                this.client.getApiVersion(),
-                                xMsClientRequestId,
-                                accept,
-                                suggestRequest,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(),
+                this.client.getApiVersion(), xMsClientRequestId, accept, suggestRequest, context));
     }
 
     /**
@@ -857,25 +575,19 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
-            SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(SuggestRequest suggestRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.suggestPost(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                suggestRequest,
-                context);
+        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
+            xMsClientRequestId, accept, suggestRequest, context);
     }
 
     /**
@@ -891,7 +603,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SuggestDocumentsResult> suggestPostAsync(SuggestRequest suggestRequest, RequestOptions requestOptions) {
         return suggestPostWithResponseAsync(suggestRequest, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -906,10 +618,10 @@ public final class DocumentsImpl {
      * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SuggestDocumentsResult> suggestPostAsync(
-            SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+    public Mono<SuggestDocumentsResult> suggestPostAsync(SuggestRequest suggestRequest, RequestOptions requestOptions,
+        Context context) {
         return suggestPostWithResponseAsync(suggestRequest, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -924,22 +636,16 @@ public final class DocumentsImpl {
      * @return response containing suggestion query results from an index along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SuggestDocumentsResult> suggestPostWithResponse(
-            SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
+    public Response<SuggestDocumentsResult> suggestPostWithResponse(SuggestRequest suggestRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.suggestPostSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                suggestRequest,
-                context);
+        return service.suggestPostSync(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, suggestRequest, context);
     }
 
     /**
@@ -965,28 +671,20 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of operations for all documents in the indexing request along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return response containing the status of operations for all documents in the indexing request along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
-            IndexBatch batch, RequestOptions requestOptions) {
+    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(IndexBatch batch,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.index(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                this.client.getApiVersion(),
-                                xMsClientRequestId,
-                                accept,
-                                batch,
-                                context));
+        return FluxUtil.withContext(context -> service.index(this.client.getEndpoint(), this.client.getIndexName(),
+            this.client.getApiVersion(), xMsClientRequestId, accept, batch, context));
     }
 
     /**
@@ -998,26 +696,20 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of operations for all documents in the indexing request along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return response containing the status of operations for all documents in the indexing request along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
-            IndexBatch batch, RequestOptions requestOptions, Context context) {
+    public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(IndexBatch batch, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.index(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                batch,
-                context);
+        return service.index(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
+            xMsClientRequestId, accept, batch, context);
     }
 
     /**
@@ -1029,7 +721,7 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexAsync(IndexBatch batch, RequestOptions requestOptions) {
@@ -1046,7 +738,7 @@ public final class DocumentsImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexAsync(IndexBatch batch, RequestOptions requestOptions, Context context) {
@@ -1062,26 +754,20 @@ public final class DocumentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the status of operations for all documents in the indexing request along with {@link
-     *     Response}.
+     * @return response containing the status of operations for all documents in the indexing request along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> indexWithResponse(
-            IndexBatch batch, RequestOptions requestOptions, Context context) {
+    public Response<IndexDocumentsResult> indexWithResponse(IndexBatch batch, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.indexSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                this.client.getApiVersion(),
-                xMsClientRequestId,
-                accept,
-                batch,
-                context);
+        return service.indexSync(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
+            xMsClientRequestId, accept, batch, context);
     }
 
     /**
@@ -1110,24 +796,17 @@ public final class DocumentsImpl {
      * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
-            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions) {
+    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(AutocompleteRequest autocompleteRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.autocompletePost(
-                                this.client.getEndpoint(),
-                                this.client.getIndexName(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                autocompleteRequest,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(),
+                xMsClientRequestId, this.client.getApiVersion(), accept, autocompleteRequest, context));
     }
 
     /**
@@ -1142,22 +821,16 @@ public final class DocumentsImpl {
      * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
-            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
+    public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(AutocompleteRequest autocompleteRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.autocompletePost(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                autocompleteRequest,
-                context);
+        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, autocompleteRequest, context);
     }
 
     /**
@@ -1171,10 +844,10 @@ public final class DocumentsImpl {
      * @return the result of Autocomplete query on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutocompleteResult> autocompletePostAsync(
-            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions) {
+    public Mono<AutocompleteResult> autocompletePostAsync(AutocompleteRequest autocompleteRequest,
+        RequestOptions requestOptions) {
         return autocompletePostWithResponseAsync(autocompleteRequest, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1189,10 +862,10 @@ public final class DocumentsImpl {
      * @return the result of Autocomplete query on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AutocompleteResult> autocompletePostAsync(
-            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
+    public Mono<AutocompleteResult> autocompletePostAsync(AutocompleteRequest autocompleteRequest,
+        RequestOptions requestOptions, Context context) {
         return autocompletePostWithResponseAsync(autocompleteRequest, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1207,22 +880,16 @@ public final class DocumentsImpl {
      * @return the result of Autocomplete query along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AutocompleteResult> autocompletePostWithResponse(
-            AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
+    public Response<AutocompleteResult> autocompletePostWithResponse(AutocompleteRequest autocompleteRequest,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.autocompletePostSync(
-                this.client.getEndpoint(),
-                this.client.getIndexName(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                autocompleteRequest,
-                context);
+        return service.autocompletePostSync(this.client.getEndpoint(), this.client.getIndexName(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, autocompleteRequest, context);
     }
 
     /**

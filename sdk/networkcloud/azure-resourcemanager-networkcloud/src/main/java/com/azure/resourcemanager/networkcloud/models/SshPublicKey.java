@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SshPublicKey represents the public key used to authenticate with the virtual machine through SSH. */
+/** SshPublicKey represents the public key used to authenticate with a resource through SSH. */
 @Fluent
 public final class SshPublicKey {
     /*
-     * The public ssh key of the user.
+     * The SSH public key data.
      */
     @JsonProperty(value = "keyData", required = true)
     private String keyData;
@@ -22,7 +22,7 @@ public final class SshPublicKey {
     }
 
     /**
-     * Get the keyData property: The public ssh key of the user.
+     * Get the keyData property: The SSH public key data.
      *
      * @return the keyData value.
      */
@@ -31,7 +31,7 @@ public final class SshPublicKey {
     }
 
     /**
-     * Set the keyData property: The public ssh key of the user.
+     * Set the keyData property: The SSH public key data.
      *
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.

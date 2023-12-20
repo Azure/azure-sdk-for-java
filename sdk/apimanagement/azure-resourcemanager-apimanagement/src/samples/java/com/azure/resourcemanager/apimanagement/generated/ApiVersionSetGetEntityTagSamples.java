@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiVersionSet GetEntityTag. */
 public final class ApiVersionSetGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiVersionSet.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiVersionSet.json
      */
     /**
      * Sample code: ApiManagementHeadApiVersionSet.
@@ -18,6 +16,8 @@ public final class ApiVersionSetGetEntityTagSamples {
      */
     public static void apiManagementHeadApiVersionSet(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiVersionSets().getEntityTagWithResponse("rg1", "apimService1", "vs1", Context.NONE);
+        manager
+            .apiVersionSets()
+            .getEntityTagWithResponse("rg1", "apimService1", "vs1", com.azure.core.util.Context.NONE);
     }
 }

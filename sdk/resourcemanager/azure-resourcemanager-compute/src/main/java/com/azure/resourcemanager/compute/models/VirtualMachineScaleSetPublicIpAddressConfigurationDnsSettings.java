@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a virtual machines scale sets network configuration's DNS settings. */
+/**
+ * Describes a virtual machines scale sets network configuration's DNS settings.
+ */
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
     /*
@@ -18,14 +20,24 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
 
-    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings class. */
+    /*
+     * The Domain name label scope.The concatenation of the hashed domain name label that generated according to the
+     * policy from domain name label scope and vm index will be the domain name labels of the PublicIPAddress resources
+     * that will be created
+     */
+    @JsonProperty(value = "domainNameLabelScope")
+    private DomainNameLabelScopeTypes domainNameLabelScope;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings class.
+     */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings() {
     }
 
     /**
      * Get the domainNameLabel property: The Domain name label.The concatenation of the domain name label and vm index
      * will be the domain name labels of the PublicIPAddress resources that will be created.
-     *
+     * 
      * @return the domainNameLabel value.
      */
     public String domainNameLabel() {
@@ -35,7 +47,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
     /**
      * Set the domainNameLabel property: The Domain name label.The concatenation of the domain name label and vm index
      * will be the domain name labels of the PublicIPAddress resources that will be created.
-     *
+     * 
      * @param domainNameLabel the domainNameLabel value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings object itself.
      */
@@ -45,20 +57,42 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
     }
 
     /**
+     * Get the domainNameLabelScope property: The Domain name label scope.The concatenation of the hashed domain name
+     * label that generated according to the policy from domain name label scope and vm index will be the domain name
+     * labels of the PublicIPAddress resources that will be created.
+     * 
+     * @return the domainNameLabelScope value.
+     */
+    public DomainNameLabelScopeTypes domainNameLabelScope() {
+        return this.domainNameLabelScope;
+    }
+
+    /**
+     * Set the domainNameLabelScope property: The Domain name label scope.The concatenation of the hashed domain name
+     * label that generated according to the policy from domain name label scope and vm index will be the domain name
+     * labels of the PublicIPAddress resources that will be created.
+     * 
+     * @param domainNameLabelScope the domainNameLabelScope value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings object itself.
+     */
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
+        withDomainNameLabelScope(DomainNameLabelScopeTypes domainNameLabelScope) {
+        this.domainNameLabelScope = domainNameLabelScope;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainNameLabel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainNameLabel in model"
-                            + " VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.class);
 }

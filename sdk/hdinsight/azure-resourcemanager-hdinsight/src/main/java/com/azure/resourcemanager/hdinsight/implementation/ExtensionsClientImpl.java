@@ -66,8 +66,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     public interface ExtensionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/clustermonitoring")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableMonitoring(
@@ -82,8 +81,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/clustermonitoring")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterMonitoringResponseInner>> getMonitoringStatus(
@@ -97,8 +95,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/clustermonitoring")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/clustermonitoring")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableMonitoring(
@@ -112,8 +109,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/azureMonitor")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableAzureMonitor(
@@ -128,8 +124,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/azureMonitor")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureMonitorResponseInner>> getAzureMonitorStatus(
@@ -143,8 +138,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/azureMonitor")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/azureMonitor")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableAzureMonitor(
@@ -158,8 +152,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/{extensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -175,8 +168,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/{extensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterMonitoringResponseInner>> get(
@@ -191,8 +183,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/{extensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -207,8 +198,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/extensions/{extensionName}/azureAsyncOperations/{operationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/extensions/{extensionName}/azureAsyncOperations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> getAzureAsyncOperationStatus(
@@ -390,7 +380,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters) {
-        return beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -408,7 +398,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context) {
-        return beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this.beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -776,7 +766,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(String resourceGroupName, String clusterName) {
-        return beginDisableMonitoringAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDisableMonitoringAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -793,7 +783,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDisableMonitoringAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDisableMonitoringAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1027,7 +1017,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
-        return beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
+        return this.beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
     }
 
     /**
@@ -1045,7 +1035,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context) {
-        return beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
+        return this.beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1411,7 +1401,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName) {
-        return beginDisableAzureMonitorAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDisableAzureMonitorAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
@@ -1428,7 +1418,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDisableAzureMonitorAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDisableAzureMonitorAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
@@ -1675,7 +1665,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters) {
-        return beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters).getSyncPoller();
     }
 
     /**
@@ -1694,7 +1684,9 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2093,7 +2085,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String extensionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, extensionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, extensionName).getSyncPoller();
     }
 
     /**
@@ -2111,7 +2103,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String extensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, extensionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, extensionName, context).getSyncPoller();
     }
 
     /**

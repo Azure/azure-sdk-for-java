@@ -13,17 +13,17 @@ public final class SignalRServiceUsageNameTests {
     public void testDeserialize() throws Exception {
         SignalRServiceUsageName model =
             BinaryData
-                .fromString("{\"value\":\"s\",\"localizedValue\":\"gbquxigj\"}")
+                .fromString("{\"value\":\"qsl\",\"localizedValue\":\"yvxyqjp\"}")
                 .toObject(SignalRServiceUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRServiceUsageName model = new SignalRServiceUsageName().withValue("s").withLocalizedValue("gbquxigj");
+        SignalRServiceUsageName model = new SignalRServiceUsageName().withValue("qsl").withLocalizedValue("yvxyqjp");
         model = BinaryData.fromObject(model).toObject(SignalRServiceUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 }

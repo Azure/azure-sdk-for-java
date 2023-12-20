@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.graphservices.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.graphservices.fluent.AccountsClient;
@@ -46,11 +48,124 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new AccountResourceImpl(inner1, this.manager()));
     }
 
+    public Response<AccountResource> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        Response<AccountResourceInner> inner =
+            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AccountResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AccountResource getByResourceGroup(String resourceGroupName, String resourceName) {
+        AccountResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new AccountResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
+        this.serviceClient().delete(resourceGroupName, resourceName);
+    }
+
+    public AccountResource getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        if (resourceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+    }
+
+    public Response<AccountResource> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        if (resourceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        if (resourceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = Utils.getValueFromIdByName(id, "accounts");
+        if (resourceName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+        }
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    }
+
     private AccountsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.graphservices.GraphServicesManager manager() {
         return this.serviceManager;
+    }
+
+    public AccountResourceImpl define(String name) {
+        return new AccountResourceImpl(name, this.manager());
     }
 }

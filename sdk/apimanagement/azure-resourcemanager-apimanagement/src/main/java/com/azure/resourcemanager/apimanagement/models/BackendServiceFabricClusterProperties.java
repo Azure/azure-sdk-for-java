@@ -19,8 +19,7 @@ public final class BackendServiceFabricClusterProperties {
     private String clientCertificateId;
 
     /*
-     * The client certificate thumbprint for the management endpoint. Will be
-     * ignored if certificatesIds are provided
+     * The client certificate thumbprint for the management endpoint. Will be ignored if certificatesIds are provided
      */
     @JsonProperty(value = "clientCertificatethumbprint")
     private String clientCertificatethumbprint;
@@ -38,8 +37,7 @@ public final class BackendServiceFabricClusterProperties {
     private List<String> managementEndpoints;
 
     /*
-     * Thumbprints of certificates cluster management service uses for tls
-     * communication
+     * Thumbprints of certificates cluster management service uses for tls communication
      */
     @JsonProperty(value = "serverCertificateThumbprints")
     private List<String> serverCertificateThumbprints;
@@ -49,6 +47,10 @@ public final class BackendServiceFabricClusterProperties {
      */
     @JsonProperty(value = "serverX509Names")
     private List<X509CertificateName> serverX509Names;
+
+    /** Creates an instance of BackendServiceFabricClusterProperties class. */
+    public BackendServiceFabricClusterProperties() {
+    }
 
     /**
      * Get the clientCertificateId property: The client certificate id for the management endpoint.

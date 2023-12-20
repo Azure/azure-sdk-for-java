@@ -7,19 +7,18 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.QuotaInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaInfoTests {
-    @Test
-    public void testDeserialize() {
-        QuotaInfo model = BinaryData.fromString("{\"coresUsed\":1083545989}").toObject(QuotaInfo.class);
-        Assertions.assertEquals(1083545989, model.coresUsed());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        QuotaInfo model = BinaryData.fromString("{\"coresUsed\":1416358219}").toObject(QuotaInfo.class);
+        Assertions.assertEquals(1416358219, model.coresUsed());
     }
 
-    @Test
-    public void testSerialize() {
-        QuotaInfo model = new QuotaInfo().withCoresUsed(1083545989);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        QuotaInfo model = new QuotaInfo().withCoresUsed(1416358219);
         model = BinaryData.fromObject(model).toObject(QuotaInfo.class);
-        Assertions.assertEquals(1083545989, model.coresUsed());
+        Assertions.assertEquals(1416358219, model.coresUsed());
     }
 }

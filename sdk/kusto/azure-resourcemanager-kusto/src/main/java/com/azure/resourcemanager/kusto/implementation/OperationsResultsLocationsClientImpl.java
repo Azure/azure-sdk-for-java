@@ -15,12 +15,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
+import com.azure.resourcemanager.kusto.models.OperationsResultsLocationsGetResponse;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsResultsLocationsClient. */
@@ -53,11 +53,10 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     public interface OperationsResultsLocationsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Kusto/locations/{location}/operationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> get(
+        Mono<OperationsResultsLocationsGetResponse> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
@@ -69,15 +68,15 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getWithResponseAsync(String location, String operationId) {
+    private Mono<OperationsResultsLocationsGetResponse> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -113,16 +112,17 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getWithResponseAsync(String location, String operationId, Context context) {
+    private Mono<OperationsResultsLocationsGetResponse> getWithResponseAsync(
+        String location, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -155,8 +155,8 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,24 +170,24 @@ public final class OperationsResultsLocationsClientImpl implements OperationsRes
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getWithResponse(String location, String operationId, Context context) {
+    public OperationsResultsLocationsGetResponse getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
     }
 
     /**
      * Returns operation results.
      *
-     * @param location Azure location (region) name.
-     * @param operationId The Guid of the operation ID.
+     * @param location The name of Azure region.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

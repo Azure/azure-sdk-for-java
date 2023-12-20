@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The storage account information for storing Service Fabric diagnostic logs. */
+/**
+ * The storage account information for storing Service Fabric diagnostic logs.
+ */
 @Fluent
 public final class DiagnosticsStorageAccountConfig {
     /*
@@ -48,13 +50,15 @@ public final class DiagnosticsStorageAccountConfig {
     @JsonProperty(value = "tableEndpoint", required = true)
     private String tableEndpoint;
 
-    /** Creates an instance of DiagnosticsStorageAccountConfig class. */
+    /**
+     * Creates an instance of DiagnosticsStorageAccountConfig class.
+     */
     public DiagnosticsStorageAccountConfig() {
     }
 
     /**
      * Get the storageAccountName property: The Azure storage account name.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -63,7 +67,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Set the storageAccountName property: The Azure storage account name.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -74,7 +78,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Get the protectedAccountKeyName property: The protected diagnostics storage key name.
-     *
+     * 
      * @return the protectedAccountKeyName value.
      */
     public String protectedAccountKeyName() {
@@ -83,7 +87,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Set the protectedAccountKeyName property: The protected diagnostics storage key name.
-     *
+     * 
      * @param protectedAccountKeyName the protectedAccountKeyName value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -95,7 +99,7 @@ public final class DiagnosticsStorageAccountConfig {
     /**
      * Get the protectedAccountKeyName2 property: The secondary protected diagnostics storage key name. If one of the
      * storage account keys is rotated the cluster will fallback to using the other.
-     *
+     * 
      * @return the protectedAccountKeyName2 value.
      */
     public String protectedAccountKeyName2() {
@@ -105,7 +109,7 @@ public final class DiagnosticsStorageAccountConfig {
     /**
      * Set the protectedAccountKeyName2 property: The secondary protected diagnostics storage key name. If one of the
      * storage account keys is rotated the cluster will fallback to using the other.
-     *
+     * 
      * @param protectedAccountKeyName2 the protectedAccountKeyName2 value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -116,7 +120,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Get the blobEndpoint property: The blob endpoint of the azure storage account.
-     *
+     * 
      * @return the blobEndpoint value.
      */
     public String blobEndpoint() {
@@ -125,7 +129,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Set the blobEndpoint property: The blob endpoint of the azure storage account.
-     *
+     * 
      * @param blobEndpoint the blobEndpoint value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -136,7 +140,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Get the queueEndpoint property: The queue endpoint of the azure storage account.
-     *
+     * 
      * @return the queueEndpoint value.
      */
     public String queueEndpoint() {
@@ -145,7 +149,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Set the queueEndpoint property: The queue endpoint of the azure storage account.
-     *
+     * 
      * @param queueEndpoint the queueEndpoint value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -156,7 +160,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Get the tableEndpoint property: The table endpoint of the azure storage account.
-     *
+     * 
      * @return the tableEndpoint value.
      */
     public String tableEndpoint() {
@@ -165,7 +169,7 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Set the tableEndpoint property: The table endpoint of the azure storage account.
-     *
+     * 
      * @param tableEndpoint the tableEndpoint value to set.
      * @return the DiagnosticsStorageAccountConfig object itself.
      */
@@ -176,39 +180,29 @@ public final class DiagnosticsStorageAccountConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageAccountName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountName in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccountName in model DiagnosticsStorageAccountConfig"));
         }
         if (protectedAccountKeyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protectedAccountKeyName in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property protectedAccountKeyName in model DiagnosticsStorageAccountConfig"));
         }
         if (blobEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property blobEndpoint in model DiagnosticsStorageAccountConfig"));
         }
         if (queueEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queueEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property queueEndpoint in model DiagnosticsStorageAccountConfig"));
         }
         if (tableEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableEndpoint in model DiagnosticsStorageAccountConfig"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tableEndpoint in model DiagnosticsStorageAccountConfig"));
         }
     }
 

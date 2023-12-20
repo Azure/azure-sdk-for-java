@@ -10,8 +10,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,9 +21,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.function.Function;
 
-public class DigitalTwinsTestBase extends TestBase {
+public class DigitalTwinsTestBase extends TestProxyTestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
     private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
 
@@ -49,6 +51,8 @@ public class DigitalTwinsTestBase extends TestBase {
             builder.credential(new FakeCredentials());
             // Connect to a special host when running tests in playback mode.
             builder.endpoint(PLAYBACK_ENDPOINT);
+            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
+
             return builder;
         }
 

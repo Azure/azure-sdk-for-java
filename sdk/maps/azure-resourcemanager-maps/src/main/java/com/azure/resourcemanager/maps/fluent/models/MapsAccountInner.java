@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.models.Kind;
+import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.maps.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -29,10 +30,16 @@ public final class MapsAccountInner extends Resource {
     private Kind kind;
 
     /*
-     * The system meta data relating to this resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * The map account properties.
@@ -85,12 +92,32 @@ public final class MapsAccountInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the MapsAccountInner object itself.
+     */
+    public MapsAccountInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -139,6 +166,9 @@ public final class MapsAccountInner extends Resource {
                     new IllegalArgumentException("Missing required property sku in model MapsAccountInner"));
         } else {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (properties() != null) {
             properties().validate();

@@ -5,52 +5,60 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Basic custom model information. */
+/**
+ * Basic custom model information.
+ */
 @Fluent
-public final class ModelInfo {
+public final class ModelInfo implements JsonSerializable<ModelInfo> {
     /*
      * Model identifier.
      */
-    @JsonProperty(value = "modelId", required = true)
     private UUID modelId;
 
     /*
      * Status of the model.
      */
-    @JsonProperty(value = "status", required = true)
     private ModelStatus status;
 
     /*
      * Date and time (UTC) when the model was created.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
     private OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    @JsonProperty(value = "lastUpdatedDateTime", required = true)
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
-    @JsonProperty(value = "modelName")
     private String modelName;
 
     /*
      * Optional model attributes.
      */
-    @JsonProperty(value = "attributes")
     private Attributes attributes;
 
     /**
+     * Creates an instance of ModelInfo class.
+     */
+    public ModelInfo() {
+    }
+
+    /**
      * Get the modelId property: Model identifier.
-     *
+     * 
      * @return the modelId value.
      */
     public UUID getModelId() {
@@ -59,7 +67,7 @@ public final class ModelInfo {
 
     /**
      * Set the modelId property: Model identifier.
-     *
+     * 
      * @param modelId the modelId value to set.
      * @return the ModelInfo object itself.
      */
@@ -70,7 +78,7 @@ public final class ModelInfo {
 
     /**
      * Get the status property: Status of the model.
-     *
+     * 
      * @return the status value.
      */
     public ModelStatus getStatus() {
@@ -79,7 +87,7 @@ public final class ModelInfo {
 
     /**
      * Set the status property: Status of the model.
-     *
+     * 
      * @param status the status value to set.
      * @return the ModelInfo object itself.
      */
@@ -90,7 +98,7 @@ public final class ModelInfo {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the model was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -99,7 +107,7 @@ public final class ModelInfo {
 
     /**
      * Set the createdDateTime property: Date and time (UTC) when the model was created.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the ModelInfo object itself.
      */
@@ -110,7 +118,7 @@ public final class ModelInfo {
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     *
+     * 
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime getLastUpdatedDateTime() {
@@ -119,7 +127,7 @@ public final class ModelInfo {
 
     /**
      * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     *
+     * 
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the ModelInfo object itself.
      */
@@ -130,7 +138,7 @@ public final class ModelInfo {
 
     /**
      * Get the modelName property: Optional user defined model name (max length: 1024).
-     *
+     * 
      * @return the modelName value.
      */
     public String getModelName() {
@@ -139,7 +147,7 @@ public final class ModelInfo {
 
     /**
      * Set the modelName property: Optional user defined model name (max length: 1024).
-     *
+     * 
      * @param modelName the modelName value to set.
      * @return the ModelInfo object itself.
      */
@@ -150,7 +158,7 @@ public final class ModelInfo {
 
     /**
      * Get the attributes property: Optional model attributes.
-     *
+     * 
      * @return the attributes value.
      */
     public Attributes getAttributes() {
@@ -159,12 +167,66 @@ public final class ModelInfo {
 
     /**
      * Set the attributes property: Optional model attributes.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the ModelInfo object itself.
      */
     public ModelInfo setAttributes(Attributes attributes) {
         this.attributes = attributes;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", Objects.toString(this.modelId, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeJsonField("attributes", this.attributes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ModelInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ModelInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ModelInfo.
+     */
+    public static ModelInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ModelInfo deserializedModelInfo = new ModelInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modelId".equals(fieldName)) {
+                    deserializedModelInfo.modelId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedModelInfo.status = ModelStatus.fromString(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedModelInfo.createdDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    deserializedModelInfo.lastUpdatedDateTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("modelName".equals(fieldName)) {
+                    deserializedModelInfo.modelName = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedModelInfo.attributes = Attributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedModelInfo;
+        });
     }
 }

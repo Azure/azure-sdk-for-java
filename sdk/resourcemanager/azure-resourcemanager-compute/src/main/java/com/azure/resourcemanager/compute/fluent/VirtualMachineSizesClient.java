@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineSizesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineSizesClient.
+ */
 public interface VirtualMachineSizesClient {
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface VirtualMachineSizesClient {
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface VirtualMachineSizesClient {
 
     /**
      * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

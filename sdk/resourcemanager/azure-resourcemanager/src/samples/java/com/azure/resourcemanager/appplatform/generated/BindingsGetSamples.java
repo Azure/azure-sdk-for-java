@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Bindings Get. */
 public final class BindingsGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_Get.json
      */
     /**
      * Sample code: Bindings_Get.

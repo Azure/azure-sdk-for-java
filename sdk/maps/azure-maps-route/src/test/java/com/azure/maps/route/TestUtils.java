@@ -3,15 +3,6 @@
 
 package com.azure.maps.route;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
 import com.azure.core.test.TestBase;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -21,8 +12,16 @@ import com.azure.maps.route.models.RouteDirections;
 import com.azure.maps.route.models.RouteDirectionsBatchResult;
 import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeResult;
-
 import org.junit.jupiter.params.provider.Arguments;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class TestUtils {
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";

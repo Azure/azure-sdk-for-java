@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The azure blob storage linked service. */
+/**
+ * The azure blob storage linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobStorage")
 @JsonFlatten
@@ -93,13 +95,35 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of AzureBlobStorageLinkedService class. */
-    public AzureBlobStorageLinkedService() {}
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.authenticationType")
+    private AzureStorageAuthenticationType authenticationType;
+
+    /*
+     * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.containerUri")
+    private Object containerUri;
+
+    /**
+     * Creates an instance of AzureBlobStorageLinkedService class.
+     */
+    public AzureBlobStorageLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri, serviceEndpoint
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -109,7 +133,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with sasUri, serviceEndpoint
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -120,7 +144,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @return the accountKey value.
      */
     public AzureKeyVaultSecretReference getAccountKey() {
@@ -129,7 +153,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -141,7 +165,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Get the sasUri property: SAS URI of the Azure Blob Storage resource. It is mutually exclusive with
      * connectionString, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the sasUri value.
      */
     public Object getSasUri() {
@@ -151,7 +175,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the sasUri property: SAS URI of the Azure Blob Storage resource. It is mutually exclusive with
      * connectionString, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -162,7 +186,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @return the sasToken value.
      */
     public AzureKeyVaultSecretReference getSasToken() {
@@ -171,7 +195,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -183,7 +207,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Get the serviceEndpoint property: Blob service endpoint of the Azure Blob Storage resource. It is mutually
      * exclusive with connectionString, sasUri property.
-     *
+     * 
      * @return the serviceEndpoint value.
      */
     public String getServiceEndpoint() {
@@ -193,7 +217,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the serviceEndpoint property: Blob service endpoint of the Azure Blob Storage resource. It is mutually
      * exclusive with connectionString, sasUri property.
-     *
+     * 
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -205,7 +229,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -215,7 +239,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -227,7 +251,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -237,7 +261,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -249,7 +273,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -259,7 +283,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -269,10 +293,10 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object getAzureCloudType() {
@@ -280,10 +304,10 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -296,7 +320,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      * Get the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
      * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the accountKind value.
      */
     public String getAccountKind() {
@@ -307,7 +331,7 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      * Set the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
      * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param accountKind the accountKind value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -317,9 +341,9 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -327,9 +351,9 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
@@ -338,28 +362,98 @@ public class AzureBlobStorageLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public AzureStorageAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setAuthenticationType(AzureStorageAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     * 
+     * @return the containerUri value.
+     */
+    public Object getContainerUri() {
+        return this.containerUri;
+    }
+
+    /**
+     * Set the containerUri property: Container uri of the Azure Blob Storage resource only support for anonymous
+     * access. Type: string (or Expression with resultType string).
+     * 
+     * @param containerUri the containerUri value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setContainerUri(Object containerUri) {
+        this.containerUri = containerUri;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -55,6 +55,12 @@ public final class ManagedClusterLoadBalancerProfile {
     @JsonProperty(value = "enableMultipleStandardLoadBalancers")
     private Boolean enableMultipleStandardLoadBalancers;
 
+    /*
+     * The type of the managed inbound Load Balancer BackendPool.
+     */
+    @JsonProperty(value = "backendPoolType")
+    private BackendPoolType backendPoolType;
+
     /** Creates an instance of ManagedClusterLoadBalancerProfile class. */
     public ManagedClusterLoadBalancerProfile() {
     }
@@ -205,6 +211,26 @@ public final class ManagedClusterLoadBalancerProfile {
     public ManagedClusterLoadBalancerProfile withEnableMultipleStandardLoadBalancers(
         Boolean enableMultipleStandardLoadBalancers) {
         this.enableMultipleStandardLoadBalancers = enableMultipleStandardLoadBalancers;
+        return this;
+    }
+
+    /**
+     * Get the backendPoolType property: The type of the managed inbound Load Balancer BackendPool.
+     *
+     * @return the backendPoolType value.
+     */
+    public BackendPoolType backendPoolType() {
+        return this.backendPoolType;
+    }
+
+    /**
+     * Set the backendPoolType property: The type of the managed inbound Load Balancer BackendPool.
+     *
+     * @param backendPoolType the backendPoolType value to set.
+     * @return the ManagedClusterLoadBalancerProfile object itself.
+     */
+    public ManagedClusterLoadBalancerProfile withBackendPoolType(BackendPoolType backendPoolType) {
+        this.backendPoolType = backendPoolType;
         return this;
     }
 

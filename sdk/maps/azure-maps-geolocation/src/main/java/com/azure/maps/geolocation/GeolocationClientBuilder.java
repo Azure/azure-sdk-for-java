@@ -67,13 +67,14 @@ public final class GeolocationClientBuilder implements AzureKeyCredentialTrait<G
     // constants
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String GEOLOCATION_SUBSCRIPTION_KEY = "subscription-key";
     private static final String X_MS_CLIENT_ID = "x-ms-client-id";
-    //subscription-key
-
-    // instance fields
     private static final ClientLogger LOGGER = new ClientLogger(GeolocationClientBuilder.class);
     private final Map<String, String> properties = new HashMap<>();
+
+    // subscription-key
+    static final String GEOLOCATION_SUBSCRIPTION_KEY = "subscription-key";
+
+    // instance fields
     private String endpoint;
     private GeolocationServiceVersion serviceVersion;
     /*

@@ -54,7 +54,7 @@ public final class SimPolicyPropertiesFormat {
     private Integer rfspIndex;
 
     /*
-     * Interval for the UE periodic registration update procedure, in seconds.
+     * UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds.
      */
     @JsonProperty(value = "registrationTimer")
     private Integer registrationTimer;
@@ -156,7 +156,8 @@ public final class SimPolicyPropertiesFormat {
     }
 
     /**
-     * Get the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
+     * Get the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
      *
      * @return the registrationTimer value.
      */
@@ -165,7 +166,8 @@ public final class SimPolicyPropertiesFormat {
     }
 
     /**
-     * Set the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
+     * Set the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
      *
      * @param registrationTimer the registrationTimer value to set.
      * @return the SimPolicyPropertiesFormat object itself.

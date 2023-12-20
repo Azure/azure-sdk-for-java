@@ -58,6 +58,6 @@ public final class ContainerAppsSourceControlsDeleteMockTests {
 
         manager
             .containerAppsSourceControls()
-            .delete("ot", "jzcfyjzptwr", "ohapqinfsz", com.azure.core.util.Context.NONE);
+            .delete("efgnaavuagnt", "taoutnpdct", "hspfefyihd", com.azure.core.util.Context.NONE);
     }
 }

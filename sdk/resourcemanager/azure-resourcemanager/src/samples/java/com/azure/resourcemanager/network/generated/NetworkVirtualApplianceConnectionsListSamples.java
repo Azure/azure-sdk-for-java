@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkVirtualApplianceConnections List. */
+/**
+ * Samples for NetworkVirtualApplianceConnections List.
+ */
 public final class NetworkVirtualApplianceConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceConnectionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkVirtualApplianceConnectionList.json
      */
     /**
      * Sample code: NetworkVirtualApplianceConnectionList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkVirtualApplianceConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkVirtualApplianceConnections()
-            .list("rg1", "nva1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkVirtualApplianceConnections().list("rg1", "nva1",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -7,20 +7,19 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.AzureMonitorTableConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureMonitorTableConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureMonitorTableConfiguration model =
-            BinaryData.fromString("{\"name\":\"qmqhldvriii\"}").toObject(AzureMonitorTableConfiguration.class);
-        Assertions.assertEquals("qmqhldvriii", model.name());
+            BinaryData.fromString("{\"name\":\"ykojoxafnndlpic\"}").toObject(AzureMonitorTableConfiguration.class);
+        Assertions.assertEquals("ykojoxafnndlpic", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureMonitorTableConfiguration model = new AzureMonitorTableConfiguration().withName("qmqhldvriii");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureMonitorTableConfiguration model = new AzureMonitorTableConfiguration().withName("ykojoxafnndlpic");
         model = BinaryData.fromObject(model).toObject(AzureMonitorTableConfiguration.class);
-        Assertions.assertEquals("qmqhldvriii", model.name());
+        Assertions.assertEquals("ykojoxafnndlpic", model.name());
     }
 }

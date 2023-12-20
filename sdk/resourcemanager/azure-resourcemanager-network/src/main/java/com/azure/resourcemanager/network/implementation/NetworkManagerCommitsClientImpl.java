@@ -31,23 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkManagerCommitsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkManagerCommitsClient.
+ */
 public final class NetworkManagerCommitsClientImpl implements NetworkManagerCommitsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkManagerCommitsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkManagerCommitsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkManagerCommitsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(NetworkManagerCommitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkManagerCommitsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,25 +63,21 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface NetworkManagerCommitsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commit")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/commit")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkManagerName") String networkManagerName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NetworkManagerCommitInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("networkManagerName") String networkManagerName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NetworkManagerCommitInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -86,19 +87,15 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,27 +110,17 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .post(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.post(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -144,19 +131,15 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,24 +154,16 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .post(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.post(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -198,23 +173,18 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return the {@link PollerFlux} for polling of network Manager Commit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<NetworkManagerCommitInner>, NetworkManagerCommitInner> beginPostAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            postWithResponseAsync(resourceGroupName, networkManagerName, parameters);
-        return this
-            .client
-            .<NetworkManagerCommitInner, NetworkManagerCommitInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkManagerCommitInner.class,
-                NetworkManagerCommitInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<NetworkManagerCommitInner>, NetworkManagerCommitInner>
+        beginPostAsync(String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = postWithResponseAsync(resourceGroupName, networkManagerName, parameters);
+        return this.client.<NetworkManagerCommitInner, NetworkManagerCommitInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkManagerCommitInner.class, NetworkManagerCommitInner.class,
+            this.client.getContext());
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -228,21 +198,15 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
     private PollerFlux<PollResult<NetworkManagerCommitInner>, NetworkManagerCommitInner> beginPostAsync(
         String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            postWithResponseAsync(resourceGroupName, networkManagerName, parameters, context);
-        return this
-            .client
-            .<NetworkManagerCommitInner, NetworkManagerCommitInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkManagerCommitInner.class,
-                NetworkManagerCommitInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = postWithResponseAsync(resourceGroupName, networkManagerName, parameters, context);
+        return this.client.<NetworkManagerCommitInner, NetworkManagerCommitInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NetworkManagerCommitInner.class, NetworkManagerCommitInner.class, context);
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -252,14 +216,14 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return the {@link SyncPoller} for polling of network Manager Commit.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkManagerCommitInner>, NetworkManagerCommitInner> beginPost(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
+    public SyncPoller<PollResult<NetworkManagerCommitInner>, NetworkManagerCommitInner>
+        beginPost(String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
         return this.beginPostAsync(resourceGroupName, networkManagerName, parameters).getSyncPoller();
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -277,7 +241,7 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -287,16 +251,15 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkManagerCommitInner> postAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
-        return beginPostAsync(resourceGroupName, networkManagerName, parameters)
-            .last()
+    public Mono<NetworkManagerCommitInner> postAsync(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters) {
+        return beginPostAsync(resourceGroupName, networkManagerName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -307,16 +270,15 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkManagerCommitInner> postAsync(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters, Context context) {
-        return beginPostAsync(resourceGroupName, networkManagerName, parameters, context)
-            .last()
+    private Mono<NetworkManagerCommitInner> postAsync(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters, Context context) {
+        return beginPostAsync(resourceGroupName, networkManagerName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -326,14 +288,14 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerCommitInner post(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters) {
+    public NetworkManagerCommitInner post(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters) {
         return postAsync(resourceGroupName, networkManagerName, parameters).block();
     }
 
     /**
      * Post a Network Manager Commit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Parameters supplied to specify which Managed Network commit is.
@@ -344,8 +306,8 @@ public final class NetworkManagerCommitsClientImpl implements NetworkManagerComm
      * @return network Manager Commit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkManagerCommitInner post(
-        String resourceGroupName, String networkManagerName, NetworkManagerCommitInner parameters, Context context) {
+    public NetworkManagerCommitInner post(String resourceGroupName, String networkManagerName,
+        NetworkManagerCommitInner parameters, Context context) {
         return postAsync(resourceGroupName, networkManagerName, parameters, context).block();
     }
 }

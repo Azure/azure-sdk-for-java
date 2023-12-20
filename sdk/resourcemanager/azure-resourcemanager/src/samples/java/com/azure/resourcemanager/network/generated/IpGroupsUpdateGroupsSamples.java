@@ -8,29 +8,27 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IpGroups UpdateGroups. */
+/**
+ * Samples for IpGroups UpdateGroups.
+ */
 public final class IpGroupsUpdateGroupsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/IpGroupsUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/IpGroupsUpdateTags.json
      */
     /**
      * Sample code: Update_IpGroups.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getIpGroups()
-            .updateGroupsWithResponse(
-                "myResourceGroup",
-                "ipGroups1",
-                new TagsObject().withTags(mapOf("key1", "value1", "key2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getIpGroups().updateGroupsWithResponse("myResourceGroup",
+            "ipGroups1",
+            new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

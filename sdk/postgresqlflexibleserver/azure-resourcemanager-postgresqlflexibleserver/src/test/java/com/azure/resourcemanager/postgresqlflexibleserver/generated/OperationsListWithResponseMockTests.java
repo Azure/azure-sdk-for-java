@@ -31,7 +31,7 @@ public final class OperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"altol\",\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"pfuvglsbjjca\":\"datawcsdbnwdcfhucq\",\"t\":\"datavxb\",\"mr\":\"dataudutnco\",\"f\":\"dataxqtvcofu\"}},{\"name\":\"kgjubgdknnqvsazn\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"uetae\":\"datagsahmkycgrauw\",\"movsmzlxwabmqoe\":\"datauruv\",\"vtpuqujmqlgk\":\"datakif\"}},{\"name\":\"tndoaongbjc\",\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"twwaezkojvdcpzf\":\"dataed\"}}],\"nextLink\":\"ouicybxarzgszu\"}";
+            "{\"value\":[{\"name\":\"tmninw\",\"display\":{\"provider\":\"cilnghgshejjt\",\"resource\":\"qmuluxlxqz\",\"operation\":\"ers\",\"description\":\"cucrwnamikze\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"swhvhczznvfbycj\":\"datawziqgfuhokzr\",\"xzv\":\"dataxjww\"}},{\"name\":\"wmxqhndvnoamlds\",\"display\":{\"provider\":\"ohdjhhflzok\",\"resource\":\"ox\",\"operation\":\"lnjetaglt\",\"description\":\"oatftgzpnpbswvef\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"xp\":\"dataozihmipgawt\"}},{\"name\":\"jcxcjxgrytfmpcyc\",\"display\":{\"provider\":\"mcayk\",\"resource\":\"noxuztrksx\",\"operation\":\"ndfcpfn\",\"description\":\"thjtwk\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"iosmgbzahgxqdly\":\"datazvoamktc\",\"ap\":\"datatlt\",\"oqeq\":\"dataltzkatbhjmznnb\",\"ebwlnbmhyreeudzq\":\"datalarvlagunbtg\"}},{\"name\":\"bpdqmjxlyy\",\"display\":{\"provider\":\"gouwtlmj\",\"resource\":\"uojqt\",\"operation\":\"axkjeytunlbfjk\",\"description\":\"u\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"qunjqh\":\"datay\"}}],\"nextLink\":\"nxaulk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class OperationsListWithResponseMockTests {
         OperationListResult response =
             manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("ouicybxarzgszu", response.nextLink());
+        Assertions.assertEquals(false, response.value().get(0).isDataAction());
+        Assertions.assertEquals("nxaulk", response.nextLink());
     }
 }

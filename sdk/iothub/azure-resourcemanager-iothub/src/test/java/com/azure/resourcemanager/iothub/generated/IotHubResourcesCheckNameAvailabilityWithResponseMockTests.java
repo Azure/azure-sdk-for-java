@@ -31,7 +31,7 @@ public final class IotHubResourcesCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"uslfead\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"gq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class IotHubResourcesCheckNameAvailabilityWithResponseMockTests {
             manager
                 .iotHubResources()
                 .checkNameAvailabilityWithResponse(
-                    new OperationInputs().withName("dtclusiypb"), com.azure.core.util.Context.NONE)
+                    new OperationInputs().withName("iypbsfgytgusl"), com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("uslfead", response.message());
+        Assertions.assertEquals("gq", response.message());
     }
 }

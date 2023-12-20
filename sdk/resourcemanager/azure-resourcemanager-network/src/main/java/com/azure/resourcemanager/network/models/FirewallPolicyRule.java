@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties of a rule. */
+/**
+ * Properties of a rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ApplicationRule", value = ApplicationRule.class),
     @JsonSubTypes.Type(name = "NatRule", value = NatRule.class),
-    @JsonSubTypes.Type(name = "NetworkRule", value = NetworkRule.class)
-})
+    @JsonSubTypes.Type(name = "NetworkRule", value = NetworkRule.class) })
 @Fluent
 public class FirewallPolicyRule {
     /*
@@ -36,13 +37,15 @@ public class FirewallPolicyRule {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of FirewallPolicyRule class. */
+    /**
+     * Creates an instance of FirewallPolicyRule class.
+     */
     public FirewallPolicyRule() {
     }
 
     /**
      * Get the name property: Name of the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +54,7 @@ public class FirewallPolicyRule {
 
     /**
      * Set the name property: Name of the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyRule object itself.
      */
@@ -62,7 +65,7 @@ public class FirewallPolicyRule {
 
     /**
      * Get the description property: Description of the rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -71,7 +74,7 @@ public class FirewallPolicyRule {
 
     /**
      * Set the description property: Description of the rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the FirewallPolicyRule object itself.
      */
@@ -82,7 +85,7 @@ public class FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RegionInfoAvailabilityZoneMappingsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegionInfoAvailabilityZoneMappingsItem model =
-            BinaryData
-                .fromString("{\"availabilityZone\":\"pg\",\"isAvailable\":false}")
+        RegionInfoAvailabilityZoneMappingsItem model
+            = BinaryData.fromString("{\"availabilityZone\":\"dhibnuq\",\"isAvailable\":false}")
                 .toObject(RegionInfoAvailabilityZoneMappingsItem.class);
-        Assertions.assertEquals("pg", model.availabilityZone());
+        Assertions.assertEquals("dhibnuq", model.availabilityZone());
         Assertions.assertEquals(false, model.isAvailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionInfoAvailabilityZoneMappingsItem model =
-            new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("pg").withIsAvailable(false);
+        RegionInfoAvailabilityZoneMappingsItem model
+            = new RegionInfoAvailabilityZoneMappingsItem().withAvailabilityZone("dhibnuq").withIsAvailable(false);
         model = BinaryData.fromObject(model).toObject(RegionInfoAvailabilityZoneMappingsItem.class);
-        Assertions.assertEquals("pg", model.availabilityZone());
+        Assertions.assertEquals("dhibnuq", model.availabilityZone());
         Assertions.assertEquals(false, model.isAvailable());
     }
 }

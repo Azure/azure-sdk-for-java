@@ -27,16 +27,16 @@ public final class ConsolesImpl implements Consoles {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Console> listByResourceGroup(String resourceGroupName, String virtualMachineName) {
+    public PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName) {
         PagedIterable<ConsoleInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, virtualMachineName);
+            this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName);
         return Utils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Console> listByResourceGroup(
+    public PagedIterable<Console> listByVirtualMachine(
         String resourceGroupName, String virtualMachineName, Context context) {
         PagedIterable<ConsoleInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, virtualMachineName, context);
+            this.serviceClient().listByVirtualMachine(resourceGroupName, virtualMachineName, context);
         return Utils.mapPage(inner, inner1 -> new ConsoleImpl(inner1, this.manager()));
     }
 

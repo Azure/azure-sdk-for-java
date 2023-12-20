@@ -7,19 +7,18 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.IpRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IpRuleTests {
-    @Test
-    public void testDeserialize() {
-        IpRule model = BinaryData.fromString("{\"value\":\"hfpmrqobmtukknr\"}").toObject(IpRule.class);
-        Assertions.assertEquals("hfpmrqobmtukknr", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IpRule model = BinaryData.fromString("{\"value\":\"he\"}").toObject(IpRule.class);
+        Assertions.assertEquals("he", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        IpRule model = new IpRule().withValue("hfpmrqobmtukknr");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IpRule model = new IpRule().withValue("he");
         model = BinaryData.fromObject(model).toObject(IpRule.class);
-        Assertions.assertEquals("hfpmrqobmtukknr", model.value());
+        Assertions.assertEquals("he", model.value());
     }
 }

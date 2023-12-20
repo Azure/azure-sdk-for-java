@@ -4,25 +4,21 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Backups Delete. */
+/**
+ * Samples for Backups Delete.
+ */
 public final class BackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Delete.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * BackupsUnderBackupVault_Delete.json
      */
     /**
-     * Sample code: Backups_Delete.
-     *
+     * Sample code: BackupsUnderBackupVault_Delete.
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager
-            .backups()
-            .delete(
-                "resourceGroup",
-                "accountName",
-                "poolName",
-                "volumeName",
-                "backupName",
-                com.azure.core.util.Context.NONE);
+    public static void backupsUnderBackupVaultDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.backups().delete("resourceGroup", "account1", "backupVault1", "backup1",
+            com.azure.core.util.Context.NONE);
     }
 }

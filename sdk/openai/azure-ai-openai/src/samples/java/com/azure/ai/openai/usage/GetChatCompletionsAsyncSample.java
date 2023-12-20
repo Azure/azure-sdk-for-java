@@ -7,8 +7,11 @@ import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -39,17 +42,17 @@ public class GetChatCompletionsAsyncSample {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         client.getChatCompletions(deploymentOrModelId, new ChatCompletionsOptions(chatMessages)).subscribe(
             chatCompletions -> {
-                System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+                System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
                 for (ChatChoice choice : chatCompletions.getChoices()) {
-                    ChatMessage message = choice.getMessage();
+                    ChatResponseMessage message = choice.getMessage();
                     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
                     System.out.println("Message:");
                     System.out.println(message.getContent());

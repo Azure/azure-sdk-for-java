@@ -26,6 +26,15 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
     public static final Bypass AZURE_SERVICES = fromString("AzureServices");
 
     /**
+     * Creates a new instance of Bypass value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Bypass() {
+    }
+
+    /**
      * Creates or finds a Bypass from its string representation.
      *
      * @param name a name to look for.

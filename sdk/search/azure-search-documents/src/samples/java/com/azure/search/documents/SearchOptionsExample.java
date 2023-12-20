@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  * This example shows how to work with {@link SearchOptions} while performing searches
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/azure/search/search-get-started-portal
  * </p>
  */
 public class SearchOptionsExample {

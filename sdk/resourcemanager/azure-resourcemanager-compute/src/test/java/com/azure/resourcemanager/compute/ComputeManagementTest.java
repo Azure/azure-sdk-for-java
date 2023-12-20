@@ -28,7 +28,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
@@ -39,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
-public abstract class ComputeManagementTest extends ResourceManagerTestBase {
+public abstract class ComputeManagementTest extends ResourceManagerTestProxyTestBase {
 
     protected ResourceManager resourceManager;
     protected ComputeManager computeManager;

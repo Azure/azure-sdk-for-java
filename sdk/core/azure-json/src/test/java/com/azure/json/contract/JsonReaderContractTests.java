@@ -656,8 +656,43 @@ public abstract class JsonReaderContractTests {
             Arguments.of("[]", 2, "]"),
 
             Arguments.of("{\"field\":\"value\"}", 2, "field"),
+            Arguments.of("{\"\\\"field\\\"\":\"value\"}", 2, "\"field\""),
 
             Arguments.of("{\"field\":\"value\"}", 3, "value"),
+            Arguments.of("{\"field\":\"\\\"value\\\"\"}", 3, "\"value\""),
+            Arguments.of("{\"field\":42}", 3, "42"),
+            Arguments.of("{\"field\":42.0}", 3, "42.0"),
+            Arguments.of("{\"field\":true}", 3, "true"),
+            Arguments.of("{\"field\":false}", 3, "false"),
+            Arguments.of("{\"field\":null}", 3, "null")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getRawTextSupplier")
+    public void getRawToken(String json, int nextTokens, String expected) throws IOException {
+        try (JsonReader reader = getJsonReader(json)) {
+            for (int i = 0; i < nextTokens; i++) {
+                reader.nextToken();
+            }
+
+            assertEquals(expected, reader.getRawText());
+        }
+    }
+
+    private static Stream<Arguments> getRawTextSupplier() {
+        return Stream.of(
+            Arguments.of("{}", 1, "{"),
+            Arguments.of("{}", 2, "}"),
+
+            Arguments.of("[]", 1, "["),
+            Arguments.of("[]", 2, "]"),
+
+            Arguments.of("{\"field\":\"value\"}", 2, "field"),
+            Arguments.of("{\"\\\"field\\\"\":\"value\"}", 2, "\\\"field\\\""),
+
+            Arguments.of("{\"field\":\"value\"}", 3, "value"),
+            Arguments.of("{\"field\":\"\\\"value\\\"\"}", 3, "\\\"value\\\""),
             Arguments.of("{\"field\":42}", 3, "42"),
             Arguments.of("{\"field\":42.0}", 3, "42.0"),
             Arguments.of("{\"field\":true}", 3, "true"),

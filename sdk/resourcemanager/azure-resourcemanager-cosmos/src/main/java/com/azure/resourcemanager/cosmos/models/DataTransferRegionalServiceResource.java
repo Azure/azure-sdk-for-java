@@ -6,16 +6,20 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** Resource for a regional service location. */
+/**
+ * Resource for a regional service location.
+ */
 @Immutable
 public final class DataTransferRegionalServiceResource extends RegionalServiceResource {
-    /** Creates an instance of DataTransferRegionalServiceResource class. */
+    /**
+     * Creates an instance of DataTransferRegionalServiceResource class.
+     */
     public DataTransferRegionalServiceResource() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

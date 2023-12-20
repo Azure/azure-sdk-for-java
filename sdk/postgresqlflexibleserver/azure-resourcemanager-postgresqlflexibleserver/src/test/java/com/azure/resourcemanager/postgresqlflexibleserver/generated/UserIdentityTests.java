@@ -12,16 +12,16 @@ public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserIdentity model =
-            BinaryData.fromString("{\"principalId\":\"iuebbaumny\",\"clientId\":\"ped\"}").toObject(UserIdentity.class);
-        Assertions.assertEquals("iuebbaumny", model.principalId());
-        Assertions.assertEquals("ped", model.clientId());
+            BinaryData.fromString("{\"principalId\":\"exq\",\"clientId\":\"fadmws\"}").toObject(UserIdentity.class);
+        Assertions.assertEquals("exq", model.principalId());
+        Assertions.assertEquals("fadmws", model.clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentity model = new UserIdentity().withPrincipalId("iuebbaumny").withClientId("ped");
+        UserIdentity model = new UserIdentity().withPrincipalId("exq").withClientId("fadmws");
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("iuebbaumny", model.principalId());
-        Assertions.assertEquals("ped", model.clientId());
+        Assertions.assertEquals("exq", model.principalId());
+        Assertions.assertEquals("fadmws", model.clientId());
     }
 }

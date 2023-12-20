@@ -26,6 +26,7 @@ import com.azure.resourcemanager.kusto.fluent.AttachedDatabaseConfigurationsClie
 import com.azure.resourcemanager.kusto.fluent.ClusterPrincipalAssignmentsClient;
 import com.azure.resourcemanager.kusto.fluent.ClustersClient;
 import com.azure.resourcemanager.kusto.fluent.DataConnectionsClient;
+import com.azure.resourcemanager.kusto.fluent.DatabaseOperationsClient;
 import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
 import com.azure.resourcemanager.kusto.fluent.DatabasesClient;
 import com.azure.resourcemanager.kusto.fluent.KustoManagementClient;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.kusto.fluent.SandboxCustomImagesClient;
 import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
 import com.azure.resourcemanager.kusto.fluent.SkusClient;
 import java.io.IOException;
@@ -49,15 +51,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the KustoManagementClientImpl type. */
 @ServiceClient(builder = KustoManagementClientBuilder.class)
 public final class KustoManagementClientImpl implements KustoManagementClient {
-    /**
-     * Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -197,6 +195,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.managedPrivateEndpoints;
     }
 
+    /** The DatabaseOperationsClient object to access its operations. */
+    private final DatabaseOperationsClient databaseOperations;
+
+    /**
+     * Gets the DatabaseOperationsClient object to access its operations.
+     *
+     * @return the DatabaseOperationsClient object.
+     */
+    public DatabaseOperationsClient getDatabaseOperations() {
+        return this.databaseOperations;
+    }
+
     /** The DatabasePrincipalAssignmentsClient object to access its operations. */
     private final DatabasePrincipalAssignmentsClient databasePrincipalAssignments;
 
@@ -219,6 +229,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
      */
     public ScriptsClient getScripts() {
         return this.scripts;
+    }
+
+    /** The SandboxCustomImagesClient object to access its operations. */
+    private final SandboxCustomImagesClient sandboxCustomImages;
+
+    /**
+     * Gets the SandboxCustomImagesClient object to access its operations.
+     *
+     * @return the SandboxCustomImagesClient object.
+     */
+    public SandboxCustomImagesClient getSandboxCustomImages() {
+        return this.sandboxCustomImages;
     }
 
     /** The PrivateEndpointConnectionsClient object to access its operations. */
@@ -300,8 +322,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Gets subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     KustoManagementClientImpl(
@@ -316,15 +337,17 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-12-29";
+        this.apiVersion = "2023-08-15";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsClientImpl(this);
         this.managedPrivateEndpoints = new ManagedPrivateEndpointsClientImpl(this);
+        this.databaseOperations = new DatabaseOperationsClientImpl(this);
         this.databasePrincipalAssignments = new DatabasePrincipalAssignmentsClientImpl(this);
         this.scripts = new ScriptsClientImpl(this);
+        this.sandboxCustomImages = new SandboxCustomImagesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.dataConnections = new DataConnectionsClientImpl(this);

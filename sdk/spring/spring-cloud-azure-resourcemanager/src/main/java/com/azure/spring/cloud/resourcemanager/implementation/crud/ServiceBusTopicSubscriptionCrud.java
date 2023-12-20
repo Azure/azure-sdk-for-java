@@ -8,6 +8,8 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
+import org.springframework.lang.Nullable;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
@@ -15,9 +17,9 @@ import reactor.util.function.Tuples;
  * Resource manager for Service Bus topic subscription.
  */
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
-    Tuple3<String, String, String>> {
+    Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
-    private ServiceBusTopicCrud serviceBusTopicCrud;
+    private final ServiceBusTopicCrud serviceBusTopicCrud;
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
                                            AzureResourceMetadata azureResourceMetadata) {
         this(azureResourceManager, azureResourceMetadata,
@@ -62,6 +64,16 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate) {
         return this.serviceBusTopicCrud
             .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
+            .subscriptions()
+            .define(subscriptionCoordinate.getT3())
+            .create();
+    }
+
+    @Override
+    public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate,
+                                                 @Nullable ServiceBusTopicProperties topicProperties) {
+        return this.serviceBusTopicCrud
+            .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()), topicProperties)
             .subscriptions()
             .define(subscriptionCoordinate.getT3())
             .create();

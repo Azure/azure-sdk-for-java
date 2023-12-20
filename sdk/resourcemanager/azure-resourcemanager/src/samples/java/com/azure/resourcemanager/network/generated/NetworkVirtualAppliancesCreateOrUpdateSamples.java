@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInner;
 import com.azure.resourcemanager.network.models.DelegationProperties;
+import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
@@ -16,90 +17,62 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkVirtualAppliances CreateOrUpdate. */
+/**
+ * Samples for NetworkVirtualAppliances CreateOrUpdate.
+ */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceSaaSPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkVirtualApplianceSaaSPut.json
      */
     /**
      * Sample code: Create SaaS NetworkVirtualAppliance.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSaaSNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkVirtualAppliances()
-            .createOrUpdate(
-                "rg1",
-                "nva",
-                new NetworkVirtualApplianceInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
-                    .withVirtualHub(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"))
-                    .withDelegation(new DelegationProperties().withServiceName("PaloAltoNetworks.Cloudngfw/firewalls")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkVirtualAppliances().createOrUpdate("rg1", "nva",
+            new NetworkVirtualApplianceInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withVirtualHub(new SubResource()
+                    .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"))
+                .withDelegation(new DelegationProperties().withServiceName("PaloAltoNetworks.Cloudngfw/firewalls")),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualAppliancePut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualAppliancePut.
+     * json
      */
     /**
      * Sample code: Create NetworkVirtualAppliance.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNetworkVirtualAppliance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkVirtualAppliances()
-            .createOrUpdate(
-                "rg1",
-                "nva",
-                new NetworkVirtualApplianceInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
-                    .withIdentity(
-                        new ManagedServiceIdentity()
-                            .withType(ResourceIdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
-                                    new ManagedServiceIdentityUserAssignedIdentities())))
-                    .withNvaSku(
-                        new VirtualApplianceSkuProperties()
-                            .withVendor("Cisco SDWAN")
-                            .withBundledScaleUnit("1")
-                            .withMarketPlaceVersion("12.1"))
-                    .withBootStrapConfigurationBlobs(
-                        Arrays
-                            .asList(
-                                "https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
-                    .withVirtualHub(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"))
-                    .withCloudInitConfigurationBlobs(
-                        Arrays
-                            .asList(
-                                "https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
-                    .withVirtualApplianceAsn(10000L)
-                    .withAdditionalNics(
-                        Arrays
-                            .asList(
-                                new VirtualApplianceAdditionalNicProperties()
-                                    .withName("exrsdwan")
-                                    .withHasPublicIp(true))),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkVirtualAppliances().createOrUpdate("rg1", "nva",
+            new NetworkVirtualApplianceInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withNvaSku(new VirtualApplianceSkuProperties().withVendor("Cisco SDWAN").withBundledScaleUnit("1")
+                    .withMarketPlaceVersion("12.1"))
+                .withBootStrapConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrbootstrapconfig"))
+                .withVirtualHub(new SubResource()
+                    .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"))
+                .withCloudInitConfigurationBlobs(Arrays
+                    .asList("https://csrncvhdstorage1.blob.core.windows.net/csrncvhdstoragecont/csrcloudinitconfig"))
+                .withVirtualApplianceAsn(10000L)
+                .withAdditionalNics(Arrays
+                    .asList(new VirtualApplianceAdditionalNicProperties().withName("exrsdwan").withHasPublicIp(true)))
+                .withInternetIngressPublicIps(Arrays.asList(new InternetIngressPublicIpsProperties().withId(
+                    "/subscriptions/{{subscriptionId}}/resourceGroups/{{rg}}/providers/Microsoft.Network/publicIPAddresses/slbip"))),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

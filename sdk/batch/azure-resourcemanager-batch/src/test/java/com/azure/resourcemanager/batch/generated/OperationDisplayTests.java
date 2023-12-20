@@ -7,34 +7,33 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"ocfs\",\"operation\":\"s\",\"resource\":\"ddystkiiuxhqy\",\"description\":\"xorrqnb\"}")
+                    "{\"provider\":\"mdectehfiqscjey\",\"operation\":\"hezrkgq\",\"resource\":\"jrefovgmkqsle\",\"description\":\"vxyqjpkcattpngjc\"}")
                 .toObject(OperationDisplay.class);
-        Assertions.assertEquals("ocfs", model.provider());
-        Assertions.assertEquals("s", model.operation());
-        Assertions.assertEquals("ddystkiiuxhqy", model.resource());
-        Assertions.assertEquals("xorrqnb", model.description());
+        Assertions.assertEquals("mdectehfiqscjey", model.provider());
+        Assertions.assertEquals("hezrkgq", model.operation());
+        Assertions.assertEquals("jrefovgmkqsle", model.resource());
+        Assertions.assertEquals("vxyqjpkcattpngjc", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationDisplay model =
             new OperationDisplay()
-                .withProvider("ocfs")
-                .withOperation("s")
-                .withResource("ddystkiiuxhqy")
-                .withDescription("xorrqnb");
+                .withProvider("mdectehfiqscjey")
+                .withOperation("hezrkgq")
+                .withResource("jrefovgmkqsle")
+                .withDescription("vxyqjpkcattpngjc");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("ocfs", model.provider());
-        Assertions.assertEquals("s", model.operation());
-        Assertions.assertEquals("ddystkiiuxhqy", model.resource());
-        Assertions.assertEquals("xorrqnb", model.description());
+        Assertions.assertEquals("mdectehfiqscjey", model.provider());
+        Assertions.assertEquals("hezrkgq", model.operation());
+        Assertions.assertEquals("jrefovgmkqsle", model.resource());
+        Assertions.assertEquals("vxyqjpkcattpngjc", model.description());
     }
 }

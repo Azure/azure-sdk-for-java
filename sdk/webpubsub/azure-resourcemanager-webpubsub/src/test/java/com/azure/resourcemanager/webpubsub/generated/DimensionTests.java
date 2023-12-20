@@ -14,11 +14,11 @@ public final class DimensionTests {
         Dimension model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"gsntnbybkzgcwr\",\"displayName\":\"lxxwrljdouskc\",\"internalName\":\"kocrcjdkwtnhx\",\"toBeExportedForShoebox\":true}")
+                    "{\"name\":\"alhbx\",\"displayName\":\"e\",\"internalName\":\"zzvdudgwds\",\"toBeExportedForShoebox\":true}")
                 .toObject(Dimension.class);
-        Assertions.assertEquals("gsntnbybkzgcwr", model.name());
-        Assertions.assertEquals("lxxwrljdouskc", model.displayName());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.internalName());
+        Assertions.assertEquals("alhbx", model.name());
+        Assertions.assertEquals("e", model.displayName());
+        Assertions.assertEquals("zzvdudgwds", model.internalName());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
@@ -26,14 +26,14 @@ public final class DimensionTests {
     public void testSerialize() throws Exception {
         Dimension model =
             new Dimension()
-                .withName("gsntnbybkzgcwr")
-                .withDisplayName("lxxwrljdouskc")
-                .withInternalName("kocrcjdkwtnhx")
+                .withName("alhbx")
+                .withDisplayName("e")
+                .withInternalName("zzvdudgwds")
                 .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(Dimension.class);
-        Assertions.assertEquals("gsntnbybkzgcwr", model.name());
-        Assertions.assertEquals("lxxwrljdouskc", model.displayName());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.internalName());
+        Assertions.assertEquals("alhbx", model.name());
+        Assertions.assertEquals("e", model.displayName());
+        Assertions.assertEquals("zzvdudgwds", model.internalName());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 }

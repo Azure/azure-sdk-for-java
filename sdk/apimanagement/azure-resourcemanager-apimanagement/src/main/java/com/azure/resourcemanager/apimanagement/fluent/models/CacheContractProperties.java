@@ -24,8 +24,7 @@ public final class CacheContractProperties {
     private String connectionString;
 
     /*
-     * Location identifier to use cache from (should be either 'default' or
-     * valid Azure region identifier)
+     * Location identifier to use cache from (should be either 'default' or valid Azure region identifier)
      */
     @JsonProperty(value = "useFromLocation", required = true)
     private String useFromLocation;
@@ -35,6 +34,10 @@ public final class CacheContractProperties {
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of CacheContractProperties class. */
+    public CacheContractProperties() {
+    }
 
     /**
      * Get the description property: Cache description.

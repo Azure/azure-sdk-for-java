@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ClusterResizeParameters;
 import com.azure.resourcemanager.hdinsight.models.RoleName;
@@ -62,10 +61,10 @@ public final class ClustersResizeMockTests {
         manager
             .clusters()
             .resize(
-                "vldspa",
-                "tjb",
+                "dxxewuninv",
+                "db",
                 RoleName.WORKERNODE,
-                new ClusterResizeParameters().withTargetInstanceCount(1616776415),
-                Context.NONE);
+                new ClusterResizeParameters().withTargetInstanceCount(1594166889),
+                com.azure.core.util.Context.NONE);
     }
 }

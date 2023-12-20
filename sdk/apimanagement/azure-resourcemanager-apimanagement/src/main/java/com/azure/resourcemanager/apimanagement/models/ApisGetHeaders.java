@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApisGetHeaders model. */
@@ -15,6 +17,16 @@ public final class ApisGetHeaders {
      */
     @JsonProperty(value = "Etag")
     private String etag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ApisGetHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ApisGetHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the etag property: The Etag property.

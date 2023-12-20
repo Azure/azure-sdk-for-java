@@ -33,7 +33,7 @@ public final class CloudServicesNetworksListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"tgvgzp\",\"type\":\"rrkolawjmjs\"},\"properties\":{\"additionalEgressEndpoints\":[],\"clusterId\":\"cdxfzzzwyjafitl\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"nuchlgmltxdwhmo\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[],\"hybridAksClustersAssociatedIds\":[\"ns\"],\"interfaceName\":\"jzfpafolpymwamx\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"p\",\"dphtv\",\"ulajvlejchc\",\"rlzk\"]},\"location\":\"zlanrupdwvnph\",\"tags\":{\"pjhmqrhvthl\":\"q\",\"xetlgydlhqv\":\"iwdcxsmlzzhzd\"},\"id\":\"n\",\"name\":\"pxy\",\"type\":\"afiqgeaarbgjekg\"}]}";
+            "{\"value\":[{\"extendedLocation\":{\"name\":\"wdfmmpzhzzwvywr\",\"type\":\"yngydgrpxncaki\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"djrkclamggl\",\"endpoints\":[{\"domainName\":\"mfejdoqeykglty\"}]},{\"category\":\"xhqf\",\"endpoints\":[{\"domainName\":\"ka\"},{\"domainName\":\"ejsxt\"}]},{\"category\":\"gflwfgziiucijj\",\"endpoints\":[{\"domainName\":\"atlijjjr\"},{\"domainName\":\"va\"},{\"domainName\":\"caszk\"},{\"domainName\":\"xk\"}]}],\"associatedResourceIds\":[\"xetyvku\",\"mignohikkg\",\"ogjwpindedvabbxb\",\"medeil\"],\"clusterId\":\"ywfcfxzi\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"hvwyp\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"slczwciidjsllf\",\"endpoints\":[{\"domainName\":\"vdmvxadqa\"},{\"domainName\":\"frgnawbabgfbktyj\"}]},{\"category\":\"fczlfsyqkfrbzgow\",\"endpoints\":[{\"domainName\":\"qmje\"},{\"domainName\":\"jcx\"},{\"domainName\":\"yqgxhlus\"}]},{\"category\":\"vxisimjcea\",\"endpoints\":[{\"domainName\":\"jqvlsumywz\"},{\"domainName\":\"shxgonoy\"}]}],\"hybridAksClustersAssociatedIds\":[\"ipubyznclkfk\",\"ebgvo\"],\"interfaceName\":\"m\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"jly\",\"gqa\"]},\"location\":\"igflqqbtnyjp\",\"tags\":{\"s\":\"dbfvabmv\"},\"id\":\"baevwjcnkottl\",\"name\":\"uhvajmailfemjjza\",\"type\":\"zwjiqullq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,18 @@ public final class CloudServicesNetworksListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CloudServicesNetwork> response =
-            manager.cloudServicesNetworks().listByResourceGroup("zolxrzvhqjwtr", com.azure.core.util.Context.NONE);
+            manager.cloudServicesNetworks().listByResourceGroup("tuicds", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zlanrupdwvnph", response.iterator().next().location());
-        Assertions.assertEquals("q", response.iterator().next().tags().get("pjhmqrhvthl"));
-        Assertions.assertEquals("tgvgzp", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("rrkolawjmjs", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("igflqqbtnyjp", response.iterator().next().location());
+        Assertions.assertEquals("dbfvabmv", response.iterator().next().tags().get("s"));
+        Assertions.assertEquals("wdfmmpzhzzwvywr", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("yngydgrpxncaki", response.iterator().next().extendedLocation().type());
+        Assertions
+            .assertEquals("djrkclamggl", response.iterator().next().additionalEgressEndpoints().get(0).category());
+        Assertions
+            .assertEquals(
+                "mfejdoqeykglty",
+                response.iterator().next().additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
         Assertions
             .assertEquals(
                 CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,

@@ -8,29 +8,26 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for LocalNetworkGateways UpdateTags. */
+/**
+ * Samples for LocalNetworkGateways UpdateTags.
+ */
 public final class LocalNetworkGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/LocalNetworkGatewayUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LocalNetworkGatewayUpdateTags
+     * .json
      */
     /**
      * Sample code: UpdateLocalNetworkGatewayTags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateLocalNetworkGatewayTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getLocalNetworkGateways()
-            .updateTagsWithResponse(
-                "rg1",
-                "lgw",
-                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getLocalNetworkGateways().updateTagsWithResponse("rg1", "lgw",
+            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

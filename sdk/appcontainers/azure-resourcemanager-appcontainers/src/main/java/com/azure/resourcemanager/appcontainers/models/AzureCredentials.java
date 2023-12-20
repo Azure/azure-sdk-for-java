@@ -29,6 +29,12 @@ public final class AzureCredentials {
     private String tenantId;
 
     /*
+     * Kind of auth github does for deploying the template
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
+
+    /*
      * Subscription Id.
      */
     @JsonProperty(value = "subscriptionId")
@@ -95,6 +101,26 @@ public final class AzureCredentials {
      */
     public AzureCredentials withTenantId(String tenantId) {
         this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Kind of auth github does for deploying the template.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of auth github does for deploying the template.
+     *
+     * @param kind the kind value to set.
+     * @return the AzureCredentials object itself.
+     */
+    public AzureCredentials withKind(String kind) {
+        this.kind = kind;
         return this;
     }
 

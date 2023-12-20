@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sphere/ci.yml
+      - sdk/sphere/azure-resourcemanager-sphere/
+    exclude:
+      - sdk/sphere/pom.xml
+      - sdk/sphere/azure-resourcemanager-sphere/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sphere/ci.yml
+      - sdk/sphere/azure-resourcemanager-sphere/
+    exclude:
+      - sdk/sphere/pom.xml
+      - sdk/sphere/azure-resourcemanager-sphere/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersphere
+    displayName: azure-resourcemanager-sphere
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: sphere
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-sphere
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersphere
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersphere }}

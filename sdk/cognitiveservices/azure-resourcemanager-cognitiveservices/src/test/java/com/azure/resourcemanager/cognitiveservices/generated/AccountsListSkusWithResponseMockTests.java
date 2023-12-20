@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSkuListResult;
+import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class AccountsListSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"fi\"},{\"resourceType\":\"botzingamvppho\"},{\"resourceType\":\"zudphqamvdkfw\"},{\"resourceType\":\"cvtbv\"}]}";
+            "{\"value\":[{\"resourceType\":\"fgslqubkwdl\",\"sku\":{\"name\":\"rds\",\"tier\":\"Free\",\"size\":\"bazpjuohmi\",\"family\":\"flnorwmduvwp\",\"capacity\":1862028450}},{\"resourceType\":\"w\",\"sku\":{\"name\":\"gdxpg\",\"tier\":\"Basic\",\"size\":\"isze\",\"family\":\"nb\",\"capacity\":1746749164}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +61,16 @@ public final class AccountsListSkusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccountSkuListResult response =
-            manager.accounts().listSkusWithResponse("kndxdigrjgu", "fzdm", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .accounts()
+                .listSkusWithResponse("uaadraufactkahzo", "ajjziuxxpshne", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("fi", response.value().get(0).resourceType());
+        Assertions.assertEquals("fgslqubkwdl", response.value().get(0).resourceType());
+        Assertions.assertEquals("rds", response.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.value().get(0).sku().tier());
+        Assertions.assertEquals("bazpjuohmi", response.value().get(0).sku().size());
+        Assertions.assertEquals("flnorwmduvwp", response.value().get(0).sku().family());
+        Assertions.assertEquals(1862028450, response.value().get(0).sku().capacity());
     }
 }

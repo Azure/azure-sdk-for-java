@@ -178,6 +178,12 @@ public final class AccountProperties {
     @JsonProperty(value = "commitmentPlanAssociations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentPlanAssociation> commitmentPlanAssociations;
 
+    /*
+     * The abuse penalty.
+     */
+    @JsonProperty(value = "abusePenalty", access = JsonProperty.Access.WRITE_ONLY)
+    private AbusePenalty abusePenalty;
+
     /** Creates an instance of AccountProperties class. */
     public AccountProperties() {
     }
@@ -572,6 +578,15 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the abusePenalty property: The abuse penalty.
+     *
+     * @return the abusePenalty value.
+     */
+    public AbusePenalty abusePenalty() {
+        return this.abusePenalty;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -609,6 +624,9 @@ public final class AccountProperties {
         }
         if (commitmentPlanAssociations() != null) {
             commitmentPlanAssociations().forEach(e -> e.validate());
+        }
+        if (abusePenalty() != null) {
+            abusePenalty().validate();
         }
     }
 }

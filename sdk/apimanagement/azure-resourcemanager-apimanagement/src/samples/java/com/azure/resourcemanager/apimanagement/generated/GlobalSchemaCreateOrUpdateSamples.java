@@ -12,7 +12,7 @@ import java.io.IOException;
 /** Samples for GlobalSchema CreateOrUpdate. */
 public final class GlobalSchemaCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGlobalSchema1.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGlobalSchema1.json
      */
     /**
      * Sample code: ApiManagementCreateSchema1.
@@ -55,7 +55,7 @@ public final class GlobalSchemaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGlobalSchema2.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGlobalSchema2.json
      */
     /**
      * Sample code: ApiManagementCreateSchema2.

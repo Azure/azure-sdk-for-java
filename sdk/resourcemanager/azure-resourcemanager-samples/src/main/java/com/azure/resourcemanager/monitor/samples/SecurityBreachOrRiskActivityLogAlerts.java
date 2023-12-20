@@ -21,6 +21,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * This sample shows examples of configuring Activity Log Alerts for potential security breach or risk notifications.
@@ -97,7 +98,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // for near real time monitoring.
             ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
-            OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
+            OffsetDateTime recordDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS);
             // get activity logs for the same period.
             PagedIterable<EventData> logs = azureResourceManager.activityLogs().defineQuery()
                     .startingFrom(recordDateTime.minusDays(7))

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
 /** Samples for VaultExtendedInfo Update. */
 public final class VaultExtendedInfoUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: PATCH ExtendedInfo of Resource.

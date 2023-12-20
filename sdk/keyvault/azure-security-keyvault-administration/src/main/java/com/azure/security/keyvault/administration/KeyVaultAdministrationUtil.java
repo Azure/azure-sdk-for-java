@@ -42,9 +42,6 @@ import com.azure.security.keyvault.administration.models.SetRoleDefinitionOption
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -103,26 +100,20 @@ class KeyVaultAdministrationUtil {
     static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope, String roleDefinitionId, String principalId, String roleAssignmentName) {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName);
         Objects.requireNonNull(principalId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'principalId'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'principalId'"));
         Objects.requireNonNull(roleDefinitionId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleDefinitionId'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionId'"));
 
         RoleAssignmentProperties roleAssignmentProperties = new RoleAssignmentProperties(roleDefinitionId, principalId);
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
     static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
-        Objects.requireNonNull(options,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options'"));
+        Objects.requireNonNull(options, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options'"));
         Objects.requireNonNull(options.getRoleScope(),
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options.getRoleScope()'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleScope()'"));
         Objects.requireNonNull(options.getRoleDefinitionName(),
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options.getRoleDefinitionName()'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleDefinitionName()'"));
 
         List<Permission> permissions = null;
 
@@ -146,21 +137,15 @@ class KeyVaultAdministrationUtil {
     }
 
     static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         Objects.requireNonNull(roleAssignmentName,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleAssignmentName'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
     }
 
     static void validateRoleDefinitionParameters(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         Objects.requireNonNull(roleDefinitionName,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleDefinitionName'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionName'"));
     }
 
     @SuppressWarnings("BoundedWildcard")
@@ -325,8 +310,8 @@ class KeyVaultAdministrationUtil {
 
             return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                longToOffsetDateTime(restoreOperation.getStartTime()),
-                longToOffsetDateTime(restoreOperation.getEndTime()));
+                restoreOperation.getStartTime(),
+                restoreOperation.getEndTime());
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
@@ -334,24 +319,19 @@ class KeyVaultAdministrationUtil {
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
                 selectiveKeyRestoreOperation.getJobId(),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getStartTime()),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getEndTime()));
+                selectiveKeyRestoreOperation.getStartTime(),
+                selectiveKeyRestoreOperation.getEndTime());
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
             return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                longToOffsetDateTime(fullBackupOperation.getStartTime()),
-                longToOffsetDateTime(fullBackupOperation.getEndTime()),
+                fullBackupOperation.getStartTime(),
+                fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-
-    static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {
-        return epochInSeconds == null ? null
-            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochInSeconds), ZoneOffset.UTC);
     }
 
     static Context enableSyncRestProxy(Context context) {

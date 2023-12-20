@@ -8,31 +8,26 @@ import com.azure.resourcemanager.network.models.ConfigurationType;
 import com.azure.resourcemanager.network.models.NetworkManagerDeploymentStatusParameter;
 import java.util.Arrays;
 
-/** Samples for NetworkManagerDeploymentStatusOperation List. */
+/**
+ * Samples for NetworkManagerDeploymentStatusOperation List.
+ */
 public final class NetworkManagerDeploymentStatusOperationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerDeploymentStatusList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkManagerDeploymentStatusList.json
      */
     /**
      * Sample code: NetworkManagerDeploymentStatusList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManagerDeploymentStatusList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkManagerDeploymentStatusOperations()
-            .listWithResponse(
-                "resoureGroupSample",
-                "testNetworkManager",
-                new NetworkManagerDeploymentStatusParameter()
-                    .withRegions(Arrays.asList("eastus", "westus"))
-                    .withDeploymentTypes(
-                        Arrays.asList(ConfigurationType.CONNECTIVITY, ConfigurationType.fromString("AdminPolicy")))
-                    .withSkipToken("fakeTokenPlaceholder"),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkManagerDeploymentStatusOperations().listWithResponse(
+            "resoureGroupSample", "testNetworkManager",
+            new NetworkManagerDeploymentStatusParameter().withRegions(Arrays.asList("eastus", "westus"))
+                .withDeploymentTypes(
+                    Arrays.asList(ConfigurationType.CONNECTIVITY, ConfigurationType.fromString("AdminPolicy")))
+                .withSkipToken("fakeTokenPlaceholder"),
+            null, com.azure.core.util.Context.NONE);
     }
 }

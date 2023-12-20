@@ -28,6 +28,10 @@ public final class ApiManagementSkuCosts {
     @JsonProperty(value = "extendedUnit", access = JsonProperty.Access.WRITE_ONLY)
     private String extendedUnit;
 
+    /** Creates an instance of ApiManagementSkuCosts class. */
+    public ApiManagementSkuCosts() {
+    }
+
     /**
      * Get the meterId property: Used for querying price from commerce.
      *

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringResponse;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class ExtensionsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"jlrigjkskyrioovz\"}";
+        String responseStr = "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"ljvrcmyfqipgxhnp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,9 +59,12 @@ public final class ExtensionsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterMonitoringResponse response =
-            manager.extensions().getWithResponse("zn", "tgoe", "ybbabpfhvfsl", Context.NONE).getValue();
+            manager
+                .extensions()
+                .getWithResponse("yzqedikdfrd", "iqmrjgeihfqlggw", "iwzcxmjpbyeph", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals(false, response.clusterMonitoringEnabled());
-        Assertions.assertEquals("jlrigjkskyrioovz", response.workspaceId());
+        Assertions.assertEquals("ljvrcmyfqipgxhnp", response.workspaceId());
     }
 }

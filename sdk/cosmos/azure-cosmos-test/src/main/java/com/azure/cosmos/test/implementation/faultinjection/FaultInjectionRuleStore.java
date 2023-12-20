@@ -8,7 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
+import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import reactor.core.publisher.Mono;
@@ -18,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.DIRECT;
+import static com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType.GATEWAY;
 
 public class FaultInjectionRuleStore {
     private final Set<FaultInjectionServerErrorRule> serverResponseDelayRuleSet = ConcurrentHashMap.newKeySet();
@@ -75,9 +78,12 @@ public class FaultInjectionRuleStore {
             });
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseDelayRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerResponseDelayRule(FaultInjectionRequestArgs requestArgs) {
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -86,9 +92,12 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseErrorRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerResponseErrorRule(FaultInjectionRequestArgs requestArgs) {
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseErrorRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -97,9 +106,12 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerConnectionDelayRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerConnectionDelayRule(FaultInjectionRequestArgs requestArgs) {
+        FaultInjectionConnectionType connectionType =
+            requestArgs instanceof RntbdFaultInjectionRequestArgs ? DIRECT : GATEWAY;
+
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverConnectionDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == connectionType
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }

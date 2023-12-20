@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -44,6 +45,12 @@ public final class MaintenanceConfigurationProperties {
      */
     @JsonProperty(value = "visibility")
     private Visibility visibility;
+
+    /*
+     * The input parameters to be passed to the patch run operation.
+     */
+    @JsonProperty(value = "installPatches")
+    private InputPatchConfiguration installPatches;
 
     /** Creates an instance of MaintenanceConfigurationProperties class. */
     public MaintenanceConfigurationProperties() {
@@ -135,6 +142,26 @@ public final class MaintenanceConfigurationProperties {
      */
     public MaintenanceConfigurationProperties withVisibility(Visibility visibility) {
         this.visibility = visibility;
+        return this;
+    }
+
+    /**
+     * Get the installPatches property: The input parameters to be passed to the patch run operation.
+     *
+     * @return the installPatches value.
+     */
+    public InputPatchConfiguration installPatches() {
+        return this.installPatches;
+    }
+
+    /**
+     * Set the installPatches property: The input parameters to be passed to the patch run operation.
+     *
+     * @param installPatches the installPatches value to set.
+     * @return the MaintenanceConfigurationProperties object itself.
+     */
+    public MaintenanceConfigurationProperties withInstallPatches(InputPatchConfiguration installPatches) {
+        this.installPatches = installPatches;
         return this;
     }
 
@@ -254,9 +281,10 @@ public final class MaintenanceConfigurationProperties {
      * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
      * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
      * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
-     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
-     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
-     * Monday.
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of days)]. Offset value must
+     * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
+     * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
+     * Offset-3, recurEvery: Month Third Sunday Offset6.
      *
      * @return the recurEvery value.
      */
@@ -272,9 +300,10 @@ public final class MaintenanceConfigurationProperties {
      * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
      * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
      * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
-     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
-     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
-     * Monday.
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of days)]. Offset value must
+     * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
+     * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
+     * Offset-3, recurEvery: Month Third Sunday Offset6.
      *
      * @param recurEvery the recurEvery value to set.
      * @return the MaintenanceConfigurationProperties object itself.
@@ -295,6 +324,9 @@ public final class MaintenanceConfigurationProperties {
     public void validate() {
         if (innerMaintenanceWindow() != null) {
             innerMaintenanceWindow().validate();
+        }
+        if (installPatches() != null) {
+            installPatches().validate();
         }
     }
 }

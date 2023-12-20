@@ -14,11 +14,11 @@ import java.util.List;
 public final class ApplianceListCredentialResultsImpl implements ApplianceListCredentialResults {
     private ApplianceListCredentialResultsInner innerObject;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
     ApplianceListCredentialResultsImpl(
         ApplianceListCredentialResultsInner innerObject,
-        com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -40,7 +40,7 @@ public final class ApplianceListCredentialResultsImpl implements ApplianceListCr
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 }

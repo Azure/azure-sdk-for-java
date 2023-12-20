@@ -185,7 +185,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -245,7 +245,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -374,7 +374,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -430,7 +430,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -541,7 +541,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapCreateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -610,7 +610,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapCreateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -849,7 +849,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -904,7 +904,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         if (scopeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1115,7 +1115,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapUpdateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1184,7 +1184,7 @@ public final class ScopeMapsClientImpl implements ScopeMapsClient {
         } else {
             scopeMapUpdateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

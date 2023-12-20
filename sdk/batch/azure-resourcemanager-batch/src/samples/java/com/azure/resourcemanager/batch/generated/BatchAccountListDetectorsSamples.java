@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount ListDetectors. */
 public final class BatchAccountListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/DetectorList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/DetectorList.json
      */
     /**
      * Sample code: ListDetectors.
@@ -17,6 +15,8 @@ public final class BatchAccountListDetectorsSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void listDetectors(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().listDetectors("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+        manager
+            .batchAccounts()
+            .listDetectors("default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }

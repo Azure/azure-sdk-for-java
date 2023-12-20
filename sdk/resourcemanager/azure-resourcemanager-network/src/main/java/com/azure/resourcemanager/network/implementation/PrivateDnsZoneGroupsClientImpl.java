@@ -39,23 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateDnsZoneGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateDnsZoneGroupsClient.
+ */
 public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateDnsZoneGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateDnsZoneGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateDnsZoneGroupsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateDnsZoneGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateDnsZoneGroupsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,80 +71,61 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface PrivateDnsZoneGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateEndpointName") String privateEndpointName,
             @PathParam("privateDnsZoneGroupName") String privateDnsZoneGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateDnsZoneGroupInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateDnsZoneGroupInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateEndpointName") String privateEndpointName,
             @PathParam("privateDnsZoneGroupName") String privateDnsZoneGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups/{privateDnsZoneGroupName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateEndpointName") String privateEndpointName,
             @PathParam("privateDnsZoneGroupName") String privateDnsZoneGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PrivateDnsZoneGroupInner parameters,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PrivateDnsZoneGroupInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateEndpoints/{privateEndpointName}/privateDnsZoneGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<PrivateDnsZoneGroupListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateDnsZoneGroupListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("privateEndpointName") String privateEndpointName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<PrivateDnsZoneGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -149,13 +135,11 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -166,37 +150,24 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateEndpointName,
-                            privateDnsZoneGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
+                privateDnsZoneGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -207,13 +178,11 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -224,34 +193,23 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateEndpointName,
-                privateDnsZoneGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
+            privateDnsZoneGroupName, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -261,19 +219,17 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -284,19 +240,18 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -306,14 +261,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName) {
         return this.beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName).getSyncPoller();
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -324,16 +279,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -343,16 +297,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
-        return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName) {
+        return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -363,16 +316,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -387,7 +339,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Deletes the specified private dns zone group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -397,14 +349,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+    public void delete(String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
+        Context context) {
         deleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context).block();
     }
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -412,16 +364,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private dns zone group resource by specified private dns zone group name along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
+    public Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,37 +382,24 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateEndpointName,
-                            privateDnsZoneGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
+                privateDnsZoneGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -471,16 +408,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private dns zone group resource by specified private dns zone group name along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+    private Mono<Response<PrivateDnsZoneGroupInner>> getWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -491,34 +426,23 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateEndpointName,
-                privateDnsZoneGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, privateEndpointName, privateDnsZoneGroupName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -526,18 +450,18 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private dns zone group resource by specified private dns zone group name on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateDnsZoneGroupInner> getAsync(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
+    public Mono<PrivateDnsZoneGroupInner> getAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName) {
         return getWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -548,14 +472,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the private dns zone group resource by specified private dns zone group name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateDnsZoneGroupInner> getWithResponse(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
+    public Response<PrivateDnsZoneGroupInner> getWithResponse(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context).block();
     }
 
     /**
      * Gets the private dns zone group resource by specified private dns zone group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -565,15 +489,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return the private dns zone group resource by specified private dns zone group name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateDnsZoneGroupInner get(
-        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
+    public PrivateDnsZoneGroupInner get(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName) {
         return getWithResponse(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -584,16 +508,11 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -604,43 +523,30 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateEndpointName,
-                            privateDnsZoneGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
+                    privateDnsZoneGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -652,17 +558,12 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateEndpointName, String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -673,40 +574,28 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (privateDnsZoneGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateDnsZoneGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateEndpointName,
-                privateDnsZoneGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, privateEndpointName,
+            privateDnsZoneGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -718,26 +607,18 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
         PrivateDnsZoneGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters);
-        return this
-            .client
-            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateDnsZoneGroupInner.class,
-                PrivateDnsZoneGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName,
+            privateDnsZoneGroupName, parameters);
+        return this.client.<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateDnsZoneGroupInner.class, PrivateDnsZoneGroupInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -750,28 +631,18 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context) {
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
+        PrivateDnsZoneGroupInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters, context);
-        return this
-            .client
-            .<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateDnsZoneGroupInner.class,
-                PrivateDnsZoneGroupInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, privateEndpointName,
+            privateDnsZoneGroupName, parameters, context);
+        return this.client.<PrivateDnsZoneGroupInner, PrivateDnsZoneGroupInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateDnsZoneGroupInner.class, PrivateDnsZoneGroupInner.class, context);
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -783,9 +654,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
         PrivateDnsZoneGroupInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters)
@@ -794,7 +663,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -807,20 +676,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters, context)
-            .getSyncPoller();
+        String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName,
+        PrivateDnsZoneGroupInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName,
+            parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -831,19 +695,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters) {
+    public Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -855,21 +715,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<PrivateDnsZoneGroupInner> createOrUpdateAsync(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -880,17 +734,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateDnsZoneGroupInner createOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters) {
+    public PrivateDnsZoneGroupInner createOrUpdate(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters).block();
     }
 
     /**
      * Creates or updates a private dns zone group in the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
      * @param privateDnsZoneGroupName The name of the private dns zone group.
@@ -902,35 +753,29 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return private dns zone group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateDnsZoneGroupInner createOrUpdate(
-        String resourceGroupName,
-        String privateEndpointName,
-        String privateDnsZoneGroupName,
-        PrivateDnsZoneGroupInner parameters,
-        Context context) {
+    public PrivateDnsZoneGroupInner createOrUpdate(String resourceGroupName, String privateEndpointName,
+        String privateDnsZoneGroupName, PrivateDnsZoneGroupInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, parameters, context)
             .block();
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(
-        String privateEndpointName, String resourceGroupName) {
+    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String privateEndpointName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointName == null) {
             return Mono
@@ -941,40 +786,22 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            privateEndpointName,
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PrivateDnsZoneGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), privateEndpointName, resourceGroupName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PrivateDnsZoneGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -982,16 +809,14 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(
-        String privateEndpointName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String privateEndpointName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointName == null) {
             return Mono
@@ -1002,37 +827,22 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                privateEndpointName,
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), privateEndpointName, resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,14 +852,13 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateDnsZoneGroupInner> listAsync(String privateEndpointName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(privateEndpointName, resourceGroupName),
+        return new PagedFlux<>(() -> listSinglePageAsync(privateEndpointName, resourceGroupName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -1059,16 +868,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateDnsZoneGroupInner> listAsync(
-        String privateEndpointName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(privateEndpointName, resourceGroupName, context),
+    private PagedFlux<PrivateDnsZoneGroupInner> listAsync(String privateEndpointName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(privateEndpointName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1083,7 +891,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
 
     /**
      * Gets all private dns zone groups in a private endpoint.
-     *
+     * 
      * @param privateEndpointName The name of the private endpoint.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -1093,21 +901,22 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateDnsZoneGroupInner> list(
-        String privateEndpointName, String resourceGroupName, Context context) {
+    public PagedIterable<PrivateDnsZoneGroupInner> list(String privateEndpointName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listAsync(privateEndpointName, resourceGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListPrivateDnsZoneGroups API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1115,37 +924,28 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateDnsZoneGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateDnsZoneGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListPrivateDnsZoneGroups API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1153,23 +953,13 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

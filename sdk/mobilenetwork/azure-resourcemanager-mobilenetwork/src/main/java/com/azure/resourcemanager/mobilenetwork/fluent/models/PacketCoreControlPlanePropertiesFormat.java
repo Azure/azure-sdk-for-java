@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
+import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.EventHubConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -29,7 +32,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     /*
      * The installation state of the packet core control plane resource.
      */
-    @JsonProperty(value = "installation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "installation")
     private Installation installation;
 
     /*
@@ -52,10 +55,16 @@ public final class PacketCoreControlPlanePropertiesFormat {
     private CoreNetworkType coreNetworkTechnology;
 
     /*
-     * The version of the packet core software that is deployed.
+     * The desired version of the packet core software.
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /*
+     * The currently installed version of the packet core software.
+     */
+    @JsonProperty(value = "installedVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String installedVersion;
 
     /*
      * The previous version of the packet core software that was deployed. Used when performing the rollback action.
@@ -69,6 +78,14 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     @JsonProperty(value = "controlPlaneAccessInterface", required = true)
     private InterfaceProperties controlPlaneAccessInterface;
+
+    /*
+     * The virtual IP address(es) for the control plane on the access network in a High Availability (HA) system. In an
+     * HA deployment the access network router should be configured to anycast traffic for this address to the control
+     * plane access interfaces on the active and standby nodes. In non-HA system this list should be omitted or empty.
+     */
+    @JsonProperty(value = "controlPlaneAccessVirtualIpv4Addresses")
+    private List<String> controlPlaneAccessVirtualIpv4Addresses;
 
     /*
      * The SKU defining the throughput and SIM allowances for this packet core control plane deployment.
@@ -89,6 +106,24 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     @JsonProperty(value = "localDiagnosticsAccess", required = true)
     private LocalDiagnosticsAccessConfiguration localDiagnosticsAccess;
+
+    /*
+     * Configuration for uploading packet core diagnostics
+     */
+    @JsonProperty(value = "diagnosticsUpload")
+    private DiagnosticsUploadConfiguration diagnosticsUpload;
+
+    /*
+     * Configuration for sending packet core events to an Azure Event Hub.
+     */
+    @JsonProperty(value = "eventHub")
+    private EventHubConfiguration eventHub;
+
+    /*
+     * Signaling configuration for the packet core.
+     */
+    @JsonProperty(value = "signaling")
+    private SignalingConfiguration signaling;
 
     /*
      * Settings to allow interoperability with third party components e.g. RANs and UEs.
@@ -116,6 +151,17 @@ public final class PacketCoreControlPlanePropertiesFormat {
      */
     public Installation installation() {
         return this.installation;
+    }
+
+    /**
+     * Set the installation property: The installation state of the packet core control plane resource.
+     *
+     * @param installation the installation value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withInstallation(Installation installation) {
+        this.installation = installation;
+        return this;
     }
 
     /**
@@ -181,7 +227,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Get the version property: The version of the packet core software that is deployed.
+     * Get the version property: The desired version of the packet core software.
      *
      * @return the version value.
      */
@@ -190,7 +236,7 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
-     * Set the version property: The version of the packet core software that is deployed.
+     * Set the version property: The desired version of the packet core software.
      *
      * @param version the version value to set.
      * @return the PacketCoreControlPlanePropertiesFormat object itself.
@@ -198,6 +244,15 @@ public final class PacketCoreControlPlanePropertiesFormat {
     public PacketCoreControlPlanePropertiesFormat withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Get the installedVersion property: The currently installed version of the packet core software.
+     *
+     * @return the installedVersion value.
+     */
+    public String installedVersion() {
+        return this.installedVersion;
     }
 
     /**
@@ -230,6 +285,33 @@ public final class PacketCoreControlPlanePropertiesFormat {
     public PacketCoreControlPlanePropertiesFormat withControlPlaneAccessInterface(
         InterfaceProperties controlPlaneAccessInterface) {
         this.controlPlaneAccessInterface = controlPlaneAccessInterface;
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @return the controlPlaneAccessVirtualIpv4Addresses value.
+     */
+    public List<String> controlPlaneAccessVirtualIpv4Addresses() {
+        return this.controlPlaneAccessVirtualIpv4Addresses;
+    }
+
+    /**
+     * Set the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @param controlPlaneAccessVirtualIpv4Addresses the controlPlaneAccessVirtualIpv4Addresses value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withControlPlaneAccessVirtualIpv4Addresses(
+        List<String> controlPlaneAccessVirtualIpv4Addresses) {
+        this.controlPlaneAccessVirtualIpv4Addresses = controlPlaneAccessVirtualIpv4Addresses;
         return this;
     }
 
@@ -303,6 +385,67 @@ public final class PacketCoreControlPlanePropertiesFormat {
     }
 
     /**
+     * Get the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @return the diagnosticsUpload value.
+     */
+    public DiagnosticsUploadConfiguration diagnosticsUpload() {
+        return this.diagnosticsUpload;
+    }
+
+    /**
+     * Set the diagnosticsUpload property: Configuration for uploading packet core diagnostics.
+     *
+     * @param diagnosticsUpload the diagnosticsUpload value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withDiagnosticsUpload(
+        DiagnosticsUploadConfiguration diagnosticsUpload) {
+        this.diagnosticsUpload = diagnosticsUpload;
+        return this;
+    }
+
+    /**
+     * Get the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @return the eventHub value.
+     */
+    public EventHubConfiguration eventHub() {
+        return this.eventHub;
+    }
+
+    /**
+     * Set the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @param eventHub the eventHub value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withEventHub(EventHubConfiguration eventHub) {
+        this.eventHub = eventHub;
+        return this;
+    }
+
+    /**
+     * Get the signaling property: Signaling configuration for the packet core.
+     *
+     * @return the signaling value.
+     */
+    public SignalingConfiguration signaling() {
+        return this.signaling;
+    }
+
+    /**
+     * Set the signaling property: Signaling configuration for the packet core.
+     *
+     * @param signaling the signaling value to set.
+     * @return the PacketCoreControlPlanePropertiesFormat object itself.
+     */
+    public PacketCoreControlPlanePropertiesFormat withSignaling(SignalingConfiguration signaling) {
+        this.signaling = signaling;
+        return this;
+    }
+
+    /**
      * Get the interopSettings property: Settings to allow interoperability with third party components e.g. RANs and
      * UEs.
      *
@@ -372,6 +515,15 @@ public final class PacketCoreControlPlanePropertiesFormat {
                             + " PacketCoreControlPlanePropertiesFormat"));
         } else {
             localDiagnosticsAccess().validate();
+        }
+        if (diagnosticsUpload() != null) {
+            diagnosticsUpload().validate();
+        }
+        if (eventHub() != null) {
+            eventHub().validate();
+        }
+        if (signaling() != null) {
+            signaling().validate();
         }
     }
 

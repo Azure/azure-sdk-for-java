@@ -13,7 +13,7 @@ public final class PlacementPoliciesListTests {
         PlacementPoliciesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"pulpqblylsyxk\",\"provisioningState\":\"Canceled\"},\"id\":\"sjervti\",\"name\":\"gxsds\",\"type\":\"uem\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"f\",\"provisioningState\":\"Canceled\"},\"id\":\"yvpnqicvinvkjj\",\"name\":\"dxrbuukzcle\",\"type\":\"yhmlwpaztzp\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"kwyfzqwhxxbuyqax\",\"provisioningState\":\"Failed\"},\"id\":\"qztpp\",\"name\":\"iolxor\",\"type\":\"altol\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"obqwcsdbnwdcfh\",\"provisioningState\":\"Updating\"},\"id\":\"dpfuvg\",\"name\":\"sbjjc\",\"type\":\"nvxbvt\"}],\"nextLink\":\"dut\"}")
+                    "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"umwctondz\",\"provisioningState\":\"Canceled\"},\"id\":\"udfdlwgg\",\"name\":\"tsbwtovvtgse\",\"type\":\"nqfiufxqknpi\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ttwqmsni\",\"provisioningState\":\"Deleting\"},\"id\":\"dmqnrojlpij\",\"name\":\"k\",\"type\":\"xfrdd\"}],\"nextLink\":\"ratiz\"}")
                 .toObject(PlacementPoliciesList.class);
     }
 

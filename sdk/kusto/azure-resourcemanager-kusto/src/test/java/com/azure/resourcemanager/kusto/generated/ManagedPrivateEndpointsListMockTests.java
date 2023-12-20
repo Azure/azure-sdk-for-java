@@ -32,7 +32,7 @@ public final class ManagedPrivateEndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"oylhjlmuoyxprimr\",\"privateLinkResourceRegion\":\"pteecjme\",\"groupId\":\"slstvasy\",\"requestMessage\":\"xdza\",\"provisioningState\":\"Deleting\"},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"}]}";
+            "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"rkolawjm\",\"privateLinkResourceRegion\":\"mwrokcdxfzzzwyja\",\"groupId\":\"itlhguyn\",\"requestMessage\":\"hlgmltxdwhmoz\",\"provisioningState\":\"Moving\"},\"id\":\"vlnsnnjz\",\"name\":\"pafolp\",\"type\":\"mwamxqzragpgdph\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,11 @@ public final class ManagedPrivateEndpointsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ManagedPrivateEndpoint> response =
-            manager.managedPrivateEndpoints().list("aka", "ankjpdnjzh", com.azure.core.util.Context.NONE);
+            manager.managedPrivateEndpoints().list("lxrzvhqjwtr", "tgvgzp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oylhjlmuoyxprimr", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("pteecjme", response.iterator().next().privateLinkResourceRegion());
-        Assertions.assertEquals("slstvasy", response.iterator().next().groupId());
-        Assertions.assertEquals("xdza", response.iterator().next().requestMessage());
+        Assertions.assertEquals("rkolawjm", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("mwrokcdxfzzzwyja", response.iterator().next().privateLinkResourceRegion());
+        Assertions.assertEquals("itlhguyn", response.iterator().next().groupId());
+        Assertions.assertEquals("hlgmltxdwhmoz", response.iterator().next().requestMessage());
     }
 }

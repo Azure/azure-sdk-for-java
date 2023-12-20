@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,103 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2023-10-12)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.VaultSubResourceType` was added
+
+#### `models.AzureVmWorkloadSapHanaHsr` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstance` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+
+#### `models.AzureVmWorkloadSqlInstanceProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSqlAvailabilityGroupProtectableItem` was modified
+
+* `withNodesList(java.util.List)` was added
+* `withIsProtectable(java.lang.Boolean)` was added
+* `nodesList()` was added
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+
+#### `models.BackupStatusResponse` was modified
+
+* `protectedItemsCount()` was added
+* `acquireStorageAccountLock()` was added
+
+#### `models.BackupResourceVaultConfig` was modified
+
+* `softDeleteRetentionPeriodInDays()` was added
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.InquiryValidation` was modified
+
+* `protectableItemCount()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+* `nodesList()` was added
+
+#### `models.AzureVmWorkloadSapHanaSystemProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadProtectableItem` was modified
+
+* `isProtectable()` was added
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.IaasVMRecoveryPoint` was modified
+
+* `extendedLocation()` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstanceProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `withGroupIds(java.util.List)` was added
+* `groupIds()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapAseSystemProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.DistributedNodesInfo` was modified
+
+* `withSourceResourceId(java.lang.String)` was added
+* `sourceResourceId()` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
 
 ## 1.1.0 (2023-03-16)
 

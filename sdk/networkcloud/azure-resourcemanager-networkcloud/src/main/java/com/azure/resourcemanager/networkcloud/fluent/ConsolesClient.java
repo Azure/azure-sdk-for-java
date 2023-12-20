@@ -17,25 +17,24 @@ import com.azure.resourcemanager.networkcloud.models.ConsolePatchParameters;
 /** An instance of this class provides access to all the operations defined in ConsolesClient. */
 public interface ConsolesClient {
     /**
-     * List virtual machine consoles in the resource group.
+     * List consoles of the virtual machine.
      *
-     * <p>Get a list of virtual machine consoles in the provided resource group.
+     * <p>Get a list of consoles for the provided virtual machine.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine consoles in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConsoleInner> listByResourceGroup(String resourceGroupName, String virtualMachineName);
+    PagedIterable<ConsoleInner> listByVirtualMachine(String resourceGroupName, String virtualMachineName);
 
     /**
-     * List virtual machine consoles in the resource group.
+     * List consoles of the virtual machine.
      *
-     * <p>Get a list of virtual machine consoles in the provided resource group.
+     * <p>Get a list of consoles for the provided virtual machine.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
@@ -43,11 +42,10 @@ public interface ConsolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine consoles in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConsoleInner> listByResourceGroup(
+    PagedIterable<ConsoleInner> listByVirtualMachine(
         String resourceGroupName, String virtualMachineName, Context context);
 
     /**

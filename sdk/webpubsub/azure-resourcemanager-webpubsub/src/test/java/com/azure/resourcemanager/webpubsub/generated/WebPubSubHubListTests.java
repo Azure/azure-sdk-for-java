@@ -6,6 +6,11 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
+import com.azure.resourcemanager.webpubsub.models.EventHandler;
+import com.azure.resourcemanager.webpubsub.models.EventListener;
+import com.azure.resourcemanager.webpubsub.models.EventListenerEndpoint;
+import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubList;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.util.Arrays;
@@ -17,9 +22,16 @@ public final class WebPubSubHubListTests {
         WebPubSubHubList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"rmcqiby\"},\"id\":\"nojvknmefqsg\",\"name\":\"vah\",\"type\":\"pjyzhpv\"},{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"rvxdjzlmw\"},\"id\":\"xkvugfhzov\",\"name\":\"wjvzunluthnn\",\"type\":\"rnxipei\"},{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"aejxd\"},\"id\":\"ltskzbbtd\",\"name\":\"umveekgpwozuhkf\",\"type\":\"bsjyofdx\"},{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"ttouwaboekqvkel\"},\"id\":\"smv\",\"name\":\"xwyjsflhhc\",\"type\":\"aln\"}],\"nextLink\":\"xisxyawjoyaqcsl\"}")
+                    "{\"value\":[{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"jpvkvpbjxbkzbzkd\",\"userEventPattern\":\"cjabudurgkakmo\",\"systemEvents\":[\"jjklff\",\"mouwqlgzrfzeey\"],\"auth\":{}},{\"urlTemplate\":\"izikayuhq\",\"userEventPattern\":\"jbsybbqw\",\"systemEvents\":[\"ldgmfpgvmpip\"],\"auth\":{}},{\"urlTemplate\":\"ltha\",\"userEventPattern\":\"x\",\"systemEvents\":[\"wutwbdsre\",\"pdrhne\",\"yowqkdwytisibir\"],\"auth\":{}},{\"urlTemplate\":\"pikpz\",\"userEventPattern\":\"ejzanlfz\",\"systemEvents\":[\"vrmbzono\"],\"auth\":{}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"q\"},\"id\":\"rgz\",\"name\":\"frl\",\"type\":\"zszrnwoiindfpw\"},{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"lwbtlhf\",\"userEventPattern\":\"jcdh\",\"systemEvents\":[\"jvfbgofelja\",\"rqmq\",\"ldvriiiojnalghfk\",\"tvsexsowuel\"],\"auth\":{}},{\"urlTemplate\":\"hhahhxvrhmzkwpjg\",\"userEventPattern\":\"spughftqsxhq\",\"systemEvents\":[\"xukndxdigr\"],\"auth\":{}},{\"urlTemplate\":\"uufzdmsyqtfihw\",\"userEventPattern\":\"otzi\",\"systemEvents\":[\"mvpp\",\"o\",\"zqzudph\",\"amvdkfwynwcvtbv\"],\"auth\":{}},{\"urlTemplate\":\"yhmtnvyqiat\",\"userEventPattern\":\"wp\",\"systemEvents\":[\"wzcjaesgvvsccy\"],\"auth\":{}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"fhwygzlvdnkfxus\"},\"id\":\"dwzrmuh\",\"name\":\"pfcqdp\",\"type\":\"qxqvpsvuoymgc\"},{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"vezrypqlmfeo\",\"userEventPattern\":\"rqwky\",\"systemEvents\":[\"bopgxedkowepbqp\"],\"auth\":{}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"wccsnjvcdwxlpqek\"},\"id\":\"nkhtjsyingw\",\"name\":\"qatmtdhtmdvy\",\"type\":\"gikdgsz\"}],\"nextLink\":\"kbir\"}")
                 .toObject(WebPubSubHubList.class);
-        Assertions.assertEquals("rmcqiby", model.value().get(0).properties().anonymousConnectPolicy());
+        Assertions
+            .assertEquals("jpvkvpbjxbkzbzkd", model.value().get(0).properties().eventHandlers().get(0).urlTemplate());
+        Assertions
+            .assertEquals(
+                "cjabudurgkakmo", model.value().get(0).properties().eventHandlers().get(0).userEventPattern());
+        Assertions
+            .assertEquals("jjklff", model.value().get(0).properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals("q", model.value().get(0).properties().anonymousConnectPolicy());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,28 +44,106 @@ public final class WebPubSubHubListTests {
                             new WebPubSubHubInner()
                                 .withProperties(
                                     new WebPubSubHubProperties()
-                                        .withEventHandlers(Arrays.asList())
-                                        .withEventListeners(Arrays.asList())
-                                        .withAnonymousConnectPolicy("rmcqiby")),
+                                        .withEventHandlers(
+                                            Arrays
+                                                .asList(
+                                                    new EventHandler()
+                                                        .withUrlTemplate("jpvkvpbjxbkzbzkd")
+                                                        .withUserEventPattern("cjabudurgkakmo")
+                                                        .withSystemEvents(Arrays.asList("jjklff", "mouwqlgzrfzeey"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("izikayuhq")
+                                                        .withUserEventPattern("jbsybbqw")
+                                                        .withSystemEvents(Arrays.asList("ldgmfpgvmpip"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("ltha")
+                                                        .withUserEventPattern("x")
+                                                        .withSystemEvents(
+                                                            Arrays.asList("wutwbdsre", "pdrhne", "yowqkdwytisibir"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("pikpz")
+                                                        .withUserEventPattern("ejzanlfz")
+                                                        .withSystemEvents(Arrays.asList("vrmbzono"))
+                                                        .withAuth(new UpstreamAuthSettings())))
+                                        .withEventListeners(
+                                            Arrays
+                                                .asList(
+                                                    new EventListener()
+                                                        .withFilter(new EventListenerFilter())
+                                                        .withEndpoint(new EventListenerEndpoint())))
+                                        .withAnonymousConnectPolicy("q")),
                             new WebPubSubHubInner()
                                 .withProperties(
                                     new WebPubSubHubProperties()
-                                        .withEventHandlers(Arrays.asList())
-                                        .withEventListeners(Arrays.asList())
-                                        .withAnonymousConnectPolicy("rvxdjzlmw")),
+                                        .withEventHandlers(
+                                            Arrays
+                                                .asList(
+                                                    new EventHandler()
+                                                        .withUrlTemplate("lwbtlhf")
+                                                        .withUserEventPattern("jcdh")
+                                                        .withSystemEvents(
+                                                            Arrays
+                                                                .asList(
+                                                                    "jvfbgofelja",
+                                                                    "rqmq",
+                                                                    "ldvriiiojnalghfk",
+                                                                    "tvsexsowuel"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("hhahhxvrhmzkwpjg")
+                                                        .withUserEventPattern("spughftqsxhq")
+                                                        .withSystemEvents(Arrays.asList("xukndxdigr"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("uufzdmsyqtfihw")
+                                                        .withUserEventPattern("otzi")
+                                                        .withSystemEvents(
+                                                            Arrays.asList("mvpp", "o", "zqzudph", "amvdkfwynwcvtbv"))
+                                                        .withAuth(new UpstreamAuthSettings()),
+                                                    new EventHandler()
+                                                        .withUrlTemplate("yhmtnvyqiat")
+                                                        .withUserEventPattern("wp")
+                                                        .withSystemEvents(Arrays.asList("wzcjaesgvvsccy"))
+                                                        .withAuth(new UpstreamAuthSettings())))
+                                        .withEventListeners(
+                                            Arrays
+                                                .asList(
+                                                    new EventListener()
+                                                        .withFilter(new EventListenerFilter())
+                                                        .withEndpoint(new EventListenerEndpoint())))
+                                        .withAnonymousConnectPolicy("fhwygzlvdnkfxus")),
                             new WebPubSubHubInner()
                                 .withProperties(
                                     new WebPubSubHubProperties()
-                                        .withEventHandlers(Arrays.asList())
-                                        .withEventListeners(Arrays.asList())
-                                        .withAnonymousConnectPolicy("aejxd")),
-                            new WebPubSubHubInner()
-                                .withProperties(
-                                    new WebPubSubHubProperties()
-                                        .withEventHandlers(Arrays.asList())
-                                        .withEventListeners(Arrays.asList())
-                                        .withAnonymousConnectPolicy("ttouwaboekqvkel"))));
+                                        .withEventHandlers(
+                                            Arrays
+                                                .asList(
+                                                    new EventHandler()
+                                                        .withUrlTemplate("vezrypqlmfeo")
+                                                        .withUserEventPattern("rqwky")
+                                                        .withSystemEvents(Arrays.asList("bopgxedkowepbqp"))
+                                                        .withAuth(new UpstreamAuthSettings())))
+                                        .withEventListeners(
+                                            Arrays
+                                                .asList(
+                                                    new EventListener()
+                                                        .withFilter(new EventListenerFilter())
+                                                        .withEndpoint(new EventListenerEndpoint()),
+                                                    new EventListener()
+                                                        .withFilter(new EventListenerFilter())
+                                                        .withEndpoint(new EventListenerEndpoint())))
+                                        .withAnonymousConnectPolicy("wccsnjvcdwxlpqek"))));
         model = BinaryData.fromObject(model).toObject(WebPubSubHubList.class);
-        Assertions.assertEquals("rmcqiby", model.value().get(0).properties().anonymousConnectPolicy());
+        Assertions
+            .assertEquals("jpvkvpbjxbkzbzkd", model.value().get(0).properties().eventHandlers().get(0).urlTemplate());
+        Assertions
+            .assertEquals(
+                "cjabudurgkakmo", model.value().get(0).properties().eventHandlers().get(0).userEventPattern());
+        Assertions
+            .assertEquals("jjklff", model.value().get(0).properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals("q", model.value().get(0).properties().anonymousConnectPolicy());
     }
 }

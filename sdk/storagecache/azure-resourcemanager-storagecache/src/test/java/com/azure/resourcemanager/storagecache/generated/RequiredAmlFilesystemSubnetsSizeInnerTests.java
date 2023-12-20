@@ -13,16 +13,16 @@ public final class RequiredAmlFilesystemSubnetsSizeInnerTests {
     public void testDeserialize() throws Exception {
         RequiredAmlFilesystemSubnetsSizeInner model =
             BinaryData
-                .fromString("{\"filesystemSubnetSize\":370806274}")
+                .fromString("{\"filesystemSubnetSize\":1580515344}")
                 .toObject(RequiredAmlFilesystemSubnetsSizeInner.class);
-        Assertions.assertEquals(370806274, model.filesystemSubnetSize());
+        Assertions.assertEquals(1580515344, model.filesystemSubnetSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RequiredAmlFilesystemSubnetsSizeInner model =
-            new RequiredAmlFilesystemSubnetsSizeInner().withFilesystemSubnetSize(370806274);
+            new RequiredAmlFilesystemSubnetsSizeInner().withFilesystemSubnetSize(1580515344);
         model = BinaryData.fromObject(model).toObject(RequiredAmlFilesystemSubnetsSizeInner.class);
-        Assertions.assertEquals(370806274, model.filesystemSubnetSize());
+        Assertions.assertEquals(1580515344, model.filesystemSubnetSize());
     }
 }

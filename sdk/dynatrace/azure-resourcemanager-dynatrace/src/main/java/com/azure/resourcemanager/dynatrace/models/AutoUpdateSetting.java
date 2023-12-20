@@ -17,6 +17,15 @@ public final class AutoUpdateSetting extends ExpandableStringEnum<AutoUpdateSett
     public static final AutoUpdateSetting DISABLED = fromString("DISABLED");
 
     /**
+     * Creates a new instance of AutoUpdateSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoUpdateSetting() {
+    }
+
+    /**
      * Creates or finds a AutoUpdateSetting from its string representation.
      *
      * @param name a name to look for.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomDomains EnableCustomHttps. */
 public final class CustomDomainsEnableCustomHttpsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.json
      */
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.
@@ -23,11 +21,12 @@ public final class CustomDomainsEnableCustomHttpsSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
+            .enableCustomHttps(
+                "RG", "profile1", "endpoint1", "www-someDomain-net", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/CustomDomains_EnableCustomHttpsUsingBYOC.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/CustomDomains_EnableCustomHttpsUsingBYOC.json
      */
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingYourOwnCertificate.
@@ -41,6 +40,7 @@ public final class CustomDomainsEnableCustomHttpsSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null, Context.NONE);
+            .enableCustomHttps(
+                "RG", "profile1", "endpoint1", "www-someDomain-net", null, com.azure.core.util.Context.NONE);
     }
 }

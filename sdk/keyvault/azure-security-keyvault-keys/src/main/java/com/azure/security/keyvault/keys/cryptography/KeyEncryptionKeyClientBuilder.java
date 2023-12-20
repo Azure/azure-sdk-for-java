@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -88,7 +89,29 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     @Override
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(keyId).block());
+        builder.keyIdentifier(keyId);
+
+        if (CoreUtils.isNullOrEmpty(keyId)) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
+                    + "client."));
+        }
+
+        CryptographyServiceVersion serviceVersion =
+            builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+
+        if (builder.getPipeline() != null) {
+            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion);
+        }
+
+        if (builder.getCredential() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
+        }
+
+        HttpPipeline pipeline = builder.setupPipeline();
+
+        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion);
     }
 
     /**
@@ -105,7 +128,15 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws IllegalStateException If {{@code key} is not set.
      */
     public KeyEncryptionKey buildKeyEncryptionKey(JsonWebKey key) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
+        if (key == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        return new KeyEncryptionKeyClient(key);
     }
 
     /**
@@ -134,7 +165,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
         builder.keyIdentifier(keyId);
 
-        if (Strings.isNullOrEmpty(keyId)) {
+        if (CoreUtils.isNullOrEmpty(keyId)) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
                     + "client."));
@@ -217,6 +248,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -237,6 +269,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param policy A {@link HttpPipelinePolicy pipeline policy}.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
@@ -263,6 +296,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param client The {@link HttpClient} to use for requests.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -283,6 +317,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -356,6 +391,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -379,8 +415,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @see HttpClientOptions
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     *
+     * @see HttpClientOptions
      */
     @Override
     public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {

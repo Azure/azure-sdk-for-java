@@ -239,7 +239,7 @@ public final class RecoveryServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservices")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -418,8 +418,10 @@ public final class RecoveryServicesManager {
     }
 
     /**
-     * @return Wrapped service client RecoveryServicesManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client RecoveryServicesManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client RecoveryServicesManagementClient.
      */
     public RecoveryServicesManagementClient serviceClient() {
         return this.clientObject;

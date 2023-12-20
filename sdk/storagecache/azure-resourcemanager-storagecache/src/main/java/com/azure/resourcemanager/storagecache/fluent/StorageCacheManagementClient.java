@@ -45,6 +45,20 @@ public interface StorageCacheManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the AmlFilesystemsClient object to access its operations.
+     *
+     * @return the AmlFilesystemsClient object.
+     */
+    AmlFilesystemsClient getAmlFilesystems();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -99,18 +113,4 @@ public interface StorageCacheManagementClient {
      * @return the StorageTargetOperationsClient object.
      */
     StorageTargetOperationsClient getStorageTargetOperations();
-
-    /**
-     * Gets the AmlFilesystemsClient object to access its operations.
-     *
-     * @return the AmlFilesystemsClient object.
-     */
-    AmlFilesystemsClient getAmlFilesystems();
-
-    /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     *
-     * @return the ResourceProvidersClient object.
-     */
-    ResourceProvidersClient getResourceProviders();
 }

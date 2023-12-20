@@ -10,11 +10,21 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
-import com.azure.core.test.TestBase;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +34,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class SparkClientTestBase extends TestBase {
+public abstract class SparkClientTestBase extends TestProxyTestBase {
 
     static final String NAME = "name";
     static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-spark.properties";
@@ -33,7 +43,7 @@ public abstract class SparkClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    private final String fakeSparkPool = "testsparkpool";
+    private final String fakeSparkPool = "Spark1";
     final String livyApiVersion = "2019-11-01-preview";
 
     protected String getEndpoint() {
@@ -53,20 +63,12 @@ public abstract class SparkClientTestBase extends TestBase {
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        TokenCredential credential = null;
+        TokenCredential credential;
 
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("AZURE_CLIENT_ID");
-            String clientKey = System.getenv("AZURE_CLIENT_SECRET");
-            String tenantId = System.getenv("AZURE_TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .build();
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockTokenCredential();
+        } else {
+            credential = new DefaultAzureCredentialBuilder().build();
         }
 
         HttpClient httpClient;
@@ -80,9 +82,7 @@ public abstract class SparkClientTestBase extends TestBase {
         policies.add(new AddDatePolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPES));
-        }
+        policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPES));
 
         policies.add(new RetryPolicy());
 
@@ -94,7 +94,10 @@ public abstract class SparkClientTestBase extends TestBase {
         } else {
             httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
         }
-        policies.add(interceptorManager.getRecordPolicy());
+
+        if (interceptorManager.isRecordMode()) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))

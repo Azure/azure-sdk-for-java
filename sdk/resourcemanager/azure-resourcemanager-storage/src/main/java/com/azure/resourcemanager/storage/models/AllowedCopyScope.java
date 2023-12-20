@@ -17,6 +17,15 @@ public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScop
     public static final AllowedCopyScope AAD = fromString("AAD");
 
     /**
+     * Creates a new instance of AllowedCopyScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AllowedCopyScope() {
+    }
+
+    /**
      * Creates or finds a AllowedCopyScope from its string representation.
      *
      * @param name a name to look for.

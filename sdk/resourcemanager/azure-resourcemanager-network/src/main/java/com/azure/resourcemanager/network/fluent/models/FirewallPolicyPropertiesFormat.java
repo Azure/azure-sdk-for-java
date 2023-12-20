@@ -20,9 +20,17 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Firewall Policy definition. */
+/**
+ * Firewall Policy definition.
+ */
 @Fluent
 public final class FirewallPolicyPropertiesFormat {
+    /*
+     * A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB. (ex 0.5MB)
+     */
+    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
+    private String size;
+
     /*
      * List of references to FirewallPolicyRuleCollectionGroups.
      */
@@ -113,13 +121,25 @@ public final class FirewallPolicyPropertiesFormat {
     @JsonProperty(value = "sku")
     private FirewallPolicySku sku;
 
-    /** Creates an instance of FirewallPolicyPropertiesFormat class. */
+    /**
+     * Creates an instance of FirewallPolicyPropertiesFormat class.
+     */
     public FirewallPolicyPropertiesFormat() {
     }
 
     /**
+     * Get the size property: A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB.
+     * (ex 0.5MB).
+     * 
+     * @return the size value.
+     */
+    public String size() {
+        return this.size;
+    }
+
+    /**
      * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
-     *
+     * 
      * @return the ruleCollectionGroups value.
      */
     public List<SubResource> ruleCollectionGroups() {
@@ -128,7 +148,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the firewall policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -137,7 +157,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @return the basePolicy value.
      */
     public SubResource basePolicy() {
@@ -146,7 +166,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @param basePolicy the basePolicy value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -157,7 +177,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the firewalls property: List of references to Azure Firewalls that this Firewall Policy is associated with.
-     *
+     * 
      * @return the firewalls value.
      */
     public List<SubResource> firewalls() {
@@ -166,7 +186,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the childPolicies property: List of references to Child Firewall Policies.
-     *
+     * 
      * @return the childPolicies value.
      */
     public List<SubResource> childPolicies() {
@@ -175,7 +195,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -184,7 +204,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -195,7 +215,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @return the threatIntelWhitelist value.
      */
     public FirewallPolicyThreatIntelWhitelist threatIntelWhitelist() {
@@ -204,19 +224,19 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @param threatIntelWhitelist the threatIntelWhitelist value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
-    public FirewallPolicyPropertiesFormat withThreatIntelWhitelist(
-        FirewallPolicyThreatIntelWhitelist threatIntelWhitelist) {
+    public FirewallPolicyPropertiesFormat
+        withThreatIntelWhitelist(FirewallPolicyThreatIntelWhitelist threatIntelWhitelist) {
         this.threatIntelWhitelist = threatIntelWhitelist;
         return this;
     }
 
     /**
      * Get the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @return the insights value.
      */
     public FirewallPolicyInsights insights() {
@@ -225,7 +245,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -236,7 +256,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @return the snat value.
      */
     public FirewallPolicySnat snat() {
@@ -245,7 +265,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @param snat the snat value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -256,7 +276,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the sql property: SQL Settings definition.
-     *
+     * 
      * @return the sql value.
      */
     public FirewallPolicySql sql() {
@@ -265,7 +285,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the sql property: SQL Settings definition.
-     *
+     * 
      * @param sql the sql value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -276,7 +296,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -285,7 +305,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -296,7 +316,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @return the explicitProxy value.
      */
     public ExplicitProxy explicitProxy() {
@@ -305,7 +325,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @param explicitProxy the explicitProxy value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -316,7 +336,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @return the intrusionDetection value.
      */
     public FirewallPolicyIntrusionDetection intrusionDetection() {
@@ -325,7 +345,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @param intrusionDetection the intrusionDetection value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -336,7 +356,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the transportSecurity property: TLS Configuration definition.
-     *
+     * 
      * @return the transportSecurity value.
      */
     public FirewallPolicyTransportSecurity transportSecurity() {
@@ -345,7 +365,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the transportSecurity property: TLS Configuration definition.
-     *
+     * 
      * @param transportSecurity the transportSecurity value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -356,7 +376,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Get the sku property: The Firewall Policy SKU.
-     *
+     * 
      * @return the sku value.
      */
     public FirewallPolicySku sku() {
@@ -365,7 +385,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Set the sku property: The Firewall Policy SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
@@ -376,7 +396,7 @@ public final class FirewallPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

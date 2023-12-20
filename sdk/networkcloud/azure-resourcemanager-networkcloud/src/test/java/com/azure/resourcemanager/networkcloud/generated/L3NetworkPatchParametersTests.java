@@ -15,30 +15,20 @@ public final class L3NetworkPatchParametersTests {
     public void testDeserialize() throws Exception {
         L3NetworkPatchParameters model =
             BinaryData
-                .fromString(
-                    "{\"tags\":{\"ac\":\"yamlbnse\",\"m\":\"jvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\"}}")
+                .fromString("{\"tags\":{\"ycjimryvwgcwwpbm\":\"oafcluqvox\"}}")
                 .toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("yamlbnse", model.tags().get("ac"));
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3NetworkPatchParameters model =
-            new L3NetworkPatchParameters()
-                .withTags(
-                    mapOf(
-                        "ac",
-                        "yamlbnse",
-                        "m",
-                        "jvpilguooqja",
-                        "hrtdtpdelq",
-                        "itgueiookjbs",
-                        "vcjkgd",
-                        "cslmotoebnfxo"));
+            new L3NetworkPatchParameters().withTags(mapOf("ycjimryvwgcwwpbm", "oafcluqvox"));
         model = BinaryData.fromObject(model).toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("yamlbnse", model.tags().get("ac"));
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

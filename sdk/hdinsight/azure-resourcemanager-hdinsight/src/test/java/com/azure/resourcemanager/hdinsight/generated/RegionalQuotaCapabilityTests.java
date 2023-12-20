@@ -7,31 +7,30 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.RegionalQuotaCapability;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RegionalQuotaCapabilityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RegionalQuotaCapability model =
             BinaryData
                 .fromString(
-                    "{\"regionName\":\"nozj\",\"coresUsed\":1906816553325698286,\"coresAvailable\":6944179335245488017}")
+                    "{\"regionName\":\"zlxwabmqoefkifr\",\"coresUsed\":6868317644582891875,\"coresAvailable\":6882751528428278733}")
                 .toObject(RegionalQuotaCapability.class);
-        Assertions.assertEquals("nozj", model.regionName());
-        Assertions.assertEquals(1906816553325698286L, model.coresUsed());
-        Assertions.assertEquals(6944179335245488017L, model.coresAvailable());
+        Assertions.assertEquals("zlxwabmqoefkifr", model.regionName());
+        Assertions.assertEquals(6868317644582891875L, model.coresUsed());
+        Assertions.assertEquals(6882751528428278733L, model.coresAvailable());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RegionalQuotaCapability model =
             new RegionalQuotaCapability()
-                .withRegionName("nozj")
-                .withCoresUsed(1906816553325698286L)
-                .withCoresAvailable(6944179335245488017L);
+                .withRegionName("zlxwabmqoefkifr")
+                .withCoresUsed(6868317644582891875L)
+                .withCoresAvailable(6882751528428278733L);
         model = BinaryData.fromObject(model).toObject(RegionalQuotaCapability.class);
-        Assertions.assertEquals("nozj", model.regionName());
-        Assertions.assertEquals(1906816553325698286L, model.coresUsed());
-        Assertions.assertEquals(6944179335245488017L, model.coresAvailable());
+        Assertions.assertEquals("zlxwabmqoefkifr", model.regionName());
+        Assertions.assertEquals(6868317644582891875L, model.coresUsed());
+        Assertions.assertEquals(6882751528428278733L, model.coresAvailable());
     }
 }

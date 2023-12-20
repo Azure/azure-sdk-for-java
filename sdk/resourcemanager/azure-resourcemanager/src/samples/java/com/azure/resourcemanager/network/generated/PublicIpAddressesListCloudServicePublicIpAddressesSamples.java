@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for PublicIpAddresses ListCloudServicePublicIpAddresses. */
+/**
+ * Samples for PublicIpAddresses ListCloudServicePublicIpAddresses.
+ */
 public final class PublicIpAddressesListCloudServicePublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/CloudServicePublicIpListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/CloudServicePublicIpListAll.
+     * json
      */
     /**
      * Sample code: ListVMSSPublicIP.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listVMSSPublicIP(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getPublicIpAddresses()
-            .listCloudServicePublicIpAddresses("cs-tester", "cs1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getPublicIpAddresses().listCloudServicePublicIpAddresses("cs-tester",
+            "cs1", com.azure.core.util.Context.NONE);
     }
 }

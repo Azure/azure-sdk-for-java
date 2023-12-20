@@ -17,6 +17,10 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
     @JsonProperty(value = "properties")
     private GatewayHostnameConfigurationContractProperties innerProperties;
 
+    /** Creates an instance of GatewayHostnameConfigurationContractInner class. */
+    public GatewayHostnameConfigurationContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Gateway hostname configuration details.
      *

@@ -8,42 +8,59 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status code of the application gateway custom error. */
+/**
+ * Status code of the application gateway custom error.
+ */
 public final class ApplicationGatewayCustomErrorStatusCode
     extends ExpandableStringEnum<ApplicationGatewayCustomErrorStatusCode> {
-    /** Static value HttpStatus400 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus400 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS400 = fromString("HttpStatus400");
 
-    /** Static value HttpStatus403 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus403 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS403 = fromString("HttpStatus403");
 
-    /** Static value HttpStatus404 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus404 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS404 = fromString("HttpStatus404");
 
-    /** Static value HttpStatus405 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus405 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS405 = fromString("HttpStatus405");
 
-    /** Static value HttpStatus408 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus408 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS408 = fromString("HttpStatus408");
 
-    /** Static value HttpStatus499 for ApplicationGatewayCustomErrorStatusCode. */
-    public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS499 = fromString("HttpStatus499");
-
-    /** Static value HttpStatus500 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus500 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS500 = fromString("HttpStatus500");
 
-    /** Static value HttpStatus502 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus502 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS502 = fromString("HttpStatus502");
 
-    /** Static value HttpStatus503 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus503 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS503 = fromString("HttpStatus503");
 
-    /** Static value HttpStatus504 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus504 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS504 = fromString("HttpStatus504");
 
     /**
      * Creates a new instance of ApplicationGatewayCustomErrorStatusCode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -52,7 +69,7 @@ public final class ApplicationGatewayCustomErrorStatusCode
 
     /**
      * Creates or finds a ApplicationGatewayCustomErrorStatusCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayCustomErrorStatusCode.
      */
@@ -63,7 +80,7 @@ public final class ApplicationGatewayCustomErrorStatusCode
 
     /**
      * Gets known ApplicationGatewayCustomErrorStatusCode values.
-     *
+     * 
      * @return known ApplicationGatewayCustomErrorStatusCode values.
      */
     public static Collection<ApplicationGatewayCustomErrorStatusCode> values() {

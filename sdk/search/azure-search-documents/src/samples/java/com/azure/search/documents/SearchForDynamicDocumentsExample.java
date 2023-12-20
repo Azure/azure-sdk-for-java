@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
  * This example shows how to perform basic searches using the Azure Cognitive Search SDK for Java
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/azure/search/search-get-started-portal
  */
 public class SearchForDynamicDocumentsExample {
 

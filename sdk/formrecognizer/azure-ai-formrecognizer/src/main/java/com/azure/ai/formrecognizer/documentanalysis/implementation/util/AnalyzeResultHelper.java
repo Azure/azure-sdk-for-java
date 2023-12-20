@@ -35,6 +35,8 @@ public final class AnalyzeResultHelper {
         void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents);
         void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages);
         void setParagraphs(AnalyzeResult analyzeResult, List<DocumentParagraph> paragraphs);
+
+        void setServiceVersion(AnalyzeResult analyzeResult, String serviceVersion);
     }
 
     /**
@@ -79,5 +81,9 @@ public final class AnalyzeResultHelper {
 
     static void setParagraphs(AnalyzeResult analyzeResult, List<DocumentParagraph> paragraphs) {
         accessor.setParagraphs(analyzeResult, paragraphs);
+    }
+
+    static void setServiceVersion(AnalyzeResult analyzeResult, String serviceVersion) {
+        accessor.setServiceVersion(analyzeResult, serviceVersion);
     }
 }

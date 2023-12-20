@@ -25,6 +25,10 @@ public final class SkuCapability {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of SkuCapability class. */
+    public SkuCapability() {
+    }
+
     /**
      * Get the name property: The name of capability, The capability information in the specified SKU, including file
      * encryption, network ACLs, change notification, etc.

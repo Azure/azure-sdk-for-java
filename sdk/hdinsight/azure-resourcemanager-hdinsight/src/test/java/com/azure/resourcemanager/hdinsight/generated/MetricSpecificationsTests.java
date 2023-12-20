@@ -9,86 +9,90 @@ import com.azure.resourcemanager.hdinsight.models.Dimension;
 import com.azure.resourcemanager.hdinsight.models.MetricSpecifications;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MetricSpecificationsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MetricSpecifications model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"smlmbtxhwgfwsrta\",\"displayName\":\"oezbrhubsk\",\"displayDescription\":\"dyg\",\"unit\":\"okkqfqjbvleo\",\"aggregationType\":\"ml\",\"supportedAggregationTypes\":[\"tqzfavyv\",\"qqybarye\",\"ayjkqa\"],\"supportedTimeGrainTypes\":[\"zslesjcbher\",\"ntiew\",\"jcvb\",\"uwrbehwagoh\"],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"kmr\",\"sourceMdmNamespace\":\"mvvhmxtdrjfuta\",\"metricFilterPattern\":\"ebjvewzcjzn\",\"fillGapWithZero\":true,\"category\":\"mguaadraufa\",\"resourceIdDimensionNameOverride\":\"kahzo\",\"isInternal\":true,\"delegateMetricNameOverride\":\"ziuxxpshnee\",\"dimensions\":[{\"name\":\"gs\",\"displayName\":\"ubkwdle\",\"internalName\":\"d\",\"toBeExportedForShoebox\":true}]}")
+                    "{\"name\":\"g\",\"displayName\":\"joxslhvnhla\",\"displayDescription\":\"q\",\"unit\":\"kzjcjbtrgae\",\"aggregationType\":\"vibr\",\"supportedAggregationTypes\":[\"s\"],\"supportedTimeGrainTypes\":[\"beitpkx\",\"tmo\",\"bklftidgfcwqmpim\",\"qxzhem\"],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"hujswtwkozzwcul\",\"sourceMdmNamespace\":\"awpfajnjwltlwtjj\",\"metricFilterPattern\":\"ktalhsnvkcdmxz\",\"fillGapWithZero\":false,\"category\":\"imlnwiaaomylw\",\"resourceIdDimensionNameOverride\":\"z\",\"isInternal\":false,\"delegateMetricNameOverride\":\"ethwwnpjhlfz\",\"dimensions\":[{\"name\":\"hwahfbousn\",\"displayName\":\"pgfewetwlyx\",\"internalName\":\"cxy\",\"toBeExportedForShoebox\":true},{\"name\":\"jhlimmbcxfhbcpo\",\"displayName\":\"vxcjzhqizxfpxtgq\",\"internalName\":\"javftjuhdqa\",\"toBeExportedForShoebox\":false}]}")
                 .toObject(MetricSpecifications.class);
-        Assertions.assertEquals("smlmbtxhwgfwsrta", model.name());
-        Assertions.assertEquals("oezbrhubsk", model.displayName());
-        Assertions.assertEquals("dyg", model.displayDescription());
-        Assertions.assertEquals("okkqfqjbvleo", model.unit());
-        Assertions.assertEquals("ml", model.aggregationType());
-        Assertions.assertEquals("tqzfavyv", model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("zslesjcbher", model.supportedTimeGrainTypes().get(0));
+        Assertions.assertEquals("g", model.name());
+        Assertions.assertEquals("joxslhvnhla", model.displayName());
+        Assertions.assertEquals("q", model.displayDescription());
+        Assertions.assertEquals("kzjcjbtrgae", model.unit());
+        Assertions.assertEquals("vibr", model.aggregationType());
+        Assertions.assertEquals("s", model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("beitpkx", model.supportedTimeGrainTypes().get(0));
         Assertions.assertEquals(false, model.enableRegionalMdmAccount());
-        Assertions.assertEquals("kmr", model.sourceMdmAccount());
-        Assertions.assertEquals("mvvhmxtdrjfuta", model.sourceMdmNamespace());
-        Assertions.assertEquals("ebjvewzcjzn", model.metricFilterPattern());
-        Assertions.assertEquals(true, model.fillGapWithZero());
-        Assertions.assertEquals("mguaadraufa", model.category());
-        Assertions.assertEquals("kahzo", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(true, model.isInternal());
-        Assertions.assertEquals("ziuxxpshnee", model.delegateMetricNameOverride());
-        Assertions.assertEquals("gs", model.dimensions().get(0).name());
-        Assertions.assertEquals("ubkwdle", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("d", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("hujswtwkozzwcul", model.sourceMdmAccount());
+        Assertions.assertEquals("awpfajnjwltlwtjj", model.sourceMdmNamespace());
+        Assertions.assertEquals("ktalhsnvkcdmxz", model.metricFilterPattern());
+        Assertions.assertEquals(false, model.fillGapWithZero());
+        Assertions.assertEquals("imlnwiaaomylw", model.category());
+        Assertions.assertEquals("z", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals(false, model.isInternal());
+        Assertions.assertEquals("ethwwnpjhlfz", model.delegateMetricNameOverride());
+        Assertions.assertEquals("hwahfbousn", model.dimensions().get(0).name());
+        Assertions.assertEquals("pgfewetwlyx", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cxy", model.dimensions().get(0).internalName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MetricSpecifications model =
             new MetricSpecifications()
-                .withName("smlmbtxhwgfwsrta")
-                .withDisplayName("oezbrhubsk")
-                .withDisplayDescription("dyg")
-                .withUnit("okkqfqjbvleo")
-                .withAggregationType("ml")
-                .withSupportedAggregationTypes(Arrays.asList("tqzfavyv", "qqybarye", "ayjkqa"))
-                .withSupportedTimeGrainTypes(Arrays.asList("zslesjcbher", "ntiew", "jcvb", "uwrbehwagoh"))
+                .withName("g")
+                .withDisplayName("joxslhvnhla")
+                .withDisplayDescription("q")
+                .withUnit("kzjcjbtrgae")
+                .withAggregationType("vibr")
+                .withSupportedAggregationTypes(Arrays.asList("s"))
+                .withSupportedTimeGrainTypes(Arrays.asList("beitpkx", "tmo", "bklftidgfcwqmpim", "qxzhem"))
                 .withEnableRegionalMdmAccount(false)
-                .withSourceMdmAccount("kmr")
-                .withSourceMdmNamespace("mvvhmxtdrjfuta")
-                .withMetricFilterPattern("ebjvewzcjzn")
-                .withFillGapWithZero(true)
-                .withCategory("mguaadraufa")
-                .withResourceIdDimensionNameOverride("kahzo")
-                .withIsInternal(true)
-                .withDelegateMetricNameOverride("ziuxxpshnee")
+                .withSourceMdmAccount("hujswtwkozzwcul")
+                .withSourceMdmNamespace("awpfajnjwltlwtjj")
+                .withMetricFilterPattern("ktalhsnvkcdmxz")
+                .withFillGapWithZero(false)
+                .withCategory("imlnwiaaomylw")
+                .withResourceIdDimensionNameOverride("z")
+                .withIsInternal(false)
+                .withDelegateMetricNameOverride("ethwwnpjhlfz")
                 .withDimensions(
                     Arrays
                         .asList(
                             new Dimension()
-                                .withName("gs")
-                                .withDisplayName("ubkwdle")
-                                .withInternalName("d")
-                                .withToBeExportedForShoebox(true)));
+                                .withName("hwahfbousn")
+                                .withDisplayName("pgfewetwlyx")
+                                .withInternalName("cxy")
+                                .withToBeExportedForShoebox(true),
+                            new Dimension()
+                                .withName("jhlimmbcxfhbcpo")
+                                .withDisplayName("vxcjzhqizxfpxtgq")
+                                .withInternalName("javftjuhdqa")
+                                .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecifications.class);
-        Assertions.assertEquals("smlmbtxhwgfwsrta", model.name());
-        Assertions.assertEquals("oezbrhubsk", model.displayName());
-        Assertions.assertEquals("dyg", model.displayDescription());
-        Assertions.assertEquals("okkqfqjbvleo", model.unit());
-        Assertions.assertEquals("ml", model.aggregationType());
-        Assertions.assertEquals("tqzfavyv", model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("zslesjcbher", model.supportedTimeGrainTypes().get(0));
+        Assertions.assertEquals("g", model.name());
+        Assertions.assertEquals("joxslhvnhla", model.displayName());
+        Assertions.assertEquals("q", model.displayDescription());
+        Assertions.assertEquals("kzjcjbtrgae", model.unit());
+        Assertions.assertEquals("vibr", model.aggregationType());
+        Assertions.assertEquals("s", model.supportedAggregationTypes().get(0));
+        Assertions.assertEquals("beitpkx", model.supportedTimeGrainTypes().get(0));
         Assertions.assertEquals(false, model.enableRegionalMdmAccount());
-        Assertions.assertEquals("kmr", model.sourceMdmAccount());
-        Assertions.assertEquals("mvvhmxtdrjfuta", model.sourceMdmNamespace());
-        Assertions.assertEquals("ebjvewzcjzn", model.metricFilterPattern());
-        Assertions.assertEquals(true, model.fillGapWithZero());
-        Assertions.assertEquals("mguaadraufa", model.category());
-        Assertions.assertEquals("kahzo", model.resourceIdDimensionNameOverride());
-        Assertions.assertEquals(true, model.isInternal());
-        Assertions.assertEquals("ziuxxpshnee", model.delegateMetricNameOverride());
-        Assertions.assertEquals("gs", model.dimensions().get(0).name());
-        Assertions.assertEquals("ubkwdle", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("d", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("hujswtwkozzwcul", model.sourceMdmAccount());
+        Assertions.assertEquals("awpfajnjwltlwtjj", model.sourceMdmNamespace());
+        Assertions.assertEquals("ktalhsnvkcdmxz", model.metricFilterPattern());
+        Assertions.assertEquals(false, model.fillGapWithZero());
+        Assertions.assertEquals("imlnwiaaomylw", model.category());
+        Assertions.assertEquals("z", model.resourceIdDimensionNameOverride());
+        Assertions.assertEquals(false, model.isInternal());
+        Assertions.assertEquals("ethwwnpjhlfz", model.delegateMetricNameOverride());
+        Assertions.assertEquals("hwahfbousn", model.dimensions().get(0).name());
+        Assertions.assertEquals("pgfewetwlyx", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cxy", model.dimensions().get(0).internalName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 }

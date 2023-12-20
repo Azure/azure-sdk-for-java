@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.Configs;
@@ -64,13 +65,16 @@ public class ConsistencyReaderTest {
         TransportClient transportClient = Mockito.mock(TransportClient.class);
         GatewayServiceConfiguratorReaderMock gatewayServiceConfigurationReaderWrapper = GatewayServiceConfiguratorReaderMock.from(accountConsistencyLevel);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelector,
                                                                     sessionContainer,
                                                                     transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authorizationTokenProvider);
+                                                                    authorizationTokenProvider,
+                                                                    sessionRetryOptions);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -115,13 +119,16 @@ public class ConsistencyReaderTest {
                                                                                                                         userMaxReplicaCount,
                                                                                                                         userMinReplicaCount);
         IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelector,
                                                                     sessionContainer,
                                                                     transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authorizationTokenProvider);
+                                                                    authorizationTokenProvider,
+                                                                    sessionRetryOptions);
 
         RxDocumentServiceRequest request;
         if (isReadingFromMasterOperation) {
@@ -397,13 +404,16 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authTokenProvider);
+                                                                    authTokenProvider,
+                                                                    sessionRetryOptions);
 
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -503,13 +513,16 @@ public class ConsistencyReaderTest {
             3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
             configs,
             addressSelectorWrapper.addressSelector,
             sessionContainer,
             transportClientWrapper.transportClient,
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-            authTokenProvider);
+            authTokenProvider,
+            sessionRetryOptions);
 
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -595,13 +608,16 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authTokenProvider);
+                                                                    authTokenProvider,
+                                                                    sessionRetryOptions);
 
         Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
@@ -662,13 +678,16 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authTokenProvider);
+                                                                    authTokenProvider,
+                                                                    sessionRetryOptions);
 
         Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
@@ -727,13 +746,16 @@ public class ConsistencyReaderTest {
                                                                                                                                   3);
 
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        SessionRetryOptions sessionRetryOptions = Mockito.mock(SessionRetryOptions.class);
+
         ConsistencyReader consistencyReader = new ConsistencyReader(mockDiagnosticsClientContext(),
                                                                     configs,
                                                                     addressSelectorWrapper.addressSelector,
                                                                     sessionContainer,
                                                                     transportClientWrapper.transportClient,
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
-                                                                    authTokenProvider);
+                                                                    authTokenProvider,
+                                                                    sessionRetryOptions);
 
         Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 

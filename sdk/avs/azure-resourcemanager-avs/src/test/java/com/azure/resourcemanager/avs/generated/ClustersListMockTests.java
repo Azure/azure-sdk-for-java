@@ -32,7 +32,7 @@ public final class ClustersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"utujba\"},\"properties\":{\"clusterSize\":535538658,\"provisioningState\":\"Cancelled\",\"clusterId\":1747811781,\"hosts\":[\"flnorwmduvwp\"]},\"id\":\"lvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"}]}";
+            "{\"value\":[{\"sku\":{\"name\":\"dmdqb\"},\"properties\":{\"clusterSize\":181668941,\"provisioningState\":\"Updating\",\"clusterId\":543854908,\"hosts\":[\"acbslhhxu\",\"bxv\",\"d\",\"tnsi\"]},\"id\":\"ud\",\"name\":\"z\",\"type\":\"mes\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,10 +60,11 @@ public final class ClustersListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Cluster> response = manager.clusters().list("lqubkwdlen", "d", com.azure.core.util.Context.NONE);
+        PagedIterable<Cluster> response =
+            manager.clusters().list("itvtzeexavo", "tfgle", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("utujba", response.iterator().next().sku().name());
-        Assertions.assertEquals(535538658, response.iterator().next().clusterSize());
-        Assertions.assertEquals("flnorwmduvwp", response.iterator().next().hosts().get(0));
+        Assertions.assertEquals("dmdqb", response.iterator().next().sku().name());
+        Assertions.assertEquals(181668941, response.iterator().next().clusterSize());
+        Assertions.assertEquals("acbslhhxu", response.iterator().next().hosts().get(0));
     }
 }

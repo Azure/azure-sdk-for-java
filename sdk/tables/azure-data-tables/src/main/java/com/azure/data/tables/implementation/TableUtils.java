@@ -44,15 +44,17 @@ import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
-import java.util.OptionalLong;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -61,6 +63,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
+    private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
     private static final long THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
@@ -205,8 +208,8 @@ public final class TableUtils {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
-    public static OptionalLong setTimeout(Duration timeout) {
-        return timeout != null ? OptionalLong.of(timeout.toMillis()) : OptionalLong.empty();
+    public static boolean hasTimeout(Duration timeout) {
+        return timeout != null && !timeout.isZero() && !timeout.isNegative();
     }
 
     /**
@@ -582,6 +585,34 @@ public final class TableUtils {
             return (TableTransactionFailedException) cause;
         } else {
             return (RuntimeException) mapThrowableToTableServiceException(exception);
+        }
+    }
+
+    public static String[] getKeysFromToken(String token) {
+        String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
+        String[] keys = new String[2];
+        if (split.length == 0) {
+            throw new RuntimeException("Split done incorrectly, must have partition key. Token: " + token);
+        } else if (split.length == 2) {
+            keys[0] = split[0];
+            keys[1] = split[1];
+        } else {
+            keys[0] = split[0];
+            keys[1] = null;
+        }
+        return keys;
+    }
+
+    public static <T> T callWithOptionalTimeout(Supplier<T> callable, ExecutorService threadPool, Duration timeout,
+        ClientLogger logger) {
+        try {
+            return hasTimeout(timeout)
+                ? getResultWithTimeout(threadPool.submit(callable::get), timeout)
+                : callable.get();
+        } catch (InterruptedException | ExecutionException | TimeoutException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError((RuntimeException) mapThrowableToTableServiceException(ex));
         }
     }
 }

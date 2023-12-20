@@ -69,11 +69,10 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientT")
-    private interface TenantAccessService {
+    public interface TenantAccessService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccessInformationCollection>> listByService(
@@ -88,8 +87,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantAccessGetEntityTagResponse> getEntityTag(
@@ -104,8 +102,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantAccessGetResponse> get(
@@ -120,8 +117,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantAccessCreateResponse> create(
@@ -138,8 +134,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantAccessUpdateResponse> update(
@@ -156,8 +151,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}/regeneratePrimaryKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/regeneratePrimaryKey")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regeneratePrimaryKey(
@@ -172,8 +166,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}/regenerateSecondaryKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/regenerateSecondaryKey")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regenerateSecondaryKey(
@@ -188,8 +181,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/tenant/{accessName}/listSecrets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/listSecrets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantAccessListSecretsResponse> listSecrets(
@@ -216,7 +208,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +268,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -334,7 +326,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +345,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -371,7 +363,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -391,7 +383,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -407,7 +399,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -425,7 +417,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Tenant access metadata.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,7 +470,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Tenant access metadata.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -529,7 +521,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Tenant access metadata.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,28 +532,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, AccessIdName accessName) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap((TenantAccessGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Tenant access metadata.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        getEntityTagAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Tenant access metadata.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -577,9 +554,24 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Tenant access metadata.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, accessName, Context.NONE);
+    }
+
+    /**
      * Get tenant access information details without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,7 +624,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Get tenant access information details without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -683,7 +675,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Get tenant access information details without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,36 +687,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     private Mono<AccessInformationContractInner> getAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return getWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap(
-                (TenantAccessGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get tenant access information details without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details without secrets.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessInformationContractInner get(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        return getAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Get tenant access information details without secrets.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -740,9 +709,25 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Get tenant access information details without secrets.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant access information details without secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessInformationContractInner get(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        return getWithResponse(resourceGroupName, serviceName, accessName, Context.NONE).getValue();
+    }
+
+    /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -812,7 +797,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -881,7 +866,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -900,44 +885,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
         String ifMatch,
         AccessInformationCreateParameters parameters) {
         return createWithResponseAsync(resourceGroupName, serviceName, accessName, ifMatch, parameters)
-            .flatMap(
-                (TenantAccessCreateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Parameters supplied to retrieve the Tenant Access Information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessInformationContractInner create(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationCreateParameters parameters) {
-        return createAsync(resourceGroupName, serviceName, accessName, ifMatch, parameters).block();
-    }
-
-    /**
-     * Update tenant access information details.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -964,7 +918,32 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Parameters supplied to retrieve the Tenant Access Information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant Settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessInformationContractInner create(
+        String resourceGroupName,
+        String serviceName,
+        AccessIdName accessName,
+        String ifMatch,
+        AccessInformationCreateParameters parameters) {
+        return createWithResponse(resourceGroupName, serviceName, accessName, ifMatch, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Update tenant access information details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1034,7 +1013,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1103,7 +1082,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1122,44 +1101,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
         String ifMatch,
         AccessInformationUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, accessName, ifMatch, parameters)
-            .flatMap(
-                (TenantAccessUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Parameters supplied to retrieve the Tenant Access Information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessInformationContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, serviceName, accessName, ifMatch, parameters).block();
-    }
-
-    /**
-     * Update tenant access information details.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1184,9 +1132,34 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Update tenant access information details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Parameters supplied to retrieve the Tenant Access Information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant Settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessInformationContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        AccessIdName accessName,
+        String ifMatch,
+        AccessInformationUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, accessName, ifMatch, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Regenerate primary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1239,7 +1212,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Regenerate primary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1290,7 +1263,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Regenerate primary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1302,28 +1275,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     private Mono<Void> regeneratePrimaryKeyAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Regenerate primary access key.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        regeneratePrimaryKeyAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Regenerate primary access key.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1339,9 +1297,24 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Regenerate primary access key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        regeneratePrimaryKeyWithResponse(resourceGroupName, serviceName, accessName, Context.NONE);
+    }
+
+    /**
      * Regenerate secondary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1394,7 +1367,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Regenerate secondary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1445,7 +1418,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Regenerate secondary access key.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1457,28 +1430,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     private Mono<Void> regenerateSecondaryKeyAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Regenerate secondary access key.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
-        regenerateSecondaryKeyAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Regenerate secondary access key.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1494,9 +1452,24 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Regenerate secondary access key.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
+        regenerateSecondaryKeyWithResponse(resourceGroupName, serviceName, accessName, Context.NONE);
+    }
+
+    /**
      * Get tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1549,7 +1522,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Get tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1600,7 +1573,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Get tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1612,37 +1585,13 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     private Mono<AccessInformationSecretsContractInner> listSecretsAsync(
         String resourceGroupName, String serviceName, AccessIdName accessName) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, accessName)
-            .flatMap(
-                (TenantAccessListSecretsResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get tenant access information details.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param accessName The identifier of the Access configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessInformationSecretsContractInner listSecrets(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
-        return listSecretsAsync(resourceGroupName, serviceName, accessName).block();
-    }
-
-    /**
-     * Get tenant access information details.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param context The context to associate with this operation.
@@ -1658,9 +1607,27 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     }
 
     /**
+     * Get tenant access information details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param accessName The identifier of the Access configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant access information details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessInformationSecretsContractInner listSecrets(
+        String resourceGroupName, String serviceName, AccessIdName accessName) {
+        return listSecretsWithResponse(resourceGroupName, serviceName, accessName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1696,7 +1663,8 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

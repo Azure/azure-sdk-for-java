@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public final class UserUpdateParametersProperties extends UserEntityBaseParameters {
     /*
-     * Email address. Must not be empty and must be unique within the service
-     * instance.
+     * Email address. Must not be empty and must be unique within the service instance.
      */
     @JsonProperty(value = "email")
     private String email;
@@ -37,6 +36,10 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
      */
     @JsonProperty(value = "lastName")
     private String lastName;
+
+    /** Creates an instance of UserUpdateParametersProperties class. */
+    public UserUpdateParametersProperties() {
+    }
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.

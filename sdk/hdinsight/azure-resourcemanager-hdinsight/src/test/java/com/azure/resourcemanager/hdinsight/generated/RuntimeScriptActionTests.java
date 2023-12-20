@@ -8,34 +8,33 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RuntimeScriptActionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RuntimeScriptAction model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"axmodfvuef\",\"uri\":\"wsbpfvm\",\"parameters\":\"hrfou\",\"roles\":[\"taakc\"],\"applicationName\":\"iyzvqtmnub\"}")
+                    "{\"name\":\"fqrvkdvjsllrmvvd\",\"uri\":\"watkpnpulexxb\",\"parameters\":\"wtruwiqzbqjvsovm\",\"roles\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"applicationName\":\"kcciwwzjuqkhr\"}")
                 .toObject(RuntimeScriptAction.class);
-        Assertions.assertEquals("axmodfvuef", model.name());
-        Assertions.assertEquals("wsbpfvm", model.uri());
-        Assertions.assertEquals("hrfou", model.parameters());
-        Assertions.assertEquals("taakc", model.roles().get(0));
+        Assertions.assertEquals("fqrvkdvjsllrmvvd", model.name());
+        Assertions.assertEquals("watkpnpulexxb", model.uri());
+        Assertions.assertEquals("wtruwiqzbqjvsovm", model.parameters());
+        Assertions.assertEquals("kacspkw", model.roles().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RuntimeScriptAction model =
             new RuntimeScriptAction()
-                .withName("axmodfvuef")
-                .withUri("wsbpfvm")
-                .withParameters("hrfou")
-                .withRoles(Arrays.asList("taakc"));
+                .withName("fqrvkdvjsllrmvvd")
+                .withUri("watkpnpulexxb")
+                .withParameters("wtruwiqzbqjvsovm")
+                .withRoles(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"));
         model = BinaryData.fromObject(model).toObject(RuntimeScriptAction.class);
-        Assertions.assertEquals("axmodfvuef", model.name());
-        Assertions.assertEquals("wsbpfvm", model.uri());
-        Assertions.assertEquals("hrfou", model.parameters());
-        Assertions.assertEquals("taakc", model.roles().get(0));
+        Assertions.assertEquals("fqrvkdvjsllrmvvd", model.name());
+        Assertions.assertEquals("watkpnpulexxb", model.uri());
+        Assertions.assertEquals("wtruwiqzbqjvsovm", model.parameters());
+        Assertions.assertEquals("kacspkw", model.roles().get(0));
     }
 }

@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BackendProxyContract {
     /*
-     * WebProxy Server AbsoluteUri property which includes the entire URI
-     * stored in the Uri instance, including all fragments and query strings.
+     * WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all
+     * fragments and query strings.
      */
     @JsonProperty(value = "url", required = true)
     private String url;
@@ -29,6 +29,10 @@ public final class BackendProxyContract {
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /** Creates an instance of BackendProxyContract class. */
+    public BackendProxyContract() {
+    }
 
     /**
      * Get the url property: WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri

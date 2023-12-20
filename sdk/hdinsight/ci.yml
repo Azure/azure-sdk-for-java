@@ -29,6 +29,16 @@ pr:
       - sdk/hdinsight/pom.xml
       - sdk/hdinsight/azure-resourcemanager-hdinsight/pom.xml
 
+parameters:
+- name: release_azureresourcemanagerhdinsight
+  displayName: 'azure-resourcemanager-hdinsight'
+  type: boolean
+  default: false
+- name: release_azureresourcemanagerhdinsightcontainers
+  displayName: 'azure-resourcemanager-hdinsight-containers'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -38,3 +48,8 @@ extends:
       - name: azure-resourcemanager-hdinsight
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerhdinsight
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhdinsight }}
+      - name: azure-resourcemanager-hdinsight-containers
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhdinsightcontainers
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhdinsightcontainers }}

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This activity verifies that an external resource exists. */
+/**
+ * This activity verifies that an external resource exists.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Validation")
 @Fluent
@@ -23,41 +25,69 @@ public final class ValidationActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ValidationActivityTypeProperties innerTypeProperties = new ValidationActivityTypeProperties();
 
-    /** Creates an instance of ValidationActivity class. */
+    /**
+     * Creates an instance of ValidationActivity class.
+     */
     public ValidationActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Validation activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ValidationActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ValidationActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ValidationActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidationActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -65,10 +95,10 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the timeout value.
      */
     public Object timeout() {
@@ -76,10 +106,10 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ValidationActivity object itself.
      */
@@ -92,9 +122,9 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
+     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * 
      * @return the sleep value.
      */
     public Object sleep() {
@@ -102,9 +132,9 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
+     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * 
      * @param sleep the sleep value to set.
      * @return the ValidationActivity object itself.
      */
@@ -119,7 +149,7 @@ public final class ValidationActivity extends ControlActivity {
     /**
      * Get the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
      * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the minimumSize value.
      */
     public Object minimumSize() {
@@ -129,7 +159,7 @@ public final class ValidationActivity extends ControlActivity {
     /**
      * Set the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
      * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param minimumSize the minimumSize value to set.
      * @return the ValidationActivity object itself.
      */
@@ -143,8 +173,9 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
+     * boolean).
+     * 
      * @return the childItems value.
      */
     public Object childItems() {
@@ -153,8 +184,9 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
+     * boolean).
+     * 
      * @param childItems the childItems value to set.
      * @return the ValidationActivity object itself.
      */
@@ -168,7 +200,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Get the dataset property: Validation activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -177,7 +209,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Set the dataset property: Validation activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the ValidationActivity object itself.
      */
@@ -191,17 +223,15 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ValidationActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model ValidationActivity"));
         } else {
             innerTypeProperties().validate();
         }

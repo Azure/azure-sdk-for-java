@@ -12,13 +12,7 @@ public final class OperationNames {
         if (operationName != null) {
             return operationName;
         }
-
-        String spanName = span.getName();
-        String httpMethod = span.getAttribute(SemanticAttributes.HTTP_METHOD);
-        if (httpMethod != null && !httpMethod.isEmpty() && spanName.startsWith("/")) {
-            return httpMethod + " " + spanName;
-        }
-        return spanName;
+        return span.getName();
     }
 
     private OperationNames() {

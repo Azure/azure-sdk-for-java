@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiOperationPolicy ListByOperation. */
 public final class ApiOperationPolicyListByOperationSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApiOperationPolicies.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListApiOperationPolicies.json
      */
     /**
      * Sample code: ApiManagementListApiOperationPolicies.
@@ -21,6 +19,10 @@ public final class ApiOperationPolicyListByOperationSamples {
         manager
             .apiOperationPolicies()
             .listByOperationWithResponse(
-                "rg1", "apimService1", "599e2953193c3c0bd0b3e2fa", "599e29ab193c3c0bd0b3e2fb", Context.NONE);
+                "rg1",
+                "apimService1",
+                "599e2953193c3c0bd0b3e2fa",
+                "599e29ab193c3c0bd0b3e2fb",
+                com.azure.core.util.Context.NONE);
     }
 }

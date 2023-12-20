@@ -27,29 +27,66 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
- * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
- * a specific consumer group.
+ * <p>A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
+ * a specific consumer group.</p>
  *
- * <p><strong>Creating a synchronous consumer</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <p>Most receive operations contain a parameter {@code maxWaitTime}.  The iterable is returned when either
+ * {@code maxWaitTime} has elapsed or {@code numberOfEvents} have been received.  It is possible to have an empty
+ * iterable if no events were received in that time frame.  {@link #receiveFromPartition(String, int, EventPosition)}
+ * does not have a parameter for {@code maxWaitTime}, consequently, it can take a long time to return results if
+ * {@code numberOfEvents} is too high and there is low traffic in that Event Hub.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Creating a synchronous consumer</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link EventHubConsumerClient}.
+ * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name. It is listed under the "Essentials"
+ * panel after navigating to the Event Hubs Namespace via Azure Portal. The {@code consumerGroup} is found by
+ * navigating to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel.  The
+ * {@link EventHubClientBuilder#consumerGroup(String)} is required for creating consumer clients. </p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  * <pre>
- * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
- *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
- *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
  *     .buildConsumerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  *
- * <p><strong>Consuming events from a single partition</strong></p>
+ * <p><strong>Sample: Consuming events from a single partition</strong></p>
+ *
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
  * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
  * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
- * timeout has elapsed.</p>
+ * timeout has elapsed.  It is possible to have an empty iterable returned if there were no events received in that
+ * duration.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+ *     .buildConsumerClient&#40;&#41;;
+ *
  * Instant twelveHoursAgo = Instant.now&#40;&#41;.minus&#40;Duration.ofHours&#40;12&#41;&#41;;
  * EventPosition startingPosition = EventPosition.fromEnqueuedTime&#40;twelveHoursAgo&#41;;
  * String partitionId = &quot;0&quot;;
@@ -77,6 +114,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * &#125;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
+ *
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {

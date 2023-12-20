@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for LoadBalancerFrontendIpConfigurations Get. */
+/**
+ * Samples for LoadBalancerFrontendIpConfigurations Get.
+ */
 public final class LoadBalancerFrontendIpConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/LoadBalancerFrontendIPConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * LoadBalancerFrontendIPConfigurationGet.json
      */
     /**
      * Sample code: LoadBalancerFrontendIPConfigurationGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerFrontendIPConfigurationGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getLoadBalancerFrontendIpConfigurations()
-            .getWithResponse("testrg", "lb", "frontend", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getLoadBalancerFrontendIpConfigurations().getWithResponse("testrg",
+            "lb", "frontend", com.azure.core.util.Context.NONE);
     }
 }

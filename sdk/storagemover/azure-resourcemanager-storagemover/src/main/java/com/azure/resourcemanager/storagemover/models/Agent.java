@@ -33,7 +33,7 @@ public interface Agent {
     String type();
 
     /**
-     * Gets the systemData property: Resource system metadata.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -145,11 +145,13 @@ public interface Agent {
             DefinitionStages.WithArcVmUuid,
             DefinitionStages.WithCreate {
     }
+
     /** The Agent definition stages. */
     interface DefinitionStages {
         /** The first stage of the Agent definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Agent definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -161,6 +163,7 @@ public interface Agent {
              */
             WithArcResourceId withExistingStorageMover(String resourceGroupName, String storageMoverName);
         }
+
         /** The stage of the Agent definition allowing to specify arcResourceId. */
         interface WithArcResourceId {
             /**
@@ -172,6 +175,7 @@ public interface Agent {
              */
             WithArcVmUuid withArcResourceId(String arcResourceId);
         }
+
         /** The stage of the Agent definition allowing to specify arcVmUuid. */
         interface WithArcVmUuid {
             /**
@@ -182,6 +186,7 @@ public interface Agent {
              */
             WithCreate withArcVmUuid(String arcVmUuid);
         }
+
         /**
          * The stage of the Agent definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -202,6 +207,7 @@ public interface Agent {
              */
             Agent create(Context context);
         }
+
         /** The stage of the Agent definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -213,6 +219,7 @@ public interface Agent {
             WithCreate withDescription(String description);
         }
     }
+
     /**
      * Begins update for the Agent resource.
      *
@@ -237,6 +244,7 @@ public interface Agent {
          */
         Agent apply(Context context);
     }
+
     /** The Agent update stages. */
     interface UpdateStages {
         /** The stage of the Agent update allowing to specify description. */
@@ -250,6 +258,7 @@ public interface Agent {
             Update withDescription(String description);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

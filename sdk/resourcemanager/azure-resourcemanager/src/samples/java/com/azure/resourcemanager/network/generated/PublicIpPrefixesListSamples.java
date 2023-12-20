@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for PublicIpPrefixes List. */
+/**
+ * Samples for PublicIpPrefixes List.
+ */
 public final class PublicIpPrefixesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/PublicIpPrefixListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/PublicIpPrefixListAll.json
      */
     /**
      * Sample code: List all public IP prefixes.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllPublicIPPrefixes(com.azure.resourcemanager.AzureResourceManager azure) {

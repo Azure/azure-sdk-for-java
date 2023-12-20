@@ -32,7 +32,7 @@ public final class WorkloadNetworksListVMGroupsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"yvvjskgfmo\",\"members\":[\"hpqgatjeaahhvj\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":4553438778846408776},\"id\":\"bjjidjksyxky\",\"name\":\"vxevblb\",\"type\":\"ednljl\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"ds\",\"members\":[\"cobiegstmninwjiz\",\"i\"],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":1072358778361989846},\"id\":\"jjtbxqmuluxlxqz\",\"name\":\"nersb\",\"type\":\"cucrwnamikze\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class WorkloadNetworksListVMGroupsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkVMGroup> response =
-            manager.workloadNetworks().listVMGroups("zkgimsid", "asi", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().listVMGroups("ixmonstshiyxg", "elfclducc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yvvjskgfmo", response.iterator().next().displayName());
-        Assertions.assertEquals("hpqgatjeaahhvj", response.iterator().next().members().get(0));
-        Assertions.assertEquals(4553438778846408776L, response.iterator().next().revision());
+        Assertions.assertEquals("ds", response.iterator().next().displayName());
+        Assertions.assertEquals("cobiegstmninwjiz", response.iterator().next().members().get(0));
+        Assertions.assertEquals(1072358778361989846L, response.iterator().next().revision());
     }
 }

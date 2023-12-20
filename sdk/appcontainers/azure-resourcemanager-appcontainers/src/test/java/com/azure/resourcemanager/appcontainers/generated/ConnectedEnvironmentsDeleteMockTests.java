@@ -56,6 +56,6 @@ public final class ConnectedEnvironmentsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.connectedEnvironments().delete("zcezelfwyfwl", "xjwet", com.azure.core.util.Context.NONE);
+        manager.connectedEnvironments().delete("lnwcltyjed", "xxmlfmkqscazua", com.azure.core.util.Context.NONE);
     }
 }

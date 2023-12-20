@@ -32,7 +32,7 @@ public final class GalleriesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"galleryResourceId\":\"zqljyxgtczh\"},\"id\":\"dbsdshm\",\"name\":\"xmaehvbbxu\",\"type\":\"iplt\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"galleryResourceId\":\"cpwpg\"},\"id\":\"rc\",\"name\":\"vtsoxf\",\"type\":\"kenx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class GalleriesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Gallery> response =
-            manager.galleries().listByDevCenter("p", "jpr", 967300246, com.azure.core.util.Context.NONE);
+            manager.galleries().listByDevCenter("wivkxo", "zunbixx", 535878702, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zqljyxgtczh", response.iterator().next().galleryResourceId());
+        Assertions.assertEquals("cpwpg", response.iterator().next().galleryResourceId());
     }
 }

@@ -10,16 +10,19 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
+import com.azure.search.documents.models.SemanticErrorMode;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
-/** Parameter group. */
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class SearchOptions implements JsonSerializable<SearchOptions> {
 
@@ -90,10 +93,34 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private String scoringProfile;
 
     /*
+     * Allows setting a separate search query that will be solely used for semantic reranking, semantic captions and
+     * semantic answers. Is useful for scenarios where there is a need to use different queries between the base
+     * retrieval and ranking phase, and the L2 semantic phase.
+     */
+    private String semanticQuery;
+
+    /*
      * The name of the semantic configuration that lists which fields should be used for semantic ranking, captions,
      * highlights, and answers
      */
     private String semanticConfiguration;
+
+    /*
+     * Allows the user to choose whether a semantic call should fail completely, or to return partial results
+     * (default).
+     */
+    private SemanticErrorMode semanticErrorHandling;
+
+    /*
+     * Allows the user to set an upper bound on the amount of time it takes for semantic enrichment to finish
+     * processing before the request fails.
+     */
+    private Integer semanticMaxWaitInMilliseconds;
+
+    /*
+     * Enables a debugging tool that can be used to further explore your search results.
+     */
+    private QueryDebugMode debug;
 
     /*
      * The list of field names to which to scope the full-text search. When using fielded search
@@ -113,10 +140,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private QuerySpellerType speller;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns answers extracted from
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns answers extracted from
      * key passages in the highest ranked documents. The number of answers returned can be configured by appending the
-     * pipe character '|' followed by the 'count-<number of answers>' option after the answers parameter value, such as
-     * 'extractive|count-3'. Default count is 1.
+     * pipe character `|` followed by the `count-<number of answers>` option after the answers parameter value, such as
+     * `extractive|count-3`. Default count is 1. The confidence threshold can be configured by appending the pipe
+     * character `|` followed by the `threshold-<confidence threshold>` option after the answers parameter value, such
+     * as `extractive|threshold-0.9`. Default threshold is 0.7.
      */
     private String answers;
 
@@ -161,20 +190,23 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     private Integer top;
 
     /*
-     * This parameter is only valid if the query type is 'semantic'. If set, the query returns captions extracted from
-     * key passages in the highest ranked documents. When Captions is set to 'extractive', highlighting is enabled by
-     * default, and can be configured by appending the pipe character '|' followed by the 'highlight-<true/false>'
-     * option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * This parameter is only valid if the query type is `semantic`. If set, the query returns captions extracted from
+     * key passages in the highest ranked documents. When Captions is set to `extractive`, highlighting is enabled by
+     * default, and can be configured by appending the pipe character `|` followed by the `highlight-<true/false>`
+     * option, such as `extractive|highlight-true`. Defaults to `None`.
      */
     private String captions;
 
     /*
-     * The list of field names used for semantic search.
+     * The list of field names used for semantic ranking.
      */
     private List<String> semanticFields;
 
-    /** Creates an instance of SearchOptions class. */
-    public SearchOptions() {}
+    /**
+     * Creates an instance of SearchOptions class.
+     */
+    public SearchOptions() {
+    }
 
     /**
      * Get the includeTotalCount property: A value that specifies whether to fetch the total count of results. Default
@@ -385,7 +417,8 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     /**
      * Get the scoringParameters property: The list of parameter values to be used in scoring functions (for example,
      * referencePointParameter) using the format name-values. For example, if the scoring profile defines a function
-     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the quotes).
+     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the
+     * quotes).
      *
      * @return the scoringParameters value.
      */
@@ -396,7 +429,8 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     /**
      * Set the scoringParameters property: The list of parameter values to be used in scoring functions (for example,
      * referencePointParameter) using the format name-values. For example, if the scoring profile defines a function
-     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the quotes).
+     * with a parameter called 'mylocation' the parameter string would be "mylocation--122.2,44.8" (without the
+     * quotes).
      *
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchOptions object itself.
@@ -407,8 +441,8 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the scoringProfile property: The name of a scoring profile to evaluate match scores for matching documents in
-     * order to sort the results.
+     * Get the scoringProfile property: The name of a scoring profile to evaluate match scores for matching documents
+     * in order to sort the results.
      *
      * @return the scoringProfile value.
      */
@@ -417,14 +451,38 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the scoringProfile property: The name of a scoring profile to evaluate match scores for matching documents in
-     * order to sort the results.
+     * Set the scoringProfile property: The name of a scoring profile to evaluate match scores for matching documents
+     * in order to sort the results.
      *
      * @param scoringProfile the scoringProfile value to set.
      * @return the SearchOptions object itself.
      */
     public SearchOptions setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
+        return this;
+    }
+
+    /**
+     * Get the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use
+     * different queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @return the semanticQuery value.
+     */
+    public String getSemanticQuery() {
+        return this.semanticQuery;
+    }
+
+    /**
+     * Set the semanticQuery property: Allows setting a separate search query that will be solely used for semantic
+     * reranking, semantic captions and semantic answers. Is useful for scenarios where there is a need to use
+     * different queries between the base retrieval and ranking phase, and the L2 semantic phase.
+     *
+     * @param semanticQuery the semanticQuery value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticQuery(String semanticQuery) {
+        this.semanticQuery = semanticQuery;
         return this;
     }
 
@@ -451,9 +509,73 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the searchFields property: The list of field names to which to scope the full-text search. When using fielded
-     * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
-     * take precedence over any field names listed in this parameter.
+     * Get the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail
+     * completely, or to return partial results (default).
+     *
+     * @return the semanticErrorHandling value.
+     */
+    public SemanticErrorMode getSemanticErrorHandling() {
+        return this.semanticErrorHandling;
+    }
+
+    /**
+     * Set the semanticErrorHandling property: Allows the user to choose whether a semantic call should fail
+     * completely, or to return partial results (default).
+     *
+     * @param semanticErrorHandling the semanticErrorHandling value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticErrorHandling(SemanticErrorMode semanticErrorHandling) {
+        this.semanticErrorHandling = semanticErrorHandling;
+        return this;
+    }
+
+    /**
+     * Get the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
+     * takes for semantic enrichment to finish processing before the request fails.
+     *
+     * @return the semanticMaxWaitInMilliseconds value.
+     */
+    public Integer getSemanticMaxWaitInMilliseconds() {
+        return this.semanticMaxWaitInMilliseconds;
+    }
+
+    /**
+     * Set the semanticMaxWaitInMilliseconds property: Allows the user to set an upper bound on the amount of time it
+     * takes for semantic enrichment to finish processing before the request fails.
+     *
+     * @param semanticMaxWaitInMilliseconds the semanticMaxWaitInMilliseconds value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticMaxWaitInMilliseconds(Integer semanticMaxWaitInMilliseconds) {
+        this.semanticMaxWaitInMilliseconds = semanticMaxWaitInMilliseconds;
+        return this;
+    }
+
+    /**
+     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @return the debug value.
+     */
+    public QueryDebugMode getDebug() {
+        return this.debug;
+    }
+
+    /**
+     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
+     *
+     * @param debug the debug value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setDebug(QueryDebugMode debug) {
+        this.debug = debug;
+        return this;
+    }
+
+    /**
+     * Get the searchFields property: The list of field names to which to scope the full-text search. When using
+     * fielded search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search
+     * expression take precedence over any field names listed in this parameter.
      *
      * @return the searchFields value.
      */
@@ -462,9 +584,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the searchFields property: The list of field names to which to scope the full-text search. When using fielded
-     * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
-     * take precedence over any field names listed in this parameter.
+     * Set the searchFields property: The list of field names to which to scope the full-text search. When using
+     * fielded search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search
+     * expression take precedence over any field names listed in this parameter.
      *
      * @param searchFields the searchFields value to set.
      * @return the SearchOptions object itself.
@@ -515,10 +637,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
-     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     * Get the answers property: This parameter is only valid if the query type is `semantic`. If set, the query
+     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
+     * be configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after
+     * the answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @return the answers value.
      */
@@ -527,10 +651,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
-     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
-     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
-     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     * Set the answers property: This parameter is only valid if the query type is `semantic`. If set, the query
+     * returns answers extracted from key passages in the highest ranked documents. The number of answers returned can
+     * be configured by appending the pipe character `|` followed by the `count-&lt;number of answers&gt;` option after
+     * the answers parameter value, such as `extractive|count-3`. Default count is 1. The confidence threshold can be
+     * configured by appending the pipe character `|` followed by the `threshold-&lt;confidence threshold&gt;` option
+     * after the answers parameter value, such as `extractive|threshold-0.9`. Default threshold is 0.7.
      *
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
@@ -683,10 +809,10 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @return the captions value.
      */
@@ -695,10 +821,10 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the captions property: This parameter is only valid if the query type is `semantic`. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
-     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
-     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     * `extractive`, highlighting is enabled by default, and can be configured by appending the pipe character `|`
+     * followed by the `highlight-&lt;true/false&gt;` option, such as `extractive|highlight-true`. Defaults to `None`.
      *
      * @param captions the captions value to set.
      * @return the SearchOptions object itself.
@@ -709,7 +835,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Get the semanticFields property: The list of field names used for semantic search.
+     * Get the semanticFields property: The list of field names used for semantic ranking.
      *
      * @return the semanticFields value.
      */
@@ -718,7 +844,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the semanticFields property: The list of field names used for semantic search.
+     * Set the semanticFields property: The list of field names used for semantic ranking.
      *
      * @param semanticFields the semanticFields value to set.
      * @return the SearchOptions object itself.
@@ -734,30 +860,36 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         jsonWriter.writeBooleanField("includeTotalCount", this.includeTotalCount);
         jsonWriter.writeArrayField("Facets", this.facets, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("$filter", this.filter);
-        jsonWriter.writeArrayField(
-                "HighlightFields", this.highlightFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("HighlightFields", this.highlightFields,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag);
         jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag);
         jsonWriter.writeNumberField("minimumCoverage", this.minimumCoverage);
         jsonWriter.writeArrayField("OrderBy", this.orderBy, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("queryType", Objects.toString(this.queryType, null));
-        jsonWriter.writeArrayField(
-                "ScoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeArrayField("ScoringParameters", this.scoringParameters,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile);
+        jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration);
+        jsonWriter.writeStringField("semanticErrorHandling",
+            this.semanticErrorHandling == null ? null : this.semanticErrorHandling.toString());
+        jsonWriter.writeNumberField("semanticMaxWaitInMilliseconds", this.semanticMaxWaitInMilliseconds);
+        jsonWriter.writeStringField("debug", this.debug == null ? null : this.debug.toString());
         jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("queryLanguage", Objects.toString(this.queryLanguage, null));
-        jsonWriter.writeStringField("speller", Objects.toString(this.speller, null));
+        jsonWriter.writeStringField("queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString());
+        jsonWriter.writeStringField("speller", this.speller == null ? null : this.speller.toString());
         jsonWriter.writeStringField("answers", this.answers);
-        jsonWriter.writeStringField("searchMode", Objects.toString(this.searchMode, null));
-        jsonWriter.writeStringField("scoringStatistics", Objects.toString(this.scoringStatistics, null));
+        jsonWriter.writeStringField("searchMode", this.searchMode == null ? null : this.searchMode.toString());
+        jsonWriter.writeStringField("scoringStatistics",
+            this.scoringStatistics == null ? null : this.scoringStatistics.toString());
         jsonWriter.writeStringField("sessionId", this.sessionId);
         jsonWriter.writeArrayField("$select", this.select, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("$skip", this.skip);
         jsonWriter.writeNumberField("$top", this.top);
         jsonWriter.writeStringField("captions", this.captions);
-        jsonWriter.writeArrayField(
-                "semanticFields", this.semanticFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("semanticFields", this.semanticFields,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -766,78 +898,84 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchOptions if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchOptions.
      */
     public static SearchOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SearchOptions deserializedSearchOptions = new SearchOptions();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("includeTotalCount".equals(fieldName)) {
-                            deserializedSearchOptions.includeTotalCount = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("Facets".equals(fieldName)) {
-                            List<String> facets = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.facets = facets;
-                        } else if ("$filter".equals(fieldName)) {
-                            deserializedSearchOptions.filter = reader.getString();
-                        } else if ("HighlightFields".equals(fieldName)) {
-                            List<String> highlightFields = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.highlightFields = highlightFields;
-                        } else if ("highlightPostTag".equals(fieldName)) {
-                            deserializedSearchOptions.highlightPostTag = reader.getString();
-                        } else if ("highlightPreTag".equals(fieldName)) {
-                            deserializedSearchOptions.highlightPreTag = reader.getString();
-                        } else if ("minimumCoverage".equals(fieldName)) {
-                            deserializedSearchOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
-                        } else if ("OrderBy".equals(fieldName)) {
-                            List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.orderBy = orderBy;
-                        } else if ("queryType".equals(fieldName)) {
-                            deserializedSearchOptions.queryType = QueryType.fromString(reader.getString());
-                        } else if ("ScoringParameters".equals(fieldName)) {
-                            List<String> scoringParameters = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.scoringParameters = scoringParameters;
-                        } else if ("scoringProfile".equals(fieldName)) {
-                            deserializedSearchOptions.scoringProfile = reader.getString();
-                        } else if ("semanticConfiguration".equals(fieldName)) {
-                            deserializedSearchOptions.semanticConfiguration = reader.getString();
-                        } else if ("searchFields".equals(fieldName)) {
-                            List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.searchFields = searchFields;
-                        } else if ("queryLanguage".equals(fieldName)) {
-                            deserializedSearchOptions.queryLanguage = QueryLanguage.fromString(reader.getString());
-                        } else if ("speller".equals(fieldName)) {
-                            deserializedSearchOptions.speller = QuerySpellerType.fromString(reader.getString());
-                        } else if ("answers".equals(fieldName)) {
-                            deserializedSearchOptions.answers = reader.getString();
-                        } else if ("searchMode".equals(fieldName)) {
-                            deserializedSearchOptions.searchMode = SearchMode.fromString(reader.getString());
-                        } else if ("scoringStatistics".equals(fieldName)) {
-                            deserializedSearchOptions.scoringStatistics =
-                                    ScoringStatistics.fromString(reader.getString());
-                        } else if ("sessionId".equals(fieldName)) {
-                            deserializedSearchOptions.sessionId = reader.getString();
-                        } else if ("$select".equals(fieldName)) {
-                            List<String> select = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.select = select;
-                        } else if ("$skip".equals(fieldName)) {
-                            deserializedSearchOptions.skip = reader.getNullable(JsonReader::getInt);
-                        } else if ("$top".equals(fieldName)) {
-                            deserializedSearchOptions.top = reader.getNullable(JsonReader::getInt);
-                        } else if ("captions".equals(fieldName)) {
-                            deserializedSearchOptions.captions = reader.getString();
-                        } else if ("semanticFields".equals(fieldName)) {
-                            List<String> semanticFields = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSearchOptions.semanticFields = semanticFields;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    return deserializedSearchOptions;
-                });
+        return jsonReader.readObject(reader -> {
+            SearchOptions deserializedSearchOptions = new SearchOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("includeTotalCount".equals(fieldName)) {
+                    deserializedSearchOptions.includeTotalCount = reader.getNullable(JsonReader::getBoolean);
+                } else if ("Facets".equals(fieldName)) {
+                    List<String> facets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.facets = facets;
+                } else if ("$filter".equals(fieldName)) {
+                    deserializedSearchOptions.filter = reader.getString();
+                } else if ("HighlightFields".equals(fieldName)) {
+                    List<String> highlightFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.highlightFields = highlightFields;
+                } else if ("highlightPostTag".equals(fieldName)) {
+                    deserializedSearchOptions.highlightPostTag = reader.getString();
+                } else if ("highlightPreTag".equals(fieldName)) {
+                    deserializedSearchOptions.highlightPreTag = reader.getString();
+                } else if ("minimumCoverage".equals(fieldName)) {
+                    deserializedSearchOptions.minimumCoverage = reader.getNullable(JsonReader::getDouble);
+                } else if ("OrderBy".equals(fieldName)) {
+                    List<String> orderBy = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.orderBy = orderBy;
+                } else if ("queryType".equals(fieldName)) {
+                    deserializedSearchOptions.queryType = QueryType.fromString(reader.getString());
+                } else if ("ScoringParameters".equals(fieldName)) {
+                    List<String> scoringParameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.scoringParameters = scoringParameters;
+                } else if ("scoringProfile".equals(fieldName)) {
+                    deserializedSearchOptions.scoringProfile = reader.getString();
+                } else if ("semanticQuery".equals(fieldName)) {
+                    deserializedSearchOptions.semanticQuery = reader.getString();
+                } else if ("semanticConfiguration".equals(fieldName)) {
+                    deserializedSearchOptions.semanticConfiguration = reader.getString();
+                } else if ("semanticErrorHandling".equals(fieldName)) {
+                    deserializedSearchOptions.semanticErrorHandling = SemanticErrorMode.fromString(reader.getString());
+                } else if ("semanticMaxWaitInMilliseconds".equals(fieldName)) {
+                    deserializedSearchOptions.semanticMaxWaitInMilliseconds = reader.getNullable(JsonReader::getInt);
+                } else if ("debug".equals(fieldName)) {
+                    deserializedSearchOptions.debug = QueryDebugMode.fromString(reader.getString());
+                } else if ("searchFields".equals(fieldName)) {
+                    List<String> searchFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.searchFields = searchFields;
+                } else if ("queryLanguage".equals(fieldName)) {
+                    deserializedSearchOptions.queryLanguage = QueryLanguage.fromString(reader.getString());
+                } else if ("speller".equals(fieldName)) {
+                    deserializedSearchOptions.speller = QuerySpellerType.fromString(reader.getString());
+                } else if ("answers".equals(fieldName)) {
+                    deserializedSearchOptions.answers = reader.getString();
+                } else if ("searchMode".equals(fieldName)) {
+                    deserializedSearchOptions.searchMode = SearchMode.fromString(reader.getString());
+                } else if ("scoringStatistics".equals(fieldName)) {
+                    deserializedSearchOptions.scoringStatistics = ScoringStatistics.fromString(reader.getString());
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedSearchOptions.sessionId = reader.getString();
+                } else if ("$select".equals(fieldName)) {
+                    List<String> select = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.select = select;
+                } else if ("$skip".equals(fieldName)) {
+                    deserializedSearchOptions.skip = reader.getNullable(JsonReader::getInt);
+                } else if ("$top".equals(fieldName)) {
+                    deserializedSearchOptions.top = reader.getNullable(JsonReader::getInt);
+                } else if ("captions".equals(fieldName)) {
+                    deserializedSearchOptions.captions = reader.getString();
+                } else if ("semanticFields".equals(fieldName)) {
+                    List<String> semanticFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSearchOptions.semanticFields = semanticFields;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedSearchOptions;
+        });
     }
 
     /**
@@ -868,9 +1006,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     }
 
     /**
-     * Set the searchFields property: The list of field names to which to scope the full-text search. When using fielded
-     * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
-     * take precedence over any field names listed in this parameter.
+     * Set the searchFields property: The list of field names to which to scope the full-text search. When using
+     * fielded search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search
+     * expression take precedence over any field names listed in this parameter.
      *
      * @param searchFields the searchFields value to set.
      * @return the SearchOptions object itself.

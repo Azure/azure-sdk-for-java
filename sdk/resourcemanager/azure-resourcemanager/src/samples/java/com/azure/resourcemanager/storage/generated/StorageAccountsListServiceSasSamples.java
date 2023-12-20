@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.Permissions;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.SignedResource;
@@ -13,7 +12,7 @@ import java.time.OffsetDateTime;
 /** Samples for StorageAccounts ListServiceSas. */
 public final class StorageAccountsListServiceSasSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListServiceSAS.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListServiceSAS.json
      */
     /**
      * Sample code: StorageAccountListServiceSAS.
@@ -34,6 +33,6 @@ public final class StorageAccountsListServiceSasSamples {
                     .withResource(SignedResource.C)
                     .withPermissions(Permissions.L)
                     .withSharedAccessExpiryTime(OffsetDateTime.parse("2017-05-24T11:32:48.8457197Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

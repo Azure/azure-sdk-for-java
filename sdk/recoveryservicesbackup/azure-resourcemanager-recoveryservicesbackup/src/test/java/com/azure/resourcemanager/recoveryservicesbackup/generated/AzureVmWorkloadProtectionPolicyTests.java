@@ -7,10 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVmWorkloadProtectionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PolicyType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Settings;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SubProtectionPolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.TieringMode;
+import com.azure.resourcemanager.recoveryservicesbackup.models.TieringPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,15 +26,26 @@ public final class AzureVmWorkloadProtectionPolicyTests {
         AzureVmWorkloadProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"GenericDataSource\",\"settings\":{\"timeZone\":\"dlwwqfbumlkxt\",\"issqlcompression\":true,\"isCompression\":true},\"subProtectionPolicy\":[{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"SnapshotCopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}},{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":547871572,\"resourceGuardOperationRequests\":[\"oookkqfq\"]}")
+                    "{\"backupManagementType\":\"AzureWorkload\",\"workLoadType\":\"Exchange\",\"settings\":{\"timeZone\":\"uutpwoqhih\",\"issqlcompression\":false,\"isCompression\":false},\"subProtectionPolicy\":[{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"foimwkslircizjxv\":{\"tieringMode\":\"TierRecommended\",\"duration\":613728557,\"durationType\":\"Days\"},\"vlhv\":{\"tieringMode\":\"TierAfter\",\"duration\":1161175344,\"durationType\":\"Days\"}}},{\"policyType\":\"Incremental\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"wjslbiwkojgcyzt\":{\"tieringMode\":\"TierAfter\",\"duration\":381355743,\"durationType\":\"Days\"},\"eqphchqnrnr\":{\"tieringMode\":\"TierAfter\",\"duration\":672857926,\"durationType\":\"Invalid\"},\"ykqgaifmvik\":{\"tieringMode\":\"DoNotTier\",\"duration\":1644281123,\"durationType\":\"Weeks\"}}},{\"policyType\":\"Full\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"xcv\":{\"tieringMode\":\"Invalid\",\"duration\":1006090143,\"durationType\":\"Years\"},\"volvtn\":{\"tieringMode\":\"Invalid\",\"duration\":986033506,\"durationType\":\"Days\"},\"mjdftu\":{\"tieringMode\":\"TierAfter\",\"duration\":1191725223,\"durationType\":\"Months\"},\"eamtmcz\":{\"tieringMode\":\"TierRecommended\",\"duration\":184092911,\"durationType\":\"Invalid\"}}}],\"makePolicyConsistent\":false,\"protectedItemsCount\":418634069,\"resourceGuardOperationRequests\":[\"w\",\"qioknssxmojm\"]}")
                 .toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(547871572, model.protectedItemsCount());
-        Assertions.assertEquals("oookkqfq", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
-        Assertions.assertEquals("dlwwqfbumlkxt", model.settings().timeZone());
-        Assertions.assertEquals(true, model.settings().issqlcompression());
-        Assertions.assertEquals(true, model.settings().isCompression());
-        Assertions.assertEquals(PolicyType.FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals(418634069, model.protectedItemsCount());
+        Assertions.assertEquals("w", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workLoadType());
+        Assertions.assertEquals("uutpwoqhih", model.settings().timeZone());
+        Assertions.assertEquals(false, model.settings().issqlcompression());
+        Assertions.assertEquals(false, model.settings().isCompression());
+        Assertions.assertEquals(PolicyType.LOG, model.subProtectionPolicy().get(0).policyType());
+        Assertions
+            .assertEquals(
+                TieringMode.TIER_RECOMMENDED,
+                model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").tieringMode());
+        Assertions
+            .assertEquals(
+                613728557, model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").duration());
+        Assertions
+            .assertEquals(
+                RetentionDurationType.DAYS,
+                model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").durationType());
         Assertions.assertEquals(false, model.makePolicyConsistent());
     }
 
@@ -39,46 +53,101 @@ public final class AzureVmWorkloadProtectionPolicyTests {
     public void testSerialize() throws Exception {
         AzureVmWorkloadProtectionPolicy model =
             new AzureVmWorkloadProtectionPolicy()
-                .withProtectedItemsCount(547871572)
-                .withResourceGuardOperationRequests(Arrays.asList("oookkqfq"))
-                .withWorkLoadType(WorkloadType.GENERIC_DATA_SOURCE)
+                .withProtectedItemsCount(418634069)
+                .withResourceGuardOperationRequests(Arrays.asList("w", "qioknssxmojm"))
+                .withWorkLoadType(WorkloadType.EXCHANGE)
                 .withSettings(
-                    new Settings().withTimeZone("dlwwqfbumlkxt").withIssqlcompression(true).withIsCompression(true))
+                    new Settings().withTimeZone("uutpwoqhih").withIssqlcompression(false).withIsCompression(false))
                 .withSubProtectionPolicy(
                     Arrays
                         .asList(
                             new SubProtectionPolicy()
+                                .withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(
+                                    mapOf(
+                                        "foimwkslircizjxv",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_RECOMMENDED)
+                                            .withDuration(613728557)
+                                            .withDurationType(RetentionDurationType.DAYS),
+                                        "vlhv",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_AFTER)
+                                            .withDuration(1161175344)
+                                            .withDurationType(RetentionDurationType.DAYS))),
+                            new SubProtectionPolicy()
+                                .withPolicyType(PolicyType.INCREMENTAL)
+                                .withSchedulePolicy(new SchedulePolicy())
+                                .withRetentionPolicy(new RetentionPolicy())
+                                .withTieringPolicy(
+                                    mapOf(
+                                        "wjslbiwkojgcyzt",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_AFTER)
+                                            .withDuration(381355743)
+                                            .withDurationType(RetentionDurationType.DAYS),
+                                        "eqphchqnrnr",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_AFTER)
+                                            .withDuration(672857926)
+                                            .withDurationType(RetentionDurationType.INVALID),
+                                        "ykqgaifmvik",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.DO_NOT_TIER)
+                                            .withDuration(1644281123)
+                                            .withDurationType(RetentionDurationType.WEEKS))),
+                            new SubProtectionPolicy()
                                 .withPolicyType(PolicyType.FULL)
                                 .withSchedulePolicy(new SchedulePolicy())
                                 .withRetentionPolicy(new RetentionPolicy())
-                                .withTieringPolicy(mapOf()),
-                            new SubProtectionPolicy()
-                                .withPolicyType(PolicyType.SNAPSHOT_COPY_ONLY_FULL)
-                                .withSchedulePolicy(new SchedulePolicy())
-                                .withRetentionPolicy(new RetentionPolicy())
-                                .withTieringPolicy(mapOf()),
-                            new SubProtectionPolicy()
-                                .withPolicyType(PolicyType.COPY_ONLY_FULL)
-                                .withSchedulePolicy(new SchedulePolicy())
-                                .withRetentionPolicy(new RetentionPolicy())
-                                .withTieringPolicy(mapOf()),
-                            new SubProtectionPolicy()
-                                .withPolicyType(PolicyType.COPY_ONLY_FULL)
-                                .withSchedulePolicy(new SchedulePolicy())
-                                .withRetentionPolicy(new RetentionPolicy())
-                                .withTieringPolicy(mapOf())))
+                                .withTieringPolicy(
+                                    mapOf(
+                                        "xcv",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.INVALID)
+                                            .withDuration(1006090143)
+                                            .withDurationType(RetentionDurationType.YEARS),
+                                        "volvtn",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.INVALID)
+                                            .withDuration(986033506)
+                                            .withDurationType(RetentionDurationType.DAYS),
+                                        "mjdftu",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_AFTER)
+                                            .withDuration(1191725223)
+                                            .withDurationType(RetentionDurationType.MONTHS),
+                                        "eamtmcz",
+                                        new TieringPolicy()
+                                            .withTieringMode(TieringMode.TIER_RECOMMENDED)
+                                            .withDuration(184092911)
+                                            .withDurationType(RetentionDurationType.INVALID)))))
                 .withMakePolicyConsistent(false);
         model = BinaryData.fromObject(model).toObject(AzureVmWorkloadProtectionPolicy.class);
-        Assertions.assertEquals(547871572, model.protectedItemsCount());
-        Assertions.assertEquals("oookkqfq", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.GENERIC_DATA_SOURCE, model.workLoadType());
-        Assertions.assertEquals("dlwwqfbumlkxt", model.settings().timeZone());
-        Assertions.assertEquals(true, model.settings().issqlcompression());
-        Assertions.assertEquals(true, model.settings().isCompression());
-        Assertions.assertEquals(PolicyType.FULL, model.subProtectionPolicy().get(0).policyType());
+        Assertions.assertEquals(418634069, model.protectedItemsCount());
+        Assertions.assertEquals("w", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.EXCHANGE, model.workLoadType());
+        Assertions.assertEquals("uutpwoqhih", model.settings().timeZone());
+        Assertions.assertEquals(false, model.settings().issqlcompression());
+        Assertions.assertEquals(false, model.settings().isCompression());
+        Assertions.assertEquals(PolicyType.LOG, model.subProtectionPolicy().get(0).policyType());
+        Assertions
+            .assertEquals(
+                TieringMode.TIER_RECOMMENDED,
+                model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").tieringMode());
+        Assertions
+            .assertEquals(
+                613728557, model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").duration());
+        Assertions
+            .assertEquals(
+                RetentionDurationType.DAYS,
+                model.subProtectionPolicy().get(0).tieringPolicy().get("foimwkslircizjxv").durationType());
         Assertions.assertEquals(false, model.makePolicyConsistent());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

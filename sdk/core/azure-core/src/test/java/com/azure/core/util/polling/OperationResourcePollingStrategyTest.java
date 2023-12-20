@@ -322,6 +322,7 @@ public class OperationResourcePollingStrategyTest {
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
+        HttpRequest finalRequest = new HttpRequest(HttpMethod.GET, finalResultUrl);
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -330,13 +331,16 @@ public class OperationResourcePollingStrategyTest {
                 if (mockPollUrl.equals(request.getUrl().toString()) && count == 0) {
                     return Mono.just(new MockHttpResponse(pollRequest, args[0],
                         new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
-                        new TestPollResult("Retry")));
+                        new TestPollResult("Succeeded")));
                 } else if (mockPollUrl.equals(request.getUrl().toString()) && count == 1) {
                     return Mono.just(new MockHttpResponse(pollRequest, args[1],
                         new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Succeeded")));
+                } else if (finalResultUrl.equals(request.getUrl().toString()) && count == 1) {
+                    return Mono.just(new MockHttpResponse(finalRequest, args[1], new HttpHeaders(),
+                        new TestPollResult("final-state")));
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, args[2], new HttpHeaders(),
+                    return Mono.just(new MockHttpResponse(finalRequest, args[2], new HttpHeaders(),
                         new TestPollResult("final-state")));
                 } else {
                     return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
@@ -406,8 +410,10 @@ public class OperationResourcePollingStrategyTest {
 
     static Stream<int[]> statusCodeProvider() {
         return Stream.of(
+            // poll 500, poll 200 Succeeded, final 200
             new int[]{500, 200, 200, 3},
-            new int[]{200, 500, 200, 2});
+            // poll 200 Succeeded, final 500, final 200
+            new int[]{200, 500, 200, 3});
     }
 
 }

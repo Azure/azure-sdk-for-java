@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.support.generated;
 
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.PreferredContactMethod;
 import com.azure.resourcemanager.support.models.QuotaChangeRequest;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
+import com.azure.resourcemanager.support.models.UserConsent;
 import java.util.Arrays;
 
 /** Samples for SupportTickets Create. */
 public final class SupportTicketsCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for Azure Synapse Analytics.
@@ -31,6 +34,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_datawarehouse_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -56,7 +62,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Active Jobs and Job Schedules for a Batch account.
@@ -72,6 +78,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -97,7 +106,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for Machine Learning service.
@@ -113,6 +122,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/machine_learning_service_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -138,7 +150,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Batch accounts for a subscription.
@@ -154,6 +166,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -179,7 +194,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForDTUs.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for DTUs for SQL Database.
@@ -195,6 +210,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_database_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -220,7 +238,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateGenericQuotaTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateGenericQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for services that do not require additional details in the
@@ -253,7 +271,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Low-priority cores for a Batch account.
@@ -269,6 +287,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -295,7 +316,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlManagedInstanceQuotaTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlManagedInstanceQuotaTicket.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Azure SQL managed instance.
@@ -311,6 +332,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_managedinstance_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -339,7 +363,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Pools for a Batch account.
@@ -355,6 +379,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -380,7 +407,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for a Batch account.
@@ -396,6 +423,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/batch_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -422,7 +452,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatabaseQuotaTicketForServers.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatabaseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for SQL Database.
@@ -438,6 +468,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_database_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -459,7 +492,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateBillingSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateBillingSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Billing related issues.
@@ -474,6 +507,8 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/billing_service_guid/problemClassifications/billing_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -485,11 +520,12 @@ public final class SupportTicketsCreateSamples {
                     .withPreferredSupportLanguage("en-US"))
             .withTitle("my title")
             .withServiceId("/providers/Microsoft.Support/services/billing_service_guid")
+            .withFileWorkspaceName("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSubMgmtSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSubMgmtSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Subscription Management related issues.
@@ -505,6 +541,8 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/subscription_management_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -516,11 +554,12 @@ public final class SupportTicketsCreateSamples {
                     .withPreferredSupportLanguage("en-US"))
             .withTitle("my title")
             .withServiceId("/providers/Microsoft.Support/services/subscription_management_service_guid")
+            .withFileWorkspaceName("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateTechnicalSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateTechnicalSupportTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket for Technical issue related to a specific resource.
@@ -536,6 +575,21 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/virtual_machine_running_linux_service_guid/problemClassifications/problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withProblemScopingQuestions(
+                "{\"articleId\":\"076846c1-4c0b-4b21-91c6-1a30246b3867\",\"scopingDetails\":[{\"question\":\"When did"
+                    + " the problem"
+                    + " begin?\",\"controlId\":\"problem_start_time\",\"orderId\":1,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"2023-08-31T18:55:00.739Z\",\"value\":\"2023-08-31T18:55:00.739Z\",\"type\":\"datetime\"}},{\"question\":\"API"
+                    + " Type of the Cosmos DB"
+                    + " account\",\"controlId\":\"api_type\",\"orderId\":2,\"inputType\":\"static\",\"answer\":{\"displayValue\":\"Table\",\"value\":\"tables\",\"type\":\"string\"}},{\"question\":\"Table"
+                    + " name\",\"controlId\":\"collection_name_table\",\"orderId\":11,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"Select"
+                    + " Table Name\",\"value\":\"dont_know_answer\",\"type\":\"string\"}},{\"question\":\"Provide"
+                    + " additional details about the issue you're"
+                    + " facing\",\"controlId\":\"problem_description\",\"orderId\":12,\"inputType\":\"nonstatic\",\"answer\":{\"displayValue\":\"test"
+                    + " ticket, please ignore and close\",\"value\":\"test ticket, please ignore and"
+                    + " close\",\"type\":\"string\"}}]}")
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -547,15 +601,22 @@ public final class SupportTicketsCreateSamples {
                     .withPreferredSupportLanguage("en-US"))
             .withTitle("my title")
             .withServiceId("/providers/Microsoft.Support/services/cddd3eb5-1830-b494-44fd-782f691479dc")
+            .withFileWorkspaceName("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066")
             .withTechnicalTicketDetails(
                 new TechnicalTicketDetails()
                     .withResourceId(
                         "/subscriptions/subid/resourceGroups/test/providers/Microsoft.Compute/virtualMachines/testserver"))
+            .withSecondaryConsent(
+                Arrays
+                    .asList(
+                        new SecondaryConsent()
+                            .withUserConsent(UserConsent.YES)
+                            .withType("virtualmachinerunninglinuxservice")))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateMachineLearningQuotaTicketForDedicatedCores.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for specific VM family cores for Machine Learning service.
@@ -571,6 +632,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/machine_learning_service_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -597,7 +661,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateSqlDatawarehouseQuotaTicketForServers.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Servers for Azure Synapse Analytics.
@@ -613,6 +677,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/sql_datawarehouse_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")
@@ -634,7 +701,7 @@ public final class SupportTicketsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CreateCoresQuotaTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CreateCoresQuotaTicketForSubscription.json
      */
     /**
      * Sample code: Create a ticket to request Quota increase for Compute VM Cores.
@@ -650,6 +717,9 @@ public final class SupportTicketsCreateSamples {
             .withProblemClassificationId(
                 "/providers/Microsoft.Support/services/quota_service_guid/problemClassifications/cores_problemClassification_guid")
             .withSeverity(SeverityLevel.MODERATE)
+            .withAdvancedDiagnosticConsent(Consent.YES)
+            .withSupportPlanId(
+                "U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw=")
             .withContactDetails(
                 new ContactProfile()
                     .withFirstName("abc")

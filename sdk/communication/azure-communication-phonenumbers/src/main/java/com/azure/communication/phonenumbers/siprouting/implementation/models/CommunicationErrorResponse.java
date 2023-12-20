@@ -4,11 +4,13 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Communication Services error. */
 @Fluent
+@Generated
 public final class CommunicationErrorResponse {
     /*
      * The Communication Services error.

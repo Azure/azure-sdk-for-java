@@ -17,38 +17,42 @@ public final class UsageModelsResultTests {
         UsageModelsResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"dsoifiyipj\",\"value\":[{\"display\":{\"description\":\"gr\"},\"modelName\":\"znorcj\",\"targetType\":\"snb\"},{\"display\":{\"description\":\"abnmocpcyshu\"},\"modelName\":\"afbljjgpbtoqcjmk\",\"targetType\":\"a\"},{\"display\":{\"description\":\"idtqajzyu\"},\"modelName\":\"kudjkrlkhb\",\"targetType\":\"fepgzgq\"}]}")
+                    "{\"nextLink\":\"clhocohsl\",\"value\":[{\"display\":{\"description\":\"ggzfbu\"},\"modelName\":\"mvfaxkffeiith\",\"targetType\":\"m\"},{\"display\":{\"description\":\"v\"},\"modelName\":\"xmzsbbzogg\",\"targetType\":\"rxwburv\"},{\"display\":{\"description\":\"jnspydp\"},\"modelName\":\"oenkouknvudwti\",\"targetType\":\"bldngkpoc\"},{\"display\":{\"description\":\"z\"},\"modelName\":\"o\",\"targetType\":\"ukgjnpiucgygevq\"}]}")
                 .toObject(UsageModelsResult.class);
-        Assertions.assertEquals("dsoifiyipj", model.nextLink());
-        Assertions.assertEquals("gr", model.value().get(0).display().description());
-        Assertions.assertEquals("znorcj", model.value().get(0).modelName());
-        Assertions.assertEquals("snb", model.value().get(0).targetType());
+        Assertions.assertEquals("clhocohsl", model.nextLink());
+        Assertions.assertEquals("ggzfbu", model.value().get(0).display().description());
+        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).modelName());
+        Assertions.assertEquals("m", model.value().get(0).targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsageModelsResult model =
             new UsageModelsResult()
-                .withNextLink("dsoifiyipj")
+                .withNextLink("clhocohsl")
                 .withValue(
                     Arrays
                         .asList(
                             new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("gr"))
-                                .withModelName("znorcj")
-                                .withTargetType("snb"),
+                                .withDisplay(new UsageModelDisplay().withDescription("ggzfbu"))
+                                .withModelName("mvfaxkffeiith")
+                                .withTargetType("m"),
                             new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("abnmocpcyshu"))
-                                .withModelName("afbljjgpbtoqcjmk")
-                                .withTargetType("a"),
+                                .withDisplay(new UsageModelDisplay().withDescription("v"))
+                                .withModelName("xmzsbbzogg")
+                                .withTargetType("rxwburv"),
                             new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("idtqajzyu"))
-                                .withModelName("kudjkrlkhb")
-                                .withTargetType("fepgzgq")));
+                                .withDisplay(new UsageModelDisplay().withDescription("jnspydp"))
+                                .withModelName("oenkouknvudwti")
+                                .withTargetType("bldngkpoc"),
+                            new UsageModelInner()
+                                .withDisplay(new UsageModelDisplay().withDescription("z"))
+                                .withModelName("o")
+                                .withTargetType("ukgjnpiucgygevq")));
         model = BinaryData.fromObject(model).toObject(UsageModelsResult.class);
-        Assertions.assertEquals("dsoifiyipj", model.nextLink());
-        Assertions.assertEquals("gr", model.value().get(0).display().description());
-        Assertions.assertEquals("znorcj", model.value().get(0).modelName());
-        Assertions.assertEquals("snb", model.value().get(0).targetType());
+        Assertions.assertEquals("clhocohsl", model.nextLink());
+        Assertions.assertEquals("ggzfbu", model.value().get(0).display().description());
+        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).modelName());
+        Assertions.assertEquals("m", model.value().get(0).targetType());
     }
 }

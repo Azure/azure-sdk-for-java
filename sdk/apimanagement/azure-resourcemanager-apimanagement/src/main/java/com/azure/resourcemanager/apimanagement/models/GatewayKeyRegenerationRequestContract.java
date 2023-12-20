@@ -17,6 +17,10 @@ public final class GatewayKeyRegenerationRequestContract {
     @JsonProperty(value = "keyType", required = true)
     private KeyType keyType;
 
+    /** Creates an instance of GatewayKeyRegenerationRequestContract class. */
+    public GatewayKeyRegenerationRequestContract() {
+    }
+
     /**
      * Get the keyType property: The Key being regenerated.
      *

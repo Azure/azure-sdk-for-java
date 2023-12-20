@@ -13,16 +13,16 @@ public final class AttachedDatabaseConfigurationsCheckNameRequestTests {
     public void testDeserialize() throws Exception {
         AttachedDatabaseConfigurationsCheckNameRequest model =
             BinaryData
-                .fromString("{\"name\":\"dckzywbiexz\"}")
+                .fromString("{\"name\":\"wpmqt\"}")
                 .toObject(AttachedDatabaseConfigurationsCheckNameRequest.class);
-        Assertions.assertEquals("dckzywbiexz", model.name());
+        Assertions.assertEquals("wpmqt", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AttachedDatabaseConfigurationsCheckNameRequest model =
-            new AttachedDatabaseConfigurationsCheckNameRequest().withName("dckzywbiexz");
+            new AttachedDatabaseConfigurationsCheckNameRequest().withName("wpmqt");
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationsCheckNameRequest.class);
-        Assertions.assertEquals("dckzywbiexz", model.name());
+        Assertions.assertEquals("wpmqt", model.name());
     }
 }

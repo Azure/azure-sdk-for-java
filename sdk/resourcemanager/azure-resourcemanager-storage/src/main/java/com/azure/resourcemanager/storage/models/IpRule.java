@@ -23,6 +23,10 @@ public final class IpRule {
     @JsonProperty(value = "action")
     private Action action;
 
+    /** Creates an instance of IpRule class. */
+    public IpRule() {
+    }
+
     /**
      * Get the ipAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      *

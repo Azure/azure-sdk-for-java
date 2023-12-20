@@ -38,106 +38,93 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoutingIntentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoutingIntentsClient.
+ */
 public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoutingIntentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of RoutingIntentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoutingIntentsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RoutingIntentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RoutingIntentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientRoutingIntents to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientRoutingIntents to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface RoutingIntentsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routingIntentName") String routingIntentName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("routingIntentName") String routingIntentName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoutingIntentInner routingIntentParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoutingIntentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoutingIntentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routingIntentName") String routingIntentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("routingIntentName") String routingIntentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routingIntentName") String routingIntentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("routingIntentName") String routingIntentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListRoutingIntentResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListRoutingIntentResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListRoutingIntentResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListRoutingIntentResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -146,25 +133,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,34 +158,23 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
         if (routingIntentParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter routingIntentParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter routingIntentParameters is required and cannot be null."));
         } else {
             routingIntentParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routingIntentName,
-                            apiVersion,
-                            routingIntentParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routingIntentName, apiVersion, routingIntentParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -215,26 +184,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -248,31 +209,21 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
         if (routingIntentParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter routingIntentParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter routingIntentParameters is required and cannot be null."));
         } else {
             routingIntentParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routingIntentName,
-                apiVersion,
-                routingIntentParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routingIntentName, apiVersion, routingIntentParameters, accept, context);
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -284,26 +235,17 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
+        String resourceGroupName, String virtualHubName, String routingIntentName,
         RoutingIntentInner routingIntentParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters);
-        return this
-            .client
-            .<RoutingIntentInner, RoutingIntentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RoutingIntentInner.class,
-                RoutingIntentInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName,
+            routingIntentName, routingIntentParameters);
+        return this.client.<RoutingIntentInner, RoutingIntentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RoutingIntentInner.class, RoutingIntentInner.class, this.client.getContext());
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -316,24 +258,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context) {
+        String resourceGroupName, String virtualHubName, String routingIntentName,
+        RoutingIntentInner routingIntentParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, context);
-        return this
-            .client
-            .<RoutingIntentInner, RoutingIntentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RoutingIntentInner.class, RoutingIntentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName,
+            routingIntentName, routingIntentParameters, context);
+        return this.client.<RoutingIntentInner, RoutingIntentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RoutingIntentInner.class, RoutingIntentInner.class, context);
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -344,11 +280,8 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters) {
+    public SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters)
             .getSyncPoller();
@@ -356,7 +289,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -368,21 +301,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName,
+            routingIntentParameters, context).getSyncPoller();
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -393,19 +320,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoutingIntentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters) {
+    public Mono<RoutingIntentInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, RoutingIntentInner routingIntentParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -417,21 +340,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RoutingIntentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<RoutingIntentInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, RoutingIntentInner routingIntentParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -442,10 +359,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoutingIntentInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
+    public RoutingIntentInner createOrUpdate(String resourceGroupName, String virtualHubName, String routingIntentName,
         RoutingIntentInner routingIntentParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters)
             .block();
@@ -453,7 +367,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -465,20 +379,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoutingIntentInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, context)
-            .block();
+    public RoutingIntentInner createOrUpdate(String resourceGroupName, String virtualHubName, String routingIntentName,
+        RoutingIntentInner routingIntentParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters,
+            context).block();
     }
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -486,22 +395,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoutingIntentInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName) {
+    public Mono<Response<RoutingIntentInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -514,27 +419,17 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routingIntentName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routingIntentName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -543,22 +438,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoutingIntentInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
+    private Mono<Response<RoutingIntentInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -571,24 +462,16 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routingIntentName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routingIntentName, apiVersion, accept, context);
     }
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -598,15 +481,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoutingIntentInner> getAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName) {
+    public Mono<RoutingIntentInner> getAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -617,14 +500,14 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoutingIntentInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
+    public Response<RoutingIntentInner> getWithResponse(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName, context).block();
     }
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -640,7 +523,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -650,19 +533,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,27 +554,17 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routingIntentName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routingIntentName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -706,19 +575,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,24 +596,16 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routingIntentName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routingIntentName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -758,19 +615,17 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -781,19 +636,18 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -803,14 +657,14 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routingIntentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routingIntentName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName).getSyncPoller();
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -821,14 +675,14 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName, context).getSyncPoller();
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -839,14 +693,13 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routingIntentName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -857,16 +710,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routingIntentName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routingIntentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -881,7 +733,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -897,29 +749,25 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the routing intent result and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of the routing intent result and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoutingIntentInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName) {
+    private Mono<PagedResponse<RoutingIntentInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualHubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -928,58 +776,38 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<RoutingIntentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, apiVersion, accept, context))
+            .<PagedResponse<RoutingIntentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the routing intent result and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of the routing intent result and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoutingIntentInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName, Context context) {
+    private Mono<PagedResponse<RoutingIntentInner>> listSinglePageAsync(String resourceGroupName, String virtualHubName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -988,50 +816,36 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualHubName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoutingIntentInner> listAsync(String resourceGroupName, String virtualHubName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1039,25 +853,24 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoutingIntentInner> listAsync(String resourceGroupName, String virtualHubName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutingIntentInner> list(String resourceGroupName, String virtualHubName) {
@@ -1066,7 +879,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1074,7 +887,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoutingIntentInner> list(String resourceGroupName, String virtualHubName, Context context) {
@@ -1083,14 +896,15 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the routing intent result and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of the routing intent result and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoutingIntentInner>> listNextSinglePageAsync(String nextLink) {
@@ -1098,37 +912,28 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoutingIntentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RoutingIntentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of the routing intent result and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of the routing intent result and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoutingIntentInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1136,23 +941,13 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

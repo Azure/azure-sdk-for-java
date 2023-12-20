@@ -11,24 +11,24 @@ import com.azure.core.util.Context;
 /** Resource collection API of BareMetalMachineKeySets. */
 public interface BareMetalMachineKeySets {
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<BareMetalMachineKeySet> listByResourceGroup(String resourceGroupName, String clusterName);
+    PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName);
 
     /**
-     * List bare metal machine key sets of the cluster in the resource group.
+     * List bare metal machine key sets of the cluster.
      *
-     * <p>Get a list of bare metal machine key sets of the cluster in the provided resource group.
+     * <p>Get a list of bare metal machine key sets for the provided cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -36,11 +36,10 @@ public interface BareMetalMachineKeySets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets of the cluster in the provided resource group as paginated response
-     *     with {@link PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
+     *     PagedIterable}.
      */
-    PagedIterable<BareMetalMachineKeySet> listByResourceGroup(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.

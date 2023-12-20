@@ -14,11 +14,11 @@ public final class MetricDimensionTests {
         MetricDimension model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"c\",\"displayName\":\"ierhhbcsglummaj\",\"internalName\":\"aodxo\",\"toBeExportedForShoebox\":true}")
+                    "{\"name\":\"dwtiukbldngkp\",\"displayName\":\"ipazyxoegukgjnpi\",\"internalName\":\"gygev\",\"toBeExportedForShoebox\":true}")
                 .toObject(MetricDimension.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("ierhhbcsglummaj", model.displayName());
-        Assertions.assertEquals("aodxo", model.internalName());
+        Assertions.assertEquals("dwtiukbldngkp", model.name());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.displayName());
+        Assertions.assertEquals("gygev", model.internalName());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
@@ -26,14 +26,14 @@ public final class MetricDimensionTests {
     public void testSerialize() throws Exception {
         MetricDimension model =
             new MetricDimension()
-                .withName("c")
-                .withDisplayName("ierhhbcsglummaj")
-                .withInternalName("aodxo")
+                .withName("dwtiukbldngkp")
+                .withDisplayName("ipazyxoegukgjnpi")
+                .withInternalName("gygev")
                 .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("ierhhbcsglummaj", model.displayName());
-        Assertions.assertEquals("aodxo", model.internalName());
+        Assertions.assertEquals("dwtiukbldngkp", model.name());
+        Assertions.assertEquals("ipazyxoegukgjnpi", model.displayName());
+        Assertions.assertEquals("gygev", model.internalName());
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 }

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ApplicationGateways ListAvailableResponseHeaders. */
+/**
+ * Samples for ApplicationGateways ListAvailableResponseHeaders.
+ */
 public final class ApplicationGatewaysListAvailableResponseHeadersSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableResponseHeadersGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ApplicationGatewayAvailableResponseHeadersGet.json
      */
     /**
      * Sample code: Get Available Response Headers.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableResponseHeaders(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getApplicationGateways()
+        azure.networks().manager().serviceClient().getApplicationGateways()
             .listAvailableResponseHeadersWithResponse(com.azure.core.util.Context.NONE);
     }
 }

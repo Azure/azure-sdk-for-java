@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ApplicationGateways ListAvailableServerVariables. */
+/**
+ * Samples for ApplicationGateways ListAvailableServerVariables.
+ */
 public final class ApplicationGatewaysListAvailableServerVariablesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayAvailableServerVariablesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ApplicationGatewayAvailableServerVariablesGet.json
      */
     /**
      * Sample code: Get Available Server Variables.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableServerVariables(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getApplicationGateways()
+        azure.networks().manager().serviceClient().getApplicationGateways()
             .listAvailableServerVariablesWithResponse(com.azure.core.util.Context.NONE);
     }
 }

@@ -6,9 +6,7 @@ package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /** Response for Volume request. */
 @Fluent
@@ -18,13 +16,6 @@ public final class VolumeUpdate {
      */
     @JsonProperty(value = "properties")
     private VolumeUpdateProperties innerProperties;
-
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of VolumeUpdate class. */
     public VolumeUpdate() {
@@ -37,26 +28,6 @@ public final class VolumeUpdate {
      */
     private VolumeUpdateProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the VolumeUpdate object itself.
-     */
-    public VolumeUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -79,6 +50,29 @@ public final class VolumeUpdate {
             this.innerProperties = new VolumeUpdateProperties();
         }
         this.innerProperties().withSizeGiB(sizeGiB);
+        return this;
+    }
+
+    /**
+     * Get the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     *
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeUpdate object itself.
+     */
+    public VolumeUpdate withManagedBy(ManagedByInfo managedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeUpdateProperties();
+        }
+        this.innerProperties().withManagedBy(managedBy);
         return this;
     }
 

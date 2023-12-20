@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobInventoryPolicies List. */
 public final class BlobInventoryPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountGetBlobInventoryPolicy.
@@ -22,6 +20,6 @@ public final class BlobInventoryPoliciesListSamples {
             .manager()
             .serviceClient()
             .getBlobInventoryPolicies()
-            .list("res7687", "sto9699", Context.NONE);
+            .list("res7687", "sto9699", com.azure.core.util.Context.NONE);
     }
 }

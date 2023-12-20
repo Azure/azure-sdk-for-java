@@ -38,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecurityAdminConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityAdminConfigurationsClient.
+ */
 public final class SecurityAdminConfigurationsClientImpl implements SecurityAdminConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecurityAdminConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of SecurityAdminConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecurityAdminConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SecurityAdminConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SecurityAdminConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,110 +70,85 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface SecurityAdminConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAdminConfigurationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SecurityAdminConfigurationListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkManagerName") String networkManagerName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SecurityAdminConfigurationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
+            @PathParam("configurationName") String configurationName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAdminConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("configurationName") String configurationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAdminConfigurationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SecurityAdminConfigurationInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
             @PathParam("configurationName") String configurationName,
             @BodyParam("application/json") SecurityAdminConfigurationInner securityAdminConfiguration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/securityAdminConfigurations/{configurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configurationName") String configurationName, @QueryParam("force") Boolean force,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityAdminConfigurationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of network manager security admin configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken) {
+    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,65 +158,43 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            top,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<SecurityAdminConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, top, skipToken, accept, context))
+            .<PagedResponse<SecurityAdminConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of network manager security admin configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,57 +204,41 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                top,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                networkManagerName, top, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of network manager security admin configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SecurityAdminConfigurationInner> listAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
+    public PagedFlux<SecurityAdminConfigurationInner> listAsync(String resourceGroupName, String networkManagerName,
+        Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,21 +250,20 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
     public PagedFlux<SecurityAdminConfigurationInner> listAsync(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -331,8 +271,8 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return a list of network manager security admin configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SecurityAdminConfigurationInner> listAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    private PagedFlux<SecurityAdminConfigurationInner> listAsync(String resourceGroupName, String networkManagerName,
+        Integer top, String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -340,7 +280,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,14 +297,14 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,37 +312,33 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return a list of network manager security admin configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecurityAdminConfigurationInner> list(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    public PagedIterable<SecurityAdminConfigurationInner> list(String resourceGroupName, String networkManagerName,
+        Integer top, String skipToken, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, top, skipToken, context));
     }
 
     /**
      * Retrieves a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the security admin configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecurityAdminConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String configurationName) {
+    public Mono<Response<SecurityAdminConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -416,27 +352,17 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            configurationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, configurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -444,23 +370,19 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the security admin configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAdminConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Context context) {
+    private Mono<Response<SecurityAdminConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -474,24 +396,16 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                configurationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, configurationName, accept, context);
     }
 
     /**
      * Retrieves a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -501,15 +415,15 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecurityAdminConfigurationInner> getAsync(
-        String resourceGroupName, String networkManagerName, String configurationName) {
+    public Mono<SecurityAdminConfigurationInner> getAsync(String resourceGroupName, String networkManagerName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -520,14 +434,14 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityAdminConfigurationInner> getWithResponse(
-        String resourceGroupName, String networkManagerName, String configurationName, Context context) {
+    public Response<SecurityAdminConfigurationInner> getWithResponse(String resourceGroupName,
+        String networkManagerName, String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, configurationName, context).block();
     }
 
     /**
      * Retrieves a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -537,14 +451,14 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAdminConfigurationInner get(
-        String resourceGroupName, String networkManagerName, String configurationName) {
+    public SecurityAdminConfigurationInner get(String resourceGroupName, String networkManagerName,
+        String configurationName) {
         return getWithResponse(resourceGroupName, networkManagerName, configurationName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -552,26 +466,20 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the security admin configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecurityAdminConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
+    public Mono<Response<SecurityAdminConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName,
         SecurityAdminConfigurationInner securityAdminConfiguration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -586,35 +494,23 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
         if (securityAdminConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter securityAdminConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAdminConfiguration is required and cannot be null."));
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            configurationName,
-                            securityAdminConfiguration,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkManagerName, configurationName,
+                securityAdminConfiguration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -623,27 +519,20 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines the security admin configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAdminConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        SecurityAdminConfigurationInner securityAdminConfiguration,
+    private Mono<Response<SecurityAdminConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName, SecurityAdminConfigurationInner securityAdminConfiguration,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -658,32 +547,21 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
         if (securityAdminConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter securityAdminConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAdminConfiguration is required and cannot be null."));
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                configurationName,
-                securityAdminConfiguration,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkManagerName, configurationName, securityAdminConfiguration, accept, context);
     }
 
     /**
      * Creates or updates a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -694,19 +572,16 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecurityAdminConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
+    public Mono<SecurityAdminConfigurationInner> createOrUpdateAsync(String resourceGroupName,
+        String networkManagerName, String configurationName,
         SecurityAdminConfigurationInner securityAdminConfiguration) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, configurationName, securityAdminConfiguration)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, configurationName,
+            securityAdminConfiguration).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -718,20 +593,16 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityAdminConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        SecurityAdminConfigurationInner securityAdminConfiguration,
+    public Response<SecurityAdminConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String networkManagerName, String configurationName, SecurityAdminConfigurationInner securityAdminConfiguration,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, configurationName, securityAdminConfiguration, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, configurationName,
+            securityAdminConfiguration, context).block();
     }
 
     /**
      * Creates or updates a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -742,43 +613,35 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return defines the security admin configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAdminConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        SecurityAdminConfigurationInner securityAdminConfiguration) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, networkManagerName, configurationName, securityAdminConfiguration, Context.NONE)
-            .getValue();
+    public SecurityAdminConfigurationInner createOrUpdate(String resourceGroupName, String networkManagerName,
+        String configurationName, SecurityAdminConfigurationInner securityAdminConfiguration) {
+        return createOrUpdateWithResponse(resourceGroupName, networkManagerName, configurationName,
+            securityAdminConfiguration, Context.NONE).getValue();
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -792,33 +655,23 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            configurationName,
-                            force,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, networkManagerName, configurationName, force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -826,19 +679,15 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName, Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -852,49 +701,38 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                configurationName,
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, configurationName, force, accept, context);
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, Boolean force) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -904,25 +742,23 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String configurationName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String configurationName) {
         final Boolean force = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,19 +766,18 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, Boolean force, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, configurationName, force, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -952,20 +787,20 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String configurationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String configurationName) {
         final Boolean force = null;
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).getSyncPoller();
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,37 +808,35 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String configurationName, Boolean force, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
+        Boolean force) {
+        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -1015,19 +848,18 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1035,16 +867,15 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
+        Boolean force, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -1060,33 +891,34 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
 
     /**
      * Deletes a network manager security admin configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String networkManagerName, String configurationName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String networkManagerName, String configurationName, Boolean force,
+        Context context) {
         deleteAsync(resourceGroupName, networkManagerName, configurationName, force, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of network manager security admin configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityAdminConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1094,62 +926,43 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecurityAdminConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SecurityAdminConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of network manager security admin configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SecurityAdminConfigurationInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

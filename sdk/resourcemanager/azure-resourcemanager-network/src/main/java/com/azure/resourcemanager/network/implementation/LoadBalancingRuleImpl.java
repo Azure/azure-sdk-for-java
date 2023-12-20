@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
@@ -20,8 +21,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /** Implementation for LoadBalancingRule. */
 class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
@@ -85,12 +89,15 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     @Override
     public LoadBalancerBackend backend() {
         SubResource backendRef = this.innerModel().backendAddressPool();
-        if (backendRef == null) {
-            return null;
-        } else {
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
-            return this.parent().backends().get(backendName);
+        LoadBalancerBackend backend = this.backendFromSubResource(backendRef);
+        if (backend == null) {
+            // fallback to backendAddressPools
+            List<LoadBalancerBackend> backends = this.backends();
+            if (!backends.isEmpty()) {
+                backend = backends.iterator().next();
+            }
         }
+        return backend;
     }
 
     @Override
@@ -107,6 +114,26 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
             } else {
                 return null;
             }
+        }
+    }
+
+    @Override
+    public List<LoadBalancerBackend> backends() {
+        List<LoadBalancerBackend> backends = new ArrayList<>();
+        if (!CoreUtils.isNullOrEmpty(this.innerModel().backendAddressPools())) {
+            for (SubResource backendRef : this.innerModel().backendAddressPools()) {
+                backends.add(this.backendFromSubResource(backendRef));
+            }
+        }
+        return Collections.unmodifiableList(backends);
+    }
+
+    private LoadBalancerBackend backendFromSubResource(SubResource backendRef) {
+        if (backendRef == null) {
+            return null;
+        } else {
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+            return this.parent().backends().get(backendName);
         }
     }
 

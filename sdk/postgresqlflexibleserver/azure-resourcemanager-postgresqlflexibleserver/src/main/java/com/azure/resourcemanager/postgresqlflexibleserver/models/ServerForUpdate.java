@@ -135,7 +135,7 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Get the version property: PostgreSQL Server version.
+     * Get the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
      *
      * @return the version value.
      */
@@ -144,7 +144,7 @@ public final class ServerForUpdate {
     }
 
     /**
-     * Set the version property: PostgreSQL Server version.
+     * Set the version property: PostgreSQL Server version. Version 16 is currently not supported for MVU.
      *
      * @param version the version value to set.
      * @return the ServerForUpdate object itself.
@@ -338,6 +338,56 @@ public final class ServerForUpdate {
             this.innerProperties = new ServerPropertiesForUpdate();
         }
         this.innerProperties().withReplicationRole(replicationRole);
+        return this;
+    }
+
+    /**
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @return the replica value.
+     */
+    public Replica replica() {
+        return this.innerProperties() == null ? null : this.innerProperties().replica();
+    }
+
+    /**
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @param replica the replica value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withReplica(Replica replica) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withReplica(replica);
+        return this;
+    }
+
+    /**
+     * Get the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.innerProperties() == null ? null : this.innerProperties().network();
+    }
+
+    /**
+     * Set the network property: Network properties of a server. These are required to be passed only in case if server
+     * is a private access server.
+     *
+     * @param network the network value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withNetwork(Network network) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withNetwork(network);
         return this;
     }
 

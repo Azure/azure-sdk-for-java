@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-/** Samples for Disks GetByResourceGroup. */
+/**
+ * Samples for Disks GetByResourceGroup.
+ */
 public final class DisksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskExamples/Disk_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskExamples/Disk_Get.
+     * json
      */
     /**
      * Sample code: Get information about a managed disk.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutAManagedDisk(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getDisks()
-            .getByResourceGroupWithResponse("myResourceGroup", "myManagedDisk", com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getDisks().getByResourceGroupWithResponse("myResourceGroup",
+            "myManagedDisk", com.azure.core.util.Context.NONE);
     }
 }

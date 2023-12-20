@@ -20,11 +20,14 @@ public final class ApiVersionSetContractProperties extends ApiVersionSetEntityBa
     private String displayName;
 
     /*
-     * An value that determines where the API Version identifier will be
-     * located in a HTTP request.
+     * An value that determines where the API Version identifier will be located in a HTTP request.
      */
     @JsonProperty(value = "versioningScheme", required = true)
     private VersioningScheme versioningScheme;
+
+    /** Creates an instance of ApiVersionSetContractProperties class. */
+    public ApiVersionSetContractProperties() {
+    }
 
     /**
      * Get the displayName property: Name of API Version Set.

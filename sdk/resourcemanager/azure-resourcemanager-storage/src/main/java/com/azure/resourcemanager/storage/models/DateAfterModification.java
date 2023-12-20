@@ -43,6 +43,10 @@ public final class DateAfterModification {
     @JsonProperty(value = "daysAfterCreationGreaterThan")
     private Float daysAfterCreationGreaterThan;
 
+    /** Creates an instance of DateAfterModification class. */
+    public DateAfterModification() {
+    }
+
     /**
      * Get the daysAfterModificationGreaterThan property: Value indicating the age in days after last modification.
      *

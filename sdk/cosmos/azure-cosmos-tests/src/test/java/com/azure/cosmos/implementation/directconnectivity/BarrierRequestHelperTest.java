@@ -181,6 +181,8 @@ public class BarrierRequestHelperTest {
                 null,
                 new CosmosClientTelemetryConfig().sendClientTelemetryToService(false),
                 null,
+                null,
+                null,
                 null);
 
         ResourceType resourceType = ResourceType.DocumentCollection;

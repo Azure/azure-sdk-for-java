@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A class representing update parameters for CommunicationService resource. */
+/**
+ * A class representing update parameters for CommunicationService resource.
+ */
 @Fluent
 public final class CommunicationServiceResourceUpdate extends TaggedResource {
     /*
@@ -19,20 +21,50 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
     @JsonProperty(value = "properties")
     private CommunicationServiceUpdateProperties innerProperties;
 
-    /** Creates an instance of CommunicationServiceResourceUpdate class. */
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
+    /**
+     * Creates an instance of CommunicationServiceResourceUpdate class.
+     */
     public CommunicationServiceResourceUpdate() {
     }
 
     /**
      * Get the innerProperties property: The properties of the service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CommunicationServiceUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @param identity the identity value to set.
+     * @return the CommunicationServiceResourceUpdate object itself.
+     */
+    public CommunicationServiceResourceUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunicationServiceResourceUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +73,7 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
 
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @return the linkedDomains value.
      */
     public List<String> linkedDomains() {
@@ -50,7 +82,7 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
 
     /**
      * Set the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @param linkedDomains the linkedDomains value to set.
      * @return the CommunicationServiceResourceUpdate object itself.
      */
@@ -64,7 +96,7 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -72,6 +104,9 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
         super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

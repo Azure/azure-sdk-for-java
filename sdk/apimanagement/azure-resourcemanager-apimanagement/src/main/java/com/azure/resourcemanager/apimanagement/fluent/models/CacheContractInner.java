@@ -17,6 +17,10 @@ public final class CacheContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private CacheContractProperties innerProperties;
 
+    /** Creates an instance of CacheContractInner class. */
+    public CacheContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Cache properties details.
      *

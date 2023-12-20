@@ -26,6 +26,15 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
         fromString("StorageFileDataSmbShareElevatedContributor");
 
     /**
+     * Creates a new instance of DefaultSharePermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultSharePermission() {
+    }
+
+    /**
      * Creates or finds a DefaultSharePermission from its string representation.
      *
      * @param name a name to look for.

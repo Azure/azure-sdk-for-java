@@ -3,14 +3,6 @@
 
 package com.azure.maps.route;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoCollection;
@@ -32,9 +24,16 @@ import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteRangeResult;
 import com.azure.maps.route.models.RouteType;
 import com.azure.maps.route.models.TravelMode;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MapsRouteClientTest extends MapsRouteTestBase {
     private MapsRouteClient client;

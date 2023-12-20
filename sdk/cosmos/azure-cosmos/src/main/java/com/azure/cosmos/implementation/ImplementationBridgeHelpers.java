@@ -20,17 +20,20 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -48,15 +51,18 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -173,6 +179,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 
@@ -253,6 +260,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosQueryRequestOptionsAccessor {
+            CosmosQueryRequestOptions clone(
+                CosmosQueryRequestOptions toBeCloned);
             void setOperationContext(CosmosQueryRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
@@ -262,19 +271,24 @@ public class ImplementationBridgeHelpers {
             UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
-            CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
-            CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
-            void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
+            List<String> getExcludeRegions(CosmosQueryRequestOptions options);
             List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
+            void setAllowEmptyPages(CosmosQueryRequestOptions options, boolean emptyPagesAllowed);
+
+            boolean getAllowEmptyPages(CosmosQueryRequestOptions options);
+
+            Integer getMaxItemCount(CosmosQueryRequestOptions options);
+
+            String getRequestContinuation(CosmosQueryRequestOptions options);
         }
     }
 
@@ -316,7 +330,7 @@ public class ImplementationBridgeHelpers {
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
-            void applyMaxItemCount(CosmosChangeFeedRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
+            List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
         }
     }
 
@@ -365,6 +379,9 @@ public class ImplementationBridgeHelpers {
                 CosmosItemRequestOptions cosmosItemRequestOptions,
                 WriteRetryPolicy clientDefault,
                 boolean operationDefault);
+
+            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+                CosmosItemRequestOptions options);
         }
     }
 
@@ -416,10 +433,6 @@ public class ImplementationBridgeHelpers {
                 double minRetryRate,
                 double maxRetryRate);
 
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
-
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
@@ -439,6 +452,13 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+            List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize);
+
+            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
+            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -728,6 +748,15 @@ public class ImplementationBridgeHelpers {
             void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate);
 
             CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate);
+            void recordAddressResolutionEnd(
+                RxDocumentServiceRequest request,
+                String identifier,
+                String errorMessage,
+                long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
+
+            void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -777,7 +806,8 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds thresholds,
                 String trackingId,
                 String connectionMode,
-                String userAgent);
+                String userAgent,
+                Integer sequenceNumber);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -826,6 +856,10 @@ public class ImplementationBridgeHelpers {
             String getSpanName(CosmosDiagnosticsContext ctx);
 
             void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
+
+            Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
+
+            boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -880,6 +914,26 @@ public class ImplementationBridgeHelpers {
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 Callable<IFaultInjectorProvider> injectorProviderCallable);
+
+            <T> Mono<FeedResponse<T>> readMany(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                List<CosmosItemIdentity> itemIdentityList,
+                CosmosQueryRequestOptions requestOptions,
+                Class<T> classType);
+
+            <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                SqlQuerySpec sqlQuerySpec,
+                CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                Class<T> classType);
+
+            <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFuncWithMonoSqlQuerySpec(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                Mono<SqlQuerySpec> sqlQuerySpecMono,
+                CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                Class<T> classType);
+
+            Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh);
         }
     }
 
@@ -959,6 +1013,7 @@ public class ImplementationBridgeHelpers {
                                                           ConsistencyLevel consistencyLevel);
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
+            List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions);
         }
     }
 
@@ -1518,6 +1573,49 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosContainerProactiveInitConfigAccessor {
             Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
+        }
+    }
+
+    public static final class CosmosSessionRetryOptionsHelper {
+        private static final AtomicReference<Boolean> cosmosSessionRetryOptionsClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosSessionRetryOptionsAccessor> accessor = new AtomicReference<>();
+
+        private CosmosSessionRetryOptionsHelper() {}
+
+        public static CosmosSessionRetryOptionsAccessor getCosmosSessionRetryOptionsAccessor() {
+
+            if (!cosmosSessionRetryOptionsClassLoaded.get()) {
+                logger.debug("Initializing cosmosSessionRetryOptionsAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosSessionRetryOptionsAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("cosmosSessionRetryOptionsAccessor is not initialized yet!");
+                System.exit(9727); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosSessionRetryOptionsAccessor(final CosmosSessionRetryOptionsAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosSessionRetryOptionsAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosSessionRetryOptionsAccessor...");
+                cosmosSessionRetryOptionsClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosSessionRetryOptionsAccessor {
+            CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
+            Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
+
+            int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
         }
     }
 }

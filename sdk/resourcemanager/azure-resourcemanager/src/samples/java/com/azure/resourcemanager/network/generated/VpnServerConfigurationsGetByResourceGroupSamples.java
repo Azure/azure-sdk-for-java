@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VpnServerConfigurations GetByResourceGroup. */
+/**
+ * Samples for VpnServerConfigurations GetByResourceGroup.
+ */
 public final class VpnServerConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnServerConfigurationGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VpnServerConfigurationGet.
+     * json
      */
     /**
      * Sample code: VpnServerConfigurationGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnServerConfigurationGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVpnServerConfigurations()
-            .getByResourceGroupWithResponse("rg1", "vpnServerConfiguration1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVpnServerConfigurations().getByResourceGroupWithResponse("rg1",
+            "vpnServerConfiguration1", com.azure.core.util.Context.NONE);
     }
 }

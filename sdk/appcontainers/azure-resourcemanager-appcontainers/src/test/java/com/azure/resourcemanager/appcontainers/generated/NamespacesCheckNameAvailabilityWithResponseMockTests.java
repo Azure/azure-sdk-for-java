@@ -32,7 +32,7 @@ public final class NamespacesCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"fhfv\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"avn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,14 @@ public final class NamespacesCheckNameAvailabilityWithResponseMockTests {
             manager
                 .namespaces()
                 .checkNameAvailabilityWithResponse(
-                    "pdwwexymzvlazi",
-                    "bhpwvqsgnyy",
-                    new CheckNameAvailabilityRequest().withName("ziven").withType("pmeyyvpkpatlbijp"),
+                    "ashxgonoyjfqi",
+                    "ubyzn",
+                    new CheckNameAvailabilityRequest().withName("k").withType("eebgvopemtuoqu"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals(false, response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("fhfv", response.message());
+        Assertions.assertEquals("avn", response.message());
     }
 }

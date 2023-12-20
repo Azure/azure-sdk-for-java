@@ -3,15 +3,6 @@
 
 package com.azure.maps.search;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
@@ -33,27 +24,24 @@ import com.azure.maps.search.models.SearchPointOfInterestCategoryOptions;
 import com.azure.maps.search.models.SearchPointOfInterestOptions;
 import com.azure.maps.search.models.SearchStructuredAddressOptions;
 import com.azure.maps.search.models.StructuredAddress;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import reactor.test.StepVerifier;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private MapsSearchAsyncClient getMapsSearchAsyncClient(HttpClient httpClient,
         MapsSearchServiceVersion serviceVersion) {
@@ -67,13 +55,15 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         List<String> geometryIds = Arrays.asList("8bceafe8-3d98-4445-b29b-fd81d3e9adf5", "00005858-5800-1200-0000-0000773694ca");
         StepVerifier.create(client.getPolygons(geometryIds))
-        .assertNext(actualResults -> {
-            try {
-                validateGetPolygons(TestUtils.getMultiPolygonsResults(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get polygon from json file");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetPolygons(TestUtils.getMultiPolygonsResults(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get polygon from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get polygons with response
@@ -91,7 +81,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                     Assertions.fail("Unable to get polygon from json file");
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -101,10 +92,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         List<String> geometryIds = new ArrayList<>();
         StepVerifier.create(client.getPolygonsWithResponse(geometryIds, Context.NONE))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async fuzzy search
@@ -112,13 +104,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncFuzzySearch(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.fuzzySearch(new FuzzySearchOptions("starbucks"))).assertNext(actualResults -> {
-            try {
-                validateFuzzySearch(TestUtils.getExpectedFuzzySearchResults(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get SearchAddressResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.fuzzySearch(new FuzzySearchOptions("starbucks")))
+            .assertNext(actualResults -> {
+                try {
+                    validateFuzzySearch(TestUtils.getExpectedFuzzySearchResults(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test fuzzy search with response
@@ -135,7 +130,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -144,10 +140,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidFuzzySearchWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.fuzzySearchWithResponse(new FuzzySearchOptions(""), Context.NONE))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search point of interest
@@ -155,13 +152,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchPointOfInterest(new SearchPointOfInterestOptions("caviar lobster pasta", new GeoPosition(-121.97483, 36.98844)))).assertNext(actualResults -> {
-            try {
-                validateSearchPointOfInterest(TestUtils.getExpectedSearchPointOfInterestResults(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get SearchAddressResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.searchPointOfInterest(new SearchPointOfInterestOptions("caviar lobster pasta", new GeoPosition(-121.97483, 36.98844))))
+            .assertNext(actualResults -> {
+                try {
+                    validateSearchPointOfInterest(TestUtils.getExpectedSearchPointOfInterestResults(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search point of interest with response
@@ -178,7 +178,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -187,10 +188,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchPointOfInterestWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchPointOfInterestWithResponse(new SearchPointOfInterestOptions("", new GeoPosition(-121.97483, 36.98844)), Context.NONE))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search nearby point of interest
@@ -199,13 +201,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchNearbyPointsOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchNearbyPointsOfInterest(
-            new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270)))).assertNext(actualResults -> {
+            new SearchNearbyPointsOfInterestOptions(new GeoPosition(-74.011454, 40.706270))))
+            .assertNext(actualResults -> {
                 try {
                     validateSearchNearbyPointOfInterest(TestUtils.getExpectedSearchNearbyPointOfInterestResults(), actualResults);
                 } catch (IOException e) {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search nearby point of interest with response
@@ -221,7 +226,9 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -230,10 +237,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchNearbyPointsOfInterestWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchNearbyPointsOfInterestWithResponse(new SearchNearbyPointsOfInterestOptions(new GeoPosition(-100, -100)), Context.NONE))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search point of interest category
@@ -242,13 +250,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncSearchPointOfInterestCategory(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchPointOfInterestCategory(
-            new SearchPointOfInterestCategoryOptions("atm", new GeoPosition(-74.011454, 40.706270)))).assertNext(actualResults -> {
+            new SearchPointOfInterestCategoryOptions("atm", new GeoPosition(-74.011454, 40.706270))))
+            .assertNext(actualResults -> {
                 try {
                     validateSearchPointOfInterestCategory(TestUtils.getExpectedSearchPointOfInterestCategoryResults(), actualResults);
                 } catch (IOException e) {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search point of interest category with response
@@ -259,13 +270,15 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchPointOfInterestCategoryWithResponse(
             new SearchPointOfInterestCategoryOptions("atm", new GeoPosition(-74.011454, 40.706270)), Context.NONE))
-                .assertNext(response -> {
-                    try {
-                        validateSearchPointOfInterestCategoryWithResponse(TestUtils.getExpectedSearchPointOfInterestCategoryResults(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get SearchAddressResult from json file");
-                    }
-                }).verifyComplete();
+            .assertNext(response -> {
+                try {
+                    validateSearchPointOfInterestCategoryWithResponse(TestUtils.getExpectedSearchPointOfInterestCategoryResults(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -275,10 +288,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchPointOfInterestCategoryWithResponse(
             new SearchPointOfInterestCategoryOptions("", new GeoPosition(-100, -100)), Context.NONE))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get point of interest category tree
@@ -286,13 +300,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterestCategoryTree(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getPointOfInterestCategoryTree()).assertNext(actualResults -> {
-            try {
-                validateSearchPointOfInterestCategoryTree(TestUtils.getExpectedSearchPointOfInterestCategoryTreeResults(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get PointOfInterestCategoryTreeResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.getPointOfInterestCategoryTree())
+            .assertNext(actualResults -> {
+                try {
+                    validateSearchPointOfInterestCategoryTree(TestUtils.getExpectedSearchPointOfInterestCategoryTreeResults(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get PointOfInterestCategoryTreeResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get point of interest category tree with response
@@ -308,7 +325,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                     Assertions.fail("Unable to get PointOfInterestCategoryTreeResult from json file");
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search address
@@ -316,13 +334,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchAddress(new SearchAddressOptions("NE 24th Street, Redmond, WA 98052"))).assertNext(actualResults -> {
-            try {
-                validateSearchAddress(TestUtils.getExpectedSearchAddressResults(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get SearchAddressResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.searchAddress(new SearchAddressOptions("NE 24th Street, Redmond, WA 98052")))
+            .assertNext(actualResults -> {
+                try {
+                    validateSearchAddress(TestUtils.getExpectedSearchAddressResults(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search address with response
@@ -339,7 +360,8 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -348,10 +370,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchAddressWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchAddressWithResponse(new SearchAddressOptions(""), Context.NONE))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search address
@@ -359,14 +382,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncReverseSearchAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchAddress(
-            new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)))).assertNext(actualResults -> {
+        StepVerifier.create(client.reverseSearchAddress(new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337))))
+            .assertNext(actualResults -> {
                 try {
                     validateReverseSearchAddress(TestUtils.getExpectedReverseSearchAddressResults(), actualResults);
                 } catch (IOException e) {
                     Assertions.fail("Unable to get ReverseSearchAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search address with response
@@ -375,16 +400,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncReverseSearchAddressWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchAddressWithResponse(
-            new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)), Context.NONE))
-                .assertNext(response -> {
-                    try {
-                        validateReverseSearchAddressWithResponse(TestUtils.getExpectedReverseSearchAddressResults(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get ReverseSearchAddressResult from json file");
-                    }
-                })
-                .verifyComplete();
+        StepVerifier.create(client.reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(new GeoPosition(-121.89, 37.337)), Context.NONE))
+            .assertNext(response -> {
+                try {
+                    validateReverseSearchAddressWithResponse(TestUtils.getExpectedReverseSearchAddressResults(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get ReverseSearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -392,12 +417,12 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncInvalidReverseSearchAddressWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.reverseSearchAddressWithResponse(
-            new ReverseSearchAddressOptions(new GeoPosition(-121.89, -100)), Context.NONE))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+        StepVerifier.create(client.reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(new GeoPosition(-121.89, -100)), Context.NONE))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search cross street address
@@ -406,13 +431,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncReverseSearchCrossStreetAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.reverseSearchCrossStreetAddress(
-            new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337)))).assertNext(actualResults -> {
+            new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337))))
+            .assertNext(actualResults -> {
                 try {
                     validateReverseSearchCrossStreetAddress(TestUtils.getExpectedReverseSearchCrossStreetAddressResults(), actualResults);
                 } catch (IOException e) {
                     Assertions.fail("Unable to get ReverseSearchCrossStreetAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search cross street address with response
@@ -423,13 +451,15 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.reverseSearchCrossStreetAddressWithResponse(
             new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, 37.337)), Context.NONE))
-                .assertNext(response -> {
-                    try {
-                        validateReverseSearchCrossStreetAddressWithResponse(TestUtils.getExpectedReverseSearchCrossStreetAddressResults(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get ReverseSearchCrossStreetAddressResult from json file");
-                    }
-                }).verifyComplete();
+            .assertNext(response -> {
+                try {
+                    validateReverseSearchCrossStreetAddressWithResponse(TestUtils.getExpectedReverseSearchCrossStreetAddressResults(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get ReverseSearchCrossStreetAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -439,10 +469,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.reverseSearchCrossStreetAddressWithResponse(
             new ReverseSearchCrossStreetAddressOptions(new GeoPosition(-121.89, -100)), Context.NONE))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search structured address
@@ -450,13 +481,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchStructuredAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchStructuredAddress(new StructuredAddress("US"), null)).assertNext(actualResults -> {
-            try {
-                validateSearchStructuredAddress(TestUtils.getExpectedSearchStructuredAddress(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get SearchAddressResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.searchStructuredAddress(new StructuredAddress("US"), null))
+            .assertNext(actualResults -> {
+                try {
+                    validateSearchStructuredAddress(TestUtils.getExpectedSearchStructuredAddress(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search structured address with response
@@ -465,17 +499,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchStructuredAddressWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.searchStructuredAddressWithResponse(
-            new StructuredAddress("US"),
-            new SearchStructuredAddressOptions(), null))
-                .assertNext(response -> {
-                    try {
-                        validateSearchStructuredAddressWithResponse(TestUtils.getExpectedSearchStructuredAddress(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get SearchAddressResult from json file");
-                    }
-                })
-                .verifyComplete();
+        StepVerifier.create(client.searchStructuredAddressWithResponse(new StructuredAddress("US"), new SearchStructuredAddressOptions(), null))
+            .assertNext(response -> {
+                try {
+                    validateSearchStructuredAddressWithResponse(TestUtils.getExpectedSearchStructuredAddress(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -484,10 +517,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     public void testAsyncInvalidSearchStructuredAddress(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.searchStructuredAddressWithResponse(new StructuredAddress(""), null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search inside geometry
@@ -498,13 +532,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         File file = new File("src/test/resources/geoobjectone.json");
         GeoObject obj = TestUtils.getGeoObject(file);
         StepVerifier.create(client.searchInsideGeometry(
-            new SearchInsideGeometryOptions("pizza", obj))).assertNext(actualResults -> {
+            new SearchInsideGeometryOptions("pizza", obj)))
+            .assertNext(actualResults -> {
                 try {
                     validateSearchInsideGeometry(TestUtils.getExpectedSearchInsideGeometry(), actualResults);
                 } catch (IOException e) {
                     Assertions.fail("Unable to get SearchAddressResult from json file");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search inside geometry with response
@@ -515,15 +552,16 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geoobjectone.json");
         GeoObject obj = TestUtils.getGeoObject(file);
-        StepVerifier.create(client.searchInsideGeometryWithResponse(
-            new SearchInsideGeometryOptions("pizza", obj), null))
-                .assertNext(response -> {
-                    try {
-                        validateSearchInsideGeometryWithResponse(TestUtils.getExpectedSearchInsideGeometry(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get SearchAddressResult from json file");
-                    }
-                }).verifyComplete();
+        StepVerifier.create(client.searchInsideGeometryWithResponse(new SearchInsideGeometryOptions("pizza", obj), null))
+            .assertNext(response -> {
+                try {
+                    validateSearchInsideGeometryWithResponse(TestUtils.getExpectedSearchInsideGeometry(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -533,48 +571,53 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geoobjectone.json");
         GeoObject obj = TestUtils.getGeoObject(file);
-        StepVerifier.create(client.searchInsideGeometryWithResponse(
-            new SearchInsideGeometryOptions("", obj), null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+        StepVerifier.create(client.searchInsideGeometryWithResponse(new SearchInsideGeometryOptions("", obj), null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search along route
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAlongRoute(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) throws IOException {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geolinestringone.json");
         GeoLineString obj = TestUtils.getGeoLineString(file);
-        StepVerifier.create(client.searchAlongRoute(new SearchAlongRouteOptions("burger", 1000, obj))).assertNext(actualResults -> {
-            try {
-                validateSearchAlongRoute(TestUtils.getExpectedSearchAlongRoute(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get SearchAddressResult from json file");
-            }
-        }).verifyComplete();
+        StepVerifier.create(client.searchAlongRoute(new SearchAlongRouteOptions("burger", 1000, obj)))
+            .assertNext(actualResults -> {
+                try {
+                    validateSearchAlongRoute(TestUtils.getExpectedSearchAlongRoute(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async search along route with response
     // Case 1: 200
+    @Disabled // TODO: Re-enable once https://github.com/Azure/azure-sdk-for-java/issues/35979 is resolved.
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchAlongRouteWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) throws IOException {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geolinestringone.json");
         GeoLineString obj = TestUtils.getGeoLineString(file);
-        StepVerifier.create(client.searchAlongRouteWithResponse(
-            new SearchAlongRouteOptions("burger", 1000, obj), null))
-                .assertNext(response -> {
-                    try {
-                        validateSearchAlongRouteWithResponse(TestUtils.getExpectedSearchAlongRoute(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get SearchAddressResult from json file");
-                    }
-                })
-                .verifyComplete();
+        StepVerifier.create(client.searchAlongRouteWithResponse(new SearchAlongRouteOptions("burger", 1000, obj), null))
+            .assertNext(response -> {
+                try {
+                    validateSearchAlongRouteWithResponse(TestUtils.getExpectedSearchAlongRoute(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get SearchAddressResult from json file");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -584,12 +627,12 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         File file = new File("src/test/resources/geolinestringone.json");
         GeoLineString obj = TestUtils.getGeoLineString(file);
-        StepVerifier.create(client.searchAlongRouteWithResponse(
-            new SearchAlongRouteOptions("", 1000, obj), null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+        StepVerifier.create(client.searchAlongRouteWithResponse(new SearchAlongRouteOptions("", 1000, obj), null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async begin fuzzy search batch

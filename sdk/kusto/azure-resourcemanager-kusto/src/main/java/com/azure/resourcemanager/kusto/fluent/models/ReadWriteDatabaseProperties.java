@@ -6,7 +6,9 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.kusto.models.DatabaseStatistics;
+import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.SuspensionDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
@@ -42,6 +44,19 @@ public final class ReadWriteDatabaseProperties {
      */
     @JsonProperty(value = "isFollowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFollowed;
+
+    /*
+     * KeyVault properties for the database encryption.
+     */
+    @JsonProperty(value = "keyVaultProperties")
+    private KeyVaultProperties keyVaultProperties;
+
+    /*
+     * The database suspension details. If the database is suspended, this object contains information related to the
+     * database's suspension state.
+     */
+    @JsonProperty(value = "suspensionDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private SuspensionDetails suspensionDetails;
 
     /** Creates an instance of ReadWriteDatabaseProperties class. */
     public ReadWriteDatabaseProperties() {
@@ -117,6 +132,36 @@ public final class ReadWriteDatabaseProperties {
     }
 
     /**
+     * Get the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @return the keyVaultProperties value.
+     */
+    public KeyVaultProperties keyVaultProperties() {
+        return this.keyVaultProperties;
+    }
+
+    /**
+     * Set the keyVaultProperties property: KeyVault properties for the database encryption.
+     *
+     * @param keyVaultProperties the keyVaultProperties value to set.
+     * @return the ReadWriteDatabaseProperties object itself.
+     */
+    public ReadWriteDatabaseProperties withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+        this.keyVaultProperties = keyVaultProperties;
+        return this;
+    }
+
+    /**
+     * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
+     * contains information related to the database's suspension state.
+     *
+     * @return the suspensionDetails value.
+     */
+    public SuspensionDetails suspensionDetails() {
+        return this.suspensionDetails;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -124,6 +169,12 @@ public final class ReadWriteDatabaseProperties {
     public void validate() {
         if (statistics() != null) {
             statistics().validate();
+        }
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
+        if (suspensionDetails() != null) {
+            suspensionDetails().validate();
         }
     }
 }

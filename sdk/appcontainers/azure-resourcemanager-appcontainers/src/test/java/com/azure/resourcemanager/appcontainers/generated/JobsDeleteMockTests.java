@@ -56,6 +56,6 @@ public final class JobsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.jobs().delete("fxof", "cjkgdirazftxej", com.azure.core.util.Context.NONE);
+        manager.jobs().delete("alwcjgckbb", "ccgzpraoxnyu", com.azure.core.util.Context.NONE);
     }
 }

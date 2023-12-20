@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of rewrite rule set of the application gateway. */
+/**
+ * Properties of rewrite rule set of the application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
     /*
@@ -25,13 +27,15 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleSetPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleSetPropertiesFormat class.
+     */
     public ApplicationGatewayRewriteRuleSetPropertiesFormat() {
     }
 
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @return the rewriteRules value.
      */
     public List<ApplicationGatewayRewriteRule> rewriteRules() {
@@ -40,19 +44,19 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
 
     /**
      * Set the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @param rewriteRules the rewriteRules value to set.
      * @return the ApplicationGatewayRewriteRuleSetPropertiesFormat object itself.
      */
-    public ApplicationGatewayRewriteRuleSetPropertiesFormat withRewriteRules(
-        List<ApplicationGatewayRewriteRule> rewriteRules) {
+    public ApplicationGatewayRewriteRuleSetPropertiesFormat
+        withRewriteRules(List<ApplicationGatewayRewriteRule> rewriteRules) {
         this.rewriteRules = rewriteRules;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -61,7 +65,7 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

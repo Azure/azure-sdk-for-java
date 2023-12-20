@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Amazon Rds for SQL Server linked service properties. */
+/**
+ * Amazon Rds for SQL Server linked service properties.
+ */
 @Fluent
 public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     /*
@@ -33,10 +35,10 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * Sql always encrypted properties.
@@ -44,14 +46,16 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
-    /** Creates an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties class.
+     */
     public AmazonRdsForSqlServerLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -61,7 +65,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
@@ -73,7 +77,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     /**
      * Get the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -83,7 +87,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     /**
      * Set the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -103,7 +107,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @param password the password value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
@@ -113,30 +117,30 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
-    public AmazonRdsForSqlServerLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @return the alwaysEncryptedSettings value.
      */
     public SqlAlwaysEncryptedProperties alwaysEncryptedSettings() {
@@ -145,28 +149,25 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
 
     /**
      * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the AmazonRdsForSqlServerLinkedServiceTypeProperties object itself.
      */
-    public AmazonRdsForSqlServerLinkedServiceTypeProperties withAlwaysEncryptedSettings(
-        SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties
+        withAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model"
-                            + " AmazonRdsForSqlServerLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model AmazonRdsForSqlServerLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

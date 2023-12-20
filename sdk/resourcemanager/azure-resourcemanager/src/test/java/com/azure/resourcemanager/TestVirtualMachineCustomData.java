@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -32,7 +32,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         final String publicIpDnsLabel = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
-        final String password = ResourceManagerTestBase.password();
+        final String password = ResourceManagerTestProxyTestBase.password();
 
         // Prepare the custom data
         //

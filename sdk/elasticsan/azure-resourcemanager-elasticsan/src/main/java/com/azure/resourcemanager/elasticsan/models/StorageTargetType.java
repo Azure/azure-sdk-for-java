@@ -17,6 +17,15 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
     public static final StorageTargetType NONE = fromString("None");
 
     /**
+     * Creates a new instance of StorageTargetType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageTargetType() {
+    }
+
+    /**
      * Creates or finds a StorageTargetType from its string representation.
      *
      * @param name a name to look for.

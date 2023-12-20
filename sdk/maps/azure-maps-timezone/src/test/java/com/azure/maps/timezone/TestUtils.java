@@ -3,6 +3,18 @@
 
 package com.azure.maps.timezone;
 
+import com.azure.core.test.TestBase;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.maps.timezone.models.IanaId;
+import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
+import com.azure.maps.timezone.models.TimeZoneResult;
+import com.azure.maps.timezone.models.TimeZoneWindows;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.params.provider.Arguments;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,19 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.azure.core.test.TestBase;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.timezone.models.IanaId;
-import com.azure.maps.timezone.models.TimeZoneIanaVersionResult;
-import com.azure.maps.timezone.models.TimeZoneResult;
-import com.azure.maps.timezone.models.TimeZoneWindows;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
     static final String FAKE_API_KEY = "fakeKeyPlaceholder";

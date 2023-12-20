@@ -4,17 +4,26 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.elasticsan.models.Action;
+import com.azure.resourcemanager.elasticsan.models.EncryptionIdentity;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
+import com.azure.resourcemanager.elasticsan.models.Identity;
+import com.azure.resourcemanager.elasticsan.models.IdentityType;
+import com.azure.resourcemanager.elasticsan.models.KeyVaultProperties;
+import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
+import com.azure.resourcemanager.elasticsan.models.UserAssignedIdentity;
+import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for VolumeGroups Update. */
 public final class VolumeGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Update_MaximumSet_Gen.
@@ -25,18 +34,39 @@ public final class VolumeGroupsUpdateSamples {
         VolumeGroup resource =
             manager
                 .volumeGroups()
-                .getWithResponse("rgelasticsan", "ti7q-k952-1qB3J_5", "u_5I_1j4t3", Context.NONE)
+                .getWithResponse(
+                    "resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key7542", "aaaaaaaaaaaaaaaaaaaa"))
+            .withIdentity(
+                new Identity()
+                    .withType(IdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("key7482", new UserAssignedIdentity())))
             .withProtocolType(StorageTargetType.ISCSI)
             .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryptionProperties(
+                new EncryptionProperties()
+                    .withKeyVaultProperties(
+                        new KeyVaultProperties()
+                            .withKeyName("fakeTokenPlaceholder")
+                            .withKeyVersion("fakeTokenPlaceholder")
+                            .withKeyVaultUri("fakeTokenPlaceholder"))
+                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("im")))
+            .withNetworkAcls(
+                new NetworkRuleSet()
+                    .withVirtualNetworkRules(
+                        Arrays
+                            .asList(
+                                new VirtualNetworkRule()
+                                    .withVirtualNetworkResourceId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}")
+                                    .withAction(Action.ALLOW))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Update_MinimumSet_Gen.
@@ -47,11 +77,13 @@ public final class VolumeGroupsUpdateSamples {
         VolumeGroup resource =
             manager
                 .volumeGroups()
-                .getWithResponse("rgelasticsan", "ti7q-k952-1qB3J_5", "u_5I_1j4t3", Context.NONE)
+                .getWithResponse(
+                    "resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

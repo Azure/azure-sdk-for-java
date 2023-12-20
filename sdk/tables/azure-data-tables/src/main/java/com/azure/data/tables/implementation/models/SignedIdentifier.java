@@ -13,7 +13,9 @@ import com.azure.xml.XmlWriter;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** A signed identifier. */
+/**
+ * A signed identifier.
+ */
 @Fluent
 public final class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     /*
@@ -26,12 +28,15 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
      */
     private AccessPolicy accessPolicy;
 
-    /** Creates an instance of SignedIdentifier class. */
-    public SignedIdentifier() {}
+    /**
+     * Creates an instance of SignedIdentifier class.
+     */
+    public SignedIdentifier() {
+    }
 
     /**
      * Get the id property: A unique id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -40,7 +45,7 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
 
     /**
      * Set the id property: A unique id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SignedIdentifier object itself.
      */
@@ -51,7 +56,7 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
 
     /**
      * Get the accessPolicy property: The access policy.
-     *
+     * 
      * @return the accessPolicy value.
      */
     public AccessPolicy getAccessPolicy() {
@@ -60,7 +65,7 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
 
     /**
      * Set the accessPolicy property: The access policy.
-     *
+     * 
      * @param accessPolicy the accessPolicy value to set.
      * @return the SignedIdentifier object itself.
      */
@@ -85,10 +90,10 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
 
     /**
      * Reads an instance of SignedIdentifier from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of SignedIdentifier if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the SignedIdentifier.
      */
@@ -98,34 +103,32 @@ public final class SignedIdentifier implements XmlSerializable<SignedIdentifier>
 
     /**
      * Reads an instance of SignedIdentifier from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of SignedIdentifier if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the SignedIdentifier.
      */
     public static SignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    SignedIdentifier deserializedSignedIdentifier = new SignedIdentifier();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            SignedIdentifier deserializedSignedIdentifier = new SignedIdentifier();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("Id".equals(elementName.getLocalPart())) {
-                            deserializedSignedIdentifier.id = reader.getStringElement();
-                        } else if ("AccessPolicy".equals(elementName.getLocalPart())) {
-                            deserializedSignedIdentifier.accessPolicy = AccessPolicy.fromXml(reader, "AccessPolicy");
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("Id".equals(elementName.getLocalPart())) {
+                    deserializedSignedIdentifier.id = reader.getStringElement();
+                } else if ("AccessPolicy".equals(elementName.getLocalPart())) {
+                    deserializedSignedIdentifier.accessPolicy = AccessPolicy.fromXml(reader, "AccessPolicy");
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedSignedIdentifier;
-                });
+            return deserializedSignedIdentifier;
+        });
     }
 }

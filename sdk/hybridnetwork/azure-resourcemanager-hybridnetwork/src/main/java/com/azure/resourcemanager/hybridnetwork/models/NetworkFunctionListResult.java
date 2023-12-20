@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for network function API service call. */
+/**
+ * Response for network function API service call.
+ */
 @Fluent
 public final class NetworkFunctionListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkFunctionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of NetworkFunctionListResult class. */
+    /**
+     * Creates an instance of NetworkFunctionListResult class.
+     */
     public NetworkFunctionListResult() {
     }
 
     /**
      * Get the value property: A list of network function resources in a subscription or resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkFunctionInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkFunctionListResult {
 
     /**
      * Set the value property: A list of network function resources in a subscription or resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkFunctionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkFunctionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkFunctionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

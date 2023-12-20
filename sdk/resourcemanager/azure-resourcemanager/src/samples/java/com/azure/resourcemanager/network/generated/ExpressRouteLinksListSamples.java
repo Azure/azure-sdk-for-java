@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteLinks List. */
+/**
+ * Samples for ExpressRouteLinks List.
+ */
 public final class ExpressRouteLinksListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteLinkList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ExpressRouteLinkList.json
      */
     /**
      * Sample code: ExpressRouteLinkGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteLinkGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteLinks()
-            .list("rg1", "portName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteLinks().list("rg1", "portName",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -14,15 +14,15 @@ public final class CommitmentTierListResultTests {
         CommitmentTierListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"rbpbewtghfgblcg\",\"value\":[{\"kind\":\"lvqhjkbegibtnmx\",\"skuName\":\"bwwaloa\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"wrtz\",\"tier\":\"zg\",\"maxCount\":598094792,\"quota\":{\"quantity\":4114340895697399622,\"unit\":\"ngmtsavjcb\"},\"cost\":{\"commitmentMeterId\":\"qpsrknftguvri\",\"overageMeterId\":\"prwmdyvxqt\"}},{\"kind\":\"riwwroy\",\"skuName\":\"exrmcqibycnojvk\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"qsgzvahapj\",\"tier\":\"hpvgqz\",\"maxCount\":256612038,\"quota\":{\"quantity\":8796817644563958079,\"unit\":\"lmwlxkvugfhzo\"},\"cost\":{\"commitmentMeterId\":\"jvzunluthnnp\",\"overageMeterId\":\"xipeilpjzuaejx\"}},{\"kind\":\"ltskzbbtd\",\"skuName\":\"mv\",\"hostingModel\":\"Web\",\"planType\":\"pwo\",\"tier\":\"hkfpbs\",\"maxCount\":657936288,\"quota\":{\"quantity\":1603603856747313899,\"unit\":\"us\"},\"cost\":{\"commitmentMeterId\":\"ouwaboekqvkeln\",\"overageMeterId\":\"vbxwyjsflhh\"}},{\"kind\":\"aln\",\"skuName\":\"xisxyawjoyaqcsl\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"iidzyexzne\",\"tier\":\"xhnrztfolhb\",\"maxCount\":297001975,\"quota\":{\"quantity\":6939449275608814243,\"unit\":\"lp\"},\"cost\":{\"commitmentMeterId\":\"dtpnapnyiropuhp\",\"overageMeterId\":\"vpgylgqgitxmed\"}}]}")
+                    "{\"nextLink\":\"lo\",\"value\":[{\"kind\":\"yfjfcnjbkcn\",\"skuName\":\"hbttkphyw\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"t\",\"tier\":\"nermcl\",\"maxCount\":1227353846,\"quota\":{\"quantity\":8408659910270038809,\"unit\":\"scrpabgyepsbjt\"},\"cost\":{\"commitmentMeterId\":\"ugxywpmueef\",\"overageMeterId\":\"wfqkquj\"}}]}")
                 .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("rbpbewtghfgblcg", model.nextLink());
+        Assertions.assertEquals("lo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("rbpbewtghfgblcg");
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("lo");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("rbpbewtghfgblcg", model.nextLink());
+        Assertions.assertEquals("lo", model.nextLink());
     }
 }

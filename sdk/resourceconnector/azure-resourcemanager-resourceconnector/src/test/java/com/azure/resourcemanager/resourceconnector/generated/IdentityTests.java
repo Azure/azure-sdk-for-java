@@ -14,7 +14,7 @@ public final class IdentityTests {
     public void testDeserialize() throws Exception {
         Identity model =
             BinaryData
-                .fromString("{\"principalId\":\"zk\",\"tenantId\":\"dbihanufhfcbj\",\"type\":\"SystemAssigned\"}")
+                .fromString("{\"principalId\":\"bj\",\"tenantId\":\"a\",\"type\":\"SystemAssigned\"}")
                 .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

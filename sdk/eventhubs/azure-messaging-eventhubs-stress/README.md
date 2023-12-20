@@ -20,17 +20,10 @@ To know how to develop a stress test project, you should first go through the [A
 
 ### Deploy Stress Test
 
-Build out the jar package:
+Cd into `azure-sdk-for-java` root folder and run command to deploy the package to cluster
 
 ```shell
-cd <current project path>
-mvn clean install
-```
-
-Run command to deploy the package to cluster:
-
-```shell
-..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Login -PushImage
+..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\eventhubs\
 ``` 
 
 ### Validate Status

@@ -41,7 +41,7 @@ public class CreateSkillsetExample {
 
     private static void createOcrSkillset(SearchIndexerClient searchIndexerClient) {
         // Sample OCR definition
-        // https://docs.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr#sample-definition
+        // https://docs.microsoft.com/azure/search/cognitive-search-skill-ocr#sample-definition
 
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry("image")

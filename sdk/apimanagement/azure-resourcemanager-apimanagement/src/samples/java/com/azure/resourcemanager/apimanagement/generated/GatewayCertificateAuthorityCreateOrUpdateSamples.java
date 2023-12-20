@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 /** Samples for GatewayCertificateAuthority CreateOrUpdate. */
 public final class GatewayCertificateAuthorityCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGatewayCertificateAuthority.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGatewayCertificateAuthority.json
      */
     /**
      * Sample code: ApiManagementCreateGatewayCertificateAuthority.

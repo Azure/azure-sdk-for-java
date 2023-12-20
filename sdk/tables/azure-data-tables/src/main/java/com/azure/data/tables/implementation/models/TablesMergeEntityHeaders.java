@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
-/** The TablesMergeEntityHeaders model. */
+/**
+ * The TablesMergeEntityHeaders model.
+ */
 @Fluent
 public final class TablesMergeEntityHeaders {
     /*
@@ -45,7 +47,7 @@ public final class TablesMergeEntityHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesMergeEntityHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesMergeEntityHeaders(HttpHeaders rawHeaders) {
@@ -61,7 +63,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -70,7 +72,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
@@ -81,7 +83,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -90,7 +92,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
@@ -101,7 +103,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -110,7 +112,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
@@ -121,7 +123,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -130,7 +132,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */
@@ -141,7 +143,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -153,7 +155,7 @@ public final class TablesMergeEntityHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesMergeEntityHeaders object itself.
      */

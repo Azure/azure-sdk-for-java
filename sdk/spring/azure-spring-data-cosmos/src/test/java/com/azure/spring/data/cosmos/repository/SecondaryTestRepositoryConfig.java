@@ -4,6 +4,9 @@ package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
@@ -15,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
+
+import java.time.Duration;
 
 /**
  * Secondary Database Account
@@ -43,12 +48,34 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.responseContinuationTokenLimitInKb}")
     private int responseContinuationTokenLimitInKb;
 
+    @Value("${cosmos.diagnosticsThresholds.pointOperationLatencyThresholdInMS}")
+    private int pointOperationLatencyThresholdInMS;
+
+    @Value("${cosmos.diagnosticsThresholds.nonPointOperationLatencyThresholdInMS}")
+    private int nonPointOperationLatencyThresholdInMS;
+
+    @Value("${cosmos.diagnosticsThresholds.requestChargeThresholdInRU}")
+    private int requestChargeThresholdInRU;
+
+    @Value("${cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
+    private int payloadSizeThresholdInBytes;
+
     @Bean
     public CosmosClientBuilder secondaryCosmosClientBuilder() {
         return new CosmosClientBuilder()
             .key(cosmosDbKey)
             .endpoint(cosmosDbUri)
-            .contentResponseOnWriteEnabled(true);
+            .contentResponseOnWriteEnabled(true)
+            .clientTelemetryConfig(
+                new CosmosClientTelemetryConfig()
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds()
+                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU)
+                    )
+                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Bean("secondaryCosmosAsyncClient")

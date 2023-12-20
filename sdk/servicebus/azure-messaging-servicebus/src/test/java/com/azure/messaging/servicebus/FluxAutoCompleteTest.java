@@ -3,10 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.reactivestreams.Subscription;
@@ -35,21 +33,12 @@ import static org.mockito.Mockito.when;
  * Tests {@link FluxAutoComplete} for abandoning messages.
  */
 class FluxAutoCompleteTest {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private final Semaphore completionLock = new Semaphore(1);
 
     private final ArrayList<ServiceBusMessageContext> onCompleteInvocations = new ArrayList<>();
     private final ArrayList<ServiceBusMessageContext> onAbandonInvocations = new ArrayList<>();
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @AfterEach
     public void afterEach() {
@@ -86,7 +75,8 @@ class FluxAutoCompleteTest {
         StepVerifier.create(autoComplete)
             .then(() -> testPublisher.emit(context, context2))
             .expectNext(context, context2)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verifyLists(onCompleteInvocations, context, context2);
@@ -167,7 +157,7 @@ class FluxAutoCompleteTest {
             .then(() -> testPublisher.next(context, context2, context3, context4))
             .thenConsumeWhile(m -> m != context2)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verifyLists(onCompleteInvocations, context, context2);
@@ -212,7 +202,7 @@ class FluxAutoCompleteTest {
             .then(() -> testPublisher.next(context, context2))
             .expectNext(context, context2)
             .expectErrorSatisfies(e -> Assertions.assertEquals(testError, e))
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verifyLists(onAbandonInvocations);
@@ -241,7 +231,7 @@ class FluxAutoCompleteTest {
             .expectNext(context, context2)
             .then(() -> testPublisher.complete())
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verifyLists(onCompleteInvocations, context2);
@@ -286,7 +276,7 @@ class FluxAutoCompleteTest {
                 assertNotNull(cause);
                 assertEquals(testError, cause);
             })
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         // Assert
         verifyLists(onCompleteInvocations, context);

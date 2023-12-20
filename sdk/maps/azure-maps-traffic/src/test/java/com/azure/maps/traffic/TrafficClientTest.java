@@ -3,16 +3,10 @@
 
 package com.azure.maps.traffic;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
-import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.IncidentDetailStyle;
 import com.azure.maps.traffic.models.IncidentGeometryType;
 import com.azure.maps.traffic.models.ProjectionStandard;
@@ -24,14 +18,19 @@ import com.azure.maps.traffic.models.TrafficFlowSegmentOptions;
 import com.azure.maps.traffic.models.TrafficFlowSegmentStyle;
 import com.azure.maps.traffic.models.TrafficFlowTileOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileStyle;
+import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentTileOptions;
 import com.azure.maps.traffic.models.TrafficIncidentTileStyle;
 import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TrafficClientTest extends TrafficClientTestBase {
     private TrafficClient client;

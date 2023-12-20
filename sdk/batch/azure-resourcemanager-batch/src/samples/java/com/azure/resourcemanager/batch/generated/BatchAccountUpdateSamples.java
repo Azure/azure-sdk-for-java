@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.BatchAccount;
 
 /** Samples for BatchAccount Update. */
 public final class BatchAccountUpdateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountUpdate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountUpdate.json
      */
     /**
      * Sample code: BatchAccountUpdate.
@@ -22,7 +21,8 @@ public final class BatchAccountUpdateSamples {
         BatchAccount resource =
             manager
                 .batchAccounts()
-                .getByResourceGroupWithResponse("default-azurebatch-japaneast", "sampleacct", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

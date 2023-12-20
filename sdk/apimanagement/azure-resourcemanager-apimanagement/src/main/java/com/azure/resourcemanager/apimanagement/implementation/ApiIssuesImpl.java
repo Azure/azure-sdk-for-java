@@ -52,22 +52,13 @@ public final class ApiIssuesImpl implements ApiIssues {
         return Utils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId);
-    }
-
     public ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, context);
     }
 
-    public IssueContract get(String resourceGroupName, String serviceName, String apiId, String issueId) {
-        IssueContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId);
-        if (inner != null) {
-            return new IssueContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId);
     }
 
     public Response<IssueContract> getWithResponse(
@@ -92,8 +83,13 @@ public final class ApiIssuesImpl implements ApiIssues {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, ifMatch);
+    public IssueContract get(String resourceGroupName, String serviceName, String apiId, String issueId) {
+        IssueContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId);
+        if (inner != null) {
+            return new IssueContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -101,6 +97,10 @@ public final class ApiIssuesImpl implements ApiIssues {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, ifMatch);
     }
 
     public IssueContract getById(String id) {

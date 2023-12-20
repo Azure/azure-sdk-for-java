@@ -6,6 +6,8 @@ package com.azure.resourcemanager.resourcemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcemover.models.PublicIpAddressResourceSettings;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PublicIpAddressResourceSettingsTests {
@@ -14,32 +16,50 @@ public final class PublicIpAddressResourceSettingsTests {
         PublicIpAddressResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/publicIPAddresses\",\"domainNameLabel\":\"ibtnmxiebwwaloay\",\"fqdn\":\"gwrtzju\",\"publicIpAllocationMethod\":\"wyzmhtxon\",\"sku\":\"ts\",\"zones\":\"jcbpwxqpsrknft\",\"targetResourceName\":\"uvriuhprwm\"}")
+                    "{\"resourceType\":\"Microsoft.Network/publicIPAddresses\",\"tags\":{\"srfbjfdtwss\":\"fsubcgjbirxbpy\",\"tpvjzbexilzznfqq\":\"t\",\"taruoujmkcj\":\"vwpm\"},\"domainNameLabel\":\"qytjrybnwjewgd\",\"fqdn\":\"ervnaenqpehi\",\"publicIpAllocationMethod\":\"oygmift\",\"sku\":\"zdnds\",\"zones\":\"nayqi\",\"targetResourceName\":\"nduhavhqlkthum\",\"targetResourceGroupName\":\"olbgycduiertgccy\"}")
                 .toObject(PublicIpAddressResourceSettings.class);
-        Assertions.assertEquals("uvriuhprwm", model.targetResourceName());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.domainNameLabel());
-        Assertions.assertEquals("gwrtzju", model.fqdn());
-        Assertions.assertEquals("wyzmhtxon", model.publicIpAllocationMethod());
-        Assertions.assertEquals("ts", model.sku());
-        Assertions.assertEquals("jcbpwxqpsrknft", model.zones());
+        Assertions.assertEquals("nduhavhqlkthum", model.targetResourceName());
+        Assertions.assertEquals("olbgycduiertgccy", model.targetResourceGroupName());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.tags().get("srfbjfdtwss"));
+        Assertions.assertEquals("qytjrybnwjewgd", model.domainNameLabel());
+        Assertions.assertEquals("ervnaenqpehi", model.fqdn());
+        Assertions.assertEquals("oygmift", model.publicIpAllocationMethod());
+        Assertions.assertEquals("zdnds", model.sku());
+        Assertions.assertEquals("nayqi", model.zones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PublicIpAddressResourceSettings model =
             new PublicIpAddressResourceSettings()
-                .withTargetResourceName("uvriuhprwm")
-                .withDomainNameLabel("ibtnmxiebwwaloay")
-                .withFqdn("gwrtzju")
-                .withPublicIpAllocationMethod("wyzmhtxon")
-                .withSku("ts")
-                .withZones("jcbpwxqpsrknft");
+                .withTargetResourceName("nduhavhqlkthum")
+                .withTargetResourceGroupName("olbgycduiertgccy")
+                .withTags(mapOf("srfbjfdtwss", "fsubcgjbirxbpy", "tpvjzbexilzznfqq", "t", "taruoujmkcj", "vwpm"))
+                .withDomainNameLabel("qytjrybnwjewgd")
+                .withFqdn("ervnaenqpehi")
+                .withPublicIpAllocationMethod("oygmift")
+                .withSku("zdnds")
+                .withZones("nayqi");
         model = BinaryData.fromObject(model).toObject(PublicIpAddressResourceSettings.class);
-        Assertions.assertEquals("uvriuhprwm", model.targetResourceName());
-        Assertions.assertEquals("ibtnmxiebwwaloay", model.domainNameLabel());
-        Assertions.assertEquals("gwrtzju", model.fqdn());
-        Assertions.assertEquals("wyzmhtxon", model.publicIpAllocationMethod());
-        Assertions.assertEquals("ts", model.sku());
-        Assertions.assertEquals("jcbpwxqpsrknft", model.zones());
+        Assertions.assertEquals("nduhavhqlkthum", model.targetResourceName());
+        Assertions.assertEquals("olbgycduiertgccy", model.targetResourceGroupName());
+        Assertions.assertEquals("fsubcgjbirxbpy", model.tags().get("srfbjfdtwss"));
+        Assertions.assertEquals("qytjrybnwjewgd", model.domainNameLabel());
+        Assertions.assertEquals("ervnaenqpehi", model.fqdn());
+        Assertions.assertEquals("oygmift", model.publicIpAllocationMethod());
+        Assertions.assertEquals("zdnds", model.sku());
+        Assertions.assertEquals("nayqi", model.zones());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

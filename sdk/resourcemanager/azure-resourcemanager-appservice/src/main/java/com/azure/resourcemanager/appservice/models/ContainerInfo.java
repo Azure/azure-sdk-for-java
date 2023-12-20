@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ContainerInfo model. */
+/**
+ * The ContainerInfo model.
+ */
 @Fluent
 public final class ContainerInfo {
     /*
@@ -59,13 +61,15 @@ public final class ContainerInfo {
     @JsonProperty(value = "eth0")
     private ContainerNetworkInterfaceStatistics eth0;
 
-    /** Creates an instance of ContainerInfo class. */
+    /**
+     * Creates an instance of ContainerInfo class.
+     */
     public ContainerInfo() {
     }
 
     /**
      * Get the currentTimestamp property: The currentTimeStamp property.
-     *
+     * 
      * @return the currentTimestamp value.
      */
     public OffsetDateTime currentTimestamp() {
@@ -74,7 +78,7 @@ public final class ContainerInfo {
 
     /**
      * Set the currentTimestamp property: The currentTimeStamp property.
-     *
+     * 
      * @param currentTimestamp the currentTimestamp value to set.
      * @return the ContainerInfo object itself.
      */
@@ -85,7 +89,7 @@ public final class ContainerInfo {
 
     /**
      * Get the previousTimestamp property: The previousTimeStamp property.
-     *
+     * 
      * @return the previousTimestamp value.
      */
     public OffsetDateTime previousTimestamp() {
@@ -94,7 +98,7 @@ public final class ContainerInfo {
 
     /**
      * Set the previousTimestamp property: The previousTimeStamp property.
-     *
+     * 
      * @param previousTimestamp the previousTimestamp value to set.
      * @return the ContainerInfo object itself.
      */
@@ -105,7 +109,7 @@ public final class ContainerInfo {
 
     /**
      * Get the currentCpuStats property: The currentCpuStats property.
-     *
+     * 
      * @return the currentCpuStats value.
      */
     public ContainerCpuStatistics currentCpuStats() {
@@ -114,7 +118,7 @@ public final class ContainerInfo {
 
     /**
      * Set the currentCpuStats property: The currentCpuStats property.
-     *
+     * 
      * @param currentCpuStats the currentCpuStats value to set.
      * @return the ContainerInfo object itself.
      */
@@ -125,7 +129,7 @@ public final class ContainerInfo {
 
     /**
      * Get the previousCpuStats property: The previousCpuStats property.
-     *
+     * 
      * @return the previousCpuStats value.
      */
     public ContainerCpuStatistics previousCpuStats() {
@@ -134,7 +138,7 @@ public final class ContainerInfo {
 
     /**
      * Set the previousCpuStats property: The previousCpuStats property.
-     *
+     * 
      * @param previousCpuStats the previousCpuStats value to set.
      * @return the ContainerInfo object itself.
      */
@@ -145,7 +149,7 @@ public final class ContainerInfo {
 
     /**
      * Get the memoryStats property: The memoryStats property.
-     *
+     * 
      * @return the memoryStats value.
      */
     public ContainerMemoryStatistics memoryStats() {
@@ -154,7 +158,7 @@ public final class ContainerInfo {
 
     /**
      * Set the memoryStats property: The memoryStats property.
-     *
+     * 
      * @param memoryStats the memoryStats value to set.
      * @return the ContainerInfo object itself.
      */
@@ -165,7 +169,7 @@ public final class ContainerInfo {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -174,7 +178,7 @@ public final class ContainerInfo {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ContainerInfo object itself.
      */
@@ -185,7 +189,7 @@ public final class ContainerInfo {
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -194,7 +198,7 @@ public final class ContainerInfo {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the ContainerInfo object itself.
      */
@@ -205,7 +209,7 @@ public final class ContainerInfo {
 
     /**
      * Get the eth0 property: The eth0 property.
-     *
+     * 
      * @return the eth0 value.
      */
     public ContainerNetworkInterfaceStatistics eth0() {
@@ -214,7 +218,7 @@ public final class ContainerInfo {
 
     /**
      * Set the eth0 property: The eth0 property.
-     *
+     * 
      * @param eth0 the eth0 value to set.
      * @return the ContainerInfo object itself.
      */
@@ -225,7 +229,7 @@ public final class ContainerInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

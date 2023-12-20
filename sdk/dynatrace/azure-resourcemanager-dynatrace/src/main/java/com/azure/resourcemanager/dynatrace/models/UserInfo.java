@@ -40,6 +40,10 @@ public final class UserInfo {
     @JsonProperty(value = "country")
     private String country;
 
+    /** Creates an instance of UserInfo class. */
+    public UserInfo() {
+    }
+
     /**
      * Get the firstName property: First Name of the user.
      *

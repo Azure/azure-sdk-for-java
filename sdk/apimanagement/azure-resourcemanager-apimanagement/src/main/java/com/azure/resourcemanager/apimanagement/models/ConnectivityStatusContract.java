@@ -13,9 +13,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ConnectivityStatusContract {
     /*
-     * The hostname of the resource which the service depends on. This can be
-     * the database, storage or any other azure resource on which the service
-     * depends upon.
+     * The hostname of the resource which the service depends on. This can be the database, storage or any other azure
+     * resource on which the service depends upon.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -33,21 +32,18 @@ public final class ConnectivityStatusContract {
     private String error;
 
     /*
-     * The date when the resource connectivity status was last updated. This
-     * status should be updated every 15 minutes. If this status has not been
-     * updated, then it means that the service has lost network connectivity to
-     * the resource, from inside the Virtual Network.The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
+     * The date when the resource connectivity status was last updated. This status should be updated every 15 minutes.
+     * If this status has not been updated, then it means that the service has lost network connectivity to the
+     * resource, from inside the Virtual Network.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "lastUpdated", required = true)
     private OffsetDateTime lastUpdated;
 
     /*
-     * The date when the resource connectivity status last Changed from success
-     * to failure or vice-versa. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * The date when the resource connectivity status last Changed from success to failure or vice-versa. The date
+     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "lastStatusChange", required = true)
@@ -64,6 +60,10 @@ public final class ConnectivityStatusContract {
      */
     @JsonProperty(value = "isOptional", required = true)
     private boolean isOptional;
+
+    /** Creates an instance of ConnectivityStatusContract class. */
+    public ConnectivityStatusContract() {
+    }
 
     /**
      * Get the name property: The hostname of the resource which the service depends on. This can be the database,

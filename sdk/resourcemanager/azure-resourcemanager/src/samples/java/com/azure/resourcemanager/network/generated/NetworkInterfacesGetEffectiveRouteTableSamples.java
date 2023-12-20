@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkInterfaces GetEffectiveRouteTable. */
+/**
+ * Samples for NetworkInterfaces GetEffectiveRouteTable.
+ */
 public final class NetworkInterfacesGetEffectiveRouteTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkInterfaceEffectiveRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkInterfaceEffectiveRouteTableList.json
      */
     /**
      * Sample code: Show network interface effective route tables.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void showNetworkInterfaceEffectiveRouteTables(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkInterfaces()
-            .getEffectiveRouteTable("rg1", "nic1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkInterfaces().getEffectiveRouteTable("rg1", "nic1",
+            com.azure.core.util.Context.NONE);
     }
 }

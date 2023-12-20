@@ -8,30 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceConnection model =
-            BinaryData
-                .fromString("{\"name\":\"suyonobglaocq\",\"groupIds\":[\"cmgyud\"],\"requestMessage\":\"tlmoyrx\"}")
-                .toObject(PrivateLinkServiceConnection.class);
-        Assertions.assertEquals("suyonobglaocq", model.name());
-        Assertions.assertEquals("cmgyud", model.groupIds().get(0));
-        Assertions.assertEquals("tlmoyrx", model.requestMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceConnection model = BinaryData.fromString(
+            "{\"name\":\"mewzsyyc\",\"groupIds\":[\"soibjudpfrx\",\"rthzvaytdwkqbrqu\",\"paxh\",\"xiilivpdtiirqt\"],\"requestMessage\":\"oaxoruzfgsqu\"}")
+            .toObject(PrivateLinkServiceConnection.class);
+        Assertions.assertEquals("mewzsyyc", model.name());
+        Assertions.assertEquals("soibjudpfrx", model.groupIds().get(0));
+        Assertions.assertEquals("oaxoruzfgsqu", model.requestMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceConnection model =
-            new PrivateLinkServiceConnection()
-                .withName("suyonobglaocq")
-                .withGroupIds(Arrays.asList("cmgyud"))
-                .withRequestMessage("tlmoyrx");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceConnection model = new PrivateLinkServiceConnection().withName("mewzsyyc")
+            .withGroupIds(Arrays.asList("soibjudpfrx", "rthzvaytdwkqbrqu", "paxh", "xiilivpdtiirqt"))
+            .withRequestMessage("oaxoruzfgsqu");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnection.class);
-        Assertions.assertEquals("suyonobglaocq", model.name());
-        Assertions.assertEquals("cmgyud", model.groupIds().get(0));
-        Assertions.assertEquals("tlmoyrx", model.requestMessage());
+        Assertions.assertEquals("mewzsyyc", model.name());
+        Assertions.assertEquals("soibjudpfrx", model.groupIds().get(0));
+        Assertions.assertEquals("oaxoruzfgsqu", model.requestMessage());
     }
 }

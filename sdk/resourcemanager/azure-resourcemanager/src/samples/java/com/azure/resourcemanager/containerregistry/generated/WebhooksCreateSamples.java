@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Webhooks Create. */
 public final class WebhooksCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/WebhookCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/WebhookCreate.json
      */
     /**
      * Sample code: WebhookCreate.

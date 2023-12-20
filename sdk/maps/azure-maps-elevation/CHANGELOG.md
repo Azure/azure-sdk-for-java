@@ -17,4 +17,4 @@ Please note, this package has been deprecated and will no longer be in service o
 
 ## 1.0.0-beta.1 (2023-04-15)
 
-- This package contains the Azure Maps SDK Elevation client library for Java. Package tag 1.0.0-beta.1. For documentation on how to use this package, please see [Microsoft Azure SDK for Elevation SDK](https://docs.microsoft.com/rest/api/maps/elevation).
+- This package contains the Azure Maps SDK Elevation client library for Java. Package tag 1.0.0-beta.1.

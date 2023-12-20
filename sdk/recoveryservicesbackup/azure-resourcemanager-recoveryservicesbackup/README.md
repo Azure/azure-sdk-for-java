@@ -2,7 +2,7 @@
 
 Azure Resource Manager RecoveryServicesBackup client library for Java.
 
-This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-recoveryservicesbackup</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,6 +74,103 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+OffsetDateTime scheduleDateTime = OffsetDateTime.parse(
+    OffsetDateTime.now(Clock.systemUTC())
+        .withNano(0).withMinute(0).withSecond(0)
+        .plusDays(1).format(DateTimeFormatter.ISO_INSTANT));
+
+List<SubProtectionPolicy> lstSubProtectionPolicy = Arrays.asList(
+    new SubProtectionPolicy()
+        .withPolicyType(PolicyType.FULL)
+        .withSchedulePolicy(
+            new SimpleSchedulePolicy()
+                .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
+        .withRetentionPolicy(
+            new LongTermRetentionPolicy()
+                .withWeeklySchedule(
+                    new WeeklyRetentionSchedule()
+                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                        .withRetentionDuration(
+                            new RetentionDuration()
+                                .withCount(2)
+                                .withDurationType(RetentionDurationType.WEEKS)))
+                .withMonthlySchedule(
+                    new MonthlyRetentionSchedule()
+                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                        .withRetentionScheduleWeekly(
+                            new WeeklyRetentionFormat()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
+                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                        .withRetentionDuration(
+                            new RetentionDuration()
+                                .withCount(1)
+                                .withDurationType(RetentionDurationType.MONTHS)))
+                .withYearlySchedule(
+                    new YearlyRetentionSchedule()
+                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                        .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY, MonthOfYear.JUNE, MonthOfYear.DECEMBER))
+                        .withRetentionScheduleWeekly(
+                            new WeeklyRetentionFormat()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
+                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                        .withRetentionDuration(
+                            new RetentionDuration()
+                                .withCount(1)
+                                .withDurationType(RetentionDurationType.YEARS)))),
+    new SubProtectionPolicy()
+        .withPolicyType(PolicyType.DIFFERENTIAL)
+        .withSchedulePolicy(
+            new SimpleSchedulePolicy()
+                .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
+                .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
+        .withRetentionPolicy(
+            new SimpleRetentionPolicy()
+                .withRetentionDuration(
+                    new RetentionDuration()
+                        .withCount(8)
+                        .withDurationType(RetentionDurationType.DAYS))),
+    new SubProtectionPolicy()
+        .withPolicyType(PolicyType.LOG)
+        .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
+        .withRetentionPolicy(
+            new SimpleRetentionPolicy()
+                .withRetentionDuration(
+                    new RetentionDuration()
+                        .withCount(7)
+                        .withDurationType(RetentionDurationType.DAYS))));
+
+vault = recoveryServicesManager.vaults()
+    .define(vaultName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
+    .withProperties(new VaultProperties()
+        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+        .withRestoreSettings(new RestoreSettings()
+            .withCrossSubscriptionRestoreSettings(
+                new CrossSubscriptionRestoreSettings()
+                    .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+    .create();
+
+protectionPolicyResource = recoveryServicesBackupManager.protectionPolicies()
+    .define(policyName)
+    .withRegion(REGION)
+    .withExistingVault(vaultName, resourceGroupName)
+    .withProperties(
+        new AzureVmWorkloadProtectionPolicy()
+            .withWorkLoadType(WorkloadType.SQLDATA_BASE)
+            .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
+            .withSubProtectionPolicy(lstSubProtectionPolicy)
+    )
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/recoveryservicesbackup/azure-resourcemanager-recoveryservicesbackup/SAMPLE.md)
 
 
@@ -103,3 +200,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Frecoveryservicesbackup%2Fazure-resourcemanager-recoveryservicesbackup%2FREADME.png)

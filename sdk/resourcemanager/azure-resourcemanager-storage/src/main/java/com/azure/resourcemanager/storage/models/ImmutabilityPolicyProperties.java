@@ -30,6 +30,10 @@ public final class ImmutabilityPolicyProperties {
     @JsonProperty(value = "updateHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateHistoryProperty> updateHistory;
 
+    /** Creates an instance of ImmutabilityPolicyProperties class. */
+    public ImmutabilityPolicyProperties() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
      *

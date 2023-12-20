@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VpnGateways Delete. */
+/**
+ * Samples for VpnGateways Delete.
+ */
 public final class VpnGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnGatewayDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VpnGatewayDelete.json
      */
     /**
      * Sample code: VpnGatewayDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnGatewayDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVpnGateways()
-            .delete("rg1", "gateway1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVpnGateways().delete("rg1", "gateway1",
+            com.azure.core.util.Context.NONE);
     }
 }

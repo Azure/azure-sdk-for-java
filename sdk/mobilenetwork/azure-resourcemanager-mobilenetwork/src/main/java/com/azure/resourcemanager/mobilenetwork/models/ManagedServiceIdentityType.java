@@ -8,20 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed). */
+/** Type of managed service identity (currently only UserAssigned allowed). */
 public final class ManagedServiceIdentityType extends ExpandableStringEnum<ManagedServiceIdentityType> {
     /** Static value None for ManagedServiceIdentityType. */
     public static final ManagedServiceIdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for ManagedServiceIdentityType. */
-    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
-
     /** Static value UserAssigned for ManagedServiceIdentityType. */
     public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
-
-    /** Static value SystemAssigned,UserAssigned for ManagedServiceIdentityType. */
-    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED =
-        fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of ManagedServiceIdentityType value.

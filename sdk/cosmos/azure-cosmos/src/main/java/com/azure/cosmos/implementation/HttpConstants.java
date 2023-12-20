@@ -271,6 +271,7 @@ public class HttpConstants {
 
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE = "x-ms-dedicatedgateway-bypass-cache";
 
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
@@ -424,14 +425,18 @@ public class HttpConstants {
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 
         //SDK Codes(Client)
-        // IMPORTANT - whenever possible use consistency substaus codes that .Net SDK also uses
+        // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
         public static final int TRANSPORT_GENERATED_410 = 20001;
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
 
+        // IMPORTANT - below sub status codes have no corresponding .Net
+        // version, because they are only applicable in Java
+        public static final int NEGATIVE_TIMEOUT_PROVIDED = 20901; // .Net has different cancellation concept
+
         //SDK Codes (Server)
-        // IMPORTANT - whenever possible use consistency substaus codes that .Net SDK also uses
+        // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
         public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;
         public static final int PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT = 21002;
         public static final int COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT = 21003;

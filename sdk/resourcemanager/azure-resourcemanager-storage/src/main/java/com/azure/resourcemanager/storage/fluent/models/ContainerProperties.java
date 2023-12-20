@@ -140,6 +140,10 @@ public final class ContainerProperties {
     @JsonProperty(value = "enableNfsV3AllSquash")
     private Boolean enableNfsV3AllSquash;
 
+    /** Creates an instance of ContainerProperties class. */
+    public ContainerProperties() {
+    }
+
     /**
      * Get the version property: The version of the deleted blob container.
      *

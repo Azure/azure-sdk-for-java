@@ -7,17 +7,26 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Abstract
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Trie;
 import io.opentelemetry.api.common.AttributeKey;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
 class MappingsBuilder {
 
+    enum MappingType {
+        LOG,
+        SPAN,
+        METRIC
+    }
+    public static final Mappings EMPTY_MAPPINGS = new Mappings(Collections.emptyMap(), Trie.<PrefixMapping>newBuilder().build());
+
     // TODO need to keep this list in sync as new semantic conventions are defined
-    private static final Set<String> STANDARD_ATTRIBUTE_PREFIXES =
+    private static final Set<String> IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES =
         new HashSet<>(
             asList(
                 "http.",
@@ -35,14 +44,28 @@ class MappingsBuilder {
                 "job.", // proposed semantic convention which we use for job,
                 "applicationinsights.internal."));
 
+    private static final Set<String> IGNORED_METRIC_INTERNAL_ATTRIBUTE_PREFIXES = Collections.singleton("applicationinsights.internal.");
+
     private final Map<String, ExactMapping> exactMappings = new HashMap<>();
     private final Trie.Builder<PrefixMapping> prefixMappings = Trie.newBuilder();
 
-    MappingsBuilder() {
-        // ignore all standard attribute prefixes
-        for (String prefix : STANDARD_ATTRIBUTE_PREFIXES) {
-            prefixMappings.put(prefix, (telemetryBuilder, key, value) -> {
-            });
+    MappingsBuilder(MappingType mappingType) {
+        switch(mappingType) {
+            case LOG:
+            case SPAN:
+                // ignore all standard attribute prefixes for Logs and Spans
+                for (String prefix : IGNORED_LOG_AND_SPAN_STANDARD_ATTRIBUTE_PREFIXES) {
+                    prefixMappings.put(prefix, (telemetryBuilder, key, value) -> {
+                    });
+                }
+                break;
+            case METRIC:
+                // ignore all internal attribute prefixes for Metrics
+                for (String prefix : IGNORED_METRIC_INTERNAL_ATTRIBUTE_PREFIXES) {
+                    prefixMappings.put(prefix, (telemetryBuilder, key, value) -> {
+                    });
+                }
+                break;
         }
     }
 
@@ -85,6 +108,18 @@ class MappingsBuilder {
             (telemetryBuilder, value) -> {
                 if (value instanceof Long) {
                     telemetryBuilder.addProperty(propertyName, Long.toString((Long) value));
+                }
+            });
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    MappingsBuilder exactStringArray(AttributeKey<List<String>> attributeKey, String propertyName) {
+        exactMappings.put(
+            attributeKey.getKey(),
+            (telemetryBuilder, value) -> {
+                if (value instanceof List) {
+                    telemetryBuilder.addProperty(propertyName, String.join(",", (List) value));
                 }
             });
         return this;

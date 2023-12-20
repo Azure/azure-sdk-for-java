@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ApplicationGatewayPrivateEndpointConnections Get. */
+/**
+ * Samples for ApplicationGatewayPrivateEndpointConnections Get.
+ */
 public final class ApplicationGatewayPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ApplicationGatewayPrivateEndpointConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ApplicationGatewayPrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Get Application Gateway Private Endpoint Connection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getApplicationGatewayPrivateEndpointConnection(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getApplicationGatewayPrivateEndpointConnections()
+    public static void
+        getApplicationGatewayPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks().manager().serviceClient().getApplicationGatewayPrivateEndpointConnections()
             .getWithResponse("rg1", "appgw", "connection1", com.azure.core.util.Context.NONE);
     }
 }

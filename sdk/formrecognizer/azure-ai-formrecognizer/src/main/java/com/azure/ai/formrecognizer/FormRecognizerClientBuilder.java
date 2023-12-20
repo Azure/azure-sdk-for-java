@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Constants;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -101,6 +100,14 @@ public final class FormRecognizerClientBuilder implements
     EndpointTrait<FormRecognizerClientBuilder>,
     HttpTrait<FormRecognizerClientBuilder>,
     TokenCredentialTrait<FormRecognizerClientBuilder> {
+
+    /**
+     * Constructs a {@link FormRecognizerClientBuilder} object.
+     */
+    public FormRecognizerClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -191,13 +198,8 @@ public final class FormRecognizerClientBuilder implements
                 httpClient);
         }
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
+        return new FormRecognizerAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion);
     }
 
     /**
@@ -306,7 +308,7 @@ public final class FormRecognizerClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormRecognizerClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public FormRecognizerClientBuilder clientOptions(ClientOptions clientOptions) {

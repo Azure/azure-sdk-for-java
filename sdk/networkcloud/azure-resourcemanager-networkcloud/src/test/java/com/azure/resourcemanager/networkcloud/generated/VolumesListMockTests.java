@@ -32,7 +32,7 @@ public final class VolumesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"tpzkgmeboywhcz\",\"type\":\"qrhm\"},\"properties\":{\"attachedTo\":[\"be\",\"ygisrz\",\"nykdi\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"lrmpwctofldse\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"ztx\",\"sizeMiB\":657394705446491758},\"location\":\"g\",\"tags\":{\"hfjsrwqrxetf\":\"jiye\",\"r\":\"cwv\",\"ax\":\"dqntycnawthv\",\"jecehokwc\":\"nuyeamcmhud\"},\"id\":\"qtwloes\",\"name\":\"rg\",\"type\":\"vrbnyrukoil\"}]}";
+            "{\"value\":[{\"extendedLocation\":{\"name\":\"ggrunozfvualjt\",\"type\":\"oivsdwsngkrf\"},\"properties\":{\"attachedTo\":[\"cjvakmh\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"a\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"i\",\"sizeMiB\":5907895514067975579},\"location\":\"x\",\"tags\":{\"pfzsclefyrl\":\"ynuqqkotauratnic\",\"ggnbbuypwovvvsfl\":\"tndqlmf\",\"xrlzhpziha\":\"evnoqayrehjuqwva\",\"fonfdbgm\":\"enqqzlxnqzu\"},\"id\":\"fwmjcwtewfhxwy\",\"name\":\"kbrehzlrynjp\",\"type\":\"ha\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class VolumesListMockTests {
 
         PagedIterable<Volume> response = manager.volumes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("g", response.iterator().next().location());
-        Assertions.assertEquals("jiye", response.iterator().next().tags().get("hfjsrwqrxetf"));
-        Assertions.assertEquals("tpzkgmeboywhcz", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("qrhm", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(657394705446491758L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("x", response.iterator().next().location());
+        Assertions.assertEquals("ynuqqkotauratnic", response.iterator().next().tags().get("pfzsclefyrl"));
+        Assertions.assertEquals("ggrunozfvualjt", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("oivsdwsngkrf", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(5907895514067975579L, response.iterator().next().sizeMiB());
     }
 }

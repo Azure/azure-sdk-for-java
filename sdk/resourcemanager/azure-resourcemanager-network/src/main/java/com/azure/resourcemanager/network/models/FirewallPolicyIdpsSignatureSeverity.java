@@ -7,18 +7,28 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High. */
+/**
+ * Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
+ */
 public enum FirewallPolicyIdpsSignatureSeverity {
-    /** Enum value 1. */
+    /**
+     * Enum value 1.
+     */
     ONE(1),
 
-    /** Enum value 2. */
+    /**
+     * Enum value 2.
+     */
     TWO(2),
 
-    /** Enum value 3. */
+    /**
+     * Enum value 3.
+     */
     THREE(3);
 
-    /** The actual serialized value for a FirewallPolicyIdpsSignatureSeverity instance. */
+    /**
+     * The actual serialized value for a FirewallPolicyIdpsSignatureSeverity instance.
+     */
     private final int value;
 
     FirewallPolicyIdpsSignatureSeverity(int value) {
@@ -27,7 +37,7 @@ public enum FirewallPolicyIdpsSignatureSeverity {
 
     /**
      * Parses a serialized value to a FirewallPolicyIdpsSignatureSeverity instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FirewallPolicyIdpsSignatureSeverity object, or null if unable to parse.
      */
@@ -44,7 +54,7 @@ public enum FirewallPolicyIdpsSignatureSeverity {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
     @JsonValue

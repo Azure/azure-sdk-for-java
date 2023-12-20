@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
@@ -63,18 +62,28 @@ public final class ClustersExecuteScriptActionsMockTests {
         manager
             .clusters()
             .executeScriptActions(
-                "lfkqojpy",
-                "vgtrdcnifmzzs",
+                "hsrrryejylmbkz",
+                "dnigrfihot",
                 new ExecuteScriptActionParameters()
                     .withScriptActions(
                         Arrays
                             .asList(
                                 new RuntimeScriptAction()
-                                    .withName("brn")
-                                    .withUri("suxmpraf")
-                                    .withParameters("ckh")
-                                    .withRoles(Arrays.asList("xvd", "ffwafq", "oudaspavehhrvk", "unzo"))))
+                                    .withName("lpxuzzjgnrefq")
+                                    .withUri("hqo")
+                                    .withParameters("ihiqakydiw")
+                                    .withRoles(Arrays.asList("rkwpzdqtvhcspod", "qaxsipietgbebjf", "lbmoichd")),
+                                new RuntimeScriptAction()
+                                    .withName("iqsowsaaelc")
+                                    .withUri("ttcjuhplrvkmjc")
+                                    .withParameters("jvlgfggcvkyyliz")
+                                    .withRoles(Arrays.asList("bjpsfxsfuztlvtm")),
+                                new RuntimeScriptAction()
+                                    .withName("koveof")
+                                    .withUri("zrvjfnmjmvlwyzgi")
+                                    .withParameters("kujrllfojui")
+                                    .withRoles(Arrays.asList("puuyjucejik"))))
                     .withPersistOnSuccess(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

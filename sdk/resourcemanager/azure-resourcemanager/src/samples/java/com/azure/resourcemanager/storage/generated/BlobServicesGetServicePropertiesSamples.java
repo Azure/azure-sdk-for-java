@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BlobServices GetServiceProperties. */
 public final class BlobServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobServicesGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobServicesGet.json
      */
     /**
      * Sample code: GetBlobServices.
@@ -22,6 +20,6 @@ public final class BlobServicesGetServicePropertiesSamples {
             .manager()
             .serviceClient()
             .getBlobServices()
-            .getServicePropertiesWithResponse("res4410", "sto8607", Context.NONE);
+            .getServicePropertiesWithResponse("res4410", "sto8607", com.azure.core.util.Context.NONE);
     }
 }

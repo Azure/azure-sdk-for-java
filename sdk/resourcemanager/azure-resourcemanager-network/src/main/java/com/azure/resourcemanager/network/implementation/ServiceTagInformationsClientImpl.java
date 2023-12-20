@@ -30,123 +30,101 @@ import com.azure.resourcemanager.network.fluent.models.ServiceTagInformationInne
 import com.azure.resourcemanager.network.models.ServiceTagInformationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceTagInformationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceTagInformationsClient.
+ */
 public final class ServiceTagInformationsClientImpl implements ServiceTagInformationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceTagInformationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ServiceTagInformationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceTagInformationsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ServiceTagInformationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServiceTagInformationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientServiceTagInformations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientServiceTagInformations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface ServiceTagInformationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTagDetails")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceTagInformationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ServiceTagInformationListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("noAddressPrefixes") Boolean noAddressPrefixes,
-            @QueryParam("tagName") String tagName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("noAddressPrefixes") Boolean noAddressPrefixes, @QueryParam("tagName") String tagName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceTagInformationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @param noAddressPrefixes Do not return address prefixes for the tag(s).
      * @param tagName Return tag information for a particular tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service tag information resources with pagination along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceTagInformationInner>> listSinglePageAsync(
-        String location, Boolean noAddressPrefixes, String tagName) {
+    private Mono<PagedResponse<ServiceTagInformationInner>> listSinglePageAsync(String location,
+        Boolean noAddressPrefixes, String tagName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            location,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            noAddressPrefixes,
-                            tagName,
-                            accept,
-                            context))
-            .<PagedResponse<ServiceTagInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), noAddressPrefixes, tagName, accept, context))
+            .<PagedResponse<ServiceTagInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @param noAddressPrefixes Do not return address prefixes for the tag(s).
      * @param tagName Return tag information for a particular tag.
      * @param context The context to associate with this operation.
@@ -154,56 +132,38 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service tag information resources with pagination along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceTagInformationInner>> listSinglePageAsync(
-        String location, Boolean noAddressPrefixes, String tagName, Context context) {
+    private Mono<PagedResponse<ServiceTagInformationInner>> listSinglePageAsync(String location,
+        Boolean noAddressPrefixes, String tagName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                location,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                noAddressPrefixes,
-                tagName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), noAddressPrefixes,
+                tagName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @param noAddressPrefixes Do not return address prefixes for the tag(s).
      * @param tagName Return tag information for a particular tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,17 +173,16 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceTagInformationInner> listAsync(String location, Boolean noAddressPrefixes, String tagName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, noAddressPrefixes, tagName),
+        return new PagedFlux<>(() -> listSinglePageAsync(location, noAddressPrefixes, tagName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,17 +192,16 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
     public PagedFlux<ServiceTagInformationInner> listAsync(String location) {
         final Boolean noAddressPrefixes = null;
         final String tagName = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, noAddressPrefixes, tagName),
+        return new PagedFlux<>(() -> listSinglePageAsync(location, noAddressPrefixes, tagName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @param noAddressPrefixes Do not return address prefixes for the tag(s).
      * @param tagName Return tag information for a particular tag.
      * @param context The context to associate with this operation.
@@ -253,24 +211,23 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
      * @return a list of service tag information resources with pagination as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceTagInformationInner> listAsync(
-        String location, Boolean noAddressPrefixes, String tagName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, noAddressPrefixes, tagName, context),
+    private PagedFlux<ServiceTagInformationInner> listAsync(String location, Boolean noAddressPrefixes, String tagName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, noAddressPrefixes, tagName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources with pagination as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of service tag information resources with pagination as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceTagInformationInner> list(String location) {
@@ -281,35 +238,36 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
 
     /**
      * Gets a list of service tag information resources with pagination.
-     *
+     * 
      * @param location The location that will be used as a reference for cloud (not as a filter based on location, you
-     *     will get the list of service tags with prefix details across all regions but limited to the cloud that your
-     *     subscription belongs to).
+     * will get the list of service tags with prefix details across all regions but limited to the cloud that your
+     * subscription belongs to).
      * @param noAddressPrefixes Do not return address prefixes for the tag(s).
      * @param tagName Return tag information for a particular tag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources with pagination as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of service tag information resources with pagination as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServiceTagInformationInner> list(
-        String location, Boolean noAddressPrefixes, String tagName, Context context) {
+    public PagedIterable<ServiceTagInformationInner> list(String location, Boolean noAddressPrefixes, String tagName,
+        Context context) {
         return new PagedIterable<>(listAsync(location, noAddressPrefixes, tagName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for Get ServiceTagInformation API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceTagInformationInner>> listNextSinglePageAsync(String nextLink) {
@@ -317,37 +275,28 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServiceTagInformationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ServiceTagInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for Get ServiceTagInformation API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceTagInformationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -355,23 +304,13 @@ public final class ServiceTagInformationsClientImpl implements ServiceTagInforma
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resourceconnector.AppliancesManager;
+import com.azure.resourcemanager.resourceconnector.ResourceConnectorManager;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceOperation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +31,7 @@ public final class AppliancesListOperationsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"display\":{\"description\":\"bzqqedqytbciq\",\"operation\":\"uflmm\",\"provider\":\"zsm\",\"resource\":\"mglougpbkw\"},\"isDataAction\":true,\"name\":\"duqkt\",\"origin\":\"spwgcuertumkdosv\"}]}";
+            "{\"value\":[{\"display\":{\"description\":\"hwxmnteiwa\",\"operation\":\"vkmijcmmxdcuf\",\"provider\":\"srp\",\"resource\":\"zidnsezcxtbzsgfy\"},\"isDataAction\":false,\"name\":\"ewmdw\",\"origin\":\"eiachboosflnr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,8 +51,8 @@ public final class AppliancesListOperationsMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        AppliancesManager manager =
-            AppliancesManager
+        ResourceConnectorManager manager =
+            ResourceConnectorManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

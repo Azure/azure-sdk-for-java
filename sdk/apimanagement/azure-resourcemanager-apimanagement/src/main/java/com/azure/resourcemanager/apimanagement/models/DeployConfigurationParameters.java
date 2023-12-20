@@ -17,6 +17,10 @@ public final class DeployConfigurationParameters {
     @JsonProperty(value = "properties")
     private DeployConfigurationParameterProperties innerProperties;
 
+    /** Creates an instance of DeployConfigurationParameters class. */
+    public DeployConfigurationParameters() {
+    }
+
     /**
      * Get the innerProperties property: Deploy Configuration Parameter contract properties.
      *

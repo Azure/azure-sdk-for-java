@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 
-/** An instance of this class provides access to all the operations defined in AccountBackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountBackupsClient.
+ */
 public interface AccountBackupsClient {
     /**
      * List Backups for a Netapp Account
-     *
-     * <p>List all Backups for a Netapp Account.
-     *
+     * 
+     * List all Backups for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,15 +30,17 @@ public interface AccountBackupsClient {
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupInner> list(String resourceGroupName, String accountName);
+    PagedIterable<BackupInner> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
      * List Backups for a Netapp Account
-     *
-     * <p>List all Backups for a Netapp Account.
-     *
+     * 
+     * List all Backups for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
+     * @param includeOnlyBackupsFromDeletedVolumes An option to specify whether to return backups only from deleted
+     * volumes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,13 +48,14 @@ public interface AccountBackupsClient {
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupInner> list(String resourceGroupName, String accountName, Context context);
+    PagedIterable<BackupInner> listByNetAppAccount(String resourceGroupName, String accountName,
+        String includeOnlyBackupsFromDeletedVolumes, Context context);
 
     /**
      * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
+     * 
+     * Gets the specified backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -61,14 +66,14 @@ public interface AccountBackupsClient {
      * @return the specified backup for a Netapp Account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupInner> getWithResponse(
-        String resourceGroupName, String accountName, String backupName, Context context);
+    Response<BackupInner> getWithResponse(String resourceGroupName, String accountName, String backupName,
+        Context context);
 
     /**
      * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
+     * 
+     * Gets the specified backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -82,9 +87,9 @@ public interface AccountBackupsClient {
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -98,9 +103,9 @@ public interface AccountBackupsClient {
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -111,14 +116,14 @@ public interface AccountBackupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String backupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String backupName,
+        Context context);
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
@@ -131,9 +136,9 @@ public interface AccountBackupsClient {
 
     /**
      * Delete Backup for a Netapp Account
-     *
-     * <p>Delete the specified Backup for a Netapp Account.
-     *
+     * 
+     * Delete the specified Backup for a Netapp Account.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.

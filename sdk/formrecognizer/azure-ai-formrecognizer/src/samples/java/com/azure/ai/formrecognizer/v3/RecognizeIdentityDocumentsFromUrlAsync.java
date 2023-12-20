@@ -20,8 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for recognizing commonly found identity document fields from a file source URL.
- * See fields found on an license here:
- * https://aka.ms/formrecognizer/iddocumentfields
+ * See fields found on an license <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a>
  */
 public class RecognizeIdentityDocumentsFromUrlAsync {
 

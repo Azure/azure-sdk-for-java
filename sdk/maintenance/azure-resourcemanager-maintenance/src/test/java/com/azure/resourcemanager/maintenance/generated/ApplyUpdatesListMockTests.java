@@ -33,7 +33,7 @@ public final class ApplyUpdatesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Completed\",\"resourceId\":\"dyggdtjixhbku\",\"lastUpdateTime\":\"2020-12-23T07:48:17Z\"},\"id\":\"e\",\"name\":\"kh\",\"type\":\"enevfyexfwhybci\"}]}";
+            "{\"value\":[{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"clvit\",\"lastUpdateTime\":\"2021-05-03T20:49:25Z\"},\"id\":\"o\",\"name\":\"osggbhc\",\"type\":\"hfwdsjnkaljutiis\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class ApplyUpdatesListMockTests {
 
         PagedIterable<ApplyUpdate> response = manager.applyUpdates().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UpdateStatus.COMPLETED, response.iterator().next().status());
-        Assertions.assertEquals("dyggdtjixhbku", response.iterator().next().resourceId());
+        Assertions.assertEquals(UpdateStatus.PENDING, response.iterator().next().status());
+        Assertions.assertEquals("clvit", response.iterator().next().resourceId());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2020-12-23T07:48:17Z"), response.iterator().next().lastUpdateTime());
+            .assertEquals(OffsetDateTime.parse("2021-05-03T20:49:25Z"), response.iterator().next().lastUpdateTime());
     }
 }

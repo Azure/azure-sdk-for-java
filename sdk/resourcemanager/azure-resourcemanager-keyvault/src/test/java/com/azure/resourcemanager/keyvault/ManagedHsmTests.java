@@ -15,6 +15,7 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
 import com.azure.resourcemanager.keyvault.models.MhsmNetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -43,6 +44,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
      *       that's not purged after deletion.</p>
      * @see <a href="https://learn.microsoft.com/en-us/azure/key-vault/managed-hsm/soft-delete-overview">soft-delete-overview</a>
      */
+    @Disabled("Disabled for test-proxy migration. Please enable it again, next time api-version update.")
     @Test
     public void canCrudManagedHsms() {
         String mhsmName = generateRandomResourceName("mhsm", 10);

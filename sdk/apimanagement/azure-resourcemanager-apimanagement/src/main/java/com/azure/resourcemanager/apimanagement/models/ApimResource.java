@@ -20,6 +20,10 @@ public class ApimResource extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ApimResource class. */
+    public ApimResource() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

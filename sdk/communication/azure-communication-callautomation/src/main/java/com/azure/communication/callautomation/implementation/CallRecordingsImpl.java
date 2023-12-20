@@ -24,7 +24,9 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -61,7 +63,7 @@ public final class CallRecordingsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
-                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
+                @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
                 @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -128,15 +130,17 @@ public final class CallRecordingsImpl {
     public Mono<Response<RecordingStateResponseInternal>> startRecordingWithResponseAsync(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent) {
+            OffsetDateTime repeatabilityFirstSent) {
         final String accept = "application/json";
+        DateTimeRfc1123 repeatabilityFirstSentConverted =
+                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
         return FluxUtil.withContext(
                 context ->
                         service.startRecording(
                                 this.client.getEndpoint(),
                                 this.client.getApiVersion(),
                                 repeatabilityRequestID,
-                                repeatabilityFirstSent,
+                                repeatabilityFirstSentConverted,
                                 startCallRecording,
                                 accept,
                                 context));
@@ -164,14 +168,16 @@ public final class CallRecordingsImpl {
     public Mono<Response<RecordingStateResponseInternal>> startRecordingWithResponseAsync(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent,
+            OffsetDateTime repeatabilityFirstSent,
             Context context) {
         final String accept = "application/json";
+        DateTimeRfc1123 repeatabilityFirstSentConverted =
+                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
         return service.startRecording(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 repeatabilityRequestID,
-                repeatabilityFirstSent,
+                repeatabilityFirstSentConverted,
                 startCallRecording,
                 accept,
                 context);
@@ -198,7 +204,7 @@ public final class CallRecordingsImpl {
     public Mono<RecordingStateResponseInternal> startRecordingAsync(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent) {
+            OffsetDateTime repeatabilityFirstSent) {
         return startRecordingWithResponseAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
                         (Response<RecordingStateResponseInternal> res) -> {
@@ -232,7 +238,7 @@ public final class CallRecordingsImpl {
     public Mono<RecordingStateResponseInternal> startRecordingAsync(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent,
+            OffsetDateTime repeatabilityFirstSent,
             Context context) {
         return startRecordingWithResponseAsync(
                         startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)
@@ -267,7 +273,7 @@ public final class CallRecordingsImpl {
     public RecordingStateResponseInternal startRecording(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent) {
+            OffsetDateTime repeatabilityFirstSent) {
         return startRecordingAsync(startCallRecording, repeatabilityRequestID, repeatabilityFirstSent).block();
     }
 
@@ -293,7 +299,7 @@ public final class CallRecordingsImpl {
     public Response<RecordingStateResponseInternal> startRecordingWithResponse(
             StartCallRecordingRequestInternal startCallRecording,
             UUID repeatabilityRequestID,
-            String repeatabilityFirstSent,
+            OffsetDateTime repeatabilityFirstSent,
             Context context) {
         return startRecordingWithResponseAsync(
                         startCallRecording, repeatabilityRequestID, repeatabilityFirstSent, context)

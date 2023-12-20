@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.DeletedShare;
 
 /** Samples for FileShares Restore. */
 public final class FileSharesRestoreSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesRestore.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesRestore.json
      */
     /**
      * Sample code: RestoreShares.
@@ -28,6 +27,6 @@ public final class FileSharesRestoreSamples {
                 "sto328",
                 "share1249",
                 new DeletedShare().withDeletedShareName("share1249").withDeletedShareVersion("1234567890"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

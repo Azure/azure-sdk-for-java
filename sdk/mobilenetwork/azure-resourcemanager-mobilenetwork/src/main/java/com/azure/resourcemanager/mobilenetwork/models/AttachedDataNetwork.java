@@ -145,11 +145,13 @@ public interface AttachedDataNetwork {
             DefinitionStages.WithDnsAddresses,
             DefinitionStages.WithCreate {
     }
+
     /** The AttachedDataNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the AttachedDataNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -168,6 +170,7 @@ public interface AttachedDataNetwork {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -181,6 +184,7 @@ public interface AttachedDataNetwork {
             WithUserPlaneDataInterface withExistingPacketCoreDataPlane(
                 String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify userPlaneDataInterface. */
         interface WithUserPlaneDataInterface {
             /**
@@ -193,6 +197,7 @@ public interface AttachedDataNetwork {
              */
             WithDnsAddresses withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify dnsAddresses. */
         interface WithDnsAddresses {
             /**
@@ -206,6 +211,7 @@ public interface AttachedDataNetwork {
              */
             WithCreate withDnsAddresses(List<String> dnsAddresses);
         }
+
         /**
          * The stage of the AttachedDataNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -230,6 +236,7 @@ public interface AttachedDataNetwork {
              */
             AttachedDataNetwork create(Context context);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -240,6 +247,7 @@ public interface AttachedDataNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify naptConfiguration. */
         interface WithNaptConfiguration {
             /**
@@ -253,6 +261,7 @@ public interface AttachedDataNetwork {
              */
             WithCreate withNaptConfiguration(NaptConfiguration naptConfiguration);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify userEquipmentAddressPoolPrefix. */
         interface WithUserEquipmentAddressPoolPrefix {
             /**
@@ -271,6 +280,7 @@ public interface AttachedDataNetwork {
              */
             WithCreate withUserEquipmentAddressPoolPrefix(List<String> userEquipmentAddressPoolPrefix);
         }
+
         /** The stage of the AttachedDataNetwork definition allowing to specify userEquipmentStaticAddressPoolPrefix. */
         interface WithUserEquipmentStaticAddressPoolPrefix {
             /**
@@ -292,6 +302,7 @@ public interface AttachedDataNetwork {
             WithCreate withUserEquipmentStaticAddressPoolPrefix(List<String> userEquipmentStaticAddressPoolPrefix);
         }
     }
+
     /**
      * Begins update for the AttachedDataNetwork resource.
      *
@@ -316,6 +327,7 @@ public interface AttachedDataNetwork {
          */
         AttachedDataNetwork apply(Context context);
     }
+
     /** The AttachedDataNetwork update stages. */
     interface UpdateStages {
         /** The stage of the AttachedDataNetwork update allowing to specify tags. */
@@ -329,6 +341,7 @@ public interface AttachedDataNetwork {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

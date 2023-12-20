@@ -17,6 +17,15 @@ public final class ResourceProviderConnection extends ExpandableStringEnum<Resou
     public static final ResourceProviderConnection OUTBOUND = fromString("Outbound");
 
     /**
+     * Creates a new instance of ResourceProviderConnection value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceProviderConnection() {
+    }
+
+    /**
      * Creates or finds a ResourceProviderConnection from its string representation.
      *
      * @param name a name to look for.

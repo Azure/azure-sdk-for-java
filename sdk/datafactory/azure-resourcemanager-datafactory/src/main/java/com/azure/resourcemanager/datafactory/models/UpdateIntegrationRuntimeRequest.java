@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update integration runtime request. */
+/**
+ * Update integration runtime request.
+ */
 @Fluent
 public final class UpdateIntegrationRuntimeRequest {
     /*
@@ -24,14 +26,16 @@ public final class UpdateIntegrationRuntimeRequest {
     @JsonProperty(value = "updateDelayOffset")
     private String updateDelayOffset;
 
-    /** Creates an instance of UpdateIntegrationRuntimeRequest class. */
+    /**
+     * Creates an instance of UpdateIntegrationRuntimeRequest class.
+     */
     public UpdateIntegrationRuntimeRequest() {
     }
 
     /**
      * Get the autoUpdate property: Enables or disables the auto-update feature of the self-hosted integration runtime.
      * See https://go.microsoft.com/fwlink/?linkid=854189.
-     *
+     * 
      * @return the autoUpdate value.
      */
     public IntegrationRuntimeAutoUpdate autoUpdate() {
@@ -41,7 +45,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Set the autoUpdate property: Enables or disables the auto-update feature of the self-hosted integration runtime.
      * See https://go.microsoft.com/fwlink/?linkid=854189.
-     *
+     * 
      * @param autoUpdate the autoUpdate value to set.
      * @return the UpdateIntegrationRuntimeRequest object itself.
      */
@@ -53,7 +57,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Get the updateDelayOffset property: The time offset (in hours) in the day, e.g., PT03H is 3 hours. The
      * integration runtime auto update will happen on that time.
-     *
+     * 
      * @return the updateDelayOffset value.
      */
     public String updateDelayOffset() {
@@ -63,7 +67,7 @@ public final class UpdateIntegrationRuntimeRequest {
     /**
      * Set the updateDelayOffset property: The time offset (in hours) in the day, e.g., PT03H is 3 hours. The
      * integration runtime auto update will happen on that time.
-     *
+     * 
      * @param updateDelayOffset the updateDelayOffset value to set.
      * @return the UpdateIntegrationRuntimeRequest object itself.
      */
@@ -74,7 +78,7 @@ public final class UpdateIntegrationRuntimeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

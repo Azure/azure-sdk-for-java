@@ -8,18 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.DiffDiskPlacement;
 import com.azure.resourcemanager.batch.models.DiffDiskSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiffDiskSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiffDiskSettings model =
             BinaryData.fromString("{\"placement\":\"CacheDisk\"}").toObject(DiffDiskSettings.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.placement());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiffDiskSettings model = new DiffDiskSettings().withPlacement(DiffDiskPlacement.CACHE_DISK);
         model = BinaryData.fromObject(model).toObject(DiffDiskSettings.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.placement());

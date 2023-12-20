@@ -32,7 +32,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"zhraglkafh\"},\"privateLinkServiceConnectionState\":{\"status\":\"qjujeickpzvcp\",\"description\":\"mxelnwcltyjed\",\"actionsRequired\":\"xm\"},\"groupId\":\"mkqscaz\",\"provisioningState\":\"Succeeded\"},\"id\":\"rvxcush\",\"name\":\"phai\",\"type\":\"mxyasflvgsgzw\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"rweft\"},\"privateLinkServiceConnectionState\":{\"status\":\"qejpmvssehaepwa\",\"description\":\"xtczhupeuknijd\",\"actionsRequired\":\"yespydjfbocyv\"},\"groupId\":\"ulrtywikdmh\",\"provisioningState\":\"Succeeded\"},\"id\":\"uacdixmxuf\",\"name\":\"sryjqgdkfno\",\"type\":\"oeoq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,15 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .define("igjkskyrio")
-                .withExistingCluster("hv", "slkvntjl")
+                .define("ecmslclbl")
+                .withExistingCluster("uovmaonurjt", "mghihp")
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty().withStatus("ifrygzn").withDescription("axri"))
+                    new PrivateLinkServiceConnectionStateProperty()
+                        .withStatus("gctmgxuupbezq")
+                        .withDescription("ydrtc"))
                 .create();
 
-        Assertions.assertEquals("qjujeickpzvcp", response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("mxelnwcltyjed", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qejpmvssehaepwa", response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("xtczhupeuknijd", response.privateLinkServiceConnectionState().description());
     }
 }

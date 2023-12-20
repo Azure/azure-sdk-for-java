@@ -32,7 +32,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"isSubdomainAvailable\":true,\"reason\":\"fssnrbgyefrymsga\",\"subdomainName\":\"fmwncotmrfh\",\"type\":\"ctymoxoftp\",\"kind\":\"iwyczuh\"}";
+            "{\"isSubdomainAvailable\":false,\"reason\":\"swtwkozzwc\",\"subdomainName\":\"kb\",\"type\":\"pfajnjwltlwtjj\",\"kind\":\"ktalhsnvkcdmxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
                 .resourceProviders()
                 .checkDomainAvailabilityWithResponse(
                     new CheckDomainAvailabilityParameter()
-                        .withSubdomainName("bomvzzbtdcqv")
-                        .withType("niyujv")
-                        .withKind("l"),
+                        .withSubdomainName("toqbeitpkxztmoob")
+                        .withType("lftidgfcwqmpim")
+                        .withKind("xzhemjyh"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(true, response.isSubdomainAvailable());
-        Assertions.assertEquals("fssnrbgyefrymsga", response.reason());
-        Assertions.assertEquals("fmwncotmrfh", response.subdomainName());
-        Assertions.assertEquals("ctymoxoftp", response.type());
-        Assertions.assertEquals("iwyczuh", response.kind());
+        Assertions.assertEquals(false, response.isSubdomainAvailable());
+        Assertions.assertEquals("swtwkozzwc", response.reason());
+        Assertions.assertEquals("kb", response.subdomainName());
+        Assertions.assertEquals("pfajnjwltlwtjj", response.type());
+        Assertions.assertEquals("ktalhsnvkcdmxz", response.kind());
     }
 }

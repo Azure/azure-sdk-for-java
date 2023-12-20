@@ -14,20 +14,23 @@ public final class CustomImagePropertiesCustomTests {
     public void testDeserialize() throws Exception {
         CustomImagePropertiesCustom model =
             BinaryData
-                .fromString("{\"imageName\":\"x\",\"sysPrep\":true,\"osType\":\"None\"}")
+                .fromString("{\"imageName\":\"vwxqibyqunyo\",\"sysPrep\":false,\"osType\":\"None\"}")
                 .toObject(CustomImagePropertiesCustom.class);
-        Assertions.assertEquals("x", model.imageName());
-        Assertions.assertEquals(true, model.sysPrep());
+        Assertions.assertEquals("vwxqibyqunyo", model.imageName());
+        Assertions.assertEquals(false, model.sysPrep());
         Assertions.assertEquals(CustomImageOsType.NONE, model.osType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomImagePropertiesCustom model =
-            new CustomImagePropertiesCustom().withImageName("x").withSysPrep(true).withOsType(CustomImageOsType.NONE);
+            new CustomImagePropertiesCustom()
+                .withImageName("vwxqibyqunyo")
+                .withSysPrep(false)
+                .withOsType(CustomImageOsType.NONE);
         model = BinaryData.fromObject(model).toObject(CustomImagePropertiesCustom.class);
-        Assertions.assertEquals("x", model.imageName());
-        Assertions.assertEquals(true, model.sysPrep());
+        Assertions.assertEquals("vwxqibyqunyo", model.imageName());
+        Assertions.assertEquals(false, model.sysPrep());
         Assertions.assertEquals(CustomImageOsType.NONE, model.osType());
     }
 }

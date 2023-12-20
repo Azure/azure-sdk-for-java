@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
-/** The TablesDeleteHeaders model. */
+/**
+ * The TablesDeleteHeaders model.
+ */
 @Fluent
 public final class TablesDeleteHeaders {
     /*
@@ -40,7 +42,7 @@ public final class TablesDeleteHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesDeleteHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesDeleteHeaders(HttpHeaders rawHeaders) {
@@ -55,7 +57,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -64,7 +66,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesDeleteHeaders object itself.
      */
@@ -75,7 +77,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -84,7 +86,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesDeleteHeaders object itself.
      */
@@ -95,7 +97,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -104,7 +106,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesDeleteHeaders object itself.
      */
@@ -115,7 +117,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -127,7 +129,7 @@ public final class TablesDeleteHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesDeleteHeaders object itself.
      */

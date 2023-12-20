@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for DaprComponents CreateOrUpdate. */
 public final class DaprComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/DaprComponents_CreateOrUpdate_Secrets.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/DaprComponents_CreateOrUpdate_Secrets.json
      */
     /**
      * Sample code: Create or update dapr component with secrets.
@@ -45,7 +45,7 @@ public final class DaprComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/DaprComponents_CreateOrUpdate_SecretStoreComponent.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/DaprComponents_CreateOrUpdate_SecretStoreComponent.json
      */
     /**
      * Sample code: Create or update dapr component with secret store component.

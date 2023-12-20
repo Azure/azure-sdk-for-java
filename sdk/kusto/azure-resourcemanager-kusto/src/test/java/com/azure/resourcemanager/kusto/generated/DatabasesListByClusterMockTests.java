@@ -32,7 +32,7 @@ public final class DatabasesListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"Database\",\"location\":\"wafqroud\",\"id\":\"spave\",\"name\":\"hrv\",\"type\":\"bunzozudh\"}]}";
+            "{\"value\":[{\"kind\":\"Database\",\"location\":\"jqhden\",\"id\":\"aulk\",\"name\":\"akdkifmjnnawtqab\",\"type\":\"xuckpggqoweyir\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,10 @@ public final class DatabasesListByClusterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Database> response =
-            manager.databases().listByCluster("m", "rafwgckhocxvdf", com.azure.core.util.Context.NONE);
+            manager
+                .databases()
+                .listByCluster("tu", "lbfjkwr", 1064304425, "nkqbhsyrq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wafqroud", response.iterator().next().location());
+        Assertions.assertEquals("jqhden", response.iterator().next().location());
     }
 }

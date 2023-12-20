@@ -31,9 +31,7 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -54,22 +52,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class AzureTableImplTest extends TestProxyTestBase {
     private static final int TIMEOUT_IN_MS = 100_000;
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofMillis(TIMEOUT_IN_MS);
 
     private final QueryOptions defaultQueryOptions = new QueryOptions()
         .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
     private final ClientLogger logger = new ClientLogger(AzureTableImplTest.class);
     private AzureTableImpl azureTable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofMillis(TIMEOUT_IN_MS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @Override
     protected void beforeTest() {
@@ -161,7 +150,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -180,7 +169,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 TableServiceJsonErrorException exception = assertInstanceOf(TableServiceJsonErrorException.class, error);
                 assertTrue(exception.getMessage().contains(expectedErrorCode));
             })
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -197,7 +186,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -209,7 +198,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableName, requestId, Context.NONE))
             .expectError(TableServiceJsonErrorException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -235,7 +224,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 assertTrue(results.stream().anyMatch(p -> tableB.equals(p.getTableName())));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -262,7 +251,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 Assertions.assertEquals(tableA, response.getValue().getValue().get(0).getTableName());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -292,7 +281,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 Assertions.assertTrue(tableA.equals(tableName) || tableB.equals(tableName));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -315,7 +304,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -339,15 +328,13 @@ public class AzureTableImplTest extends TestProxyTestBase {
             StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
                 rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
                 .expectError(TableServiceJsonErrorException.class)
-                .verify();
+                .verify(DEFAULT_TIMEOUT);
         } else {
             StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
                 rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
-                .assertNext(response -> {
-                    Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-                })
+                .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
                 .expectComplete()
-                .verify();
+                .verify(DEFAULT_TIMEOUT);
         }
     }
 
@@ -365,7 +352,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .expectError(TableServiceJsonErrorException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -386,11 +373,9 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
-            .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -407,7 +392,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .expectError(TableServiceJsonErrorException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -427,11 +412,9 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, "*", TIMEOUT_IN_MS, requestId, null, Context.NONE))
-            .assertNext(response -> {
-                Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -447,7 +430,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         StepVerifier.create(azureTable.getTables().deleteEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, "*", TIMEOUT_IN_MS, requestId, null, Context.NONE))
             .expectError(TableServiceJsonErrorException.class)
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -482,7 +465,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 assertTrue(results.stream().anyMatch(p -> p.containsValue(partitionKeyEntityB)));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -525,7 +508,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 assertTrue(results.stream().anyMatch(p -> p.containsValue(rowKeyEntityB)));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -565,7 +548,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
                 assertTrue(response.getValue().getValue().get(0).containsValue(partitionKeyEntityA));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -609,6 +592,6 @@ public class AzureTableImplTest extends TestProxyTestBase {
                     || properties.containsValue(partitionKeyEntityB));
             })
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 }

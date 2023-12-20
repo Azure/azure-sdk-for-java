@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -31,8 +30,7 @@ public final class ConfigurationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"muapcvhdbevw\":\"lm\",\"qzinkfkbg\":\"qxeysko\",\"owxeqocljmy\":\"z\",\"jeokbzefezrxccz\":\"vkzqk\"}";
+        String responseStr = "{\"ikjcjcazt\":\"kkum\",\"comlikytwvczc\":\"wsnsqowx\",\"ve\":\"wka\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +59,11 @@ public final class ConfigurationsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Map<String, String> response =
-            manager.configurations().getWithResponse("gqcwdhohsdtmc", "zsu", "cohdx", Context.NONE).getValue();
+            manager
+                .configurations()
+                .getWithResponse("rhpw", "gddeimaw", "o", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("lm", response.get("muapcvhdbevw"));
+        Assertions.assertEquals("kkum", response.get("ikjcjcazt"));
     }
 }

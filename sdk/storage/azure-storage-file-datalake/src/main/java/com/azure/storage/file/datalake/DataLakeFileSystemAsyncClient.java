@@ -117,6 +117,7 @@ public class DataLakeFileSystemAsyncClient {
     private final String fileSystemName;
     private final DataLakeServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
+    private final boolean isTokenCredentialAuthenticated;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -130,7 +131,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient,
-        AzureSasCredential sasToken) {
+        AzureSasCredential sasToken, boolean isTokenCredentialAuthenticated) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -151,6 +152,7 @@ public class DataLakeFileSystemAsyncClient {
         this.fileSystemName = fileSystemName;
         this.blobContainerAsyncClient = blobContainerAsyncClient;
         this.sasToken = sasToken;
+        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -179,7 +181,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getFileSystemName(), fileName, blockBlobAsyncClient, sasToken,
-            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()), isTokenCredentialAuthenticated);
     }
 
     /**
@@ -207,7 +209,8 @@ public class DataLakeFileSystemAsyncClient {
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient, sasToken,
-            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()),
+            isTokenCredentialAuthenticated);
     }
 
     /**
@@ -1076,12 +1079,11 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
         DataLakePathCreateOptions options) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         options = options == null ? new DataLakePathCreateOptions() : options;
+        options.setRequestConditions(new DataLakeRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            return createFileWithResponse(fileName, options.getPermissions(), options.getUmask(),
-                options.getPathHttpHeaders(), options.getMetadata(), requestConditions)
+            return createFileWithResponse(fileName, options)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,
                     t -> {
@@ -1441,11 +1443,11 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
         DataLakePathCreateOptions options) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
+        options.setRequestConditions(new DataLakeRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            options = options == null ? new DataLakePathCreateOptions() : options;
-            return createDirectoryWithResponse(directoryName, options.getPermissions(), options.getUmask(),
-                options.getPathHttpHeaders(), options.getMetadata(),
-                new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
+            return createDirectoryWithResponse(directoryName, options)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,
                     t -> {
@@ -1672,7 +1674,8 @@ public class DataLakeFileSystemAsyncClient {
                         PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
                             .getBlockBlobAsyncClient(), sasToken,
-                            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
+                            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()),
+                        isTokenCredentialAuthenticated);
                     if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
                     } else if (PathResourceType.FILE.equals(client.pathResourceType)) {

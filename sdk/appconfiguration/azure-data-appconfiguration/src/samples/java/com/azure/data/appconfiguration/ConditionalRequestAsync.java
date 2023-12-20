@@ -38,8 +38,8 @@ public class ConditionalRequestAsync {
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
-                    output.getValue()));
+                System.out.printf("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                    output.getValue());
             },
             error -> System.err.println("There was an error while setting the setting: " + error));
 
@@ -52,8 +52,8 @@ public class ConditionalRequestAsync {
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
-                    output.getValue()));
+                System.out.printf("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                    output.getValue());
             },
             error -> System.err.println("There was an error while getting the setting: " + error));
 
@@ -66,8 +66,8 @@ public class ConditionalRequestAsync {
             result -> {
                 final ConfigurationSetting output = result.getValue();
                 final int statusCode = result.getStatusCode();
-                System.out.printf(String.format("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
-                    output.getValue()));
+                System.out.printf("Status code: %s, Key: %s, Value: %s", statusCode, output.getKey(),
+                    output.getValue());
             },
             error -> System.err.println("There was an error while deleting the setting: " + error));
     }

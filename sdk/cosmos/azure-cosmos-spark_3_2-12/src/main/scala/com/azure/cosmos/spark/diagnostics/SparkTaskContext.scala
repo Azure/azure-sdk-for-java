@@ -28,6 +28,9 @@ private[spark] case class ReplaceOperation(sparkTaskContext: SparkTaskContext, i
 private[spark] case class PatchOperation(sparkTaskContext: SparkTaskContext, itemIdentifier: CosmosItemIdentifier)
  extends WriteOperation
 
+private[spark] case class PatchBulkUpdateOperation(sparkTaskContext: SparkTaskContext, itemIdentifier: CosmosItemIdentifier)
+    extends WriteOperation
+
 private[spark] case class SparkTaskContext(correlationActivityId: UUID,
                                            stageId: Int,
                                            partitionId: Long,

@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.encryption;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.Constants;
+import com.azure.cosmos.encryption.implementation.CosmosEncryptionQueryTransformer;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
@@ -62,12 +62,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
-import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -792,34 +791,6 @@ public final class CosmosEncryptionAsyncContainer {
         ).defaultIfEmpty(rsp);
     }
 
-    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,
-                                                                                                   boolean isChangeFeed,
-                                                                                                   Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-        return func.andThen(flux ->
-            flux.publishOn(encryptionScheduler)
-                .flatMap(
-                    page -> {
-                        boolean useEtagAsContinuation = isChangeFeed;
-                        boolean isNoChangesResponse = isChangeFeed ?
-                            ModelBridgeInternal.getNoChangesFromFeedResponse(page)
-                            : false;
-                        List<Mono<JsonNode>> jsonNodeArrayMonoList =
-                            page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
-                        return Flux.concat(jsonNodeArrayMonoList).map(
-                            item -> getItemDeserializer().convert(classType, item)
-                        ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
-                            page.getResponseHeaders(),
-                            BridgeInternal.queryMetricsFromFeedResponse(page),
-                            ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
-                            useEtagAsContinuation,
-                            isNoChangesResponse,
-                            page.getCosmosDiagnostics())
-                        );
-                    }
-                )
-        );
-    }
-
     private Mono<CosmosItemResponse<byte[]>> readItemHelper(String id,
                                                             PartitionKey partitionKey,
                                                             CosmosItemRequestOptions requestOptions,
@@ -1027,61 +998,150 @@ public final class CosmosEncryptionAsyncContainer {
                                                     CosmosQueryRequestOptions options,
                                                     Class<T> classType,
                                                     boolean isRetry) {
-        setRequestHeaders(options);
-        CosmosQueryRequestOptions finalOptions = options;
-        Flux<FeedResponse<T>>  tFlux = CosmosBridgeInternal.queryItemsInternal(container, sqlQuerySpec, options,
-            new Transformer<T>() {
-                @Override
-                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, false, func);
-                }
-            }).byPage().onErrorResume(exception -> {
-            if (exception instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) exception;
-                if (!isRetry && isIncorrectContainerRid(cosmosException)) {
-                    this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
-                    return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
-                        (CosmosPagedFlux.defer(() -> queryItemsHelper(sqlQuerySpec,finalOptions, classType, true).byPage())));
-                }
-            }
-            return Mono.error(exception);
-        });
-
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
-            return tFlux;
+            AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
+
+            Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
+                this.encryptionScheduler,
+                this.getEncryptionProcessor(),
+                this.getItemDeserializer(),
+                classType,
+                false);
+
+            Flux<FeedResponse<T>> result = this.transformQueryItemsInternal(
+                transformer,
+                sqlQuerySpec,
+                options,
+                pagedFluxOptions
+            ).apply(pagedFluxOptions);
+
+            return result
+                .onErrorResume(exception -> {
+                    if (exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
+                        if (shouldRetry.get() && isIncorrectContainerRid(cosmosException)) {
+                            // stale cache, refresh caches and then retry
+                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                            shouldRetry.set(false);
+
+                            return this.encryptionProcessor
+                                .initializeEncryptionSettingsAsync(true)
+                                .thenMany(
+                                    Flux.defer(() -> {
+                                        return this.transformQueryItemsInternal(
+                                            transformer,
+                                            sqlQuerySpec,
+                                            options,
+                                            pagedFluxOptions
+                                        ).apply(pagedFluxOptions);
+                                    })
+                                );
+                        }
+                    }
+                    return Mono.error(exception);
+                });
         });
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transformQueryItemsInternal(
+        Transformer<T> transformer,
+        SqlQuerySpec sqlQuerySpec,
+        CosmosQueryRequestOptions queryRequestOptions,
+        CosmosPagedFluxOptions pagedFluxOptions) {
+
+        CosmosQueryRequestOptions finalOptions = setRequestHeaders(queryRequestOptions);
+
+        return transformer.transform(
+            cosmosAsyncContainerAccessor.queryItemsInternalFunc(
+                this.container,
+                sqlQuerySpec,
+                finalOptions,
+                JsonNode.class)
+        );
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transformQueryChangeFeedInternal(
+        Transformer<T> transformer,
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+        CosmosPagedFluxOptions pagedFluxOptions) {
+
+        CosmosChangeFeedRequestOptions finalOptions = setRequestHeaders(changeFeedRequestOptions);;
+        getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, finalOptions);
+
+        return transformer.transform(
+            cosmosAsyncContainerAccessor
+                .queryChangeFeedInternalFunc(
+                    this.container,
+                    finalOptions,
+                    JsonNode.class)
+        );
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transformQueryItemsWithMonoSqlQuerySpec(
+        Transformer<T> transformer,
+        Mono<SqlQuerySpec> sqlQuerySpecMono,
+        CosmosQueryRequestOptions options,
+        CosmosPagedFluxOptions pagedFluxOptions) {
+
+        CosmosQueryRequestOptions finalOptions = setRequestHeaders(options);
+
+        return transformer.transform(
+            cosmosAsyncContainerAccessor.queryItemsInternalFuncWithMonoSqlQuerySpec(
+                this.container,
+                sqlQuerySpecMono,
+                finalOptions,
+                JsonNode.class
+            )
+        );
     }
 
     private <T> CosmosPagedFlux<T> queryChangeFeedHelper(CosmosChangeFeedRequestOptions options,
                                                          Class<T> classType,
                                                          boolean isRetry) {
-        setRequestHeaders(options);
-        CosmosChangeFeedRequestOptions finalOptions = options;
-        Flux<FeedResponse<T>> tFlux =
-            UtilBridgeInternal.createCosmosPagedFlux(((Transformer<T>) func -> queryDecryptionTransformer(classType,
-                true,
-                func)).transform(cosmosAsyncContainerAccessor.queryChangeFeedInternalFunc(this.container, options,
-                JsonNode.class))).byPage().onErrorResume(exception -> {
-                if (exception instanceof CosmosException) {
-                    final CosmosException cosmosException = (CosmosException) exception;
-                    if (!isRetry && isIncorrectContainerRid(cosmosException)) {
-                        this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
-                        return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
-                            (CosmosPagedFlux.defer(() -> queryChangeFeedHelper(finalOptions, classType, true).byPage())));
-                    }
-                }
-                return Mono.error(exception);
-            });
-
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, finalOptions);
-            return tFlux;
+            AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
+
+            Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
+                this.encryptionScheduler,
+                this.getEncryptionProcessor(),
+                this.getItemDeserializer(),
+                classType,
+                true);
+
+            Flux<FeedResponse<T>> result = this.transformQueryChangeFeedInternal(
+                transformer,
+                options,
+                pagedFluxOptions
+            ).apply(pagedFluxOptions);
+
+            return result
+                .onErrorResume(exception -> {
+                    if (exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
+                        if (shouldRetry.get() && isIncorrectContainerRid(cosmosException)) {
+                            // stale cache, refresh caches and then retry
+                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                            shouldRetry.set(false);
+
+                            return this.encryptionProcessor
+                                .initializeEncryptionSettingsAsync(true)
+                                .thenMany(
+                                    Flux.defer(() -> {
+                                        return this.transformQueryChangeFeedInternal(
+                                            transformer,
+                                            options,
+                                            pagedFluxOptions
+                                        ).apply(pagedFluxOptions);
+                                    })
+                                );
+                        }
+                    }
+                    return Mono.error(exception);
+                });
         });
     }
-
 
     private <T> CosmosPagedFlux<T> queryItemsHelperWithMonoSqlQuerySpec(Mono<SqlQuerySpec> sqlQuerySpecMono,
                                                                         SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption,
@@ -1089,30 +1149,48 @@ public final class CosmosEncryptionAsyncContainer {
                                                                         Class<T> classType,
                                                                         boolean isRetry) {
 
-        setRequestHeaders(options);
-        CosmosQueryRequestOptions finalOptions = options;
-
-        Flux<FeedResponse<T>>  tFlux = CosmosBridgeInternal.queryItemsInternal(container, sqlQuerySpecMono, options,
-            new Transformer<T>() {
-                @Override
-                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, false, func);
-                }
-            }).byPage().onErrorResume(exception -> {
-            if (exception instanceof CosmosException) {
-                final CosmosException cosmosException = (CosmosException) exception;
-                if (!isRetry && isIncorrectContainerRid(cosmosException)) {
-                    this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
-                    return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
-                        (CosmosPagedFlux.defer(() -> queryItemsHelper(specWithEncryptionAccessor.getSqlQuerySpec(sqlQuerySpecWithEncryption), finalOptions, classType, true).byPage())));
-                }
-            }
-            return Mono.error(exception);
-        });
-
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
-            return tFlux;
+            AtomicBoolean shouldRetry = new AtomicBoolean(!isRetry);
+
+            Transformer<T> transformer = new CosmosEncryptionQueryTransformer<T>(
+                this.encryptionScheduler,
+                this.getEncryptionProcessor(),
+                this.getItemDeserializer(),
+                classType,
+                false);
+
+            Flux<FeedResponse<T>> result = this.transformQueryItemsWithMonoSqlQuerySpec(
+                transformer,
+                sqlQuerySpecMono,
+                options,
+                pagedFluxOptions
+            ).apply(pagedFluxOptions);
+
+            return result
+                .onErrorResume(exception -> {
+                    if (exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
+                        if (shouldRetry.get() && isIncorrectContainerRid(cosmosException)) {
+                            // stale cache, refresh caches and then retry
+                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                            shouldRetry.set(false);
+
+                            return this.encryptionProcessor
+                                .initializeEncryptionSettingsAsync(true)
+                                .thenMany(
+                                    Flux.defer(() -> {
+                                        return this.transformQueryItemsInternal(
+                                            transformer,
+                                            specWithEncryptionAccessor.getSqlQuerySpec(sqlQuerySpecWithEncryption),
+                                            options,
+                                            pagedFluxOptions
+                                        ).apply(pagedFluxOptions);
+                                    })
+                                );
+                        }
+                    }
+                    return Mono.error(exception);
+                });
         });
     }
 
@@ -1422,14 +1500,17 @@ public final class CosmosEncryptionAsyncContainer {
         cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
-    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
+    private CosmosQueryRequestOptions setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
         cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+        System.out.println("Setting collectionRid header " + this.encryptionProcessor.getContainerRid());
+        return requestOptions;
     }
 
-    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
+    private CosmosChangeFeedRequestOptions setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
         cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+        return requestOptions;
     }
 
     private void setRequestHeaders(CosmosBatchRequestOptions requestOptions) {

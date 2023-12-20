@@ -4,27 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for AdminRuleCollections Get. */
+/**
+ * Samples for AdminRuleCollections Get.
+ */
 public final class AdminRuleCollectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerAdminRuleCollectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkManagerAdminRuleCollectionGet.json
      */
     /**
      * Sample code: Gets security admin rule collection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsSecurityAdminRuleCollection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getAdminRuleCollections()
-            .getWithResponse(
-                "rg1",
-                "testNetworkManager",
-                "myTestSecurityConfig",
-                "testRuleCollection",
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getAdminRuleCollections().getWithResponse("rg1",
+            "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", com.azure.core.util.Context.NONE);
     }
 }

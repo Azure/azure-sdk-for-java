@@ -17,6 +17,8 @@ import java.util.Map;
 /** alternativeSecurityId. */
 @Fluent
 public final class MicrosoftGraphAlternativeSecurityId {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     /*
      * For internal use only
      */
@@ -71,7 +73,7 @@ public final class MicrosoftGraphAlternativeSecurityId {
      */
     public byte[] key() {
         if (this.key == null) {
-            return new byte[0];
+            return EMPTY_BYTE_ARRAY;
         }
         return this.key.decodedBytes();
     }

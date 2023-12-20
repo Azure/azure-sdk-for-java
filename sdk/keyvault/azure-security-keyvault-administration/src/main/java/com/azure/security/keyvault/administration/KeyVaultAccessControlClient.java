@@ -92,8 +92,7 @@ public final class KeyVaultAccessControlClient {
      */
     KeyVaultAccessControlClient(URL vaultUrl, HttpPipeline httpPipeline,
                                      KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
@@ -193,8 +192,7 @@ public final class KeyVaultAccessControlClient {
                                                                              KeyVaultRoleScope roleScope,
                                                                              Context context) {
         Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         try {
             PagedResponse<RoleDefinition> roleDefinitionPagedResponse = clientImpl.getRoleDefinitions()
                 .listSinglePage(vaultUrl, roleScope.toString(), null,
@@ -605,8 +603,7 @@ public final class KeyVaultAccessControlClient {
                                                                        KeyVaultRoleScope roleScope,
                                                                        Context context) {
         Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         try {
             PagedResponse<RoleAssignment> roleAssignmentPagedResponse = clientImpl.getRoleAssignments()
                 .listForScopeSinglePage(vaultUrl, roleScope.toString(), null,

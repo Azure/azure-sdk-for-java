@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.models.NetworkGroupProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The network configuration group resource. */
+/**
+ * The network configuration group resource.
+ */
 @Fluent
 public final class ConfigurationGroup {
     /*
@@ -23,13 +25,15 @@ public final class ConfigurationGroup {
     @JsonProperty(value = "properties")
     private NetworkGroupProperties innerProperties;
 
-    /** Creates an instance of ConfigurationGroup class. */
+    /**
+     * Creates an instance of ConfigurationGroup class.
+     */
     public ConfigurationGroup() {
     }
 
     /**
      * Get the id property: Network group ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +42,7 @@ public final class ConfigurationGroup {
 
     /**
      * Set the id property: Network group ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ConfigurationGroup object itself.
      */
@@ -49,7 +53,7 @@ public final class ConfigurationGroup {
 
     /**
      * Get the innerProperties property: The network configuration group properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkGroupProperties innerProperties() {
@@ -58,7 +62,7 @@ public final class ConfigurationGroup {
 
     /**
      * Get the description property: A description of the network group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +71,7 @@ public final class ConfigurationGroup {
 
     /**
      * Set the description property: A description of the network group.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConfigurationGroup object itself.
      */
@@ -81,7 +85,7 @@ public final class ConfigurationGroup {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,8 +93,17 @@ public final class ConfigurationGroup {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

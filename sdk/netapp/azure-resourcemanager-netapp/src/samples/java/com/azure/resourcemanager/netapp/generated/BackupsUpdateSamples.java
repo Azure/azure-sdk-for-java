@@ -6,22 +6,23 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.resourcemanager.netapp.models.Backup;
 
-/** Samples for Backups Update. */
+/**
+ * Samples for Backups Update.
+ */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * BackupsUnderBackupVault_Update.json
      */
     /**
-     * Sample code: Backups_Update.
-     *
+     * Sample code: BackupsUnderBackupVault_Update.
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        Backup resource =
-            manager
-                .backups()
-                .getWithResponse("myRG", "account1", "pool1", "volume1", "backup1", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void backupsUnderBackupVaultUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        Backup resource = manager.backups()
+            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

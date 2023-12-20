@@ -14,10 +14,10 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnetTests {
     public void testDeserialize() throws Exception {
         AmlFilesystemCheckSubnetErrorFilesystemSubnet model =
             BinaryData
-                .fromString("{\"status\":\"Invalid\",\"message\":\"jqg\"}")
+                .fromString("{\"status\":\"Invalid\",\"message\":\"pvswjdkirso\"}")
                 .toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.INVALID, model.status());
-        Assertions.assertEquals("jqg", model.message());
+        Assertions.assertEquals("pvswjdkirso", model.message());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,9 +25,9 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnetTests {
         AmlFilesystemCheckSubnetErrorFilesystemSubnet model =
             new AmlFilesystemCheckSubnetErrorFilesystemSubnet()
                 .withStatus(FilesystemSubnetStatusType.INVALID)
-                .withMessage("jqg");
+                .withMessage("pvswjdkirso");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.INVALID, model.status());
-        Assertions.assertEquals("jqg", model.message());
+        Assertions.assertEquals("pvswjdkirso", model.message());
     }
 }

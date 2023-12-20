@@ -31,45 +31,31 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":7267482395817324073,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"qjujeickpzvcp\"},\"location\":\"mxelnwcltyjed\",\"tags\":{\"azuawx\":\"mlfmkqs\"},\"id\":\"z\",\"name\":\"puamwabzxr\",\"type\":\"xcushs\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"quotaSizeInKiBs\":6402661217613808008,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"oqboshbragapyyr\"},\"location\":\"svbpavbopfppdbwn\",\"tags\":{\"asjcaacfdmmcpu\":\"ahxku\",\"zeh\":\"mehqepvufh\",\"clgsc\":\"whoqhnlbqnbldxe\",\"rsrrmoucsofldp\":\"orim\"},\"id\":\"viyfcaabeolhbhlv\",\"name\":\"mxuq\",\"type\":\"bsxtkcudfbsfarfs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VolumeQuotaRule response =
-            manager
-                .volumeQuotaRules()
-                .getWithResponse("jphslhcaw", "u", "i", "dwfmvigorqjb", "tzh", com.azure.core.util.Context.NONE)
-                .getValue();
+        VolumeQuotaRule response = manager.volumeQuotaRules().getWithResponse("zb", "ybww", "bdvibidmhmwffpl", "muvapc",
+            "ccrrvweyoxoyyu", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mxelnwcltyjed", response.location());
-        Assertions.assertEquals("mlfmkqs", response.tags().get("azuawx"));
-        Assertions.assertEquals(7267482395817324073L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("qjujeickpzvcp", response.quotaTarget());
+        Assertions.assertEquals("svbpavbopfppdbwn", response.location());
+        Assertions.assertEquals("ahxku", response.tags().get("asjcaacfdmmcpu"));
+        Assertions.assertEquals(6402661217613808008L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("oqboshbragapyyr", response.quotaTarget());
     }
 }

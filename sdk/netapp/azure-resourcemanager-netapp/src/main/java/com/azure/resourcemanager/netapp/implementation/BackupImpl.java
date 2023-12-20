@@ -4,16 +4,13 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
-import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
 import com.azure.resourcemanager.netapp.models.BackupType;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 public final class BackupImpl implements Backup, Backup.Definition, Backup.Update {
     private BackupInner innerObject;
@@ -30,10 +27,6 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public SystemData systemData() {
@@ -68,20 +61,20 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.innerModel().failureReason();
     }
 
-    public String volumeName() {
-        return this.innerModel().volumeName();
+    public String volumeResourceId() {
+        return this.innerModel().volumeResourceId();
     }
 
     public Boolean useExistingSnapshot() {
         return this.innerModel().useExistingSnapshot();
     }
 
-    public Region region() {
-        return Region.fromName(this.regionName());
+    public String snapshotName() {
+        return this.innerModel().snapshotName();
     }
 
-    public String regionName() {
-        return this.location();
+    public String backupPolicyResourceId() {
+        return this.innerModel().backupPolicyResourceId();
     }
 
     public String resourceGroupName() {
@@ -100,39 +93,28 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     private String accountName;
 
-    private String poolName;
-
-    private String volumeName;
+    private String backupVaultName;
 
     private String backupName;
 
     private BackupPatch updateBody;
 
-    public BackupImpl withExistingVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public BackupImpl withExistingBackupVault(String resourceGroupName, String accountName, String backupVaultName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
-        this.poolName = poolName;
-        this.volumeName = volumeName;
+        this.backupVaultName = backupVaultName;
         return this;
     }
 
     public Backup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .create(
-                    resourceGroupName, accountName, poolName, volumeName, backupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackups().create(resourceGroupName, accountName,
+            backupVaultName, backupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Backup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .create(resourceGroupName, accountName, poolName, volumeName, backupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getBackups().create(resourceGroupName, accountName,
+            backupVaultName, backupName, this.innerModel(), context);
         return this;
     }
 
@@ -148,20 +130,14 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public Backup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .update(resourceGroupName, accountName, poolName, volumeName, backupName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackups().update(resourceGroupName, accountName,
+            backupVaultName, backupName, updateBody, Context.NONE);
         return this;
     }
 
     public Backup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .update(resourceGroupName, accountName, poolName, volumeName, backupName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getBackups().update(resourceGroupName, accountName,
+            backupVaultName, backupName, updateBody, context);
         return this;
     }
 
@@ -170,48 +146,24 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.backupVaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
         this.backupName = Utils.getValueFromIdByName(innerObject.id(), "backups");
     }
 
     public Backup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, backupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackups()
+            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE).getValue();
         return this;
     }
 
     public Backup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackups()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, backupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackups()
+            .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context).getValue();
         return this;
     }
 
-    public void restoreFiles(BackupRestoreFiles body) {
-        serviceManager.backups().restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body);
-    }
-
-    public void restoreFiles(BackupRestoreFiles body, Context context) {
-        serviceManager
-            .backups()
-            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body, context);
-    }
-
-    public BackupImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public BackupImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
+    public BackupImpl withVolumeResourceId(String volumeResourceId) {
+        this.innerModel().withVolumeResourceId(volumeResourceId);
         return this;
     }
 
@@ -226,17 +178,12 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
     }
 
     public BackupImpl withUseExistingSnapshot(Boolean useExistingSnapshot) {
-        if (isInCreateMode()) {
-            this.innerModel().withUseExistingSnapshot(useExistingSnapshot);
-            return this;
-        } else {
-            this.updateBody.withUseExistingSnapshot(useExistingSnapshot);
-            return this;
-        }
+        this.innerModel().withUseExistingSnapshot(useExistingSnapshot);
+        return this;
     }
 
-    public BackupImpl withTags(Map<String, String> tags) {
-        this.updateBody.withTags(tags);
+    public BackupImpl withSnapshotName(String snapshotName) {
+        this.innerModel().withSnapshotName(snapshotName);
         return this;
     }
 

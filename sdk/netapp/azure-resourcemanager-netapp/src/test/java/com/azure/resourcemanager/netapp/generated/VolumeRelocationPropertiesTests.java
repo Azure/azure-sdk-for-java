@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeRelocationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeRelocationProperties model =
-            BinaryData
-                .fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":true}")
+        VolumeRelocationProperties model
+            = BinaryData.fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":false}")
                 .toObject(VolumeRelocationProperties.class);
         Assertions.assertEquals(false, model.relocationRequested());
     }

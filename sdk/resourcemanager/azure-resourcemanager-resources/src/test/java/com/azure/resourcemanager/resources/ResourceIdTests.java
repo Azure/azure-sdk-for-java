@@ -4,8 +4,12 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Test class to test ResourceId class.
@@ -71,5 +75,16 @@ public class ResourceIdTests {
         Assertions.assertEquals(resourceId.parent().parent().providerNamespace(), "Microsoft.Network");
         Assertions.assertEquals(resourceId.parent().parent().resourceType(), "applicationGateways");
         Assertions.assertEquals(resourceId.parent().parent().fullResourceType(), "Microsoft.Network/applicationGateways");
+    }
+
+    @Test
+    public void encodeResourceIdTest() throws URISyntaxException {
+        // white spaces are not allowed to appear in URI
+        String resourceId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/%20my_resourcegroup/providers/Microsoft.Network/applicationGateways/my application gateway/someChildType/request routing,rule+/grandChildType/grandChild";
+        Assertions.assertThrows(URISyntaxException.class, () -> new URI(String.format("http://localhost:3000%s", resourceId)));
+
+        String expectedEncodedResourceId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/%20my_resourcegroup/providers/Microsoft.Network/applicationGateways/my%20application%20gateway/someChildType/request%20routing,rule+/grandChildType/grandChild";
+        new URI(String.format("http://localhost:3000%s", expectedEncodedResourceId));
+        Assertions.assertEquals(expectedEncodedResourceId, ResourceUtils.encodeResourceId(resourceId));
     }
 }

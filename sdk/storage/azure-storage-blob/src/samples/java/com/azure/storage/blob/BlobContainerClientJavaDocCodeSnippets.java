@@ -349,7 +349,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
             .setPrefix("directoryName")
             .setDetails(new BlobListDetails()
                 .setRetrieveDeletedBlobs(true)
-                .setRetrieveSnapshots(true));
+                .setRetrieveSnapshots(false));
 
         client.listBlobsByHierarchy("/", options, timeout).forEach(blob ->
             System.out.printf("Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n",

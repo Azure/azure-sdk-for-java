@@ -36,24 +36,24 @@ import reactor.core.publisher.Mono;
  */
 public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     implements VpnServerConfigurationsAssociatedWithVirtualWansClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VpnServerConfigurationsAssociatedWithVirtualWansService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VpnServerConfigurationsAssociatedWithVirtualWansClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VpnServerConfigurationsAssociatedWithVirtualWansService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(VpnServerConfigurationsAssociatedWithVirtualWansService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,45 +65,37 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VpnServerConfigurationsAssociatedWithVirtualWansService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWANName") String virtualWanName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualWANName") String virtualWanName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfigurations list associated with VirtualWan Response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listWithResponseAsync(String resourceGroupName, String virtualWanName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,26 +104,17 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualWanName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualWanName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -139,22 +122,18 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfigurations list associated with VirtualWan Response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listWithResponseAsync(
-        String resourceGroupName, String virtualWanName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> listWithResponseAsync(String resourceGroupName, String virtualWanName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -163,23 +142,16 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualWanName,
-                apiVersion,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualWanName, apiVersion, accept, context);
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,19 +163,14 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     public PollerFlux<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner>
         beginListAsync(String resourceGroupName, String virtualWanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = listWithResponseAsync(resourceGroupName, virtualWanName);
-        return this
-            .client
-            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnServerConfigurationsResponseInner.class,
-                VpnServerConfigurationsResponseInner.class,
-                this.client.getContext());
+        return this.client.<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), VpnServerConfigurationsResponseInner.class,
+            VpnServerConfigurationsResponseInner.class, this.client.getContext());
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -217,19 +184,14 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         beginListAsync(String resourceGroupName, String virtualWanName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = listWithResponseAsync(resourceGroupName, virtualWanName, context);
-        return this
-            .client
-            .<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnServerConfigurationsResponseInner.class,
-                VpnServerConfigurationsResponseInner.class,
-                context);
+        return this.client.<VpnServerConfigurationsResponseInner, VpnServerConfigurationsResponseInner>getLroResult(
+            mono, this.client.getHttpPipeline(), VpnServerConfigurationsResponseInner.class,
+            VpnServerConfigurationsResponseInner.class, context);
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,14 +200,14 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
      * @return the {@link SyncPoller} for polling of vpnServerConfigurations list associated with VirtualWan Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
-        String resourceGroupName, String virtualWanName) {
+    public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner>
+        beginList(String resourceGroupName, String virtualWanName) {
         return this.beginListAsync(resourceGroupName, virtualWanName).getSyncPoller();
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
@@ -255,21 +217,21 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
      * @return the {@link SyncPoller} for polling of vpnServerConfigurations list associated with VirtualWan Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
-        String resourceGroupName, String virtualWanName, Context context) {
+    public SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner>
+        beginList(String resourceGroupName, String virtualWanName, Context context) {
         return this.beginListAsync(resourceGroupName, virtualWanName, context).getSyncPoller();
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurations list associated with VirtualWan Response on successful completion of {@link
-     *     Mono}.
+     * @return vpnServerConfigurations list associated with VirtualWan Response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationsResponseInner> listAsync(String resourceGroupName, String virtualWanName) {
@@ -278,27 +240,26 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurations list associated with VirtualWan Response on successful completion of {@link
-     *     Mono}.
+     * @return vpnServerConfigurations list associated with VirtualWan Response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VpnServerConfigurationsResponseInner> listAsync(
-        String resourceGroupName, String virtualWanName, Context context) {
-        return beginListAsync(resourceGroupName, virtualWanName, context)
-            .last()
+    private Mono<VpnServerConfigurationsResponseInner> listAsync(String resourceGroupName, String virtualWanName,
+        Context context) {
+        return beginListAsync(resourceGroupName, virtualWanName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,7 +274,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
 
     /**
      * Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param context The context to associate with this operation.

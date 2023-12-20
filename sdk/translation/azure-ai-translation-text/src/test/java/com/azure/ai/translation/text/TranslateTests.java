@@ -3,14 +3,15 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.azure.ai.translation.text.models.InputTextItem;
-import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslatedTextItem;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TranslateTests extends TextTranslationClientBase {
 
     @Test
-    public void translateBasic() throws Exception {
+    public void translateBasic() {
         ArrayList<String> targetLanguages = new ArrayList<>();
         targetLanguages.add("cs");
 

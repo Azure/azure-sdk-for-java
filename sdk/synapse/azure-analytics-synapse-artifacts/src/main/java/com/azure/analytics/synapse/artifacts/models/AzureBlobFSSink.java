@@ -9,23 +9,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Data Lake Storage Gen2 sink. */
+/**
+ * A copy activity Azure Data Lake Storage Gen2 sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSSink")
 @Fluent
 public final class AzureBlobFSSink extends CopySink {
     /*
-     * The type of copy behavior for copy sink.
+     * The type of copy behavior for copy sink. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "copyBehavior")
     private Object copyBehavior;
 
-    /** Creates an instance of AzureBlobFSSink class. */
-    public AzureBlobFSSink() {}
+    /**
+     * Creates an instance of AzureBlobFSSink class.
+     */
+    public AzureBlobFSSink() {
+    }
 
     /**
-     * Get the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -33,8 +39,9 @@ public final class AzureBlobFSSink extends CopySink {
     }
 
     /**
-     * Set the copyBehavior property: The type of copy behavior for copy sink.
-     *
+     * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureBlobFSSink object itself.
      */
@@ -43,35 +50,45 @@ public final class AzureBlobFSSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

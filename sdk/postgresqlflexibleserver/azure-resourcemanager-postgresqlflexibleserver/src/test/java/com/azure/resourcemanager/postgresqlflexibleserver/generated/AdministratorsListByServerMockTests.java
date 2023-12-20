@@ -33,7 +33,7 @@ public final class AdministratorsListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"ol\",\"objectId\":\"ahzxctobgbk\",\"tenantId\":\"oizpostmgrcfbun\"},\"id\":\"fqjhhkxbpvjymj\",\"name\":\"xxjyngudivkrtsw\",\"type\":\"xqzvszjfa\"}]}";
+            "{\"value\":[{\"properties\":{\"principalType\":\"Group\",\"principalName\":\"gdxpg\",\"objectId\":\"chisze\",\"tenantId\":\"nb\"},\"id\":\"rxgibbd\",\"name\":\"xconfozauors\",\"type\":\"kokwbqplhlvnu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class AdministratorsListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ActiveDirectoryAdministrator> response =
-            manager.administrators().listByServer("op", "fqrhhuaopppc", com.azure.core.util.Context.NONE);
+            manager.administrators().listByServer("pjuohminyfl", "orwmduvwpklv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrincipalType.GROUP, response.iterator().next().principalType());
-        Assertions.assertEquals("ol", response.iterator().next().principalName());
-        Assertions.assertEquals("ahzxctobgbk", response.iterator().next().objectId());
-        Assertions.assertEquals("oizpostmgrcfbun", response.iterator().next().tenantId());
+        Assertions.assertEquals("gdxpg", response.iterator().next().principalName());
+        Assertions.assertEquals("chisze", response.iterator().next().objectId());
+        Assertions.assertEquals("nb", response.iterator().next().tenantId());
     }
 }

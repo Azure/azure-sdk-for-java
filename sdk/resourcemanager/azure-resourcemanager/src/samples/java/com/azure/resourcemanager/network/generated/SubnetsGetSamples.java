@@ -4,39 +4,35 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for Subnets Get. */
+/**
+ * Samples for Subnets Get.
+ */
 public final class SubnetsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/SubnetGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/SubnetGet.json
      */
     /**
      * Sample code: Get subnet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getSubnets()
-            .getWithResponse("subnet-test", "vnetname", "subnet1", null, com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getSubnets().getWithResponse("subnet-test", "vnetname", "subnet1",
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/SubnetGetWithDelegation.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/SubnetGetWithDelegation.json
      */
     /**
      * Sample code: Get subnet with a delegation.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnetWithADelegation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getSubnets()
-            .getWithResponse("subnet-test", "vnetname", "subnet1", null, com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getSubnets().getWithResponse("subnet-test", "vnetname", "subnet1",
+            null, com.azure.core.util.Context.NONE);
     }
 }

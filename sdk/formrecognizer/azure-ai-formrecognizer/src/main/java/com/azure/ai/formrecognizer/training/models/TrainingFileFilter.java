@@ -24,6 +24,12 @@ public final class TrainingFileFilter {
     private boolean includeSubfolders;
 
     /**
+     * Create a TrainingFileFilter instance.
+     */
+    public TrainingFileFilter() {
+    }
+
+    /**
      * Get the case-sensitive prefix string to filter
      * documents in the source path for training.
      *

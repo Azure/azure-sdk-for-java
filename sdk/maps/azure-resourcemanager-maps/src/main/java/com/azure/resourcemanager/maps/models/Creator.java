@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
 import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
@@ -55,6 +56,13 @@ public interface Creator {
     CreatorProperties properties();
 
     /**
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -90,11 +98,13 @@ public interface Creator {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The Creator definition stages. */
     interface DefinitionStages {
         /** The first stage of the Creator definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Creator definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -113,6 +123,7 @@ public interface Creator {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Creator definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -124,6 +135,7 @@ public interface Creator {
              */
             WithProperties withExistingAccount(String resourceGroupName, String accountName);
         }
+
         /** The stage of the Creator definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -134,6 +146,7 @@ public interface Creator {
              */
             WithCreate withProperties(CreatorProperties properties);
         }
+
         /**
          * The stage of the Creator definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -154,6 +167,7 @@ public interface Creator {
              */
             Creator create(Context context);
         }
+
         /** The stage of the Creator definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -165,6 +179,7 @@ public interface Creator {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the Creator resource.
      *
@@ -189,6 +204,7 @@ public interface Creator {
          */
         Creator apply(Context context);
     }
+
     /** The Creator update stages. */
     interface UpdateStages {
         /** The stage of the Creator update allowing to specify tags. */
@@ -207,6 +223,7 @@ public interface Creator {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Creator update allowing to specify storageUnits. */
         interface WithStorageUnits {
             /**
@@ -219,6 +236,7 @@ public interface Creator {
             Update withStorageUnits(int storageUnits);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

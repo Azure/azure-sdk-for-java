@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for AvailablePrivateEndpointTypes List. */
+/**
+ * Samples for AvailablePrivateEndpointTypes List.
+ */
 public final class AvailablePrivateEndpointTypesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AvailablePrivateEndpointTypesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * AvailablePrivateEndpointTypesGet.json
      */
     /**
      * Sample code: Get available PrivateEndpoint types.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailablePrivateEndpointTypes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getAvailablePrivateEndpointTypes()
-            .list("regionName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getAvailablePrivateEndpointTypes().list("regionName",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,7 @@ import com.azure.resourcemanager.kusto.models.AzureResourceSku;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.azure.resourcemanager.kusto.models.Cluster;
 import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
+import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 import com.azure.resourcemanager.kusto.models.Clusters;
 import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
@@ -88,6 +89,15 @@ public final class ClustersImpl implements Clusters {
 
     public void start(String resourceGroupName, String clusterName, Context context) {
         this.serviceClient().start(resourceGroupName, clusterName, context);
+    }
+
+    public void migrate(String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest) {
+        this.serviceClient().migrate(resourceGroupName, clusterName, clusterMigrateRequest);
+    }
+
+    public void migrate(
+        String resourceGroupName, String clusterName, ClusterMigrateRequest clusterMigrateRequest, Context context) {
+        this.serviceClient().migrate(resourceGroupName, clusterName, clusterMigrateRequest, context);
     }
 
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(

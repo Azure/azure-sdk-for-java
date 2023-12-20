@@ -8,31 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionStateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString(
-                    "{\"status\":\"Pending\",\"description\":\"bpizcdrqjsdpydn\",\"actionsRequired\":\"hxdeoejz\"}")
+                .fromString("{\"status\":\"Approved\",\"description\":\"zmnvdfznudaod\",\"actionsRequired\":\"zbn\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.description());
-        Assertions.assertEquals("hxdeoejz", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("zmnvdfznudaod", model.description());
+        Assertions.assertEquals("zbn", model.actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
-                .withDescription("bpizcdrqjsdpydn")
-                .withActionsRequired("hxdeoejz");
+                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                .withDescription("zmnvdfznudaod")
+                .withActionsRequired("zbn");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.description());
-        Assertions.assertEquals("hxdeoejz", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("zmnvdfznudaod", model.description());
+        Assertions.assertEquals("zbn", model.actionsRequired());
     }
 }

@@ -23,6 +23,15 @@ public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVers
     public static final MinimumTlsVersion TLS1_2 = fromString("TLS1_2");
 
     /**
+     * Creates a new instance of MinimumTlsVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MinimumTlsVersion() {
+    }
+
+    /**
      * Creates or finds a MinimumTlsVersion from its string representation.
      *
      * @param name a name to look for.

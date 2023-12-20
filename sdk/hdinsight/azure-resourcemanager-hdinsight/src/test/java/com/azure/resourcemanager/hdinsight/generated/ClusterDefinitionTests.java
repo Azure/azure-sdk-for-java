@@ -9,33 +9,32 @@ import com.azure.resourcemanager.hdinsight.models.ClusterDefinition;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterDefinitionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterDefinition model =
             BinaryData
                 .fromString(
-                    "{\"blueprint\":\"audccsnhs\",\"kind\":\"nyejhkryhtnap\",\"componentVersion\":{\"ni\":\"lokjyemkk\",\"ilzyd\":\"joxzjnchgejspodm\"},\"configurations\":\"datao\"}")
+                    "{\"blueprint\":\"vce\",\"kind\":\"eil\",\"componentVersion\":{\"jfcn\":\"oty\",\"x\":\"bkc\",\"nv\":\"hbttkphyw\",\"qnermclfplphoxu\":\"t\"},\"configurations\":\"datarpabg\"}")
                 .toObject(ClusterDefinition.class);
-        Assertions.assertEquals("audccsnhs", model.blueprint());
-        Assertions.assertEquals("nyejhkryhtnap", model.kind());
-        Assertions.assertEquals("lokjyemkk", model.componentVersion().get("ni"));
+        Assertions.assertEquals("vce", model.blueprint());
+        Assertions.assertEquals("eil", model.kind());
+        Assertions.assertEquals("oty", model.componentVersion().get("jfcn"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterDefinition model =
             new ClusterDefinition()
-                .withBlueprint("audccsnhs")
-                .withKind("nyejhkryhtnap")
-                .withComponentVersion(mapOf("ni", "lokjyemkk", "ilzyd", "joxzjnchgejspodm"))
-                .withConfigurations("datao");
+                .withBlueprint("vce")
+                .withKind("eil")
+                .withComponentVersion(mapOf("jfcn", "oty", "x", "bkc", "nv", "hbttkphyw", "qnermclfplphoxu", "t"))
+                .withConfigurations("datarpabg");
         model = BinaryData.fromObject(model).toObject(ClusterDefinition.class);
-        Assertions.assertEquals("audccsnhs", model.blueprint());
-        Assertions.assertEquals("nyejhkryhtnap", model.kind());
-        Assertions.assertEquals("lokjyemkk", model.componentVersion().get("ni"));
+        Assertions.assertEquals("vce", model.blueprint());
+        Assertions.assertEquals("eil", model.kind());
+        Assertions.assertEquals("oty", model.componentVersion().get("jfcn"));
     }
 
     @SuppressWarnings("unchecked")

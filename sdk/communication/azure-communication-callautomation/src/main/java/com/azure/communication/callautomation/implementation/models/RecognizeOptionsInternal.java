@@ -36,6 +36,12 @@ public final class RecognizeOptionsInternal {
     private String speechLanguage;
 
     /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
@@ -45,7 +51,7 @@ public final class RecognizeOptionsInternal {
      * Defines Ivr choices for recognize.
      */
     @JsonProperty(value = "choices")
-    private List<RecognizeChoiceInternal> choices;
+    private List<RecognitionChoiceInternal> choices;
 
     /*
      * Defines continuous speech recognition option.
@@ -134,6 +140,26 @@ public final class RecognizeOptionsInternal {
     }
 
     /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
      * Get the dtmfOptions property: Defines configurations for DTMF.
      *
      * @return the dtmfOptions value.
@@ -158,7 +184,7 @@ public final class RecognizeOptionsInternal {
      *
      * @return the choices value.
      */
-    public List<RecognizeChoiceInternal> getChoices() {
+    public List<RecognitionChoiceInternal> getChoices() {
         return this.choices;
     }
 
@@ -168,7 +194,7 @@ public final class RecognizeOptionsInternal {
      * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
-    public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
+    public RecognizeOptionsInternal setChoices(List<RecognitionChoiceInternal> choices) {
         this.choices = choices;
         return this;
     }

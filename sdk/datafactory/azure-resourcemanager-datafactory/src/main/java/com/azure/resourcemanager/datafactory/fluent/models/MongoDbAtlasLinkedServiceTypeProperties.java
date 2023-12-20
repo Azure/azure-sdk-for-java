@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MongoDB Atlas linked service properties. */
+/**
+ * MongoDB Atlas linked service properties.
+ */
 @Fluent
 public final class MongoDbAtlasLinkedServiceTypeProperties {
     /*
@@ -25,14 +27,23 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     @JsonProperty(value = "database", required = true)
     private Object database;
 
-    /** Creates an instance of MongoDbAtlasLinkedServiceTypeProperties class. */
+    /*
+     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "driverVersion")
+    private Object driverVersion;
+
+    /**
+     * Creates an instance of MongoDbAtlasLinkedServiceTypeProperties class.
+     */
     public MongoDbAtlasLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -42,7 +53,7 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The MongoDB Atlas connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MongoDbAtlasLinkedServiceTypeProperties object itself.
      */
@@ -54,7 +65,7 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     /**
      * Get the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -64,7 +75,7 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     /**
      * Set the database property: The name of the MongoDB Atlas database that you want to access. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the MongoDbAtlasLinkedServiceTypeProperties object itself.
      */
@@ -74,22 +85,40 @@ public final class MongoDbAtlasLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     * 
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     * 
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedServiceTypeProperties object itself.
+     */
+    public MongoDbAtlasLinkedServiceTypeProperties withDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model MongoDbAtlasLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model MongoDbAtlasLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property database in model MongoDbAtlasLinkedServiceTypeProperties"));
         }
     }
 

@@ -22,6 +22,10 @@ public final class GatewayKeysContractInner {
     @JsonProperty(value = "secondary")
     private String secondary;
 
+    /** Creates an instance of GatewayKeysContractInner class. */
+    public GatewayKeysContractInner() {
+    }
+
     /**
      * Get the primary property: Primary gateway key.
      *

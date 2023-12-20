@@ -89,9 +89,7 @@ public final class KeyVaultSettingsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSetting> updateSetting(KeyVaultSetting setting) {
-        Objects.requireNonNull(setting,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'setting'"));
+        Objects.requireNonNull(setting, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'setting'"));
 
         try {
             String settingValue = null;
@@ -138,9 +136,7 @@ public final class KeyVaultSettingsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSetting>> updateSettingWithResponse(KeyVaultSetting setting) {
-        Objects.requireNonNull(setting,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'setting'"));
+        Objects.requireNonNull(setting, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'setting'"));
 
         try {
             String settingValue = null;

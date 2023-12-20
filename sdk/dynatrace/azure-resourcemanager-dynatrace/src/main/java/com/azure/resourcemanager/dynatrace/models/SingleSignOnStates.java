@@ -23,6 +23,15 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
     public static final SingleSignOnStates EXISTING = fromString("Existing");
 
     /**
+     * Creates a new instance of SingleSignOnStates value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SingleSignOnStates() {
+    }
+
+    /**
      * Creates or finds a SingleSignOnStates from its string representation.
      *
      * @param name a name to look for.

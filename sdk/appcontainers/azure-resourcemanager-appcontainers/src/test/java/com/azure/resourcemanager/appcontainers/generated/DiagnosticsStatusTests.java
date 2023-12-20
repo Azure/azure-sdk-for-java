@@ -12,18 +12,16 @@ public final class DiagnosticsStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsStatus model =
-            BinaryData
-                .fromString("{\"message\":\"srmffeycxcktpiym\",\"statusId\":1764465622}")
-                .toObject(DiagnosticsStatus.class);
-        Assertions.assertEquals("srmffeycxcktpiym", model.message());
-        Assertions.assertEquals(1764465622, model.statusId());
+            BinaryData.fromString("{\"message\":\"isavok\",\"statusId\":1487761087}").toObject(DiagnosticsStatus.class);
+        Assertions.assertEquals("isavok", model.message());
+        Assertions.assertEquals(1487761087, model.statusId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsStatus model = new DiagnosticsStatus().withMessage("srmffeycxcktpiym").withStatusId(1764465622);
+        DiagnosticsStatus model = new DiagnosticsStatus().withMessage("isavok").withStatusId(1487761087);
         model = BinaryData.fromObject(model).toObject(DiagnosticsStatus.class);
-        Assertions.assertEquals("srmffeycxcktpiym", model.message());
-        Assertions.assertEquals(1764465622, model.statusId());
+        Assertions.assertEquals("isavok", model.message());
+        Assertions.assertEquals(1487761087, model.statusId());
     }
 }

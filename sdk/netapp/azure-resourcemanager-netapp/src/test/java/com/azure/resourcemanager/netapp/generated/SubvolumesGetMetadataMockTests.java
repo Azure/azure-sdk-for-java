@@ -30,50 +30,36 @@ public final class SubvolumesGetMetadataMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"ytunlbfjkwr\",\"name\":\"nkqbhsyrq\",\"type\":\"jqhden\",\"properties\":{\"path\":\"l\",\"parentPath\":\"akdkifmjnnawtqab\",\"size\":5710243161782085788,\"bytesUsed\":1035962610522456238,\"permissions\":\"qoweyirdhl\",\"creationTimeStamp\":\"2021-10-24T15:23:04Z\",\"accessedTimeStamp\":\"2021-09-15T11:45:30Z\",\"modifiedTimeStamp\":\"2021-07-25T17:04:59Z\",\"changedTimeStamp\":\"2021-06-30T03:10:24Z\",\"provisioningState\":\"Succeeded\"}}";
+        String responseStr
+            = "{\"id\":\"ddei\",\"name\":\"wzovgk\",\"type\":\"muikjcjcaztbws\",\"properties\":{\"path\":\"owxwcomli\",\"parentPath\":\"twvc\",\"size\":9048131341769912568,\"bytesUsed\":3791668665585819281,\"permissions\":\"ejyfdvlvhbwrnfx\",\"creationTimeStamp\":\"2021-04-12T09:19:16Z\",\"accessedTimeStamp\":\"2021-01-12T00:32:09Z\",\"modifiedTimeStamp\":\"2021-07-21T21:17:06Z\",\"changedTimeStamp\":\"2021-04-10T14:59:15Z\",\"provisioningState\":\"Succeeded\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SubvolumeModel response =
-            manager
-                .subvolumes()
-                .getMetadata(
-                    "nbmhyree", "dzqavbpdqmjxlyyz", "lgouwtlmjj", "uojqt", "baxk", com.azure.core.util.Context.NONE);
+        SubvolumeModel response = manager.subvolumes().getMetadata("jggsvo", "jkxibda", "hrkmdyomkxfbvfbh", "y", "rhpw",
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("l", response.path());
-        Assertions.assertEquals("akdkifmjnnawtqab", response.parentPath());
-        Assertions.assertEquals(5710243161782085788L, response.size());
-        Assertions.assertEquals(1035962610522456238L, response.bytesUsed());
-        Assertions.assertEquals("qoweyirdhl", response.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-24T15:23:04Z"), response.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T11:45:30Z"), response.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T17:04:59Z"), response.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-30T03:10:24Z"), response.changedTimestamp());
+        Assertions.assertEquals("owxwcomli", response.path());
+        Assertions.assertEquals("twvc", response.parentPath());
+        Assertions.assertEquals(9048131341769912568L, response.size());
+        Assertions.assertEquals(3791668665585819281L, response.bytesUsed());
+        Assertions.assertEquals("ejyfdvlvhbwrnfx", response.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T09:19:16Z"), response.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-12T00:32:09Z"), response.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T21:17:06Z"), response.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-10T14:59:15Z"), response.changedTimestamp());
         Assertions.assertEquals("Succeeded", response.provisioningState());
     }
 }

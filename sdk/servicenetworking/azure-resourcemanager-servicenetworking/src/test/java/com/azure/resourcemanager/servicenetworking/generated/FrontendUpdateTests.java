@@ -13,18 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendUpdate model =
-            BinaryData.fromString("{\"tags\":{\"bmqj\":\"coofsxlzev\"}}").toObject(FrontendUpdate.class);
-        Assertions.assertEquals("coofsxlzev", model.tags().get("bmqj"));
+        FrontendUpdate model = BinaryData
+            .fromString("{\"tags\":{\"po\":\"ajionpimexgstxg\",\"djwzrlov\":\"gmaajrm\",\"qsqsy\":\"clwhijcoejctbz\"}}")
+            .toObject(FrontendUpdate.class);
+        Assertions.assertEquals("ajionpimexgstxg", model.tags().get("po"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendUpdate model = new FrontendUpdate().withTags(mapOf("bmqj", "coofsxlzev"));
+        FrontendUpdate model = new FrontendUpdate()
+            .withTags(mapOf("po", "ajionpimexgstxg", "djwzrlov", "gmaajrm", "qsqsy", "clwhijcoejctbz"));
         model = BinaryData.fromObject(model).toObject(FrontendUpdate.class);
-        Assertions.assertEquals("coofsxlzev", model.tags().get("bmqj"));
+        Assertions.assertEquals("ajionpimexgstxg", model.tags().get("po"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

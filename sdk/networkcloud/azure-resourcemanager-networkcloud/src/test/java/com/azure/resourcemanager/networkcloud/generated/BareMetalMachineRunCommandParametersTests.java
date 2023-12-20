@@ -15,23 +15,23 @@ public final class BareMetalMachineRunCommandParametersTests {
         BareMetalMachineRunCommandParameters model =
             BinaryData
                 .fromString(
-                    "{\"arguments\":[\"tvqcttadijaeu\"],\"limitTimeSeconds\":8092412337575637077,\"script\":\"sieekpndzaapm\"}")
+                    "{\"arguments\":[\"nghgshej\",\"tbxqmuluxlxq\",\"vnersbycucrw\",\"amikzebrqbsm\"],\"limitTimeSeconds\":4275672432001300092,\"script\":\"iqg\"}")
                 .toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("tvqcttadijaeu", model.arguments().get(0));
-        Assertions.assertEquals(8092412337575637077L, model.limitTimeSeconds());
-        Assertions.assertEquals("sieekpndzaapm", model.script());
+        Assertions.assertEquals("nghgshej", model.arguments().get(0));
+        Assertions.assertEquals(4275672432001300092L, model.limitTimeSeconds());
+        Assertions.assertEquals("iqg", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineRunCommandParameters model =
             new BareMetalMachineRunCommandParameters()
-                .withArguments(Arrays.asList("tvqcttadijaeu"))
-                .withLimitTimeSeconds(8092412337575637077L)
-                .withScript("sieekpndzaapm");
+                .withArguments(Arrays.asList("nghgshej", "tbxqmuluxlxq", "vnersbycucrw", "amikzebrqbsm"))
+                .withLimitTimeSeconds(4275672432001300092L)
+                .withScript("iqg");
         model = BinaryData.fromObject(model).toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("tvqcttadijaeu", model.arguments().get(0));
-        Assertions.assertEquals(8092412337575637077L, model.limitTimeSeconds());
-        Assertions.assertEquals("sieekpndzaapm", model.script());
+        Assertions.assertEquals("nghgshej", model.arguments().get(0));
+        Assertions.assertEquals(4275672432001300092L, model.limitTimeSeconds());
+        Assertions.assertEquals("iqg", model.script());
     }
 }

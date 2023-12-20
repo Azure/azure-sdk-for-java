@@ -9,34 +9,31 @@ import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.batch.models.DetectorListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DetectorListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DetectorListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"dpydn\"},\"etag\":\"hxdeoejz\",\"id\":\"cwif\",\"name\":\"jttgzf\",\"type\":\"ishc\"},{\"properties\":{\"value\":\"ajdeyeamdphaga\"},\"etag\":\"buxwgip\",\"id\":\"honowkgshwank\",\"name\":\"xzbinjeputt\",\"type\":\"rywn\"},{\"properties\":{\"value\":\"qftiy\"},\"etag\":\"rnkcqvyxlw\",\"id\":\"zlsico\",\"name\":\"oqqnwvlryav\",\"type\":\"hheunmmqhgyx\"},{\"properties\":{\"value\":\"noc\"},\"etag\":\"oklyaxuconuq\",\"id\":\"zf\",\"name\":\"beypewrmjmw\",\"type\":\"vjektcxsenh\"}],\"nextLink\":\"rsffrzpwvlqdqgbi\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"spkwlhzdobpxjm\"},\"etag\":\"bvvnchrkcciw\",\"id\":\"zjuqkhrsaj\",\"name\":\"wkuofoskghsauu\",\"type\":\"mjmvxieduugidyjr\"},{\"properties\":{\"value\":\"y\"},\"etag\":\"svexcsonpclhoco\",\"id\":\"slkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
                 .toObject(DetectorListResult.class);
-        Assertions.assertEquals("dpydn", model.value().get(0).value());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
+        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
+        Assertions.assertEquals("vmezy", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DetectorListResult model =
             new DetectorListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new DetectorResponseInner().withValue("dpydn"),
-                            new DetectorResponseInner().withValue("ajdeyeamdphaga"),
-                            new DetectorResponseInner().withValue("qftiy"),
-                            new DetectorResponseInner().withValue("noc")))
-                .withNextLink("rsffrzpwvlqdqgbi");
+                            new DetectorResponseInner().withValue("spkwlhzdobpxjm"),
+                            new DetectorResponseInner().withValue("y")))
+                .withNextLink("vmezy");
         model = BinaryData.fromObject(model).toObject(DetectorListResult.class);
-        Assertions.assertEquals("dpydn", model.value().get(0).value());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
+        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
+        Assertions.assertEquals("vmezy", model.nextLink());
     }
 }

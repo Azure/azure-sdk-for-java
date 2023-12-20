@@ -17,6 +17,10 @@ public final class TagDescriptionCreateParameters {
     @JsonProperty(value = "properties")
     private TagDescriptionBaseProperties innerProperties;
 
+    /** Creates an instance of TagDescriptionCreateParameters class. */
+    public TagDescriptionCreateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties supplied to Create TagDescription operation.
      *

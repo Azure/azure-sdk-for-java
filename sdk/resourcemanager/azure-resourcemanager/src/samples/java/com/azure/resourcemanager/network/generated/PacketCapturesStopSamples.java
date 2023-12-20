@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for PacketCaptures Stop. */
+/**
+ * Samples for PacketCaptures Stop.
+ */
 public final class PacketCapturesStopSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkWatcherPacketCaptureStop.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * NetworkWatcherPacketCaptureStop.json
      */
     /**
      * Sample code: Stop packet capture.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void stopPacketCapture(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getPacketCaptures()
-            .stop("rg1", "nw1", "pc1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getPacketCaptures().stop("rg1", "nw1", "pc1",
+            com.azure.core.util.Context.NONE);
     }
 }

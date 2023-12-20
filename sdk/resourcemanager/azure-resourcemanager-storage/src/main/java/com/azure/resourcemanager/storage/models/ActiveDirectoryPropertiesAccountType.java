@@ -18,6 +18,15 @@ public final class ActiveDirectoryPropertiesAccountType
     public static final ActiveDirectoryPropertiesAccountType COMPUTER = fromString("Computer");
 
     /**
+     * Creates a new instance of ActiveDirectoryPropertiesAccountType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActiveDirectoryPropertiesAccountType() {
+    }
+
+    /**
      * Creates or finds a ActiveDirectoryPropertiesAccountType from its string representation.
      *
      * @param name a name to look for.

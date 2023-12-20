@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OutboundNetworkDependenciesEndpoints ListByService. */
 public final class OutboundNetworkDependenciesEndpointsListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementServiceGetOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ApiManagementServiceGetOutboundNetworkDependenciesEndpoints.
@@ -18,6 +16,8 @@ public final class OutboundNetworkDependenciesEndpointsListByServiceSamples {
      */
     public static void apiManagementServiceGetOutboundNetworkDependenciesEndpoints(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.outboundNetworkDependenciesEndpoints().listByServiceWithResponse("rg1", "apimService1", Context.NONE);
+        manager
+            .outboundNetworkDependenciesEndpoints()
+            .listByServiceWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

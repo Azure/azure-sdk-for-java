@@ -7,13 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import okhttp3.Call;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -23,11 +21,14 @@ import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -48,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests {@link OkHttpAsyncHttpClientBuilder}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientBuilderTests {
     private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
     private static final String DEFAULT_PATH = "/default";
@@ -64,7 +66,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static final String JAVA_HTTP_PROXY_PASSWORD = "http.proxyPassword";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     private static String cookieValidatorUrl;
     private static String defaultUrl;
@@ -73,37 +75,46 @@ public class OkHttpAsyncHttpClientBuilderTests {
     private static String redirectUrl;
 
     @BeforeAll
-    public static void setupWireMock() {
-        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            String path = req.getServletPath();
+            boolean get = "GET".equalsIgnoreCase(req.getMethod());
 
-        // Mocked endpoint to test building a client with a prebuilt OkHttpClient.
-        server.stubFor(WireMock.get(COOKIE_VALIDATOR_PATH).withCookie("test", WireMock.matching("success"))
-            .willReturn(WireMock.aResponse().withStatus(200)));
-
-        // Mocked endpoint to test building a client with a timeout.
-        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
-
-        // Mocked endpoint to test building a client with a dispatcher and uses a delayed response.
-        server.stubFor(WireMock.get(DISPATCHER_PATH).willReturn(WireMock.aResponse().withStatus(200)
-            .withFixedDelay(5000)));
+            if (get && COOKIE_VALIDATOR_PATH.equals(path)) {
+                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
+                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
+                if (!hasCookie) {
+                    resp.setStatus(400);
+                }
+            } else if (get && DISPATCHER_PATH.equals(path)) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (get && REDIRECT_PATH.equals(path)) {
+                resp.setStatus(307);
+                resp.setHeader("Location", locationUrl);
+            } else if (get && (DEFAULT_PATH.equals(path) || LOCATION_PATH.equals(path))) {
+                resp.setStatus(200);
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
+            }
+        });
 
         server.start();
 
-        cookieValidatorUrl = "http://localhost:" + server.port() + COOKIE_VALIDATOR_PATH;
-        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
-        dispatcherUrl = "http://localhost:" + server.port() + DISPATCHER_PATH;
-        redirectUrl = "http://localhost:" + server.port() + REDIRECT_PATH;
-        locationUrl = "http://localhost:" + server.port() + LOCATION_PATH;
-
-        // Mocked endpoint to test the redirect behavior.
-        server.stubFor(WireMock.get(REDIRECT_PATH).willReturn(WireMock.aResponse().withStatus(307).withHeader("Location", locationUrl)));
-        server.stubFor(WireMock.get(LOCATION_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+        cookieValidatorUrl = server.getHttpUri() + COOKIE_VALIDATOR_PATH;
+        defaultUrl = server.getHttpUri() + DEFAULT_PATH;
+        dispatcherUrl = server.getHttpUri() + DISPATCHER_PATH;
+        redirectUrl = server.getHttpUri() + REDIRECT_PATH;
+        locationUrl = server.getHttpUri() + LOCATION_PATH;
     }
 
     @AfterAll
-    public static void shutdownWireMock() {
-        if (server.isRunning()) {
-            server.shutdown();
+    public static void stopTestServer() {
+        if (server != null) {
+            server.stop();
         }
     }
 
@@ -180,8 +191,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that setting the {@link Interceptor interceptors} to {@code null} will throw a {@link
-     * NullPointerException}.
+     * Tests that setting the {@link Interceptor interceptors} to {@code null} will throw a
+     * {@link NullPointerException}.
      */
     @Test
     public void nullNetworkInterceptorsThrows() {
@@ -335,8 +346,8 @@ public class OkHttpAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that passing a {@code null} {@code connectionPool} to the builder will throw a {@link
-     * NullPointerException}.
+     * Tests that passing a {@code null} {@code connectionPool} to the builder will throw a
+     * {@link NullPointerException}.
      */
     @Test
     public void nullConnectionPoolThrows() {
@@ -358,7 +369,7 @@ public class OkHttpAsyncHttpClientBuilderTests {
 
         /*
          * Schedule a task that will run in one second to cancel all requests sent using the dispatcher. This should
-         * result in the request we are about to send to be cancelled since WireMock will wait 5 seconds before
+         * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
         new Timer().schedule(new TimerTask() {
@@ -519,24 +530,24 @@ public class OkHttpAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get(), EMPTY_SOURCE).build(), defaultUrl));
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUrl));
 
         /*
          * HTTP proxy with authentication configured.
          */
-        Configuration javaProxyWithAuthentication =  new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get()
-                .put(JAVA_HTTP_PROXY_USER, "1")
-                .put(JAVA_HTTP_PROXY_PASSWORD, "1"),
+        Configuration javaProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, baseJavaProxyConfigurationSupplier.get()
+            .put(JAVA_HTTP_PROXY_USER, "1")
+            .put(JAVA_HTTP_PROXY_PASSWORD, "1"),
             EMPTY_SOURCE)
             .build();
         arguments.add(Arguments.of(true, javaProxyWithAuthentication, defaultUrl));
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true"))
             .build();
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUrl));
 

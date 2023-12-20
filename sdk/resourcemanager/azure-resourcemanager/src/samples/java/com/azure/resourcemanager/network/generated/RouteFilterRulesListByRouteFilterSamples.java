@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for RouteFilterRules ListByRouteFilter. */
+/**
+ * Samples for RouteFilterRules ListByRouteFilter.
+ */
 public final class RouteFilterRulesListByRouteFilterSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/RouteFilterRuleListByRouteFilter.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * RouteFilterRuleListByRouteFilter.json
      */
     /**
      * Sample code: RouteFilterRuleListByRouteFilter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterRuleListByRouteFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getRouteFilterRules()
-            .listByRouteFilter("rg1", "filterName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getRouteFilterRules().listByRouteFilter("rg1", "filterName",
+            com.azure.core.util.Context.NONE);
     }
 }

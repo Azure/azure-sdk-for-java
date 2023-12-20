@@ -15,8 +15,7 @@ public final class ActivityRunsQueryResponseImpl implements ActivityRunsQueryRes
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    ActivityRunsQueryResponseImpl(
-        ActivityRunsQueryResponseInner innerObject,
+    ActivityRunsQueryResponseImpl(ActivityRunsQueryResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

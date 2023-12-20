@@ -72,8 +72,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     public interface DataConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataConnectionListResult>> listByDatabase(
@@ -88,8 +87,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnectionValidation")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnectionValidation")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> dataConnectionValidation(
@@ -105,8 +103,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -122,8 +119,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataConnectionInner>> get(
@@ -139,8 +135,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -157,8 +152,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -175,8 +169,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -194,7 +187,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +245,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -308,7 +301,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +318,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -344,7 +337,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,7 +354,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns the list of data connections of the given Kusto database.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -379,7 +372,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -440,7 +433,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -503,7 +496,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -534,7 +527,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -569,7 +562,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -593,7 +586,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -619,7 +612,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -639,7 +632,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -664,7 +657,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -682,7 +675,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection parameters are valid.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -705,7 +698,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -770,7 +763,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -834,7 +827,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -856,7 +849,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -881,7 +874,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -904,7 +897,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -964,7 +957,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1022,7 +1015,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1041,7 +1034,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1060,7 +1053,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Returns a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1079,7 +1072,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1150,7 +1143,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1220,7 +1213,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1253,7 +1246,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1285,7 +1278,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1310,7 +1303,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1338,7 +1331,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1363,7 +1356,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1391,7 +1384,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1415,7 +1408,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Creates or updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1442,7 +1435,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1513,7 +1506,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1583,7 +1576,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1615,7 +1608,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1647,7 +1640,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1672,7 +1665,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1699,7 +1692,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1724,7 +1717,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1751,7 +1744,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1774,7 +1767,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Updates a data connection.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1800,7 +1793,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1859,7 +1852,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1916,7 +1909,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1939,7 +1932,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1963,7 +1956,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1981,7 +1974,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2002,7 +1995,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2022,7 +2015,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2043,7 +2036,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2059,7 +2052,7 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
     /**
      * Deletes the data connection with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.

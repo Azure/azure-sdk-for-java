@@ -24,6 +24,10 @@ public final class GatewayCertificateAuthorityCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GatewayCertificateAuthorityCollection class. */
+    public GatewayCertificateAuthorityCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

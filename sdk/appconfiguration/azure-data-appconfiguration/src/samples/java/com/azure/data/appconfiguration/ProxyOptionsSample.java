@@ -44,13 +44,13 @@ public class ProxyOptionsSample {
         final String value = "world";
 
         ConfigurationSetting setting = client.setConfigurationSetting(key, null, value);
-        System.out.printf(String.format("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+        System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.getConfigurationSetting(key, null, null);
-        System.out.printf(String.format("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+        System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.deleteConfigurationSetting(key, null);
-        System.out.printf(String.format("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         System.out.println("End of synchronous sample.");
     }

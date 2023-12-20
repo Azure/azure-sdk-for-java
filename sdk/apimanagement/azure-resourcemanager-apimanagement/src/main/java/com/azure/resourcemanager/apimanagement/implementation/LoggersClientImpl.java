@@ -64,11 +64,10 @@ public final class LoggersClientImpl implements LoggersClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientL")
-    private interface LoggersService {
+    public interface LoggersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoggerCollection>> listByService(
@@ -85,8 +84,7 @@ public final class LoggersClientImpl implements LoggersClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers/{loggerId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<LoggersGetEntityTagResponse> getEntityTag(
@@ -101,8 +99,7 @@ public final class LoggersClientImpl implements LoggersClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers/{loggerId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<LoggersGetResponse> get(
@@ -117,8 +114,7 @@ public final class LoggersClientImpl implements LoggersClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers/{loggerId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<LoggersCreateOrUpdateResponse> createOrUpdate(
@@ -135,8 +131,7 @@ public final class LoggersClientImpl implements LoggersClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers/{loggerId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<LoggersUpdateResponse> update(
@@ -153,8 +148,7 @@ public final class LoggersClientImpl implements LoggersClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/loggers/{loggerId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -182,7 +176,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -250,7 +244,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -316,7 +310,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -341,7 +335,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -361,7 +355,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -387,7 +381,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,7 +399,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -429,7 +423,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +477,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -535,7 +529,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,29 +540,13 @@ public final class LoggersClientImpl implements LoggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String loggerId) {
-        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, loggerId)
-            .flatMap((LoggersGetEntityTagResponse res) -> Mono.empty());
+        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, loggerId).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String loggerId) {
-        getEntityTagAsync(resourceGroupName, serviceName, loggerId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the logger specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -584,9 +562,24 @@ public final class LoggersClientImpl implements LoggersClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the logger specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String loggerId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, loggerId, Context.NONE);
+    }
+
+    /**
      * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -639,7 +632,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -690,7 +683,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,36 +694,13 @@ public final class LoggersClientImpl implements LoggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggerContractInner> getAsync(String resourceGroupName, String serviceName, String loggerId) {
         return getWithResponseAsync(resourceGroupName, serviceName, loggerId)
-            .flatMap(
-                (LoggersGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the logger specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggerContractInner get(String resourceGroupName, String serviceName, String loggerId) {
-        return getAsync(resourceGroupName, serviceName, loggerId).block();
-    }
-
-    /**
-     * Gets the details of the logger specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -746,9 +716,25 @@ public final class LoggersClientImpl implements LoggersClient {
     }
 
     /**
+     * Gets the details of the logger specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the logger specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoggerContractInner get(String resourceGroupName, String serviceName, String loggerId) {
+        return getWithResponse(resourceGroupName, serviceName, loggerId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or Updates a logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param parameters Create parameters.
@@ -810,7 +796,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Creates or Updates a logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param parameters Create parameters.
@@ -875,34 +861,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Creates or Updates a logger.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggerContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters, String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, loggerId, parameters, ifMatch)
-            .flatMap(
-                (LoggersCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or Updates a logger.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param parameters Create parameters.
@@ -916,39 +875,13 @@ public final class LoggersClientImpl implements LoggersClient {
         String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, loggerId, parameters, ifMatch)
-            .flatMap(
-                (LoggersCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or Updates a logger.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @param parameters Create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, loggerId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates or Updates a logger.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param parameters Create parameters.
@@ -972,9 +905,29 @@ public final class LoggersClientImpl implements LoggersClient {
     }
 
     /**
+     * Creates or Updates a logger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @param parameters Create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logger details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoggerContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, loggerId, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Updates an existing logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1044,7 +997,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Updates an existing logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1113,7 +1066,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Updates an existing logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1132,44 +1085,13 @@ public final class LoggersClientImpl implements LoggersClient {
         String ifMatch,
         LoggerUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, loggerId, ifMatch, parameters)
-            .flatMap(
-                (LoggersUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an existing logger.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggerContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters) {
-        return updateAsync(resourceGroupName, serviceName, loggerId, ifMatch, parameters).block();
-    }
-
-    /**
-     * Updates an existing logger.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1193,9 +1115,34 @@ public final class LoggersClientImpl implements LoggersClient {
     }
 
     /**
+     * Updates an existing logger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return logger details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LoggerContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String loggerId,
+        String ifMatch,
+        LoggerUpdateContract parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, loggerId, ifMatch, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the specified logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1254,7 +1201,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Deletes the specified logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1311,7 +1258,7 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Deletes the specified logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1324,30 +1271,13 @@ public final class LoggersClientImpl implements LoggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, loggerId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified logger.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, loggerId, ifMatch).block();
-    }
-
-    /**
-     * Deletes the specified logger.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1365,9 +1295,27 @@ public final class LoggersClientImpl implements LoggersClient {
     }
 
     /**
+     * Deletes the specified logger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, loggerId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1403,7 +1351,8 @@ public final class LoggersClientImpl implements LoggersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

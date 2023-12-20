@@ -34,8 +34,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimGroupsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimGroupInner;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.SimGroupListResult;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -68,8 +68,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     public interface SimGroupsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/simGroups/{simGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -83,8 +82,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/simGroups/{simGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SimGroupInner>> getByResourceGroup(
@@ -98,8 +96,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/simGroups/{simGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/simGroups/{simGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups/{simGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SimGroupInner>> updateTags(
@@ -124,7 +120,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("simGroupName") String simGroupName,
-            @BodyParam("application/json") TagsObject parameters,
+            @BodyParam("application/json") IdentityAndTagsObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -141,8 +137,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/simGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/simGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SimGroupListResult>> listByResourceGroup(
@@ -812,11 +807,11 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     }
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,7 +819,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SimGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String simGroupName, TagsObject parameters) {
+        String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -867,11 +862,11 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     }
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -880,7 +875,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SimGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String simGroupName, TagsObject parameters, Context context) {
+        String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -920,28 +915,29 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     }
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIM group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimGroupInner> updateTagsAsync(String resourceGroupName, String simGroupName, TagsObject parameters) {
+    private Mono<SimGroupInner> updateTagsAsync(
+        String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, simGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -950,23 +946,23 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SimGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String simGroupName, TagsObject parameters, Context context) {
+        String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, simGroupName, parameters, context).block();
     }
 
     /**
-     * Updates SIM group tags.
+     * Patch SIM group resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
+     * @param parameters Parameters supplied to patch SIM group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sIM group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimGroupInner updateTags(String resourceGroupName, String simGroupName, TagsObject parameters) {
+    public SimGroupInner updateTags(String resourceGroupName, String simGroupName, IdentityAndTagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, simGroupName, parameters, Context.NONE).getValue();
     }
 

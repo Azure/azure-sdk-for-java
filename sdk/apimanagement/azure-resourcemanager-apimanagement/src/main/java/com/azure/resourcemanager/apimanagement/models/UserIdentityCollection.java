@@ -30,6 +30,10 @@ public final class UserIdentityCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of UserIdentityCollection class. */
+    public UserIdentityCollection() {
+    }
+
     /**
      * Get the value property: User Identity values.
      *

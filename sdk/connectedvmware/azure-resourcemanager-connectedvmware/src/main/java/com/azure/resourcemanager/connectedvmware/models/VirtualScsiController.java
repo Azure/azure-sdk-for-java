@@ -43,6 +43,10 @@ public final class VirtualScsiController {
     @JsonProperty(value = "sharing")
     private VirtualScsiSharing sharing;
 
+    /** Creates an instance of VirtualScsiController class. */
+    public VirtualScsiController() {
+    }
+
     /**
      * Get the type property: Gets or sets the controller type.
      *

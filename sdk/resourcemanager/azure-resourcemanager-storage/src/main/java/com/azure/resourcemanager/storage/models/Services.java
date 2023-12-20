@@ -26,6 +26,15 @@ public final class Services extends ExpandableStringEnum<Services> {
     public static final Services F = fromString("f");
 
     /**
+     * Creates a new instance of Services value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Services() {
+    }
+
+    /**
      * Creates or finds a Services from its string representation.
      *
      * @param name a name to look for.

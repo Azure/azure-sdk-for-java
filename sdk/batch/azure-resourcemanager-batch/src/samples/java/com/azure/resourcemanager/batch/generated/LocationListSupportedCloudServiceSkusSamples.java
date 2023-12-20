@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Location ListSupportedCloudServiceSkus. */
 public final class LocationListSupportedCloudServiceSkusSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/LocationListCloudServiceSkus.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/LocationListCloudServiceSkus.json
      */
     /**
      * Sample code: LocationListCloudServiceSkus.
@@ -17,6 +15,6 @@ public final class LocationListSupportedCloudServiceSkusSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void locationListCloudServiceSkus(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().listSupportedCloudServiceSkus("japaneast", null, null, Context.NONE);
+        manager.locations().listSupportedCloudServiceSkus("japaneast", null, null, com.azure.core.util.Context.NONE);
     }
 }

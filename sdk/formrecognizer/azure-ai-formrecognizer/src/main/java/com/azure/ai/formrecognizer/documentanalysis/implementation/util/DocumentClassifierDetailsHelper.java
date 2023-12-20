@@ -24,7 +24,7 @@ public final class DocumentClassifierDetailsHelper {
     public interface DocumentClassifierDetailsAccessor {
         void setClassifierId(DocumentClassifierDetails documentClassifierDetails, String modelId);
         void setDescription(DocumentClassifierDetails documentClassifierDetails, String description);
-        void setApiVersion(DocumentClassifierDetails documentClassifierDetails, String apiVersion);
+        void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String serviceVersion);
         void setCreatedOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime createdDateTime);
         void setExpiresOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime expirationDateTime);
         void setDocTypes(DocumentClassifierDetails documentClassifierDetails, Map<String, ClassifierDocumentTypeDetails> docTypes);
@@ -43,8 +43,8 @@ public final class DocumentClassifierDetailsHelper {
         accessor.setClassifierId(documentClassifierDetails, classifierId);
     }
 
-    static void setApiVersion(DocumentClassifierDetails documentClassifierDetails, String apiVersion) {
-        accessor.setApiVersion(documentClassifierDetails, apiVersion);
+    static void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String serviceVersion) {
+        accessor.setServiceVersion(documentClassifierDetails, serviceVersion);
     }
 
     static void setDescription(DocumentClassifierDetails documentClassifierDetails, String description) {

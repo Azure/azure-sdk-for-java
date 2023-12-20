@@ -8,29 +8,27 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DdosCustomPolicies UpdateTags. */
+/**
+ * Samples for DdosCustomPolicies UpdateTags.
+ */
 public final class DdosCustomPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/DdosCustomPolicyUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/DdosCustomPolicyUpdateTags.
+     * json
      */
     /**
      * Sample code: DDoS Custom policy Update tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dDoSCustomPolicyUpdateTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getDdosCustomPolicies()
-            .updateTagsWithResponse(
-                "rg1",
-                "test-ddos-custom-policy",
-                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getDdosCustomPolicies().updateTagsWithResponse("rg1",
+            "test-ddos-custom-policy", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

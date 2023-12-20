@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Gallery regional sharing status. */
+/**
+ * Gallery regional sharing status.
+ */
 @Fluent
 public final class RegionalSharingStatus {
     /*
@@ -18,7 +20,7 @@ public final class RegionalSharingStatus {
 
     /*
      * The sharing state of the gallery.
-     *
+     * 
      * Gallery sharing state in current region
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
@@ -30,13 +32,15 @@ public final class RegionalSharingStatus {
     @JsonProperty(value = "details")
     private String details;
 
-    /** Creates an instance of RegionalSharingStatus class. */
+    /**
+     * Creates an instance of RegionalSharingStatus class.
+     */
     public RegionalSharingStatus() {
     }
 
     /**
      * Get the region property: Region name.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -45,7 +49,7 @@ public final class RegionalSharingStatus {
 
     /**
      * Set the region property: Region name.
-     *
+     * 
      * @param region the region value to set.
      * @return the RegionalSharingStatus object itself.
      */
@@ -56,9 +60,9 @@ public final class RegionalSharingStatus {
 
     /**
      * Get the state property: The sharing state of the gallery.
-     *
-     * <p>Gallery sharing state in current region.
-     *
+     * 
+     * Gallery sharing state in current region.
+     * 
      * @return the state value.
      */
     public SharingState state() {
@@ -67,7 +71,7 @@ public final class RegionalSharingStatus {
 
     /**
      * Get the details property: Details of gallery regional sharing failure.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -76,7 +80,7 @@ public final class RegionalSharingStatus {
 
     /**
      * Set the details property: Details of gallery regional sharing failure.
-     *
+     * 
      * @param details the details value to set.
      * @return the RegionalSharingStatus object itself.
      */
@@ -87,7 +91,7 @@ public final class RegionalSharingStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

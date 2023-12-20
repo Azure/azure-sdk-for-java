@@ -7,24 +7,23 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.OutboundEnvironmentEndpointCollection;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundEnvironmentEndpointCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"category\":\"x\",\"endpoints\":[]},{\"category\":\"yc\",\"endpoints\":[]},{\"category\":\"p\",\"endpoints\":[]},{\"category\":\"ymareqnajxqugj\",\"endpoints\":[]}],\"nextLink\":\"ubeddg\"}")
+                    "{\"value\":[{\"category\":\"uetae\",\"endpoints\":[{\"domainName\":\"vdmovsmzlxwabm\",\"description\":\"efkifr\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"qujmqlgkf\",\"description\":\"ndo\",\"endpointDetails\":[{}]}]}],\"nextLink\":\"bjcntujitc\"}")
                 .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("ubeddg", model.nextLink());
+        Assertions.assertEquals("bjcntujitc", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OutboundEnvironmentEndpointCollection model =
-            new OutboundEnvironmentEndpointCollection().withNextLink("ubeddg");
+            new OutboundEnvironmentEndpointCollection().withNextLink("bjcntujitc");
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("ubeddg", model.nextLink());
+        Assertions.assertEquals("bjcntujitc", model.nextLink());
     }
 }

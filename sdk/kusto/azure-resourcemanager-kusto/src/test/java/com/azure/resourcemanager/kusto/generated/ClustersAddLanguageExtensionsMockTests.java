@@ -64,18 +64,24 @@ public final class ClustersAddLanguageExtensionsMockTests {
         manager
             .clusters()
             .addLanguageExtensions(
-                "qytibyowbblgyavu",
-                "pthjoxo",
+                "pn",
+                "qvcww",
                 new LanguageExtensionsList()
                     .withValue(
                         Arrays
                             .asList(
                                 new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5),
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON_CUSTOM_IMAGE)
+                                    .withLanguageExtensionCustomImageName("ppr"),
+                                new LanguageExtensionInner()
+                                    .withLanguageExtensionName(LanguageExtensionName.R)
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R)
+                                    .withLanguageExtensionCustomImageName("k"),
                                 new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8))),
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON_CUSTOM_IMAGE)
+                                    .withLanguageExtensionCustomImageName("hlb"))),
                 com.azure.core.util.Context.NONE);
     }
 }

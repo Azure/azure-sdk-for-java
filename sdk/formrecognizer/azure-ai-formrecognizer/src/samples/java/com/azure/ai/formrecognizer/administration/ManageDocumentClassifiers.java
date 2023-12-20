@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -44,9 +45,11 @@ public class ManageDocumentClassifiers {
             System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
             System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
             System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedOn());
-            documentClassifier.getDocTypes().forEach((key, documentTypeDetails) -> {
-                System.out.printf("Blob Source container Url: %s", documentTypeDetails.getAzureBlobSource().getContainerUrl());
-                System.out.printf("Blob File list Source container Url: %s", documentTypeDetails.getAzureBlobFileListSource().getContainerUrl());
+            documentClassifier.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                    System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                        .getContentSource()).getContainerUrl());
+                }
             });
         });
 

@@ -13,7 +13,9 @@ import com.azure.xml.XmlWriter;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** Table Service error. */
+/**
+ * Table Service error.
+ */
 @Fluent
 public final class TableServiceError implements XmlSerializable<TableServiceError> {
     /*
@@ -21,12 +23,15 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
      */
     private String message;
 
-    /** Creates an instance of TableServiceError class. */
-    public TableServiceError() {}
+    /**
+     * Creates an instance of TableServiceError class.
+     */
+    public TableServiceError() {
+    }
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -35,7 +40,7 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TableServiceError object itself.
      */
@@ -59,10 +64,10 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
 
     /**
      * Reads an instance of TableServiceError from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of TableServiceError if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceError.
      */
     public static TableServiceError fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -71,31 +76,29 @@ public final class TableServiceError implements XmlSerializable<TableServiceErro
 
     /**
      * Reads an instance of TableServiceError from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of TableServiceError if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceError.
      */
     public static TableServiceError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceError" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    TableServiceError deserializedTableServiceError = new TableServiceError();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            TableServiceError deserializedTableServiceError = new TableServiceError();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("Message".equals(elementName.getLocalPart())) {
-                            deserializedTableServiceError.message = reader.getStringElement();
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("Message".equals(elementName.getLocalPart())) {
+                    deserializedTableServiceError.message = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedTableServiceError;
-                });
+            return deserializedTableServiceError;
+        });
     }
 }

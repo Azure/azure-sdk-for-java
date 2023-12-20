@@ -16,10 +16,10 @@ public final class PlacementPolicyInnerTests {
         PlacementPolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"r\",\"provisioningState\":\"Canceled\"},\"id\":\"tvcof\",\"name\":\"dflvkg\",\"type\":\"u\"}")
+                    "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"sxiftozq\",\"provisioningState\":\"Canceled\"},\"id\":\"f\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"}")
                 .toObject(PlacementPolicyInner.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.properties().state());
-        Assertions.assertEquals("r", model.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.properties().state());
+        Assertions.assertEquals("sxiftozq", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,9 +27,11 @@ public final class PlacementPolicyInnerTests {
         PlacementPolicyInner model =
             new PlacementPolicyInner()
                 .withProperties(
-                    new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("r"));
+                    new PlacementPolicyProperties()
+                        .withState(PlacementPolicyState.ENABLED)
+                        .withDisplayName("sxiftozq"));
         model = BinaryData.fromObject(model).toObject(PlacementPolicyInner.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.properties().state());
-        Assertions.assertEquals("r", model.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.properties().state());
+        Assertions.assertEquals("sxiftozq", model.properties().displayName());
     }
 }

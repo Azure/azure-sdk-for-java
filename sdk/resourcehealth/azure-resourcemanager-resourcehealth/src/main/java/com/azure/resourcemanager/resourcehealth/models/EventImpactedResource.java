@@ -60,6 +60,41 @@ public interface EventImpactedResource {
     String targetRegion();
 
     /**
+     * Gets the resourceName property: Resource name of the impacted resource.
+     *
+     * @return the resourceName value.
+     */
+    String resourceName();
+
+    /**
+     * Gets the resourceGroup property: Resource group name of the impacted resource.
+     *
+     * @return the resourceGroup value.
+     */
+    String resourceGroup();
+
+    /**
+     * Gets the status property: Status of the impacted resource.
+     *
+     * @return the status value.
+     */
+    String status();
+
+    /**
+     * Gets the maintenanceStartTime property: Start time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceStartTime value.
+     */
+    String maintenanceStartTime();
+
+    /**
+     * Gets the maintenanceEndTime property: End time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceEndTime value.
+     */
+    String maintenanceEndTime();
+
+    /**
      * Gets the info property: Additional information.
      *
      * @return the info value.

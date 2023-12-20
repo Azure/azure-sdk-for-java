@@ -43,22 +43,13 @@ public final class PortalRevisionsImpl implements PortalRevisions {
         return Utils.mapPage(inner, inner1 -> new PortalRevisionContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, portalRevisionId);
-    }
-
     public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, portalRevisionId, context);
     }
 
-    public PortalRevisionContract get(String resourceGroupName, String serviceName, String portalRevisionId) {
-        PortalRevisionContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, portalRevisionId);
-        if (inner != null) {
-            return new PortalRevisionContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, portalRevisionId);
     }
 
     public Response<PortalRevisionContract> getWithResponse(
@@ -71,6 +62,15 @@ public final class PortalRevisionsImpl implements PortalRevisions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PortalRevisionContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PortalRevisionContract get(String resourceGroupName, String serviceName, String portalRevisionId) {
+        PortalRevisionContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, portalRevisionId);
+        if (inner != null) {
+            return new PortalRevisionContractImpl(inner, this.manager());
         } else {
             return null;
         }

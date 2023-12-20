@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateConfigurationStoreName. */
+/**
+ * The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and
+ * CertificateAuthority are valid locations.
+ */
 public final class CertificateConfigurationStoreName extends ExpandableStringEnum<CertificateConfigurationStoreName> {
     /** Static value CertificateAuthority for CertificateConfigurationStoreName. */
     public static final CertificateConfigurationStoreName CERTIFICATE_AUTHORITY = fromString("CertificateAuthority");
 
     /** Static value Root for CertificateConfigurationStoreName. */
     public static final CertificateConfigurationStoreName ROOT = fromString("Root");
+
+    /**
+     * Creates a new instance of CertificateConfigurationStoreName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateConfigurationStoreName() {
+    }
 
     /**
      * Creates or finds a CertificateConfigurationStoreName from its string representation.
@@ -27,7 +39,11 @@ public final class CertificateConfigurationStoreName extends ExpandableStringEnu
         return fromString(name, CertificateConfigurationStoreName.class);
     }
 
-    /** @return known CertificateConfigurationStoreName values. */
+    /**
+     * Gets known CertificateConfigurationStoreName values.
+     *
+     * @return known CertificateConfigurationStoreName values.
+     */
     public static Collection<CertificateConfigurationStoreName> values() {
         return values(CertificateConfigurationStoreName.class);
     }

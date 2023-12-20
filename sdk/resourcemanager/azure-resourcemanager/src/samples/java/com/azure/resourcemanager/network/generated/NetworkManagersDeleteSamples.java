@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkManagers Delete. */
+/**
+ * Samples for NetworkManagers Delete.
+ */
 public final class NetworkManagersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkManagerDelete.json
      */
     /**
      * Sample code: NetworkManagersDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManagersDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkManagers()
-            .delete("rg1", "testNetworkManager", false, com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkManagers().delete("rg1", "testNetworkManager", false,
+            com.azure.core.util.Context.NONE);
     }
 }

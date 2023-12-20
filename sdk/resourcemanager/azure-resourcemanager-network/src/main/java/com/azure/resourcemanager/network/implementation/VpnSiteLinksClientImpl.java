@@ -30,22 +30,28 @@ import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import com.azure.resourcemanager.network.models.ListVpnSiteLinksResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnSiteLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VpnSiteLinksClient.
+ */
 public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VpnSiteLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VpnSiteLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VpnSiteLinksClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VpnSiteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VpnSiteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,49 +62,37 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VpnSiteLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VpnSiteLinkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VpnSiteLinkInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vpnSiteName") String vpnSiteName,
-            @PathParam("vpnSiteLinkName") String vpnSiteLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vpnSiteName") String vpnSiteName,
+            @PathParam("vpnSiteLinkName") String vpnSiteLinkName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnSiteLinksResult>> listByVpnSite(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListVpnSiteLinksResult>> listByVpnSite(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vpnSiteName") String vpnSiteName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vpnSiteName") String vpnSiteName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSiteLinksResult>> listByVpnSiteNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -108,19 +102,15 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @return vpnSiteLink Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName) {
+    public Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(String resourceGroupName, String vpnSiteName,
+        String vpnSiteLinkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -133,27 +123,17 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnSiteName,
-                            vpnSiteLinkName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vpnSiteName, vpnSiteLinkName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -164,19 +144,15 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @return vpnSiteLink Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName, Context context) {
+    private Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(String resourceGroupName, String vpnSiteName,
+        String vpnSiteLinkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,24 +165,16 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnSiteName,
-                vpnSiteLinkName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vpnSiteName,
+            vpnSiteLinkName, apiVersion, accept, context);
     }
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -223,7 +191,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -234,14 +202,14 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @return vpnSiteLink Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VpnSiteLinkInner> getWithResponse(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName, Context context) {
+    public Response<VpnSiteLinkInner> getWithResponse(String resourceGroupName, String vpnSiteName,
+        String vpnSiteLinkName, Context context) {
         return getWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteLinkName, context).block();
     }
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -257,29 +225,25 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSiteLinks along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteSinglePageAsync(
-        String resourceGroupName, String vpnSiteName) {
+    private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteSinglePageAsync(String resourceGroupName,
+        String vpnSiteName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -288,35 +252,19 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVpnSite(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnSiteName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<VpnSiteLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByVpnSite(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vpnSiteName, apiVersion, accept, context))
+            .<PagedResponse<VpnSiteLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param context The context to associate with this operation.
@@ -324,22 +272,18 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSiteLinks along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteSinglePageAsync(
-        String resourceGroupName, String vpnSiteName, Context context) {
+    private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteSinglePageAsync(String resourceGroupName,
+        String vpnSiteName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,32 +292,19 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVpnSite(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnSiteName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByVpnSite(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vpnSiteName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,14 +314,13 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnSiteLinkInner> listByVpnSiteAsync(String resourceGroupName, String vpnSiteName) {
-        return new PagedFlux<>(
-            () -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName),
+        return new PagedFlux<>(() -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName),
             nextLink -> listByVpnSiteNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param context The context to associate with this operation.
@@ -400,16 +330,15 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @return result of the request to list VpnSiteLinks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VpnSiteLinkInner> listByVpnSiteAsync(
-        String resourceGroupName, String vpnSiteName, Context context) {
-        return new PagedFlux<>(
-            () -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName, context),
+    private PagedFlux<VpnSiteLinkInner> listByVpnSiteAsync(String resourceGroupName, String vpnSiteName,
+        Context context) {
+        return new PagedFlux<>(() -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName, context),
             nextLink -> listByVpnSiteNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +353,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param context The context to associate with this operation.
@@ -434,21 +363,22 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
      * @return result of the request to list VpnSiteLinks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VpnSiteLinkInner> listByVpnSite(
-        String resourceGroupName, String vpnSiteName, Context context) {
+    public PagedIterable<VpnSiteLinkInner> listByVpnSite(String resourceGroupName, String vpnSiteName,
+        Context context) {
         return new PagedIterable<>(listByVpnSiteAsync(resourceGroupName, vpnSiteName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSiteLinks along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteNextSinglePageAsync(String nextLink) {
@@ -456,37 +386,29 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVpnSiteNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VpnSiteLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VpnSiteLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSiteLinks along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnSiteLinkInner>> listByVpnSiteNextSinglePageAsync(String nextLink, Context context) {
@@ -494,23 +416,13 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByVpnSiteNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByVpnSiteNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

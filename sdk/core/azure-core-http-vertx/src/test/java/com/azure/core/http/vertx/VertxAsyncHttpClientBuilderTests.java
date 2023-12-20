@@ -7,23 +7,26 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
+import javax.servlet.ServletException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -42,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link VertxAsyncHttpClientBuilder}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
@@ -49,27 +53,39 @@ public class VertxAsyncHttpClientBuilderTests {
     private static final String SERVICE_ENDPOINT = "/default";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
+    private static LocalTestServer server;
+
+    @BeforeAll
+    public static void startTestServer() {
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(req.getServletPath())) {
+                resp.setStatus(200);
+            } else {
+                throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
+            }
+        });
+
+        server.start();
+    }
+
+    @AfterAll
+    public static void stopTestServer() {
+        if (server != null) {
+            server.stop();
+        }
+    }
+
     @Test
     public void buildWithConfigurationNone() {
         HttpClient httpClient = new VertxAsyncHttpClientBuilder()
             .configuration(Configuration.NONE)
             .build();
 
-        String defaultPath = "/default";
-        WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
@@ -80,26 +96,16 @@ public class VertxAsyncHttpClientBuilderTests {
         io.vertx.core.http.HttpClient client = ((VertxAsyncHttpClient) httpClient).client;
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).options();
 
-        String defaultPath = "/default";
-        WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
+        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
 
-            assertEquals(10000, options.getConnectTimeout());
-            assertEquals(60, options.getIdleTimeout());
-            assertEquals(60, options.getReadIdleTimeout());
-            assertEquals(60, options.getWriteIdleTimeout());
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertEquals(10000, options.getConnectTimeout());
+        assertEquals(60, options.getIdleTimeout());
+        assertEquals(60, options.getReadIdleTimeout());
+        assertEquals(60, options.getWriteIdleTimeout());
     }
 
     @Test
@@ -113,26 +119,16 @@ public class VertxAsyncHttpClientBuilderTests {
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
-        String defaultPath = "/default";
-        WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
+        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
 
-            assertEquals(10000, options.getConnectTimeout());
-            assertEquals(20, options.getIdleTimeout());
-            assertEquals(30, options.getReadIdleTimeout());
-            assertEquals(40, options.getWriteIdleTimeout());
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertEquals(10000, options.getConnectTimeout());
+        assertEquals(20, options.getIdleTimeout());
+        assertEquals(30, options.getReadIdleTimeout());
+        assertEquals(40, options.getWriteIdleTimeout());
     }
 
     @ParameterizedTest
@@ -176,8 +172,7 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxy() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -202,8 +197,7 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -230,8 +224,7 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -263,21 +256,12 @@ public class VertxAsyncHttpClientBuilderTests {
             .vertx(vertx)
             .build();
 
-        String defaultPath = "/default";
-        WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        String defaultUrl = "http://localhost:" + server.port() + defaultPath;
+        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
         try {
             StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
         } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-
             CountDownLatch latch = new CountDownLatch(1);
             vertx.close(event -> latch.countDown());
             // Wait 60 seconds, same as production code.
@@ -307,28 +291,17 @@ public class VertxAsyncHttpClientBuilderTests {
         assertEquals(60, options.getReadIdleTimeout());
         assertEquals(70, options.getWriteIdleTimeout());
 
-        String defaultPath = "/default";
-        WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
-        server.start();
-        String defaultUrl = "http://localhost:" + server.port() + defaultPath;
-        try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-                .assertNext(response -> assertEquals(200, response.getStatusCode()))
-                .verifyComplete();
-        } finally {
-            if (server.isRunning()) {
-                server.shutdown();
-            }
-        }
+        String defaultUrl = server.getHttpUri() + SERVICE_ENDPOINT;
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     @Test
     public void buildWithNullProxyAddress() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             proxyServer.start();
@@ -367,8 +340,7 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithNullProxyType() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -393,8 +365,7 @@ public class VertxAsyncHttpClientBuilderTests {
     @Test
     public void buildWithoutProxyAuthentication() {
         SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();

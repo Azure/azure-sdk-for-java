@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The network group resource. */
+/**
+ * The network group resource.
+ */
 @Fluent
 public final class NetworkGroupInner extends ChildResource {
     /*
@@ -25,13 +27,15 @@ public final class NetworkGroupInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkGroupInner class. */
+    /**
+     * Creates an instance of NetworkGroupInner class.
+     */
     public NetworkGroupInner() {
     }
 
     /**
      * Get the innerProperties property: The Network Group properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkGroupProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the description property: A description of the network group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Set the description property: A description of the network group.
-     *
+     * 
      * @param description the description value to set.
      * @return the NetworkGroupInner object itself.
      */
@@ -72,7 +76,7 @@ public final class NetworkGroupInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -80,8 +84,17 @@ public final class NetworkGroupInner extends ChildResource {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

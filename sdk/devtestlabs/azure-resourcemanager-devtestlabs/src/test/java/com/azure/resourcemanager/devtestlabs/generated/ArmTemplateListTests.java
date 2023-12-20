@@ -18,11 +18,11 @@ public final class ArmTemplateListTests {
         ArmTemplateList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"oggigrxwburv\",\"description\":\"xjnspy\",\"publisher\":\"tko\",\"icon\":\"kouknvudwtiu\",\"contents\":\"dataldngkpoci\",\"createdDate\":\"2021-03-10T18:39:36Z\",\"parametersValueFilesInfo\":[],\"enabled\":false},\"location\":\"egukgjnpiucg\",\"tags\":{\"j\":\"vqzntypmrbpizcdr\",\"yhxdeoejzicwi\":\"dpydn\",\"bkh\":\"sjttgzfbish\"},\"id\":\"jdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"},{\"properties\":{\"displayName\":\"ixzbinjeputtmryw\",\"description\":\"zoqftiyqzrnkcqvy\",\"publisher\":\"whzlsicohoq\",\"icon\":\"wvl\",\"contents\":\"dataavwhheunm\",\"createdDate\":\"2020-12-26T14:51:32Z\",\"parametersValueFilesInfo\":[],\"enabled\":false},\"location\":\"zko\",\"tags\":{\"lyaxuc\":\"uko\",\"ewrmjmwvvjektc\":\"nuqszfkbey\",\"frzpwvlqdqgb\":\"senhwlrs\",\"fcivfsnkym\":\"qylihkaetckt\"},\"id\":\"ctq\",\"name\":\"jf\",\"type\":\"ebrjcxe\"},{\"properties\":{\"displayName\":\"uwutttxfvjrbi\",\"description\":\"hxepcyvahfnlj\",\"publisher\":\"qxj\",\"icon\":\"ujqgidok\",\"contents\":\"dataljyoxgvcltb\",\"createdDate\":\"2021-05-02T13:16:46Z\",\"parametersValueFilesInfo\":[],\"enabled\":true},\"location\":\"kjeszz\",\"tags\":{\"mpvecxgodebfqk\":\"jhtxfvgxbfsmxne\",\"flz\":\"rbmpukgri\"},\"id\":\"fbxzpuzycisp\",\"name\":\"qzahmgkbrp\",\"type\":\"y\"}],\"nextLink\":\"ibnuqqkpik\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"ashsfwxos\",\"description\":\"z\",\"publisher\":\"ugicjooxdjebw\",\"icon\":\"cwwfvovbvme\",\"contents\":\"datacivyhzceuo\",\"createdDate\":\"2020-12-29T21:09:26Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ueiotwmcdyt\",\"parametersValueInfo\":\"datawit\"}],\"enabled\":false},\"location\":\"jawgqwg\",\"tags\":{\"fbkp\":\"isk\"},\"id\":\"cg\",\"name\":\"lwn\",\"type\":\"nhjdauw\"},{\"properties\":{\"displayName\":\"ylwz\",\"description\":\"dhxujznbmpo\",\"publisher\":\"wpr\",\"icon\":\"lve\",\"contents\":\"datalupj\",\"createdDate\":\"2021-04-21T08:53:38Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bbcswsrtjri\",\"parametersValueInfo\":\"datarbpbewtghfgblcg\"},{\"fileName\":\"zvlvqhjkbegib\",\"parametersValueInfo\":\"datamxiebw\"},{\"fileName\":\"loayqcgw\",\"parametersValueInfo\":\"datazjuzgwyz\"}],\"enabled\":false},\"location\":\"xongmtsavjcbpwxq\",\"tags\":{\"rwmdyvxqtay\":\"knftguvriuh\",\"ibycno\":\"iwwroyqbexrmc\",\"nmefqsgzvahapj\":\"v\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"},{\"properties\":{\"displayName\":\"ltskzbbtd\",\"description\":\"mv\",\"publisher\":\"kgpwoz\",\"icon\":\"kfpbs\",\"contents\":\"dataofd\",\"createdDate\":\"2021-04-25T06:48:17Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ttouwaboekqvkel\",\"parametersValueInfo\":\"datamvb\"}],\"enabled\":true},\"location\":\"jsflhhcaalnjix\",\"tags\":{\"oyaqcslyjpkiid\":\"yaw\",\"eli\":\"yexz\"},\"id\":\"hnrztfol\",\"name\":\"bnxknalaulppg\",\"type\":\"dtpnapnyiropuhp\"}],\"nextLink\":\"vpgylgqgitxmed\"}")
                 .toObject(ArmTemplateList.class);
-        Assertions.assertEquals("egukgjnpiucg", model.value().get(0).location());
-        Assertions.assertEquals("vqzntypmrbpizcdr", model.value().get(0).tags().get("j"));
-        Assertions.assertEquals("ibnuqqkpik", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).location());
+        Assertions.assertEquals("isk", model.value().get(0).tags().get("fbkp"));
+        Assertions.assertEquals("vpgylgqgitxmed", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,32 +32,30 @@ public final class ArmTemplateListTests {
                 .withValue(
                     Arrays
                         .asList(
+                            new ArmTemplateInner().withLocation("jawgqwg").withTags(mapOf("fbkp", "isk")),
                             new ArmTemplateInner()
-                                .withLocation("egukgjnpiucg")
-                                .withTags(
-                                    mapOf("j", "vqzntypmrbpizcdr", "yhxdeoejzicwi", "dpydn", "bkh", "sjttgzfbish")),
-                            new ArmTemplateInner()
-                                .withLocation("zko")
+                                .withLocation("xongmtsavjcbpwxq")
                                 .withTags(
                                     mapOf(
-                                        "lyaxuc",
-                                        "uko",
-                                        "ewrmjmwvvjektc",
-                                        "nuqszfkbey",
-                                        "frzpwvlqdqgb",
-                                        "senhwlrs",
-                                        "fcivfsnkym",
-                                        "qylihkaetckt")),
+                                        "rwmdyvxqtay",
+                                        "knftguvriuh",
+                                        "ibycno",
+                                        "iwwroyqbexrmc",
+                                        "nmefqsgzvahapj",
+                                        "v",
+                                        "zlmwlxkvugfhz",
+                                        "zhpvgqzcjrvxd")),
                             new ArmTemplateInner()
-                                .withLocation("kjeszz")
-                                .withTags(mapOf("mpvecxgodebfqk", "jhtxfvgxbfsmxne", "flz", "rbmpukgri"))))
-                .withNextLink("ibnuqqkpik");
+                                .withLocation("jsflhhcaalnjix")
+                                .withTags(mapOf("oyaqcslyjpkiid", "yaw", "eli", "yexz"))))
+                .withNextLink("vpgylgqgitxmed");
         model = BinaryData.fromObject(model).toObject(ArmTemplateList.class);
-        Assertions.assertEquals("egukgjnpiucg", model.value().get(0).location());
-        Assertions.assertEquals("vqzntypmrbpizcdr", model.value().get(0).tags().get("j"));
-        Assertions.assertEquals("ibnuqqkpik", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).location());
+        Assertions.assertEquals("isk", model.value().get(0).tags().get("fbkp"));
+        Assertions.assertEquals("vpgylgqgitxmed", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

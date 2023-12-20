@@ -14,8 +14,7 @@ public final class DataFlowDebugSessionInfoImpl implements DataFlowDebugSessionI
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    DataFlowDebugSessionInfoImpl(
-        DataFlowDebugSessionInfoInner innerObject,
+    DataFlowDebugSessionInfoImpl(DataFlowDebugSessionInfoInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

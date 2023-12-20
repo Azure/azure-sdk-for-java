@@ -358,6 +358,7 @@ public interface AppliancesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
+     * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -366,7 +367,7 @@ public interface AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplianceListKeysResultsInner> listKeysWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+        String resourceGroupName, String resourceName, String artifactType, Context context);
 
     /**
      * Gets the management config.

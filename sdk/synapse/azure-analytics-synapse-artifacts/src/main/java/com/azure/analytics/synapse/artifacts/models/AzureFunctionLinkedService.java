@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Function linked service. */
+/**
+ * Azure Function linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFunction")
 @JsonFlatten
@@ -37,13 +39,35 @@ public class AzureFunctionLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of AzureFunctionLinkedService class. */
-    public AzureFunctionLinkedService() {}
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /*
+     * Allowed token audiences for azure function.
+     */
+    @JsonProperty(value = "typeProperties.resourceId")
+    private Object resourceId;
+
+    /*
+     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authentication")
+    private Object authentication;
+
+    /**
+     * Creates an instance of AzureFunctionLinkedService class.
+     */
+    public AzureFunctionLinkedService() {
+    }
 
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * 
      * @return the functionAppUrl value.
      */
     public Object getFunctionAppUrl() {
@@ -53,7 +77,7 @@ public class AzureFunctionLinkedService extends LinkedService {
     /**
      * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * 
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -64,7 +88,7 @@ public class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Get the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @return the functionKey value.
      */
     public SecretBase getFunctionKey() {
@@ -73,7 +97,7 @@ public class AzureFunctionLinkedService extends LinkedService {
 
     /**
      * Set the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @param functionKey the functionKey value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -83,9 +107,9 @@ public class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -93,9 +117,9 @@ public class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedService object itself.
      */
@@ -104,28 +128,98 @@ public class AzureFunctionLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: Allowed token audiences for azure function.
+     * 
+     * @return the resourceId value.
+     */
+    public Object getResourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Set the resourceId property: Allowed token audiences for azure function.
+     * 
+     * @param resourceId the resourceId value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService setResourceId(Object resourceId) {
+        this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to
+     * AzureFunction. Type: string (or Expression with resultType string).
+     * 
+     * @return the authentication value.
+     */
+    public Object getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to
+     * AzureFunction. Type: string (or Expression with resultType string).
+     * 
+     * @param authentication the authentication value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService setAuthentication(Object authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

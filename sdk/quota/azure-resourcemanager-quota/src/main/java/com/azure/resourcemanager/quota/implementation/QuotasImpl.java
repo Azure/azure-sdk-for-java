@@ -30,10 +30,7 @@ public final class QuotasImpl implements Quotas {
     public Response<CurrentQuotaLimitBase> getWithResponse(String resourceName, String scope, Context context) {
         QuotasGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CurrentQuotaLimitBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,47 +57,33 @@ public final class QuotasImpl implements Quotas {
     }
 
     public CurrentQuotaLimitBase getById(String id) {
-        String resourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
+        String resourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
         }
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
         return this.getWithResponse(resourceName, scope, Context.NONE).getValue();
     }
 
     public Response<CurrentQuotaLimitBase> getByIdWithResponse(String id, Context context) {
-        String resourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
+        String resourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
         }
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
         return this.getWithResponse(resourceName, scope, context);
     }

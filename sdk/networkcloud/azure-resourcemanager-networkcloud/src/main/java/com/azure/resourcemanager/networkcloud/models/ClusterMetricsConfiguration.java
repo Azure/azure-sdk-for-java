@@ -146,11 +146,13 @@ public interface ClusterMetricsConfiguration {
             DefinitionStages.WithCollectionInterval,
             DefinitionStages.WithCreate {
     }
+
     /** The ClusterMetricsConfiguration definition stages. */
     interface DefinitionStages {
         /** The first stage of the ClusterMetricsConfiguration definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -169,6 +171,7 @@ public interface ClusterMetricsConfiguration {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -180,6 +183,7 @@ public interface ClusterMetricsConfiguration {
              */
             WithExtendedLocation withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -195,6 +199,7 @@ public interface ClusterMetricsConfiguration {
              */
             WithCollectionInterval withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify collectionInterval. */
         interface WithCollectionInterval {
             /**
@@ -205,6 +210,7 @@ public interface ClusterMetricsConfiguration {
              */
             WithCreate withCollectionInterval(long collectionInterval);
         }
+
         /**
          * The stage of the ClusterMetricsConfiguration definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -225,6 +231,7 @@ public interface ClusterMetricsConfiguration {
              */
             ClusterMetricsConfiguration create(Context context);
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -235,6 +242,7 @@ public interface ClusterMetricsConfiguration {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ClusterMetricsConfiguration definition allowing to specify enabledMetrics. */
         interface WithEnabledMetrics {
             /**
@@ -248,6 +256,7 @@ public interface ClusterMetricsConfiguration {
             WithCreate withEnabledMetrics(List<String> enabledMetrics);
         }
     }
+
     /**
      * Begins update for the ClusterMetricsConfiguration resource.
      *
@@ -273,6 +282,7 @@ public interface ClusterMetricsConfiguration {
          */
         ClusterMetricsConfiguration apply(Context context);
     }
+
     /** The ClusterMetricsConfiguration update stages. */
     interface UpdateStages {
         /** The stage of the ClusterMetricsConfiguration update allowing to specify tags. */
@@ -285,6 +295,7 @@ public interface ClusterMetricsConfiguration {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ClusterMetricsConfiguration update allowing to specify collectionInterval. */
         interface WithCollectionInterval {
             /**
@@ -295,6 +306,7 @@ public interface ClusterMetricsConfiguration {
              */
             Update withCollectionInterval(Long collectionInterval);
         }
+
         /** The stage of the ClusterMetricsConfiguration update allowing to specify enabledMetrics. */
         interface WithEnabledMetrics {
             /**
@@ -308,6 +320,7 @@ public interface ClusterMetricsConfiguration {
             Update withEnabledMetrics(List<String> enabledMetrics);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -33,7 +33,7 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"pjbi\",\"type\":\"jmfxumvf\",\"skuName\":\"uyovw\",\"skuAvailable\":true,\"reason\":\"fezzxscyhwzdg\",\"message\":\"ujb\"}]}";
+            "{\"value\":[{\"kind\":\"petogebjox\",\"type\":\"hvnh\",\"skuName\":\"brqnkkzjcjb\",\"skuAvailable\":true,\"reason\":\"ehvvib\",\"message\":\"jj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,19 +65,19 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
             manager
                 .resourceProviders()
                 .checkSkuAvailabilityWithResponse(
-                    "qg",
+                    "u",
                     new CheckSkuAvailabilityParameter()
-                        .withSkus(Arrays.asList("yzirtxdyuxzejn", "psew", "ioilqukrydxtq"))
-                        .withKind("ieoxorggufhyaomt")
-                        .withType("ghhavgrvkffo"),
+                        .withSkus(Arrays.asList("gqibrtalmetttw"))
+                        .withKind("dslqxihhrmooizqs")
+                        .withType("ypxiutcxap"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("pjbi", response.value().get(0).kind());
-        Assertions.assertEquals("jmfxumvf", response.value().get(0).type());
-        Assertions.assertEquals("uyovw", response.value().get(0).skuName());
+        Assertions.assertEquals("petogebjox", response.value().get(0).kind());
+        Assertions.assertEquals("hvnh", response.value().get(0).type());
+        Assertions.assertEquals("brqnkkzjcjb", response.value().get(0).skuName());
         Assertions.assertEquals(true, response.value().get(0).skuAvailable());
-        Assertions.assertEquals("fezzxscyhwzdg", response.value().get(0).reason());
-        Assertions.assertEquals("ujb", response.value().get(0).message());
+        Assertions.assertEquals("ehvvib", response.value().get(0).reason());
+        Assertions.assertEquals("jj", response.value().get(0).message());
     }
 }

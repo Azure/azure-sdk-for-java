@@ -24,6 +24,10 @@ public final class AppServiceListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AppServiceListResponse class. */
+    public AppServiceListResponse() {
+    }
+
     /**
      * Get the value property: The items on this page.
      *

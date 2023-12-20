@@ -10,6 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -111,6 +112,12 @@ public final class ManagedEnvironmentProperties {
      */
     @JsonProperty(value = "infrastructureResourceGroup")
     private String infrastructureResourceGroup;
+
+    /*
+     * Peer authentication settings for the Managed Environment
+     */
+    @JsonProperty(value = "peerAuthentication")
+    private ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication;
 
     /** Creates an instance of ManagedEnvironmentProperties class. */
     public ManagedEnvironmentProperties() {
@@ -373,6 +380,27 @@ public final class ManagedEnvironmentProperties {
     }
 
     /**
+     * Get the peerAuthentication property: Peer authentication settings for the Managed Environment.
+     *
+     * @return the peerAuthentication value.
+     */
+    public ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication() {
+        return this.peerAuthentication;
+    }
+
+    /**
+     * Set the peerAuthentication property: Peer authentication settings for the Managed Environment.
+     *
+     * @param peerAuthentication the peerAuthentication value to set.
+     * @return the ManagedEnvironmentProperties object itself.
+     */
+    public ManagedEnvironmentProperties withPeerAuthentication(
+        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+        this.peerAuthentication = peerAuthentication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -395,6 +423,9 @@ public final class ManagedEnvironmentProperties {
         }
         if (daprConfiguration() != null) {
             daprConfiguration().validate();
+        }
+        if (peerAuthentication() != null) {
+            peerAuthentication().validate();
         }
     }
 }

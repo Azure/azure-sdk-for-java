@@ -18,44 +18,44 @@ public final class IotHubDataConnectionTests {
         IotHubDataConnection model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"IotHub\",\"properties\":{\"iotHubResourceId\":\"feo\",\"consumerGroup\":\"erqwkyhkobopg\",\"tableName\":\"dkow\",\"mappingRuleName\":\"bqpc\",\"dataFormat\":\"SCSV\",\"eventSystemProperties\":[\"ccsnjvcdwxlpq\",\"kftnkhtjsyin\",\"wfqatmtd\",\"tmdvypgikdgs\"],\"sharedAccessPolicyName\":\"ywkbirryuzhlhkjo\",\"databaseRouting\":\"Multi\",\"retrievalStartDate\":\"2021-09-24T04:17:08Z\",\"provisioningState\":\"Canceled\"},\"location\":\"jinrvgoupmfiibfg\",\"id\":\"jioolvrwxk\",\"name\":\"tkkgllqwjy\",\"type\":\"vjayvblmhvkzu\"}")
+                    "{\"kind\":\"IotHub\",\"properties\":{\"iotHubResourceId\":\"seypxiutcxapz\",\"consumerGroup\":\"y\",\"tableName\":\"etoge\",\"mappingRuleName\":\"oxslh\",\"dataFormat\":\"SOHSV\",\"eventSystemProperties\":[\"brqnkkzjcjb\",\"rgaehvvibrxjj\",\"toqbeitpkxztmoob\"],\"sharedAccessPolicyName\":\"lftidgfcwqmpim\",\"databaseRouting\":\"Single\",\"retrievalStartDate\":\"2021-12-01T05:05:15Z\",\"provisioningState\":\"Running\"},\"location\":\"yhohujswtwkozzwc\",\"id\":\"lkb\",\"name\":\"wpfaj\",\"type\":\"jwltlwtjjgu\"}")
                 .toObject(IotHubDataConnection.class);
-        Assertions.assertEquals("jinrvgoupmfiibfg", model.location());
-        Assertions.assertEquals("feo", model.iotHubResourceId());
-        Assertions.assertEquals("erqwkyhkobopg", model.consumerGroup());
-        Assertions.assertEquals("dkow", model.tableName());
-        Assertions.assertEquals("bqpc", model.mappingRuleName());
-        Assertions.assertEquals(IotHubDataFormat.SCSV, model.dataFormat());
-        Assertions.assertEquals("ccsnjvcdwxlpq", model.eventSystemProperties().get(0));
-        Assertions.assertEquals("ywkbirryuzhlhkjo", model.sharedAccessPolicyName());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T04:17:08Z"), model.retrievalStartDate());
+        Assertions.assertEquals("yhohujswtwkozzwc", model.location());
+        Assertions.assertEquals("seypxiutcxapz", model.iotHubResourceId());
+        Assertions.assertEquals("y", model.consumerGroup());
+        Assertions.assertEquals("etoge", model.tableName());
+        Assertions.assertEquals("oxslh", model.mappingRuleName());
+        Assertions.assertEquals(IotHubDataFormat.SOHSV, model.dataFormat());
+        Assertions.assertEquals("brqnkkzjcjb", model.eventSystemProperties().get(0));
+        Assertions.assertEquals("lftidgfcwqmpim", model.sharedAccessPolicyName());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T05:05:15Z"), model.retrievalStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IotHubDataConnection model =
             new IotHubDataConnection()
-                .withLocation("jinrvgoupmfiibfg")
-                .withIotHubResourceId("feo")
-                .withConsumerGroup("erqwkyhkobopg")
-                .withTableName("dkow")
-                .withMappingRuleName("bqpc")
-                .withDataFormat(IotHubDataFormat.SCSV)
-                .withEventSystemProperties(Arrays.asList("ccsnjvcdwxlpq", "kftnkhtjsyin", "wfqatmtd", "tmdvypgikdgs"))
-                .withSharedAccessPolicyName("ywkbirryuzhlhkjo")
-                .withDatabaseRouting(DatabaseRouting.MULTI)
-                .withRetrievalStartDate(OffsetDateTime.parse("2021-09-24T04:17:08Z"));
+                .withLocation("yhohujswtwkozzwc")
+                .withIotHubResourceId("seypxiutcxapz")
+                .withConsumerGroup("y")
+                .withTableName("etoge")
+                .withMappingRuleName("oxslh")
+                .withDataFormat(IotHubDataFormat.SOHSV)
+                .withEventSystemProperties(Arrays.asList("brqnkkzjcjb", "rgaehvvibrxjj", "toqbeitpkxztmoob"))
+                .withSharedAccessPolicyName("lftidgfcwqmpim")
+                .withDatabaseRouting(DatabaseRouting.SINGLE)
+                .withRetrievalStartDate(OffsetDateTime.parse("2021-12-01T05:05:15Z"));
         model = BinaryData.fromObject(model).toObject(IotHubDataConnection.class);
-        Assertions.assertEquals("jinrvgoupmfiibfg", model.location());
-        Assertions.assertEquals("feo", model.iotHubResourceId());
-        Assertions.assertEquals("erqwkyhkobopg", model.consumerGroup());
-        Assertions.assertEquals("dkow", model.tableName());
-        Assertions.assertEquals("bqpc", model.mappingRuleName());
-        Assertions.assertEquals(IotHubDataFormat.SCSV, model.dataFormat());
-        Assertions.assertEquals("ccsnjvcdwxlpq", model.eventSystemProperties().get(0));
-        Assertions.assertEquals("ywkbirryuzhlhkjo", model.sharedAccessPolicyName());
-        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T04:17:08Z"), model.retrievalStartDate());
+        Assertions.assertEquals("yhohujswtwkozzwc", model.location());
+        Assertions.assertEquals("seypxiutcxapz", model.iotHubResourceId());
+        Assertions.assertEquals("y", model.consumerGroup());
+        Assertions.assertEquals("etoge", model.tableName());
+        Assertions.assertEquals("oxslh", model.mappingRuleName());
+        Assertions.assertEquals(IotHubDataFormat.SOHSV, model.dataFormat());
+        Assertions.assertEquals("brqnkkzjcjb", model.eventSystemProperties().get(0));
+        Assertions.assertEquals("lftidgfcwqmpim", model.sharedAccessPolicyName());
+        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T05:05:15Z"), model.retrievalStartDate());
     }
 }

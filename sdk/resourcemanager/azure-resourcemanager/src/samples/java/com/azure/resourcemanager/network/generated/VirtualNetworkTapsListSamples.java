@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualNetworkTaps List. */
+/**
+ * Samples for VirtualNetworkTaps List.
+ */
 public final class VirtualNetworkTapsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkTapListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkTapListAll.json
      */
     /**
      * Sample code: List all virtual network taps.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllVirtualNetworkTaps(com.azure.resourcemanager.AzureResourceManager azure) {

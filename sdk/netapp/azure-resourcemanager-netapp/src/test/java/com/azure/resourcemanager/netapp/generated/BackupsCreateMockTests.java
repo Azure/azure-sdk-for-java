@@ -30,47 +30,31 @@ public final class BackupsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"nkeifz\",\"properties\":{\"backupId\":\"mkdasv\",\"creationDate\":\"2021-10-31T03:36:23Z\",\"provisioningState\":\"Succeeded\",\"size\":2167042291845318263,\"label\":\"ldforobwj\",\"backupType\":\"Scheduled\",\"failureReason\":\"bfhfovvacqp\",\"volumeName\":\"uodxesza\",\"useExistingSnapshot\":false},\"id\":\"awumuaslzkwrrwo\",\"name\":\"cqucwyhahnom\",\"type\":\"rkywuhpsvfuu\"}";
+        String responseStr
+            = "{\"properties\":{\"backupId\":\"qwm\",\"creationDate\":\"2021-02-08T03:25:21Z\",\"provisioningState\":\"Succeeded\",\"size\":4559406956172132091,\"label\":\"xynpdkvgf\",\"backupType\":\"Manual\",\"failureReason\":\"yjibuzphdugne\",\"volumeResourceId\":\"knpgoxgjiuq\",\"useExistingSnapshot\":true,\"snapshotName\":\"ozipqwjedmurrxx\",\"backupPolicyResourceId\":\"wpktvqylkmqpzoyh\"},\"id\":\"bcg\",\"name\":\"gcl\",\"type\":\"xoe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Backup response =
-            manager
-                .backups()
-                .define("revkhgnlnzo")
-                .withRegion("zlrpiqywncvj")
-                .withExistingVolume("ismjqfrddgamqu", "iosrsjuivfcdis", "irnxz", "czexrxzbujrtrhqv")
-                .withLabel("ljeamu")
-                .withUseExistingSnapshot(true)
-                .create();
+        Backup response = manager.backups().define("fpgpicrmnzhrgm")
+            .withExistingBackupVault("vkhlggdhbemz", "kzsz", "wiwtglxxhl").withVolumeResourceId("wohqfzizvu")
+            .withLabel("iibakcl").withUseExistingSnapshot(false).withSnapshotName("jsvthnwpzteko").create();
 
-        Assertions.assertEquals("nkeifz", response.location());
-        Assertions.assertEquals("ldforobwj", response.label());
-        Assertions.assertEquals(false, response.useExistingSnapshot());
+        Assertions.assertEquals("xynpdkvgf", response.label());
+        Assertions.assertEquals("knpgoxgjiuq", response.volumeResourceId());
+        Assertions.assertEquals(true, response.useExistingSnapshot());
+        Assertions.assertEquals("ozipqwjedmurrxx", response.snapshotName());
     }
 }

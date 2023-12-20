@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteConnections List. */
+/**
+ * Samples for ExpressRouteConnections List.
+ */
 public final class ExpressRouteConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteConnectionList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ExpressRouteConnectionList.
+     * json
      */
     /**
      * Sample code: ExpressRouteConnectionList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteConnections()
-            .listWithResponse("resourceGroupName", "expressRouteGatewayName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteConnections().listWithResponse("resourceGroupName",
+            "expressRouteGatewayName", com.azure.core.util.Context.NONE);
     }
 }

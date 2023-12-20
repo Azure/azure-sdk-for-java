@@ -13,15 +13,15 @@ public final class CreatorPropertiesTests {
     public void testDeserialize() throws Exception {
         CreatorProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"cbtwnpzaoqvuh\",\"storageUnits\":2040818894}")
+                .fromString("{\"provisioningState\":\"ermclfplphoxuscr\",\"storageUnits\":1022629586}")
                 .toObject(CreatorProperties.class);
-        Assertions.assertEquals(2040818894, model.storageUnits());
+        Assertions.assertEquals(1022629586, model.storageUnits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreatorProperties model = new CreatorProperties().withStorageUnits(2040818894);
+        CreatorProperties model = new CreatorProperties().withStorageUnits(1022629586);
         model = BinaryData.fromObject(model).toObject(CreatorProperties.class);
-        Assertions.assertEquals(2040818894, model.storageUnits());
+        Assertions.assertEquals(1022629586, model.storageUnits());
     }
 }

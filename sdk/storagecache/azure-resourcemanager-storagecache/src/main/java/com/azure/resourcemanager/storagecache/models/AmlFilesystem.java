@@ -108,26 +108,11 @@ public interface AmlFilesystem {
     String filesystemSubnet();
 
     /**
-     * Gets the mgsAddress property: The IPv4 address used by clients to mount the AML file system's Lustre Management
-     * Service (MGS).
+     * Gets the clientInfo property: Client information for the AML file system.
      *
-     * @return the mgsAddress value.
+     * @return the clientInfo value.
      */
-    String mgsAddress();
-
-    /**
-     * Gets the mountCommand property: Recommended command to mount the AML file system.
-     *
-     * @return the mountCommand value.
-     */
-    String mountCommand();
-
-    /**
-     * Gets the lustreVersion property: The version of Lustre running in the AML file system.
-     *
-     * @return the lustreVersion value.
-     */
-    String lustreVersion();
+    AmlFilesystemClientInfo clientInfo();
 
     /**
      * Gets the throughputProvisionedMBps property: Throughput provisioned in MB per sec, calculated as

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Represents a server. */
@@ -318,7 +320,8 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the network property: Network properties of a server.
+     * Get the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -327,7 +330,8 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the network property: Network properties of a server.
+     * Set the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @param network the network value to set.
      * @return the ServerInner object itself.
@@ -388,7 +392,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -398,7 +403,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerInner object itself.
@@ -413,7 +419,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -423,7 +429,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerInner object itself.
@@ -492,16 +498,27 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the replicaCapacity property: Replicas allowed for a server.
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      *
-     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the replica value.
+     */
+    public Replica replica() {
+        return this.innerProperties() == null ? null : this.innerProperties().replica();
+    }
+
+    /**
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @param replica the replica value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
+    public ServerInner withReplica(Replica replica) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
-        this.innerProperties().withReplicaCapacity(replicaCapacity);
+        this.innerProperties().withReplica(replica);
         return this;
     }
 
@@ -526,6 +543,16 @@ public final class ServerInner extends Resource {
         }
         this.innerProperties().withCreateMode(createMode);
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

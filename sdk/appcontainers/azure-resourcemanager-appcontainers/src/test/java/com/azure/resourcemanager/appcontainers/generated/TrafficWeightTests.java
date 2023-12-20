@@ -14,26 +14,26 @@ public final class TrafficWeightTests {
         TrafficWeight model =
             BinaryData
                 .fromString(
-                    "{\"revisionName\":\"cpdggkzzlvmbmp\",\"weight\":2116317811,\"latestRevision\":false,\"label\":\"vuefywsbpfvmwyh\"}")
+                    "{\"revisionName\":\"trmgucnapkte\",\"weight\":1950925712,\"latestRevision\":false,\"label\":\"tfdygpfqb\"}")
                 .toObject(TrafficWeight.class);
-        Assertions.assertEquals("cpdggkzzlvmbmp", model.revisionName());
-        Assertions.assertEquals(2116317811, model.weight());
+        Assertions.assertEquals("trmgucnapkte", model.revisionName());
+        Assertions.assertEquals(1950925712, model.weight());
         Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("vuefywsbpfvmwyh", model.label());
+        Assertions.assertEquals("tfdygpfqb", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrafficWeight model =
             new TrafficWeight()
-                .withRevisionName("cpdggkzzlvmbmp")
-                .withWeight(2116317811)
+                .withRevisionName("trmgucnapkte")
+                .withWeight(1950925712)
                 .withLatestRevision(false)
-                .withLabel("vuefywsbpfvmwyh");
+                .withLabel("tfdygpfqb");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("cpdggkzzlvmbmp", model.revisionName());
-        Assertions.assertEquals(2116317811, model.weight());
+        Assertions.assertEquals("trmgucnapkte", model.revisionName());
+        Assertions.assertEquals(1950925712, model.weight());
         Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("vuefywsbpfvmwyh", model.label());
+        Assertions.assertEquals("tfdygpfqb", model.label());
     }
 }

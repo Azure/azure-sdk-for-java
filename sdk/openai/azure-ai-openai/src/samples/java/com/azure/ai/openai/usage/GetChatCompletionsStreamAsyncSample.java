@@ -5,11 +5,12 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -40,31 +41,42 @@ public class GetChatCompletionsStreamAsyncSample {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
-            .subscribe(chatCompletions -> {
-                System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
-                for (ChatChoice choice : chatCompletions.getChoices()) {
-                    ChatMessage message = choice.getDelta();
-                    if (message != null) {
-                        System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                        System.out.println("Message:");
-                        System.out.println(message.getContent());
-                    }
-                }
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .map(chatCompletions -> {
+                /* The delta is the message content for a streaming response.
+                 * Subsequence of streaming delta will be like:
+                 * "delta": {
+                 *     "role": "assistant"
+                 * },
+                 * "delta": {
+                 *     "content": "Why"
+                 * },
+                 * "delta": {
+                 *     "content": " don"
+                 * },
+                 * "delta": {
+                 *     "content": "'t"
+                 * }
+                 */
+                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
-                CompletionsUsage usage = chatCompletions.getUsage();
-                if (usage != null) {
-                    System.out.printf("Usage: number of prompt token is %d, "
-                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+                if (delta.getRole() != null) {
+                    System.out.println("Role = " + delta.getRole());
                 }
-            },
+                return delta.getContent() == null ? "" : delta.getContent();
+            })
+            .subscribe(
+                System.out::print,
                 error -> System.err.println("There was an error getting chat completions." + error),
                 () -> System.out.println("Completed called getChatCompletions."));
 

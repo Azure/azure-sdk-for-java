@@ -88,7 +88,7 @@ public class DataLakeFileOutputStreamOptions {
     /**
      * @return {@link AccessTier}
      */
-    public AccessTier getTier() {
+    public AccessTier getAccessTier() {
         return tier;
     }
 
@@ -96,7 +96,7 @@ public class DataLakeFileOutputStreamOptions {
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
-    public DataLakeFileOutputStreamOptions setTier(AccessTier tier) {
+    public DataLakeFileOutputStreamOptions setAccessTier(AccessTier tier) {
         this.tier = tier;
         return this;
     }

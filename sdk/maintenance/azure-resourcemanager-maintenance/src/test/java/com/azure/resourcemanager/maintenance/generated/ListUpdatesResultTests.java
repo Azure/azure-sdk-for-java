@@ -20,14 +20,14 @@ public final class ListUpdatesResultTests {
         ListUpdatesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"maintenanceScope\":\"SQLDB\",\"impactType\":\"Restart\",\"status\":\"Completed\",\"impactDurationInSec\":2146966484,\"notBefore\":\"2020-12-28T02:07:44Z\",\"properties\":{\"resourceId\":\"ezcxtbzsgfyccsne\"}},{\"maintenanceScope\":\"SQLDB\",\"impactType\":\"None\",\"status\":\"Completed\",\"impactDurationInSec\":479901048,\"notBefore\":\"2021-08-09T00:52:58Z\",\"properties\":{\"resourceId\":\"osfln\"}},{\"maintenanceScope\":\"SQLDB\",\"impactType\":\"Freeze\",\"status\":\"Pending\",\"impactDurationInSec\":824817069,\"notBefore\":\"2021-06-28T09:00:21Z\",\"properties\":{\"resourceId\":\"ypyqrimzinp\"}}]}")
+                    "{\"value\":[{\"maintenanceScope\":\"SQLManagedInstance\",\"impactType\":\"None\",\"status\":\"InProgress\",\"impactDurationInSec\":236193588,\"notBefore\":\"2021-05-28T01:48:43Z\",\"properties\":{\"resourceId\":\"y\"}},{\"maintenanceScope\":\"OSImage\",\"impactType\":\"Freeze\",\"status\":\"InProgress\",\"impactDurationInSec\":1035502887,\"notBefore\":\"2021-06-18T07:43:59Z\",\"properties\":{\"resourceId\":\"whvylw\"}}]}")
                 .toObject(ListUpdatesResult.class);
-        Assertions.assertEquals(MaintenanceScope.SQLDB, model.value().get(0).maintenanceScope());
-        Assertions.assertEquals(ImpactType.RESTART, model.value().get(0).impactType());
-        Assertions.assertEquals(UpdateStatus.COMPLETED, model.value().get(0).status());
-        Assertions.assertEquals(2146966484, model.value().get(0).impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T02:07:44Z"), model.value().get(0).notBefore());
-        Assertions.assertEquals("ezcxtbzsgfyccsne", model.value().get(0).resourceId());
+        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, model.value().get(0).maintenanceScope());
+        Assertions.assertEquals(ImpactType.NONE, model.value().get(0).impactType());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, model.value().get(0).status());
+        Assertions.assertEquals(236193588, model.value().get(0).impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T01:48:43Z"), model.value().get(0).notBefore());
+        Assertions.assertEquals("y", model.value().get(0).resourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,32 +38,25 @@ public final class ListUpdatesResultTests {
                     Arrays
                         .asList(
                             new UpdateInner()
-                                .withMaintenanceScope(MaintenanceScope.SQLDB)
-                                .withImpactType(ImpactType.RESTART)
-                                .withStatus(UpdateStatus.COMPLETED)
-                                .withImpactDurationInSec(2146966484)
-                                .withNotBefore(OffsetDateTime.parse("2020-12-28T02:07:44Z"))
-                                .withResourceId("ezcxtbzsgfyccsne"),
-                            new UpdateInner()
-                                .withMaintenanceScope(MaintenanceScope.SQLDB)
+                                .withMaintenanceScope(MaintenanceScope.SQLMANAGED_INSTANCE)
                                 .withImpactType(ImpactType.NONE)
-                                .withStatus(UpdateStatus.COMPLETED)
-                                .withImpactDurationInSec(479901048)
-                                .withNotBefore(OffsetDateTime.parse("2021-08-09T00:52:58Z"))
-                                .withResourceId("osfln"),
+                                .withStatus(UpdateStatus.IN_PROGRESS)
+                                .withImpactDurationInSec(236193588)
+                                .withNotBefore(OffsetDateTime.parse("2021-05-28T01:48:43Z"))
+                                .withResourceId("y"),
                             new UpdateInner()
-                                .withMaintenanceScope(MaintenanceScope.SQLDB)
+                                .withMaintenanceScope(MaintenanceScope.OSIMAGE)
                                 .withImpactType(ImpactType.FREEZE)
-                                .withStatus(UpdateStatus.PENDING)
-                                .withImpactDurationInSec(824817069)
-                                .withNotBefore(OffsetDateTime.parse("2021-06-28T09:00:21Z"))
-                                .withResourceId("ypyqrimzinp")));
+                                .withStatus(UpdateStatus.IN_PROGRESS)
+                                .withImpactDurationInSec(1035502887)
+                                .withNotBefore(OffsetDateTime.parse("2021-06-18T07:43:59Z"))
+                                .withResourceId("whvylw")));
         model = BinaryData.fromObject(model).toObject(ListUpdatesResult.class);
-        Assertions.assertEquals(MaintenanceScope.SQLDB, model.value().get(0).maintenanceScope());
-        Assertions.assertEquals(ImpactType.RESTART, model.value().get(0).impactType());
-        Assertions.assertEquals(UpdateStatus.COMPLETED, model.value().get(0).status());
-        Assertions.assertEquals(2146966484, model.value().get(0).impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T02:07:44Z"), model.value().get(0).notBefore());
-        Assertions.assertEquals("ezcxtbzsgfyccsne", model.value().get(0).resourceId());
+        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, model.value().get(0).maintenanceScope());
+        Assertions.assertEquals(ImpactType.NONE, model.value().get(0).impactType());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, model.value().get(0).status());
+        Assertions.assertEquals(236193588, model.value().get(0).impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T01:48:43Z"), model.value().get(0).notBefore());
+        Assertions.assertEquals("y", model.value().get(0).resourceId());
     }
 }

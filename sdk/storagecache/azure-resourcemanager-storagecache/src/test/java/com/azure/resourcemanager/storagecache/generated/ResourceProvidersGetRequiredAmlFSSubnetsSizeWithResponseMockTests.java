@@ -32,7 +32,7 @@ public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockT
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"filesystemSubnetSize\":624157964}";
+        String responseStr = "{\"filesystemSubnetSize\":2127235728}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,11 +65,11 @@ public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockT
                 .resourceProviders()
                 .getRequiredAmlFSSubnetsSizeWithResponse(
                     new RequiredAmlFilesystemSubnetsSizeInfo()
-                        .withStorageCapacityTiB(6.7967834F)
-                        .withSku(new SkuName().withName("tmtdhtmdvypgik")),
+                        .withStorageCapacityTiB(34.47978F)
+                        .withSku(new SkuName().withName("mmsbvdkcrodtjin")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(624157964, response.filesystemSubnetSize());
+        Assertions.assertEquals(2127235728, response.filesystemSubnetSize());
     }
 }

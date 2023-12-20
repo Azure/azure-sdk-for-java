@@ -3,71 +3,62 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.messaging.servicebus.stress.util.EntityType;
+import com.azure.messaging.servicebus.stress.util.RateLimiter;
+import com.azure.messaging.servicebus.stress.util.TestUtils;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
+import java.time.Duration;
+import java.time.Instant;
+
+import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.createBatchSync;
+import static com.azure.messaging.servicebus.stress.util.TestUtils.createMessagePayload;
 
 /**
  * Test ServiceBusSenderClient
  */
 @Component("MessageSender")
 public class MessageSender extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSender.class);
+    @Value("${SEND_MESSAGE_RATE:100}")
+    private int sendMessageRatePerSecond;
 
-    private static final Random RANDOM = new Random();
+    @Value("${SEND_CONCURRENCY:5}")
+    private int sendConcurrency;
 
-    @Value("${SEND_TIMES:100000}")
-    private int sendTimes;
-
-    @Value("${SEND_MESSAGES:10}")
-    private int messagesToSend;
-
-    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
-    private int payloadSize;
+    @Value("${BATCH_SIZE:2}")
+    private int batchSize;
 
     @Override
     public void run() {
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
-        }
+        final BinaryData messagePayload = createMessagePayload(options.getMessageSize());
+        ServiceBusSenderClient client = toClose(TestUtils.getSenderBuilder(options, false).buildClient());
+        long endAtEpochMillis = Instant.now().plus(options.getTestDuration()).toEpochMilli();
 
-        ServiceBusSenderClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .topicName(topicName)
-            .buildClient();
-
-        final byte[] payload = new byte[payloadSize];
-        RANDOM.nextBytes(payload);
-
-        for (long i = 0; i < sendTimes; i++) {
-            List<ServiceBusMessage> eventDataList = new ArrayList<>();
-            IntStream.range(0, messagesToSend).forEach(j -> {
-                eventDataList.add(new ServiceBusMessage(payload));
-            });
-            try {
-                client.sendMessages(eventDataList);
-            } catch (Exception exp) {
-                LOGGER.error(exp.getMessage());
+        int batchRatePerSecond = sendMessageRatePerSecond / batchSize;
+        RateLimiter rateLimiter = toClose(new RateLimiter(batchRatePerSecond, sendConcurrency));
+        while (Instant.now().toEpochMilli() < endAtEpochMillis) {
+            if (rateLimiter.tryAcquire()) {
+                try {
+                    client.sendMessages(createBatchSync(client, messagePayload, batchSize));
+                } catch (Exception ex) {
+                    recordError("send error", ex, "send");
+                }
+            } else {
+                blockingWait(Duration.ofMillis(10));
             }
         }
+    }
 
-        client.close();
+    @Override
+    public void recordRunOptions(Span span) {
+        super.recordRunOptions(span);
+        span.setAttribute(AttributeKey.longKey("sendMessageRatePerSecond"), sendMessageRatePerSecond);
+        span.setAttribute(AttributeKey.longKey("sendConcurrency"), sendConcurrency);
+        span.setAttribute(AttributeKey.longKey("batchSize"), batchSize);
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualHubs List. */
+/**
+ * Samples for VirtualHubs List.
+ */
 public final class VirtualHubsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualHubList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualHubList.json
      */
     /**
      * Sample code: VirtualHubList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubList(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -31,7 +31,7 @@ public final class ClustersListSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"kqfqjbvl\",\"name\":\"rfmluiqtq\",\"tier\":\"avyvnqqyba\",\"locations\":[\"uayjkqa\",\"qgzsles\",\"cbhernntiewdj\",\"vbquwr\"],\"locationInfo\":[{\"location\":\"wagohbuffk\",\"zones\":[\"emvvhm\"],\"zoneDetails\":[]},{\"location\":\"rjfut\",\"zones\":[\"ebjvewzcjzn\"],\"zoneDetails\":[]},{\"location\":\"pmguaadraufac\",\"zones\":[\"hzovaj\",\"ziuxxpshnee\",\"ulfgslqu\",\"kwdlenrdsutujba\"],\"zoneDetails\":[]},{\"location\":\"uo\",\"zones\":[\"nyfln\",\"rwm\",\"uvwpklvxwmyg\",\"xpgpq\"],\"zoneDetails\":[]}],\"restrictions\":[\"dataepn\"]}]}";
+            "{\"value\":[{\"resourceType\":\"unqndyfpchrqb\",\"name\":\"jrcg\",\"tier\":\"ydcwboxjumv\",\"locations\":[\"lihrraiouaubr\",\"tloqxfuojrn\"],\"locationInfo\":[{\"location\":\"l\",\"zones\":[\"asccbiui\",\"zdlyjdfqw\"],\"zoneDetails\":[{\"name\":[\"ufdvruz\",\"lzo\",\"hpc\",\"fnmdxotn\"],\"capabilities\":[{}]},{\"name\":[\"geyzihgrkyuiz\",\"bsnmfpph\",\"jee\",\"yhyhsgzfczb\"],\"capabilities\":[{}]},{\"name\":[\"beglqg\",\"eohibet\",\"luan\"],\"capabilities\":[{},{},{}]}]},{\"location\":\"fxeeebtijvacvbm\",\"zones\":[\"qqxlajr\",\"wxacevehj\"],\"zoneDetails\":[{\"name\":[\"afgaoqlt\",\"aeylinm\"],\"capabilities\":[{},{},{}]},{\"name\":[\"r\",\"gh\",\"iypoqeyhlqhykprl\",\"yznuciqd\"],\"capabilities\":[{}]}]}],\"restrictions\":[\"dataitdfuxtyasiib\",\"dataiybnnustgnljhnmg\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

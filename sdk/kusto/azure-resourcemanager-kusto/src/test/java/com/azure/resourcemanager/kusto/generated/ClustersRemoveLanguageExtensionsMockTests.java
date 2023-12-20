@@ -64,24 +64,24 @@ public final class ClustersRemoveLanguageExtensionsMockTests {
         manager
             .clusters()
             .removeLanguageExtensions(
-                "qolj",
-                "kcgxxlxsffgcvi",
+                "pbzpcpiljhahz",
+                "echndbnwieholew",
                 new LanguageExtensionsList()
                     .withValue(
                         Arrays
                             .asList(
                                 new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R),
+                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8)
+                                    .withLanguageExtensionCustomImageName("fqsfa"),
                                 new LanguageExtensionInner()
                                     .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R),
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8_DL)
+                                    .withLanguageExtensionCustomImageName("rrqwexjk"),
                                 new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5),
-                                new LanguageExtensionInner()
-                                    .withLanguageExtensionName(LanguageExtensionName.R)
-                                    .withLanguageExtensionImageName(LanguageExtensionImageName.R))),
+                                    .withLanguageExtensionName(LanguageExtensionName.PYTHON)
+                                    .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5)
+                                    .withLanguageExtensionCustomImageName("wogqqnobpudcdab"))),
                 com.azure.core.util.Context.NONE);
     }
 }

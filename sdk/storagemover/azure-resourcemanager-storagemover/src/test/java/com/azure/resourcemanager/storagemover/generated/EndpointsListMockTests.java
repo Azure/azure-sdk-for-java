@@ -32,7 +32,7 @@ public final class EndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"rw\",\"provisioningState\":\"Succeeded\"},\"id\":\"otwmcdyt\",\"name\":\"x\",\"type\":\"it\"}]}";
+            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"eualupjmkhf\",\"provisioningState\":\"Succeeded\"},\"id\":\"cswsrtjri\",\"name\":\"lrbpbewtghfgbl\",\"type\":\"gw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class EndpointsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Endpoint> response =
-            manager.endpoints().list("wfvovbv", "euecivyhzceuoj", com.azure.core.util.Context.NONE);
+            manager.endpoints().list("vylwzbtdhxuj", "nbmpowuwprzq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rw", response.iterator().next().properties().description());
+        Assertions.assertEquals("eualupjmkhf", response.iterator().next().properties().description());
     }
 }

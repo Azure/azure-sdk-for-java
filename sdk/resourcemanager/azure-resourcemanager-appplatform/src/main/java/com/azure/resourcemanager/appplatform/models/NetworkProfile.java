@@ -57,6 +57,18 @@ public final class NetworkProfile {
     @JsonProperty(value = "requiredTraffics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RequiredTraffic> requiredTraffics;
 
+    /*
+     * Ingress configuration payload for Azure Spring Apps resource.
+     */
+    @JsonProperty(value = "ingressConfig")
+    private IngressConfig ingressConfig;
+
+    /*
+     * The egress traffic type of Azure Spring Apps VNet instances.
+     */
+    @JsonProperty(value = "outboundType")
+    private String outboundType;
+
     /**
      * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime.
@@ -184,6 +196,46 @@ public final class NetworkProfile {
     }
 
     /**
+     * Get the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
+     *
+     * @return the ingressConfig value.
+     */
+    public IngressConfig ingressConfig() {
+        return this.ingressConfig;
+    }
+
+    /**
+     * Set the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
+     *
+     * @param ingressConfig the ingressConfig value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withIngressConfig(IngressConfig ingressConfig) {
+        this.ingressConfig = ingressConfig;
+        return this;
+    }
+
+    /**
+     * Get the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
+     *
+     * @return the outboundType value.
+     */
+    public String outboundType() {
+        return this.outboundType;
+    }
+
+    /**
+     * Set the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
+     *
+     * @param outboundType the outboundType value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withOutboundType(String outboundType) {
+        this.outboundType = outboundType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -194,6 +246,9 @@ public final class NetworkProfile {
         }
         if (requiredTraffics() != null) {
             requiredTraffics().forEach(e -> e.validate());
+        }
+        if (ingressConfig() != null) {
+            ingressConfig().validate();
         }
     }
 }

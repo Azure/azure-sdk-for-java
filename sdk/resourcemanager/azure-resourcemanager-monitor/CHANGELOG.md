@@ -1,6 +1,6 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.34.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,53 @@
 
 ### Bugs Fixed
 
-- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings.
+### Other Changes
+
+## 2.33.0 (2023-11-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.30.0 (2023-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that methods in `MetricDefinitions` and `DiagnosticSettings`, which have `resourceId` as one of their 
+  parameters, throw exception on resources whose names contain white spaces.
+- Fixed `DiagnosticSettings.deleteByIds()` to make it work.
+
+## 2.28.0 (2023-06-25)
+
+### Bugs Fixed
+
+- Fixed a bug in `DiagnosticSetting` initialization where category groups overwrite log settings.
 
 ## 2.27.0 (2023-05-25)
 

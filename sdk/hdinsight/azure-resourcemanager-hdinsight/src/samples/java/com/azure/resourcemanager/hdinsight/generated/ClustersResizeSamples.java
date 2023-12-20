@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.ClusterResizeParameters;
 import com.azure.resourcemanager.hdinsight.models.RoleName;
 
 /** Samples for Clusters Resize. */
 public final class ClustersResizeSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ResizeLinuxHadoopCluster.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/ResizeLinuxHadoopCluster.json
      */
     /**
      * Sample code: Resize the worker nodes for a Hadoop on Linux cluster.
@@ -27,6 +26,6 @@ public final class ClustersResizeSamples {
                 "cluster1",
                 RoleName.WORKERNODE,
                 new ClusterResizeParameters().withTargetInstanceCount(10),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

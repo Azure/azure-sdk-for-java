@@ -9,10 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.SyncMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the backend address pool. */
+/**
+ * Properties of the backend address pool.
+ */
 @Fluent
 public final class BackendAddressPoolPropertiesFormat {
     /*
@@ -81,13 +84,21 @@ public final class BackendAddressPoolPropertiesFormat {
     @JsonProperty(value = "virtualNetwork")
     private SubResource virtualNetwork;
 
-    /** Creates an instance of BackendAddressPoolPropertiesFormat class. */
+    /*
+     * Backend address synchronous mode for the backend pool
+     */
+    @JsonProperty(value = "syncMode")
+    private SyncMode syncMode;
+
+    /**
+     * Creates an instance of BackendAddressPoolPropertiesFormat class.
+     */
     public BackendAddressPoolPropertiesFormat() {
     }
 
     /**
      * Get the location property: The location of the backend address pool.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -96,7 +107,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the location property: The location of the backend address pool.
-     *
+     * 
      * @param location the location value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -107,7 +118,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @return the tunnelInterfaces value.
      */
     public List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces() {
@@ -116,19 +127,19 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @param tunnelInterfaces the tunnelInterfaces value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
-    public BackendAddressPoolPropertiesFormat withTunnelInterfaces(
-        List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces) {
+    public BackendAddressPoolPropertiesFormat
+        withTunnelInterfaces(List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces) {
         this.tunnelInterfaces = tunnelInterfaces;
         return this;
     }
 
     /**
      * Get the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @return the loadBalancerBackendAddresses value.
      */
     public List<LoadBalancerBackendAddress> loadBalancerBackendAddresses() {
@@ -137,19 +148,19 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @param loadBalancerBackendAddresses the loadBalancerBackendAddresses value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
-    public BackendAddressPoolPropertiesFormat withLoadBalancerBackendAddresses(
-        List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
+    public BackendAddressPoolPropertiesFormat
+        withLoadBalancerBackendAddresses(List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
         this.loadBalancerBackendAddresses = loadBalancerBackendAddresses;
         return this;
     }
 
     /**
      * Get the backendIpConfigurations property: An array of references to IP addresses defined in network interfaces.
-     *
+     * 
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
@@ -157,9 +168,9 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend address
-     * pool.
-     *
+     * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend
+     * address pool.
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -168,7 +179,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the outboundRule property: A reference to an outbound rule that uses this backend address pool.
-     *
+     * 
      * @return the outboundRule value.
      */
     public SubResource outboundRule() {
@@ -177,7 +188,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the outboundRules property: An array of references to outbound rules that use this backend address pool.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<SubResource> outboundRules() {
@@ -185,8 +196,9 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
-     *
+     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address
+     * pool.
+     * 
      * @return the inboundNatRules value.
      */
     public List<SubResource> inboundNatRules() {
@@ -195,7 +207,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend address pool resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -205,7 +217,7 @@ public final class BackendAddressPoolPropertiesFormat {
     /**
      * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @return the drainPeriodInSeconds value.
      */
     public Integer drainPeriodInSeconds() {
@@ -215,7 +227,7 @@ public final class BackendAddressPoolPropertiesFormat {
     /**
      * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -226,7 +238,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Get the virtualNetwork property: A reference to a virtual network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -235,7 +247,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Set the virtualNetwork property: A reference to a virtual network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -245,8 +257,28 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
+     * Get the syncMode property: Backend address synchronous mode for the backend pool.
+     * 
+     * @return the syncMode value.
+     */
+    public SyncMode syncMode() {
+        return this.syncMode;
+    }
+
+    /**
+     * Set the syncMode property: Backend address synchronous mode for the backend pool.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the BackendAddressPoolPropertiesFormat object itself.
+     */
+    public BackendAddressPoolPropertiesFormat withSyncMode(SyncMode syncMode) {
+        this.syncMode = syncMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

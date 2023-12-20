@@ -17,7 +17,7 @@ public final class CapabilitiesPropertiesTests {
         CapabilitiesProperties model =
             BinaryData
                 .fromString(
-                    "{\"dnsZones\":[{\"subResource\":\"AzureSiteRecovery\"},{\"subResource\":\"AzureBackup\"},{\"subResource\":\"AzureSiteRecovery\"}]}")
+                    "{\"dnsZones\":[{\"subResource\":\"AzureSiteRecovery\"},{\"subResource\":\"AzureSiteRecovery\"}]}")
                 .toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.dnsZones().get(0).subResource());
     }
@@ -30,7 +30,6 @@ public final class CapabilitiesPropertiesTests {
                     Arrays
                         .asList(
                             new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
                             new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)));
         model = BinaryData.fromObject(model).toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.dnsZones().get(0).subResource());

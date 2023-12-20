@@ -23,6 +23,12 @@ public final class ClusterResourceProperties {
     private NetworkProfile networkProfile;
 
     /*
+     * Additional Service settings in vnet injection instance
+     */
+    @JsonProperty(value = "vnetAddons")
+    private ServiceVNetAddons vnetAddons;
+
+    /*
      * Version of the Service
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
@@ -33,6 +39,12 @@ public final class ClusterResourceProperties {
      */
     @JsonProperty(value = "serviceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceId;
+
+    /*
+     * Power state of the Service
+     */
+    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
 
     /*
      * The zoneRedundant property.
@@ -76,6 +88,26 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the vnetAddons property: Additional Service settings in vnet injection instance.
+     *
+     * @return the vnetAddons value.
+     */
+    public ServiceVNetAddons vnetAddons() {
+        return this.vnetAddons;
+    }
+
+    /**
+     * Set the vnetAddons property: Additional Service settings in vnet injection instance.
+     *
+     * @param vnetAddons the vnetAddons value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withVnetAddons(ServiceVNetAddons vnetAddons) {
+        this.vnetAddons = vnetAddons;
+        return this;
+    }
+
+    /**
      * Get the version property: Version of the Service.
      *
      * @return the version value.
@@ -91,6 +123,15 @@ public final class ClusterResourceProperties {
      */
     public String serviceId() {
         return this.serviceId;
+    }
+
+    /**
+     * Get the powerState property: Power state of the Service.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -130,6 +171,9 @@ public final class ClusterResourceProperties {
     public void validate() {
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (vnetAddons() != null) {
+            vnetAddons().validate();
         }
     }
 }

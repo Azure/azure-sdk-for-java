@@ -16,21 +16,24 @@ public final class CreatorUpdateParametersTests {
         CreatorUpdateParameters model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"mjthjqkwp\":\"fcyddg\"},\"properties\":{\"provisioningState\":\"cxmqciwqvhkhix\",\"storageUnits\":213865408}}")
+                    "{\"tags\":{\"sbj\":\"ye\",\"wfqkquj\":\"azqugxywpmueefj\"},\"properties\":{\"provisioningState\":\"uyonobglaoc\",\"storageUnits\":1422532209}}")
                 .toObject(CreatorUpdateParameters.class);
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
-        Assertions.assertEquals(213865408, model.storageUnits());
+        Assertions.assertEquals("ye", model.tags().get("sbj"));
+        Assertions.assertEquals(1422532209, model.storageUnits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreatorUpdateParameters model =
-            new CreatorUpdateParameters().withTags(mapOf("mjthjqkwp", "fcyddg")).withStorageUnits(213865408);
+            new CreatorUpdateParameters()
+                .withTags(mapOf("sbj", "ye", "wfqkquj", "azqugxywpmueefj"))
+                .withStorageUnits(1422532209);
         model = BinaryData.fromObject(model).toObject(CreatorUpdateParameters.class);
-        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
-        Assertions.assertEquals(213865408, model.storageUnits());
+        Assertions.assertEquals("ye", model.tags().get("sbj"));
+        Assertions.assertEquals(1422532209, model.storageUnits());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

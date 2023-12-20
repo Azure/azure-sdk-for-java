@@ -58,6 +58,6 @@ public final class ContainerAppsRevisionsActivateRevisionWithResponseMockTests {
 
         manager
             .containerAppsRevisions()
-            .activateRevisionWithResponse("cjuhplrvkm", "cwmjvlg", "ggcvk", com.azure.core.util.Context.NONE);
+            .activateRevisionWithResponse("obbpihehc", "cy", "mrqbrjbbmpxdlv", com.azure.core.util.Context.NONE);
     }
 }

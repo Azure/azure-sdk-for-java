@@ -31,6 +31,7 @@ public final class CertificatePatchTests {
         Assertions.assertEquals("ukgri", model.tags().get("flz"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -62,6 +62,13 @@ public interface CertificateContract {
     KeyVaultContractProperties keyVault();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.CertificateContractInner object.
      *
      * @return the inner object.
@@ -72,22 +79,25 @@ public interface CertificateContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CertificateContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the CertificateContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CertificateContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the CertificateContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -112,6 +122,7 @@ public interface CertificateContract {
              */
             CertificateContract create(Context context);
         }
+
         /** The stage of the CertificateContract definition allowing to specify data. */
         interface WithData {
             /**
@@ -122,6 +133,7 @@ public interface CertificateContract {
              */
             WithCreate withData(String data);
         }
+
         /** The stage of the CertificateContract definition allowing to specify password. */
         interface WithPassword {
             /**
@@ -132,6 +144,7 @@ public interface CertificateContract {
              */
             WithCreate withPassword(String password);
         }
+
         /** The stage of the CertificateContract definition allowing to specify keyVault. */
         interface WithKeyVault {
             /**
@@ -142,6 +155,7 @@ public interface CertificateContract {
              */
             WithCreate withKeyVault(KeyVaultContractCreateProperties keyVault);
         }
+
         /** The stage of the CertificateContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -155,6 +169,7 @@ public interface CertificateContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the CertificateContract resource.
      *
@@ -180,6 +195,7 @@ public interface CertificateContract {
          */
         CertificateContract apply(Context context);
     }
+
     /** The CertificateContract update stages. */
     interface UpdateStages {
         /** The stage of the CertificateContract update allowing to specify data. */
@@ -192,6 +208,7 @@ public interface CertificateContract {
              */
             Update withData(String data);
         }
+
         /** The stage of the CertificateContract update allowing to specify password. */
         interface WithPassword {
             /**
@@ -202,6 +219,7 @@ public interface CertificateContract {
              */
             Update withPassword(String password);
         }
+
         /** The stage of the CertificateContract update allowing to specify keyVault. */
         interface WithKeyVault {
             /**
@@ -212,6 +230,7 @@ public interface CertificateContract {
              */
             Update withKeyVault(KeyVaultContractCreateProperties keyVault);
         }
+
         /** The stage of the CertificateContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -225,6 +244,7 @@ public interface CertificateContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -243,15 +263,6 @@ public interface CertificateContract {
     /**
      * From KeyVault, Refresh the certificate being used for authentication with the backend.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate details.
-     */
-    CertificateContract refreshSecret();
-
-    /**
-     * From KeyVault, Refresh the certificate being used for authentication with the backend.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -259,4 +270,13 @@ public interface CertificateContract {
      * @return certificate details.
      */
     Response<CertificateContract> refreshSecretWithResponse(Context context);
+
+    /**
+     * From KeyVault, Refresh the certificate being used for authentication with the backend.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate details.
+     */
+    CertificateContract refreshSecret();
 }

@@ -6,21 +6,28 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeUpdateProperties model =
-            BinaryData.fromString("{\"sizeGiB\":246259275856309822}").toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(246259275856309822L, model.sizeGiB());
+            BinaryData
+                .fromString("{\"sizeGiB\":5784284842657699353,\"managedBy\":{\"resourceId\":\"fkts\"}}")
+                .toObject(VolumeUpdateProperties.class);
+        Assertions.assertEquals(5784284842657699353L, model.sizeGiB());
+        Assertions.assertEquals("fkts", model.managedBy().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        VolumeUpdateProperties model = new VolumeUpdateProperties().withSizeGiB(246259275856309822L);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VolumeUpdateProperties model =
+            new VolumeUpdateProperties()
+                .withSizeGiB(5784284842657699353L)
+                .withManagedBy(new ManagedByInfo().withResourceId("fkts"));
         model = BinaryData.fromObject(model).toObject(VolumeUpdateProperties.class);
-        Assertions.assertEquals(246259275856309822L, model.sizeGiB());
+        Assertions.assertEquals(5784284842657699353L, model.sizeGiB());
+        Assertions.assertEquals("fkts", model.managedBy().resourceId());
     }
 }

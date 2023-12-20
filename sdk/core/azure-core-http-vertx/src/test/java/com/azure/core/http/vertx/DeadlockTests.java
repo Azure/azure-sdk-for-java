@@ -6,51 +6,55 @@ package com.azure.core.http.vertx;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.security.SecureRandom;
+import javax.servlet.ServletException;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class DeadlockTests {
     private static final String GET_ENDPOINT = "/get";
 
-    private WireMockServer server;
+    private LocalTestServer server;
     private byte[] expectedGetBytes;
 
     @BeforeEach
-    public void configureWireMockServer() {
+    public void startTestServer() {
         expectedGetBytes = new byte[32768];
-        new SecureRandom().nextBytes(expectedGetBytes);
+        ThreadLocalRandom.current().nextBytes(expectedGetBytes);
 
-        server = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
-
-        server.stubFor(get(GET_ENDPOINT).willReturn(aResponse().withBody(expectedGetBytes)));
+        server = new LocalTestServer((req, resp, requestBody) -> {
+            if ("GET".equalsIgnoreCase(req.getMethod()) && GET_ENDPOINT.equals(req.getServletPath())) {
+                resp.setContentType("application/octet-stream");
+                resp.setContentLength(expectedGetBytes.length);
+                resp.getOutputStream().write(expectedGetBytes);
+            } else {
+                throw new ServletException("Unexpected request " + req.getMethod() + " " + req.getServletPath());
+            }
+        }, 20);
 
         server.start();
     }
 
     @AfterEach
-    public void shutdownWireMockServer() {
+    public void stopTestServer() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
@@ -58,7 +62,7 @@ public class DeadlockTests {
     public void attemptToDeadlock() {
         HttpClient httpClient = new VertxAsyncHttpClientProvider().createInstance();
 
-        String endpoint = server.baseUrl() + GET_ENDPOINT;
+        String endpoint = server.getHttpUri() + GET_ENDPOINT;
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
             .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 32768)

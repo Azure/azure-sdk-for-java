@@ -19,8 +19,7 @@ public final class PortalDelegationSettingsProperties {
     private String url;
 
     /*
-     * A base64-encoded validation key to validate, that a request is coming
-     * from Azure API Management.
+     * A base64-encoded validation key to validate, that a request is coming from Azure API Management.
      */
     @JsonProperty(value = "validationKey")
     private String validationKey;
@@ -36,6 +35,10 @@ public final class PortalDelegationSettingsProperties {
      */
     @JsonProperty(value = "userRegistration")
     private RegistrationDelegationSettingsProperties userRegistration;
+
+    /** Creates an instance of PortalDelegationSettingsProperties class. */
+    public PortalDelegationSettingsProperties() {
+    }
 
     /**
      * Get the url property: A delegation Url.

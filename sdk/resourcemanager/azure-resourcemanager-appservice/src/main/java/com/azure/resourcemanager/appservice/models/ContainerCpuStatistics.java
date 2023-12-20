@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerCpuStatistics model. */
+/**
+ * The ContainerCpuStatistics model.
+ */
 @Fluent
 public final class ContainerCpuStatistics {
     /*
@@ -34,13 +36,15 @@ public final class ContainerCpuStatistics {
     @JsonProperty(value = "throttlingData")
     private ContainerThrottlingData throttlingData;
 
-    /** Creates an instance of ContainerCpuStatistics class. */
+    /**
+     * Creates an instance of ContainerCpuStatistics class.
+     */
     public ContainerCpuStatistics() {
     }
 
     /**
      * Get the cpuUsage property: The cpuUsage property.
-     *
+     * 
      * @return the cpuUsage value.
      */
     public ContainerCpuUsage cpuUsage() {
@@ -49,7 +53,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Set the cpuUsage property: The cpuUsage property.
-     *
+     * 
      * @param cpuUsage the cpuUsage value to set.
      * @return the ContainerCpuStatistics object itself.
      */
@@ -60,7 +64,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Get the systemCpuUsage property: The systemCpuUsage property.
-     *
+     * 
      * @return the systemCpuUsage value.
      */
     public Long systemCpuUsage() {
@@ -69,7 +73,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Set the systemCpuUsage property: The systemCpuUsage property.
-     *
+     * 
      * @param systemCpuUsage the systemCpuUsage value to set.
      * @return the ContainerCpuStatistics object itself.
      */
@@ -80,7 +84,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Get the onlineCpuCount property: The onlineCpuCount property.
-     *
+     * 
      * @return the onlineCpuCount value.
      */
     public Integer onlineCpuCount() {
@@ -89,7 +93,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Set the onlineCpuCount property: The onlineCpuCount property.
-     *
+     * 
      * @param onlineCpuCount the onlineCpuCount value to set.
      * @return the ContainerCpuStatistics object itself.
      */
@@ -100,7 +104,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Get the throttlingData property: The throttlingData property.
-     *
+     * 
      * @return the throttlingData value.
      */
     public ContainerThrottlingData throttlingData() {
@@ -109,7 +113,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Set the throttlingData property: The throttlingData property.
-     *
+     * 
      * @param throttlingData the throttlingData value to set.
      * @return the ContainerCpuStatistics object itself.
      */
@@ -120,7 +124,7 @@ public final class ContainerCpuStatistics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

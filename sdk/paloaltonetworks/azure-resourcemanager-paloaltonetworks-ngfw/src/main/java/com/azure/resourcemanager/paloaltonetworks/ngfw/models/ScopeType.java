@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Rulestack Type. */
+/**
+ * Rulestack Type.
+ */
 public final class ScopeType extends ExpandableStringEnum<ScopeType> {
-    /** Static value LOCAL for ScopeType. */
+    /**
+     * Static value LOCAL for ScopeType.
+     */
     public static final ScopeType LOCAL = fromString("LOCAL");
 
-    /** Static value GLOBAL for ScopeType. */
+    /**
+     * Static value GLOBAL for ScopeType.
+     */
     public static final ScopeType GLOBAL = fromString("GLOBAL");
 
     /**
      * Creates a new instance of ScopeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ScopeType extends ExpandableStringEnum<ScopeType> {
 
     /**
      * Creates or finds a ScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScopeType.
      */
@@ -38,7 +44,7 @@ public final class ScopeType extends ExpandableStringEnum<ScopeType> {
 
     /**
      * Gets known ScopeType values.
-     *
+     * 
      * @return known ScopeType values.
      */
     public static Collection<ScopeType> values() {

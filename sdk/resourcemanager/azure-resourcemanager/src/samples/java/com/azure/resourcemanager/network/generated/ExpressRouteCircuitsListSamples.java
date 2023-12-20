@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRouteCircuits List. */
+/**
+ * Samples for ExpressRouteCircuits List.
+ */
 public final class ExpressRouteCircuitsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ExpressRouteCircuitListBySubscription.json
      */
     /**
      * Sample code: List ExpressRouteCircuits in a subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listExpressRouteCircuitsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {

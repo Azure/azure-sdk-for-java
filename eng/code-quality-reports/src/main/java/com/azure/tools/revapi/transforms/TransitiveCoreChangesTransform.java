@@ -51,8 +51,10 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
             return TransformationResult.keep();
         }
 
-        if (!newArchive.startsWith("com.azure:azure-core:")) {
-            // The difference isn't from the azure-core SDK, keep the current result.
+        if (!newArchive.startsWith("com.azure:azure-core:")
+            && !newArchive.startsWith("com.azure:azure-json:")
+            && !newArchive.startsWith("com.azure:azure-xml:")) {
+            // The difference isn't from the azure-core, azure-json, or azure-xml SDK, keep the current result.
             return TransformationResult.keep();
         }
 

@@ -82,7 +82,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         return rand.nextInt(100);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -116,7 +116,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT_LONG)
+    @Test(groups = {"query"}, timeOut = TIMEOUT_LONG)
     public void queryDistinctDocuments() {
 
         Map<String, Boolean> queries = ImmutableMap.<String, Boolean>builder()
@@ -266,7 +266,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsForDistinctIntValues(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -298,7 +298,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryWithOrderByProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryWithOrderByProvider")
     public void queryDocumentsWithOrderBy(String query, boolean matchedOrderBy) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxBufferedItemCount(1);
@@ -371,12 +371,12 @@ public class DistinctQueryTests extends TestSuiteBase {
         return new Person(name, city, income, people, age, pet, guid);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

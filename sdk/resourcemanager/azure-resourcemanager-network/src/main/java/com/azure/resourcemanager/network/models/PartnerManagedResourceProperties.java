@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the partner managed resource. */
+/**
+ * Properties of the partner managed resource.
+ */
 @Immutable
 public final class PartnerManagedResourceProperties {
     /*
@@ -28,13 +30,15 @@ public final class PartnerManagedResourceProperties {
     @JsonProperty(value = "standardLoadBalancerId", access = JsonProperty.Access.WRITE_ONLY)
     private String standardLoadBalancerId;
 
-    /** Creates an instance of PartnerManagedResourceProperties class. */
+    /**
+     * Creates an instance of PartnerManagedResourceProperties class.
+     */
     public PartnerManagedResourceProperties() {
     }
 
     /**
      * Get the id property: The partner managed resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class PartnerManagedResourceProperties {
 
     /**
      * Get the internalLoadBalancerId property: The partner managed ILB resource id.
-     *
+     * 
      * @return the internalLoadBalancerId value.
      */
     public String internalLoadBalancerId() {
@@ -52,7 +56,7 @@ public final class PartnerManagedResourceProperties {
 
     /**
      * Get the standardLoadBalancerId property: The partner managed SLB resource id.
-     *
+     * 
      * @return the standardLoadBalancerId value.
      */
     public String standardLoadBalancerId() {
@@ -61,7 +65,7 @@ public final class PartnerManagedResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

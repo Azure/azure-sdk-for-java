@@ -18,6 +18,10 @@ public final class BlobServiceItems {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BlobServicePropertiesInner> value;
 
+    /** Creates an instance of BlobServiceItems class. */
+    public BlobServiceItems() {
+    }
+
     /**
      * Get the value property: List of blob services returned.
      *

@@ -14,9 +14,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SubscriptionContractProperties {
     /*
-     * The user resource identifier of the subscription owner. The value is a
-     * valid relative URL in the format of /users/{userId} where {userId} is a
-     * user identifier.
+     * The user resource identifier of the subscription owner. The value is a valid relative URL in the format of
+     * /users/{userId} where {userId} is a user identifier.
      */
     @JsonProperty(value = "ownerId")
     private String ownerId;
@@ -34,85 +33,74 @@ public final class SubscriptionContractProperties {
     private String displayName;
 
     /*
-     * Subscription state. Possible states are * active – the subscription is
-     * active, * suspended – the subscription is blocked, and the subscriber
-     * cannot call any APIs of the product, * submitted – the subscription
-     * request has been made by the developer, but has not yet been approved or
-     * rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the
-     * developer or administrator, * expired – the subscription reached its
-     * expiration date and was deactivated.
+     * Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is
+     * blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been
+     * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
+     * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
+     * * expired – the subscription reached its expiration date and was deactivated.
      */
     @JsonProperty(value = "state", required = true)
     private SubscriptionState state;
 
     /*
-     * Subscription creation date. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
+     * the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
-     * Subscription activation date. The setting is for audit purposes only and
-     * the subscription is not automatically activated. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
+     * Subscription activation date. The setting is for audit purposes only and the subscription is not automatically
+     * activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the
+     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "startDate")
     private OffsetDateTime startDate;
 
     /*
-     * Subscription expiration date. The setting is for audit purposes only and
-     * the subscription is not automatically expired. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
+     * Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically
+     * expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the
+     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "expirationDate")
     private OffsetDateTime expirationDate;
 
     /*
-     * Date when subscription was cancelled or expired. The setting is for
-     * audit purposes only and the subscription is not automatically cancelled.
-     * The subscription lifecycle can be managed by using the `state` property.
-     * The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
-     * specified by the ISO 8601 standard.
+     * Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is
+     * not automatically cancelled. The subscription lifecycle can be managed by using the `state` property. The date
+     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "endDate")
     private OffsetDateTime endDate;
 
     /*
-     * Upcoming subscription expiration notification date. The date conforms to
-     * the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO
-     * 8601 standard.
+     * Upcoming subscription expiration notification date. The date conforms to the following format:
+     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "notificationDate")
     private OffsetDateTime notificationDate;
 
     /*
-     * Subscription primary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
+     * to get the value.
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * Subscription secondary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST
+     * request to get the value.
      */
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
-     * Optional subscription comment added by an administrator when the state
-     * is changed to the 'rejected'.
+     * Optional subscription comment added by an administrator when the state is changed to the 'rejected'.
      */
     @JsonProperty(value = "stateComment")
     private String stateComment;
@@ -122,6 +110,10 @@ public final class SubscriptionContractProperties {
      */
     @JsonProperty(value = "allowTracing")
     private Boolean allowTracing;
+
+    /** Creates an instance of SubscriptionContractProperties class. */
+    public SubscriptionContractProperties() {
+    }
 
     /**
      * Get the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative

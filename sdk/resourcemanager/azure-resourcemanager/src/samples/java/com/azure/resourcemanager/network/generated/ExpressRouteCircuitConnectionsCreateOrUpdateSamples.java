@@ -8,40 +8,28 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitConnectionInner;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 
-/** Samples for ExpressRouteCircuitConnections CreateOrUpdate. */
+/**
+ * Samples for ExpressRouteCircuitConnections CreateOrUpdate.
+ */
 public final class ExpressRouteCircuitConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRouteCircuitConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ExpressRouteCircuitConnectionCreate.json
      */
     /**
      * Sample code: ExpressRouteCircuitConnectionCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteCircuitConnectionCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRouteCircuitConnections()
-            .createOrUpdate(
-                "rg1",
-                "ExpressRouteARMCircuitA",
-                "AzurePrivatePeering",
-                "circuitConnectionUSAUS",
-                new ExpressRouteCircuitConnectionInner()
-                    .withExpressRouteCircuitPeering(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/subid1/resourceGroups/dedharcktinit/providers/Microsoft.Network/expressRouteCircuits/dedharcktlocal/peerings/AzurePrivatePeering"))
-                    .withPeerExpressRouteCircuitPeering(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/subid2/resourceGroups/dedharcktpeer/providers/Microsoft.Network/expressRouteCircuits/dedharcktremote/peerings/AzurePrivatePeering"))
-                    .withAddressPrefix("10.0.0.0/29")
-                    .withAuthorizationKey("fakeTokenPlaceholder")
-                    .withIpv6CircuitConnectionConfig(
-                        new Ipv6CircuitConnectionConfig().withAddressPrefix("aa:bb::/125")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRouteCircuitConnections().createOrUpdate("rg1",
+            "ExpressRouteARMCircuitA", "AzurePrivatePeering", "circuitConnectionUSAUS",
+            new ExpressRouteCircuitConnectionInner().withExpressRouteCircuitPeering(new SubResource().withId(
+                "/subscriptions/subid1/resourceGroups/dedharcktinit/providers/Microsoft.Network/expressRouteCircuits/dedharcktlocal/peerings/AzurePrivatePeering"))
+                .withPeerExpressRouteCircuitPeering(new SubResource().withId(
+                    "/subscriptions/subid2/resourceGroups/dedharcktpeer/providers/Microsoft.Network/expressRouteCircuits/dedharcktremote/peerings/AzurePrivatePeering"))
+                .withAddressPrefix("10.0.0.0/29").withAuthorizationKey("fakeTokenPlaceholder")
+                .withIpv6CircuitConnectionConfig(new Ipv6CircuitConnectionConfig().withAddressPrefix("aa:bb::/125")),
+            com.azure.core.util.Context.NONE);
     }
 }

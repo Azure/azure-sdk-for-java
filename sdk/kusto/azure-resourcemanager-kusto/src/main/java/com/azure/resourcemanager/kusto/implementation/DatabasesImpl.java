@@ -68,9 +68,10 @@ public final class DatabasesImpl implements Databases {
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<Database> listByCluster(
+        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context) {
         PagedIterable<DatabaseInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName, top, skiptoken, context);
         return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 

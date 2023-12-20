@@ -7,8 +7,8 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The options for creating a group call.
@@ -25,11 +25,6 @@ public final class CreateGroupCallOptions {
      */
     private final String callbackUrl;
 
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
-     */
-    private String azureCognitiveServicesUrl;
-
     /**
      * A customer set value used to track the answering of a call.
      */
@@ -41,6 +36,11 @@ public final class CreateGroupCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -50,18 +50,15 @@ public final class CreateGroupCallOptions {
      */
     private PhoneNumberIdentifier sourceCallIdNumber;
 
-    /**
-     * Custom Context for PSTN targets
+    /*
+     * AI options for the call
      */
-    private Map<String, String> sipHeaders;
+    private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
-     * Custom Context for Voip targets
+     * Custom Context
      */
-    private Map<String, String> voipHeaders;
-
-
-
+    private final CustomCallingContext customContext;
 
     /**
      * Constructor
@@ -74,6 +71,7 @@ public final class CreateGroupCallOptions {
         this.callbackUrl = callbackUrl;
         this.sourceDisplayName = null;
         this.sourceCallIdNumber = null;
+        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -95,31 +93,12 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesUrl() {
-        return this.azureCognitiveServicesUrl;
-    }
-
-    /**
      * Get the operationContext: A customer set value used to track the answering of a call.
      *
      * @return the operationContext value.
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
     }
 
     /**
@@ -139,22 +118,6 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get Custom Context for PSTN targets
-     * @return Custom Context for PSTN targets
-     */
-    public Map<String, String> getSipHeaders() {
-        return sipHeaders;
-    }
-
-    /**
-     *  Get Custom Context for Voip targets
-     * @return Custom Context for Voip targets
-     */
-    public Map<String, String> getVoipHeaders() {
-        return voipHeaders;
-    }
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -169,7 +132,7 @@ public final class CreateGroupCallOptions {
      * Set the media streaming configuration.
      *
      * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
+     * @return the CreateGroupCallOptions object itself.
      */
     public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
@@ -177,14 +140,13 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the transcription configuration.
      *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
+     * @param transcriptionOptions The transcription configuration.
+     * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
+    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
@@ -208,27 +170,49 @@ public final class CreateGroupCallOptions {
         return this;
     }
 
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
 
     /**
-     * Set Custom Context for PSTN targets
-     * @param sipHeaders collection of Custom Context for PSTN targets
-     * @return the CreateGroupCallOptions object itself
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the CreateGroupCallOptions object itself.
      */
-    public CreateGroupCallOptions setSipHeaders(Map<String, String> sipHeaders) {
-        this.sipHeaders = sipHeaders;
+    public CreateGroupCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 
-
     /**
-     * Set Custom Context for Voip targets
-     * @param voipHeaders collection of Custom Context for Voip targets
-     * @return the CreateGroupCallOptions object itself
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
      */
-    public CreateGroupCallOptions setVoipHeaders(Map<String, String> voipHeaders) {
-        this.voipHeaders = voipHeaders;
-        return this;
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
     }
 
+    /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
 
+    /**
+     *  get custom context
+     * @return custom context
+     */
+    public CustomCallingContext getCustomContext() {
+        return customContext;
+    }
 }

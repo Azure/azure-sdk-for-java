@@ -7,6 +7,7 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** An immutable client-side representation of SupportTicketDetails. */
 public interface SupportTicketDetails {
@@ -85,6 +86,27 @@ public interface SupportTicketDetails {
     Boolean require24X7Response();
 
     /**
+     * Gets the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
+     *
+     * @return the advancedDiagnosticConsent value.
+     */
+    Consent advancedDiagnosticConsent();
+
+    /**
+     * Gets the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
+     *
+     * @return the problemScopingQuestions value.
+     */
+    String problemScopingQuestions();
+
+    /**
+     * Gets the supportPlanId property: Support plan id associated with the support ticket.
+     *
+     * @return the supportPlanId value.
+     */
+    String supportPlanId();
+
+    /**
      * Gets the contactDetails property: Contact information of the user requesting to create a support ticket.
      *
      * @return the contactDetails value.
@@ -111,6 +133,13 @@ public interface SupportTicketDetails {
      * @return the supportPlanType value.
      */
     String supportPlanType();
+
+    /**
+     * Gets the supportPlanDisplayName property: Support plan type associated with the support ticket.
+     *
+     * @return the supportPlanDisplayName value.
+     */
+    String supportPlanDisplayName();
 
     /**
      * Gets the title property: Title of the support ticket.
@@ -163,6 +192,13 @@ public interface SupportTicketDetails {
     OffsetDateTime modifiedDate();
 
     /**
+     * Gets the fileWorkspaceName property: File workspace name.
+     *
+     * @return the fileWorkspaceName value.
+     */
+    String fileWorkspaceName();
+
+    /**
      * Gets the technicalTicketDetails property: Additional ticket details associated with a technical support ticket
      * request.
      *
@@ -178,6 +214,13 @@ public interface SupportTicketDetails {
     QuotaTicketDetails quotaTicketDetails();
 
     /**
+     * Gets the secondaryConsent property: This property indicates secondary consents for the support ticket.
+     *
+     * @return the secondaryConsent value.
+     */
+    List<SecondaryConsent> secondaryConsent();
+
+    /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner object.
      *
      * @return the inner object.
@@ -187,11 +230,13 @@ public interface SupportTicketDetails {
     /** The entirety of the SupportTicketDetails definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
+
     /** The SupportTicketDetails definition stages. */
     interface DefinitionStages {
         /** The first stage of the SupportTicketDetails definition. */
         interface Blank extends WithCreate {
         }
+
         /**
          * The stage of the SupportTicketDetails definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -202,14 +247,19 @@ public interface SupportTicketDetails {
                 DefinitionStages.WithProblemClassificationId,
                 DefinitionStages.WithSeverity,
                 DefinitionStages.WithRequire24X7Response,
+                DefinitionStages.WithAdvancedDiagnosticConsent,
+                DefinitionStages.WithProblemScopingQuestions,
+                DefinitionStages.WithSupportPlanId,
                 DefinitionStages.WithContactDetails,
                 DefinitionStages.WithServiceLevelAgreement,
                 DefinitionStages.WithSupportEngineer,
                 DefinitionStages.WithTitle,
                 DefinitionStages.WithProblemStartTime,
                 DefinitionStages.WithServiceId,
+                DefinitionStages.WithFileWorkspaceName,
                 DefinitionStages.WithTechnicalTicketDetails,
-                DefinitionStages.WithQuotaTicketDetails {
+                DefinitionStages.WithQuotaTicketDetails,
+                DefinitionStages.WithSecondaryConsent {
             /**
              * Executes the create request.
              *
@@ -225,6 +275,7 @@ public interface SupportTicketDetails {
              */
             SupportTicketDetails create(Context context);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify supportTicketId. */
         interface WithSupportTicketId {
             /**
@@ -235,6 +286,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withSupportTicketId(String supportTicketId);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -245,6 +297,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify problemClassificationId. */
         interface WithProblemClassificationId {
             /**
@@ -258,6 +311,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withProblemClassificationId(String problemClassificationId);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify severity. */
         interface WithSeverity {
             /**
@@ -274,6 +328,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withSeverity(SeverityLevel severity);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify require24X7Response. */
         interface WithRequire24X7Response {
             /**
@@ -284,6 +339,42 @@ public interface SupportTicketDetails {
              */
             WithCreate withRequire24X7Response(Boolean require24X7Response);
         }
+
+        /** The stage of the SupportTicketDetails definition allowing to specify advancedDiagnosticConsent. */
+        interface WithAdvancedDiagnosticConsent {
+            /**
+             * Specifies the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the
+             * support ticket..
+             *
+             * @param advancedDiagnosticConsent Advanced diagnostic consent to be updated on the support ticket.
+             * @return the next definition stage.
+             */
+            WithCreate withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent);
+        }
+
+        /** The stage of the SupportTicketDetails definition allowing to specify problemScopingQuestions. */
+        interface WithProblemScopingQuestions {
+            /**
+             * Specifies the problemScopingQuestions property: Problem scoping questions associated with the support
+             * ticket..
+             *
+             * @param problemScopingQuestions Problem scoping questions associated with the support ticket.
+             * @return the next definition stage.
+             */
+            WithCreate withProblemScopingQuestions(String problemScopingQuestions);
+        }
+
+        /** The stage of the SupportTicketDetails definition allowing to specify supportPlanId. */
+        interface WithSupportPlanId {
+            /**
+             * Specifies the supportPlanId property: Support plan id associated with the support ticket..
+             *
+             * @param supportPlanId Support plan id associated with the support ticket.
+             * @return the next definition stage.
+             */
+            WithCreate withSupportPlanId(String supportPlanId);
+        }
+
         /** The stage of the SupportTicketDetails definition allowing to specify contactDetails. */
         interface WithContactDetails {
             /**
@@ -295,6 +386,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withContactDetails(ContactProfile contactDetails);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify serviceLevelAgreement. */
         interface WithServiceLevelAgreement {
             /**
@@ -306,6 +398,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withServiceLevelAgreement(ServiceLevelAgreement serviceLevelAgreement);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify supportEngineer. */
         interface WithSupportEngineer {
             /**
@@ -317,6 +410,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withSupportEngineer(SupportEngineer supportEngineer);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify title. */
         interface WithTitle {
             /**
@@ -327,6 +421,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withTitle(String title);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify problemStartTime. */
         interface WithProblemStartTime {
             /**
@@ -337,6 +432,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withProblemStartTime(OffsetDateTime problemStartTime);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify serviceId. */
         interface WithServiceId {
             /**
@@ -349,6 +445,18 @@ public interface SupportTicketDetails {
              */
             WithCreate withServiceId(String serviceId);
         }
+
+        /** The stage of the SupportTicketDetails definition allowing to specify fileWorkspaceName. */
+        interface WithFileWorkspaceName {
+            /**
+             * Specifies the fileWorkspaceName property: File workspace name..
+             *
+             * @param fileWorkspaceName File workspace name.
+             * @return the next definition stage.
+             */
+            WithCreate withFileWorkspaceName(String fileWorkspaceName);
+        }
+
         /** The stage of the SupportTicketDetails definition allowing to specify technicalTicketDetails. */
         interface WithTechnicalTicketDetails {
             /**
@@ -361,6 +469,7 @@ public interface SupportTicketDetails {
              */
             WithCreate withTechnicalTicketDetails(TechnicalTicketDetails technicalTicketDetails);
         }
+
         /** The stage of the SupportTicketDetails definition allowing to specify quotaTicketDetails. */
         interface WithQuotaTicketDetails {
             /**
@@ -372,7 +481,20 @@ public interface SupportTicketDetails {
              */
             WithCreate withQuotaTicketDetails(QuotaTicketDetails quotaTicketDetails);
         }
+
+        /** The stage of the SupportTicketDetails definition allowing to specify secondaryConsent. */
+        interface WithSecondaryConsent {
+            /**
+             * Specifies the secondaryConsent property: This property indicates secondary consents for the support
+             * ticket.
+             *
+             * @param secondaryConsent This property indicates secondary consents for the support ticket.
+             * @return the next definition stage.
+             */
+            WithCreate withSecondaryConsent(List<SecondaryConsent> secondaryConsent);
+        }
     }
+
     /**
      * Begins update for the SupportTicketDetails resource.
      *
@@ -381,7 +503,12 @@ public interface SupportTicketDetails {
     SupportTicketDetails.Update update();
 
     /** The template for SupportTicketDetails update. */
-    interface Update extends UpdateStages.WithSeverity, UpdateStages.WithStatus, UpdateStages.WithContactDetails {
+    interface Update
+        extends UpdateStages.WithSeverity,
+            UpdateStages.WithStatus,
+            UpdateStages.WithContactDetails,
+            UpdateStages.WithAdvancedDiagnosticConsent,
+            UpdateStages.WithSecondaryConsent {
         /**
          * Executes the update request.
          *
@@ -397,6 +524,7 @@ public interface SupportTicketDetails {
          */
         SupportTicketDetails apply(Context context);
     }
+
     /** The SupportTicketDetails update stages. */
     interface UpdateStages {
         /** The stage of the SupportTicketDetails update allowing to specify severity. */
@@ -409,6 +537,7 @@ public interface SupportTicketDetails {
              */
             Update withSeverity(SeverityLevel severity);
         }
+
         /** The stage of the SupportTicketDetails update allowing to specify status. */
         interface WithStatus {
             /**
@@ -419,6 +548,7 @@ public interface SupportTicketDetails {
              */
             Update withStatus(Status status);
         }
+
         /** The stage of the SupportTicketDetails update allowing to specify contactDetails. */
         interface WithContactDetails {
             /**
@@ -429,7 +559,32 @@ public interface SupportTicketDetails {
              */
             Update withContactDetails(UpdateContactProfile contactDetails);
         }
+
+        /** The stage of the SupportTicketDetails update allowing to specify advancedDiagnosticConsent. */
+        interface WithAdvancedDiagnosticConsent {
+            /**
+             * Specifies the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the
+             * support ticket..
+             *
+             * @param advancedDiagnosticConsent Advanced diagnostic consent to be updated on the support ticket.
+             * @return the next definition stage.
+             */
+            Update withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent);
+        }
+
+        /** The stage of the SupportTicketDetails update allowing to specify secondaryConsent. */
+        interface WithSecondaryConsent {
+            /**
+             * Specifies the secondaryConsent property: This property indicates secondary consents for the support
+             * ticket.
+             *
+             * @param secondaryConsent This property indicates secondary consents for the support ticket.
+             * @return the next definition stage.
+             */
+            Update withSecondaryConsent(List<SecondaryConsent> secondaryConsent);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

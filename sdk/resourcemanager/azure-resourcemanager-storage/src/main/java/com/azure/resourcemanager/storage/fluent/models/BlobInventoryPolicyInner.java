@@ -26,6 +26,10 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of BlobInventoryPolicyInner class. */
+    public BlobInventoryPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Returns the storage account blob inventory policy rules.
      *

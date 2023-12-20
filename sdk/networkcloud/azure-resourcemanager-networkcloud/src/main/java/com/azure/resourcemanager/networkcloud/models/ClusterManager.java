@@ -176,11 +176,13 @@ public interface ClusterManager {
             DefinitionStages.WithFabricControllerId,
             DefinitionStages.WithCreate {
     }
+
     /** The ClusterManager definition stages. */
     interface DefinitionStages {
         /** The first stage of the ClusterManager definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ClusterManager definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -199,6 +201,7 @@ public interface ClusterManager {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ClusterManager definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -209,6 +212,7 @@ public interface ClusterManager {
              */
             WithFabricControllerId withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ClusterManager definition allowing to specify fabricControllerId. */
         interface WithFabricControllerId {
             /**
@@ -221,6 +225,7 @@ public interface ClusterManager {
              */
             WithCreate withFabricControllerId(String fabricControllerId);
         }
+
         /**
          * The stage of the ClusterManager definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -246,6 +251,7 @@ public interface ClusterManager {
              */
             ClusterManager create(Context context);
         }
+
         /** The stage of the ClusterManager definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -256,6 +262,7 @@ public interface ClusterManager {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ClusterManager definition allowing to specify analyticsWorkspaceId. */
         interface WithAnalyticsWorkspaceId {
             /**
@@ -268,6 +275,7 @@ public interface ClusterManager {
              */
             WithCreate withAnalyticsWorkspaceId(String analyticsWorkspaceId);
         }
+
         /** The stage of the ClusterManager definition allowing to specify availabilityZones. */
         interface WithAvailabilityZones {
             /**
@@ -282,6 +290,7 @@ public interface ClusterManager {
              */
             WithCreate withAvailabilityZones(List<String> availabilityZones);
         }
+
         /** The stage of the ClusterManager definition allowing to specify managedResourceGroupConfiguration. */
         interface WithManagedResourceGroupConfiguration {
             /**
@@ -298,6 +307,7 @@ public interface ClusterManager {
             WithCreate withManagedResourceGroupConfiguration(
                 ManagedResourceGroupConfiguration managedResourceGroupConfiguration);
         }
+
         /** The stage of the ClusterManager definition allowing to specify vmSize. */
         interface WithVmSize {
             /**
@@ -313,6 +323,7 @@ public interface ClusterManager {
             WithCreate withVmSize(String vmSize);
         }
     }
+
     /**
      * Begins update for the ClusterManager resource.
      *
@@ -337,6 +348,7 @@ public interface ClusterManager {
          */
         ClusterManager apply(Context context);
     }
+
     /** The ClusterManager update stages. */
     interface UpdateStages {
         /** The stage of the ClusterManager update allowing to specify tags. */
@@ -350,6 +362,7 @@ public interface ClusterManager {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

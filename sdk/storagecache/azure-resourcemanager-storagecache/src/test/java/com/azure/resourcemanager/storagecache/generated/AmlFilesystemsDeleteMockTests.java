@@ -56,6 +56,6 @@ public final class AmlFilesystemsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.amlFilesystems().delete("a", "rqmq", com.azure.core.util.Context.NONE);
+        manager.amlFilesystems().delete("gge", "dunyg", com.azure.core.util.Context.NONE);
     }
 }

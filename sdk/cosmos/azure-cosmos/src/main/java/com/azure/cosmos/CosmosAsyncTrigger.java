@@ -123,7 +123,7 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Read,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosTriggerResponse> replaceInternal(CosmosTriggerProperties triggerSettings, Context context) {
@@ -146,7 +146,7 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Replace,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosTriggerResponse> deleteInternal(Context context) {
@@ -167,6 +167,6 @@ public class CosmosAsyncTrigger {
             null,
             OperationType.Delete,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 }

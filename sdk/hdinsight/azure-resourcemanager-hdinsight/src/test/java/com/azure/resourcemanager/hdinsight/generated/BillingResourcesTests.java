@@ -11,68 +11,64 @@ import com.azure.resourcemanager.hdinsight.models.DiskBillingMeters;
 import com.azure.resourcemanager.hdinsight.models.Tier;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingResourcesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BillingResources model =
             BinaryData
                 .fromString(
-                    "{\"region\":\"ruvdmov\",\"billingMeters\":[{\"meterParameter\":\"xwabmqoe\",\"meter\":\"ifrvtpu\",\"unit\":\"jmqlgkfb\"},{\"meterParameter\":\"doaon\",\"meter\":\"jcntuj\",\"unit\":\"c\"},{\"meterParameter\":\"df\",\"meter\":\"waezkojvd\",\"unit\":\"zfoqouicybxar\"},{\"meterParameter\":\"szufoxciqopidoa\",\"meter\":\"iodhkhazxkhnz\",\"unit\":\"nlwntoe\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"wbw\",\"sku\":\"szzcmrvexztv\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"sfraoyzko\",\"sku\":\"tlmngu\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"aldsy\",\"sku\":\"ximerqfobwyznk\",\"tier\":\"Standard\"}]}")
+                    "{\"region\":\"fcluyov\",\"billingMeters\":[{\"meterParameter\":\"kfezzxscyhwz\",\"meter\":\"irujbz\",\"unit\":\"mvzzbtdcqvp\"},{\"meterParameter\":\"yujviylwdshfssn\",\"meter\":\"gy\",\"unit\":\"rymsgaojfmw\"},{\"meterParameter\":\"otmrfhir\",\"meter\":\"ymoxoftpipiwyczu\",\"unit\":\"a\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"lihhyuspskasdvlm\",\"sku\":\"dgzxulucvpamrsr\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"xurisjnhnyt\",\"sku\":\"fq\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"mrhublwpc\",\"sku\":\"utr\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"auutpwoqhihe\",\"sku\":\"g\",\"tier\":\"Premium\"}]}")
                 .toObject(BillingResources.class);
-        Assertions.assertEquals("ruvdmov", model.region());
-        Assertions.assertEquals("xwabmqoe", model.billingMeters().get(0).meterParameter());
-        Assertions.assertEquals("ifrvtpu", model.billingMeters().get(0).meter());
-        Assertions.assertEquals("jmqlgkfb", model.billingMeters().get(0).unit());
-        Assertions.assertEquals("wbw", model.diskBillingMeters().get(0).diskRpMeter());
-        Assertions.assertEquals("szzcmrvexztv", model.diskBillingMeters().get(0).sku());
+        Assertions.assertEquals("fcluyov", model.region());
+        Assertions.assertEquals("kfezzxscyhwz", model.billingMeters().get(0).meterParameter());
+        Assertions.assertEquals("irujbz", model.billingMeters().get(0).meter());
+        Assertions.assertEquals("mvzzbtdcqvp", model.billingMeters().get(0).unit());
+        Assertions.assertEquals("lihhyuspskasdvlm", model.diskBillingMeters().get(0).diskRpMeter());
+        Assertions.assertEquals("dgzxulucvpamrsr", model.diskBillingMeters().get(0).sku());
         Assertions.assertEquals(Tier.PREMIUM, model.diskBillingMeters().get(0).tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BillingResources model =
             new BillingResources()
-                .withRegion("ruvdmov")
+                .withRegion("fcluyov")
                 .withBillingMeters(
                     Arrays
                         .asList(
                             new BillingMeters()
-                                .withMeterParameter("xwabmqoe")
-                                .withMeter("ifrvtpu")
-                                .withUnit("jmqlgkfb"),
-                            new BillingMeters().withMeterParameter("doaon").withMeter("jcntuj").withUnit("c"),
+                                .withMeterParameter("kfezzxscyhwz")
+                                .withMeter("irujbz")
+                                .withUnit("mvzzbtdcqvp"),
                             new BillingMeters()
-                                .withMeterParameter("df")
-                                .withMeter("waezkojvd")
-                                .withUnit("zfoqouicybxar"),
+                                .withMeterParameter("yujviylwdshfssn")
+                                .withMeter("gy")
+                                .withUnit("rymsgaojfmw"),
                             new BillingMeters()
-                                .withMeterParameter("szufoxciqopidoa")
-                                .withMeter("iodhkhazxkhnz")
-                                .withUnit("nlwntoe")))
+                                .withMeterParameter("otmrfhir")
+                                .withMeter("ymoxoftpipiwyczu")
+                                .withUnit("a")))
                 .withDiskBillingMeters(
                     Arrays
                         .asList(
                             new DiskBillingMeters()
-                                .withDiskRpMeter("wbw")
-                                .withSku("szzcmrvexztv")
+                                .withDiskRpMeter("lihhyuspskasdvlm")
+                                .withSku("dgzxulucvpamrsr")
                                 .withTier(Tier.PREMIUM),
+                            new DiskBillingMeters().withDiskRpMeter("xurisjnhnyt").withSku("fq").withTier(Tier.PREMIUM),
+                            new DiskBillingMeters().withDiskRpMeter("mrhublwpc").withSku("utr").withTier(Tier.STANDARD),
                             new DiskBillingMeters()
-                                .withDiskRpMeter("sfraoyzko")
-                                .withSku("tlmngu")
-                                .withTier(Tier.STANDARD),
-                            new DiskBillingMeters()
-                                .withDiskRpMeter("aldsy")
-                                .withSku("ximerqfobwyznk")
-                                .withTier(Tier.STANDARD)));
+                                .withDiskRpMeter("auutpwoqhihe")
+                                .withSku("g")
+                                .withTier(Tier.PREMIUM)));
         model = BinaryData.fromObject(model).toObject(BillingResources.class);
-        Assertions.assertEquals("ruvdmov", model.region());
-        Assertions.assertEquals("xwabmqoe", model.billingMeters().get(0).meterParameter());
-        Assertions.assertEquals("ifrvtpu", model.billingMeters().get(0).meter());
-        Assertions.assertEquals("jmqlgkfb", model.billingMeters().get(0).unit());
-        Assertions.assertEquals("wbw", model.diskBillingMeters().get(0).diskRpMeter());
-        Assertions.assertEquals("szzcmrvexztv", model.diskBillingMeters().get(0).sku());
+        Assertions.assertEquals("fcluyov", model.region());
+        Assertions.assertEquals("kfezzxscyhwz", model.billingMeters().get(0).meterParameter());
+        Assertions.assertEquals("irujbz", model.billingMeters().get(0).meter());
+        Assertions.assertEquals("mvzzbtdcqvp", model.billingMeters().get(0).unit());
+        Assertions.assertEquals("lihhyuspskasdvlm", model.diskBillingMeters().get(0).diskRpMeter());
+        Assertions.assertEquals("dgzxulucvpamrsr", model.diskBillingMeters().get(0).sku());
         Assertions.assertEquals(Tier.PREMIUM, model.diskBillingMeters().get(0).tier());
     }
 }

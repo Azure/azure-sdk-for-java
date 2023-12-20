@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AppendVariable activity properties. */
+/**
+ * AppendVariable activity properties.
+ */
 @Fluent
 public final class AppendVariableActivityTypeProperties {
     /*
@@ -17,18 +19,21 @@ public final class AppendVariableActivityTypeProperties {
     private String variableName;
 
     /*
-     * Value to be appended. Could be a static value or Expression
+     * Value to be appended. Type: could be a static value matching type of the variable item or Expression with
+     * resultType matching type of the variable item
      */
     @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of AppendVariableActivityTypeProperties class. */
+    /**
+     * Creates an instance of AppendVariableActivityTypeProperties class.
+     */
     public AppendVariableActivityTypeProperties() {
     }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be appended to.
-     *
+     * 
      * @return the variableName value.
      */
     public String variableName() {
@@ -37,7 +42,7 @@ public final class AppendVariableActivityTypeProperties {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be appended to.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the AppendVariableActivityTypeProperties object itself.
      */
@@ -47,8 +52,9 @@ public final class AppendVariableActivityTypeProperties {
     }
 
     /**
-     * Get the value property: Value to be appended. Could be a static value or Expression.
-     *
+     * Get the value property: Value to be appended. Type: could be a static value matching type of the variable item
+     * or Expression with resultType matching type of the variable item.
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -56,8 +62,9 @@ public final class AppendVariableActivityTypeProperties {
     }
 
     /**
-     * Set the value property: Value to be appended. Could be a static value or Expression.
-     *
+     * Set the value property: Value to be appended. Type: could be a static value matching type of the variable item
+     * or Expression with resultType matching type of the variable item.
+     * 
      * @param value the value value to set.
      * @return the AppendVariableActivityTypeProperties object itself.
      */
@@ -68,7 +75,7 @@ public final class AppendVariableActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

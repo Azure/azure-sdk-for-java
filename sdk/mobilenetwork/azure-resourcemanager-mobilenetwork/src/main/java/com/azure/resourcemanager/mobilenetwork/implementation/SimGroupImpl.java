@@ -8,12 +8,12 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimGroupInner;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
 import com.azure.resourcemanager.mobilenetwork.models.KeyVaultKey;
 import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimGroup;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
 import java.util.Map;
 
@@ -91,7 +91,7 @@ public final class SimGroupImpl implements SimGroup, SimGroup.Definition, SimGro
 
     private String simGroupName;
 
-    private TagsObject updateParameters;
+    private IdentityAndTagsObject updateParameters;
 
     public SimGroupImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -123,7 +123,7 @@ public final class SimGroupImpl implements SimGroup, SimGroup.Definition, SimGro
     }
 
     public SimGroupImpl update() {
-        this.updateParameters = new TagsObject();
+        this.updateParameters = new IdentityAndTagsObject();
         return this;
     }
 
@@ -196,8 +196,13 @@ public final class SimGroupImpl implements SimGroup, SimGroup.Definition, SimGro
     }
 
     public SimGroupImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
     }
 
     public SimGroupImpl withEncryptionKey(KeyVaultKey encryptionKey) {

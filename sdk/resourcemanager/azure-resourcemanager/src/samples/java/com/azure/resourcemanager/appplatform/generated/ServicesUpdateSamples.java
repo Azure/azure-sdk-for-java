@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Services Update. */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_Update.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_Update.json
      */
     /**
      * Sample code: Services_Update.

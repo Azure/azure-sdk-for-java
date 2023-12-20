@@ -94,17 +94,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeReceiptDataNullData(HttpClient httpClient,
-                                             FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeReceipts(null, 0));
-    }
-
-    /**
      * Verifies content type will be auto detected when using receipt API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -250,7 +239,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeReceiptFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -369,16 +357,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult(), true);
         }, CONTENT_FORM_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeContentResultWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeContent(null, 0));
     }
 
     /**
@@ -570,7 +548,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeContentFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -812,47 +789,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                             Context.NONE)
                             .setPollInterval(durationTestMode));
             }), INVOICE_6_PDF);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithNullModelId(HttpClient httpClient,
-                                                              FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                    null,
-                    data,
-                    dataLength,
-                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
-                    Context.NONE)
-                    .setPollInterval(durationTestMode));
-            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }, INVOICE_6_PDF);
-    }
-
-    /**
-     * Verifies an exception thrown for an empty model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithEmptyModelId(HttpClient httpClient,
-                                                               FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-
-        dataRunner((data, dataLength) -> {
-            Exception ex = assertThrows(RuntimeException.class,
-                () -> client.beginRecognizeCustomForms("",
-                        data,
-                        dataLength,
-                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
-                        Context.NONE)
-                        .setPollInterval(durationTestMode));
-            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
-        }, INVOICE_6_PDF);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1197,38 +1133,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a null model id when recognizing custom form from URL.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormFromUrlLabeledDataWithNullModelId(HttpClient httpClient,
-                                                                     FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        urlRunner(fileUrl -> {
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                null, fileUrl, new RecognizeCustomFormsOptions()
-                        .setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }, CONTENT_FORM_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for an empty model id for recognizing custom forms from URL.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormFromUrlLabeledDataWithEmptyModelId(HttpClient httpClient,
-                                                                      FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        urlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl("", fileUrl,
-                        new RecognizeCustomFormsOptions().setPollInterval(durationTestMode), Context.NONE));
-            assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
-        }), CONTENT_FORM_JPG);
-    }
-
-    /**
      * Verifies custom form data for an URL document data with labeled data and include element references
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1306,7 +1210,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeCustomFormFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1701,18 +1604,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeBusinessCardDataNullData(HttpClient httpClient,
-                                                  FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class,
-            () -> client.beginRecognizeBusinessCards(null, 0));
-    }
-
-    /**
      * Verifies content type will be auto detected when using business card API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1858,7 +1749,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeBusinessCardFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                            FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -2088,7 +1978,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void recognizeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                       FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -2196,17 +2085,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult(), false);
         }, LICENSE_CARD_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeIDDocumentDataNullData(HttpClient httpClient,
-                                                FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class, () -> client.beginRecognizeIdentityDocuments(null, 0));
     }
 
     /**

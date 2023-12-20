@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LocalRules. */
+/**
+ * Resource collection API of LocalRules.
+ */
 public interface LocalRules {
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface LocalRules {
 
     /**
      * List LocalRulesResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface LocalRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LocalRulesResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<LocalRulesResource> listByLocalRulestacks(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -48,12 +50,12 @@ public interface LocalRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LocalRulesResource along with {@link Response}.
      */
-    Response<LocalRulesResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, Context context);
+    Response<LocalRulesResource> getWithResponse(String resourceGroupName, String localRulestackName, String priority,
+        Context context);
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -66,7 +68,7 @@ public interface LocalRules {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -78,7 +80,7 @@ public interface LocalRules {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -91,7 +93,7 @@ public interface LocalRules {
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -102,12 +104,12 @@ public interface LocalRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return counters along with {@link Response}.
      */
-    Response<RuleCounter> getCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounter> getCountersWithResponse(String resourceGroupName, String localRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Get counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -120,7 +122,7 @@ public interface LocalRules {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -131,12 +133,12 @@ public interface LocalRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> refreshCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<Void> refreshCountersWithResponse(String resourceGroupName, String localRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -148,7 +150,7 @@ public interface LocalRules {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -159,12 +161,12 @@ public interface LocalRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule counter reset along with {@link Response}.
      */
-    Response<RuleCounterReset> resetCountersWithResponse(
-        String resourceGroupName, String localRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterReset> resetCountersWithResponse(String resourceGroupName, String localRulestackName,
+        String priority, String firewallName, Context context);
 
     /**
      * Reset counters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param priority Local Rule priority.
@@ -177,7 +179,7 @@ public interface LocalRules {
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,7 +190,7 @@ public interface LocalRules {
 
     /**
      * Get a LocalRulesResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +202,7 @@ public interface LocalRules {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,7 +212,7 @@ public interface LocalRules {
 
     /**
      * Delete a LocalRulesResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +223,7 @@ public interface LocalRules {
 
     /**
      * Begins definition for a new LocalRulesResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LocalRulesResource definition.
      */

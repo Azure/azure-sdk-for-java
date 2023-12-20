@@ -265,9 +265,13 @@ public class SpringAppImpl
             withDefaultActiveDeployment();
         }
         return manager().serviceClient().getApps().createOrUpdateAsync(
-            parent().resourceGroupName(), parent().name(), name(), new AppResourceInner())
+            parent().resourceGroupName(), parent().name(), name(), innerModel())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            })
             .thenMany(springAppDeploymentToCreate.createAsync())
-            .then(updateResourceAsync());
+            .then(Mono.just(this));
     }
 
     @Override
@@ -320,9 +324,9 @@ public class SpringAppImpl
     @Override
     public SpringAppImpl withDefaultActiveDeployment() {
         String defaultDeploymentName = "default";
-        withActiveDeployment(defaultDeploymentName);
         springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
-            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
+            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName))
+            .withActivation();
         return this;
     }
 
@@ -331,11 +335,10 @@ public class SpringAppImpl
     public <T extends
         SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
         SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
-        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name);
+        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name).withActivation();
     }
 
-    SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
-        withActiveDeployment(deployment.name());
+    SpringAppImpl addDeployment(SpringAppDeploymentImpl deployment) {
         springAppDeploymentToCreate = deployment;
         return this;
     }

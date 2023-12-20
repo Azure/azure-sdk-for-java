@@ -22,6 +22,10 @@ public final class PolicyDescriptionContractProperties {
     @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private Long scope;
 
+    /** Creates an instance of PolicyDescriptionContractProperties class. */
+    public PolicyDescriptionContractProperties() {
+    }
+
     /**
      * Get the description property: Policy description.
      *

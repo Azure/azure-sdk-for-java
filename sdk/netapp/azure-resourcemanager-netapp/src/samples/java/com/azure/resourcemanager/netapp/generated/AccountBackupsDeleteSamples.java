@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for AccountBackups Delete. */
+/**
+ * Samples for AccountBackups Delete.
+ */
 public final class AccountBackupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_Delete.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Backups_Account_Delete
+     * .json
      */
     /**
      * Sample code: AccountBackups_Delete.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountBackupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The ServicesSetPropertiesHeaders model. */
+/**
+ * The ServicesSetPropertiesHeaders model.
+ */
 @Fluent
 public final class ServicesSetPropertiesHeaders {
     /*
@@ -33,7 +35,7 @@ public final class ServicesSetPropertiesHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ServicesSetPropertiesHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesSetPropertiesHeaders(HttpHeaders rawHeaders) {
@@ -44,7 +46,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -53,7 +55,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
@@ -64,7 +66,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -73,7 +75,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */
@@ -84,7 +86,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -93,7 +95,7 @@ public final class ServicesSetPropertiesHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the ServicesSetPropertiesHeaders object itself.
      */

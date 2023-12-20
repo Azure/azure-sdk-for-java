@@ -12,6 +12,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
+import com.azure.resourcemanager.webpubsub.models.EventHandler;
+import com.azure.resourcemanager.webpubsub.models.EventListener;
+import com.azure.resourcemanager.webpubsub.models.EventListenerEndpoint;
+import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
+import com.azure.resourcemanager.webpubsub.models.ManagedIdentitySettings;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubProperties;
 import java.nio.ByteBuffer;
@@ -33,7 +40,7 @@ public final class WebPubSubHubsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"uq\"},\"id\":\"hwyg\",\"name\":\"lvdnkfx\",\"type\":\"semdwzrmu\"}";
+            "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"itgueiookjbs\",\"userEventPattern\":\"rtdtpdelq\",\"systemEvents\":[\"lmotoebnfxofvcj\",\"gdirazf\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"dujtmvcope\"},\"id\":\"m\",\"name\":\"urbuhhlkyqltq\",\"type\":\"rogtuwkf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +71,67 @@ public final class WebPubSubHubsCreateOrUpdateMockTests {
         WebPubSubHub response =
             manager
                 .webPubSubHubs()
-                .define("syqtfi")
-                .withExistingWebPubSub("whbotzingamv", "phoszqz")
+                .define("n")
+                .withExistingWebPubSub("ixjawrtm", "fjmyccxlzhco")
                 .withProperties(
                     new WebPubSubHubProperties()
-                        .withEventHandlers(Arrays.asList())
-                        .withEventListeners(Arrays.asList())
-                        .withAnonymousConnectPolicy("vdkfwynwcvtbvk"))
+                        .withEventHandlers(
+                            Arrays
+                                .asList(
+                                    new EventHandler()
+                                        .withUrlTemplate("nekhenlusfnrdtj")
+                                        .withUserEventPattern("xrdcqtj")
+                                        .withSystemEvents(Arrays.asList("ttgepuslvyjtcv"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.NONE)
+                                                .withManagedIdentity(new ManagedIdentitySettings())),
+                                    new EventHandler()
+                                        .withUrlTemplate("iziesfuughtuq")
+                                        .withUserEventPattern("cjxeygt")
+                                        .withSystemEvents(Arrays.asList("uicbuewmrsw"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.MANAGED_IDENTITY)
+                                                .withManagedIdentity(new ManagedIdentitySettings())),
+                                    new EventHandler()
+                                        .withUrlTemplate("zrhwp")
+                                        .withUserEventPattern("xjbaqehgpdohzjq")
+                                        .withSystemEvents(Arrays.asList("coi", "e"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.MANAGED_IDENTITY)
+                                                .withManagedIdentity(new ManagedIdentitySettings())),
+                                    new EventHandler()
+                                        .withUrlTemplate("wfepbnwgfmx")
+                                        .withUserEventPattern("cgbjbgdlfgt")
+                                        .withSystemEvents(Arrays.asList("naquflq", "ctqhamzjrwdk"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.NONE)
+                                                .withManagedIdentity(new ManagedIdentitySettings()))))
+                        .withEventListeners(
+                            Arrays
+                                .asList(
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint()),
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint()),
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint()),
+                                    new EventListener()
+                                        .withFilter(new EventListenerFilter())
+                                        .withEndpoint(new EventListenerEndpoint())))
+                        .withAnonymousConnectPolicy("zi"))
                 .create();
 
-        Assertions.assertEquals("uq", response.properties().anonymousConnectPolicy());
+        Assertions.assertEquals("itgueiookjbs", response.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("rtdtpdelq", response.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("lmotoebnfxofvcj", response.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals(UpstreamAuthType.NONE, response.properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("dujtmvcope", response.properties().anonymousConnectPolicy());
     }
 }

@@ -17,6 +17,10 @@ public final class CacheUpdateParameters {
     @JsonProperty(value = "properties")
     private CacheUpdateProperties innerProperties;
 
+    /** Creates an instance of CacheUpdateParameters class. */
+    public CacheUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Cache update properties details.
      *

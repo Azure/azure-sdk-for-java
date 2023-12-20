@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Managed identity properties retrieved from ARM request headers. */
 @Fluent
@@ -27,6 +29,13 @@ public final class ManagedIdentityProperties {
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
+
+    /*
+     * Properties of user-assigned managed identities
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
     /**
      * Get the type property: Type of the managed identity.
@@ -89,10 +98,41 @@ public final class ManagedIdentityProperties {
     }
 
     /**
+     * Get the userAssignedIdentities property: Properties of user-assigned managed identities.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedManagedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: Properties of user-assigned managed identities.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ManagedIdentityProperties object itself.
+     */
+    public ManagedIdentityProperties withUserAssignedIdentities(
+        Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

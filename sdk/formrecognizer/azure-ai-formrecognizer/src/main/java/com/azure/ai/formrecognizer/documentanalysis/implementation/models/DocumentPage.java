@@ -4,129 +4,90 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** Content and layout elements extracted from a page from the input. */
+/**
+ * Content and layout elements extracted from a page from the input.
+ */
 @Fluent
-public final class DocumentPage {
-    /*
-     * Kind of document page.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private DocumentPageKind kind;
-
+public final class DocumentPage implements JsonSerializable<DocumentPage> {
     /*
      * 1-based page number in the input document.
      */
-    @JsonProperty(value = "pageNumber", required = true)
-    private int pageNumber;
+    private final int pageNumber;
 
     /*
      * The general orientation of the content in clockwise direction, measured in degrees between (-180, 180].
      */
-    @JsonProperty(value = "angle")
     private Float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
-    @JsonProperty(value = "width")
     private Float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
-    @JsonProperty(value = "height")
     private Float height;
 
     /*
      * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit
      * is "inch".
      */
-    @JsonProperty(value = "unit")
     private LengthUnit unit;
 
     /*
      * Location of the page in the reading order concatenated content.
      */
-    @JsonProperty(value = "spans", required = true)
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
     /*
      * Extracted words from the page.
      */
-    @JsonProperty(value = "words")
     private List<DocumentWord> words;
 
     /*
      * Extracted selection marks from the page.
      */
-    @JsonProperty(value = "selectionMarks")
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
      * Extracted lines from the page, potentially containing both textual and visual elements.
      */
-    @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
-
-    /*
-     * Extracted annotations from the page.
-     */
-    @JsonProperty(value = "annotations")
-    private List<DocumentAnnotation> annotations;
 
     /*
      * Extracted barcodes from the page.
      */
-    @JsonProperty(value = "barcodes")
     private List<DocumentBarcode> barcodes;
 
     /*
      * Extracted formulas from the page.
      */
-    @JsonProperty(value = "formulas")
     private List<DocumentFormula> formulas;
-
-    /*
-     * Extracted images from the page.
-     */
-    @JsonProperty(value = "images")
-    private List<DocumentImage> images;
 
     /**
      * Creates an instance of DocumentPage class.
-     *
-     * @param kind the kind value to set.
+     * 
      * @param pageNumber the pageNumber value to set.
      * @param spans the spans value to set.
      */
-    @JsonCreator
-    public DocumentPage(
-            @JsonProperty(value = "kind", required = true) DocumentPageKind kind,
-            @JsonProperty(value = "pageNumber", required = true) int pageNumber,
-            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
-        this.kind = kind;
+    public DocumentPage(int pageNumber, List<DocumentSpan> spans) {
         this.pageNumber = pageNumber;
         this.spans = spans;
     }
 
     /**
-     * Get the kind property: Kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
      * Get the pageNumber property: 1-based page number in the input document.
-     *
+     * 
      * @return the pageNumber value.
      */
     public int getPageNumber() {
@@ -136,7 +97,7 @@ public final class DocumentPage {
     /**
      * Get the angle property: The general orientation of the content in clockwise direction, measured in degrees
      * between (-180, 180].
-     *
+     * 
      * @return the angle value.
      */
     public Float getAngle() {
@@ -146,7 +107,7 @@ public final class DocumentPage {
     /**
      * Set the angle property: The general orientation of the content in clockwise direction, measured in degrees
      * between (-180, 180].
-     *
+     * 
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
@@ -157,7 +118,7 @@ public final class DocumentPage {
 
     /**
      * Get the width property: The width of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @return the width value.
      */
     public Float getWidth() {
@@ -166,7 +127,7 @@ public final class DocumentPage {
 
     /**
      * Set the width property: The width of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
@@ -177,7 +138,7 @@ public final class DocumentPage {
 
     /**
      * Get the height property: The height of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @return the height value.
      */
     public Float getHeight() {
@@ -186,7 +147,7 @@ public final class DocumentPage {
 
     /**
      * Set the height property: The height of the image/PDF in pixels/inches, respectively.
-     *
+     * 
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
@@ -198,7 +159,7 @@ public final class DocumentPage {
     /**
      * Get the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
-     *
+     * 
      * @return the unit value.
      */
     public LengthUnit getUnit() {
@@ -208,7 +169,7 @@ public final class DocumentPage {
     /**
      * Set the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
-     *
+     * 
      * @param unit the unit value to set.
      * @return the DocumentPage object itself.
      */
@@ -219,7 +180,7 @@ public final class DocumentPage {
 
     /**
      * Get the spans property: Location of the page in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -228,7 +189,7 @@ public final class DocumentPage {
 
     /**
      * Get the words property: Extracted words from the page.
-     *
+     * 
      * @return the words value.
      */
     public List<DocumentWord> getWords() {
@@ -237,7 +198,7 @@ public final class DocumentPage {
 
     /**
      * Set the words property: Extracted words from the page.
-     *
+     * 
      * @param words the words value to set.
      * @return the DocumentPage object itself.
      */
@@ -248,7 +209,7 @@ public final class DocumentPage {
 
     /**
      * Get the selectionMarks property: Extracted selection marks from the page.
-     *
+     * 
      * @return the selectionMarks value.
      */
     public List<DocumentSelectionMark> getSelectionMarks() {
@@ -257,7 +218,7 @@ public final class DocumentPage {
 
     /**
      * Set the selectionMarks property: Extracted selection marks from the page.
-     *
+     * 
      * @param selectionMarks the selectionMarks value to set.
      * @return the DocumentPage object itself.
      */
@@ -268,7 +229,7 @@ public final class DocumentPage {
 
     /**
      * Get the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
-     *
+     * 
      * @return the lines value.
      */
     public List<DocumentLine> getLines() {
@@ -277,7 +238,7 @@ public final class DocumentPage {
 
     /**
      * Set the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
-     *
+     * 
      * @param lines the lines value to set.
      * @return the DocumentPage object itself.
      */
@@ -287,28 +248,8 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the annotations property: Extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Extracted annotations from the page.
-     *
-     * @param annotations the annotations value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setAnnotations(List<DocumentAnnotation> annotations) {
-        this.annotations = annotations;
-        return this;
-    }
-
-    /**
      * Get the barcodes property: Extracted barcodes from the page.
-     *
+     * 
      * @return the barcodes value.
      */
     public List<DocumentBarcode> getBarcodes() {
@@ -317,7 +258,7 @@ public final class DocumentPage {
 
     /**
      * Set the barcodes property: Extracted barcodes from the page.
-     *
+     * 
      * @param barcodes the barcodes value to set.
      * @return the DocumentPage object itself.
      */
@@ -328,7 +269,7 @@ public final class DocumentPage {
 
     /**
      * Get the formulas property: Extracted formulas from the page.
-     *
+     * 
      * @return the formulas value.
      */
     public List<DocumentFormula> getFormulas() {
@@ -337,7 +278,7 @@ public final class DocumentPage {
 
     /**
      * Set the formulas property: Extracted formulas from the page.
-     *
+     * 
      * @param formulas the formulas value to set.
      * @return the DocumentPage object itself.
      */
@@ -346,23 +287,104 @@ public final class DocumentPage {
         return this;
     }
 
-    /**
-     * Get the images property: Extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pageNumber", this.pageNumber);
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("angle", this.angle);
+        jsonWriter.writeNumberField("width", this.width);
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeArrayField("words", this.words, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("selectionMarks", this.selectionMarks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("barcodes", this.barcodes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("formulas", this.formulas, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
+     * Reads an instance of DocumentPage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentPage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentPage.
      */
-    public DocumentPage setImages(List<DocumentImage> images) {
-        this.images = images;
-        return this;
+    public static DocumentPage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean pageNumberFound = false;
+            int pageNumber = 0;
+            boolean spansFound = false;
+            List<DocumentSpan> spans = null;
+            Float angle = null;
+            Float width = null;
+            Float height = null;
+            LengthUnit unit = null;
+            List<DocumentWord> words = null;
+            List<DocumentSelectionMark> selectionMarks = null;
+            List<DocumentLine> lines = null;
+            List<DocumentBarcode> barcodes = null;
+            List<DocumentFormula> formulas = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pageNumber".equals(fieldName)) {
+                    pageNumber = reader.getInt();
+                    pageNumberFound = true;
+                } else if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                    spansFound = true;
+                } else if ("angle".equals(fieldName)) {
+                    angle = reader.getNullable(JsonReader::getFloat);
+                } else if ("width".equals(fieldName)) {
+                    width = reader.getNullable(JsonReader::getFloat);
+                } else if ("height".equals(fieldName)) {
+                    height = reader.getNullable(JsonReader::getFloat);
+                } else if ("unit".equals(fieldName)) {
+                    unit = LengthUnit.fromString(reader.getString());
+                } else if ("words".equals(fieldName)) {
+                    words = reader.readArray(reader1 -> DocumentWord.fromJson(reader1));
+                } else if ("selectionMarks".equals(fieldName)) {
+                    selectionMarks = reader.readArray(reader1 -> DocumentSelectionMark.fromJson(reader1));
+                } else if ("lines".equals(fieldName)) {
+                    lines = reader.readArray(reader1 -> DocumentLine.fromJson(reader1));
+                } else if ("barcodes".equals(fieldName)) {
+                    barcodes = reader.readArray(reader1 -> DocumentBarcode.fromJson(reader1));
+                } else if ("formulas".equals(fieldName)) {
+                    formulas = reader.readArray(reader1 -> DocumentFormula.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (pageNumberFound && spansFound) {
+                DocumentPage deserializedDocumentPage = new DocumentPage(pageNumber, spans);
+                deserializedDocumentPage.angle = angle;
+                deserializedDocumentPage.width = width;
+                deserializedDocumentPage.height = height;
+                deserializedDocumentPage.unit = unit;
+                deserializedDocumentPage.words = words;
+                deserializedDocumentPage.selectionMarks = selectionMarks;
+                deserializedDocumentPage.lines = lines;
+                deserializedDocumentPage.barcodes = barcodes;
+                deserializedDocumentPage.formulas = formulas;
+
+                return deserializedDocumentPage;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!pageNumberFound) {
+                missingProperties.add("pageNumber");
+            }
+            if (!spansFound) {
+                missingProperties.add("spans");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

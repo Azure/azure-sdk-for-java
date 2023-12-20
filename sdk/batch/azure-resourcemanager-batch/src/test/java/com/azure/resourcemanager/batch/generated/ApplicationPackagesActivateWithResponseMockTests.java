@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParameters;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
@@ -32,7 +31,7 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"Pending\",\"format\":\"nuuzkopbm\",\"storageUrl\":\"rfdwoyu\",\"storageUrlExpiry\":\"2021-03-01T11:30:13Z\",\"lastActivationTime\":\"2020-12-20T18:42:28Z\"},\"etag\":\"efozbhdms\",\"id\":\"l\",\"name\":\"zqhof\",\"type\":\"rmaequ\"}";
+            "{\"properties\":{\"state\":\"Pending\",\"format\":\"onok\",\"storageUrl\":\"rjqc\",\"storageUrlExpiry\":\"2021-10-08T15:41:33Z\",\"lastActivationTime\":\"2021-02-12T14:44:45Z\"},\"etag\":\"rlazszrnw\",\"id\":\"iin\",\"name\":\"fpwpjylwbt\",\"type\":\"h\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +63,12 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
             manager
                 .applicationPackages()
                 .activateWithResponse(
-                    "tdlmkkzevd",
-                    "hewpusdsttwv",
-                    "gvbbejdcng",
-                    "qmoa",
-                    new ActivateApplicationPackageParameters().withFormat("ufgmjzrwrdg"),
-                    Context.NONE)
+                    "wbdsr",
+                    "zpdrhneu",
+                    "owqkdwytisi",
+                    "ircgpikpz",
+                    new ActivateApplicationPackageParameters().withFormat("mejzanlfzxia"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

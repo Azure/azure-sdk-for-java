@@ -11,12 +11,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for all execution activities. */
+/**
+ * Base class for all execution activities.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = ExecutionActivity.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = ExecutionActivity.class)
 @JsonTypeName("Execution")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Copy", value = CopyActivity.class),
@@ -44,8 +46,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class),
     @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class),
     @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
-    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class)
-})
+    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class) })
 @Fluent
 public class ExecutionActivity extends Activity {
     /*
@@ -60,12 +61,15 @@ public class ExecutionActivity extends Activity {
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
 
-    /** Creates an instance of ExecutionActivity class. */
-    public ExecutionActivity() {}
+    /**
+     * Creates an instance of ExecutionActivity class.
+     */
+    public ExecutionActivity() {
+    }
 
     /**
      * Get the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -74,7 +78,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Set the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the ExecutionActivity object itself.
      */
@@ -85,7 +89,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Get the policy property: Activity policy.
-     *
+     * 
      * @return the policy value.
      */
     public ActivityPolicy getPolicy() {
@@ -94,7 +98,7 @@ public class ExecutionActivity extends Activity {
 
     /**
      * Set the policy property: Activity policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ExecutionActivity object itself.
      */
@@ -103,28 +107,54 @@ public class ExecutionActivity extends Activity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

@@ -29,7 +29,11 @@ public final class SignUpSettingsGetResponse extends ResponseBase<SignUpSettings
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public PortalSignupSettingsInner getValue() {
         return super.getValue();

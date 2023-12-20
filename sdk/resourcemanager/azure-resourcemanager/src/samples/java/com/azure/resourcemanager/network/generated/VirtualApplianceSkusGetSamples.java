@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualApplianceSkus Get. */
+/**
+ * Samples for VirtualApplianceSkus Get.
+ */
 public final class VirtualApplianceSkusGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkVirtualApplianceSkuGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkVirtualApplianceSkuGet
+     * .json
      */
     /**
      * Sample code: NetworkVirtualApplianceSkuGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkVirtualApplianceSkuGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVirtualApplianceSkus()
-            .getWithResponse("ciscoSdwan", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVirtualApplianceSkus().getWithResponse("ciscoSdwan",
+            com.azure.core.util.Context.NONE);
     }
 }

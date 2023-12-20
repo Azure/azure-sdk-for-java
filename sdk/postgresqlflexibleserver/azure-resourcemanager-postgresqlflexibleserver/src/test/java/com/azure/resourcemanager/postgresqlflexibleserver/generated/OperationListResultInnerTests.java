@@ -16,10 +16,10 @@ public final class OperationListResultInnerTests {
         OperationListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"rxsbkyvp\",\"display\":{\"provider\":\"n\",\"resource\":\"bpzkafkuwbc\",\"operation\":\"wbme\",\"description\":\"seyvj\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"aofmxagkvtme\":\"dataspkdee\",\"c\":\"datamqkrhahvljuahaqu\",\"aex\":\"datahmdua\"}},{\"name\":\"vfadmws\",\"display\":{\"provider\":\"gvxp\",\"resource\":\"omzlfmi\",\"operation\":\"wbnb\",\"description\":\"ldawkzbaliourqha\"},\"isDataAction\":true,\"origin\":\"user\",\"properties\":{\"gicjooxdjeb\":\"datasfwxosowzxc\",\"ecivyh\":\"datapucwwfvovbvme\",\"ojgjrwjueiotwmc\":\"datace\",\"nrjawgqwg\":\"dataytdxwit\"}},{\"name\":\"ni\",\"display\":{\"provider\":\"fbkp\",\"resource\":\"gklwn\",\"operation\":\"hjdauwhvylwz\",\"description\":\"dhxujznbmpo\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"alupjm\":\"datalve\",\"iplrbpbewtghfgb\":\"datahfxobbcswsrtj\",\"wxzvlvqhjkb\":\"datac\",\"iebwwaloayqcgwrt\":\"datagibtnm\"}}],\"nextLink\":\"uzgwyzmhtx\"}")
+                    "{\"value\":[{\"name\":\"c\",\"display\":{\"provider\":\"cpnmdyodn\",\"resource\":\"xltjcvnhltiu\",\"operation\":\"xnavvwxq\",\"description\":\"y\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"g\":\"datawlmdjrkv\",\"j\":\"datavfvpdbodaciz\"}},{\"name\":\"hkr\",\"display\":{\"provider\":\"deibqip\",\"resource\":\"ghvxndzwmkrefa\",\"operation\":\"jorwkqnyhgbij\",\"description\":\"ivfxzsjabibsyst\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"jxbkzbzkdvn\":\"datavkvp\",\"zhjjklffhmouwq\":\"datajabudurgkakmo\",\"eeyebi\":\"datagzrf\"}}],\"nextLink\":\"kayuhqlbjbs\"}")
                 .toObject(OperationListResultInner.class);
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("uzgwyzmhtx", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals("kayuhqlbjbs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,14 +27,10 @@ public final class OperationListResultInnerTests {
         OperationListResultInner model =
             new OperationListResultInner()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new Operation().withIsDataAction(false),
-                            new Operation().withIsDataAction(true),
-                            new Operation().withIsDataAction(false)))
-                .withNextLink("uzgwyzmhtx");
+                    Arrays.asList(new Operation().withIsDataAction(true), new Operation().withIsDataAction(true)))
+                .withNextLink("kayuhqlbjbs");
         model = BinaryData.fromObject(model).toObject(OperationListResultInner.class);
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("uzgwyzmhtx", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals("kayuhqlbjbs", model.nextLink());
     }
 }

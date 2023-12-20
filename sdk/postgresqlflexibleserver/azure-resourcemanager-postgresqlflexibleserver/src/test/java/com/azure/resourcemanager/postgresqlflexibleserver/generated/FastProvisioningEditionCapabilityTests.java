@@ -13,7 +13,7 @@ public final class FastProvisioningEditionCapabilityTests {
         FastProvisioningEditionCapability model =
             BinaryData
                 .fromString(
-                    "{\"supportedSku\":\"uhrzayvvt\",\"supportedStorageGb\":8189670768631717659,\"supportedServerVersions\":\"giotkftutqxlngx\"}")
+                    "{\"supportedTier\":\"ezrkgqhcjrefo\",\"supportedSku\":\"mkqsleyyv\",\"supportedStorageGb\":1769493620,\"supportedServerVersions\":\"pkc\",\"serverCount\":1721979703,\"status\":\"Visible\",\"reason\":\"jcrcczsqpjhvmda\"}")
                 .toObject(FastProvisioningEditionCapability.class);
     }
 

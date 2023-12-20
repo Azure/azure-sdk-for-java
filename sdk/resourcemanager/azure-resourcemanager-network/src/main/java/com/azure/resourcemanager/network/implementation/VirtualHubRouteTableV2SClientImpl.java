@@ -39,23 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2SClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2SClient.
+ */
 public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteTableV2SClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualHubRouteTableV2SService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualHubRouteTableV2SClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualHubRouteTableV2SClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VirtualHubRouteTableV2SService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualHubRouteTableV2SService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,80 +71,60 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VirtualHubRouteTableV2SService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VirtualHubRouteTableV2Inner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualHubRouteTableV2Inner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routeTableName") String routeTableName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("routeTableName") String routeTableName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routeTableName") String routeTableName,
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("routeTableName") String routeTableName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("routeTableName") String routeTableName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("routeTableName") String routeTableName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubRouteTableV2SResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListVirtualHubRouteTableV2SResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubRouteTableV2SResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -149,19 +134,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName) {
+    public Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routeTableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,27 +154,17 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routeTableName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routeTableName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -204,19 +175,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+    private Mono<Response<VirtualHubRouteTableV2Inner>> getWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routeTableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -228,24 +195,16 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routeTableName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routeTableName, apiVersion, accept, context);
     }
 
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -255,15 +214,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubRouteTableV2Inner> getAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName) {
+    public Mono<VirtualHubRouteTableV2Inner> getAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routeTableName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -274,14 +233,14 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualHubRouteTableV2Inner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+    public Response<VirtualHubRouteTableV2Inner> getWithResponse(String resourceGroupName, String virtualHubName,
+        String routeTableName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context).block();
     }
 
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -297,7 +256,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -308,22 +267,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,35 +288,23 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
         if (virtualHubRouteTableV2Parameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
             virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routeTableName,
-                            apiVersion,
-                            virtualHubRouteTableV2Parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routeTableName, apiVersion, virtualHubRouteTableV2Parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -376,23 +316,16 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -405,32 +338,21 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
         if (virtualHubRouteTableV2Parameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter virtualHubRouteTableV2Parameters is required and cannot be null."));
         } else {
             virtualHubRouteTableV2Parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routeTableName,
-                apiVersion,
-                virtualHubRouteTableV2Parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routeTableName, apiVersion, virtualHubRouteTableV2Parameters, accept, context);
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -442,26 +364,18 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
+        String resourceGroupName, String virtualHubName, String routeTableName,
         VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters);
-        return this
-            .client
-            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualHubRouteTableV2Inner.class,
-                VirtualHubRouteTableV2Inner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName,
+            routeTableName, virtualHubRouteTableV2Parameters);
+        return this.client.<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualHubRouteTableV2Inner.class, VirtualHubRouteTableV2Inner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -474,28 +388,19 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
-        Context context) {
+        String resourceGroupName, String virtualHubName, String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context);
-        return this
-            .client
-            .<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualHubRouteTableV2Inner.class,
-                VirtualHubRouteTableV2Inner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName,
+            routeTableName, virtualHubRouteTableV2Parameters, context);
+        return this.client.<VirtualHubRouteTableV2Inner, VirtualHubRouteTableV2Inner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualHubRouteTableV2Inner.class, VirtualHubRouteTableV2Inner.class,
+            context);
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -507,19 +412,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
+        String resourceGroupName, String virtualHubName, String routeTableName,
         VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName,
+            virtualHubRouteTableV2Parameters).getSyncPoller();
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -532,20 +433,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
-            .getSyncPoller();
+        String resourceGroupName, String virtualHubName, String routeTableName,
+        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName,
+            virtualHubRouteTableV2Parameters, context).getSyncPoller();
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -556,20 +452,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName,
+            virtualHubRouteTableV2Parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -581,21 +472,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualHubRouteTableV2Inner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName,
+            virtualHubRouteTableV2Parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -606,18 +491,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualHubRouteTableV2Inner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
+    public VirtualHubRouteTableV2Inner createOrUpdate(String resourceGroupName, String virtualHubName,
+        String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
             .block();
     }
 
     /**
      * Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -629,20 +511,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return virtualHubRouteTableV2 Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualHubRouteTableV2Inner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeTableName,
-        VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, context)
-            .block();
+    public VirtualHubRouteTableV2Inner createOrUpdate(String resourceGroupName, String virtualHubName,
+        String routeTableName, VirtualHubRouteTableV2Inner virtualHubRouteTableV2Parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters,
+            context).block();
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -652,19 +529,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -676,27 +549,17 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            routeTableName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, routeTableName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -707,19 +570,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,24 +590,16 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                routeTableName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, routeTableName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -758,19 +609,17 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -781,19 +630,18 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routeTableName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -803,14 +651,14 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeTableName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routeTableName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName).getSyncPoller();
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -821,14 +669,14 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routeTableName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context).getSyncPoller();
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -839,14 +687,13 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routeTableName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -857,16 +704,15 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualHubName, String routeTableName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String routeTableName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, routeTableName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -881,7 +727,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
 
     /**
      * Deletes a VirtualHubRouteTableV2.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubRouteTableV2.
      * @param virtualHubName The name of the VirtualHub.
      * @param routeTableName The name of the VirtualHubRouteTableV2.
@@ -897,29 +743,25 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName) {
+    private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(String resourceGroupName,
+        String virtualHubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -928,58 +770,38 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, apiVersion, accept, context))
+            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName, Context context) {
+    private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listSinglePageAsync(String resourceGroupName,
+        String virtualHubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -988,50 +810,36 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualHubName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualHubRouteTableV2Inner> listAsync(String resourceGroupName, String virtualHubName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1039,26 +847,25 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualHubRouteTableV2Inner> listAsync(
-        String resourceGroupName, String virtualHubName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
+    private PagedFlux<VirtualHubRouteTableV2Inner> listAsync(String resourceGroupName, String virtualHubName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualHubRouteTableV2Inner> list(String resourceGroupName, String virtualHubName) {
@@ -1067,7 +874,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
 
     /**
      * Retrieves the details of all VirtualHubRouteTableV2s.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1075,24 +882,25 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualHubRouteTableV2Inner> list(
-        String resourceGroupName, String virtualHubName, Context context) {
+    public PagedIterable<VirtualHubRouteTableV2Inner> list(String resourceGroupName, String virtualHubName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualHubName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listNextSinglePageAsync(String nextLink) {
@@ -1100,37 +908,28 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualHubRouteTableV2Inner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return list of VirtualHubRouteTableV2s and a URL nextLink to get the next set of results along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualHubRouteTableV2Inner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1138,23 +937,13 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

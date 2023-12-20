@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtUp
 /** Samples for ReplicationMigrationItems Update. */
 public final class ReplicationMigrationItemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Update.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Update.json
      */
     /**
      * Sample code: Updates migration item.

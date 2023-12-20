@@ -23,6 +23,10 @@ public final class LeaseContainerResponseInner {
     @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
+    /** Creates an instance of LeaseContainerResponseInner class. */
+    public LeaseContainerResponseInner() {
+    }
+
     /**
      * Get the leaseId property: Returned unique lease ID that must be included with any request to delete the
      * container, or to renew, change, or release the lease.

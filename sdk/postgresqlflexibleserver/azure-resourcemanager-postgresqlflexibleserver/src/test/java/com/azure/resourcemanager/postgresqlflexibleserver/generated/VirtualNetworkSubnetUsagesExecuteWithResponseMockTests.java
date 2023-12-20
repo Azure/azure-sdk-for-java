@@ -31,7 +31,7 @@ public final class VirtualNetworkSubnetUsagesExecuteWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"kby\",\"usage\":813821040915840759},{\"subnetName\":\"fhpagmhrskdsnf\",\"usage\":8961529268746334450},{\"subnetName\":\"kgtdlmkkze\",\"usage\":1057392076331487418},{\"subnetName\":\"wpusdsttwvogv\",\"usage\":6615521098570079164}],\"location\":\"cngqqmoakufgmjz\",\"subscriptionId\":\"rdgrtw\"}";
+            "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"gwydyy\",\"usage\":7563376119734496772}],\"location\":\"hgbvqtan\",\"subscriptionId\":\"fdlpukhpyr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,8 @@ public final class VirtualNetworkSubnetUsagesExecuteWithResponseMockTests {
             manager
                 .virtualNetworkSubnetUsages()
                 .executeWithResponse(
-                    "lmnguxaw",
-                    new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("ldsyuuximerqfob"),
+                    "fusuckzmkwklsno",
+                    new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("xmqeqalh"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

@@ -18,10 +18,10 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"userAssignedIdentities\":{\"zbhvgyuguosv\":{\"principalId\":\"ctyqik\",\"clientId\":\"bovpl\"},\"wiyighxpkdw\":{\"principalId\":\"fssxqukkfplg\",\"clientId\":\"sxnkjzkdeslpvlo\"}},\"type\":\"UserAssigned\"}")
+                    "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"UserAssigned\",\"tenantId\":\"dhmdua\"}")
                 .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("ctyqik", model.userAssignedIdentities().get("zbhvgyuguosv").principalId());
-        Assertions.assertEquals("bovpl", model.userAssignedIdentities().get("zbhvgyuguosv").clientId());
+        Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
+        Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
@@ -30,18 +30,15 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model =
             new UserAssignedIdentity()
                 .withUserAssignedIdentities(
-                    mapOf(
-                        "zbhvgyuguosv",
-                        new UserIdentity().withPrincipalId("ctyqik").withClientId("bovpl"),
-                        "wiyighxpkdw",
-                        new UserIdentity().withPrincipalId("fssxqukkfplg").withClientId("sxnkjzkdeslpvlo")))
+                    mapOf("hahvljuahaq", new UserIdentity().withPrincipalId("kv").withClientId("elmqk")))
                 .withType(IdentityType.USER_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("ctyqik", model.userAssignedIdentities().get("zbhvgyuguosv").principalId());
-        Assertions.assertEquals("bovpl", model.userAssignedIdentities().get("zbhvgyuguosv").clientId());
+        Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
+        Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

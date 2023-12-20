@@ -48,12 +48,12 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @Test(groups = "simple")
+    @Test(groups = "fast")
     public void clientInitialization() throws Exception {
         client = this.clientBuilder().build();
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) client;
@@ -64,7 +64,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
     }
 
-    @Test(groups = "simple")
+    @Test(groups = "fast")
     public void configurationPropertyReads() throws Exception {
         DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,90 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-08-22)
+
+- Azure Resource Manager AzureMaps client library for Java. This package contains Microsoft Azure SDK for AzureMaps Management SDK. Azure Maps. Package tag package-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.LinkedResource` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.CorsRules` was added
+
+* `models.SigningKey` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.AccountSasParameters` was added
+
+* `models.MapsAccountSasToken` was added
+
+* `models.InfrastructureEncryption` was added
+
+* `models.CustomerManagedKeyEncryptionKeyIdentity` was added
+
+* `models.IdentityType` was added
+
+* `models.CorsRule` was added
+
+* `models.Encryption` was added
+
+* `models.CustomerManagedKeyEncryption` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+#### `models.Accounts` was modified
+
+* `listSas(java.lang.String,java.lang.String,models.AccountSasParameters)` was added
+* `listSasWithResponse(java.lang.String,java.lang.String,models.AccountSasParameters,com.azure.core.util.Context)` was added
+
+#### `models.MapsAccount$Update` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `withCors(models.CorsRules)` was added
+* `withLinkedResources(java.util.List)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MapsAccountUpdateParameters` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `identity()` was added
+* `withCors(models.CorsRules)` was added
+* `cors()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `encryption()` was added
+* `withLinkedResources(java.util.List)` was added
+* `linkedResources()` was added
+
+#### `models.MetricSpecification` was modified
+
+* `sourceMdmAccount()` was added
+* `withLockAggregationType(java.lang.String)` was added
+* `withSourceMdmAccount(java.lang.String)` was added
+* `internalMetricName()` was added
+* `withSupportedAggregationTypes(java.lang.String)` was added
+* `withInternalMetricName(java.lang.String)` was added
+* `supportedAggregationTypes()` was added
+* `sourceMdmNamespace()` was added
+* `withSourceMdmNamespace(java.lang.String)` was added
+* `lockAggregationType()` was added
+
+#### `models.MapsAccount` was modified
+
+* `identity()` was added
+* `listSasWithResponse(models.AccountSasParameters,com.azure.core.util.Context)` was added
+* `listSas(models.AccountSasParameters)` was added
+
+#### `models.Creator` was modified
+
+* `systemData()` was added
+
+#### `models.MapsAccount$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
 
 ## 1.0.0-beta.2 (2023-01-18)
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -40,8 +39,14 @@ public class ResourceSettings {
     /*
      * Gets or sets the target Resource name.
      */
-    @JsonProperty(value = "targetResourceName", required = true)
+    @JsonProperty(value = "targetResourceName")
     private String targetResourceName;
+
+    /*
+     * Gets or sets the target resource group name.
+     */
+    @JsonProperty(value = "targetResourceGroupName")
+    private String targetResourceGroupName;
 
     /** Creates an instance of ResourceSettings class. */
     public ResourceSettings() {
@@ -68,18 +73,30 @@ public class ResourceSettings {
     }
 
     /**
+     * Get the targetResourceGroupName property: Gets or sets the target resource group name.
+     *
+     * @return the targetResourceGroupName value.
+     */
+    public String targetResourceGroupName() {
+        return this.targetResourceGroupName;
+    }
+
+    /**
+     * Set the targetResourceGroupName property: Gets or sets the target resource group name.
+     *
+     * @param targetResourceGroupName the targetResourceGroupName value to set.
+     * @return the ResourceSettings object itself.
+     */
+    public ResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        this.targetResourceGroupName = targetResourceGroupName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (targetResourceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceName in model ResourceSettings"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceSettings.class);
 }

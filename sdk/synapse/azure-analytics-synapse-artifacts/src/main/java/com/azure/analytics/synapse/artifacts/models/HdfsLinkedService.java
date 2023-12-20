@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Hadoop Distributed File System (HDFS) linked service. */
+/**
+ * Hadoop Distributed File System (HDFS) linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Hdfs")
 @JsonFlatten
@@ -51,13 +53,16 @@ public class HdfsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
-    /** Creates an instance of HdfsLinkedService class. */
-    public HdfsLinkedService() {}
+    /**
+     * Creates an instance of HdfsLinkedService class.
+     */
+    public HdfsLinkedService() {
+    }
 
     /**
      * Get the url property: The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -67,7 +72,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * Set the url property: The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the HdfsLinkedService object itself.
      */
@@ -79,7 +84,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: Type of authentication used to connect to the HDFS. Possible values are:
      * Anonymous and Windows. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -89,7 +94,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: Type of authentication used to connect to the HDFS. Possible values are:
      * Anonymous and Windows. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the HdfsLinkedService object itself.
      */
@@ -99,9 +104,9 @@ public class HdfsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -109,9 +114,9 @@ public class HdfsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HdfsLinkedService object itself.
      */
@@ -123,7 +128,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * Get the userName property: User name for Windows authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -133,7 +138,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * Set the userName property: User name for Windows authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the HdfsLinkedService object itself.
      */
@@ -144,7 +149,7 @@ public class HdfsLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for Windows authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -153,7 +158,7 @@ public class HdfsLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for Windows authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the HdfsLinkedService object itself.
      */
@@ -162,28 +167,36 @@ public class HdfsLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

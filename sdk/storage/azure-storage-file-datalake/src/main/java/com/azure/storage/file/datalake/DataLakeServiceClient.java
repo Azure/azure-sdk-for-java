@@ -47,7 +47,7 @@ public class DataLakeServiceClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
-    private final BlobServiceClient blobServiceClient;
+    final BlobServiceClient blobServiceClient;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
@@ -342,12 +342,17 @@ public class DataLakeServiceClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * try &#123;
@@ -385,12 +390,17 @@ public class DataLakeServiceClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;

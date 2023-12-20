@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Connection State of the Private Endpoint Connection. */
+/**
+ * Connection State of the Private Endpoint Connection.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
     /*
@@ -28,13 +30,15 @@ public final class PrivateLinkServiceConnectionStateProperty {
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionStateProperty class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionStateProperty class.
+     */
     public PrivateLinkServiceConnectionStateProperty() {
     }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -43,7 +47,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -54,7 +58,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Get the description property: The private link service connection description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -63,7 +67,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the description property: The private link service connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -75,7 +79,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
     /**
      * Get the actionsRequired property: Any action that is required beyond basic workflow (approve/ reject/
      * disconnect).
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -84,7 +88,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

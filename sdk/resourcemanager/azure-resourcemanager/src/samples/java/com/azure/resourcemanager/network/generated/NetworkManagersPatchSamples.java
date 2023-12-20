@@ -8,29 +8,25 @@ import com.azure.resourcemanager.network.models.PatchObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkManagers Patch. */
+/**
+ * Samples for NetworkManagers Patch.
+ */
 public final class NetworkManagersPatchSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkManagerPatch.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkManagerPatch.json
      */
     /**
      * Sample code: NetworkManagesPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkManagesPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkManagers()
-            .patchWithResponse(
-                "rg1",
-                "testNetworkManager",
-                new PatchObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkManagers().patchWithResponse("rg1", "testNetworkManager",
+            new PatchObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

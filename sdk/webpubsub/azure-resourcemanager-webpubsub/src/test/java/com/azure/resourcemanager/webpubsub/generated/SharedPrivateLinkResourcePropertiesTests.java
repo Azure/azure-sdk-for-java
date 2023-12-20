@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"lcuhxwtctyqiklb\",\"privateLinkResourceId\":\"ovplw\",\"provisioningState\":\"Updating\",\"requestMessage\":\"gy\",\"status\":\"Rejected\"}")
+                    "{\"groupId\":\"bqwcsdbnwdcf\",\"privateLinkResourceId\":\"ucqdpfuvglsb\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"nvxbvt\",\"status\":\"Disconnected\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+        Assertions.assertEquals("bqwcsdbnwdcf", model.groupId());
+        Assertions.assertEquals("ucqdpfuvglsb", model.privateLinkResourceId());
+        Assertions.assertEquals("nvxbvt", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("lcuhxwtctyqiklb")
-                .withPrivateLinkResourceId("ovplw")
-                .withRequestMessage("gy");
+                .withGroupId("bqwcsdbnwdcf")
+                .withPrivateLinkResourceId("ucqdpfuvglsb")
+                .withRequestMessage("nvxbvt");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+        Assertions.assertEquals("bqwcsdbnwdcf", model.groupId());
+        Assertions.assertEquals("ucqdpfuvglsb", model.privateLinkResourceId());
+        Assertions.assertEquals("nvxbvt", model.requestMessage());
     }
 }

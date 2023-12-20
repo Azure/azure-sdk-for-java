@@ -15,10 +15,13 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -39,12 +42,16 @@ public class CallAutomationUnitTestBase {
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
+    static final String CALL_TRANSFEREE_ID = "transfereeId";
     static final String CALL_CONNECTION_STATE = "connected";
     static final String CALL_SUBJECT = "subject";
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
+    static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
+    static final String DIALOG_ID = "dialogId";
+    static final String BOT_APP_ID = "botAppId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",
@@ -53,19 +60,27 @@ public class CallAutomationUnitTestBase {
         MediaStreamingAudioChannel.MIXED
     );
 
+    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
+        "https://websocket.url.com",
+        TranscriptionTransportType.WEBSOCKET,
+        "en-US",
+        true
+    );
+
     public static String generateDownloadResult(String content) {
         return content;
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
                                                 String callerDisplayName, String targetId, String connectionState,
-                                                String subject, String callbackUri, String mediaSubscriptionId) {
+                                                String subject, String callbackUri, String mediaSubscriptionId, String dataSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setMediaSubscriptionId(mediaSubscriptionId)
+            .setDataSubscriptionId(dataSubscriptionId)
             .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
@@ -80,7 +95,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
-            .setValues(new ArrayList<>(Arrays.asList(
+            .setValue(new ArrayList<>(Arrays.asList(
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
             .setNextLink("");
@@ -94,6 +109,13 @@ public class CallAutomationUnitTestBase {
             .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false));
 
         return serializeObject(addParticipantsResponseInternal);
+    }
+
+    public static String generateDialogStateResponse() {
+        DialogStateResponse dialogStateResponse = new DialogStateResponse()
+            .setDialogId(DIALOG_ID);
+
+        return serializeObject(dialogStateResponse);
     }
 
     public static CallAutomationAsyncClient getCallAutomationAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {

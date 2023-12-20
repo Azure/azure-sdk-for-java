@@ -7,24 +7,21 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.VirtualNetworkProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworkProfile model =
-            BinaryData
-                .fromString("{\"id\":\"ougpbkwt\",\"subnet\":\"tduqktapspwgcuer\"}")
-                .toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("ougpbkwt", model.id());
-        Assertions.assertEquals("tduqktapspwgcuer", model.subnet());
+            BinaryData.fromString("{\"id\":\"ys\",\"subnet\":\"i\"}").toObject(VirtualNetworkProfile.class);
+        Assertions.assertEquals("ys", model.id());
+        Assertions.assertEquals("i", model.subnet());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkProfile model = new VirtualNetworkProfile().withId("ougpbkwt").withSubnet("tduqktapspwgcuer");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkProfile model = new VirtualNetworkProfile().withId("ys").withSubnet("i");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("ougpbkwt", model.id());
-        Assertions.assertEquals("tduqktapspwgcuer", model.subnet());
+        Assertions.assertEquals("ys", model.id());
+        Assertions.assertEquals("i", model.subnet());
     }
 }

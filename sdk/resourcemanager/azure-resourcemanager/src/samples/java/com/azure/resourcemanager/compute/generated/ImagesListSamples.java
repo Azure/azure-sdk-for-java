@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-/** Samples for Images List. */
+/**
+ * Samples for Images List.
+ */
 public final class ImagesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/imageExamples/Image_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/imageExamples/
+     * Image_ListBySubscription.json
      */
     /**
      * Sample code: List all virtual machine images in a subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listAllVirtualMachineImagesInASubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void
+        listAllVirtualMachineImagesInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines().manager().serviceClient().getImages().list(com.azure.core.util.Context.NONE);
     }
 }

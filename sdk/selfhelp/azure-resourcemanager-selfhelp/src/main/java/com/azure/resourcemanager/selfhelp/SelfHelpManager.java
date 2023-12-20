@@ -24,13 +24,19 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
+import com.azure.resourcemanager.selfhelp.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiagnosticsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.DiscoverySolutionsImpl;
 import com.azure.resourcemanager.selfhelp.implementation.HelpRPBuilder;
 import com.azure.resourcemanager.selfhelp.implementation.OperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.SolutionOperationsImpl;
+import com.azure.resourcemanager.selfhelp.implementation.TroubleshootersImpl;
+import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
 import com.azure.resourcemanager.selfhelp.models.DiscoverySolutions;
 import com.azure.resourcemanager.selfhelp.models.Operations;
+import com.azure.resourcemanager.selfhelp.models.SolutionOperations;
+import com.azure.resourcemanager.selfhelp.models.Troubleshooters;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -38,30 +44,36 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SelfHelpManager. Help RP provider. */
+/**
+ * Entry point to SelfHelpManager.
+ * Help RP provider.
+ */
 public final class SelfHelpManager {
     private Operations operations;
+
+    private CheckNameAvailabilities checkNameAvailabilities;
 
     private Diagnostics diagnostics;
 
     private DiscoverySolutions discoverySolutions;
+
+    private SolutionOperations solutionOperations;
+
+    private Troubleshooters troubleshooters;
 
     private final HelpRP clientObject;
 
     private SelfHelpManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new HelpRPBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject
+            = new HelpRPBuilder().pipeline(httpPipeline).endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of Self Help service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Self Help service API instance.
@@ -74,7 +86,7 @@ public final class SelfHelpManager {
 
     /**
      * Creates an instance of Self Help service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Self Help service API instance.
@@ -87,14 +99,16 @@ public final class SelfHelpManager {
 
     /**
      * Gets a Configurable instance that can be used to create SelfHelpManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SelfHelpManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -166,8 +180,8 @@ public final class SelfHelpManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -184,8 +198,8 @@ public final class SelfHelpManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -205,21 +219,12 @@ public final class SelfHelpManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.selfhelp")
-                .append("/")
-                .append("1.0.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.selfhelp").append("/")
+                .append("1.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -238,38 +243,25 @@ public final class SelfHelpManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new SelfHelpManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -280,8 +272,21 @@ public final class SelfHelpManager {
     }
 
     /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     * 
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
+    public CheckNameAvailabilities checkNameAvailabilities() {
+        if (this.checkNameAvailabilities == null) {
+            this.checkNameAvailabilities
+                = new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+        }
+        return checkNameAvailabilities;
+    }
+
+    /**
      * Gets the resource collection API of Diagnostics. It manages DiagnosticResource.
-     *
+     * 
      * @return Resource collection API of Diagnostics.
      */
     public Diagnostics diagnostics() {
@@ -293,7 +298,7 @@ public final class SelfHelpManager {
 
     /**
      * Gets the resource collection API of DiscoverySolutions.
-     *
+     * 
      * @return Resource collection API of DiscoverySolutions.
      */
     public DiscoverySolutions discoverySolutions() {
@@ -304,8 +309,34 @@ public final class SelfHelpManager {
     }
 
     /**
-     * @return Wrapped service client HelpRP providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of SolutionOperations. It manages SolutionResource.
+     * 
+     * @return Resource collection API of SolutionOperations.
+     */
+    public SolutionOperations solutionOperations() {
+        if (this.solutionOperations == null) {
+            this.solutionOperations = new SolutionOperationsImpl(clientObject.getSolutionOperations(), this);
+        }
+        return solutionOperations;
+    }
+
+    /**
+     * Gets the resource collection API of Troubleshooters. It manages TroubleshooterResource.
+     * 
+     * @return Resource collection API of Troubleshooters.
+     */
+    public Troubleshooters troubleshooters() {
+        if (this.troubleshooters == null) {
+            this.troubleshooters = new TroubleshootersImpl(clientObject.getTroubleshooters(), this);
+        }
+        return troubleshooters;
+    }
+
+    /**
+     * Gets wrapped service client HelpRP providing direct access to the underlying auto-generated API implementation,
+     * based on Azure REST API.
+     * 
+     * @return Wrapped service client HelpRP.
      */
     public HelpRP serviceClient() {
         return this.clientObject;

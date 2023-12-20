@@ -56,6 +56,6 @@ public final class AmlFilesystemsCancelArchiveWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.amlFilesystems().cancelArchiveWithResponse("wynwcvtbvkayhm", "nvyq", com.azure.core.util.Context.NONE);
+        manager.amlFilesystems().cancelArchiveWithResponse("ayffim", "zrtuzq", com.azure.core.util.Context.NONE);
     }
 }

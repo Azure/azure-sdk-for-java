@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for AccountBackups Get. */
+/**
+ * Samples for AccountBackups Get.
+ */
 public final class AccountBackupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Backups_Account_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Backups_Account_Get.
+     * json
      */
     /**
      * Sample code: AccountBackups_Get.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountBackupsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

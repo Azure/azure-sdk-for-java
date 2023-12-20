@@ -25,6 +25,10 @@ public final class TagRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of TagRuleListResult class. */
+    public TagRuleListResult() {
+    }
+
     /**
      * Get the value property: The items on this page.
      *

@@ -26,6 +26,12 @@ import java.io.Writer;
  * GSON-based implementation of {@link JsonProvider}.
  */
 public final class GsonJsonProvider implements JsonProvider {
+    /**
+     * Creates an instance of {@link GsonJsonProvider}.
+     */
+    public GsonJsonProvider() {
+    }
+
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) throws IOException {
         return AzureJsonUtils.createReader(json, options);

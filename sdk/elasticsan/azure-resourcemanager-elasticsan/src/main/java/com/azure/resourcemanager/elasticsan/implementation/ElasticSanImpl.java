@@ -8,13 +8,17 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
+import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
+import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, ElasticSan.Update {
     private ElasticSanInner innerObject;
@@ -93,6 +97,24 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public Long totalSizeTiB() {
         return this.innerModel().totalSizeTiB();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     public Region region() {
@@ -237,6 +259,26 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public ElasticSanImpl withAvailabilityZones(List<String> availabilityZones) {
         this.innerModel().withAvailabilityZones(availabilityZones);
+        return this;
+    }
+
+    public ElasticSanImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public ElasticSanImpl withBaseSizeTiB(Long baseSizeTiB) {
+        this.updateParameters.withBaseSizeTiB(baseSizeTiB);
+        return this;
+    }
+
+    public ElasticSanImpl withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB) {
+        this.updateParameters.withExtendedCapacitySizeTiB(extendedCapacitySizeTiB);
         return this;
     }
 

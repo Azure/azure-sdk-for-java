@@ -5,39 +5,40 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List document classifiers response object. */
+/**
+ * List document classifiers response object.
+ */
 @Fluent
-public final class GetDocumentClassifiersResponse {
+public final class GetDocumentClassifiersResponse implements JsonSerializable<GetDocumentClassifiersResponse> {
     /*
      * List of document classifiers.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<DocumentClassifierDetails> value;
+    private final List<DocumentClassifierDetails> value;
 
     /*
      * Link to the next page of document classifiers.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of GetDocumentClassifiersResponse class.
-     *
+     * 
      * @param value the value value to set.
      */
-    @JsonCreator
-    public GetDocumentClassifiersResponse(
-            @JsonProperty(value = "value", required = true) List<DocumentClassifierDetails> value) {
+    public GetDocumentClassifiersResponse(List<DocumentClassifierDetails> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: List of document classifiers.
-     *
+     * 
      * @return the value value.
      */
     public List<DocumentClassifierDetails> getValue() {
@@ -46,7 +47,7 @@ public final class GetDocumentClassifiersResponse {
 
     /**
      * Get the nextLink property: Link to the next page of document classifiers.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -55,12 +56,58 @@ public final class GetDocumentClassifiersResponse {
 
     /**
      * Set the nextLink property: Link to the next page of document classifiers.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GetDocumentClassifiersResponse object itself.
      */
     public GetDocumentClassifiersResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetDocumentClassifiersResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetDocumentClassifiersResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetDocumentClassifiersResponse.
+     */
+    public static GetDocumentClassifiersResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean valueFound = false;
+            List<DocumentClassifierDetails> value = null;
+            String nextLink = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> DocumentClassifierDetails.fromJson(reader1));
+                    valueFound = true;
+                } else if ("nextLink".equals(fieldName)) {
+                    nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (valueFound) {
+                GetDocumentClassifiersResponse deserializedGetDocumentClassifiersResponse
+                    = new GetDocumentClassifiersResponse(value);
+                deserializedGetDocumentClassifiersResponse.nextLink = nextLink;
+
+                return deserializedGetDocumentClassifiersResponse;
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

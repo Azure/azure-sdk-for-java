@@ -32,8 +32,12 @@ import com.azure.resourcemanager.dataprotection.implementation.DataProtectionCli
 import com.azure.resourcemanager.dataprotection.implementation.DataProtectionOperationsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DataProtectionsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DeletedBackupInstancesImpl;
+import com.azure.resourcemanager.dataprotection.implementation.DppResourceGuardProxiesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsOperationResultsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.FetchCrossRegionRestoreJobsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.FetchCrossRegionRestoreJobsOperationsImpl;
+import com.azure.resourcemanager.dataprotection.implementation.FetchSecondaryRecoveryPointsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.JobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationResultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.OperationStatusBackupVaultContextsImpl;
@@ -49,8 +53,12 @@ import com.azure.resourcemanager.dataprotection.models.BackupVaults;
 import com.azure.resourcemanager.dataprotection.models.DataProtectionOperations;
 import com.azure.resourcemanager.dataprotection.models.DataProtections;
 import com.azure.resourcemanager.dataprotection.models.DeletedBackupInstances;
+import com.azure.resourcemanager.dataprotection.models.DppResourceGuardProxies;
 import com.azure.resourcemanager.dataprotection.models.ExportJobs;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
+import com.azure.resourcemanager.dataprotection.models.FetchCrossRegionRestoreJobs;
+import com.azure.resourcemanager.dataprotection.models.FetchCrossRegionRestoreJobsOperations;
+import com.azure.resourcemanager.dataprotection.models.FetchSecondaryRecoveryPoints;
 import com.azure.resourcemanager.dataprotection.models.Jobs;
 import com.azure.resourcemanager.dataprotection.models.OperationResults;
 import com.azure.resourcemanager.dataprotection.models.OperationStatus;
@@ -64,10 +72,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-/** Entry point to DataProtectionManager. Open API 2.0 Specs for Azure Data Protection service. */
+/**
+ * Entry point to DataProtectionManager.
+ * Open API 2.0 Specs for Azure Data Protection service.
+ */
 public final class DataProtectionManager {
     private BackupVaults backupVaults;
 
@@ -91,6 +101,12 @@ public final class DataProtectionManager {
 
     private RecoveryPoints recoveryPoints;
 
+    private FetchSecondaryRecoveryPoints fetchSecondaryRecoveryPoints;
+
+    private FetchCrossRegionRestoreJobs fetchCrossRegionRestoreJobs;
+
+    private FetchCrossRegionRestoreJobsOperations fetchCrossRegionRestoreJobsOperations;
+
     private Jobs jobs;
 
     private RestorableTimeRanges restorableTimeRanges;
@@ -103,23 +119,21 @@ public final class DataProtectionManager {
 
     private ResourceGuards resourceGuards;
 
+    private DppResourceGuardProxies dppResourceGuardProxies;
+
     private final DataProtectionClient clientObject;
 
     private DataProtectionManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new DataProtectionClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(UUID.fromString(profile.getSubscriptionId()))
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new DataProtectionClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of DataProtection service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the DataProtection service API instance.
@@ -132,7 +146,7 @@ public final class DataProtectionManager {
 
     /**
      * Creates an instance of DataProtection service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the DataProtection service API instance.
@@ -145,14 +159,16 @@ public final class DataProtectionManager {
 
     /**
      * Gets a Configurable instance that can be used to create DataProtectionManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new DataProtectionManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -224,8 +240,8 @@ public final class DataProtectionManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -242,8 +258,8 @@ public final class DataProtectionManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -263,21 +279,12 @@ public final class DataProtectionManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.dataprotection")
-                .append("/")
-                .append("1.0.0-beta.3");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.dataprotection")
+                .append("/").append("1.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -296,38 +303,25 @@ public final class DataProtectionManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new DataProtectionManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of BackupVaults. It manages BackupVaultResource.
-     *
+     * 
      * @return Resource collection API of BackupVaults.
      */
     public BackupVaults backupVaults() {
@@ -339,7 +333,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of OperationResults.
-     *
+     * 
      * @return Resource collection API of OperationResults.
      */
     public OperationResults operationResults() {
@@ -351,7 +345,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of OperationStatus.
-     *
+     * 
      * @return Resource collection API of OperationStatus.
      */
     public OperationStatus operationStatus() {
@@ -363,47 +357,46 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of OperationStatusBackupVaultContexts.
-     *
+     * 
      * @return Resource collection API of OperationStatusBackupVaultContexts.
      */
     public OperationStatusBackupVaultContexts operationStatusBackupVaultContexts() {
         if (this.operationStatusBackupVaultContexts == null) {
-            this.operationStatusBackupVaultContexts =
-                new OperationStatusBackupVaultContextsImpl(clientObject.getOperationStatusBackupVaultContexts(), this);
+            this.operationStatusBackupVaultContexts = new OperationStatusBackupVaultContextsImpl(
+                clientObject.getOperationStatusBackupVaultContexts(), this);
         }
         return operationStatusBackupVaultContexts;
     }
 
     /**
      * Gets the resource collection API of OperationStatusResourceGroupContexts.
-     *
+     * 
      * @return Resource collection API of OperationStatusResourceGroupContexts.
      */
     public OperationStatusResourceGroupContexts operationStatusResourceGroupContexts() {
         if (this.operationStatusResourceGroupContexts == null) {
-            this.operationStatusResourceGroupContexts =
-                new OperationStatusResourceGroupContextsImpl(
-                    clientObject.getOperationStatusResourceGroupContexts(), this);
+            this.operationStatusResourceGroupContexts = new OperationStatusResourceGroupContextsImpl(
+                clientObject.getOperationStatusResourceGroupContexts(), this);
         }
         return operationStatusResourceGroupContexts;
     }
 
     /**
      * Gets the resource collection API of BackupVaultOperationResults.
-     *
+     * 
      * @return Resource collection API of BackupVaultOperationResults.
      */
     public BackupVaultOperationResults backupVaultOperationResults() {
         if (this.backupVaultOperationResults == null) {
-            this.backupVaultOperationResults =
-                new BackupVaultOperationResultsImpl(clientObject.getBackupVaultOperationResults(), this);
+            this.backupVaultOperationResults
+                = new BackupVaultOperationResultsImpl(clientObject.getBackupVaultOperationResults(), this);
         }
         return backupVaultOperationResults;
     }
 
     /**
      * Gets the resource collection API of DataProtections.
-     *
+     * 
      * @return Resource collection API of DataProtections.
      */
     public DataProtections dataProtections() {
@@ -415,20 +408,20 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of DataProtectionOperations.
-     *
+     * 
      * @return Resource collection API of DataProtectionOperations.
      */
     public DataProtectionOperations dataProtectionOperations() {
         if (this.dataProtectionOperations == null) {
-            this.dataProtectionOperations =
-                new DataProtectionOperationsImpl(clientObject.getDataProtectionOperations(), this);
+            this.dataProtectionOperations
+                = new DataProtectionOperationsImpl(clientObject.getDataProtectionOperations(), this);
         }
         return dataProtectionOperations;
     }
 
     /**
      * Gets the resource collection API of BackupPolicies. It manages BaseBackupPolicyResource.
-     *
+     * 
      * @return Resource collection API of BackupPolicies.
      */
     public BackupPolicies backupPolicies() {
@@ -440,7 +433,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of BackupInstances. It manages BackupInstanceResource.
-     *
+     * 
      * @return Resource collection API of BackupInstances.
      */
     public BackupInstances backupInstances() {
@@ -452,7 +445,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of RecoveryPoints.
-     *
+     * 
      * @return Resource collection API of RecoveryPoints.
      */
     public RecoveryPoints recoveryPoints() {
@@ -463,8 +456,47 @@ public final class DataProtectionManager {
     }
 
     /**
+     * Gets the resource collection API of FetchSecondaryRecoveryPoints.
+     * 
+     * @return Resource collection API of FetchSecondaryRecoveryPoints.
+     */
+    public FetchSecondaryRecoveryPoints fetchSecondaryRecoveryPoints() {
+        if (this.fetchSecondaryRecoveryPoints == null) {
+            this.fetchSecondaryRecoveryPoints
+                = new FetchSecondaryRecoveryPointsImpl(clientObject.getFetchSecondaryRecoveryPoints(), this);
+        }
+        return fetchSecondaryRecoveryPoints;
+    }
+
+    /**
+     * Gets the resource collection API of FetchCrossRegionRestoreJobs.
+     * 
+     * @return Resource collection API of FetchCrossRegionRestoreJobs.
+     */
+    public FetchCrossRegionRestoreJobs fetchCrossRegionRestoreJobs() {
+        if (this.fetchCrossRegionRestoreJobs == null) {
+            this.fetchCrossRegionRestoreJobs
+                = new FetchCrossRegionRestoreJobsImpl(clientObject.getFetchCrossRegionRestoreJobs(), this);
+        }
+        return fetchCrossRegionRestoreJobs;
+    }
+
+    /**
+     * Gets the resource collection API of FetchCrossRegionRestoreJobsOperations.
+     * 
+     * @return Resource collection API of FetchCrossRegionRestoreJobsOperations.
+     */
+    public FetchCrossRegionRestoreJobsOperations fetchCrossRegionRestoreJobsOperations() {
+        if (this.fetchCrossRegionRestoreJobsOperations == null) {
+            this.fetchCrossRegionRestoreJobsOperations = new FetchCrossRegionRestoreJobsOperationsImpl(
+                clientObject.getFetchCrossRegionRestoreJobsOperations(), this);
+        }
+        return fetchCrossRegionRestoreJobsOperations;
+    }
+
+    /**
      * Gets the resource collection API of Jobs.
-     *
+     * 
      * @return Resource collection API of Jobs.
      */
     public Jobs jobs() {
@@ -476,7 +508,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of RestorableTimeRanges.
-     *
+     * 
      * @return Resource collection API of RestorableTimeRanges.
      */
     public RestorableTimeRanges restorableTimeRanges() {
@@ -488,7 +520,7 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of ExportJobs.
-     *
+     * 
      * @return Resource collection API of ExportJobs.
      */
     public ExportJobs exportJobs() {
@@ -500,33 +532,33 @@ public final class DataProtectionManager {
 
     /**
      * Gets the resource collection API of ExportJobsOperationResults.
-     *
+     * 
      * @return Resource collection API of ExportJobsOperationResults.
      */
     public ExportJobsOperationResults exportJobsOperationResults() {
         if (this.exportJobsOperationResults == null) {
-            this.exportJobsOperationResults =
-                new ExportJobsOperationResultsImpl(clientObject.getExportJobsOperationResults(), this);
+            this.exportJobsOperationResults
+                = new ExportJobsOperationResultsImpl(clientObject.getExportJobsOperationResults(), this);
         }
         return exportJobsOperationResults;
     }
 
     /**
      * Gets the resource collection API of DeletedBackupInstances.
-     *
+     * 
      * @return Resource collection API of DeletedBackupInstances.
      */
     public DeletedBackupInstances deletedBackupInstances() {
         if (this.deletedBackupInstances == null) {
-            this.deletedBackupInstances =
-                new DeletedBackupInstancesImpl(clientObject.getDeletedBackupInstances(), this);
+            this.deletedBackupInstances
+                = new DeletedBackupInstancesImpl(clientObject.getDeletedBackupInstances(), this);
         }
         return deletedBackupInstances;
     }
 
     /**
      * Gets the resource collection API of ResourceGuards. It manages ResourceGuardResource.
-     *
+     * 
      * @return Resource collection API of ResourceGuards.
      */
     public ResourceGuards resourceGuards() {
@@ -537,8 +569,23 @@ public final class DataProtectionManager {
     }
 
     /**
-     * @return Wrapped service client DataProtectionClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of DppResourceGuardProxies. It manages ResourceGuardProxyBaseResource.
+     * 
+     * @return Resource collection API of DppResourceGuardProxies.
+     */
+    public DppResourceGuardProxies dppResourceGuardProxies() {
+        if (this.dppResourceGuardProxies == null) {
+            this.dppResourceGuardProxies
+                = new DppResourceGuardProxiesImpl(clientObject.getDppResourceGuardProxies(), this);
+        }
+        return dppResourceGuardProxies;
+    }
+
+    /**
+     * Gets wrapped service client DataProtectionClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client DataProtectionClient.
      */
     public DataProtectionClient serviceClient() {
         return this.clientObject;

@@ -16,32 +16,32 @@ public final class NetworkAttachmentTests {
         NetworkAttachment model =
             BinaryData
                 .fromString(
-                    "{\"attachedNetworkId\":\"alkrmn\",\"defaultGateway\":\"True\",\"ipAllocationMethod\":\"Disabled\",\"ipv4Address\":\"acqqudfnbyxbaaab\",\"ipv6Address\":\"vayffimrzrt\",\"macAddress\":\"qogsexnevfd\",\"networkAttachmentName\":\"nw\"}")
+                    "{\"attachedNetworkId\":\"hjpglkf\",\"defaultGateway\":\"False\",\"ipAllocationMethod\":\"Static\",\"ipv4Address\":\"euel\",\"ipv6Address\":\"hsd\",\"macAddress\":\"t\",\"networkAttachmentName\":\"fikdowwqu\"}")
                 .toObject(NetworkAttachment.class);
-        Assertions.assertEquals("alkrmn", model.attachedNetworkId());
-        Assertions.assertEquals(DefaultGateway.TRUE, model.defaultGateway());
-        Assertions.assertEquals(VirtualMachineIpAllocationMethod.DISABLED, model.ipAllocationMethod());
-        Assertions.assertEquals("acqqudfnbyxbaaab", model.ipv4Address());
-        Assertions.assertEquals("vayffimrzrt", model.ipv6Address());
-        Assertions.assertEquals("nw", model.networkAttachmentName());
+        Assertions.assertEquals("hjpglkf", model.attachedNetworkId());
+        Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());
+        Assertions.assertEquals(VirtualMachineIpAllocationMethod.STATIC, model.ipAllocationMethod());
+        Assertions.assertEquals("euel", model.ipv4Address());
+        Assertions.assertEquals("hsd", model.ipv6Address());
+        Assertions.assertEquals("fikdowwqu", model.networkAttachmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkAttachment model =
             new NetworkAttachment()
-                .withAttachedNetworkId("alkrmn")
-                .withDefaultGateway(DefaultGateway.TRUE)
-                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.DISABLED)
-                .withIpv4Address("acqqudfnbyxbaaab")
-                .withIpv6Address("vayffimrzrt")
-                .withNetworkAttachmentName("nw");
+                .withAttachedNetworkId("hjpglkf")
+                .withDefaultGateway(DefaultGateway.FALSE)
+                .withIpAllocationMethod(VirtualMachineIpAllocationMethod.STATIC)
+                .withIpv4Address("euel")
+                .withIpv6Address("hsd")
+                .withNetworkAttachmentName("fikdowwqu");
         model = BinaryData.fromObject(model).toObject(NetworkAttachment.class);
-        Assertions.assertEquals("alkrmn", model.attachedNetworkId());
-        Assertions.assertEquals(DefaultGateway.TRUE, model.defaultGateway());
-        Assertions.assertEquals(VirtualMachineIpAllocationMethod.DISABLED, model.ipAllocationMethod());
-        Assertions.assertEquals("acqqudfnbyxbaaab", model.ipv4Address());
-        Assertions.assertEquals("vayffimrzrt", model.ipv6Address());
-        Assertions.assertEquals("nw", model.networkAttachmentName());
+        Assertions.assertEquals("hjpglkf", model.attachedNetworkId());
+        Assertions.assertEquals(DefaultGateway.FALSE, model.defaultGateway());
+        Assertions.assertEquals(VirtualMachineIpAllocationMethod.STATIC, model.ipAllocationMethod());
+        Assertions.assertEquals("euel", model.ipv4Address());
+        Assertions.assertEquals("hsd", model.ipv6Address());
+        Assertions.assertEquals("fikdowwqu", model.networkAttachmentName());
     }
 }

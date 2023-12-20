@@ -6,12 +6,20 @@ package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** Remote private endpoint connection details. */
+/**
+ * Remote private endpoint connection details.
+ */
 @Immutable
 public final class PrivateLinkServiceProxyRemotePrivateEndpointConnection extends RemotePrivateEndpointConnection {
     /**
+     * Creates an instance of PrivateLinkServiceProxyRemotePrivateEndpointConnection class.
+     */
+    public PrivateLinkServiceProxyRemotePrivateEndpointConnection() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

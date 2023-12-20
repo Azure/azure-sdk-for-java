@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of SNAT IP Prefixes learnt by firewall to not SNAT. */
+/**
+ * List of SNAT IP Prefixes learnt by firewall to not SNAT.
+ */
 @Fluent
 public final class IpPrefixesListInner {
     /*
@@ -17,13 +19,15 @@ public final class IpPrefixesListInner {
     @JsonProperty(value = "ipPrefixes")
     private List<String> ipPrefixes;
 
-    /** Creates an instance of IpPrefixesListInner class. */
+    /**
+     * Creates an instance of IpPrefixesListInner class.
+     */
     public IpPrefixesListInner() {
     }
 
     /**
      * Get the ipPrefixes property: IP Prefix value.
-     *
+     * 
      * @return the ipPrefixes value.
      */
     public List<String> ipPrefixes() {
@@ -32,7 +36,7 @@ public final class IpPrefixesListInner {
 
     /**
      * Set the ipPrefixes property: IP Prefix value.
-     *
+     * 
      * @param ipPrefixes the ipPrefixes value to set.
      * @return the IpPrefixesListInner object itself.
      */
@@ -43,7 +47,7 @@ public final class IpPrefixesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -16,7 +16,7 @@ public interface JobsExecutionsClient {
      * Get a Container Apps Job's executions.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -30,7 +30,7 @@ public interface JobsExecutionsClient {
      * Get a Container Apps Job's executions.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Name of the Container Apps Job.
+     * @param jobName Job Name.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

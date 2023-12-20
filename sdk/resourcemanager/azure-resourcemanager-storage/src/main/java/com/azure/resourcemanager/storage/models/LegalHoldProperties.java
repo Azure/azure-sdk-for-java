@@ -31,6 +31,10 @@ public final class LegalHoldProperties {
     @JsonProperty(value = "protectedAppendWritesHistory")
     private ProtectedAppendWritesHistory protectedAppendWritesHistory;
 
+    /** Creates an instance of LegalHoldProperties class. */
+    public LegalHoldProperties() {
+    }
+
     /**
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared

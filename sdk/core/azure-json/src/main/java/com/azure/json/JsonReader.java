@@ -7,6 +7,7 @@ import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -672,6 +673,38 @@ public abstract class JsonReader implements Closeable {
      * @throws IOException If the text cannot be read.
      */
     public final String getText() throws IOException {
+        return getTextInternal(false);
+    }
+
+    /**
+     * Gets the raw text value for the {@link #currentToken()}.
+     * <p>
+     * The following is how each {@link JsonToken} type is handled:
+     *
+     * <ul>
+     *     <li>{@link JsonToken#START_OBJECT} -&gt; &#123;</li>
+     *     <li>{@link JsonToken#END_OBJECT} -&gt; &#125;</li>
+     *     <li>{@link JsonToken#START_ARRAY} -&gt; [</li>
+     *     <li>{@link JsonToken#END_ARRAY} -&gt; ]</li>
+     *     <li>{@link JsonToken#FIELD_NAME} -&gt; {@link #getFieldName()} retaining JSON encoded and quoted
+     *     characters</li>
+     *     <li>{@link JsonToken#BOOLEAN} -&gt; String.valueOf {@link #getBoolean()}</li>
+     *     <li>{@link JsonToken#NULL} -&gt; "null"</li>
+     *     <li>{@link JsonToken#STRING} -&gt; {@link #getString()} retaining JSON encoded and quoted characters</li>
+     *     <li>{@link JsonToken#NUMBER} -&gt; String.valueOf {@link #getString()}</li>
+     * </ul>
+     *
+     * If the current token is null an {@link IllegalStateException} will be thrown.
+     *
+     * @return The raw text value for the {@link #currentToken()}.
+     * @throws IllegalStateException If the current token is null.
+     * @throws IOException If the text cannot be read.
+     */
+    public String getRawText() throws IOException {
+        return getTextInternal(true);
+    }
+
+    private String getTextInternal(boolean raw) throws IOException {
         JsonToken token = currentToken();
 
         if (token == null) {
@@ -692,14 +725,16 @@ public abstract class JsonReader implements Closeable {
                 return "]";
 
             case FIELD_NAME:
-                return getFieldName();
+                return raw ? new String(ENCODER.quoteAsUTF8(getFieldName()), StandardCharsets.UTF_8) : getFieldName();
 
             case BOOLEAN:
                 return String.valueOf(getBoolean());
 
             case NUMBER:
-            case STRING:
                 return getString();
+
+            case STRING:
+                return raw ? new String(ENCODER.quoteAsUTF8(getString()), StandardCharsets.UTF_8) : getString();
 
             case NULL:
                 return "null";

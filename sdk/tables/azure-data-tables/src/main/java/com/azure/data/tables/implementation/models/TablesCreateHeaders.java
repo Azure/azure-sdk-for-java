@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
-/** The TablesCreateHeaders model. */
+/**
+ * The TablesCreateHeaders model.
+ */
 @Fluent
 public final class TablesCreateHeaders {
     /*
@@ -45,7 +47,7 @@ public final class TablesCreateHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesCreateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesCreateHeaders(HttpHeaders rawHeaders) {
@@ -61,7 +63,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -70,7 +72,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesCreateHeaders object itself.
      */
@@ -81,7 +83,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -90,7 +92,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesCreateHeaders object itself.
      */
@@ -101,7 +103,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -110,7 +112,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesCreateHeaders object itself.
      */
@@ -121,7 +123,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -133,7 +135,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesCreateHeaders object itself.
      */
@@ -148,7 +150,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Get the preferenceApplied property: The Preference-Applied property.
-     *
+     * 
      * @return the preferenceApplied value.
      */
     public String getPreferenceApplied() {
@@ -157,7 +159,7 @@ public final class TablesCreateHeaders {
 
     /**
      * Set the preferenceApplied property: The Preference-Applied property.
-     *
+     * 
      * @param preferenceApplied the preferenceApplied value to set.
      * @return the TablesCreateHeaders object itself.
      */

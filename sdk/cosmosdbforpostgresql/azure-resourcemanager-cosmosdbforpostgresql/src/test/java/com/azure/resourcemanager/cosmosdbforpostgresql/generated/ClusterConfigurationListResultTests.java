@@ -7,6 +7,8 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterConfigurationListResult;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,9 +18,12 @@ public final class ClusterConfigurationListResultTests {
         ClusterConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"tnwu\",\"dataType\":\"Numeric\",\"allowedValues\":\"zxufiz\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[],\"provisioningState\":\"Canceled\"},\"id\":\"hr\",\"name\":\"idf\",\"type\":\"zwdzuh\"}],\"nextLink\":\"mwisdkfthwxmnt\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"tnwu\",\"dataType\":\"Numeric\",\"allowedValues\":\"zxufiz\",\"requiresRestart\":false,\"serverRoleGroupConfigurations\":[{\"role\":\"Coordinator\",\"value\":\"i\",\"defaultValue\":\"fidfvzw\",\"source\":\"uht\"}],\"provisioningState\":\"Canceled\"},\"id\":\"sdkf\",\"name\":\"hwxmnteiwa\",\"type\":\"pvkmijcmmxdcuf\"}],\"nextLink\":\"srp\"}")
                 .toObject(ClusterConfigurationListResult.class);
         Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions
+            .assertEquals(ServerRole.COORDINATOR, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("i", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,8 +35,16 @@ public final class ClusterConfigurationListResultTests {
                         .asList(
                             new ConfigurationInner()
                                 .withRequiresRestart(false)
-                                .withServerRoleGroupConfigurations(Arrays.asList())));
+                                .withServerRoleGroupConfigurations(
+                                    Arrays
+                                        .asList(
+                                            new ServerRoleGroupConfiguration()
+                                                .withRole(ServerRole.COORDINATOR)
+                                                .withValue("i")))));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationListResult.class);
         Assertions.assertEquals(false, model.value().get(0).requiresRestart());
+        Assertions
+            .assertEquals(ServerRole.COORDINATOR, model.value().get(0).serverRoleGroupConfigurations().get(0).role());
+        Assertions.assertEquals("i", model.value().get(0).serverRoleGroupConfigurations().get(0).value());
     }
 }

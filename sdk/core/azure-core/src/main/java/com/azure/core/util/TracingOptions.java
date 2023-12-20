@@ -9,7 +9,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import static com.azure.core.implementation.ImplUtils.getClassByName;
 
 /**
- * Metrics configuration options for clients.
+ * Tracing configuration options for clients.
  */
 public class TracingOptions {
     private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("tracing.disabled")
@@ -58,7 +58,7 @@ public class TracingOptions {
     }
 
     /**
-     * Loads metrics options from the configuration.
+     * Loads tracing options from the configuration.
      *
      *
      * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
@@ -71,17 +71,17 @@ public class TracingOptions {
     }
 
     /**
-     * Flag indicating if metrics should be enabled.
-     * @return {@code true} if metrics are enabled, {@code false} otherwise.
+     * Flag indicating if distributed tracing should be enabled.
+     * @return {@code true} if tracing is enabled, {@code false} otherwise.
      */
     public boolean isEnabled() {
         return this.isEnabled;
     }
 
     /**
-     * Enables or disables metrics. By default, metrics are enabled if and only if metrics implementation is detected.
+     * Enables or disables distributed tracing. By default, tracing is enabled if and only if tracing implementation is detected.
      *
-     * @param enabled pass {@code true} to enable metrics.
+     * @param enabled pass {@code true} to enable tracing.
      * @return the updated {@code TracingOptions} object.
      */
     public TracingOptions setEnabled(boolean enabled) {

@@ -32,7 +32,7 @@ public final class WorkloadNetworksCreateDnsZoneMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"ecwcrojphslhcawj\",\"domain\":[\"fdwfmvigorqj\"],\"dnsServerIps\":[\"zhraglkafh\"],\"sourceIp\":\"qjujeickpzvcp\",\"dnsServices\":5627090673281615873,\"provisioningState\":\"Succeeded\",\"revision\":266601174880523633},\"id\":\"ltyjedexxmlfmk\",\"name\":\"scazuawxtzxpu\",\"type\":\"mwabzxrvxc\"}";
+            "{\"properties\":{\"displayName\":\"yo\",\"domain\":[\"rouuxvnsasbcry\",\"o\",\"izrxklob\",\"xnazpmkml\"],\"dnsServerIps\":[\"vfxzopjh\",\"zxlioh\",\"d\",\"dtfgxqbawpcbb\"],\"sourceIp\":\"qcy\",\"dnsServices\":3888945371660163872,\"provisioningState\":\"Succeeded\",\"revision\":1167026751673523681},\"id\":\"icdhz\",\"name\":\"dyb\",\"type\":\"wgbdvibidmhmwffp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,21 +63,21 @@ public final class WorkloadNetworksCreateDnsZoneMockTests {
         WorkloadNetworkDnsZone response =
             manager
                 .workloadNetworks()
-                .defineDnsZone("jqg")
-                .withExistingPrivateCloud("jw", "nyfusfzsvtuikzh")
-                .withDisplayName("hm")
-                .withDomain(Arrays.asList("ryxynqnzrd", "sovwxznptgoeiyb"))
-                .withDnsServerIps(Arrays.asList("pfhvfslk"))
-                .withSourceIp("tjlrigjksky")
-                .withDnsServices(2909010011508190161L)
-                .withRevision(7247162843356784078L)
+                .defineDnsZone("minqcym")
+                .withExistingPrivateCloud("yfedevjbo", "lcqxypokk")
+                .withDisplayName("gn")
+                .withDomain(Arrays.asList("x", "wuninv"))
+                .withDnsServerIps(Arrays.asList("chaqdtvqec", "qct"))
+                .withSourceIp("xdtddmflhuytxzv")
+                .withDnsServices(3117767040904980283L)
+                .withRevision(6355503721954410956L)
                 .create();
 
-        Assertions.assertEquals("ecwcrojphslhcawj", response.displayName());
-        Assertions.assertEquals("fdwfmvigorqj", response.domain().get(0));
-        Assertions.assertEquals("zhraglkafh", response.dnsServerIps().get(0));
-        Assertions.assertEquals("qjujeickpzvcp", response.sourceIp());
-        Assertions.assertEquals(5627090673281615873L, response.dnsServices());
-        Assertions.assertEquals(266601174880523633L, response.revision());
+        Assertions.assertEquals("yo", response.displayName());
+        Assertions.assertEquals("rouuxvnsasbcry", response.domain().get(0));
+        Assertions.assertEquals("vfxzopjh", response.dnsServerIps().get(0));
+        Assertions.assertEquals("qcy", response.sourceIp());
+        Assertions.assertEquals(3888945371660163872L, response.dnsServices());
+        Assertions.assertEquals(1167026751673523681L, response.revision());
     }
 }

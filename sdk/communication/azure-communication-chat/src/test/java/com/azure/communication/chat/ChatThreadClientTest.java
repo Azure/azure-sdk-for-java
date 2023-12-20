@@ -22,19 +22,14 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -43,7 +38,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -71,7 +65,9 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     }
 
     private void setupTest(HttpClient httpClient, String testName) {
-        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
+        communicationClient =
+            getCommunicationIdentityClientBuilder(interceptorManager.isPlaybackMode()
+                ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
         firstParticipant = communicationClient.createUser();
         secondParticipant = communicationClient.createUser();
         firstAddedParticipant = communicationClient.createUser();
@@ -565,55 +561,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canListReadReceiptsWithContext(HttpClient httpClient) {
-        HttpClient mockHttpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(ChatResponseMocker.createReadReceiptsResponse(request));
-            }
-        };
-        setupUnitTest(mockHttpClient);
-        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
-
-        // // process the iterableByPage
-        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
-        readReceipts.iterableByPage().forEach(resp -> {
-            assertEquals(resp.getStatusCode(), 200);
-            resp.getItems().forEach(item -> readReceiptList.add(item));
-        });
-        assertEquals(readReceiptList.size(), 2);
-        assertNotNull(readReceiptList.get(0).getChatMessageId());
-        assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canListReadReceipts(HttpClient httpClient) {
-        HttpClient mockHttpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(ChatResponseMocker.createReadReceiptsResponse(request));
-            }
-        };
-        setupUnitTest(mockHttpClient);
-        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
-
-        // // process the iterableByPage
-        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
-        readReceipts.iterableByPage().forEach(resp -> {
-            assertEquals(resp.getStatusCode(), 200);
-            resp.getItems().forEach(item -> readReceiptList.add(item));
-        });
-        assertEquals(readReceiptList.size(), 2);
-        assertNotNull(readReceiptList.get(0).getChatMessageId());
-        assertNotNull(readReceiptList.get(0).getReadOn());
-        assertNotNull(readReceiptList.get(0).getSender());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canSendReadReceiptSync(HttpClient httpClient) throws InterruptedException {
+    public void canSendReadReceiptSync(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendReadReceiptSync");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
@@ -666,20 +614,5 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         assertThrows(NullPointerException.class, () -> {
             chatThreadClient.addParticipantsWithResponse(null, Context.NONE);
         });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void throwsExceptionOnBadRequest(HttpClient httpClient) {
-        HttpClient mockHttpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(ChatResponseMocker.createErrorResponse(request, 400));
-            }
-        };
-        setupUnitTest(mockHttpClient);
-
-        assertThrows(HttpResponseException.class, () ->
-            chatThreadClient.sendMessage(new SendChatMessageOptions()));
     }
 }

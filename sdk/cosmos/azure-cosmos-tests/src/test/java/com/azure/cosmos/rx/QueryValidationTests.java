@@ -77,9 +77,8 @@ public class QueryValidationTests extends TestSuiteBase {
         random = new Random();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query", "split"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
@@ -99,7 +98,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare
@@ -115,7 +114,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT *2)
+    @Test(groups = {"query"}, timeOut = TIMEOUT *2)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -156,7 +155,7 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryOptionNullValidation() {
         String query = "Select top 1 * from c";
 
@@ -246,7 +245,7 @@ public class QueryValidationTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, enabled = false)
     //  To run this test, update the QUERYPLAN_CACHE_SIZE constant to 10.
     //  The query plan cache size should not hit more than 10
     //  Without synchronization, it goes above 10
@@ -274,7 +273,7 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT)
     public void queryPlanCacheSinglePartitionCorrectness(String query) {
 
         String pk1 = "pk1";
@@ -309,7 +308,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         sqlQuerySpec.setQueryText("select * from c where c.id = @id");
@@ -371,8 +370,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
-    @Ignore("TODO 32129 - reenable after fixing flakiness.")
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
@@ -482,7 +480,7 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
     public void orderbyContinuationOnUndefinedAndNull() throws Exception {
         /*
         Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
@@ -573,7 +571,7 @@ public class QueryValidationTests extends TestSuiteBase {
         return bulkInsertBlocking(container, docsToInsert);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");

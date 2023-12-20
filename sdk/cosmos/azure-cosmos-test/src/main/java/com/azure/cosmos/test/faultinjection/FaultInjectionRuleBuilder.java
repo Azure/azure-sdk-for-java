@@ -4,6 +4,7 @@
 package com.azure.cosmos.test.faultinjection;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.test.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
 
@@ -117,10 +118,21 @@ public final class FaultInjectionRuleBuilder {
      * Create a new fault injection rule.
      *
      * @return the {@link FaultInjectionRule}.
+     * @throws IllegalArgumentException if condition is null.
+     * @throws IllegalArgumentException if result is null.
      */
     public FaultInjectionRule build() {
-        checkNotNull(this.condition, "Argument 'condition' can not be null");
-        checkNotNull(this.result, "Argument 'result' can not be null");
+        if (this.condition == null) {
+            throw new IllegalArgumentException("Argument 'condition' can not be null");
+        }
+
+        if (this.result == null) {
+            throw new IllegalArgumentException("Argument 'result' can not be null");
+        }
+
+        if (this.condition.getConnectionType() == FaultInjectionConnectionType.GATEWAY) {
+            this.validateRuleOnGatewayConnection();
+        }
 
         return new FaultInjectionRule(
             this.id,
@@ -130,5 +142,39 @@ public final class FaultInjectionRuleBuilder {
             this.enabled,
             this.condition,
             this.result);
+    }
+
+    private void validateRuleOnGatewayConnection() {
+        if (this.result == null) {
+            throw new IllegalArgumentException("Argument 'result' can not be null");
+        }
+
+        if (this.result instanceof FaultInjectionConnectionErrorResult) {
+            throw new IllegalArgumentException("FaultInjectionConnectionError result can not be configured for rule with gateway connection type.");
+        }
+
+        FaultInjectionServerErrorResult serverErrorResult = (FaultInjectionServerErrorResult) this.result;
+
+        // Gateway service internally will retry for 410/0, so the eventual exceptions being returned to SDK is 503(SERVICE_UNAVAILABLE) instead
+        if (serverErrorResult.getServerErrorType() == FaultInjectionServerErrorType.GONE) {
+            throw new IllegalArgumentException("Gone exception can not be injected for rule with gateway connection type");
+        }
+
+        if (serverErrorResult.getServerErrorType() == FaultInjectionServerErrorType.STALED_ADDRESSES_SERVER_GONE) {
+            throw new IllegalArgumentException("STALED_ADDRESSES exception can not be injected for rule with gateway connection type");
+        }
+
+        // for metadata request related rule, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error can be injected
+        if (ImplementationBridgeHelpers
+                .FaultInjectionConditionHelper
+                .getFaultInjectionConditionAccessor()
+                .isMetadataOperationType(this.condition)) {
+            if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
+                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
+                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
+
+                throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
+            }
+        }
     }
 }

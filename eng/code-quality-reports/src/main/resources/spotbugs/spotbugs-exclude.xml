@@ -59,9 +59,13 @@
 
   <!-- Internal implementation details, not at risk.-->
   <Match>
-    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
-    <Bug pattern="EI_EXPOSE_REP,
-      EI_EXPOSE_REP2"/>
+    <Or>
+      <!-- Internal implementation details, not at risk.-->
+      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
+      <!-- Testing model. -->
+      <Class name="com.azure.core.test.http.HttpClientTests$BinaryDataTestData"/>
+    </Or>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
   <Match>
@@ -130,14 +134,6 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
         <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
         <Method name="decode"/>
       </And>
@@ -181,6 +177,15 @@
         <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes"/>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -210,7 +215,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -458,8 +463,9 @@
   <!-- The casting problems do not exist in Azure use cases -->
   <Match>
     <Or>
+      <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
+      <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
       <Class name="com.azure.core.implementation.TypeUtil"/>
-      <Class name="com.azure.core.implementation.ReflectionUtils"/>
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
@@ -631,7 +637,6 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.implementation.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
@@ -1098,6 +1103,20 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
     <Field name="durationInMilliSecs"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="e2ePolicyCfg"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="excludedRegions"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1727,7 +1746,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
-    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Method name="getServerAddressesViaGatewayInternalAsync"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -2287,6 +2306,7 @@
     <Or>
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
       <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+      <Class name="com.azure.core.test.http.LocalTestServer"/>
     </Or>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
@@ -2323,6 +2343,14 @@
     </Or>
   </Match>
   <Bug pattern="NM_CONFUSING"/>
+
+  <!--  This method is made synchronous by blocking and waiting for a result. They do not return
+  anything, so it can be ignored. -->
+  <Match>
+    <Class name="com.microsoft.azure.eventgrid.implementation.EventGridClientImpl"/>
+    <Method name="publishEvents"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
 
   <Match>
     <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter"/>
@@ -2406,6 +2434,18 @@
       <Field name="mono"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+    <!--  The returned Disposable can be ignored since Scheduler is closed when Reactor closes. -->
+  <Match>
+    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
+    <Method name="start"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+    <Match>
+    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
+    <Method name="run"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
@@ -2502,6 +2542,11 @@
   <Match>
     <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
     <Method name="~getMap.*+"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.maps.render.implementation.RendersImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
@@ -2637,4 +2682,158 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Build tool suppressions -->
+  <Match>
+    <Class name="com.azure.sdk.build.tool.ReportGenerator"/>
+    <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.sdk.build.tool.mojo.AzureSdkMojo"/>
+    <Field name="mojo"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.sdk.build.tool.util.logging.ConsoleLogger"/>
+    <Field name="instance"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.sdk.build.tool.util.logging.MojoLogger"/>
+    <Field name="instance"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+
+  <!-- False positive, complaining about dereference of null 'source' on some paths, which can't happen based on the null validation checks. -->
+  <Match>
+    <Class name="com.azure.core.util.io.IOUtils"/>
+    <Method name="transfer"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+   <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="~com\.azure\.ai\.openai\.models\.(AudioTranscriptionOptions|AudioTranslationOptions)"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- False positive, it throws an IllegalArgumentException if non-exist method parameter type passed.-->
+  <Match>
+    <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
+    <Method name="serializeRequest"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Field is not initialized in Ctr but necessary safety measures are in place when accessing it -->
+  <Match>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor"/>
+    <Field name="rollingMessagePump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.SessionProcessor"/>
+    <Field name="rollingSessionsMessagePump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor"/>
+    <Field name="rollingMessagePump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+  <!-- False positives -->
+  <Match>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
+    <Or>
+      <Field name="builder"/>
+      <Field name="logger"/>
+      <Field name="disposable"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.SessionProcessor$RollingSessionsMessagePump"/>
+    <Or>
+      <Field name="builder"/>
+      <Field name="logger"/>
+      <Field name="disposable"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
+    <Or>
+      <Field name="nonSessionBuilder"/>
+      <Field name="sessionBuilder"/>
+      <Field name="logger"/>
+      <Field name="disposable"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <!-- The RollingNonSessionMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
+  <Match>
+    <Class
+      name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+      name="com.azure.messaging.servicebus.SessionProcessor$RollingSessionsMessagePump"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+      name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <!-- False positives -->
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
+    <Or>
+      <Field name="instrumentation"/>
+      <Field name="logger"/>
+      <Field name="messageFlux"/>
+      <Field name="receiversTracker"/>
+      <Field name="tracer"/>
+      <Field name="managementNode"/>
+      <Field name="serializer"/>
+      <Field name="workerScheduler"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
+    <Or>
+      <Field name="newSession"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
+    <Or>
+      <Field name="sessionReceiver"/>
+    </Or>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+  <!-- The RollingSessionReceiver, NextSessionStream, $SessionReceiverStream doesn't need to be serializable -->
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+  <Match>
+    <Class
+        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
+    <Bug pattern="SE_NO_SERIALVERSIONID"/>
+  </Match>
+
+  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>

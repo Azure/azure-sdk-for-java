@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,7 +25,7 @@ public final class ElasticSanInner extends Resource {
     private ElasticSanProperties innerProperties = new ElasticSanProperties();
 
     /*
-     * Resource metadata required by ARM RPC
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -43,7 +44,7 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Resource metadata required by ARM RPC.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -209,6 +210,40 @@ public final class ElasticSanInner extends Resource {
      */
     public Long totalSizeTiB() {
         return this.innerProperties() == null ? null : this.innerProperties().totalSizeTiB();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
     }
 
     /**

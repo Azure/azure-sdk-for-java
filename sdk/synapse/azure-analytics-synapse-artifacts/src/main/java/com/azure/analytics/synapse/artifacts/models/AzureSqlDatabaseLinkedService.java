@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Microsoft Azure SQL Database linked service. */
+/**
+ * Microsoft Azure SQL Database linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSqlDatabase")
 @JsonFlatten
@@ -59,19 +61,34 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     private Object azureCloudType;
 
     /*
+     * Sql always encrypted properties.
+     */
+    @JsonProperty(value = "typeProperties.alwaysEncryptedSettings")
+    private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
+
+    /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of AzureSqlDatabaseLinkedService class. */
-    public AzureSqlDatabaseLinkedService() {}
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
+    /**
+     * Creates an instance of AzureSqlDatabaseLinkedService class.
+     */
+    public AzureSqlDatabaseLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -81,7 +98,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -92,7 +109,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -101,7 +118,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -113,7 +130,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL
      * Database. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -123,7 +140,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL
      * Database. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -135,7 +152,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Database.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -145,7 +162,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Database.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -157,7 +174,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -167,7 +184,7 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -177,10 +194,10 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object getAzureCloudType() {
@@ -188,10 +205,10 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -201,9 +218,30 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
+     * 
+     * @return the alwaysEncryptedSettings value.
+     */
+    public SqlAlwaysEncryptedProperties getAlwaysEncryptedSettings() {
+        return this.alwaysEncryptedSettings;
+    }
+
+    /**
+     * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
+     * 
+     * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    public AzureSqlDatabaseLinkedService
+        setAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+        this.alwaysEncryptedSettings = alwaysEncryptedSettings;
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -211,9 +249,9 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSqlDatabaseLinkedService object itself.
      */
@@ -222,28 +260,56 @@ public class AzureSqlDatabaseLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureSqlDatabaseLinkedService object itself.
+     */
+    public AzureSqlDatabaseLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

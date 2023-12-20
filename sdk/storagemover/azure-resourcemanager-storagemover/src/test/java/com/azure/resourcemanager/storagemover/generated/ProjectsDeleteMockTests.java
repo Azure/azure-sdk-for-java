@@ -56,6 +56,6 @@ public final class ProjectsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.projects().delete("qcslyjpkiid", "yexz", "eli", com.azure.core.util.Context.NONE);
+        manager.projects().delete("pkteo", "llwptfdy", "pfqbuaceopzf", com.azure.core.util.Context.NONE);
     }
 }

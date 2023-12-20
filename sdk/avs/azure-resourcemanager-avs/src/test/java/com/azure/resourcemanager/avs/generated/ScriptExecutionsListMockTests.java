@@ -32,7 +32,7 @@ public final class ScriptExecutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"scriptCmdletId\":\"rrxxgewpktvq\",\"parameters\":[],\"hiddenParameters\":[],\"failureReason\":\"zoyhlfbcgwg\",\"timeout\":\"loxoebqin\",\"retention\":\"pnwjfujq\",\"submittedAt\":\"2020-12-29T10:58:54Z\",\"startedAt\":\"2021-08-20T11:44:12Z\",\"finishedAt\":\"2021-07-05T19:18:32Z\",\"provisioningState\":\"Cancelling\",\"output\":[\"ofoiy\",\"w\"],\"namedOutputs\":{\"uogphuartvtiuky\":\"datalkmkkholvdndvi\",\"nxhkxjqi\":\"datafchnmnah\"},\"information\":[\"weooxffifhxwrs\",\"ewmozqvbu\",\"qmamhsycxhxzga\"],\"warnings\":[\"abo\",\"dvmfqhppub\",\"w\"],\"errors\":[\"dfgkmtdh\",\"rngbtcjuahokqtob\",\"auxofshfph\",\"pnulaiywzej\"]},\"id\":\"whslwkoj\",\"name\":\"llndnpd\",\"type\":\"rpqaf\"}]}";
+            "{\"value\":[{\"properties\":{\"scriptCmdletId\":\"ifoxxkubvphav\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"brbqgvgovp\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"tefjoknssqyzq\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"dikdfrdbi\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mrjgeihfqlggwfi\"}],\"failureReason\":\"cxmjpbyephmg\",\"timeout\":\"vljvrc\",\"retention\":\"fqip\",\"submittedAt\":\"2020-12-22T02:20:11Z\",\"startedAt\":\"2021-09-18T18:40:03Z\",\"finishedAt\":\"2021-04-01T06:59Z\",\"provisioningState\":\"Cancelling\",\"output\":[\"abvn\",\"ilee\"],\"namedOutputs\":{\"aukhfkvcisiz\":\"datawlpaugmrmfjlrxwt\",\"eewxeiqbpsmg\":\"dataoaedsxjwuivedwcg\",\"dlrgms\":\"datamguaml\"},\"information\":[\"gaufcs\",\"hvn\",\"wgnxkympqanxrj\"],\"warnings\":[\"tw\",\"taoypnyghshxc\"],\"errors\":[\"kgmnsghpxyc\",\"hdrwjjkh\"]},\"id\":\"yomacluzvxnqm\",\"name\":\"rpqpd\",\"type\":\"wmkoisq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,14 @@ public final class ScriptExecutionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ScriptExecution> response =
-            manager.scriptExecutions().list("xgjiuqh", "btozipqwje", com.azure.core.util.Context.NONE);
+            manager.scriptExecutions().list("ufypiv", "sbbjpmcu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rrxxgewpktvq", response.iterator().next().scriptCmdletId());
-        Assertions.assertEquals("zoyhlfbcgwg", response.iterator().next().failureReason());
-        Assertions.assertEquals("loxoebqin", response.iterator().next().timeout());
-        Assertions.assertEquals("pnwjfujq", response.iterator().next().retention());
-        Assertions.assertEquals("ofoiy", response.iterator().next().output().get(0));
+        Assertions.assertEquals("ifoxxkubvphav", response.iterator().next().scriptCmdletId());
+        Assertions.assertEquals("brbqgvgovp", response.iterator().next().parameters().get(0).name());
+        Assertions.assertEquals("tefjoknssqyzq", response.iterator().next().hiddenParameters().get(0).name());
+        Assertions.assertEquals("cxmjpbyephmg", response.iterator().next().failureReason());
+        Assertions.assertEquals("vljvrc", response.iterator().next().timeout());
+        Assertions.assertEquals("fqip", response.iterator().next().retention());
+        Assertions.assertEquals("abvn", response.iterator().next().output().get(0));
     }
 }

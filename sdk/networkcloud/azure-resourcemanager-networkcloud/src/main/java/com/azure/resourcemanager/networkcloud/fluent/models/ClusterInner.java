@@ -409,8 +409,9 @@ public final class ClusterInner extends Resource {
      * Get the hybridAksExtendedLocation property: ExtendedLocation represents the Azure custom location where the
      * resource will be created.
      *
-     * <p>The extended location (custom location) that represents the Hybrid AKS control plane location. This extended
-     * location is used when creating provisioned clusters (Hybrid AKS clusters).
+     * <p>Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
+     * location) that represents the Hybrid AKS control plane location. This extended location is used when creating
+     * provisioned clusters (Hybrid AKS clusters).
      *
      * @return the hybridAksExtendedLocation value.
      */

@@ -5,101 +5,96 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Address field value. */
+/**
+ * Address field value.
+ */
 @Fluent
-public final class AddressValue {
+public final class AddressValue implements JsonSerializable<AddressValue> {
     /*
      * House or building number.
      */
-    @JsonProperty(value = "houseNumber")
     private String houseNumber;
 
     /*
      * Post office box number.
      */
-    @JsonProperty(value = "poBox")
     private String poBox;
 
     /*
      * Street name.
      */
-    @JsonProperty(value = "road")
     private String road;
 
     /*
      * Name of city, town, village, etc.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * First-level administrative division.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Postal code used for mail sorting.
      */
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * Country/region.
      */
-    @JsonProperty(value = "countryRegion")
     private String countryRegion;
 
     /*
      * Street-level address, excluding city, state, countryRegion, and postalCode.
      */
-    @JsonProperty(value = "streetAddress")
     private String streetAddress;
 
     /*
      * Apartment or office number
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Districts or boroughs within a city, such as Brooklyn in New York City or City of Westminster in London.
      */
-    @JsonProperty(value = "cityDistrict")
     private String cityDistrict;
 
     /*
      * Second-level administrative division used in certain locales.
      */
-    @JsonProperty(value = "stateDistrict")
     private String stateDistrict;
 
     /*
      * Unofficial neighborhood name, like Chinatown.
      */
-    @JsonProperty(value = "suburb")
     private String suburb;
 
     /*
      * Build name, such as World Trade Center.
      */
-    @JsonProperty(value = "house")
     private String house;
 
     /*
      * Floor number, such as 3F.
      */
-    @JsonProperty(value = "level")
     private String level;
 
-    /** Creates an instance of AddressValue class. */
-    public AddressValue() {}
+    /**
+     * Creates an instance of AddressValue class.
+     */
+    public AddressValue() {
+    }
 
     /**
      * Get the houseNumber property: House or building number.
-     *
+     * 
      * @return the houseNumber value.
      */
     public String getHouseNumber() {
@@ -108,7 +103,7 @@ public final class AddressValue {
 
     /**
      * Set the houseNumber property: House or building number.
-     *
+     * 
      * @param houseNumber the houseNumber value to set.
      * @return the AddressValue object itself.
      */
@@ -119,7 +114,7 @@ public final class AddressValue {
 
     /**
      * Get the poBox property: Post office box number.
-     *
+     * 
      * @return the poBox value.
      */
     public String getPoBox() {
@@ -128,7 +123,7 @@ public final class AddressValue {
 
     /**
      * Set the poBox property: Post office box number.
-     *
+     * 
      * @param poBox the poBox value to set.
      * @return the AddressValue object itself.
      */
@@ -139,7 +134,7 @@ public final class AddressValue {
 
     /**
      * Get the road property: Street name.
-     *
+     * 
      * @return the road value.
      */
     public String getRoad() {
@@ -148,7 +143,7 @@ public final class AddressValue {
 
     /**
      * Set the road property: Street name.
-     *
+     * 
      * @param road the road value to set.
      * @return the AddressValue object itself.
      */
@@ -159,7 +154,7 @@ public final class AddressValue {
 
     /**
      * Get the city property: Name of city, town, village, etc.
-     *
+     * 
      * @return the city value.
      */
     public String getCity() {
@@ -168,7 +163,7 @@ public final class AddressValue {
 
     /**
      * Set the city property: Name of city, town, village, etc.
-     *
+     * 
      * @param city the city value to set.
      * @return the AddressValue object itself.
      */
@@ -179,7 +174,7 @@ public final class AddressValue {
 
     /**
      * Get the state property: First-level administrative division.
-     *
+     * 
      * @return the state value.
      */
     public String getState() {
@@ -188,7 +183,7 @@ public final class AddressValue {
 
     /**
      * Set the state property: First-level administrative division.
-     *
+     * 
      * @param state the state value to set.
      * @return the AddressValue object itself.
      */
@@ -199,7 +194,7 @@ public final class AddressValue {
 
     /**
      * Get the postalCode property: Postal code used for mail sorting.
-     *
+     * 
      * @return the postalCode value.
      */
     public String getPostalCode() {
@@ -208,7 +203,7 @@ public final class AddressValue {
 
     /**
      * Set the postalCode property: Postal code used for mail sorting.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the AddressValue object itself.
      */
@@ -219,7 +214,7 @@ public final class AddressValue {
 
     /**
      * Get the countryRegion property: Country/region.
-     *
+     * 
      * @return the countryRegion value.
      */
     public String getCountryRegion() {
@@ -228,7 +223,7 @@ public final class AddressValue {
 
     /**
      * Set the countryRegion property: Country/region.
-     *
+     * 
      * @param countryRegion the countryRegion value to set.
      * @return the AddressValue object itself.
      */
@@ -239,7 +234,7 @@ public final class AddressValue {
 
     /**
      * Get the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
-     *
+     * 
      * @return the streetAddress value.
      */
     public String getStreetAddress() {
@@ -248,7 +243,7 @@ public final class AddressValue {
 
     /**
      * Set the streetAddress property: Street-level address, excluding city, state, countryRegion, and postalCode.
-     *
+     * 
      * @param streetAddress the streetAddress value to set.
      * @return the AddressValue object itself.
      */
@@ -259,7 +254,7 @@ public final class AddressValue {
 
     /**
      * Get the unit property: Apartment or office number.
-     *
+     * 
      * @return the unit value.
      */
     public String getUnit() {
@@ -268,7 +263,7 @@ public final class AddressValue {
 
     /**
      * Set the unit property: Apartment or office number.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the AddressValue object itself.
      */
@@ -280,7 +275,7 @@ public final class AddressValue {
     /**
      * Get the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
      * Westminster in London.
-     *
+     * 
      * @return the cityDistrict value.
      */
     public String getCityDistrict() {
@@ -290,7 +285,7 @@ public final class AddressValue {
     /**
      * Set the cityDistrict property: Districts or boroughs within a city, such as Brooklyn in New York City or City of
      * Westminster in London.
-     *
+     * 
      * @param cityDistrict the cityDistrict value to set.
      * @return the AddressValue object itself.
      */
@@ -301,7 +296,7 @@ public final class AddressValue {
 
     /**
      * Get the stateDistrict property: Second-level administrative division used in certain locales.
-     *
+     * 
      * @return the stateDistrict value.
      */
     public String getStateDistrict() {
@@ -310,7 +305,7 @@ public final class AddressValue {
 
     /**
      * Set the stateDistrict property: Second-level administrative division used in certain locales.
-     *
+     * 
      * @param stateDistrict the stateDistrict value to set.
      * @return the AddressValue object itself.
      */
@@ -321,7 +316,7 @@ public final class AddressValue {
 
     /**
      * Get the suburb property: Unofficial neighborhood name, like Chinatown.
-     *
+     * 
      * @return the suburb value.
      */
     public String getSuburb() {
@@ -330,7 +325,7 @@ public final class AddressValue {
 
     /**
      * Set the suburb property: Unofficial neighborhood name, like Chinatown.
-     *
+     * 
      * @param suburb the suburb value to set.
      * @return the AddressValue object itself.
      */
@@ -341,7 +336,7 @@ public final class AddressValue {
 
     /**
      * Get the house property: Build name, such as World Trade Center.
-     *
+     * 
      * @return the house value.
      */
     public String getHouse() {
@@ -350,7 +345,7 @@ public final class AddressValue {
 
     /**
      * Set the house property: Build name, such as World Trade Center.
-     *
+     * 
      * @param house the house value to set.
      * @return the AddressValue object itself.
      */
@@ -361,7 +356,7 @@ public final class AddressValue {
 
     /**
      * Get the level property: Floor number, such as 3F.
-     *
+     * 
      * @return the level value.
      */
     public String getLevel() {
@@ -370,12 +365,84 @@ public final class AddressValue {
 
     /**
      * Set the level property: Floor number, such as 3F.
-     *
+     * 
      * @param level the level value to set.
      * @return the AddressValue object itself.
      */
     public AddressValue setLevel(String level) {
         this.level = level;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("houseNumber", this.houseNumber);
+        jsonWriter.writeStringField("poBox", this.poBox);
+        jsonWriter.writeStringField("road", this.road);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("countryRegion", this.countryRegion);
+        jsonWriter.writeStringField("streetAddress", this.streetAddress);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("cityDistrict", this.cityDistrict);
+        jsonWriter.writeStringField("stateDistrict", this.stateDistrict);
+        jsonWriter.writeStringField("suburb", this.suburb);
+        jsonWriter.writeStringField("house", this.house);
+        jsonWriter.writeStringField("level", this.level);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressValue.
+     */
+    public static AddressValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressValue deserializedAddressValue = new AddressValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("houseNumber".equals(fieldName)) {
+                    deserializedAddressValue.houseNumber = reader.getString();
+                } else if ("poBox".equals(fieldName)) {
+                    deserializedAddressValue.poBox = reader.getString();
+                } else if ("road".equals(fieldName)) {
+                    deserializedAddressValue.road = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedAddressValue.city = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAddressValue.state = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedAddressValue.postalCode = reader.getString();
+                } else if ("countryRegion".equals(fieldName)) {
+                    deserializedAddressValue.countryRegion = reader.getString();
+                } else if ("streetAddress".equals(fieldName)) {
+                    deserializedAddressValue.streetAddress = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedAddressValue.unit = reader.getString();
+                } else if ("cityDistrict".equals(fieldName)) {
+                    deserializedAddressValue.cityDistrict = reader.getString();
+                } else if ("stateDistrict".equals(fieldName)) {
+                    deserializedAddressValue.stateDistrict = reader.getString();
+                } else if ("suburb".equals(fieldName)) {
+                    deserializedAddressValue.suburb = reader.getString();
+                } else if ("house".equals(fieldName)) {
+                    deserializedAddressValue.house = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedAddressValue.level = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressValue;
+        });
     }
 }

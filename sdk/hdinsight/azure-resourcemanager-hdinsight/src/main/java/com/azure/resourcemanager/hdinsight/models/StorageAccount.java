@@ -65,6 +65,13 @@ public final class StorageAccount {
     @JsonProperty(value = "fileshare")
     private String fileshare;
 
+    /*
+     * Enable secure channel or not, it's an optional field. Default value is false when cluster version < 5.1 and true
+     * when cluster version >= 5.1 ,
+     */
+    @JsonProperty(value = "enableSecureChannel")
+    private Boolean enableSecureChannel;
+
     /** Creates an instance of StorageAccount class. */
     public StorageAccount() {
     }
@@ -250,6 +257,28 @@ public final class StorageAccount {
      */
     public StorageAccount withFileshare(String fileshare) {
         this.fileshare = fileshare;
+        return this;
+    }
+
+    /**
+     * Get the enableSecureChannel property: Enable secure channel or not, it's an optional field. Default value is
+     * false when cluster version &lt; 5.1 and true when cluster version &gt;= 5.1 ,.
+     *
+     * @return the enableSecureChannel value.
+     */
+    public Boolean enableSecureChannel() {
+        return this.enableSecureChannel;
+    }
+
+    /**
+     * Set the enableSecureChannel property: Enable secure channel or not, it's an optional field. Default value is
+     * false when cluster version &lt; 5.1 and true when cluster version &gt;= 5.1 ,.
+     *
+     * @param enableSecureChannel the enableSecureChannel value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withEnableSecureChannel(Boolean enableSecureChannel) {
+        this.enableSecureChannel = enableSecureChannel;
         return this;
     }
 

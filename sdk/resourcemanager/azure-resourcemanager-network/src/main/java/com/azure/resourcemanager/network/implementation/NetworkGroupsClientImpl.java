@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkGroupsClient.
+ */
 public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkGroupsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(NetworkGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,84 +71,62 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface NetworkGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkGroupInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkGroupInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("networkGroupName") String networkGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkGroupName") String networkGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("networkGroupName") String networkGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") NetworkGroupInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkGroupName") String networkGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") NetworkGroupInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("networkGroupName") String networkGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkGroupName") String networkGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("force") Boolean force, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkGroupListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkGroupListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkManagerName") String networkManagerName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkManagerName") String networkManagerName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkGroupListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -152,19 +136,15 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the specified network group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public Mono<Response<NetworkGroupInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,27 +158,17 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -209,19 +179,15 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the specified network group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Context context) {
+    private Mono<Response<NetworkGroupInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,24 +201,16 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, apiVersion, accept, context);
     }
 
     /**
      * Gets the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -262,15 +220,15 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the specified network group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkGroupInner> getAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public Mono<NetworkGroupInner> getAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -281,14 +239,14 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the specified network group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkGroupInner> getWithResponse(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Context context) {
+    public Response<NetworkGroupInner> getWithResponse(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, context).block();
     }
 
     /**
      * Gets the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -304,36 +262,28 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Creates or updates a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param parameters Parameters supplied to the specify which network group need to create.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        NetworkGroupInner parameters,
-        String ifMatch) {
+    public Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, NetworkGroupInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -352,35 +302,24 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            apiVersion,
-                            ifMatch,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, apiVersion, ifMatch, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param parameters Parameters supplied to the specify which network group need to create.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,24 +327,16 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the network group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        NetworkGroupInner parameters,
-        String ifMatch,
+    private Mono<NetworkGroupsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, NetworkGroupInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -424,26 +355,16 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                apiVersion,
-                ifMatch,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, apiVersion, ifMatch, parameters, accept, context);
     }
 
     /**
      * Creates or updates a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -454,23 +375,22 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the network group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, NetworkGroupInner parameters) {
+    public Mono<NetworkGroupInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, NetworkGroupInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, parameters,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param parameters Parameters supplied to the specify which network group need to create.
      * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,21 +398,16 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the network group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkGroupsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        NetworkGroupInner parameters,
-        String ifMatch,
+    public NetworkGroupsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String networkManagerName, String networkGroupName, NetworkGroupInner parameters, String ifMatch,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, parameters,
+            ifMatch, context).block();
     }
 
     /**
      * Creates or updates a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -503,41 +418,36 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the network group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkGroupInner createOrUpdate(
-        String resourceGroupName, String networkManagerName, String networkGroupName, NetworkGroupInner parameters) {
+    public NetworkGroupInner createOrUpdate(String resourceGroupName, String networkManagerName,
+        String networkGroupName, NetworkGroupInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, networkManagerName, networkGroupName, parameters, ifMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -551,33 +461,22 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            apiVersion,
-                            force,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, apiVersion, force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -585,19 +484,15 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -611,49 +506,38 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                apiVersion,
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, apiVersion, force, accept, context);
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Boolean force) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -663,25 +547,23 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         final Boolean force = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -689,19 +571,18 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Boolean force, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, force, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -711,20 +592,20 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         final Boolean force = null;
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force).getSyncPoller();
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -732,37 +613,35 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Boolean force, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String networkGroupName,
+        Boolean force) {
+        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -774,19 +653,18 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String networkGroupName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -794,16 +672,15 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String networkGroupName,
+        Boolean force, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkManagerName, networkGroupName, force, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -819,53 +696,49 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Deletes a network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String networkManagerName, String networkGroupName, Boolean force,
+        Context context) {
         deleteAsync(resourceGroupName, networkManagerName, networkGroupName, force, context).block();
     }
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkGroup along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkGroupInner>> listSinglePageAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken) {
+    private Mono<PagedResponse<NetworkGroupInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -875,65 +748,43 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            apiVersion,
-                            top,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<NetworkGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, apiVersion, top, skipToken, accept, context))
+            .<PagedResponse<NetworkGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkGroup along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkGroupInner>> listSinglePageAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    private Mono<PagedResponse<NetworkGroupInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -943,57 +794,41 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                apiVersion,
-                top,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, networkManagerName,
+                apiVersion, top, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkGroup as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkGroupInner> listAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
+    public PagedFlux<NetworkGroupInner> listAsync(String resourceGroupName, String networkManagerName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,21 +840,20 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
     public PagedFlux<NetworkGroupInner> listAsync(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1027,8 +861,8 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return result of the request to list NetworkGroup as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkGroupInner> listAsync(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    private PagedFlux<NetworkGroupInner> listAsync(String resourceGroupName, String networkManagerName, Integer top,
+        String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkManagerName, top, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1036,7 +870,7 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,14 +887,14 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
 
     /**
      * Lists the specified network group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1068,21 +902,22 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
      * @return result of the request to list NetworkGroup as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkGroupInner> list(
-        String resourceGroupName, String networkManagerName, Integer top, String skipToken, Context context) {
+    public PagedIterable<NetworkGroupInner> list(String resourceGroupName, String networkManagerName, Integer top,
+        String skipToken, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, top, skipToken, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkGroup along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1090,37 +925,28 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list NetworkGroup along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1128,23 +954,13 @@ public final class NetworkGroupsClientImpl implements NetworkGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -44,7 +44,7 @@ public final class CreateCosmosDBWithIPRange {
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                     .withSessionConsistency()
                     .withWriteReplication(Region.US_WEST)
-                    .withReadReplication(Region.US_CENTRAL)
+                    .withReadReplication(Region.US_WEST3)
                     .withIpRules(Arrays.asList(
                         new IpAddressOrRange().withIpAddressOrRange("13.91.6.132"),
                         new IpAddressOrRange().withIpAddressOrRange("13.91.6.1/24")))

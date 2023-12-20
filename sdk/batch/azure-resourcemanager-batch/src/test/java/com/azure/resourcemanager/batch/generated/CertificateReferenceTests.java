@@ -10,34 +10,33 @@ import com.azure.resourcemanager.batch.models.CertificateStoreLocation;
 import com.azure.resourcemanager.batch.models.CertificateVisibility;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CertificateReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CertificateReference model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"vpa\",\"storeLocation\":\"LocalMachine\",\"storeName\":\"qqu\",\"visibility\":[\"RemoteUser\"]}")
+                    "{\"id\":\"ooaojkniodkooebw\",\"storeLocation\":\"CurrentUser\",\"storeName\":\"emmsbvdkc\",\"visibility\":[\"Task\",\"RemoteUser\"]}")
                 .toObject(CertificateReference.class);
-        Assertions.assertEquals("vpa", model.id());
-        Assertions.assertEquals(CertificateStoreLocation.LOCAL_MACHINE, model.storeLocation());
-        Assertions.assertEquals("qqu", model.storeName());
-        Assertions.assertEquals(CertificateVisibility.REMOTE_USER, model.visibility().get(0));
+        Assertions.assertEquals("ooaojkniodkooebw", model.id());
+        Assertions.assertEquals(CertificateStoreLocation.CURRENT_USER, model.storeLocation());
+        Assertions.assertEquals("emmsbvdkc", model.storeName());
+        Assertions.assertEquals(CertificateVisibility.TASK, model.visibility().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CertificateReference model =
             new CertificateReference()
-                .withId("vpa")
-                .withStoreLocation(CertificateStoreLocation.LOCAL_MACHINE)
-                .withStoreName("qqu")
-                .withVisibility(Arrays.asList(CertificateVisibility.REMOTE_USER));
+                .withId("ooaojkniodkooebw")
+                .withStoreLocation(CertificateStoreLocation.CURRENT_USER)
+                .withStoreName("emmsbvdkc")
+                .withVisibility(Arrays.asList(CertificateVisibility.TASK, CertificateVisibility.REMOTE_USER));
         model = BinaryData.fromObject(model).toObject(CertificateReference.class);
-        Assertions.assertEquals("vpa", model.id());
-        Assertions.assertEquals(CertificateStoreLocation.LOCAL_MACHINE, model.storeLocation());
-        Assertions.assertEquals("qqu", model.storeName());
-        Assertions.assertEquals(CertificateVisibility.REMOTE_USER, model.visibility().get(0));
+        Assertions.assertEquals("ooaojkniodkooebw", model.id());
+        Assertions.assertEquals(CertificateStoreLocation.CURRENT_USER, model.storeLocation());
+        Assertions.assertEquals("emmsbvdkc", model.storeName());
+        Assertions.assertEquals(CertificateVisibility.TASK, model.visibility().get(0));
     }
 }

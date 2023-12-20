@@ -14,7 +14,7 @@ public final class AddonInnerTests {
         AddonInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"imrzrtuzqog\",\"name\":\"exn\",\"type\":\"vfdnwnwmewzsyyce\"}")
+                    "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"jjoqkagf\",\"name\":\"sxtta\",\"type\":\"gzxnfaazpxdtnk\"}")
                 .toObject(AddonInner.class);
     }
 

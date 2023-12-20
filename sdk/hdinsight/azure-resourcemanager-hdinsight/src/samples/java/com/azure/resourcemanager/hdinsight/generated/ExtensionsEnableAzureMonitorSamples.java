@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.AzureMonitorRequest;
 
 /** Samples for Extensions EnableAzureMonitor. */
 public final class ExtensionsEnableAzureMonitorSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableLinuxClusterAzureMonitor.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/EnableLinuxClusterAzureMonitor.json
      */
     /**
      * Sample code: Enable cluster monitoring.
@@ -26,6 +25,6 @@ public final class ExtensionsEnableAzureMonitorSamples {
                 new AzureMonitorRequest()
                     .withWorkspaceId("a2090ead-8c9f-4fba-b70e-533e3e003163")
                     .withPrimaryKey("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

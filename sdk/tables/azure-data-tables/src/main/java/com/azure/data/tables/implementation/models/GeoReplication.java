@@ -16,7 +16,9 @@ import java.util.Objects;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** The GeoReplication model. */
+/**
+ * The GeoReplication model.
+ */
 @Fluent
 public final class GeoReplication implements XmlSerializable<GeoReplication> {
     /*
@@ -30,12 +32,15 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      */
     private DateTimeRfc1123 lastSyncTime;
 
-    /** Creates an instance of GeoReplication class. */
-    public GeoReplication() {}
+    /**
+     * Creates an instance of GeoReplication class.
+     */
+    public GeoReplication() {
+    }
 
     /**
      * Get the status property: The status of the secondary location.
-     *
+     * 
      * @return the status value.
      */
     public GeoReplicationStatusType getStatus() {
@@ -44,7 +49,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
 
     /**
      * Set the status property: The status of the secondary location.
-     *
+     * 
      * @param status the status value to set.
      * @return the GeoReplication object itself.
      */
@@ -57,7 +62,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * Get the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
      * guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or
      * may not be available for reads.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime getLastSyncTime() {
@@ -71,7 +76,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * Set the lastSyncTime property: A GMT date/time value, to the second. All primary writes preceding this value are
      * guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or
      * may not be available for reads.
-     *
+     * 
      * @param lastSyncTime the lastSyncTime value to set.
      * @return the GeoReplication object itself.
      */
@@ -93,17 +98,17 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Status", Objects.toString(this.status, null));
+        xmlWriter.writeStringElement("Status", this.status == null ? null : this.status.toString());
         xmlWriter.writeStringElement("LastSyncTime", Objects.toString(this.lastSyncTime, null));
         return xmlWriter.writeEndElement();
     }
 
     /**
      * Reads an instance of GeoReplication from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
@@ -113,36 +118,32 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
 
     /**
      * Reads an instance of GeoReplication from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
     public static GeoReplication fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "GeoReplication" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    GeoReplication deserializedGeoReplication = new GeoReplication();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            GeoReplication deserializedGeoReplication = new GeoReplication();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("Status".equals(elementName.getLocalPart())) {
-                            deserializedGeoReplication.status =
-                                    reader.getNullableElement(GeoReplicationStatusType::fromString);
-                        } else if ("LastSyncTime".equals(elementName.getLocalPart())) {
-                            deserializedGeoReplication.setLastSyncTime(
-                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("Status".equals(elementName.getLocalPart())) {
+                    deserializedGeoReplication.status = GeoReplicationStatusType.fromString(reader.getStringElement());
+                } else if ("LastSyncTime".equals(elementName.getLocalPart())) {
+                    deserializedGeoReplication.lastSyncTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedGeoReplication;
-                });
+            return deserializedGeoReplication;
+        });
     }
 }

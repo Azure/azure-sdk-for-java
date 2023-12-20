@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificate ListByBatchAccount. */
 public final class CertificateListByBatchAccountSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/CertificateListWithFilter.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateListWithFilter.json
      */
     /**
      * Sample code: ListCertificates - Filter and Select.
@@ -26,11 +24,11 @@ public final class CertificateListByBatchAccountSamples {
                 "properties/format,properties/provisioningState",
                 "properties/provisioningStateTransitionTime gt '2017-05-01' or properties/provisioningState eq"
                     + " 'Failed'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/CertificateList.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/CertificateList.json
      */
     /**
      * Sample code: ListCertificates.
@@ -40,6 +38,7 @@ public final class CertificateListByBatchAccountSamples {
     public static void listCertificates(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .certificates()
-            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", 1, null, null, Context.NONE);
+            .listByBatchAccount(
+                "default-azurebatch-japaneast", "sampleacct", 1, null, null, com.azure.core.util.Context.NONE);
     }
 }

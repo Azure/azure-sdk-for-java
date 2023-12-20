@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -26,7 +27,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withoutPrimaryPublicIPAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword("fakePasswordPlaceholder")
+                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
                 .withUnmanagedDisks()
                 .withNewUnmanagedDataDisk(30)
                 .defineUnmanagedDataDisk("disk2")

@@ -48,7 +48,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canDeleteRelatedResourcesFromFailedParallelVMCreations() {
         if (skipInPlayback()) {
             return;

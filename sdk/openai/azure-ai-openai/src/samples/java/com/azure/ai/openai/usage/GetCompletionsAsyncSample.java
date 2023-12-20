@@ -41,7 +41,7 @@ public class GetCompletionsAsyncSample {
 
         client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt)).subscribe(
             completions -> {
-                System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+                System.out.printf("Model ID=%s is created at %d.%s", completions.getId(), completions.getCreatedAt());
                 for (Choice choice : completions.getChoices()) {
                     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
                 }

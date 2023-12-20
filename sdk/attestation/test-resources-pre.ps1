@@ -115,21 +115,6 @@ function New-X509Certificate2([RSA] $rsa, [string] $SubjectName) {
     }
 }
 
-function Export-X509Certificate2([string] $Path, [X509Certificate2] $Certificate) {
-
-    $Certificate.Export([X509ContentType]::Pfx) | Set-Content $Path -AsByteStream
-}
-
-function Export-X509Certificate2PEM([string] $Path, [X509Certificate2] $Certificate) {
-
-@"
------BEGIN CERTIFICATE-----
-$([Convert]::ToBase64String($Certificate.RawData, 'InsertLineBreaks'))
------END CERTIFICATE-----
-"@ > $Path
-
-}
-
 Log "Running PreConfig script".
 
 $shortLocation = $AbbreviatedRegionMap.Get_Item($Location.ToLower())
@@ -139,32 +124,34 @@ try {
    $isolatedKey = [RSA]::Create(2048)
    $isolatedCertificate = New-X509Certificate2 $isolatedKey "CN=AttestationIsolatedManagementCertificate"
 
-   $EnvironmentVariables["isolatedSigningCertificate"] = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
-   $templateFileParameters.isolatedSigningCertificate = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
+   $isolatedSigningCertificate = $([Convert]::ToBase64String($isolatedCertificate.RawData, 'None'))
+   $EnvironmentVariables.Add("ISOLATED_SIGNING_CERTIFICATE", $isolatedSigningCertificate)
+   $templateFileParameters.Add("isolatedSigningCertificate", $isolatedSigningCertificate)
+   $isolatedSigningCertificate | Out-File -FilePath "$PSScriptRoot\ISOLATED_SIGNING_CERTIFICATE" -NoNewline
 
-   $EnvironmentVariables["isolatedSigningKey"] = $([Convert]::ToBase64String($isolatedKey.ExportPkcs8PrivateKey()))
-   $EnvironmentVariables["serializedIsolatedSigningKey"] = $isolatedKey.ToXmlString($True)
+   $isolatedSigningKey = $([Convert]::ToBase64String($isolatedKey.ExportPkcs8PrivateKey()))
+   $EnvironmentVariables.Add("ISOLATED_SIGNING_KEY", $isolatedSigningKey)
+   $isolatedSigningKey | Out-File -FilePath "$PSScriptRoot\ISOLATED_SIGNING_KEY" -NoNewline
 }
 finally {
    $isolatedKey.Dispose()
 }
 
-$EnvironmentVariables["locationShortName"] = $shortLocation
-$templateFileParameters.locationShortName = $shortLocation
+$EnvironmentVariables.Add("LOCATION_SHORT_NAME", $shortLocation)
+$templateFileParameters.Add("locationShortName", $shortLocation)
 
 Log 'Creating 3 X509 certificates which can be used to sign policies.'
 $wrappingFiles = foreach ($i in 0..2) {
     try {
         $certificateKey = [RSA]::Create(2048)
         $certificate = New-X509Certificate2 $certificateKey "CN=AttestationCertificate$i"
+        $policySigningCertificate = $([Convert]::ToBase64String($certificate.RawData))
+        $EnvironmentVariables.Add("POLICY_SIGNING_CERTIFICATE" + $i, $policySigningCertificate)
+        $policySigningCertificate | Out-File -FilePath "$PSScriptRoot\POLICY_SIGNING_CERTIFICATE$i" -NoNewline
 
-        $EnvironmentVariables["policySigningCertificate$i"] = $([Convert]::ToBase64String($certificate.RawData))
-
-        $EnvironmentVariables["policySigningKey$i"] = $([Convert]::ToBase64String($certificateKey.ExportPkcs8PrivateKey()))
-        $EnvironmentVariables["serializedPolicySigningKey$i"] = $certificateKey.ToXmlString($True)
-
-        $baseName = "$PSScriptRoot\attestation-certificate$i"
-        Export-X509Certificate2 "$baseName.pfx" $certificate
+        $policySigningKey = $([Convert]::ToBase64String($certificateKey.ExportPkcs8PrivateKey()))
+        $EnvironmentVariables.Add("POLICY_SIGNING_KEY" + $i, $policySigningKey)
+        $policySigningKey | Out-File -FilePath "$PSScriptRoot\POLICY_SIGNING_KEY$i" -NoNewline
     }
     finally {
         $certificateKey.Dispose()

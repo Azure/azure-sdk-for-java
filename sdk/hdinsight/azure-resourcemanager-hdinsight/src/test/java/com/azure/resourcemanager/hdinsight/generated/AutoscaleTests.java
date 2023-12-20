@@ -9,39 +9,80 @@ import com.azure.resourcemanager.hdinsight.models.Autoscale;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleCapacity;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleRecurrence;
 import com.azure.resourcemanager.hdinsight.models.AutoscaleSchedule;
+import com.azure.resourcemanager.hdinsight.models.AutoscaleTimeAndCapacity;
+import com.azure.resourcemanager.hdinsight.models.DaysOfWeek;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoscaleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Autoscale model =
             BinaryData
                 .fromString(
-                    "{\"capacity\":{\"minInstanceCount\":461040275,\"maxInstanceCount\":564452713},\"recurrence\":{\"timeZone\":\"ljfmppee\",\"schedule\":[{\"days\":[]},{\"days\":[]}]}}")
+                    "{\"capacity\":{\"minInstanceCount\":1771103105,\"maxInstanceCount\":1913635803},\"recurrence\":{\"timeZone\":\"bjnpg\",\"schedule\":[{\"days\":[\"Wednesday\",\"Thursday\",\"Tuesday\",\"Monday\"],\"timeAndCapacity\":{\"time\":\"tyfsoppusuesn\",\"minInstanceCount\":1828932864,\"maxInstanceCount\":317621756}},{\"days\":[\"Thursday\"],\"timeAndCapacity\":{\"time\":\"xzdmohctb\",\"minInstanceCount\":1529084406,\"maxInstanceCount\":1727666858}},{\"days\":[\"Wednesday\",\"Monday\"],\"timeAndCapacity\":{\"time\":\"owgujjugwdkcglhs\",\"minInstanceCount\":525193865,\"maxInstanceCount\":1319267139}},{\"days\":[\"Saturday\"],\"timeAndCapacity\":{\"time\":\"jixhbk\",\"minInstanceCount\":696008357,\"maxInstanceCount\":662259969}}]}}")
                 .toObject(Autoscale.class);
-        Assertions.assertEquals(461040275, model.capacity().minInstanceCount());
-        Assertions.assertEquals(564452713, model.capacity().maxInstanceCount());
-        Assertions.assertEquals("ljfmppee", model.recurrence().timeZone());
+        Assertions.assertEquals(1771103105, model.capacity().minInstanceCount());
+        Assertions.assertEquals(1913635803, model.capacity().maxInstanceCount());
+        Assertions.assertEquals("bjnpg", model.recurrence().timeZone());
+        Assertions.assertEquals(DaysOfWeek.WEDNESDAY, model.recurrence().schedule().get(0).days().get(0));
+        Assertions.assertEquals("tyfsoppusuesn", model.recurrence().schedule().get(0).timeAndCapacity().time());
+        Assertions.assertEquals(1828932864, model.recurrence().schedule().get(0).timeAndCapacity().minInstanceCount());
+        Assertions.assertEquals(317621756, model.recurrence().schedule().get(0).timeAndCapacity().maxInstanceCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Autoscale model =
             new Autoscale()
-                .withCapacity(new AutoscaleCapacity().withMinInstanceCount(461040275).withMaxInstanceCount(564452713))
+                .withCapacity(new AutoscaleCapacity().withMinInstanceCount(1771103105).withMaxInstanceCount(1913635803))
                 .withRecurrence(
                     new AutoscaleRecurrence()
-                        .withTimeZone("ljfmppee")
+                        .withTimeZone("bjnpg")
                         .withSchedule(
                             Arrays
                                 .asList(
-                                    new AutoscaleSchedule().withDays(Arrays.asList()),
-                                    new AutoscaleSchedule().withDays(Arrays.asList()))));
+                                    new AutoscaleSchedule()
+                                        .withDays(
+                                            Arrays
+                                                .asList(
+                                                    DaysOfWeek.WEDNESDAY,
+                                                    DaysOfWeek.THURSDAY,
+                                                    DaysOfWeek.TUESDAY,
+                                                    DaysOfWeek.MONDAY))
+                                        .withTimeAndCapacity(
+                                            new AutoscaleTimeAndCapacity()
+                                                .withTime("tyfsoppusuesn")
+                                                .withMinInstanceCount(1828932864)
+                                                .withMaxInstanceCount(317621756)),
+                                    new AutoscaleSchedule()
+                                        .withDays(Arrays.asList(DaysOfWeek.THURSDAY))
+                                        .withTimeAndCapacity(
+                                            new AutoscaleTimeAndCapacity()
+                                                .withTime("xzdmohctb")
+                                                .withMinInstanceCount(1529084406)
+                                                .withMaxInstanceCount(1727666858)),
+                                    new AutoscaleSchedule()
+                                        .withDays(Arrays.asList(DaysOfWeek.WEDNESDAY, DaysOfWeek.MONDAY))
+                                        .withTimeAndCapacity(
+                                            new AutoscaleTimeAndCapacity()
+                                                .withTime("owgujjugwdkcglhs")
+                                                .withMinInstanceCount(525193865)
+                                                .withMaxInstanceCount(1319267139)),
+                                    new AutoscaleSchedule()
+                                        .withDays(Arrays.asList(DaysOfWeek.SATURDAY))
+                                        .withTimeAndCapacity(
+                                            new AutoscaleTimeAndCapacity()
+                                                .withTime("jixhbk")
+                                                .withMinInstanceCount(696008357)
+                                                .withMaxInstanceCount(662259969)))));
         model = BinaryData.fromObject(model).toObject(Autoscale.class);
-        Assertions.assertEquals(461040275, model.capacity().minInstanceCount());
-        Assertions.assertEquals(564452713, model.capacity().maxInstanceCount());
-        Assertions.assertEquals("ljfmppee", model.recurrence().timeZone());
+        Assertions.assertEquals(1771103105, model.capacity().minInstanceCount());
+        Assertions.assertEquals(1913635803, model.capacity().maxInstanceCount());
+        Assertions.assertEquals("bjnpg", model.recurrence().timeZone());
+        Assertions.assertEquals(DaysOfWeek.WEDNESDAY, model.recurrence().schedule().get(0).days().get(0));
+        Assertions.assertEquals("tyfsoppusuesn", model.recurrence().schedule().get(0).timeAndCapacity().time());
+        Assertions.assertEquals(1828932864, model.recurrence().schedule().get(0).timeAndCapacity().minInstanceCount());
+        Assertions.assertEquals(317621756, model.recurrence().schedule().get(0).timeAndCapacity().maxInstanceCount());
     }
 }

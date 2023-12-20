@@ -13,6 +13,7 @@ trigger:
       - sdk/identity/pom.xml
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
+      - sdk/identity/azure-identity-broker/pom.xml
 
 pr:
   branches:
@@ -28,6 +29,7 @@ pr:
       - sdk/identity/pom.xml
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
+      - sdk/identity/azure-identity-broker/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
@@ -40,6 +42,10 @@ parameters:
   default: true
 - name: release_azureidentityextensions
   displayName: 'azure-identity-extensions'
+  type: boolean
+  default: true
+- name: release_azureidentitybroker
+  displayName: 'azure-identity-broker'
   type: boolean
   default: true
 
@@ -58,6 +64,10 @@ extends:
         groupId: com.azure
         safeName: azureidentityextensions
         releaseInBatch: ${{ parameters.release_azureidentityextensions }}
+      - name: azure-identity-broker
+        groupId: com.azure
+        safeName: azureidentitybroker
+        releaseInBatch: ${{ parameters.release_azureidentitybroker }}
     AdditionalModules:
       - name: azure-identity-perf
         groupId: com.azure

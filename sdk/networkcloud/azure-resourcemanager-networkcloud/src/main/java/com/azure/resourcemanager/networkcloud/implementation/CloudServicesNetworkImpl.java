@@ -67,6 +67,15 @@ public final class CloudServicesNetworkImpl
         }
     }
 
+    public List<String> associatedResourceIds() {
+        List<String> inner = this.innerModel().associatedResourceIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String clusterId() {
         return this.innerModel().clusterId();
     }

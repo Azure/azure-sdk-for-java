@@ -228,11 +228,13 @@ public interface BatchAccount {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The BatchAccount definition stages. */
     interface DefinitionStages {
         /** The first stage of the BatchAccount definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BatchAccount definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -251,6 +253,7 @@ public interface BatchAccount {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the BatchAccount definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -261,6 +264,7 @@ public interface BatchAccount {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the BatchAccount definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -290,6 +294,7 @@ public interface BatchAccount {
              */
             BatchAccount create(Context context);
         }
+
         /** The stage of the BatchAccount definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -300,6 +305,7 @@ public interface BatchAccount {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the BatchAccount definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -310,6 +316,7 @@ public interface BatchAccount {
              */
             WithCreate withIdentity(BatchAccountIdentity identity);
         }
+
         /** The stage of the BatchAccount definition allowing to specify autoStorage. */
         interface WithAutoStorage {
             /**
@@ -320,6 +327,7 @@ public interface BatchAccount {
              */
             WithCreate withAutoStorage(AutoStorageBaseProperties autoStorage);
         }
+
         /** The stage of the BatchAccount definition allowing to specify poolAllocationMode. */
         interface WithPoolAllocationMode {
             /**
@@ -336,6 +344,7 @@ public interface BatchAccount {
              */
             WithCreate withPoolAllocationMode(PoolAllocationMode poolAllocationMode);
         }
+
         /** The stage of the BatchAccount definition allowing to specify keyVaultReference. */
         interface WithKeyVaultReference {
             /**
@@ -347,6 +356,7 @@ public interface BatchAccount {
              */
             WithCreate withKeyVaultReference(KeyVaultReference keyVaultReference);
         }
+
         /** The stage of the BatchAccount definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -357,6 +367,7 @@ public interface BatchAccount {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess);
         }
+
         /** The stage of the BatchAccount definition allowing to specify networkProfile. */
         interface WithNetworkProfile {
             /**
@@ -368,6 +379,7 @@ public interface BatchAccount {
              */
             WithCreate withNetworkProfile(NetworkProfile networkProfile);
         }
+
         /** The stage of the BatchAccount definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -382,6 +394,7 @@ public interface BatchAccount {
              */
             WithCreate withEncryption(EncryptionProperties encryption);
         }
+
         /** The stage of the BatchAccount definition allowing to specify allowedAuthenticationModes. */
         interface WithAllowedAuthenticationModes {
             /**
@@ -396,6 +409,7 @@ public interface BatchAccount {
             WithCreate withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes);
         }
     }
+
     /**
      * Begins update for the BatchAccount resource.
      *
@@ -427,6 +441,7 @@ public interface BatchAccount {
          */
         BatchAccount apply(Context context);
     }
+
     /** The BatchAccount update stages. */
     interface UpdateStages {
         /** The stage of the BatchAccount update allowing to specify tags. */
@@ -439,6 +454,7 @@ public interface BatchAccount {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BatchAccount update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -449,6 +465,7 @@ public interface BatchAccount {
              */
             Update withIdentity(BatchAccountIdentity identity);
         }
+
         /** The stage of the BatchAccount update allowing to specify autoStorage. */
         interface WithAutoStorage {
             /**
@@ -459,6 +476,7 @@ public interface BatchAccount {
              */
             Update withAutoStorage(AutoStorageBaseProperties autoStorage);
         }
+
         /** The stage of the BatchAccount update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -473,6 +491,7 @@ public interface BatchAccount {
              */
             Update withEncryption(EncryptionProperties encryption);
         }
+
         /** The stage of the BatchAccount update allowing to specify allowedAuthenticationModes. */
         interface WithAllowedAuthenticationModes {
             /**
@@ -486,6 +505,7 @@ public interface BatchAccount {
              */
             Update withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes);
         }
+
         /** The stage of the BatchAccount update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -496,6 +516,7 @@ public interface BatchAccount {
              */
             Update withPublicNetworkAccess(PublicNetworkAccessType publicNetworkAccess);
         }
+
         /** The stage of the BatchAccount update allowing to specify networkProfile. */
         interface WithNetworkProfile {
             /**
@@ -508,6 +529,7 @@ public interface BatchAccount {
             Update withNetworkProfile(NetworkProfile networkProfile);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

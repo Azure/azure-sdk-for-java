@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiTagDescription Delete. */
 public final class ApiTagDescriptionDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiTagDescription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiTagDescription.json
      */
     /**
      * Sample code: ApiManagementDeleteApiTagDescription.
@@ -21,6 +19,11 @@ public final class ApiTagDescriptionDeleteSamples {
         manager
             .apiTagDescriptions()
             .deleteWithResponse(
-                "rg1", "apimService1", "59d5b28d1f7fab116c282650", "59d5b28e1f7fab116402044e", "*", Context.NONE);
+                "rg1",
+                "apimService1",
+                "59d5b28d1f7fab116c282650",
+                "59d5b28e1f7fab116402044e",
+                "*",
+                com.azure.core.util.Context.NONE);
     }
 }

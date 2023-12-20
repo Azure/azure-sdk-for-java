@@ -12,12 +12,14 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The properties of a server. */
 @Fluent
@@ -84,7 +86,8 @@ public final class ServerProperties {
     private Backup backup;
 
     /*
-     * Network properties of a server.
+     * Network properties of a server. This Network property is required to be passed only in case you want the server
+     * to be Private access server.
      */
     @JsonProperty(value = "network")
     private Network network;
@@ -103,14 +106,14 @@ public final class ServerProperties {
 
     /*
      * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
-     * 'GeoRestore' or 'Replica'.
+     * 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned only for Replica server
      */
     @JsonProperty(value = "sourceServerResourceId")
     private String sourceServerResourceId;
 
     /*
      * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      */
     @JsonProperty(value = "pointInTimeUTC")
     private OffsetDateTime pointInTimeUtc;
@@ -130,14 +133,27 @@ public final class ServerProperties {
     /*
      * Replicas allowed for a server.
      */
-    @JsonProperty(value = "replicaCapacity")
+    @JsonProperty(value = "replicaCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer replicaCapacity;
+
+    /*
+     * Replica properties of a server. These Replica properties are required to be passed only in case you want to
+     * Promote a server.
+     */
+    @JsonProperty(value = "replica")
+    private Replica replica;
 
     /*
      * The mode to create a new PostgreSQL server.
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
+
+    /*
+     * List of private endpoint connections associated with the specified resource.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /** Creates an instance of ServerProperties class. */
     public ServerProperties() {
@@ -313,7 +329,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the network property: Network properties of a server.
+     * Get the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -322,7 +339,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the network property: Network properties of a server.
+     * Set the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @param network the network value to set.
      * @return the ServerProperties object itself.
@@ -374,7 +392,8 @@ public final class ServerProperties {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -384,7 +403,8 @@ public final class ServerProperties {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerProperties object itself.
@@ -396,7 +416,7 @@ public final class ServerProperties {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -406,7 +426,7 @@ public final class ServerProperties {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerProperties object itself.
@@ -466,13 +486,24 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the replicaCapacity property: Replicas allowed for a server.
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      *
-     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the replica value.
+     */
+    public Replica replica() {
+        return this.replica;
+    }
+
+    /**
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
+     *
+     * @param replica the replica value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withReplicaCapacity(Integer replicaCapacity) {
-        this.replicaCapacity = replicaCapacity;
+    public ServerProperties withReplica(Replica replica) {
+        this.replica = replica;
         return this;
     }
 
@@ -494,6 +525,16 @@ public final class ServerProperties {
     public ServerProperties withCreateMode(CreateMode createMode) {
         this.createMode = createMode;
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -522,6 +563,12 @@ public final class ServerProperties {
         }
         if (maintenanceWindow() != null) {
             maintenanceWindow().validate();
+        }
+        if (replica() != null) {
+            replica().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

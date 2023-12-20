@@ -31,7 +31,7 @@ public final class CreatorsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"hheunmmqhgyx\",\"storageUnits\":1391467998},\"location\":\"onocukok\",\"tags\":{\"szfkbe\":\"xuconu\",\"jmwvvj\":\"pewr\"},\"id\":\"kt\",\"name\":\"xsenhwlr\",\"type\":\"ffrzpwvlqdqgbiqy\"}";
+            "{\"properties\":{\"provisioningState\":\"mnpkukghimdblxg\",\"storageUnits\":261614569},\"location\":\"fnjhfjxwmszkkfo\",\"tags\":{\"jawneaiv\":\"yfkzik\",\"elsfeaen\":\"wczelpci\",\"dxbjhwuaanozj\":\"abfatkl\"},\"id\":\"sphyoulpjrvxa\",\"name\":\"l\",\"type\":\"vimjwos\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class CreatorsGetWithResponseMockTests {
         Creator response =
             manager
                 .creators()
-                .getWithResponse("iyqzrnk", "qvyxlwhzlsicoho", "qnwvlrya", com.azure.core.util.Context.NONE)
+                .getWithResponse("gdv", "vgpiohgwxrt", "udxepxgyqagv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("onocukok", response.location());
-        Assertions.assertEquals("xuconu", response.tags().get("szfkbe"));
-        Assertions.assertEquals(1391467998, response.properties().storageUnits());
+        Assertions.assertEquals("fnjhfjxwmszkkfo", response.location());
+        Assertions.assertEquals("yfkzik", response.tags().get("jawneaiv"));
+        Assertions.assertEquals(261614569, response.properties().storageUnits());
     }
 }

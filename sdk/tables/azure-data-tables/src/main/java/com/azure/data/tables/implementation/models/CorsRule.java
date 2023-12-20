@@ -50,15 +50,18 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
      */
     private int maxAgeInSeconds;
 
-    /** Creates an instance of CorsRule class. */
-    public CorsRule() {}
+    /**
+     * Creates an instance of CorsRule class.
+     */
+    public CorsRule() {
+    }
 
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the service via
      * CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact
      * case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard
      * character '*' to allow all origin domains to make requests via CORS.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public String getAllowedOrigins() {
@@ -70,7 +73,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
      * CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact
      * case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard
      * character '*' to allow all origin domains to make requests via CORS.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
@@ -82,7 +85,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Get the allowedMethods property: The methods (HTTP request verbs) that the origin domain may use for a CORS
      * request. (comma separated).
-     *
+     * 
      * @return the allowedMethods value.
      */
     public String getAllowedMethods() {
@@ -92,7 +95,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Set the allowedMethods property: The methods (HTTP request verbs) that the origin domain may use for a CORS
      * request. (comma separated).
-     *
+     * 
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsRule object itself.
      */
@@ -103,7 +106,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
 
     /**
      * Get the allowedHeaders property: The request headers that the origin domain may specify on the CORS request.
-     *
+     * 
      * @return the allowedHeaders value.
      */
     public String getAllowedHeaders() {
@@ -112,7 +115,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
 
     /**
      * Set the allowedHeaders property: The request headers that the origin domain may specify on the CORS request.
-     *
+     * 
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsRule object itself.
      */
@@ -124,7 +127,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Get the exposedHeaders property: The response headers that may be sent in the response to the CORS request and
      * exposed by the browser to the request issuer.
-     *
+     * 
      * @return the exposedHeaders value.
      */
     public String getExposedHeaders() {
@@ -134,7 +137,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Set the exposedHeaders property: The response headers that may be sent in the response to the CORS request and
      * exposed by the browser to the request issuer.
-     *
+     * 
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the CorsRule object itself.
      */
@@ -146,7 +149,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Get the maxAgeInSeconds property: The maximum amount time that a browser should cache the preflight OPTIONS
      * request.
-     *
+     * 
      * @return the maxAgeInSeconds value.
      */
     public int getMaxAgeInSeconds() {
@@ -156,7 +159,7 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
     /**
      * Set the maxAgeInSeconds property: The maximum amount time that a browser should cache the preflight OPTIONS
      * request.
-     *
+     * 
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsRule object itself.
      */
@@ -184,10 +187,10 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
 
     /**
      * Reads an instance of CorsRule from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of CorsRule if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     *     XML null.
+     * XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the CorsRule.
      */
@@ -197,40 +200,38 @@ public final class CorsRule implements XmlSerializable<CorsRule> {
 
     /**
      * Reads an instance of CorsRule from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of CorsRule if the XmlReader was pointing to an instance of it, or null if it was pointing to
-     *     XML null.
+     * XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the CorsRule.
      */
     public static CorsRule fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    CorsRule deserializedCorsRule = new CorsRule();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            CorsRule deserializedCorsRule = new CorsRule();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("AllowedOrigins".equals(elementName.getLocalPart())) {
-                            deserializedCorsRule.allowedOrigins = reader.getStringElement();
-                        } else if ("AllowedMethods".equals(elementName.getLocalPart())) {
-                            deserializedCorsRule.allowedMethods = reader.getStringElement();
-                        } else if ("AllowedHeaders".equals(elementName.getLocalPart())) {
-                            deserializedCorsRule.allowedHeaders = reader.getStringElement();
-                        } else if ("ExposedHeaders".equals(elementName.getLocalPart())) {
-                            deserializedCorsRule.exposedHeaders = reader.getStringElement();
-                        } else if ("MaxAgeInSeconds".equals(elementName.getLocalPart())) {
-                            deserializedCorsRule.maxAgeInSeconds = reader.getIntElement();
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("AllowedOrigins".equals(elementName.getLocalPart())) {
+                    deserializedCorsRule.allowedOrigins = reader.getStringElement();
+                } else if ("AllowedMethods".equals(elementName.getLocalPart())) {
+                    deserializedCorsRule.allowedMethods = reader.getStringElement();
+                } else if ("AllowedHeaders".equals(elementName.getLocalPart())) {
+                    deserializedCorsRule.allowedHeaders = reader.getStringElement();
+                } else if ("ExposedHeaders".equals(elementName.getLocalPart())) {
+                    deserializedCorsRule.exposedHeaders = reader.getStringElement();
+                } else if ("MaxAgeInSeconds".equals(elementName.getLocalPart())) {
+                    deserializedCorsRule.maxAgeInSeconds = reader.getIntElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedCorsRule;
-                });
+            return deserializedCorsRule;
+        });
     }
 }

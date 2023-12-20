@@ -60,9 +60,9 @@ public final class IotHubsManualFailoverMockTests {
         manager
             .iotHubs()
             .manualFailover(
-                "ggufhyaomtb",
-                "hhavgrvkffovjz",
-                new FailoverInput().withFailoverRegion("pjbi"),
+                "dfcea",
+                "vlhv",
+                new FailoverInput().withFailoverRegion("gdyftumrtwna"),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The application gateway private link ip configuration. */
+/**
+ * The application gateway private link ip configuration.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkIpConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkIpConfiguration class.
+     */
     public ApplicationGatewayPrivateLinkIpConfiguration() {
     }
 
     /**
      * Get the innerProperties property: Properties of an application gateway private link ip configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPrivateLinkIpConfigurationProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the name property: The name of application gateway private link ip configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Set the name property: The name of application gateway private link ip configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPrivateLinkIpConfiguration withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -105,7 +111,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
@@ -119,7 +125,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -128,12 +134,12 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
-    public ApplicationGatewayPrivateLinkIpConfiguration withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public ApplicationGatewayPrivateLinkIpConfiguration
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
         }
@@ -143,7 +149,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -152,7 +158,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Set the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
@@ -166,7 +172,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Get the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -175,7 +181,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Set the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
@@ -190,7 +196,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private link IP
      * configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -199,7 +205,7 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

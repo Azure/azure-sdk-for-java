@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.13 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,349 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-12-19)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-preview-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.VolumeGroupMetadata` was modified
+
+* `deploymentSpecId()` was removed
+* `withDeploymentSpecId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.EncryptionMigrationRequest` was added
+
+* `models.BackupStatus` was added
+
+* `models.BackupType` was added
+
+* `models.BackupVault$DefinitionStages` was added
+
+* `models.BackupVaultPatch` was added
+
+* `models.NetAppResourceRegionInfos` was added
+
+* `models.BackupVault$Update` was added
+
+* `models.BackupsMigrationRequest` was added
+
+* `models.BackupVaults` was added
+
+* `models.Backup` was added
+
+* `models.BackupVault$UpdateStages` was added
+
+* `models.RemotePath` was added
+
+* `models.BackupsUnderVolumes` was added
+
+* `models.BackupsList` was added
+
+* `models.BackupVaultsList` was added
+
+* `models.BackupRestoreFiles` was added
+
+* `models.BackupVault$Definition` was added
+
+* `models.BackupsUnderBackupVaults` was added
+
+* `models.BackupVault` was added
+
+* `models.BackupsUnderAccounts` was added
+
+* `models.BackupPatch` was added
+
+* `models.Backup$DefinitionStages` was added
+
+* `models.Backup$Update` was added
+
+* `models.AccountBackups` was added
+
+* `models.RegionInfosList` was added
+
+* `models.Backup$Definition` was added
+
+* `models.Backup$UpdateStages` was added
+
+* `models.RegionInfoResource` was added
+
+* `models.VolumeBackupProperties` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `splitCloneFromParent()` was added
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+* `inheritedSizeInBytes()` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `backup()` was added
+* `withBackup(models.VolumeBackupProperties)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `accountBackups()` was added
+* `backupVaults()` was added
+* `backupsUnderBackupVaults()` was added
+* `netAppResourceRegionInfos()` was added
+* `backupsUnderAccounts()` was added
+* `backupsUnderVolumes()` was added
+
+#### `models.Backups` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getLatestStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getLatestStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `withBackup(models.VolumeBackupProperties)` was added
+* `backup()` was added
+
+#### `models.ReplicationObject` was modified
+
+* `withRemotePath(models.RemotePath)` was added
+* `remotePath()` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+* `nfsV4IdDomain()` was added
+* `isMultiAdEnabled()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `inheritedSizeInBytes()` was added
+
+#### `models.Accounts` was modified
+
+* `migrateEncryptionKey(java.lang.String,java.lang.String)` was added
+* `migrateEncryptionKey(java.lang.String,java.lang.String,models.EncryptionMigrationRequest,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `isMultiAdEnabled()` was added
+* `migrateEncryptionKey(models.EncryptionMigrationRequest,com.azure.core.util.Context)` was added
+* `migrateEncryptionKey()` was added
+* `nfsV4IdDomain()` was added
+
+## 1.0.0 (2023-10-20)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2023-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.BackupStatus` was removed
+
+* `models.BackupType` was removed
+
+* `models.Backup` was removed
+
+* `models.BackupsList` was removed
+
+* `models.BackupRestoreFiles` was removed
+
+* `models.BackupPatch` was removed
+
+* `models.Backup$DefinitionStages` was removed
+
+* `models.Backup$Update` was removed
+
+* `models.AccountBackups` was removed
+
+* `models.Backup$Definition` was removed
+
+* `models.Backup$UpdateStages` was removed
+
+* `models.VolumeBackupProperties` was removed
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `withBackup(models.VolumeBackupProperties)` was removed
+* `backup()` was removed
+
+#### `NetAppFilesManager` was modified
+
+* `accountBackups()` was removed
+
+#### `models.Backups` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `restoreFiles(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.BackupRestoreFiles)` was removed
+* `getStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getById(java.lang.String)` was removed
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `define(java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `backup()` was removed
+* `withBackup(models.VolumeBackupProperties)` was removed
+
+#### `models.ReplicationObject` was modified
+
+* `withReplicationId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.NetworkSiblingSet` was added
+
+* `models.NetworkSiblingSetProvisioningState` was added
+
+* `models.CoolAccessRetrievalPolicy` was added
+
+* `models.NicInfo` was added
+
+* `models.UpdateNetworkSiblingSetRequest` was added
+
+* `models.QueryNetworkSiblingSetRequest` was added
+
+#### `models.Volume` was modified
+
+* `populateAvailabilityZone(com.azure.core.util.Context)` was added
+* `coolAccessRetrievalPolicy()` was added
+* `populateAvailabilityZone()` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+
+#### `models.VolumePatch` was modified
+
+* `smbNonBrowsable()` was added
+* `withSmbAccessBasedEnumeration(models.SmbAccessBasedEnumeration)` was added
+* `smbAccessBasedEnumeration()` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+* `withSmbNonBrowsable(models.SmbNonBrowsable)` was added
+* `coolAccessRetrievalPolicy()` was added
+
+#### `models.NetAppResources` was modified
+
+* `updateNetworkSiblingSet(java.lang.String,models.UpdateNetworkSiblingSetRequest)` was added
+* `updateNetworkSiblingSet(java.lang.String,models.UpdateNetworkSiblingSetRequest,com.azure.core.util.Context)` was added
+* `queryNetworkSiblingSetWithResponse(java.lang.String,models.QueryNetworkSiblingSetRequest,com.azure.core.util.Context)` was added
+* `queryNetworkSiblingSet(java.lang.String,models.QueryNetworkSiblingSetRequest)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was added
+
+#### `models.Volumes` was modified
+
+* `populateAvailabilityZone(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `populateAvailabilityZone(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.SubvolumeInfo` was modified
+
+* `systemData()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withZones(java.util.List)` was added
+* `withCoolAccessRetrievalPolicy(models.CoolAccessRetrievalPolicy)` was added
+* `coolAccessRetrievalPolicy()` was added
+* `zones()` was added
+
+## 1.0.0-beta.13 (2023-07-25)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Backup` was modified
+
+* `systemData()` was removed
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was removed
+
+#### `models.SubvolumeInfo` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+* `models.GetGroupIdListForLdapUserRequest` was added
+
+* `models.GetGroupIdListForLdapUserResponse` was added
+
+#### `models.Volume` was modified
+
+* `originatingResourceId()` was added
+* `listGetGroupIdListForLdapUser(models.GetGroupIdListForLdapUserRequest,com.azure.core.util.Context)` was added
+* `listGetGroupIdListForLdapUser(models.GetGroupIdListForLdapUserRequest)` was added
+* `actualThroughputMibps()` was added
+
+#### `models.Volume$Update` was modified
+
+* `withSnapshotDirectoryVisible(java.lang.Boolean)` was added
+
+#### `models.VolumePatch` was modified
+
+* `snapshotDirectoryVisible()` was added
+* `withSnapshotDirectoryVisible(java.lang.Boolean)` was added
+
+#### `models.Volumes` was modified
+
+* `listGetGroupIdListForLdapUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.GetGroupIdListForLdapUserRequest,com.azure.core.util.Context)` was added
+* `listGetGroupIdListForLdapUser(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.GetGroupIdListForLdapUserRequest)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `actualThroughputMibps()` was added
+* `originatingResourceId()` was added
 
 ## 1.0.0-beta.12 (2023-03-16)
 

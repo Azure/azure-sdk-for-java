@@ -23,6 +23,10 @@ public final class ApiManagementSkuRestrictionInfo {
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
+    /** Creates an instance of ApiManagementSkuRestrictionInfo class. */
+    public ApiManagementSkuRestrictionInfo() {
+    }
+
     /**
      * Get the locations property: Locations where the SKU is restricted.
      *

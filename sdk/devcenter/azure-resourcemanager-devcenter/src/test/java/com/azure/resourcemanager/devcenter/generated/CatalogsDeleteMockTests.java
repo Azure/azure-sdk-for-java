@@ -56,6 +56,6 @@ public final class CatalogsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.catalogs().delete("x", "rnxrxcpj", "isavok", com.azure.core.util.Context.NONE);
+        manager.catalogs().delete("yijddtvqcttad", "jaeukmrsieekpn", "zaapmudqmeqwi", com.azure.core.util.Context.NONE);
     }
 }

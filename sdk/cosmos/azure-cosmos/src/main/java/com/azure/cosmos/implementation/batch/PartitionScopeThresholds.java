@@ -28,6 +28,7 @@ public class PartitionScopeThresholds {
     private final double minRetryRate;
     private final double maxRetryRate;
     private final double avgRetryRate;
+    private final int maxMicroBatchSize;
 
     public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptions options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
@@ -35,10 +36,7 @@ public class PartitionScopeThresholds {
 
         this.pkRangeId = pkRangeId;
         this.options = options;
-        this.targetMicroBatchSize = new AtomicInteger(
-            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                .getCosmosBulkExecutionOptionsAccessor()
-                .getMaxMicroBatchSize(options));
+        this.targetMicroBatchSize = new AtomicInteger(options.getInitialMicroBatchSize());
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
 
@@ -49,6 +47,11 @@ public class PartitionScopeThresholds {
             .getCosmosBulkExecutionOptionsAccessor()
             .getMaxTargetedMicroBatchRetryRate(options);
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
+        this.maxMicroBatchSize = Math.min(
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .getMaxMicroBatchSize(options),
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
     }
 
     public String getPartitionKeyRangeId() {
@@ -105,10 +108,6 @@ public class PartitionScopeThresholds {
         double retryRate = currentCount == 0 ? 0 : (double)retryCount / currentCount;
         int microBatchSizeBefore = this.targetMicroBatchSize.get();
         int microBatchSizeAfter = microBatchSizeBefore;
-
-        int maxMicroBatchSize = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .getMaxMicroBatchSize(options);
 
         if (retryRate < this.minRetryRate && microBatchSizeBefore < maxMicroBatchSize) {
             int targetedNewBatchSize = Math.min(

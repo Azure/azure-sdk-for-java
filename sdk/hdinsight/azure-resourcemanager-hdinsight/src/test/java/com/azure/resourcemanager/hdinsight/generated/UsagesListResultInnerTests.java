@@ -9,39 +9,38 @@ import com.azure.resourcemanager.hdinsight.fluent.models.UsagesListResultInner;
 import com.azure.resourcemanager.hdinsight.models.Usage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsagesListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UsagesListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"unit\":\"rvxaglrvimjwosy\",\"currentValue\":2401602492746642940,\"limit\":3589572009865624969,\"name\":{\"value\":\"k\",\"localizedValue\":\"umiekkezzi\"}},{\"unit\":\"ly\",\"currentValue\":8347972535078571246,\"limit\":3480662233344581257,\"name\":{\"value\":\"bdunygaeqid\",\"localizedValue\":\"fatpxllrxcyjmoa\"}}]}")
+                    "{\"value\":[{\"unit\":\"gkfbtndoaong\",\"currentValue\":1271439560574404501,\"limit\":3888691267660480720,\"name\":{\"value\":\"c\",\"localizedValue\":\"df\"}},{\"unit\":\"waezkojvd\",\"currentValue\":5361825295052268042,\"limit\":6459666134329406148,\"name\":{\"value\":\"cybxa\",\"localizedValue\":\"gszufoxciqopid\"}}]}")
                 .toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("rvxaglrvimjwosy", model.value().get(0).unit());
-        Assertions.assertEquals(2401602492746642940L, model.value().get(0).currentValue());
-        Assertions.assertEquals(3589572009865624969L, model.value().get(0).limit());
+        Assertions.assertEquals("gkfbtndoaong", model.value().get(0).unit());
+        Assertions.assertEquals(1271439560574404501L, model.value().get(0).currentValue());
+        Assertions.assertEquals(3888691267660480720L, model.value().get(0).limit());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UsagesListResultInner model =
             new UsagesListResultInner()
                 .withValue(
                     Arrays
                         .asList(
                             new Usage()
-                                .withUnit("rvxaglrvimjwosy")
-                                .withCurrentValue(2401602492746642940L)
-                                .withLimit(3589572009865624969L),
+                                .withUnit("gkfbtndoaong")
+                                .withCurrentValue(1271439560574404501L)
+                                .withLimit(3888691267660480720L),
                             new Usage()
-                                .withUnit("ly")
-                                .withCurrentValue(8347972535078571246L)
-                                .withLimit(3480662233344581257L)));
+                                .withUnit("waezkojvd")
+                                .withCurrentValue(5361825295052268042L)
+                                .withLimit(6459666134329406148L)));
         model = BinaryData.fromObject(model).toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("rvxaglrvimjwosy", model.value().get(0).unit());
-        Assertions.assertEquals(2401602492746642940L, model.value().get(0).currentValue());
-        Assertions.assertEquals(3589572009865624969L, model.value().get(0).limit());
+        Assertions.assertEquals("gkfbtndoaong", model.value().get(0).unit());
+        Assertions.assertEquals(1271439560574404501L, model.value().get(0).currentValue());
+        Assertions.assertEquals(3888691267660480720L, model.value().get(0).limit());
     }
 }

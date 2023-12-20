@@ -43,7 +43,7 @@ public class AnalyzeIdentityDocuments {
         File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/identityDocuments/license.png");
         Path filePath = licenseDocumentFile.toPath();
-        BinaryData fileData = BinaryData.fromFile(filePath);
+        BinaryData fileData = BinaryData.fromFile(filePath, (int) licenseDocumentFile.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument", fileData);

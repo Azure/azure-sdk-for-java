@@ -6,6 +6,8 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,14 +29,26 @@ public final class VolumeProperties {
     /*
      * Volume size.
      */
-    @JsonProperty(value = "sizeGiB")
-    private Long sizeGiB;
+    @JsonProperty(value = "sizeGiB", required = true)
+    private long sizeGiB;
 
     /*
      * Storage target information
      */
     @JsonProperty(value = "storageTarget", access = JsonProperty.Access.WRITE_ONLY)
     private IscsiTargetInfo storageTarget;
+
+    /*
+     * Parent resource information.
+     */
+    @JsonProperty(value = "managedBy")
+    private ManagedByInfo managedBy;
+
+    /*
+     * State of the operation on the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningStates provisioningState;
 
     /** Creates an instance of VolumeProperties class. */
     public VolumeProperties() {
@@ -74,7 +88,7 @@ public final class VolumeProperties {
      *
      * @return the sizeGiB value.
      */
-    public Long sizeGiB() {
+    public long sizeGiB() {
         return this.sizeGiB;
     }
 
@@ -84,7 +98,7 @@ public final class VolumeProperties {
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeProperties object itself.
      */
-    public VolumeProperties withSizeGiB(Long sizeGiB) {
+    public VolumeProperties withSizeGiB(long sizeGiB) {
         this.sizeGiB = sizeGiB;
         return this;
     }
@@ -99,6 +113,35 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the managedBy property: Parent resource information.
+     *
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.managedBy;
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     *
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withManagedBy(ManagedByInfo managedBy) {
+        this.managedBy = managedBy;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: State of the operation on the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningStates provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,6 +152,9 @@ public final class VolumeProperties {
         }
         if (storageTarget() != null) {
             storageTarget().validate();
+        }
+        if (managedBy() != null) {
+            managedBy().validate();
         }
     }
 }

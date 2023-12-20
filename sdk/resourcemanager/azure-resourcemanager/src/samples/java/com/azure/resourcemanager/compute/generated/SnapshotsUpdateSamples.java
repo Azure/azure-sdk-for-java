@@ -9,55 +9,46 @@ import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Snapshots Update. */
+/**
+ * Samples for Snapshots Update.
+ */
 public final class SnapshotsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/snapshotExamples/
+     * Snapshot_Update_WithAcceleratedNetwork.json
      */
     /**
      * Sample code: Update a snapshot with accelerated networking.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateASnapshotWithAcceleratedNetworking(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getSnapshots()
-            .update(
-                "myResourceGroup",
-                "mySnapshot",
-                new SnapshotUpdate()
-                    .withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
-                    .withDiskSizeGB(20)
-                    .withSupportedCapabilities(new SupportedCapabilities().withAcceleratedNetwork(false)),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getSnapshots().update("myResourceGroup", "mySnapshot",
+            new SnapshotUpdate().withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
+                .withDiskSizeGB(20).withSupportedCapabilities(
+                    new SupportedCapabilities().withAcceleratedNetwork(false)),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/snapshotExamples/Snapshot_Update.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/snapshotExamples/
+     * Snapshot_Update.json
      */
     /**
      * Sample code: Update a snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateASnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getSnapshots()
-            .update(
-                "myResourceGroup",
-                "mySnapshot",
-                new SnapshotUpdate()
-                    .withTags(mapOf("department", "Development", "project", "UpdateSnapshots"))
-                    .withDiskSizeGB(20),
-                com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getSnapshots().update(
+            "myResourceGroup", "mySnapshot", new SnapshotUpdate()
+                .withTags(mapOf("department", "Development", "project", "UpdateSnapshots")).withDiskSizeGB(20),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

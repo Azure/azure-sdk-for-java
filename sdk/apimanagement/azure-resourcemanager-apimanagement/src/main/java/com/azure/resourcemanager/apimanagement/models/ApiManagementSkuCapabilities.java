@@ -22,6 +22,10 @@ public final class ApiManagementSkuCapabilities {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of ApiManagementSkuCapabilities class. */
+    public ApiManagementSkuCapabilities() {
+    }
+
     /**
      * Get the name property: An invariant to describe the feature.
      *

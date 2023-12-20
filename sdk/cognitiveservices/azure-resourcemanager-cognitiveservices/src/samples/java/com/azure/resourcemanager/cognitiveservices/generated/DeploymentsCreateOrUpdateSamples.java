@@ -6,13 +6,12 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
-import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleSettings;
-import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/PutDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.
@@ -24,11 +23,10 @@ public final class DeploymentsCreateOrUpdateSamples {
             .deployments()
             .define("deploymentName")
             .withExistingAccount("resourceGroupName", "accountName")
+            .withSku(new Sku().withName("Standard").withCapacity(1))
             .withProperties(
                 new DeploymentProperties()
-                    .withModel(new DeploymentModel().withFormat("OpenAI").withName("ada").withVersion("1"))
-                    .withScaleSettings(
-                        new DeploymentScaleSettings().withScaleType(DeploymentScaleType.MANUAL).withCapacity(1)))
+                    .withModel(new DeploymentModel().withFormat("OpenAI").withName("ada").withVersion("1")))
             .create();
     }
 }

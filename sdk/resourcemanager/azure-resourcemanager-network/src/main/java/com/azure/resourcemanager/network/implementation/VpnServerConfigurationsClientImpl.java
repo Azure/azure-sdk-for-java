@@ -43,27 +43,29 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnServerConfigurationsClient. */
-public final class VpnServerConfigurationsClientImpl
-    implements InnerSupportsGet<VpnServerConfigurationInner>,
-        InnerSupportsListing<VpnServerConfigurationInner>,
-        InnerSupportsDelete<Void>,
-        VpnServerConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in VpnServerConfigurationsClient.
+ */
+public final class VpnServerConfigurationsClientImpl implements InnerSupportsGet<VpnServerConfigurationInner>,
+    InnerSupportsListing<VpnServerConfigurationInner>, InnerSupportsDelete<Void>, VpnServerConfigurationsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VpnServerConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VpnServerConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VpnServerConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VpnServerConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VpnServerConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,112 +76,87 @@ public final class VpnServerConfigurationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VpnServerConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VpnServerConfigurationInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VpnServerConfigurationInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vpnServerConfigurationName") String vpnServerConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vpnServerConfigurationName") String vpnServerConfigurationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VpnServerConfigurationInner vpnServerConfigurationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VpnServerConfigurationInner>> updateTags(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VpnServerConfigurationInner>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vpnServerConfigurationName") String vpnServerConfigurationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsObject vpnServerConfigurationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vpnServerConfigurationName") String vpnServerConfigurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListVpnServerConfigurationsResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnServerConfigurations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVpnServerConfigurationsResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListVpnServerConfigurationsResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnServerConfigurationsResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnServerConfigurationsResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,50 +165,36 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName) {
+    public Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnServerConfigurationName,
-                            apiVersion,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, vpnServerConfigurationName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
@@ -241,47 +204,34 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Context context) {
+    private Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnServerConfigurationName,
-                apiVersion,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vpnServerConfigurationName, apiVersion, accept, context);
     }
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,15 +240,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnServerConfigurationInner> getByResourceGroupAsync(
-        String resourceGroupName, String vpnServerConfigurationName) {
+    public Mono<VpnServerConfigurationInner> getByResourceGroupAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vpnServerConfigurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
@@ -308,14 +258,14 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vpnServerConfigurationName, Context context) {
+    public Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context).block();
     }
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +280,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -340,61 +290,42 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
         if (vpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter vpnServerConfigurationParameters is required and cannot be null."));
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnServerConfigurationName,
-                            apiVersion,
-                            vpnServerConfigurationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vpnServerConfigurationName, apiVersion, vpnServerConfigurationParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -405,59 +336,41 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
         if (vpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter vpnServerConfigurationParameters is required and cannot be null."));
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnServerConfigurationName,
-                apiVersion,
-                vpnServerConfigurationParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vpnServerConfigurationName, apiVersion, vpnServerConfigurationParameters, accept, context);
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -468,25 +381,18 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+        String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters);
-        return this
-            .client
-            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnServerConfigurationInner.class,
-                VpnServerConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            vpnServerConfigurationName, vpnServerConfigurationParameters);
+        return this.client.<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VpnServerConfigurationInner.class, VpnServerConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -498,27 +404,19 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
-        Context context) {
+        String resourceGroupName, String vpnServerConfigurationName,
+        VpnServerConfigurationInner vpnServerConfigurationParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context);
-        return this
-            .client
-            .<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VpnServerConfigurationInner.class,
-                VpnServerConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            vpnServerConfigurationName, vpnServerConfigurationParameters, context);
+        return this.client.<VpnServerConfigurationInner, VpnServerConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VpnServerConfigurationInner.class, VpnServerConfigurationInner.class,
+            context);
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -529,8 +427,7 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+        String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
@@ -539,7 +436,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -551,19 +448,15 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context)
-            .getSyncPoller();
+        String resourceGroupName, String vpnServerConfigurationName,
+        VpnServerConfigurationInner vpnServerConfigurationParameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vpnServerConfigurationName,
+            vpnServerConfigurationParameters, context).getSyncPoller();
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -573,18 +466,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnServerConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters) {
+    public Mono<VpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName,
+        String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -595,20 +485,16 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VpnServerConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
+    private Mono<VpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName,
+        String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -618,9 +504,7 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnServerConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+    public VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters) {
         return createOrUpdateAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
             .block();
@@ -628,7 +512,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -639,19 +523,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnServerConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context)
-            .block();
+    public VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
+        VpnServerConfigurationInner vpnServerConfigurationParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters,
+            context).block();
     }
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -661,59 +541,42 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
+    public Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
         if (vpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter vpnServerConfigurationParameters is required and cannot be null."));
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnServerConfigurationName,
-                            apiVersion,
-                            vpnServerConfigurationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vpnServerConfigurationName, apiVersion, vpnServerConfigurationParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -724,59 +587,40 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        TagsObject vpnServerConfigurationParameters,
-        Context context) {
+    private Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
         if (vpnServerConfigurationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter vpnServerConfigurationParameters is required and cannot be null."));
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnServerConfigurationName,
-                apiVersion,
-                vpnServerConfigurationParameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vpnServerConfigurationName, apiVersion, vpnServerConfigurationParameters, accept, context);
     }
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -786,16 +630,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnServerConfigurationInner> updateTagsAsync(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<VpnServerConfigurationInner> updateTagsAsync(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, vpnServerConfigurationName,
+            vpnServerConfigurationParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -806,19 +649,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VpnServerConfigurationInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        TagsObject vpnServerConfigurationParameters,
-        Context context) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context)
-            .block();
+    public Response<VpnServerConfigurationInner> updateTagsWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, vpnServerConfigurationName,
+            vpnServerConfigurationParameters, context).block();
     }
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -828,16 +667,15 @@ public final class VpnServerConfigurationsClientImpl
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnServerConfigurationInner updateTags(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
-        return updateTagsWithResponse(
-                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, Context.NONE)
-            .getValue();
+    public VpnServerConfigurationInner updateTags(String resourceGroupName, String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters) {
+        return updateTagsWithResponse(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,50 +684,35 @@ public final class VpnServerConfigurationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vpnServerConfigurationName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vpnServerConfigurationName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -899,47 +722,34 @@ public final class VpnServerConfigurationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vpnServerConfigurationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter vpnServerConfigurationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vpnServerConfigurationName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vpnServerConfigurationName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,18 +758,16 @@ public final class VpnServerConfigurationsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vpnServerConfigurationName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String vpnServerConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -969,19 +777,18 @@ public final class VpnServerConfigurationsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String vpnServerConfigurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,7 +803,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -1006,14 +813,14 @@ public final class VpnServerConfigurationsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vpnServerConfigurationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, context).getSyncPoller();
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,14 +830,13 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vpnServerConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -1041,14 +847,13 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vpnServerConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1062,7 +867,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -1077,113 +882,78 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnServerConfigurationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<VpnServerConfigurationInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<VpnServerConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, apiVersion, accept, context))
+            .<PagedResponse<VpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnServerConfigurationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<VpnServerConfigurationInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1192,14 +962,13 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnServerConfigurationInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1209,20 +978,19 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VpnServerConfigurationInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName) {
@@ -1231,14 +999,14 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1247,88 +1015,63 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnServerConfigurationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
-            .<PagedResponse<VpnServerConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<VpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnServerConfigurationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations as paginated response with {@link PagedFlux}.
@@ -1340,7 +1083,7 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1349,17 +1092,17 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VpnServerConfigurationInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> list() {
@@ -1368,13 +1111,13 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationInner> list(Context context) {
@@ -1383,14 +1126,15 @@ public final class VpnServerConfigurationsClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnServerConfigurationInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1398,76 +1142,59 @@ public final class VpnServerConfigurationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VpnServerConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnServerConfigurationInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VpnServerConfigurationInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnServerConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -1475,37 +1202,28 @@ public final class VpnServerConfigurationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VpnServerConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VpnServerConfigurationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1513,23 +1231,13 @@ public final class VpnServerConfigurationsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

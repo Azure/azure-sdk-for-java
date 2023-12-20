@@ -36,6 +36,10 @@ public final class ObjectReplicationPolicyRule {
     @JsonProperty(value = "filters")
     private ObjectReplicationPolicyFilter filters;
 
+    /** Creates an instance of ObjectReplicationPolicyRule class. */
+    public ObjectReplicationPolicyRule() {
+    }
+
     /**
      * Get the ruleId property: Rule Id is auto-generated for each new rule on destination account. It is required for
      * put policy on source account.

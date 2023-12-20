@@ -3,98 +3,73 @@
 
 package com.azure.core.http.vertx;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.common.FileSource;
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.github.tomakehurst.wiremock.extension.Parameters;
-import com.github.tomakehurst.wiremock.extension.ResponseTransformer;
-import com.github.tomakehurst.wiremock.http.HttpHeader;
-import com.github.tomakehurst.wiremock.http.HttpHeaders;
-import com.github.tomakehurst.wiremock.http.Request;
-import com.github.tomakehurst.wiremock.http.Response;
+import com.azure.core.test.http.LocalTestServer;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import javax.servlet.ServletException;
 import java.util.Base64;
+import java.util.Objects;
 
 /**
- * A simple Http proxy server that enforce basic proxy authentication, once authenticated
- * any request matching {@code serviceEndpoints} will be responded with an empty Http 200.
+ * A simple Http proxy server that enforce basic proxy authentication, once authenticated any request matching
+ * {@code serviceEndpoints} will be responded with an empty Http 200.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 final class SimpleBasicAuthHttpProxyServer {
     private final String userName;
     private final String password;
-    private final String[] serviceEndpoints;
-    private WireMockServer proxyService;
+    private final String serviceEndpoint;
+    private LocalTestServer proxyServer;
 
     /**
      * Creates SimpleBasicAuthHttpProxyServer.
      *
-     * @param userName the proxy user name for basic authentication
+     * @param userName the proxy username for basic authentication
      * @param password the proxy password for basic authentication
-     * @param serviceEndpoints the whitelisted mock endpoints targeting the service behind proxy
+     * @param serviceEndpoint the mock endpoint targeting the service behind proxy
      */
-    SimpleBasicAuthHttpProxyServer(String userName, String password, String[] serviceEndpoints) {
+    SimpleBasicAuthHttpProxyServer(String userName, String password, String serviceEndpoint) {
         this.userName = userName;
         this.password = password;
-        this.serviceEndpoints = serviceEndpoints;
+        this.serviceEndpoint = serviceEndpoint;
     }
 
     public ProxyEndpoint start() {
-        this.proxyService = new WireMockServer(WireMockConfiguration
-            .options()
-            .dynamicPort()
-            .extensions(new ResponseTransformer() {
-                @Override
-                public Response transform(Request request,
-                                                                               Response response,
-                                                                               FileSource fileSource,
-                                                                               Parameters parameters) {
-                    String proxyAuthorization = request.getHeader("Proxy-Authorization");
-                    if (proxyAuthorization == null) {
-                        HttpHeader proxyAuthenticateHeader = new HttpHeader("Proxy-Authenticate", "Basic");
-                        return new Response.Builder()
-                            .status(407)
-                            .headers(new HttpHeaders(proxyAuthenticateHeader))
-                            .build();
-                    } else {
-                        if (!proxyAuthorization.startsWith("Basic")) {
-                            return new Response.Builder()
-                                .status(401)
-                                .build();
-                        }
-                        String encodedCred = proxyAuthorization.substring("Basic".length());
-                        encodedCred = encodedCred.trim();
-                        final Base64.Decoder decoder = Base64.getDecoder();
-                        final byte[] decodedCred = decoder.decode(encodedCred);
-                        if (new String(decodedCred).equals(userName + ":" + password)) {
-                            return new Response.Builder()
-                                .status(200)
-                                .build();
-                        } else {
-                            return new Response.Builder()
-                                .status(401)
-                                .build();
-                        }
-                    }
-                }
+        this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
+            String requestUrl = req.getRequestURL().toString();
+            if (!Objects.equals(requestUrl, serviceEndpoint)) {
+                throw new ServletException("Unexpected request to proxy server");
+            }
 
-                @Override
-                public String getName() {
-                    return "ProxyServer";
-                }
-            })
-            .disableRequestJournal());
-        for (String endpoint : this.serviceEndpoints) {
-            proxyService.stubFor(WireMock.any(WireMock.urlEqualTo(endpoint))
-                .willReturn(WireMock.aResponse()));
-        }
-        this.proxyService.start();
-        return new ProxyEndpoint("localhost", this.proxyService.port());
+            String proxyAuthorization = req.getHeader("Proxy-Authorization");
+            if (proxyAuthorization == null) {
+                resp.setStatus(407);
+                resp.setHeader("Proxy-Authenticate", "Basic");
+                return;
+            }
+
+            if (!proxyAuthorization.startsWith("Basic")) {
+                resp.setStatus(401);
+                return;
+            }
+
+            String encodedCred = proxyAuthorization.substring("Basic".length());
+            encodedCred = encodedCred.trim();
+            final Base64.Decoder decoder = Base64.getDecoder();
+            final byte[] decodedCred = decoder.decode(encodedCred);
+            if (!new String(decodedCred).equals(userName + ":" + password)) {
+                resp.setStatus(401);
+            }
+        });
+
+        this.proxyServer.start();
+        return new ProxyEndpoint("localhost", this.proxyServer.getHttpPort());
     }
 
     public void shutdown() {
-        if (this.proxyService != null && this.proxyService.isRunning()) {
-            this.proxyService.shutdown();
+        if (this.proxyServer != null) {
+            this.proxyServer.stop();
 
         }
     }

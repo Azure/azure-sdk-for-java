@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for VirtualNetworkGateways GetVpnclientConnectionHealth. */
+/**
+ * Samples for VirtualNetworkGateways GetVpnclientConnectionHealth.
+ */
 public final class VirtualNetworkGatewaysGetVpnclientConnectionHealthSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * VirtualNetworkGatewayGetVpnclientConnectionHealth.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayVpnclientConnectionHealth.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getVirtualNetworkGatewayVpnclientConnectionHealth(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVirtualNetworkGateways()
+    public static void
+        getVirtualNetworkGatewayVpnclientConnectionHealth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks().manager().serviceClient().getVirtualNetworkGateways()
             .getVpnclientConnectionHealth("p2s-vnet-test", "vpnp2sgw", com.azure.core.util.Context.NONE);
     }
 }

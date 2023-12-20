@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters of a script block. */
+/**
+ * Parameters of a script block.
+ */
 @Fluent
 public final class ScriptActivityParameter {
     /*
@@ -23,7 +25,7 @@ public final class ScriptActivityParameter {
     private ScriptActivityParameterType type;
 
     /*
-     * The value of the parameter.
+     * The value of the parameter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -40,13 +42,15 @@ public final class ScriptActivityParameter {
     @JsonProperty(value = "size")
     private Integer size;
 
-    /** Creates an instance of ScriptActivityParameter class. */
+    /**
+     * Creates an instance of ScriptActivityParameter class.
+     */
     public ScriptActivityParameter() {
     }
 
     /**
      * Get the name property: The name of the parameter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the name value.
      */
     public Object name() {
@@ -55,7 +59,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Set the name property: The name of the parameter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param name the name value to set.
      * @return the ScriptActivityParameter object itself.
      */
@@ -66,7 +70,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Get the type property: The type of the parameter.
-     *
+     * 
      * @return the type value.
      */
     public ScriptActivityParameterType type() {
@@ -75,7 +79,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Set the type property: The type of the parameter.
-     *
+     * 
      * @param type the type value to set.
      * @return the ScriptActivityParameter object itself.
      */
@@ -85,8 +89,8 @@ public final class ScriptActivityParameter {
     }
 
     /**
-     * Get the value property: The value of the parameter.
-     *
+     * Get the value property: The value of the parameter. Type: string (or Expression with resultType string).
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -94,8 +98,8 @@ public final class ScriptActivityParameter {
     }
 
     /**
-     * Set the value property: The value of the parameter.
-     *
+     * Set the value property: The value of the parameter. Type: string (or Expression with resultType string).
+     * 
      * @param value the value value to set.
      * @return the ScriptActivityParameter object itself.
      */
@@ -106,7 +110,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Get the direction property: The direction of the parameter.
-     *
+     * 
      * @return the direction value.
      */
     public ScriptActivityParameterDirection direction() {
@@ -115,7 +119,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Set the direction property: The direction of the parameter.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the ScriptActivityParameter object itself.
      */
@@ -126,7 +130,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Get the size property: The size of the output direction parameter.
-     *
+     * 
      * @return the size value.
      */
     public Integer size() {
@@ -135,7 +139,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Set the size property: The size of the output direction parameter.
-     *
+     * 
      * @param size the size value to set.
      * @return the ScriptActivityParameter object itself.
      */
@@ -146,7 +150,7 @@ public final class ScriptActivityParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

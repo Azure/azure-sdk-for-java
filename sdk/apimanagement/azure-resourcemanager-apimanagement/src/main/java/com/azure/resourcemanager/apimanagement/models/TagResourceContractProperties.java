@@ -22,6 +22,10 @@ public final class TagResourceContractProperties {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of TagResourceContractProperties class. */
+    public TagResourceContractProperties() {
+    }
+
     /**
      * Get the id property: Tag identifier.
      *

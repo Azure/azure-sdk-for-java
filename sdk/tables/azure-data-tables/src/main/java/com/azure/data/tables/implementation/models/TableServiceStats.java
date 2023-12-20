@@ -13,7 +13,9 @@ import com.azure.xml.XmlWriter;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** Stats for the service. */
+/**
+ * Stats for the service.
+ */
 @Fluent
 public final class TableServiceStats implements XmlSerializable<TableServiceStats> {
     /*
@@ -21,12 +23,15 @@ public final class TableServiceStats implements XmlSerializable<TableServiceStat
      */
     private GeoReplication geoReplication;
 
-    /** Creates an instance of TableServiceStats class. */
-    public TableServiceStats() {}
+    /**
+     * Creates an instance of TableServiceStats class.
+     */
+    public TableServiceStats() {
+    }
 
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
-     *
+     * 
      * @return the geoReplication value.
      */
     public GeoReplication getGeoReplication() {
@@ -35,7 +40,7 @@ public final class TableServiceStats implements XmlSerializable<TableServiceStat
 
     /**
      * Set the geoReplication property: Geo-Replication information for the Secondary Storage Service.
-     *
+     * 
      * @param geoReplication the geoReplication value to set.
      * @return the TableServiceStats object itself.
      */
@@ -59,10 +64,10 @@ public final class TableServiceStats implements XmlSerializable<TableServiceStat
 
     /**
      * Reads an instance of TableServiceStats from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of TableServiceStats if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceStats.
      */
     public static TableServiceStats fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -71,33 +76,30 @@ public final class TableServiceStats implements XmlSerializable<TableServiceStat
 
     /**
      * Reads an instance of TableServiceStats from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     *     cases where the model can deserialize from different root element names.
+     * cases where the model can deserialize from different root element names.
      * @return An instance of TableServiceStats if the XmlReader was pointing to an instance of it, or null if it was
-     *     pointing to XML null.
+     * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceStats.
      */
     public static TableServiceStats fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName =
-                CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
-        return xmlReader.readObject(
-                finalRootElementName,
-                reader -> {
-                    TableServiceStats deserializedTableServiceStats = new TableServiceStats();
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        QName elementName = reader.getElementName();
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            TableServiceStats deserializedTableServiceStats = new TableServiceStats();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("GeoReplication".equals(elementName.getLocalPart())) {
-                            deserializedTableServiceStats.geoReplication =
-                                    GeoReplication.fromXml(reader, "GeoReplication");
-                        } else {
-                            reader.skipElement();
-                        }
-                    }
+                if ("GeoReplication".equals(elementName.getLocalPart())) {
+                    deserializedTableServiceStats.geoReplication = GeoReplication.fromXml(reader, "GeoReplication");
+                } else {
+                    reader.skipElement();
+                }
+            }
 
-                    return deserializedTableServiceStats;
-                });
+            return deserializedTableServiceStats;
+        });
     }
 }

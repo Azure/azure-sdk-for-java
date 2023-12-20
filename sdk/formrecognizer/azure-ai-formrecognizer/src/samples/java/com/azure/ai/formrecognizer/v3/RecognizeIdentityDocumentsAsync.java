@@ -26,7 +26,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 
 /**
  * Async sample for recognizing commonly found license fields from a local file input stream of an license identity
- * document. See fields found on an license here: https://aka.ms/formrecognizer/iddocumentfields
+ * document. See fields found on an license <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a>
  */
 public class RecognizeIdentityDocumentsAsync {
 

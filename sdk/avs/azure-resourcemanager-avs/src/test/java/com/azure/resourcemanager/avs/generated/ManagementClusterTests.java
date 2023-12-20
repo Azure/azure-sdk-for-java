@@ -15,20 +15,18 @@ public final class ManagementClusterTests {
         ManagementCluster model =
             BinaryData
                 .fromString(
-                    "{\"clusterSize\":497531730,\"provisioningState\":\"Canceled\",\"clusterId\":514021855,\"hosts\":[\"wdslfhotwmcy\",\"pwlbjnpg\",\"cftadeh\"]}")
+                    "{\"clusterSize\":2068547199,\"provisioningState\":\"Updating\",\"clusterId\":767485321,\"hosts\":[\"iklbbovpl\"]}")
                 .toObject(ManagementCluster.class);
-        Assertions.assertEquals(497531730, model.clusterSize());
-        Assertions.assertEquals("wdslfhotwmcy", model.hosts().get(0));
+        Assertions.assertEquals(2068547199, model.clusterSize());
+        Assertions.assertEquals("iklbbovpl", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagementCluster model =
-            new ManagementCluster()
-                .withClusterSize(497531730)
-                .withHosts(Arrays.asList("wdslfhotwmcy", "pwlbjnpg", "cftadeh"));
+            new ManagementCluster().withClusterSize(2068547199).withHosts(Arrays.asList("iklbbovpl"));
         model = BinaryData.fromObject(model).toObject(ManagementCluster.class);
-        Assertions.assertEquals(497531730, model.clusterSize());
-        Assertions.assertEquals("wdslfhotwmcy", model.hosts().get(0));
+        Assertions.assertEquals(2068547199, model.clusterSize());
+        Assertions.assertEquals("iklbbovpl", model.hosts().get(0));
     }
 }

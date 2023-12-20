@@ -27,6 +27,10 @@ public final class ObjectReplicationPolicyFilter {
     @JsonProperty(value = "minCreationTime")
     private String minCreationTime;
 
+    /** Creates an instance of ObjectReplicationPolicyFilter class. */
+    public ObjectReplicationPolicyFilter() {
+    }
+
     /**
      * Get the prefixMatch property: Optional. Filters the results to replicate only blobs whose names begin with the
      * specified prefix.

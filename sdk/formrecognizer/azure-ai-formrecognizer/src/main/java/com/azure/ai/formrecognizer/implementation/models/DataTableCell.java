@@ -5,76 +5,77 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the extracted cell in a table. */
+/**
+ * Information about the extracted cell in a table.
+ */
 @Fluent
-public final class DataTableCell {
+public final class DataTableCell implements JsonSerializable<DataTableCell> {
     /*
      * Row index of the cell.
      */
-    @JsonProperty(value = "rowIndex", required = true)
     private int rowIndex;
 
     /*
      * Column index of the cell.
      */
-    @JsonProperty(value = "columnIndex", required = true)
     private int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    @JsonProperty(value = "rowSpan")
     private Integer rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    @JsonProperty(value = "columnSpan")
     private Integer columnSpan;
 
     /*
      * Text content of the cell.
      */
-    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Bounding box of the cell.
      */
-    @JsonProperty(value = "boundingBox", required = true)
     private List<Float> boundingBox;
 
     /*
      * Confidence value.
      */
-    @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text
-     * elements constituting this table cell.
+     * When includeTextDetails is set to true, a list of references to the text elements constituting this table cell.
      */
-    @JsonProperty(value = "elements")
     private List<String> elements;
 
     /*
      * Is the current cell a header cell?
      */
-    @JsonProperty(value = "isHeader")
     private Boolean isHeader;
 
     /*
      * Is the current cell a footer cell?
      */
-    @JsonProperty(value = "isFooter")
     private Boolean isFooter;
 
     /**
+     * Creates an instance of DataTableCell class.
+     */
+    public DataTableCell() {
+    }
+
+    /**
      * Get the rowIndex property: Row index of the cell.
-     *
+     * 
      * @return the rowIndex value.
      */
     public int getRowIndex() {
@@ -83,7 +84,7 @@ public final class DataTableCell {
 
     /**
      * Set the rowIndex property: Row index of the cell.
-     *
+     * 
      * @param rowIndex the rowIndex value to set.
      * @return the DataTableCell object itself.
      */
@@ -94,7 +95,7 @@ public final class DataTableCell {
 
     /**
      * Get the columnIndex property: Column index of the cell.
-     *
+     * 
      * @return the columnIndex value.
      */
     public int getColumnIndex() {
@@ -103,7 +104,7 @@ public final class DataTableCell {
 
     /**
      * Set the columnIndex property: Column index of the cell.
-     *
+     * 
      * @param columnIndex the columnIndex value to set.
      * @return the DataTableCell object itself.
      */
@@ -114,7 +115,7 @@ public final class DataTableCell {
 
     /**
      * Get the rowSpan property: Number of rows spanned by this cell.
-     *
+     * 
      * @return the rowSpan value.
      */
     public Integer getRowSpan() {
@@ -123,7 +124,7 @@ public final class DataTableCell {
 
     /**
      * Set the rowSpan property: Number of rows spanned by this cell.
-     *
+     * 
      * @param rowSpan the rowSpan value to set.
      * @return the DataTableCell object itself.
      */
@@ -134,7 +135,7 @@ public final class DataTableCell {
 
     /**
      * Get the columnSpan property: Number of columns spanned by this cell.
-     *
+     * 
      * @return the columnSpan value.
      */
     public Integer getColumnSpan() {
@@ -143,7 +144,7 @@ public final class DataTableCell {
 
     /**
      * Set the columnSpan property: Number of columns spanned by this cell.
-     *
+     * 
      * @param columnSpan the columnSpan value to set.
      * @return the DataTableCell object itself.
      */
@@ -154,7 +155,7 @@ public final class DataTableCell {
 
     /**
      * Get the text property: Text content of the cell.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -163,7 +164,7 @@ public final class DataTableCell {
 
     /**
      * Set the text property: Text content of the cell.
-     *
+     * 
      * @param text the text value to set.
      * @return the DataTableCell object itself.
      */
@@ -174,7 +175,7 @@ public final class DataTableCell {
 
     /**
      * Get the boundingBox property: Bounding box of the cell.
-     *
+     * 
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -183,7 +184,7 @@ public final class DataTableCell {
 
     /**
      * Set the boundingBox property: Bounding box of the cell.
-     *
+     * 
      * @param boundingBox the boundingBox value to set.
      * @return the DataTableCell object itself.
      */
@@ -194,7 +195,7 @@ public final class DataTableCell {
 
     /**
      * Get the confidence property: Confidence value.
-     *
+     * 
      * @return the confidence value.
      */
     public float getConfidence() {
@@ -203,7 +204,7 @@ public final class DataTableCell {
 
     /**
      * Set the confidence property: Confidence value.
-     *
+     * 
      * @param confidence the confidence value to set.
      * @return the DataTableCell object itself.
      */
@@ -215,7 +216,7 @@ public final class DataTableCell {
     /**
      * Get the elements property: When includeTextDetails is set to true, a list of references to the text elements
      * constituting this table cell.
-     *
+     * 
      * @return the elements value.
      */
     public List<String> getElements() {
@@ -225,7 +226,7 @@ public final class DataTableCell {
     /**
      * Set the elements property: When includeTextDetails is set to true, a list of references to the text elements
      * constituting this table cell.
-     *
+     * 
      * @param elements the elements value to set.
      * @return the DataTableCell object itself.
      */
@@ -236,7 +237,7 @@ public final class DataTableCell {
 
     /**
      * Get the isHeader property: Is the current cell a header cell?.
-     *
+     * 
      * @return the isHeader value.
      */
     public Boolean isHeader() {
@@ -245,7 +246,7 @@ public final class DataTableCell {
 
     /**
      * Set the isHeader property: Is the current cell a header cell?.
-     *
+     * 
      * @param isHeader the isHeader value to set.
      * @return the DataTableCell object itself.
      */
@@ -256,7 +257,7 @@ public final class DataTableCell {
 
     /**
      * Get the isFooter property: Is the current cell a footer cell?.
-     *
+     * 
      * @return the isFooter value.
      */
     public Boolean isFooter() {
@@ -265,12 +266,75 @@ public final class DataTableCell {
 
     /**
      * Set the isFooter property: Is the current cell a footer cell?.
-     *
+     * 
      * @param isFooter the isFooter value to set.
      * @return the DataTableCell object itself.
      */
     public DataTableCell setIsFooter(Boolean isFooter) {
         this.isFooter = isFooter;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("rowIndex", this.rowIndex);
+        jsonWriter.writeIntField("columnIndex", this.columnIndex);
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeArrayField("boundingBox", this.boundingBox, (writer, element) -> writer.writeFloat(element));
+        jsonWriter.writeFloatField("confidence", this.confidence);
+        jsonWriter.writeNumberField("rowSpan", this.rowSpan);
+        jsonWriter.writeNumberField("columnSpan", this.columnSpan);
+        jsonWriter.writeArrayField("elements", this.elements, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isHeader", this.isHeader);
+        jsonWriter.writeBooleanField("isFooter", this.isFooter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataTableCell from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataTableCell if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataTableCell.
+     */
+    public static DataTableCell fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataTableCell deserializedDataTableCell = new DataTableCell();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rowIndex".equals(fieldName)) {
+                    deserializedDataTableCell.rowIndex = reader.getInt();
+                } else if ("columnIndex".equals(fieldName)) {
+                    deserializedDataTableCell.columnIndex = reader.getInt();
+                } else if ("text".equals(fieldName)) {
+                    deserializedDataTableCell.text = reader.getString();
+                } else if ("boundingBox".equals(fieldName)) {
+                    List<Float> boundingBox = reader.readArray(reader1 -> reader1.getFloat());
+                    deserializedDataTableCell.boundingBox = boundingBox;
+                } else if ("confidence".equals(fieldName)) {
+                    deserializedDataTableCell.confidence = reader.getFloat();
+                } else if ("rowSpan".equals(fieldName)) {
+                    deserializedDataTableCell.rowSpan = reader.getNullable(JsonReader::getInt);
+                } else if ("columnSpan".equals(fieldName)) {
+                    deserializedDataTableCell.columnSpan = reader.getNullable(JsonReader::getInt);
+                } else if ("elements".equals(fieldName)) {
+                    List<String> elements = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataTableCell.elements = elements;
+                } else if ("isHeader".equals(fieldName)) {
+                    deserializedDataTableCell.isHeader = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isFooter".equals(fieldName)) {
+                    deserializedDataTableCell.isFooter = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataTableCell;
+        });
     }
 }

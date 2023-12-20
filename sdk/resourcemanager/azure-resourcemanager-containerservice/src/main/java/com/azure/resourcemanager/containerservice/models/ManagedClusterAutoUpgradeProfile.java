@@ -19,6 +19,14 @@ public final class ManagedClusterAutoUpgradeProfile {
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
+    /*
+     * Node OS Upgrade Channel
+     *
+     * Manner in which the OS on your nodes is updated. The default is NodeImage.
+     */
+    @JsonProperty(value = "nodeOSUpgradeChannel")
+    private NodeOSUpgradeChannel nodeOSUpgradeChannel;
+
     /** Creates an instance of ManagedClusterAutoUpgradeProfile class. */
     public ManagedClusterAutoUpgradeProfile() {
     }
@@ -46,6 +54,30 @@ public final class ManagedClusterAutoUpgradeProfile {
      */
     public ManagedClusterAutoUpgradeProfile withUpgradeChannel(UpgradeChannel upgradeChannel) {
         this.upgradeChannel = upgradeChannel;
+        return this;
+    }
+
+    /**
+     * Get the nodeOSUpgradeChannel property: Node OS Upgrade Channel
+     *
+     * <p>Manner in which the OS on your nodes is updated. The default is NodeImage.
+     *
+     * @return the nodeOSUpgradeChannel value.
+     */
+    public NodeOSUpgradeChannel nodeOSUpgradeChannel() {
+        return this.nodeOSUpgradeChannel;
+    }
+
+    /**
+     * Set the nodeOSUpgradeChannel property: Node OS Upgrade Channel
+     *
+     * <p>Manner in which the OS on your nodes is updated. The default is NodeImage.
+     *
+     * @param nodeOSUpgradeChannel the nodeOSUpgradeChannel value to set.
+     * @return the ManagedClusterAutoUpgradeProfile object itself.
+     */
+    public ManagedClusterAutoUpgradeProfile withNodeOSUpgradeChannel(NodeOSUpgradeChannel nodeOSUpgradeChannel) {
+        this.nodeOSUpgradeChannel = nodeOSUpgradeChannel;
         return this;
     }
 

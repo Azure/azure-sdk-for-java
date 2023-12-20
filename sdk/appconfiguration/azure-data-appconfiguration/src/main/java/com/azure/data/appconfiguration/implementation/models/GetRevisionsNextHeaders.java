@@ -12,6 +12,11 @@ import com.azure.core.http.HttpHeaders;
 @Fluent
 public final class GetRevisionsNextHeaders {
     /*
+     * The ETag property.
+     */
+    private String eTag;
+
+    /*
      * The Sync-Token property.
      */
     private String syncToken;
@@ -25,7 +30,28 @@ public final class GetRevisionsNextHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GetRevisionsNextHeaders(HttpHeaders rawHeaders) {
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
+    }
+
+    /**
+     * Get the eTag property: The ETag property.
+     *
+     * @return the eTag value.
+     */
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag property.
+     *
+     * @param eTag the eTag value to set.
+     * @return the GetRevisionsNextHeaders object itself.
+     */
+    public GetRevisionsNextHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
     }
 
     /**

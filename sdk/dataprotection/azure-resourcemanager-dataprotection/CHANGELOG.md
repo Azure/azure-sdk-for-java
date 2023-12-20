@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,215 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2023-12-18)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CrossRegionRestoreJobRequest` was added
+
+* `models.RecoveryPointCompletionState` was added
+
+* `models.FetchSecondaryRecoveryPoints` was added
+
+* `models.DefaultResourceProperties` was added
+
+* `models.FetchCrossRegionRestoreJobsOperations` was added
+
+* `models.FetchCrossRegionRestoreJobs` was added
+
+* `models.UserFacingWarningDetail` was added
+
+* `models.ValidateCrossRegionRestoreRequestObject` was added
+
+* `models.CrossRegionRestoreJobsRequest` was added
+
+* `models.ResourcePropertiesObjectType` was added
+
+* `models.CrossRegionRestoreDetails` was added
+
+* `models.KubernetesClusterVaultTierRestoreCriteria` was added
+
+* `models.FetchSecondaryRPsRequestParameters` was added
+
+* `models.CrossRegionRestoreRequestObject` was added
+
+#### `models.JobExtendedInfo` was modified
+
+* `warningDetails()` was added
+
+#### `DataProtectionManager` was modified
+
+* `fetchCrossRegionRestoreJobsOperations()` was added
+* `fetchSecondaryRecoveryPoints()` was added
+* `fetchCrossRegionRestoreJobs()` was added
+
+#### `models.BackupVault` was modified
+
+* `withReplicatedRegions(java.util.List)` was added
+* `replicatedRegions()` was added
+
+#### `models.BackupInstances` was modified
+
+* `triggerCrossRegionRestore(java.lang.String,java.lang.String,models.CrossRegionRestoreRequestObject)` was added
+* `validateCrossRegionRestore(java.lang.String,java.lang.String,models.ValidateCrossRegionRestoreRequestObject,com.azure.core.util.Context)` was added
+* `triggerCrossRegionRestore(java.lang.String,java.lang.String,models.CrossRegionRestoreRequestObject,com.azure.core.util.Context)` was added
+* `validateCrossRegionRestore(java.lang.String,java.lang.String,models.ValidateCrossRegionRestoreRequestObject)` was added
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `withRecoveryPointState(models.RecoveryPointCompletionState)` was added
+* `recoveryPointState()` was added
+
+## 1.1.0 (2023-07-21)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CrossRegionRestoreState` was added
+
+* `models.BaseResourceProperties` was added
+
+* `models.NamespacedNameResource` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.CrossRegionRestoreSettings` was added
+
+* `models.IdentityDetails` was added
+
+* `models.SecureScoreLevel` was added
+
+#### `models.AzureBackupRecoveryTimeBasedRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+* `identityDetails()` was added
+
+#### `models.DeletedBackupInstance` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupRestoreWithRehydrationRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.KubernetesClusterBackupDatasourceParameters` was modified
+
+* `backupHookReferences()` was added
+* `withBackupHookReferences(java.util.List)` was added
+
+#### `models.DatasourceSet` was modified
+
+* `withResourceProperties(models.BaseResourceProperties)` was added
+* `resourceProperties()` was added
+
+#### `models.BackupInstance` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+* `identityDetails()` was added
+
+#### `models.FeatureSettings` was modified
+
+* `crossRegionRestoreSettings()` was added
+* `withCrossRegionRestoreSettings(models.CrossRegionRestoreSettings)` was added
+
+#### `models.BackupVault` was modified
+
+* `secureScore()` was added
+
+#### `models.Datasource` was modified
+
+* `withResourceProperties(models.BaseResourceProperties)` was added
+* `resourceProperties()` was added
+
+#### `models.KubernetesClusterRestoreCriteria` was modified
+
+* `withRestoreHookReferences(java.util.List)` was added
+* `restoreHookReferences()` was added
+
+#### `models.AzureBackupRecoveryPointBasedRestoreRequest` was modified
+
+* `withIdentityDetails(models.IdentityDetails)` was added
+
+#### `models.AzureBackupJob` was modified
+
+* `rehydrationPriority()` was added
+
+#### `models.DppIdentityDetails` was modified
+
+* `userAssignedIdentities()` was added
+* `withUserAssignedIdentities(java.util.Map)` was added
+
+## 1.0.0 (2023-06-28)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ResourceGuardProxyBaseResource$DefinitionStages` was added
+
+* `models.DppResourceGuardProxies` was added
+
+* `models.UnlockDeleteRequest` was added
+
+* `models.ResourceGuardOperationDetail` was added
+
+* `models.UnlockDeleteResponse` was added
+
+* `models.ResourceGuardProxyBaseResource$Update` was added
+
+* `models.ResourceGuardProxyBaseResource$Definition` was added
+
+* `models.ResourceGuardProxyBase` was added
+
+* `models.ResourceGuardProxyBaseResourceList` was added
+
+* `models.ResourceGuardProxyBaseResource$UpdateStages` was added
+
+* `models.ResourceGuardProxyBaseResource` was added
+
+#### `DataProtectionManager` was modified
+
+* `dppResourceGuardProxies()` was added
+
+## 1.0.0-beta.4 (2023-06-20)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ResourceGuardProxyBaseResource$DefinitionStages` was added
+
+* `models.DppResourceGuardProxies` was added
+
+* `models.UnlockDeleteRequest` was added
+
+* `models.ResourceGuardOperationDetail` was added
+
+* `models.UnlockDeleteResponse` was added
+
+* `models.ResourceGuardProxyBaseResource$Update` was added
+
+* `models.ResourceGuardProxyBaseResource$Definition` was added
+
+* `models.ResourceGuardProxyBase` was added
+
+* `models.ResourceGuardProxyBaseResourceList` was added
+
+* `models.ResourceGuardProxyBaseResource$UpdateStages` was added
+
+* `models.ResourceGuardProxyBaseResource` was added
+
+#### `DataProtectionManager` was modified
+
+* `dppResourceGuardProxies()` was added
 
 ## 1.0.0-beta.3 (2023-02-14)
 

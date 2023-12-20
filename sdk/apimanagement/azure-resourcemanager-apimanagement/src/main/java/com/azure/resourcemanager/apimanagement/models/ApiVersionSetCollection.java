@@ -30,6 +30,10 @@ public final class ApiVersionSetCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApiVersionSetCollection class. */
+    public ApiVersionSetCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

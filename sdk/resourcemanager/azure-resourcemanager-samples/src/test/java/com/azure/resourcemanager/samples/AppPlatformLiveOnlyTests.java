@@ -17,7 +17,7 @@ import java.security.cert.CertificateException;
 public class AppPlatformLiveOnlyTests extends SamplesTestBase {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testSpringCloud() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, KeyManagementException {
         if (skipInPlayback()) {
             return;

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +58,14 @@ public final class ConfigurationsUpdateMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.configurations().update("zcyjtot", "vopvp", "dbzqgqqihed", mapOf("bcysih", "qwthmky"), Context.NONE);
+        manager
+            .configurations()
+            .update(
+                "esi",
+                "uqtljqobbpih",
+                "hcecybmrqbr",
+                mapOf("s", "bmpxdlvykfrexc", "xog", "qwjksghudgz", "rkmdyom", "ggsvoujkxibdaf", "dy", "xfbvfb"),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

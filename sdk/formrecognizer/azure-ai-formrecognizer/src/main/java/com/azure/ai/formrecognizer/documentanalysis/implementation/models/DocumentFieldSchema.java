@@ -5,56 +5,55 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Description of the field semantic schema using a JSON Schema style syntax. */
+/**
+ * Description of the field semantic schema using a JSON Schema style syntax.
+ */
 @Fluent
-public final class DocumentFieldSchema {
+public final class DocumentFieldSchema implements JsonSerializable<DocumentFieldSchema> {
     /*
      * Semantic data type of the field value.
      */
-    @JsonProperty(value = "type", required = true)
-    private DocumentFieldType type;
+    private final DocumentFieldType type;
 
     /*
      * Field description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Example field content.
      */
-    @JsonProperty(value = "example")
     private String example;
 
     /*
      * Field type schema of each array element.
      */
-    @JsonProperty(value = "items")
     private DocumentFieldSchema items;
 
     /*
      * Named sub-fields of the object field.
      */
-    @JsonProperty(value = "properties")
     private Map<String, DocumentFieldSchema> properties;
 
     /**
      * Creates an instance of DocumentFieldSchema class.
-     *
+     * 
      * @param type the type value to set.
      */
-    @JsonCreator
-    public DocumentFieldSchema(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
+    public DocumentFieldSchema(DocumentFieldType type) {
         this.type = type;
     }
 
     /**
      * Get the type property: Semantic data type of the field value.
-     *
+     * 
      * @return the type value.
      */
     public DocumentFieldType getType() {
@@ -63,7 +62,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the description property: Field description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -72,7 +71,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Set the description property: Field description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DocumentFieldSchema object itself.
      */
@@ -83,7 +82,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the example property: Example field content.
-     *
+     * 
      * @return the example value.
      */
     public String getExample() {
@@ -92,7 +91,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Set the example property: Example field content.
-     *
+     * 
      * @param example the example value to set.
      * @return the DocumentFieldSchema object itself.
      */
@@ -103,7 +102,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the items property: Field type schema of each array element.
-     *
+     * 
      * @return the items value.
      */
     public DocumentFieldSchema getItems() {
@@ -112,7 +111,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Set the items property: Field type schema of each array element.
-     *
+     * 
      * @param items the items value to set.
      * @return the DocumentFieldSchema object itself.
      */
@@ -123,7 +122,7 @@ public final class DocumentFieldSchema {
 
     /**
      * Get the properties property: Named sub-fields of the object field.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, DocumentFieldSchema> getProperties() {
@@ -132,12 +131,72 @@ public final class DocumentFieldSchema {
 
     /**
      * Set the properties property: Named sub-fields of the object field.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DocumentFieldSchema object itself.
      */
     public DocumentFieldSchema setProperties(Map<String, DocumentFieldSchema> properties) {
         this.properties = properties;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("example", this.example);
+        jsonWriter.writeJsonField("items", this.items);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentFieldSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentFieldSchema if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentFieldSchema.
+     */
+    public static DocumentFieldSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean typeFound = false;
+            DocumentFieldType type = null;
+            String description = null;
+            String example = null;
+            DocumentFieldSchema items = null;
+            Map<String, DocumentFieldSchema> properties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    type = DocumentFieldType.fromString(reader.getString());
+                    typeFound = true;
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("example".equals(fieldName)) {
+                    example = reader.getString();
+                } else if ("items".equals(fieldName)) {
+                    items = DocumentFieldSchema.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readMap(reader1 -> DocumentFieldSchema.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (typeFound) {
+                DocumentFieldSchema deserializedDocumentFieldSchema = new DocumentFieldSchema(type);
+                deserializedDocumentFieldSchema.description = description;
+                deserializedDocumentFieldSchema.example = example;
+                deserializedDocumentFieldSchema.items = items;
+                deserializedDocumentFieldSchema.properties = properties;
+
+                return deserializedDocumentFieldSchema;
+            }
+            throw new IllegalStateException("Missing required property: type");
+        });
     }
 }

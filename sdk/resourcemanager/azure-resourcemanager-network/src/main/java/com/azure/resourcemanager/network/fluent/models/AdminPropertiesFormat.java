@@ -14,7 +14,9 @@ import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtoco
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security admin rule resource. */
+/**
+ * Security admin rule resource.
+ */
 @Fluent
 public final class AdminPropertiesFormat {
     /*
@@ -78,13 +80,21 @@ public final class AdminPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AdminPropertiesFormat class. */
+    /*
+     * Unique identifier for this resource.
+     */
+    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGuid;
+
+    /**
+     * Creates an instance of AdminPropertiesFormat class.
+     */
     public AdminPropertiesFormat() {
     }
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -93,7 +103,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @param description the description value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -104,7 +114,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @return the protocol value.
      */
     public SecurityConfigurationRuleProtocol protocol() {
@@ -113,7 +123,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the protocol property: Network protocol this rule applies to.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -124,7 +134,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @return the sources value.
      */
     public List<AddressPrefixItem> sources() {
@@ -133,7 +143,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the sources property: The CIDR or source IP ranges.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -144,7 +154,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @return the destinations value.
      */
     public List<AddressPrefixItem> destinations() {
@@ -153,7 +163,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the destinations property: The destination address prefixes. CIDR or destination IP ranges.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -164,7 +174,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @return the sourcePortRanges value.
      */
     public List<String> sourcePortRanges() {
@@ -173,7 +183,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the sourcePortRanges property: The source port ranges.
-     *
+     * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -184,7 +194,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
@@ -193,7 +203,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the destinationPortRanges property: The destination port ranges.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -204,7 +214,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @return the access value.
      */
     public SecurityConfigurationRuleAccess access() {
@@ -213,7 +223,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the access property: Indicates the access allowed for this particular rule.
-     *
+     * 
      * @param access the access value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -226,7 +236,7 @@ public final class AdminPropertiesFormat {
      * Get the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -237,7 +247,7 @@ public final class AdminPropertiesFormat {
      * Set the priority property: The priority of the rule. The value can be between 1 and 4096. The priority number
      * must be unique for each rule in the collection. The lower the priority number, the higher the priority of the
      * rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -248,7 +258,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @return the direction value.
      */
     public SecurityConfigurationRuleDirection direction() {
@@ -257,7 +267,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Set the direction property: Indicates if the traffic matched against the rule in inbound or outbound.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the AdminPropertiesFormat object itself.
      */
@@ -268,7 +278,7 @@ public final class AdminPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -276,15 +286,23 @@ public final class AdminPropertiesFormat {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.resourceGuid;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property protocol in model AdminPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model AdminPropertiesFormat"));
         }
         if (sources() != null) {
             sources().forEach(e -> e.validate());
@@ -293,14 +311,12 @@ public final class AdminPropertiesFormat {
             destinations().forEach(e -> e.validate());
         }
         if (access() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property access in model AdminPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property access in model AdminPropertiesFormat"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model AdminPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property direction in model AdminPropertiesFormat"));
         }
     }
 

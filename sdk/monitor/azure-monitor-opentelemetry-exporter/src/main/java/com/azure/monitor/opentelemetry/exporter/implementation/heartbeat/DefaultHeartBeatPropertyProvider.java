@@ -12,10 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * <h1>Base Heartbeat Property Provider</h1>
- *
- * <p>This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface} It
- * enables setting SDK Metadata to heartbeat payload.
+ * This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface}. It enables
+ * setting SDK Metadata to heartbeat payload.
  */
 public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProviderInterface {
 

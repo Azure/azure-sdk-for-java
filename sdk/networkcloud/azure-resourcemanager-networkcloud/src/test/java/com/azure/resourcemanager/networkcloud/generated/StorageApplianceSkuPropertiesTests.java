@@ -12,7 +12,7 @@ public final class StorageApplianceSkuPropertiesTests {
     public void testDeserialize() throws Exception {
         StorageApplianceSkuProperties model =
             BinaryData
-                .fromString("{\"capacityGB\":3238286680038968891,\"model\":\"tiewdj\"}")
+                .fromString("{\"capacityGB\":6206470742211540343,\"model\":\"geivsiykzkdncj\"}")
                 .toObject(StorageApplianceSkuProperties.class);
     }
 

@@ -17,12 +17,12 @@ public final class BillingMeterCollectionInnerTests {
         BillingMeterCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"qwxrjfeallnw\",\"properties\":{\"category\":\"isnjampmngnz\",\"meterType\":\"xaqwoochcbonqv\",\"displayName\":\"vlrxnjeaseiph\"},\"id\":\"f\",\"name\":\"okeyyienj\",\"type\":\"dlwtgrhpdj\"},{\"location\":\"umasxazjpq\",\"properties\":{\"category\":\"ualhbxxhejj\",\"meterType\":\"v\",\"displayName\":\"dgwdslfhot\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"}]}")
+                    "{\"value\":[{\"location\":\"yzydagfuaxbezyi\",\"properties\":{\"category\":\"ktwh\",\"meterType\":\"xw\",\"displayName\":\"wqsmbsur\"},\"id\":\"xim\",\"name\":\"ryocfsfksymdd\",\"type\":\"stkiiuxhqyud\"},{\"location\":\"rrqnbpoczvyifqrv\",\"properties\":{\"category\":\"jsllrmv\",\"meterType\":\"f\",\"displayName\":\"t\"},\"id\":\"pnpulexxbczwtru\",\"name\":\"iqzbq\",\"type\":\"vsovmyokac\"},{\"location\":\"kwlhzdo\",\"properties\":{\"category\":\"jmflbvvnch\",\"meterType\":\"cciw\",\"displayName\":\"juqk\"},\"id\":\"rsa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}]}")
                 .toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("qwxrjfeallnw", model.value().get(0).location());
-        Assertions.assertEquals("isnjampmngnz", model.value().get(0).properties().category());
-        Assertions.assertEquals("xaqwoochcbonqv", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("vlrxnjeaseiph", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).properties().category());
+        Assertions.assertEquals("xw", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,23 +33,30 @@ public final class BillingMeterCollectionInnerTests {
                     Arrays
                         .asList(
                             new BillingMeter()
-                                .withLocation("qwxrjfeallnw")
+                                .withLocation("yzydagfuaxbezyi")
                                 .withProperties(
                                     new BillingMeterProperties()
-                                        .withCategory("isnjampmngnz")
-                                        .withMeterType("xaqwoochcbonqv")
-                                        .withDisplayName("vlrxnjeaseiph")),
+                                        .withCategory("ktwh")
+                                        .withMeterType("xw")
+                                        .withDisplayName("wqsmbsur")),
                             new BillingMeter()
-                                .withLocation("umasxazjpq")
+                                .withLocation("rrqnbpoczvyifqrv")
                                 .withProperties(
                                     new BillingMeterProperties()
-                                        .withCategory("ualhbxxhejj")
-                                        .withMeterType("v")
-                                        .withDisplayName("dgwdslfhot"))));
+                                        .withCategory("jsllrmv")
+                                        .withMeterType("f")
+                                        .withDisplayName("t")),
+                            new BillingMeter()
+                                .withLocation("kwlhzdo")
+                                .withProperties(
+                                    new BillingMeterProperties()
+                                        .withCategory("jmflbvvnch")
+                                        .withMeterType("cciw")
+                                        .withDisplayName("juqk"))));
         model = BinaryData.fromObject(model).toObject(BillingMeterCollectionInner.class);
-        Assertions.assertEquals("qwxrjfeallnw", model.value().get(0).location());
-        Assertions.assertEquals("isnjampmngnz", model.value().get(0).properties().category());
-        Assertions.assertEquals("xaqwoochcbonqv", model.value().get(0).properties().meterType());
-        Assertions.assertEquals("vlrxnjeaseiph", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("yzydagfuaxbezyi", model.value().get(0).location());
+        Assertions.assertEquals("ktwh", model.value().get(0).properties().category());
+        Assertions.assertEquals("xw", model.value().get(0).properties().meterType());
+        Assertions.assertEquals("wqsmbsur", model.value().get(0).properties().displayName());
     }
 }

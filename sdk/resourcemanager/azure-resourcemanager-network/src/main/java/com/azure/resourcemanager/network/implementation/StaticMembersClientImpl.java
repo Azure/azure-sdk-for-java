@@ -33,22 +33,28 @@ import com.azure.resourcemanager.network.fluent.models.StaticMemberInner;
 import com.azure.resourcemanager.network.models.StaticMemberListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StaticMembersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StaticMembersClient.
+ */
 public final class StaticMembersClientImpl implements StaticMembersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StaticMembersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of StaticMembersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StaticMembersClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(StaticMembersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(StaticMembersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,86 +65,66 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface StaticMembersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StaticMemberInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StaticMemberInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
             @PathParam("networkGroupName") String networkGroupName,
-            @PathParam("staticMemberName") String staticMemberName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("staticMemberName") String staticMemberName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StaticMemberInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StaticMemberInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
             @PathParam("networkGroupName") String networkGroupName,
-            @PathParam("staticMemberName") String staticMemberName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StaticMemberInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("staticMemberName") String staticMemberName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticMemberInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers/{staticMemberName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
             @PathParam("networkGroupName") String networkGroupName,
-            @PathParam("staticMemberName") String staticMemberName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("staticMemberName") String staticMemberName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/networkGroups/{networkGroupName}/staticMembers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StaticMemberListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StaticMemberListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName,
-            @PathParam("networkGroupName") String networkGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("networkGroupName") String networkGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StaticMemberListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StaticMemberListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -149,19 +135,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the specified static member along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticMemberInner>> getWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public Mono<Response<StaticMemberInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,28 +161,17 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            staticMemberName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -212,23 +183,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the specified static member along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticMemberInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        Context context) {
+    private Mono<Response<StaticMemberInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -246,25 +209,16 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                staticMemberName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, staticMemberName, apiVersion, accept, context);
     }
 
     /**
      * Gets the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -275,15 +229,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the specified static member on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticMemberInner> getAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public Mono<StaticMemberInner> getAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, staticMemberName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -295,19 +249,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the specified static member along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticMemberInner> getWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        Context context) {
+    public Response<StaticMemberInner> getWithResponse(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, staticMemberName, context)
             .block();
     }
 
     /**
      * Gets the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -318,15 +268,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the specified static member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticMemberInner get(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public StaticMemberInner get(String resourceGroupName, String networkManagerName, String networkGroupName,
+        String staticMemberName) {
         return getWithResponse(resourceGroupName, networkManagerName, networkGroupName, staticMemberName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -338,23 +288,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return staticMember Item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StaticMemberInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        StaticMemberInner parameters) {
+    public Mono<Response<StaticMemberInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, String staticMemberName, StaticMemberInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -377,29 +319,18 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            staticMemberName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, apiVersion, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -412,24 +343,16 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return staticMember Item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticMemberInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        StaticMemberInner parameters,
+    private Mono<Response<StaticMemberInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, String staticMemberName, StaticMemberInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,26 +375,16 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                staticMemberName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, staticMemberName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Creates or updates a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -483,20 +396,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return staticMember Item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StaticMemberInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        StaticMemberInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<StaticMemberInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, StaticMemberInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName,
+            staticMemberName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -509,21 +417,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return staticMember Item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StaticMemberInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        StaticMemberInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, parameters, context)
-            .block();
+    public Response<StaticMemberInner> createOrUpdateWithResponse(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, StaticMemberInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName,
+            staticMemberName, parameters, context).block();
     }
 
     /**
      * Creates or updates a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -535,20 +437,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return staticMember Item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StaticMemberInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        StaticMemberInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, parameters, Context.NONE)
-            .getValue();
+    public StaticMemberInner createOrUpdate(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, StaticMemberInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, networkManagerName, networkGroupName, staticMemberName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Deletes a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -559,19 +456,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -589,28 +482,17 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            staticMemberName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -622,23 +504,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -656,25 +530,16 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter staticMemberName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                staticMemberName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, networkGroupName, staticMemberName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -685,15 +550,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String networkGroupName,
+        String staticMemberName) {
         return deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, staticMemberName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -705,20 +570,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        String staticMemberName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, networkManagerName, networkGroupName, staticMemberName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String networkManagerName,
+        String networkGroupName, String staticMemberName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, networkManagerName, networkGroupName, staticMemberName,
+            context).block();
     }
 
     /**
      * Deletes a static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -728,42 +588,38 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String networkManagerName, String networkGroupName, String staticMemberName) {
+    public void delete(String resourceGroupName, String networkManagerName, String networkGroupName,
+        String staticMemberName) {
         deleteWithResponse(resourceGroupName, networkManagerName, networkGroupName, staticMemberName, Context.NONE);
     }
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list StaticMember along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticMemberInner>> listSinglePageAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Integer top, String skipToken) {
+    private Mono<PagedResponse<StaticMemberInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -777,72 +633,44 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            networkManagerName,
-                            networkGroupName,
-                            apiVersion,
-                            top,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<StaticMemberInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, networkManagerName, networkGroupName, apiVersion, top, skipToken, accept, context))
+            .<PagedResponse<StaticMemberInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list StaticMember along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticMemberInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        Integer top,
-        String skipToken,
-        Context context) {
+    private Mono<PagedResponse<StaticMemberInner>> listSinglePageAsync(String resourceGroupName,
+        String networkManagerName, String networkGroupName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -856,51 +684,35 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter networkGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                networkManagerName,
-                networkGroupName,
-                apiVersion,
-                top,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, networkManagerName,
+                networkGroupName, apiVersion, top, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list StaticMember as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StaticMemberInner> listAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName, Integer top, String skipToken) {
+    public PagedFlux<StaticMemberInner> listAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Integer top, String skipToken) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkManagerName, networkGroupName, top, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -908,7 +720,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -918,8 +730,8 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return result of the request to list StaticMember as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<StaticMemberInner> listAsync(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public PagedFlux<StaticMemberInner> listAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         final Integer top = null;
         final String skipToken = null;
         return new PagedFlux<>(
@@ -929,15 +741,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -945,13 +757,8 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return result of the request to list StaticMember as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticMemberInner> listAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        Integer top,
-        String skipToken,
-        Context context) {
+    private PagedFlux<StaticMemberInner> listAsync(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Integer top, String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkManagerName, networkGroupName, top, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -959,7 +766,7 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
@@ -969,8 +776,8 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return result of the request to list StaticMember as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticMemberInner> list(
-        String resourceGroupName, String networkManagerName, String networkGroupName) {
+    public PagedIterable<StaticMemberInner> list(String resourceGroupName, String networkManagerName,
+        String networkGroupName) {
         final Integer top = null;
         final String skipToken = null;
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, networkGroupName, top, skipToken));
@@ -978,15 +785,15 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
 
     /**
      * Lists the specified static member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param networkGroupName The name of the network group.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -994,27 +801,23 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
      * @return result of the request to list StaticMember as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StaticMemberInner> list(
-        String resourceGroupName,
-        String networkManagerName,
-        String networkGroupName,
-        Integer top,
-        String skipToken,
-        Context context) {
+    public PagedIterable<StaticMemberInner> list(String resourceGroupName, String networkManagerName,
+        String networkGroupName, Integer top, String skipToken, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, networkManagerName, networkGroupName, top, skipToken, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list StaticMember along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticMemberInner>> listNextSinglePageAsync(String nextLink) {
@@ -1022,37 +825,28 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StaticMemberInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StaticMemberInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list StaticMember along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticMemberInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1060,23 +854,13 @@ public final class StaticMembersClientImpl implements StaticMembersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

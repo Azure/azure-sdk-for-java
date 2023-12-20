@@ -28,7 +28,7 @@ public final class AzureFileShareConfiguration {
     /*
      * The Azure Storage account key.
      */
-    @JsonProperty(value = "accountKey", required = true)
+    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*

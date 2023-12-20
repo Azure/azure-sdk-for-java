@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for NetworkWatchers GetByResourceGroup. */
+/**
+ * Samples for NetworkWatchers GetByResourceGroup.
+ */
 public final class NetworkWatchersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/NetworkWatcherGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkWatcherGet.json
      */
     /**
      * Sample code: Get network watcher.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNetworkWatcher(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getNetworkWatchers()
-            .getByResourceGroupWithResponse("rg1", "nw1", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkWatchers().getByResourceGroupWithResponse("rg1", "nw1",
+            com.azure.core.util.Context.NONE);
     }
 }

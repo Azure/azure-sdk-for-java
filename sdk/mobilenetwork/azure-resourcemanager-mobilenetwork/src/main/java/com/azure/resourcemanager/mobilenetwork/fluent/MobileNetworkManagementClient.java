@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for MobileNetworkManagementClient class. */
 public interface MobileNetworkManagementClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -59,6 +59,13 @@ public interface MobileNetworkManagementClient {
     DataNetworksClient getDataNetworks();
 
     /**
+     * Gets the DiagnosticsPackagesClient object to access its operations.
+     *
+     * @return the DiagnosticsPackagesClient object.
+     */
+    DiagnosticsPackagesClient getDiagnosticsPackages();
+
+    /**
      * Gets the MobileNetworksClient object to access its operations.
      *
      * @return the MobileNetworksClient object.
@@ -71,6 +78,13 @@ public interface MobileNetworkManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the PacketCapturesClient object to access its operations.
+     *
+     * @return the PacketCapturesClient object.
+     */
+    PacketCapturesClient getPacketCaptures();
 
     /**
      * Gets the PacketCoreControlPlanesClient object to access its operations.

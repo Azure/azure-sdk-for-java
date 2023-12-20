@@ -124,8 +124,10 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        return new QueueAsyncClient(client, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueAsyncClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
     }
 
     /**
@@ -193,8 +195,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -253,9 +254,8 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        return new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler)
-            .deleteWithResponse(context);
+        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+        return queueAsyncClient.deleteWithResponse(context);
     }
 
     /**
@@ -700,6 +700,10 @@ public final class QueueServiceAsyncClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
+    AzureQueueStorageImpl getAzureQueueStorage() {
+        return client;
     }
 
 }

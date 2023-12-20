@@ -14,8 +14,8 @@ public final class PlayRequest {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
-    private PlaySourceInternal playSourceInfo;
+    @JsonProperty(value = "playSources", required = true)
+    private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
@@ -36,23 +36,32 @@ public final class PlayRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /**
-     * Get the playSourceInfo property: The source of the audio to be played.
-     *
-     * @return the playSourceInfo value.
+    /*
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
-    public PlaySourceInternal getPlaySourceInfo() {
-        return this.playSourceInfo;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
+
+    /**
+     * Get the playSources property: The source of the audio to be played.
+     *
+     * @return the playSources value.
+     */
+    public List<PlaySourceInternal> getPlaySources() {
+        return this.playSources;
     }
 
     /**
-     * Set the playSourceInfo property: The source of the audio to be played.
+     * Set the playSources property: The source of the audio to be played.
      *
-     * @param playSourceInfo the playSourceInfo value to set.
+     * @param playSources the playSources value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
-        this.playSourceInfo = playSourceInfo;
+    public PlayRequest setPlaySources(List<PlaySourceInternal> playSources) {
+        this.playSources = playSources;
         return this;
     }
 
@@ -115,6 +124,30 @@ public final class PlayRequest {
      */
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the PlayRequest object itself.
+     */
+    public PlayRequest setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

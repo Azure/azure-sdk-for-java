@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for SecurityPartnerProviders Delete. */
+/**
+ * Samples for SecurityPartnerProviders Delete.
+ */
 public final class SecurityPartnerProvidersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/SecurityPartnerProviderDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/SecurityPartnerProviderDelete
+     * .json
      */
     /**
      * Sample code: Delete Security Partner Provider.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteSecurityPartnerProvider(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getSecurityPartnerProviders()
-            .delete("rg1", "securityPartnerProvider", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getSecurityPartnerProviders().delete("rg1",
+            "securityPartnerProvider", com.azure.core.util.Context.NONE);
     }
 }

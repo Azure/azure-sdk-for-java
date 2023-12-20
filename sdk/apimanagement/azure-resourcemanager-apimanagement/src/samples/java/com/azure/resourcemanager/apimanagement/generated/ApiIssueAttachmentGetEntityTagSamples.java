@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiIssueAttachment GetEntityTag. */
 public final class ApiIssueAttachmentGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiIssueAttachment.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiIssueAttachment.json
      */
     /**
      * Sample code: ApiManagementHeadApiIssueAttachment.
@@ -26,6 +24,6 @@ public final class ApiIssueAttachmentGetEntityTagSamples {
                 "57d2ef278aa04f0888cba3f3",
                 "57d2ef278aa04f0ad01d6cdc",
                 "57d2ef278aa04f0888cba3f3",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

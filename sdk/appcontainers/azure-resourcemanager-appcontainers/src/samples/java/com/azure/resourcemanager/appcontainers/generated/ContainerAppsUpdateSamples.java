@@ -25,6 +25,8 @@ import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
 import com.azure.resourcemanager.appcontainers.models.Scale;
 import com.azure.resourcemanager.appcontainers.models.ScaleRule;
+import com.azure.resourcemanager.appcontainers.models.Service;
+import com.azure.resourcemanager.appcontainers.models.ServiceBind;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import com.azure.resourcemanager.appcontainers.models.TrafficWeight;
 import com.azure.resourcemanager.appcontainers.models.Type;
@@ -35,7 +37,7 @@ import java.util.Map;
 /** Samples for ContainerApps Update. */
 public final class ContainerAppsUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ContainerApps_Patch.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_Patch.json
      */
     /**
      * Sample code: Patch Container App.
@@ -102,7 +104,8 @@ public final class ContainerAppsUpdateSamples {
                             .withHttpMaxRequestSize(10)
                             .withLogLevel(LogLevel.DEBUG)
                             .withEnableApiLogging(true))
-                    .withMaxInactiveRevisions(10))
+                    .withMaxInactiveRevisions(10)
+                    .withService(new Service().withType("redis")))
             .withTemplate(
                 new Template()
                     .withInitContainers(
@@ -147,10 +150,18 @@ public final class ContainerAppsUpdateSamples {
                                             .withCustom(
                                                 new CustomScaleRule()
                                                     .withType("http")
-                                                    .withMetadata(mapOf("concurrentRequests", "50")))))))
+                                                    .withMetadata(mapOf("concurrentRequests", "50"))))))
+                    .withServiceBinds(
+                        Arrays
+                            .asList(
+                                new ServiceBind()
+                                    .withServiceId(
+                                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.App/containerApps/service")
+                                    .withName("service"))))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

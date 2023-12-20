@@ -87,16 +87,6 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         }
     }
 
-    public ApiManagementServiceResource getByResourceGroup(String resourceGroupName, String serviceName) {
-        ApiManagementServiceResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new ApiManagementServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiManagementServiceResource> getByResourceGroupWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<ApiManagementServiceResourceInner> inner =
@@ -107,6 +97,16 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApiManagementServiceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApiManagementServiceResource getByResourceGroup(String resourceGroupName, String serviceName) {
+        ApiManagementServiceResourceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new ApiManagementServiceResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -123,6 +123,25 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
 
     public ApiManagementServiceResource delete(String resourceGroupName, String serviceName, Context context) {
         ApiManagementServiceResourceInner inner = this.serviceClient().delete(resourceGroupName, serviceName, context);
+        if (inner != null) {
+            return new ApiManagementServiceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName) {
+        ApiManagementServiceResourceInner inner = this.serviceClient().migrateToStv2(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new ApiManagementServiceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ApiManagementServiceResource migrateToStv2(String resourceGroupName, String serviceName, Context context) {
+        ApiManagementServiceResourceInner inner =
+            this.serviceClient().migrateToStv2(resourceGroupName, serviceName, context);
         if (inner != null) {
             return new ApiManagementServiceResourceImpl(inner, this.manager());
         } else {
@@ -152,16 +171,6 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         return Utils.mapPage(inner, inner1 -> new ApiManagementServiceResourceImpl(inner1, this.manager()));
     }
 
-    public ApiManagementServiceGetSsoTokenResult getSsoToken(String resourceGroupName, String serviceName) {
-        ApiManagementServiceGetSsoTokenResultInner inner =
-            this.serviceClient().getSsoToken(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new ApiManagementServiceGetSsoTokenResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<ApiManagementServiceGetSsoTokenResultInner> inner =
@@ -177,11 +186,11 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         }
     }
 
-    public ApiManagementServiceNameAvailabilityResult checkNameAvailability(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters) {
-        ApiManagementServiceNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(parameters);
+    public ApiManagementServiceGetSsoTokenResult getSsoToken(String resourceGroupName, String serviceName) {
+        ApiManagementServiceGetSsoTokenResultInner inner =
+            this.serviceClient().getSsoToken(resourceGroupName, serviceName);
         if (inner != null) {
-            return new ApiManagementServiceNameAvailabilityResultImpl(inner, this.manager());
+            return new ApiManagementServiceGetSsoTokenResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -202,11 +211,11 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         }
     }
 
-    public ApiManagementServiceGetDomainOwnershipIdentifierResult getDomainOwnershipIdentifier() {
-        ApiManagementServiceGetDomainOwnershipIdentifierResultInner inner =
-            this.serviceClient().getDomainOwnershipIdentifier();
+    public ApiManagementServiceNameAvailabilityResult checkNameAvailability(
+        ApiManagementServiceCheckNameAvailabilityParameters parameters) {
+        ApiManagementServiceNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(parameters);
         if (inner != null) {
-            return new ApiManagementServiceGetDomainOwnershipIdentifierResultImpl(inner, this.manager());
+            return new ApiManagementServiceNameAvailabilityResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -227,14 +236,11 @@ public final class ApiManagementServicesImpl implements ApiManagementServices {
         }
     }
 
-    public ApiManagementServiceResource applyNetworkConfigurationUpdates(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        ApiManagementServiceResourceInner inner =
-            this.serviceClient().applyNetworkConfigurationUpdates(resourceGroupName, serviceName, parameters);
+    public ApiManagementServiceGetDomainOwnershipIdentifierResult getDomainOwnershipIdentifier() {
+        ApiManagementServiceGetDomainOwnershipIdentifierResultInner inner =
+            this.serviceClient().getDomainOwnershipIdentifier();
         if (inner != null) {
-            return new ApiManagementServiceResourceImpl(inner, this.manager());
+            return new ApiManagementServiceGetDomainOwnershipIdentifierResultImpl(inner, this.manager());
         } else {
             return null;
         }

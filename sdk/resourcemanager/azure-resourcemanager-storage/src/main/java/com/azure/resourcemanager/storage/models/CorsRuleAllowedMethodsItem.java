@@ -34,6 +34,21 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
     /** Static value PATCH for CorsRuleAllowedMethodsItem. */
     public static final CorsRuleAllowedMethodsItem PATCH = fromString("PATCH");
 
+    /** Static value CONNECT for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem CONNECT = fromString("CONNECT");
+
+    /** Static value TRACE for CorsRuleAllowedMethodsItem. */
+    public static final CorsRuleAllowedMethodsItem TRACE = fromString("TRACE");
+
+    /**
+     * Creates a new instance of CorsRuleAllowedMethodsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CorsRuleAllowedMethodsItem() {
+    }
+
     /**
      * Creates or finds a CorsRuleAllowedMethodsItem from its string representation.
      *

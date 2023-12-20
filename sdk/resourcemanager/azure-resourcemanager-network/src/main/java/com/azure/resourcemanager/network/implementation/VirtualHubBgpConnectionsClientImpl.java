@@ -43,23 +43,28 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualHubBgpConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualHubBgpConnectionsClient.
+ */
 public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualHubBgpConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualHubBgpConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualHubBgpConnectionsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VirtualHubBgpConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualHubBgpConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,110 +75,77 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VirtualHubBgpConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BgpConnectionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BgpConnectionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("connectionName") String connectionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BgpConnectionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("connectionName") String connectionName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BgpConnectionInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections/{connectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @PathParam("connectionName") String connectionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/bgpConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListVirtualHubBgpConnectionResults>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListVirtualHubBgpConnectionResults>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualHubName") String virtualHubName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualHubName") String virtualHubName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> listLearnedRoutes(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> listLearnedRoutes(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutes(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutes(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubBgpConnectionResults>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -183,19 +155,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BgpConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName) {
+    public Mono<Response<BgpConnectionInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -207,27 +175,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            connectionName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, connectionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -238,19 +196,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BgpConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+    private Mono<Response<BgpConnectionInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -262,24 +216,16 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                connectionName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, connectionName, apiVersion, accept, context);
     }
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -296,7 +242,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -307,14 +253,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BgpConnectionInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+    public Response<BgpConnectionInner> getWithResponse(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context).block();
     }
 
     /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -330,7 +276,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -341,19 +287,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String connectionName, BgpConnectionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -370,28 +312,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            connectionName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, connectionName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -403,23 +334,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        BgpConnectionInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualHubName, String connectionName, BgpConnectionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,25 +359,16 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                connectionName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, connectionName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -467,21 +381,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters);
-        return this
-            .client
-            .<BgpConnectionInner, BgpConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BgpConnectionInner.class,
-                BgpConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters);
+        return this.client.<BgpConnectionInner, BgpConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BgpConnectionInner.class, BgpConnectionInner.class, this.client.getContext());
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -494,23 +402,18 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        BgpConnectionInner parameters,
+        String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters, context);
-        return this
-            .client
-            .<BgpConnectionInner, BgpConnectionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BgpConnectionInner.class, BgpConnectionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, virtualHubName, connectionName, parameters, context);
+        return this.client.<BgpConnectionInner, BgpConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BgpConnectionInner.class, BgpConnectionInner.class, context);
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -521,16 +424,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters)
+    public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String connectionName, BgpConnectionInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -542,20 +444,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        BgpConnectionInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context)
+    public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String connectionName, BgpConnectionInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -566,16 +463,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BgpConnectionInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters)
-            .last()
+    public Mono<BgpConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, BgpConnectionInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -587,20 +483,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BgpConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        BgpConnectionInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context)
-            .last()
+    private Mono<BgpConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, BgpConnectionInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -611,14 +502,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BgpConnectionInner createOrUpdate(
-        String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
+    public BgpConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
+        BgpConnectionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters).block();
     }
 
     /**
      * Creates a VirtualHubBgpConnection resource if it doesn't exist else updates the existing VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -630,18 +521,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BgpConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String connectionName,
-        BgpConnectionInner parameters,
-        Context context) {
+    public BgpConnectionInner createOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
+        BgpConnectionInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters, context).block();
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -651,19 +538,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,27 +558,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            connectionName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, connectionName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -706,19 +579,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -730,24 +599,16 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                connectionName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            virtualHubName, connectionName, apiVersion, accept, context);
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -757,19 +618,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String connectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String connectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -780,19 +639,18 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -802,14 +660,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String connectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String connectionName) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -820,14 +678,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String connectionName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -838,14 +696,13 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -856,16 +713,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualHubName, String connectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualHubName, String connectionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -880,7 +736,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Deletes a VirtualHubBgpConnection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHubBgpConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the connection.
@@ -896,7 +752,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,19 +761,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName) {
+    private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualHubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -926,35 +778,19 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            virtualHubName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<BgpConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, virtualHubName, apiVersion, accept, context))
+            .<PagedResponse<BgpConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -964,19 +800,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return virtualHubBgpConnections list along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualHubName, Context context) {
+    private Mono<PagedResponse<BgpConnectionInner>> listSinglePageAsync(String resourceGroupName, String virtualHubName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -985,32 +817,19 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                virtualHubName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualHubName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1020,14 +839,13 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1038,14 +856,13 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BgpConnectionInner> listAsync(String resourceGroupName, String virtualHubName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualHubName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1060,7 +877,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves the details of all VirtualHubBgpConnections.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -1076,7 +893,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1084,16 +901,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(
-        String resourceGroupName, String hubName, String connectionName) {
+    public Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(String resourceGroupName, String hubName,
+        String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1106,32 +921,20 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listLearnedRoutes(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
+                connectionName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1140,16 +943,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> listLearnedRoutesWithResponseAsync(String resourceGroupName,
+        String hubName, String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1162,29 +963,19 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listLearnedRoutes(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listLearnedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1196,23 +987,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
-        return this
-            .client
-            .<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
+        return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), this.client.getContext());
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1226,23 +1011,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     private PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
-        return this
-            .client
-            .<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listLearnedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
+        return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), context);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1252,14 +1031,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListLearnedRoutes(
-        String resourceGroupName, String hubName, String connectionName) {
+    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
+        beginListLearnedRoutes(String resourceGroupName, String hubName, String connectionName) {
         return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1270,14 +1049,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListLearnedRoutes(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
+        beginListLearnedRoutes(String resourceGroupName, String hubName, String connectionName, Context context) {
         return this.beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1287,16 +1066,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(
-        String resourceGroupName, String hubName, String connectionName) {
-        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName)
-            .last()
+    public Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(String resourceGroupName, String hubName,
+        String connectionName) {
+        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1307,16 +1085,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
-        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context)
-            .last()
+    private Mono<Map<String, List<PeerRoute>>> listLearnedRoutesAsync(String resourceGroupName, String hubName,
+        String connectionName, Context context) {
+        return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1326,14 +1103,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<PeerRoute>> listLearnedRoutes(
-        String resourceGroupName, String hubName, String connectionName) {
+    public Map<String, List<PeerRoute>> listLearnedRoutes(String resourceGroupName, String hubName,
+        String connectionName) {
         return listLearnedRoutesAsync(resourceGroupName, hubName, connectionName).block();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection has learned.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1344,14 +1121,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<PeerRoute>> listLearnedRoutes(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    public Map<String, List<PeerRoute>> listLearnedRoutes(String resourceGroupName, String hubName,
+        String connectionName, Context context) {
         return listLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).block();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1359,16 +1136,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(
-        String resourceGroupName, String hubName, String connectionName) {
+    public Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(String resourceGroupName,
+        String hubName, String connectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1381,32 +1156,20 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAdvertisedRoutes(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            connectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName,
+                connectionName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1415,16 +1178,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return map from virtual router instance to list of peer routes along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> listAdvertisedRoutesWithResponseAsync(String resourceGroupName,
+        String hubName, String connectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1437,29 +1198,19 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAdvertisedRoutes(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                connectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, hubName, connectionName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1471,23 +1222,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
         beginListAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
-        return this
-            .client
-            .<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName);
+        return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), this.client.getContext());
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1499,26 +1244,20 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
-        beginListAdvertisedRoutesAsync(
-            String resourceGroupName, String hubName, String connectionName, Context context) {
+        beginListAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
-        return this
-            .client
-            .<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                new TypeReference<Map<String, List<PeerRoute>>>() {
-                }.getType(),
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = listAdvertisedRoutesWithResponseAsync(resourceGroupName, hubName, connectionName, context);
+        return this.client.<Map<String, List<PeerRoute>>, Map<String, List<PeerRoute>>>getLroResult(mono,
+            this.client.getHttpPipeline(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), new TypeReference<Map<String, List<PeerRoute>>>() {
+            }.getType(), context);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1528,14 +1267,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListAdvertisedRoutes(
-        String resourceGroupName, String hubName, String connectionName) {
+    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
+        beginListAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName) {
         return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1546,14 +1285,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return the {@link SyncPoller} for polling of map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>> beginListAdvertisedRoutes(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    public SyncPoller<PollResult<Map<String, List<PeerRoute>>>, Map<String, List<PeerRoute>>>
+        beginListAdvertisedRoutes(String resourceGroupName, String hubName, String connectionName, Context context) {
         return this.beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1563,16 +1302,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(
-        String resourceGroupName, String hubName, String connectionName) {
-        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName)
-            .last()
+    public Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(String resourceGroupName, String hubName,
+        String connectionName) {
+        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1583,16 +1321,15 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
-        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context)
-            .last()
+    private Mono<Map<String, List<PeerRoute>>> listAdvertisedRoutesAsync(String resourceGroupName, String hubName,
+        String connectionName, Context context) {
+        return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1602,14 +1339,14 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<PeerRoute>> listAdvertisedRoutes(
-        String resourceGroupName, String hubName, String connectionName) {
+    public Map<String, List<PeerRoute>> listAdvertisedRoutes(String resourceGroupName, String hubName,
+        String connectionName) {
         return listAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).block();
     }
 
     /**
      * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the virtual hub.
      * @param connectionName The name of the virtual hub bgp connection.
@@ -1620,16 +1357,17 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @return map from virtual router instance to list of peer routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, List<PeerRoute>> listAdvertisedRoutes(
-        String resourceGroupName, String hubName, String connectionName, Context context) {
+    public Map<String, List<PeerRoute>> listAdvertisedRoutes(String resourceGroupName, String hubName,
+        String connectionName, Context context) {
         return listAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1641,31 +1379,22 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BgpConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BgpConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1678,23 +1407,13 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

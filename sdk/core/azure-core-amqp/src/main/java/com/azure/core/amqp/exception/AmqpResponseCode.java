@@ -3,9 +3,6 @@
 
 package com.azure.core.amqp.exception;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Error response codes returned from AMQP.
  */
@@ -200,11 +197,11 @@ public enum AmqpResponseCode {
      */
     HTTP_VERSION_NOT_SUPPORTED(505);
 
-    private static final Map<Integer, AmqpResponseCode> VALUE_MAP = new HashMap<>();
+    private static final AmqpResponseCode[] VALUE_MAP = new AmqpResponseCode[1024];
 
     static {
         for (AmqpResponseCode code : AmqpResponseCode.values()) {
-            VALUE_MAP.put(code.value, code);
+            VALUE_MAP[code.value] = code;
         }
     }
 
@@ -222,7 +219,11 @@ public enum AmqpResponseCode {
      * is found.
      */
     public static AmqpResponseCode fromValue(final int value) {
-        return VALUE_MAP.get(value);
+        if (value >= 0 && value < VALUE_MAP.length) {
+            return VALUE_MAP[value];
+        }
+
+        return null;
     }
 
     /**

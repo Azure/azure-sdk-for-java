@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSettingsInner;
 
 /** Samples for SignInSettings Update. */
 public final class SignInSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsUpdateSignIn.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalSettingsUpdateSignIn.json
      */
     /**
      * Sample code: ApiManagementPortalSettingsUpdateSignIn.
@@ -22,6 +21,10 @@ public final class SignInSettingsUpdateSamples {
         manager
             .signInSettings()
             .updateWithResponse(
-                "rg1", "apimService1", "*", new PortalSigninSettingsInner().withEnabled(true), Context.NONE);
+                "rg1",
+                "apimService1",
+                "*",
+                new PortalSigninSettingsInner().withEnabled(true),
+                com.azure.core.util.Context.NONE);
     }
 }

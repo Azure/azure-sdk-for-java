@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.BatchAccountKeys;
 import java.nio.ByteBuffer;
@@ -30,7 +29,7 @@ public final class BatchAccountsGetKeysWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"accountName\":\"paztzpofncck\",\"primary\":\"fz\",\"secondary\":\"hxx\"}";
+        String responseStr = "{\"accountName\":\"rncsdtclu\",\"primary\":\"ypbsfgytguslfead\",\"secondary\":\"gq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +58,9 @@ public final class BatchAccountsGetKeysWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BatchAccountKeys response =
-            manager.batchAccounts().getKeysWithResponse("cvinvkjjxdxrbuuk", "clewyhm", Context.NONE).getValue();
+            manager
+                .batchAccounts()
+                .getKeysWithResponse("ggicccnxqhue", "mkttlstvlzywem", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

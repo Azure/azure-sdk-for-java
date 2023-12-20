@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildInner;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.models.ActiveDeploymentCollection;
 import com.azure.resourcemanager.appplatform.models.BuildProperties;
 import com.azure.resourcemanager.appplatform.models.BuildResultProvisioningState;
 import com.azure.resourcemanager.appplatform.models.BuildResultUserSourceInfo;
@@ -63,6 +64,7 @@ public class SpringAppDeploymentImpl
         SpringAppDeployment.Update {
     private static final Duration MAX_BUILD_TIMEOUT = Duration.ofHours(1);
     private BuildServiceTask buildServiceTask;
+    private FunctionalTaskItem setActiveTask = null;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent, DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
@@ -521,10 +523,14 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withActivation() {
-        this.addPostRunDependent(
-            context -> parent().update().withActiveDeployment(name()).applyAsync()
-                .map(Function.identity())
-        );
+        this.setActiveTask = context ->
+            manager().serviceClient().getApps()
+                .setActiveDeploymentsAsync(
+                    parent().parent().resourceGroupName(),
+                    parent().parent().name(), // service name
+                    parent().name(),          // app name
+                    new ActiveDeploymentCollection().withActiveDeploymentNames(Collections.singletonList(name())))
+                .then(context.voidMono());
         return this;
     }
 
@@ -548,6 +554,10 @@ public class SpringAppDeploymentImpl
         if (this.buildServiceTask != null) {
             this.addDependency(this.buildServiceTask);
             this.buildServiceTask = null;
+        }
+        if (this.setActiveTask != null) {
+            this.addPostRunDependent(this.setActiveTask);
+            this.setActiveTask = null;
         }
     }
 
@@ -606,7 +616,7 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppImpl attach() {
-        return parent().addActiveDeployment(this);
+        return parent().addDeployment(this);
     }
 
     private SpringAppImpl app() {
@@ -647,43 +657,9 @@ public class SpringAppDeploymentImpl
         }
 
         private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
-            AtomicLong pollCount = new AtomicLong();
-            Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
             return uploadToStorageAsync(source, option)
                 .then(enqueueBuildAsync(option))
-                .flatMap(buildId ->
-                    manager().serviceClient().getBuildServices()
-                        .getBuildResultWithResponseAsync(
-                            service().resourceGroupName(),
-                            service().name(),
-                            Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                            parent().name(),
-                            ResourceUtils.nameFromResourceId(buildId))
-                        .flatMap(response -> {
-                            if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
-                                BuildResultProvisioningState state = response.getValue().properties().provisioningState();
-                                if (state == BuildResultProvisioningState.SUCCEEDED) {
-                                    return Mono.just(buildId);
-                                } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
-                                    return Mono.empty();
-                                } else {
-                                    AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
-                                    return Mono.error(new ManagementException(String.format("Build failed for file: %s, buildId: %s",
-                                        file.getName(), buildId),
-                                        new HttpResponseImpl<>(response, client.getSerializerAdapter())));
-                                }
-                            } else {
-                                return Mono.error(new ManagementException(String.format("Build timeout for file: %s, buildId: %s",
-                                    file.getName(), buildId), null));
-                            }
-                        }).repeatWhenEmpty(
-                            longFlux ->
-                                longFlux
-                                    .flatMap(
-                                        index -> {
-                                            pollCount.set(index);
-                                            return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
-                                        })));
+                .flatMap(waitForBuildAsync());
         }
 
         private Mono<String> enqueueBuildAsync(ResourceUploadDefinition option) {
@@ -710,6 +686,43 @@ public class SpringAppDeploymentImpl
                     app().name(),
                     new BuildInner().withProperties(buildProperties))
                 .map(inner -> inner.properties().triggeredBuildResult().id());
+        }
+
+        private Function<String, Mono<? extends String>> waitForBuildAsync() {
+            AtomicLong pollCount = new AtomicLong();
+            Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
+            return buildId ->
+                manager().serviceClient().getBuildServices()
+                    .getBuildResultWithResponseAsync(
+                        service().resourceGroupName(),
+                        service().name(),
+                        Constants.DEFAULT_TANZU_COMPONENT_NAME,
+                        parent().name(),
+                        ResourceUtils.nameFromResourceId(buildId))
+                    .flatMap(response -> {
+                        if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
+                            BuildResultProvisioningState state = response.getValue().properties().provisioningState();
+                            if (state == BuildResultProvisioningState.SUCCEEDED) {
+                                return Mono.just(buildId);
+                            } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
+                                return Mono.empty();
+                            } else {
+                                AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
+                                return Mono.error(new ManagementException(String.format("Build failed for file: %s, buildId: %s",
+                                    file.getName(), buildId),
+                                    new HttpResponseImpl<>(response, client.getSerializerAdapter())));
+                            }
+                        } else {
+                            return Mono.error(new ManagementException(String.format("Build timeout for file: %s, buildId: %s",
+                                file.getName(), buildId), null));
+                        }
+                    }).repeatWhenEmpty(longFlux ->
+                    longFlux
+                        .flatMap(
+                            index -> {
+                                pollCount.set(index);
+                                return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
+                            }));
         }
 
         @SuppressWarnings("BlockingMethodInNonBlockingContext")

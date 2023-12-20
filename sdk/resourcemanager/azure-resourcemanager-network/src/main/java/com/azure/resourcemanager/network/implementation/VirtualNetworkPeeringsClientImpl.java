@@ -39,108 +39,94 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworkPeeringsClient.
+ */
 public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPeeringsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualNetworkPeeringsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualNetworkPeeringsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkPeeringsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VirtualNetworkPeeringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualNetworkPeeringsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVirtualNetworkPeerings to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientVirtualNetworkPeerings to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     public interface VirtualNetworkPeeringsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkName") String virtualNetworkName,
             @PathParam("virtualNetworkPeeringName") String virtualNetworkPeeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkPeeringInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkPeeringInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkName") String virtualNetworkName,
             @PathParam("virtualNetworkPeeringName") String virtualNetworkPeeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings/{virtualNetworkPeeringName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualNetworkName") String virtualNetworkName,
             @PathParam("virtualNetworkPeeringName") String virtualNetworkPeeringName,
             @QueryParam("syncRemoteAddressSpace") SyncRemoteAddressSpace syncRemoteAddressSpace,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/virtualNetworkPeerings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualNetworkPeeringListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VirtualNetworkPeeringListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualNetworkName") String virtualNetworkName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualNetworkPeeringListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -150,13 +136,11 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,38 +151,24 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            virtualNetworkPeeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
+                virtualNetworkPeeringName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -209,13 +179,11 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,35 +194,23 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
+            virtualNetworkPeeringName, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -264,19 +220,17 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -287,19 +241,18 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -309,14 +262,14 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).getSyncPoller();
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -327,16 +280,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -346,16 +298,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -366,16 +317,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -390,7 +340,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
 
     /**
      * Deletes the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -400,31 +350,29 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
+    public void delete(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
+        Context context) {
         deleteAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context).block();
     }
 
     /**
      * Gets the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified virtual network peering along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String virtualNetworkPeeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -435,38 +383,24 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            virtualNetworkPeeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
+                virtualNetworkPeeringName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -474,17 +408,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified virtual network peering along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
+    private Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -495,35 +427,23 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -533,15 +453,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the specified virtual network peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkPeeringInner> getAsync(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public Mono<VirtualNetworkPeeringInner> getAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -552,14 +472,14 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the specified virtual network peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context) {
+    public Response<VirtualNetworkPeeringInner> getWithResponse(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, context).block();
     }
 
     /**
      * Gets the specified virtual network peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the virtual network peering.
@@ -569,40 +489,35 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return the specified virtual network peering.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner get(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
+    public VirtualNetworkPeeringInner get(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName) {
         return getWithResponse(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return peerings in a virtual network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, SyncRemoteAddressSpace syncRemoteAddressSpace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,75 +528,53 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (virtualNetworkPeeringParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            virtualNetworkPeeringName,
-                            syncRemoteAddressSpace,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            virtualNetworkPeeringParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                virtualNetworkName, virtualNetworkPeeringName, syncRemoteAddressSpace, apiVersion,
+                this.client.getSubscriptionId(), virtualNetworkPeeringParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return peerings in a virtual network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, SyncRemoteAddressSpace syncRemoteAddressSpace,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -692,52 +585,37 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (virtualNetworkPeeringName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkPeeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (virtualNetworkPeeringParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
         } else {
             virtualNetworkPeeringParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                syncRemoteAddressSpace,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                virtualNetworkPeeringParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
+            virtualNetworkPeeringName, syncRemoteAddressSpace, apiVersion, this.client.getSubscriptionId(),
+            virtualNetworkPeeringParameters, accept, context);
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -745,36 +623,23 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace);
-        return this
-            .client
-            .<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkPeeringInner.class,
-                VirtualNetworkPeeringInner.class,
-                this.client.getContext());
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, SyncRemoteAddressSpace syncRemoteAddressSpace) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName,
+            virtualNetworkPeeringName, virtualNetworkPeeringParameters, syncRemoteAddressSpace);
+        return this.client.<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkPeeringInner.class, VirtualNetworkPeeringInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -782,38 +647,26 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         final SyncRemoteAddressSpace syncRemoteAddressSpace = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace);
-        return this
-            .client
-            .<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkPeeringInner.class,
-                VirtualNetworkPeeringInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName,
+            virtualNetworkPeeringName, virtualNetworkPeeringParameters, syncRemoteAddressSpace);
+        return this.client.<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkPeeringInner.class, VirtualNetworkPeeringInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -822,39 +675,24 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace,
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, SyncRemoteAddressSpace syncRemoteAddressSpace,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace,
-                context);
-        return this
-            .client
-            .<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkPeeringInner.class,
-                VirtualNetworkPeeringInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName,
+            virtualNetworkPeeringName, virtualNetworkPeeringParameters, syncRemoteAddressSpace, context);
+        return this.client.<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VirtualNetworkPeeringInner.class, VirtualNetworkPeeringInner.class, context);
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -862,31 +700,23 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         final SyncRemoteAddressSpace syncRemoteAddressSpace = null;
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace).getSyncPoller();
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -895,95 +725,69 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace,
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, SyncRemoteAddressSpace syncRemoteAddressSpace,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace,
-                context)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
+    public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
         SyncRemoteAddressSpace syncRemoteAddressSpace) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+    public Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         final SyncRemoteAddressSpace syncRemoteAddressSpace = null;
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -991,63 +795,45 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return peerings in a virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
+        SyncRemoteAddressSpace syncRemoteAddressSpace, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
+    public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
         final SyncRemoteAddressSpace syncRemoteAddressSpace = null;
-        return createOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace).block();
     }
 
     /**
      * Creates or updates a peering in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
+     * operation.
      * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
+     * space on the remote vNet after it's updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,42 +841,30 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return peerings in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                virtualNetworkName,
-                virtualNetworkPeeringName,
-                virtualNetworkPeeringParameters,
-                syncRemoteAddressSpace,
-                context)
-            .block();
+    public VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
+        String virtualNetworkPeeringName, VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
+        SyncRemoteAddressSpace syncRemoteAddressSpace, Context context) {
+        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName,
+            virtualNetworkPeeringParameters, syncRemoteAddressSpace, context).block();
     }
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual network peerings in a virtual network along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualNetworkName) {
+    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1101,40 +875,22 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<VirtualNetworkPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<VirtualNetworkPeeringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1142,16 +898,14 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual network peerings in a virtual network along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualNetworkName, Context context) {
+    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listSinglePageAsync(String resourceGroupName,
+        String virtualNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1162,37 +916,22 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
                 .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,14 +941,13 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkPeeringInner> listAsync(String resourceGroupName, String virtualNetworkName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualNetworkName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualNetworkName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1219,16 +957,15 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return all virtual network peerings in a virtual network as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkPeeringInner> listAsync(
-        String resourceGroupName, String virtualNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, virtualNetworkName, context),
+    private PagedFlux<VirtualNetworkPeeringInner> listAsync(String resourceGroupName, String virtualNetworkName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, virtualNetworkName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1243,7 +980,7 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
 
     /**
      * Gets all virtual network peerings in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1253,21 +990,22 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
      * @return all virtual network peerings in a virtual network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkPeeringInner> list(
-        String resourceGroupName, String virtualNetworkName, Context context) {
+    public PagedIterable<VirtualNetworkPeeringInner> list(String resourceGroupName, String virtualNetworkName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, virtualNetworkName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListSubnets API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -1275,37 +1013,28 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualNetworkPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<VirtualNetworkPeeringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListSubnets API service call along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1313,23 +1042,13 @@ public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPee
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

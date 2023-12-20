@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import wiremock.com.google.common.base.Objects;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -86,7 +86,7 @@ public class ExpandableStringEnumTests {
      */
     @Test
     public void validateHashCode() {
-        assertEquals(Objects.hashCode(TestStringEnum.class, "test"), TestStringEnum.fromString("test").hashCode());
+        assertEquals(Objects.hash(TestStringEnum.class, "test"), TestStringEnum.fromString("test").hashCode());
     }
 
     /**

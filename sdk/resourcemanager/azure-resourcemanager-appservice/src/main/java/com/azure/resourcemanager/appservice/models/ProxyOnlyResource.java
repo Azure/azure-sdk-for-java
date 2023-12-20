@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure proxy only resource. This resource is not tracked by Azure Resource Manager. */
+/**
+ * Azure proxy only resource. This resource is not tracked by Azure Resource Manager.
+ */
 @Fluent
 public class ProxyOnlyResource extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public class ProxyOnlyResource extends ProxyResource {
     @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of ProxyOnlyResource class. */
+    /**
+     * Creates an instance of ProxyOnlyResource class.
+     */
     public ProxyOnlyResource() {
     }
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -32,7 +36,7 @@ public class ProxyOnlyResource extends ProxyResource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ProxyOnlyResource object itself.
      */
@@ -43,7 +47,7 @@ public class ProxyOnlyResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

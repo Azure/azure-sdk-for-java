@@ -39,7 +39,7 @@ public class UserQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
 
         String filterUserId = createdUsers.get(0).getId();
@@ -67,7 +67,7 @@ public class UserQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryAllUsers() throws Exception {
 
         String query = "SELECT * from c";
@@ -94,7 +94,7 @@ public class UserQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryUsers_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -110,7 +110,7 @@ public class UserQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_UserQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
 
@@ -125,7 +125,7 @@ public class UserQueryTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

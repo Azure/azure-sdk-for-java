@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for WebCategories Get. */
+/**
+ * Samples for WebCategories Get.
+ */
 public final class WebCategoriesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/AzureWebCategoryGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureWebCategoryGet.json
      */
     /**
      * Sample code: Get Azure Web Category by name.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureWebCategoryByName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getWebCategories()
-            .getWithResponse("Arts", null, com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getWebCategories().getWithResponse("Arts", null,
+            com.azure.core.util.Context.NONE);
     }
 }

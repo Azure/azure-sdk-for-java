@@ -13,7 +13,7 @@ public final class ScriptPackageInnerTests {
         ScriptPackageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"gmhrskdsnfdsdoak\",\"version\":\"dlmkkzevdl\",\"company\":\"wpusdsttwvogv\",\"uri\":\"ejdcngqqmoakuf\"},\"id\":\"m\",\"name\":\"zr\",\"type\":\"rdgrtw\"}")
+                    "{\"properties\":{\"description\":\"hfssnrb\",\"version\":\"efr\",\"company\":\"sgaojfmwncot\",\"uri\":\"fhir\"},\"id\":\"tymoxoftp\",\"name\":\"piwyczuhxacpqjl\",\"type\":\"h\"}")
                 .toObject(ScriptPackageInner.class);
     }
 

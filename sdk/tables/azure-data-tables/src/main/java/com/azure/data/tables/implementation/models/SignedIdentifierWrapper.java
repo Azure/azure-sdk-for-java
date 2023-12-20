@@ -11,15 +11,18 @@ import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
-/** A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization. */
+/**
+ * A wrapper around List&lt;SignedIdentifier&gt; which provides top-level metadata for serialization.
+ */
 public final class SignedIdentifierWrapper implements XmlSerializable<SignedIdentifierWrapper> {
     private final List<SignedIdentifier> signedIdentifiers;
 
     /**
      * Creates an instance of SignedIdentifierWrapper.
-     *
+     * 
      * @param signedIdentifiers the list.
      */
     public SignedIdentifierWrapper(List<SignedIdentifier> signedIdentifiers) {
@@ -28,7 +31,7 @@ public final class SignedIdentifierWrapper implements XmlSerializable<SignedIden
 
     /**
      * Get the List&lt;SignedIdentifier&gt; contained in this wrapper.
-     *
+     * 
      * @return the List&lt;SignedIdentifier&gt;.
      */
     public List<SignedIdentifier> items() {
@@ -57,27 +60,25 @@ public final class SignedIdentifierWrapper implements XmlSerializable<SignedIden
     }
 
     public static SignedIdentifierWrapper fromXml(XmlReader xmlReader, String rootElementName)
-            throws XMLStreamException {
+        throws XMLStreamException {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
-        return xmlReader.readObject(
-                rootElementName,
-                reader -> {
-                    List<SignedIdentifier> items = null;
+        return xmlReader.readObject(rootElementName, reader -> {
+            List<SignedIdentifier> items = null;
 
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        String elementName = reader.getElementName().getLocalPart();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
 
-                        if ("SignedIdentifier".equals(elementName)) {
-                            if (items == null) {
-                                items = new ArrayList<>();
-                            }
-
-                            items.add(SignedIdentifier.fromXml(reader));
-                        } else {
-                            reader.nextElement();
-                        }
+                if ("SignedIdentifier".equals(elementName.getLocalPart())) {
+                    if (items == null) {
+                        items = new ArrayList<>();
                     }
-                    return new SignedIdentifierWrapper(items);
-                });
+
+                    items.add(SignedIdentifier.fromXml(reader));
+                } else {
+                    reader.nextElement();
+                }
+            }
+            return new SignedIdentifierWrapper(items);
+        });
     }
 }

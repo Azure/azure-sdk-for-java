@@ -11,6 +11,13 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class DocumentKeyValuePair {
+
+    /**
+     * Constructs a DocumentKeyValuePair object.
+     */
+    public DocumentKeyValuePair() {
+    }
+
     /*
      * Field label of the key-value pair.
      */
@@ -26,8 +33,6 @@ public final class DocumentKeyValuePair {
      */
     private float confidence;
 
-    private String commonName;
-
     /**
      * Get the key property: Field label of the key-value pair.
      *
@@ -41,7 +46,6 @@ public final class DocumentKeyValuePair {
      * Set the key property: Field label of the key-value pair.
      *
      * @param key the key value to set.
-     * @return the DocumentKeyValuePair object itself.
      */
     private void setKey(DocumentKeyValueElement key) {
         this.key = key;
@@ -60,7 +64,6 @@ public final class DocumentKeyValuePair {
      * Set the value property: Field value of the key-value pair.
      *
      * @param value the value value to set.
-     * @return the DocumentKeyValuePair object itself.
      */
     private void setValue(DocumentKeyValueElement value) {
         this.value = value;
@@ -79,23 +82,9 @@ public final class DocumentKeyValuePair {
      * Set the confidence property: Confidence of correctly extracting the key-value pair.
      *
      * @param confidence the confidence value to set.
-     * @return the DocumentKeyValuePair object itself.
      */
     private void setConfidence(float confidence) {
         this.confidence = confidence;
-    }
-
-    /**
-     * Get the common name of the key-value pair.
-     *
-     * @return the commonName value.
-     */
-    public String getCommonName() {
-        return commonName;
-    }
-
-    private void setCommonName(String commonName) {
-        this.commonName = commonName;
     }
 
     static {
@@ -113,11 +102,6 @@ public final class DocumentKeyValuePair {
             @Override
             public void setConfidence(DocumentKeyValuePair documentKeyValuePair, float confidence) {
                 documentKeyValuePair.setConfidence(confidence);
-            }
-
-            @Override
-            public void setCommonName(DocumentKeyValuePair documentKeyValuePair, String commonName) {
-                documentKeyValuePair.setCommonName(commonName);
             }
         });
     }

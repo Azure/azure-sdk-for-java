@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ExportApi;
 import com.azure.resourcemanager.apimanagement.models.ExportFormat;
 
 /** Samples for ApiExport Get. */
 public final class ApiExportGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiExportInOpenApi2dot0.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiExportInOpenApi2dot0.json
      */
     /**
      * Sample code: ApiManagementGetApiExportInOpenApi2dot0.
@@ -23,11 +22,16 @@ public final class ApiExportGetSamples {
         manager
             .apiExports()
             .getWithResponse(
-                "rg1", "apimService1", "echo-api", ExportFormat.SWAGGER_LINK, ExportApi.TRUE, Context.NONE);
+                "rg1",
+                "apimService1",
+                "echo-api",
+                ExportFormat.SWAGGER_LINK,
+                ExportApi.TRUE,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiExportInOpenApi3dot0.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiExportInOpenApi3dot0.json
      */
     /**
      * Sample code: ApiManagementGetApiExportInOpenApi3dot0.
@@ -38,6 +42,12 @@ public final class ApiExportGetSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .apiExports()
-            .getWithResponse("rg1", "apimService1", "aid9676", ExportFormat.OPENAPI_LINK, ExportApi.TRUE, Context.NONE);
+            .getWithResponse(
+                "rg1",
+                "apimService1",
+                "aid9676",
+                ExportFormat.OPENAPI_LINK,
+                ExportApi.TRUE,
+                com.azure.core.util.Context.NONE);
     }
 }

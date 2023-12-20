@@ -10,40 +10,39 @@ import com.azure.resourcemanager.hdinsight.models.KafkaRestProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class KafkaRestPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         KafkaRestProperties model =
             BinaryData
                 .fromString(
-                    "{\"clientGroupInfo\":{\"groupName\":\"ahuxinpm\",\"groupId\":\"jaqwixjsp\"},\"configurationOverride\":{\"wmfdatscmdvpjhul\":\"vcputegj\",\"odjpslwejd\":\"uuvmkjozkrwfnd\",\"cctazakljlahbc\":\"vwryoqpso\",\"gexpaojakhmsbz\":\"yffdfdos\"}}")
+                    "{\"clientGroupInfo\":{\"groupName\":\"sbj\",\"groupId\":\"zq\"},\"configurationOverride\":{\"jidsuyonobglaoc\":\"ywpmueefjzwfqkq\",\"udxytlmoyrx\":\"xtccmg\",\"qj\":\"wfudwpzntxhdzhl\",\"bkyvp\":\"hckfrlhrx\"}}")
                 .toObject(KafkaRestProperties.class);
-        Assertions.assertEquals("ahuxinpm", model.clientGroupInfo().groupName());
-        Assertions.assertEquals("jaqwixjsp", model.clientGroupInfo().groupId());
-        Assertions.assertEquals("vcputegj", model.configurationOverride().get("wmfdatscmdvpjhul"));
+        Assertions.assertEquals("sbj", model.clientGroupInfo().groupName());
+        Assertions.assertEquals("zq", model.clientGroupInfo().groupId());
+        Assertions.assertEquals("ywpmueefjzwfqkq", model.configurationOverride().get("jidsuyonobglaoc"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         KafkaRestProperties model =
             new KafkaRestProperties()
-                .withClientGroupInfo(new ClientGroupInfo().withGroupName("ahuxinpm").withGroupId("jaqwixjsp"))
+                .withClientGroupInfo(new ClientGroupInfo().withGroupName("sbj").withGroupId("zq"))
                 .withConfigurationOverride(
                     mapOf(
-                        "wmfdatscmdvpjhul",
-                        "vcputegj",
-                        "odjpslwejd",
-                        "uuvmkjozkrwfnd",
-                        "cctazakljlahbc",
-                        "vwryoqpso",
-                        "gexpaojakhmsbz",
-                        "yffdfdos"));
+                        "jidsuyonobglaoc",
+                        "ywpmueefjzwfqkq",
+                        "udxytlmoyrx",
+                        "xtccmg",
+                        "qj",
+                        "wfudwpzntxhdzhl",
+                        "bkyvp",
+                        "hckfrlhrx"));
         model = BinaryData.fromObject(model).toObject(KafkaRestProperties.class);
-        Assertions.assertEquals("ahuxinpm", model.clientGroupInfo().groupName());
-        Assertions.assertEquals("jaqwixjsp", model.clientGroupInfo().groupId());
-        Assertions.assertEquals("vcputegj", model.configurationOverride().get("wmfdatscmdvpjhul"));
+        Assertions.assertEquals("sbj", model.clientGroupInfo().groupName());
+        Assertions.assertEquals("zq", model.clientGroupInfo().groupId());
+        Assertions.assertEquals("ywpmueefjzwfqkq", model.configurationOverride().get("jidsuyonobglaoc"));
     }
 
     @SuppressWarnings("unchecked")

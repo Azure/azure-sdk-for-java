@@ -17,6 +17,15 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
     public static final RoutingChoice INTERNET_ROUTING = fromString("InternetRouting");
 
     /**
+     * Creates a new instance of RoutingChoice value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoutingChoice() {
+    }
+
+    /**
      * Creates or finds a RoutingChoice from its string representation.
      *
      * @param name a name to look for.

@@ -30,7 +30,7 @@ public final class LocationsCheckTrialAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"status\":\"TrialDisabled\",\"availableHosts\":2131796264}";
+        String responseStr = "{\"status\":\"TrialUsed\",\"availableHosts\":1819890486}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class LocationsCheckTrialAvailabilityWithResponseMockTests {
             manager
                 .locations()
                 .checkTrialAvailabilityWithResponse(
-                    "rgguf", new Sku().withName("yaomtb"), com.azure.core.util.Context.NONE)
+                    "kozzwculkb", new Sku().withName("wpfaj"), com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ContainerRegistryTests extends SamplesTestBase {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageContainerRegistry() throws IOException {
         if (skipInPlayback()) {
             return;
@@ -24,7 +24,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageContainerRegistryWithWebhooks() throws IOException, InterruptedException {
         if (skipInPlayback()) {
             return;

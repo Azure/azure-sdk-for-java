@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckAvailabilityResponseInner model =
-            BinaryData
-                .fromString("{\"isAvailable\":true,\"reason\":\"Invalid\",\"message\":\"qidtqajzyu\"}")
-                .toObject(CheckAvailabilityResponseInner.class);
+        CheckAvailabilityResponseInner model = BinaryData
+            .fromString("{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"czwtruwiqzbqjv\"}")
+            .toObject(CheckAvailabilityResponseInner.class);
         Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
-        Assertions.assertEquals("qidtqajzyu", model.message());
+        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("czwtruwiqzbqjv", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckAvailabilityResponseInner model =
-            new CheckAvailabilityResponseInner()
-                .withIsAvailable(true)
-                .withReason(InAvailabilityReasonType.INVALID)
-                .withMessage("qidtqajzyu");
+        CheckAvailabilityResponseInner model = new CheckAvailabilityResponseInner().withIsAvailable(true)
+            .withReason(InAvailabilityReasonType.ALREADY_EXISTS).withMessage("czwtruwiqzbqjv");
         model = BinaryData.fromObject(model).toObject(CheckAvailabilityResponseInner.class);
         Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.INVALID, model.reason());
-        Assertions.assertEquals("qidtqajzyu", model.message());
+        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, model.reason());
+        Assertions.assertEquals("czwtruwiqzbqjv", model.message());
     }
 }

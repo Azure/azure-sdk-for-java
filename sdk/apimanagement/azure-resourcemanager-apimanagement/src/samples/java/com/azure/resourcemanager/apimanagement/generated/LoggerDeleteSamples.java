@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Logger Delete. */
 public final class LoggerDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteLogger.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteLogger.json
      */
     /**
      * Sample code: ApiManagementDeleteLogger.
@@ -17,6 +15,6 @@ public final class LoggerDeleteSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.loggers().deleteWithResponse("rg1", "apimService1", "loggerId", "*", Context.NONE);
+        manager.loggers().deleteWithResponse("rg1", "apimService1", "loggerId", "*", com.azure.core.util.Context.NONE);
     }
 }

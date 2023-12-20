@@ -13,7 +13,7 @@ public final class WorkloadNetworkPublicIPsListTests {
         WorkloadNetworkPublicIPsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"pxodlqiyntorzih\",\"numberOfPublicIPs\":7214726266840032976,\"publicIPBlock\":\"swsrms\",\"provisioningState\":\"Succeeded\"},\"id\":\"rpzbchckqqzqi\",\"name\":\"xiy\",\"type\":\"uiizynke\"},{\"properties\":{\"displayName\":\"trwyhqmib\",\"numberOfPublicIPs\":3831030822063036154,\"publicIPBlock\":\"tsmypyynpcdp\",\"provisioningState\":\"Succeeded\"},\"id\":\"zgmwznmabikns\",\"name\":\"rgjhxb\",\"type\":\"dtlwwrlkd\"},{\"properties\":{\"displayName\":\"cvokotllxdyhg\",\"numberOfPublicIPs\":4987957604610375925,\"publicIPBlock\":\"gjltdtbnnhado\",\"provisioningState\":\"Building\"},\"id\":\"kvci\",\"name\":\"hnvpamqgxq\",\"type\":\"u\"},{\"properties\":{\"displayName\":\"kywggxkallatmel\",\"numberOfPublicIPs\":4889606083827449989,\"publicIPBlock\":\"ccjzkzivgvv\",\"provisioningState\":\"Failed\"},\"id\":\"y\",\"name\":\"hyrnxxmu\",\"type\":\"edndr\"}],\"nextLink\":\"stkwqqtch\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"kfwynw\",\"numberOfPublicIPs\":4797206470804726594,\"publicIPBlock\":\"kayh\",\"provisioningState\":\"Deleting\"},\"id\":\"vyqia\",\"name\":\"kzwpcnpw\",\"type\":\"cjaesgvvs\"}],\"nextLink\":\"yajguqfhwygzlv\"}")
                 .toObject(WorkloadNetworkPublicIPsList.class);
     }
 

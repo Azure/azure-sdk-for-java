@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The service OData error message. */
+/**
+ * The service OData error message.
+ */
 @Fluent
 public final class TableServiceOdataErrorMessage implements JsonSerializable<TableServiceOdataErrorMessage> {
     /*
@@ -24,12 +26,15 @@ public final class TableServiceOdataErrorMessage implements JsonSerializable<Tab
      */
     private String value;
 
-    /** Creates an instance of TableServiceOdataErrorMessage class. */
-    public TableServiceOdataErrorMessage() {}
+    /**
+     * Creates an instance of TableServiceOdataErrorMessage class.
+     */
+    public TableServiceOdataErrorMessage() {
+    }
 
     /**
      * Get the lang property: Language code of the error message.
-     *
+     * 
      * @return the lang value.
      */
     public String getLang() {
@@ -38,7 +43,7 @@ public final class TableServiceOdataErrorMessage implements JsonSerializable<Tab
 
     /**
      * Set the lang property: Language code of the error message.
-     *
+     * 
      * @param lang the lang value to set.
      * @return the TableServiceOdataErrorMessage object itself.
      */
@@ -49,7 +54,7 @@ public final class TableServiceOdataErrorMessage implements JsonSerializable<Tab
 
     /**
      * Get the value property: The error message.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -58,7 +63,7 @@ public final class TableServiceOdataErrorMessage implements JsonSerializable<Tab
 
     /**
      * Set the value property: The error message.
-     *
+     * 
      * @param value the value value to set.
      * @return the TableServiceOdataErrorMessage object itself.
      */
@@ -77,31 +82,30 @@ public final class TableServiceOdataErrorMessage implements JsonSerializable<Tab
 
     /**
      * Reads an instance of TableServiceOdataErrorMessage from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TableServiceOdataErrorMessage if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableServiceOdataErrorMessage.
      */
     public static TableServiceOdataErrorMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TableServiceOdataErrorMessage deserializedTableServiceOdataErrorMessage =
-                            new TableServiceOdataErrorMessage();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TableServiceOdataErrorMessage deserializedTableServiceOdataErrorMessage
+                = new TableServiceOdataErrorMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("lang".equals(fieldName)) {
-                            deserializedTableServiceOdataErrorMessage.lang = reader.getString();
-                        } else if ("value".equals(fieldName)) {
-                            deserializedTableServiceOdataErrorMessage.value = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("lang".equals(fieldName)) {
+                    deserializedTableServiceOdataErrorMessage.lang = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedTableServiceOdataErrorMessage.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTableServiceOdataErrorMessage;
-                });
+            return deserializedTableServiceOdataErrorMessage;
+        });
     }
 }

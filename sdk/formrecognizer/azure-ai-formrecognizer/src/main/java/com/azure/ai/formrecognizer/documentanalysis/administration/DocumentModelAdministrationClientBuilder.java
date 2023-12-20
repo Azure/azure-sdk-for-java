@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
@@ -37,9 +36,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient FormRecognizerAdminClient}
- * and {@link DocumentModelAdministrationAsyncClient DocumentTrainingAsyncClient}, call {@link #buildClient()} buildClient} and
- * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * This class provides a fluent builder API to help instantiation of
+ * {@link DocumentModelAdministrationClient DocumentModelAdministrationClient} and
+ * {@link DocumentModelAdministrationAsyncClient DocumentModelAdministrationAsyncClient}, call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
@@ -47,21 +48,25 @@ import java.util.Objects;
  * the builder access credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating an asynchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
- * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
+ * DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  *
- * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating a synchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
- * DocumentModelAdministrationClient documentModelAdministrationClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
+ * DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  *
@@ -98,6 +103,14 @@ public final class DocumentModelAdministrationClientBuilder implements
     EndpointTrait<DocumentModelAdministrationClientBuilder>,
     HttpTrait<DocumentModelAdministrationClientBuilder>,
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder> {
+
+    /**
+     * Constructs a DocumentModelAdministrationClientBuilder object.
+     */
+    public DocumentModelAdministrationClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -126,7 +139,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A FormRecognizerAdminClient with the options set from the builder.
+     * @return A DocumentModelAdministrationClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
      * {@link #credential(AzureKeyCredential)} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -149,29 +162,16 @@ public final class DocumentModelAdministrationClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentModelAdministrationClient(formRecognizerAPI, audience);
+        return new DocumentModelAdministrationClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), audience);
     }
 
     private HttpPipeline getHttpPipeline(Configuration buildConfiguration) {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions,
-                httpLogOptions,
-                buildConfiguration,
-                retryPolicy,
-                retryOptions,
-                azureKeyCredential,
-                tokenCredential,
-                audience,
-                perCallPolicies,
-                perRetryPolicies,
+            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration, retryPolicy,
+                retryOptions, azureKeyCredential, tokenCredential, audience, perCallPolicies, perRetryPolicies,
                 httpClient);
         }
         return pipeline;
@@ -187,7 +187,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A DocumentTrainingAsyncClient with the options set from the builder.
+     * @return A DocumentModelAdministrationAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -211,13 +211,8 @@ public final class DocumentModelAdministrationClientBuilder implements
 
         HttpPipeline pipeline = getHttpPipeline(buildConfiguration);
 
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
-
-        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion, audience);
+        return new DocumentModelAdministrationAsyncClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion, audience);
     }
 
     /**
@@ -326,7 +321,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentModelAdministrationClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public DocumentModelAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {

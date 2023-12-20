@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for LoadBalancers List. */
+/**
+ * Samples for LoadBalancers List.
+ */
 public final class LoadBalancersListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/LoadBalancerListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/LoadBalancerListAll.json
      */
     /**
      * Sample code: List all load balancers.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllLoadBalancers(com.azure.resourcemanager.AzureResourceManager azure) {

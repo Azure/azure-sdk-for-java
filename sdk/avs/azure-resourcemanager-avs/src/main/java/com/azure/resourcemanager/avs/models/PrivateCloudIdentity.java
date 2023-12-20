@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the virtual machine. */
 @Fluent
-public class PrivateCloudIdentity {
+public final class PrivateCloudIdentity {
     /*
      * The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
      */

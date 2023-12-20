@@ -9,35 +9,28 @@ import com.azure.resourcemanager.network.fluent.models.VirtualRouterInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualRouters CreateOrUpdate. */
+/**
+ * Samples for VirtualRouters CreateOrUpdate.
+ */
 public final class VirtualRoutersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VirtualRouterPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualRouterPut.json
      */
     /**
      * Sample code: Create VirtualRouter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createVirtualRouter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getVirtualRouters()
-            .createOrUpdate(
-                "rg1",
-                "virtualRouter",
-                new VirtualRouterInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
-                    .withHostedGateway(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vnetGateway")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getVirtualRouters().createOrUpdate("rg1", "virtualRouter",
+            new VirtualRouterInner().withLocation("West US").withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withHostedGateway(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vnetGateway")),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

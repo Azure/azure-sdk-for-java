@@ -16,15 +16,13 @@ import org.junit.jupiter.api.Assertions;
 public final class CapacityPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacityPoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"vdfwatkpn\",\"properties\":{\"poolId\":\"lexxbczwtru\",\"size\":4653794584543146117,\"serviceLevel\":\"Standard\",\"provisioningState\":\"qjvsovmyokacs\",\"totalThroughputMibps\":2.3299038,\"utilizedThroughputMibps\":94.998985,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"mflbv\",\"tags\":{\"ciwwzjuqkhr\":\"hrk\",\"oskg\":\"ajiwkuo\",\"vxieduugidyj\":\"sauuimj\",\"pclhocohslk\":\"rfbyaosvexcso\"},\"id\":\"vleggzfbuhfmvfax\",\"name\":\"ffeii\",\"type\":\"hl\"}")
-                .toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("mflbv", model.location());
-        Assertions.assertEquals("hrk", model.tags().get("ciwwzjuqkhr"));
-        Assertions.assertEquals(4653794584543146117L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        CapacityPoolInner model = BinaryData.fromString(
+            "{\"etag\":\"zcjrvxdjzlmwlx\",\"properties\":{\"poolId\":\"ug\",\"size\":6340547465391917507,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"awjvzunluthnnp\",\"totalThroughputMibps\":83.22846,\"utilizedThroughputMibps\":85.84867,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"aejxd\",\"tags\":{\"dzumveekg\":\"skzbb\",\"bsjyofdx\":\"wozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}")
+            .toObject(CapacityPoolInner.class);
+        Assertions.assertEquals("aejxd", model.location());
+        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals(6340547465391917507L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
@@ -32,34 +30,21 @@ public final class CapacityPoolInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolInner model =
-            new CapacityPoolInner()
-                .withLocation("mflbv")
-                .withTags(
-                    mapOf(
-                        "ciwwzjuqkhr",
-                        "hrk",
-                        "oskg",
-                        "ajiwkuo",
-                        "vxieduugidyj",
-                        "sauuimj",
-                        "pclhocohslk",
-                        "rfbyaosvexcso"))
-                .withSize(4653794584543146117L)
-                .withServiceLevel(ServiceLevel.STANDARD)
-                .withQosType(QosType.MANUAL)
-                .withCoolAccess(false)
-                .withEncryptionType(EncryptionType.SINGLE);
+        CapacityPoolInner model = new CapacityPoolInner().withLocation("aejxd")
+            .withTags(mapOf("dzumveekg", "skzbb", "bsjyofdx", "wozuhkf", "oekqvk", "uusdttouwa", "vbxwyjsflhh", "lns"))
+            .withSize(6340547465391917507L).withServiceLevel(ServiceLevel.ULTRA).withQosType(QosType.MANUAL)
+            .withCoolAccess(false).withEncryptionType(EncryptionType.SINGLE);
         model = BinaryData.fromObject(model).toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("mflbv", model.location());
-        Assertions.assertEquals("hrk", model.tags().get("ciwwzjuqkhr"));
-        Assertions.assertEquals(4653794584543146117L, model.size());
-        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        Assertions.assertEquals("aejxd", model.location());
+        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals(6340547465391917507L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -55,7 +55,7 @@ public final class ManageHACosmosDB {
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                     .withSessionConsistency()
                     .withWriteReplication(Region.US_WEST)
-                    .withReadReplication(Region.US_CENTRAL)
+                    .withReadReplication(Region.US_WEST3)
                     .create();
 
             System.out.println("Created CosmosDB");

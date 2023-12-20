@@ -46,8 +46,8 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /*
      * The host header value sent to the origin with each request. If you leave this blank, the request hostname
-     * determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host
-     * header value to match the origin hostname by default. This overrides the host header defined at Endpoint
+     * determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this
+     * host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
      */
     @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
@@ -83,6 +83,10 @@ public class AfdOriginUpdatePropertiesParameters {
      */
     @JsonProperty(value = "enforceCertificateNameCheck")
     private Boolean enforceCertificateNameCheck;
+
+    /** Creates an instance of AfdOriginUpdatePropertiesParameters class. */
+    public AfdOriginUpdatePropertiesParameters() {
+    }
 
     /**
      * Get the originGroupName property: The name of the origin group which contains this origin.
@@ -177,9 +181,9 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @return the originHostHeader value.
      */
@@ -189,9 +193,9 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
+     * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
+     * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
+     * header defined at Endpoint.
      *
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.

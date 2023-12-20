@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for DatabaseAccounts ListByResourceGroup. */
+/**
+ * Samples for DatabaseAccounts ListByResourceGroup.
+ */
 public final class DatabaseAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountListByResourceGroup.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBDatabaseAccountListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListByResourceGroup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountListByResourceGroup(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getDatabaseAccounts()
-            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+    public static void
+        cosmosDBDatabaseAccountListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().listByResourceGroup("rg1",
+            com.azure.core.util.Context.NONE);
     }
 }

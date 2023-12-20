@@ -6,12 +6,13 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.CosmosDbConnectionMode;
-import com.azure.resourcemanager.datafactory.models.CosmosDbServicePrincipalCredentialType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CosmosDB linked service properties. */
+/**
+ * CosmosDB linked service properties.
+ */
 @Fluent
 public final class CosmosDbLinkedServiceTypeProperties {
     /*
@@ -47,10 +48,10 @@ public final class CosmosDbLinkedServiceTypeProperties {
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
-     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      */
     @JsonProperty(value = "servicePrincipalCredentialType")
-    private CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType;
+    private Object servicePrincipalCredentialType;
 
     /*
      * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
@@ -77,17 +78,17 @@ public final class CosmosDbLinkedServiceTypeProperties {
     private Object azureCloudType;
 
     /*
-     * The connection mode used to access CosmosDB account. Type: string (or Expression with resultType string).
+     * The connection mode used to access CosmosDB account. Type: string.
      */
     @JsonProperty(value = "connectionMode")
     private CosmosDbConnectionMode connectionMode;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
@@ -95,14 +96,16 @@ public final class CosmosDbLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
-    /** Creates an instance of CosmosDbLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CosmosDbLinkedServiceTypeProperties class.
+     */
     public CosmosDbLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -112,7 +115,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -124,7 +127,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Get the accountEndpoint property: The endpoint of the Azure CosmosDB account. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the accountEndpoint value.
      */
     public Object accountEndpoint() {
@@ -134,7 +137,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Set the accountEndpoint property: The endpoint of the Azure CosmosDB account. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param accountEndpoint the accountEndpoint value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -145,7 +148,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
 
     /**
      * Get the database property: The name of the database. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -154,7 +157,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
 
     /**
      * Set the database property: The name of the database. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -166,7 +169,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Get the accountKey property: The account key of the Azure CosmosDB account. Type: SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the accountKey value.
      */
     public SecretBase accountKey() {
@@ -176,7 +179,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Set the accountKey property: The account key of the Azure CosmosDB account. Type: SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -188,7 +191,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -198,7 +201,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -208,26 +211,26 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
+     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
+     * Type: string.
+     * 
      * @return the servicePrincipalCredentialType value.
      */
-    public CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType() {
+    public Object servicePrincipalCredentialType() {
         return this.servicePrincipalCredentialType;
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
-     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
+     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
+     * Type: string.
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
-    public CosmosDbLinkedServiceTypeProperties withServicePrincipalCredentialType(
-        CosmosDbServicePrincipalCredentialType servicePrincipalCredentialType) {
+    public CosmosDbLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }
@@ -237,7 +240,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase servicePrincipalCredential() {
@@ -249,7 +252,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -261,7 +264,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -271,7 +274,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -281,10 +284,10 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @return the azureCloudType value.
      */
     public Object azureCloudType() {
@@ -292,10 +295,10 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
-     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
+     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
+     * type. Type: string (or Expression with resultType string).
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -305,9 +308,8 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the connectionMode property: The connection mode used to access CosmosDB account. Type: string (or Expression
-     * with resultType string).
-     *
+     * Get the connectionMode property: The connection mode used to access CosmosDB account. Type: string.
+     * 
      * @return the connectionMode value.
      */
     public CosmosDbConnectionMode connectionMode() {
@@ -315,9 +317,8 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the connectionMode property: The connection mode used to access CosmosDB account. Type: string (or Expression
-     * with resultType string).
-     *
+     * Set the connectionMode property: The connection mode used to access CosmosDB account. Type: string.
+     * 
      * @param connectionMode the connectionMode value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -327,30 +328,30 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
-    public CosmosDbLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public CosmosDbLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -359,7 +360,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the CosmosDbLinkedServiceTypeProperties object itself.
      */
@@ -370,7 +371,7 @@ public final class CosmosDbLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

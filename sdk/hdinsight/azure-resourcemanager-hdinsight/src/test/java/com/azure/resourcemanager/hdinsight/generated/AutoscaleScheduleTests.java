@@ -10,36 +10,35 @@ import com.azure.resourcemanager.hdinsight.models.AutoscaleTimeAndCapacity;
 import com.azure.resourcemanager.hdinsight.models.DaysOfWeek;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoscaleScheduleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoscaleSchedule model =
             BinaryData
                 .fromString(
-                    "{\"days\":[\"Sunday\",\"Sunday\",\"Thursday\",\"Sunday\"],\"timeAndCapacity\":{\"time\":\"fkgiawxk\",\"minInstanceCount\":764612558,\"maxInstanceCount\":1861456902}}")
+                    "{\"days\":[\"Monday\",\"Thursday\",\"Tuesday\",\"Sunday\"],\"timeAndCapacity\":{\"time\":\"czsqpjhvm\",\"minInstanceCount\":330627677,\"maxInstanceCount\":1964386727}}")
                 .toObject(AutoscaleSchedule.class);
-        Assertions.assertEquals(DaysOfWeek.SUNDAY, model.days().get(0));
-        Assertions.assertEquals("fkgiawxk", model.timeAndCapacity().time());
-        Assertions.assertEquals(764612558, model.timeAndCapacity().minInstanceCount());
-        Assertions.assertEquals(1861456902, model.timeAndCapacity().maxInstanceCount());
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.days().get(0));
+        Assertions.assertEquals("czsqpjhvm", model.timeAndCapacity().time());
+        Assertions.assertEquals(330627677, model.timeAndCapacity().minInstanceCount());
+        Assertions.assertEquals(1964386727, model.timeAndCapacity().maxInstanceCount());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoscaleSchedule model =
             new AutoscaleSchedule()
-                .withDays(Arrays.asList(DaysOfWeek.SUNDAY, DaysOfWeek.SUNDAY, DaysOfWeek.THURSDAY, DaysOfWeek.SUNDAY))
+                .withDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.THURSDAY, DaysOfWeek.TUESDAY, DaysOfWeek.SUNDAY))
                 .withTimeAndCapacity(
                     new AutoscaleTimeAndCapacity()
-                        .withTime("fkgiawxk")
-                        .withMinInstanceCount(764612558)
-                        .withMaxInstanceCount(1861456902));
+                        .withTime("czsqpjhvm")
+                        .withMinInstanceCount(330627677)
+                        .withMaxInstanceCount(1964386727));
         model = BinaryData.fromObject(model).toObject(AutoscaleSchedule.class);
-        Assertions.assertEquals(DaysOfWeek.SUNDAY, model.days().get(0));
-        Assertions.assertEquals("fkgiawxk", model.timeAndCapacity().time());
-        Assertions.assertEquals(764612558, model.timeAndCapacity().minInstanceCount());
-        Assertions.assertEquals(1861456902, model.timeAndCapacity().maxInstanceCount());
+        Assertions.assertEquals(DaysOfWeek.MONDAY, model.days().get(0));
+        Assertions.assertEquals("czsqpjhvm", model.timeAndCapacity().time());
+        Assertions.assertEquals(330627677, model.timeAndCapacity().minInstanceCount());
+        Assertions.assertEquals(1964386727, model.timeAndCapacity().maxInstanceCount());
     }
 }

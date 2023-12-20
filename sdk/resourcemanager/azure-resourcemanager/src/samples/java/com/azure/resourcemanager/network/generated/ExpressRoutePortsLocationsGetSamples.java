@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.network.generated;
 
-/** Samples for ExpressRoutePortsLocations Get. */
+/**
+ * Samples for ExpressRoutePortsLocations Get.
+ */
 public final class ExpressRoutePortsLocationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/ExpressRoutePortsLocationGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ExpressRoutePortsLocationGet.
+     * json
      */
     /**
      * Sample code: ExpressRoutePortsLocationGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortsLocationGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getExpressRoutePortsLocations()
-            .getWithResponse("locationName", com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getExpressRoutePortsLocations().getWithResponse("locationName",
+            com.azure.core.util.Context.NONE);
     }
 }

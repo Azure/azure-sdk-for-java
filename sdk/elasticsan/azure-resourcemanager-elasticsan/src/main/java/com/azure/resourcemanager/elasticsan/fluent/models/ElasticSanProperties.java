@@ -7,6 +7,7 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -73,6 +74,19 @@ public final class ElasticSanProperties {
      */
     @JsonProperty(value = "totalSizeTiB", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalSizeTiB;
+
+    /*
+     * The list of Private Endpoint Connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * Allow or disallow public network access to ElasticSan. Value is optional but if passed in, must be 'Enabled' or
+     * 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /** Creates an instance of ElasticSanProperties class. */
     public ElasticSanProperties() {
@@ -213,6 +227,37 @@ public final class ElasticSanProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan. Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanProperties object itself.
+     */
+    public ElasticSanProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -224,6 +269,9 @@ public final class ElasticSanProperties {
                     new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
         } else {
             sku().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 

@@ -13,6 +13,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,52 +36,41 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"ids\",\"dataLocation\":\"yonobgl\",\"notificationHubId\":\"cq\",\"version\":\"ccm\",\"immutableResourceId\":\"udxytlmoyrx\",\"linkedDomains\":[\"u\",\"wpzntxhdzh\"]},\"location\":\"qj\",\"tags\":{\"pycanuzbpz\":\"kfrlhrxsbky\"},\"id\":\"afkuwb\",\"name\":\"rnwb\",\"type\":\"ehhseyvjusrts\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"vwvxyslqbhsfx\",\"dataLocation\":\"blytk\",\"notificationHubId\":\"mpew\",\"version\":\"fbkrvrnsvs\",\"immutableResourceId\":\"johxcrsb\",\"linkedDomains\":[\"asrru\",\"wbhsqfsub\",\"gjb\"]},\"identity\":{\"principalId\":\"974e5b1a-902e-4a38-b9c0-f30b360899b1\",\"tenantId\":\"dea5e349-e51c-42d7-be6a-f3f0da212032\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fbjfdtwssotftpvj\":{\"principalId\":\"3d583232-f6aa-4850-84e7-5f64daa54956\",\"clientId\":\"53e4bbc9-815a-4ac8-b954-cac4e7201cdb\"},\"xilzznf\":{\"principalId\":\"eac58f4a-2e55-476f-b158-d385f59cd9c2\",\"clientId\":\"5557c7dc-b550-4e11-87d7-2a0f7c9c3b4d\"}}},\"location\":\"nvwpmqtaruouj\",\"tags\":{\"ewgdrjervn\":\"jhwqytjrybnw\",\"eh\":\"enq\"},\"id\":\"ndoygmifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommunicationServiceResource response =
-            manager
-                .communicationServices()
-                .define("upedeojnabckhs")
-                .withRegion("cnjbkcnxdhbt")
-                .withExistingResourceGroup("baiuebbaumny")
-                .withTags(mapOf("wpn", "h", "mclfplphoxuscr", "jtoqne"))
-                .withDataLocation("tfhvpesapskrdqmh")
-                .withLinkedDomains(Arrays.asList("upqsx", "nmic", "kvceoveilovnotyf"))
-                .create();
+        CommunicationServiceResource response = manager.communicationServices().define("lhbnxkna")
+            .withRegion("uaopppcqeq").withExistingResourceGroup("ixhnrztf")
+            .withTags(mapOf("ahzxctobgbk", "z", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj", "tswb", "xjyngudivk"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("kteo", new UserAssignedIdentity(), "wptfdy",
+                        new UserAssignedIdentity(), "qbuaceopzfqr", new UserAssignedIdentity())))
+            .withDataLocation("gdtpnapnyiro").withLinkedDomains(Arrays.asList("xgk")).create();
 
-        Assertions.assertEquals("qj", response.location());
-        Assertions.assertEquals("kfrlhrxsbky", response.tags().get("pycanuzbpz"));
-        Assertions.assertEquals("yonobgl", response.dataLocation());
-        Assertions.assertEquals("u", response.linkedDomains().get(0));
+        Assertions.assertEquals("nvwpmqtaruouj", response.location());
+        Assertions.assertEquals("jhwqytjrybnw", response.tags().get("ewgdrjervn"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("blytk", response.dataLocation());
+        Assertions.assertEquals("asrru", response.linkedDomains().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

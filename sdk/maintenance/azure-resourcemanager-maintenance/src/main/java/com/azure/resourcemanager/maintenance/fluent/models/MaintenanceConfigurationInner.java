@@ -7,6 +7,7 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -196,6 +197,29 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the installPatches property: The input parameters to be passed to the patch run operation.
+     *
+     * @return the installPatches value.
+     */
+    public InputPatchConfiguration installPatches() {
+        return this.innerProperties() == null ? null : this.innerProperties().installPatches();
+    }
+
+    /**
+     * Set the installPatches property: The input parameters to be passed to the patch run operation.
+     *
+     * @param installPatches the installPatches value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withInstallPatches(InputPatchConfiguration installPatches) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MaintenanceConfigurationProperties();
+        }
+        this.innerProperties().withInstallPatches(installPatches);
+        return this;
+    }
+
+    /**
      * Get the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
@@ -311,9 +335,10 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
      * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
      * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
-     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
-     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
-     * Monday.
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of days)]. Offset value must
+     * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
+     * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
+     * Offset-3, recurEvery: Month Third Sunday Offset6.
      *
      * @return the recurEvery value.
      */
@@ -329,9 +354,10 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
      * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
      * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
-     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
-     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
-     * Monday.
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of days)]. Offset value must
+     * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
+     * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
+     * Offset-3, recurEvery: Month Third Sunday Offset6.
      *
      * @param recurEvery the recurEvery value to set.
      * @return the MaintenanceConfigurationInner object itself.

@@ -33,9 +33,9 @@ public final class IotHubResourcesImportDevicesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"jobId\":\"kvtvsexso\",\"startTimeUtc\":\"Sat, 09 Jan 2021 15:20:12 GMT\",\"endTimeUtc\":\"Thu, 28 Jan"
-                + " 2021 09:30:25"
-                + " GMT\",\"type\":\"readDeviceProperties\",\"status\":\"completed\",\"failureReason\":\"hxvrhmzkwpjg\",\"statusMessage\":\"spughftqsxhq\",\"parentJobId\":\"j\"}";
+            "{\"jobId\":\"kj\",\"startTimeUtc\":\"Mon, 15 Nov 2021 06:41:50 GMT\",\"endTimeUtc\":\"Tue, 13 Jul 2021"
+                + " 23:55:09"
+                + " GMT\",\"type\":\"factoryResetDevice\",\"status\":\"running\",\"failureReason\":\"inrvgoupmfi\",\"statusMessage\":\"fggjioolvr\",\"parentJobId\":\"kvtkkg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,17 +67,17 @@ public final class IotHubResourcesImportDevicesWithResponseMockTests {
             manager
                 .iotHubResources()
                 .importDevicesWithResponse(
-                    "gzpfrla",
-                    "szrnwo",
+                    "bopgxedkowepbqp",
+                    "rfkbwccsnjvcdwxl",
                     new ImportDevicesRequest()
-                        .withInputBlobContainerUri("indfpwpjyl")
-                        .withOutputBlobContainerUri("bt")
-                        .withInputBlobName("flsjc")
-                        .withOutputBlobName("szfjvfbgofelja")
-                        .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
-                        .withIdentity(new ManagedIdentity().withUserAssignedIdentity("hldvriii"))
+                        .withInputBlobContainerUri("qek")
+                        .withOutputBlobContainerUri("tn")
+                        .withInputBlobName("tjsyin")
+                        .withOutputBlobName("fq")
+                        .withAuthenticationType(AuthenticationType.KEY_BASED)
+                        .withIdentity(new ManagedIdentity().withUserAssignedIdentity("htmdvy"))
                         .withIncludeConfigurations(true)
-                        .withConfigurationsBlobName("lg"),
+                        .withConfigurationsBlobName("dgszywkbirryuzh"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

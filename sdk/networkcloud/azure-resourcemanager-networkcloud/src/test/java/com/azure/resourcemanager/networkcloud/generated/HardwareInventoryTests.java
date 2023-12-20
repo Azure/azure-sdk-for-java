@@ -13,7 +13,7 @@ public final class HardwareInventoryTests {
         HardwareInventory model =
             BinaryData
                 .fromString(
-                    "{\"additionalHostInformation\":\"si\",\"interfaces\":[{\"linkStatus\":\"cciqihnhungbwjz\",\"macAddress\":\"fygxgispemvtzfk\",\"name\":\"ubljofxqe\",\"networkInterfaceId\":\"jaeq\"},{\"linkStatus\":\"qjbasvms\",\"macAddress\":\"qulngsntnbybkzgc\",\"name\":\"wclxxwrl\",\"networkInterfaceId\":\"ouskcqvkocrc\"},{\"linkStatus\":\"kwt\",\"macAddress\":\"xbnjbiksq\",\"name\":\"lssai\",\"networkInterfaceId\":\"p\"}],\"nics\":[{\"lldpNeighbor\":{\"portDescription\":\"ljfmppee\",\"portName\":\"mgxsab\",\"systemDescription\":\"qduujitcjczdz\",\"systemName\":\"ndhkrw\"},\"macAddress\":\"appd\",\"name\":\"dkvwrwjfe\"}]}")
+                    "{\"additionalHostInformation\":\"s\",\"interfaces\":[{\"linkStatus\":\"v\",\"macAddress\":\"jrwzox\",\"name\":\"tfell\",\"networkInterfaceId\":\"fziton\"},{\"linkStatus\":\"qfpjk\",\"macAddress\":\"xofpdvhpfxxypi\",\"name\":\"nmayhuybb\",\"networkInterfaceId\":\"odepoogin\"},{\"linkStatus\":\"amiheognarxz\",\"macAddress\":\"heotusiv\",\"name\":\"v\",\"networkInterfaceId\":\"iqihn\"}],\"nics\":[{\"lldpNeighbor\":{\"portDescription\":\"wjzrnfygxgisp\",\"portName\":\"vtz\",\"systemDescription\":\"ufubl\",\"systemName\":\"fxqeof\"},\"macAddress\":\"e\",\"name\":\"hqjbasvmsmj\"},{\"lldpNeighbor\":{\"portDescription\":\"ngsntnbybk\",\"portName\":\"cwrwclxxwrljdous\",\"systemDescription\":\"qvkoc\",\"systemName\":\"jdkwtnhxbnjb\"},\"macAddress\":\"sqrglssainq\",\"name\":\"wnzlljfmppeeb\"}]}")
                 .toObject(HardwareInventory.class);
     }
 

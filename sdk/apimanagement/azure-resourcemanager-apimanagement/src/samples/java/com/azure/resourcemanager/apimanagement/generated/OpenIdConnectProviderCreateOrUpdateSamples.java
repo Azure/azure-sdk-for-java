@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 /** Samples for OpenIdConnectProvider CreateOrUpdate. */
 public final class OpenIdConnectProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateOpenIdConnectProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateOpenIdConnectProvider.json
      */
     /**
      * Sample code: ApiManagementCreateOpenIdConnectProvider.
@@ -24,6 +24,8 @@ public final class OpenIdConnectProviderCreateOrUpdateSamples {
             .withMetadataEndpoint("https://oidprovider-template3.net")
             .withClientId("oidprovidertemplate3")
             .withClientSecret("x")
+            .withUseInTestConsole(false)
+            .withUseInApiDocumentation(true)
             .create();
     }
 }
