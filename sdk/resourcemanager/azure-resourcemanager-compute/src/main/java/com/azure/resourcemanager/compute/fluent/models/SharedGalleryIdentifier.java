@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The identifier information of shared gallery. */
+/**
+ * The identifier information of shared gallery.
+ */
 @Fluent
 public final class SharedGalleryIdentifier {
     /*
@@ -16,13 +18,15 @@ public final class SharedGalleryIdentifier {
     @JsonProperty(value = "uniqueId")
     private String uniqueId;
 
-    /** Creates an instance of SharedGalleryIdentifier class. */
+    /**
+     * Creates an instance of SharedGalleryIdentifier class.
+     */
     public SharedGalleryIdentifier() {
     }
 
     /**
      * Get the uniqueId property: The unique id of this shared gallery.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -31,7 +35,7 @@ public final class SharedGalleryIdentifier {
 
     /**
      * Set the uniqueId property: The unique id of this shared gallery.
-     *
+     * 
      * @param uniqueId the uniqueId value to set.
      * @return the SharedGalleryIdentifier object itself.
      */
@@ -42,7 +46,7 @@ public final class SharedGalleryIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

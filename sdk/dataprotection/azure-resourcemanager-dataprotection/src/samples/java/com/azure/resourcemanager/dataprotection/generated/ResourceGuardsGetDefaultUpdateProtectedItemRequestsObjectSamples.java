@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for ResourceGuards GetDefaultUpdateProtectedItemRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultUpdateProtectedItemRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void
+        getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultUpdateProtectedItemRequestsObjectWithResponse("SampleResourceGroup",
+            "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }

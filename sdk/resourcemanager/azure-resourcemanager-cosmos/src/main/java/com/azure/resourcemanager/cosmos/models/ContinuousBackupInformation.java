@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the status of continuous backups. */
+/**
+ * Information about the status of continuous backups.
+ */
 @Fluent
 public final class ContinuousBackupInformation {
     /*
@@ -16,13 +18,15 @@ public final class ContinuousBackupInformation {
     @JsonProperty(value = "latestRestorableTimestamp")
     private String latestRestorableTimestamp;
 
-    /** Creates an instance of ContinuousBackupInformation class. */
+    /**
+     * Creates an instance of ContinuousBackupInformation class.
+     */
     public ContinuousBackupInformation() {
     }
 
     /**
      * Get the latestRestorableTimestamp property: The latest restorable timestamp for a resource.
-     *
+     * 
      * @return the latestRestorableTimestamp value.
      */
     public String latestRestorableTimestamp() {
@@ -31,7 +35,7 @@ public final class ContinuousBackupInformation {
 
     /**
      * Set the latestRestorableTimestamp property: The latest restorable timestamp for a resource.
-     *
+     * 
      * @param latestRestorableTimestamp the latestRestorableTimestamp value to set.
      * @return the ContinuousBackupInformation object itself.
      */
@@ -42,7 +46,7 @@ public final class ContinuousBackupInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

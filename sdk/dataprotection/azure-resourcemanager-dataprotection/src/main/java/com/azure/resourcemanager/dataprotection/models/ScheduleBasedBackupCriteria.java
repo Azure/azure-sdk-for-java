@@ -13,15 +13,15 @@ import java.util.List;
 
 /**
  * ScheduleBasedBackupCriteria
- *
- * <p>Schedule based backup criteria.
+ * 
+ * Schedule based backup criteria.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ScheduleBasedBackupCriteria")
 @Fluent
 public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     /*
-     * it contains absolute values like "AllBackup"\  / "FirstOfDay"\  / "FirstOfWeek"\  / "FirstOfMonth"
+     * it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\ / "FirstOfMonth"
      * and should be part of AbsoluteMarker enum
      */
     @JsonProperty(value = "absoluteCriteria")
@@ -57,14 +57,17 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekNumber> weeksOfTheMonth;
 
-    /** Creates an instance of ScheduleBasedBackupCriteria class. */
+    /**
+     * Creates an instance of ScheduleBasedBackupCriteria class.
+     */
     public ScheduleBasedBackupCriteria() {
     }
 
     /**
-     * Get the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
-     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
-     *
+     * Get the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ /
+     * "FirstOfWeek"\ / "FirstOfMonth"
+     * and should be part of AbsoluteMarker enum.
+     * 
      * @return the absoluteCriteria value.
      */
     public List<AbsoluteMarker> absoluteCriteria() {
@@ -72,9 +75,10 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Set the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\
-     * / "FirstOfMonth" and should be part of AbsoluteMarker enum.
-     *
+     * Set the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ /
+     * "FirstOfWeek"\ / "FirstOfMonth"
+     * and should be part of AbsoluteMarker enum.
+     * 
      * @param absoluteCriteria the absoluteCriteria value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -85,7 +89,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Get the daysOfMonth property: This is day of the month from 1 to 28 other wise last of month.
-     *
+     * 
      * @return the daysOfMonth value.
      */
     public List<Day> daysOfMonth() {
@@ -94,7 +98,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Set the daysOfMonth property: This is day of the month from 1 to 28 other wise last of month.
-     *
+     * 
      * @param daysOfMonth the daysOfMonth value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -105,7 +109,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Get the daysOfTheWeek property: It should be Sunday/Monday/T..../Saturday.
-     *
+     * 
      * @return the daysOfTheWeek value.
      */
     public List<DayOfWeek> daysOfTheWeek() {
@@ -114,7 +118,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Set the daysOfTheWeek property: It should be Sunday/Monday/T..../Saturday.
-     *
+     * 
      * @param daysOfTheWeek the daysOfTheWeek value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -125,7 +129,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Get the monthsOfYear property: It should be January/February/....../December.
-     *
+     * 
      * @return the monthsOfYear value.
      */
     public List<Month> monthsOfYear() {
@@ -134,7 +138,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Set the monthsOfYear property: It should be January/February/....../December.
-     *
+     * 
      * @param monthsOfYear the monthsOfYear value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -145,7 +149,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Get the scheduleTimes property: List of schedule times for backup.
-     *
+     * 
      * @return the scheduleTimes value.
      */
     public List<OffsetDateTime> scheduleTimes() {
@@ -154,7 +158,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Set the scheduleTimes property: List of schedule times for backup.
-     *
+     * 
      * @param scheduleTimes the scheduleTimes value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -165,7 +169,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Get the weeksOfTheMonth property: It should be First/Second/Third/Fourth/Last.
-     *
+     * 
      * @return the weeksOfTheMonth value.
      */
     public List<WeekNumber> weeksOfTheMonth() {
@@ -174,7 +178,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Set the weeksOfTheMonth property: It should be First/Second/Third/Fourth/Last.
-     *
+     * 
      * @param weeksOfTheMonth the weeksOfTheMonth value to set.
      * @return the ScheduleBasedBackupCriteria object itself.
      */
@@ -185,7 +189,7 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

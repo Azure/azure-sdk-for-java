@@ -15,31 +15,19 @@ import java.util.Map;
 public final class BinarySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BinarySource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"BinarySource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datadnok\",\"disableMetricsCollection\":\"datagiecjyftsn\",\"\":{\"tjc\":\"dataz\",\"xxbkqmagpdsuyy\":\"dataa\"}},\"formatSettings\":{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"hhvgddfzcnylz\":\"dataoox\",\"degfhofo\":\"datalhufsgcpwrtg\"}},\"\":{\"otjj\":\"dataiuik\",\"snr\":\"dataecxvkqjpovjvvx\",\"flqwqcxyiqppacji\":\"datawrbmhjm\",\"jzgnla\":\"datarllacylbtkxe\"}},\"sourceRetryCount\":\"datattexaugoj\",\"sourceRetryWait\":\"datajezr\",\"maxConcurrentConnections\":\"datao\",\"disableMetricsCollection\":\"datawlntenhnqtvx\",\"\":{\"lceo\":\"dataehhehotqorrv\",\"gjir\":\"datalyugzl\"}}")
-                .toObject(BinarySource.class);
+        BinarySource model = BinaryData.fromString(
+            "{\"type\":\"BinarySource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datapkgxemvlyaprjz\",\"disableMetricsCollection\":\"dataxxq\",\"\":{\"lpxfauvgtoin\":\"datatzbhm\",\"w\":\"datazsmyvvfapfbm\",\"dspdd\":\"dataknefcoopt\",\"laxuybxjwny\":\"datagupiosibg\"}},\"formatSettings\":{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"ssqfiksjpk\":\"datattnri\",\"bf\":\"datagnmtoqtuivi\"}},\"\":{\"vzpq\":\"dataslp\",\"kgiecjyftsn\":\"datadnok\",\"z\":\"dataf\"}},\"sourceRetryCount\":\"datajclaqxx\",\"sourceRetryWait\":\"dataq\",\"maxConcurrentConnections\":\"datagpdsuyyw\",\"disableMetricsCollection\":\"dataqg\",\"\":{\"yl\":\"datauhhvgddfzc\",\"gcpwrtgtdegfh\":\"datawlhuf\",\"otjj\":\"datafoptbiuik\",\"snr\":\"dataecxvkqjpovjvvx\"}}")
+            .toObject(BinarySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySource model =
-            new BinarySource()
-                .withSourceRetryCount("datattexaugoj")
-                .withSourceRetryWait("datajezr")
-                .withMaxConcurrentConnections("datao")
-                .withDisableMetricsCollection("datawlntenhnqtvx")
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datadnok")
-                        .withDisableMetricsCollection("datagiecjyftsn")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-                .withFormatSettings(
-                    new BinaryReadSettings()
-                        .withCompressionProperties(
-                            new CompressionReadSettings()
-                                .withAdditionalProperties(mapOf("type", "CompressionReadSettings"))));
+        BinarySource model = new BinarySource().withSourceRetryCount("datajclaqxx").withSourceRetryWait("dataq")
+            .withMaxConcurrentConnections("datagpdsuyyw").withDisableMetricsCollection("dataqg")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datapkgxemvlyaprjz")
+                .withDisableMetricsCollection("dataxxq").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+            .withFormatSettings(new BinaryReadSettings().withCompressionProperties(
+                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))));
         model = BinaryData.fromObject(model).toObject(BinarySource.class);
     }
 

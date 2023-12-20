@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.PartitionMetricInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list partition metrics request. */
+/**
+ * The response to a list partition metrics request.
+ */
 @Immutable
 public final class PartitionMetricListResult {
     /*
@@ -18,13 +20,15 @@ public final class PartitionMetricListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PartitionMetricInner> value;
 
-    /** Creates an instance of PartitionMetricListResult class. */
+    /**
+     * Creates an instance of PartitionMetricListResult class.
+     */
     public PartitionMetricListResult() {
     }
 
     /**
      * Get the value property: The list of partition-level metrics for the account.
-     *
+     * 
      * @return the value value.
      */
     public List<PartitionMetricInner> value() {
@@ -33,7 +37,7 @@ public final class PartitionMetricListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Item Level kubernetes storage class target info for restore operation. */
+/**
+ * Item Level kubernetes storage class target info for restore operation.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("KubernetesStorageClassRestoreCriteria")
 @Fluent
@@ -26,13 +28,15 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
     @JsonProperty(value = "provisioner")
     private String provisioner;
 
-    /** Creates an instance of KubernetesStorageClassRestoreCriteria class. */
+    /**
+     * Creates an instance of KubernetesStorageClassRestoreCriteria class.
+     */
     public KubernetesStorageClassRestoreCriteria() {
     }
 
     /**
      * Get the selectedStorageClassName property: Selected storage class name.
-     *
+     * 
      * @return the selectedStorageClassName value.
      */
     public String selectedStorageClassName() {
@@ -41,7 +45,7 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
 
     /**
      * Set the selectedStorageClassName property: Selected storage class name.
-     *
+     * 
      * @param selectedStorageClassName the selectedStorageClassName value to set.
      * @return the KubernetesStorageClassRestoreCriteria object itself.
      */
@@ -52,7 +56,7 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
 
     /**
      * Get the provisioner property: Provisioner of the storage class.
-     *
+     * 
      * @return the provisioner value.
      */
     public String provisioner() {
@@ -61,7 +65,7 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
 
     /**
      * Set the provisioner property: Provisioner of the storage class.
-     *
+     * 
      * @param provisioner the provisioner value to set.
      * @return the KubernetesStorageClassRestoreCriteria object itself.
      */
@@ -72,7 +76,7 @@ public final class KubernetesStorageClassRestoreCriteria extends ItemLevelRestor
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -13,48 +13,40 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InstanceInnerTests {
-    @Test
-    public void testDeserialize() {
-        InstanceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"accountName\":\"bmbexppbhtqqro\",\"iotHubs\":[{\"resourceId\":\"fpsalgbqu\"}],\"enableDiagnostics\":true,\"diagnosticStorageProperties\":{\"authenticationType\":\"KeyBased\",\"connectionString\":\"gzjaoyfhrtxilne\",\"resourceId\":\"kujysvlejuvfq\"}},\"location\":\"rlyxwjkcprbnw\",\"tags\":{\"dnrujqguhmuouqfp\":\"jvtbvpyss\",\"uizga\":\"wzwbnguitn\"},\"id\":\"x\",\"name\":\"fizuckyf\",\"type\":\"hr\"}")
-                .toObject(InstanceInner.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.location());
-        Assertions.assertEquals("jvtbvpyss", model.tags().get("dnrujqguhmuouqfp"));
-        Assertions.assertEquals("fpsalgbqu", model.iotHubs().get(0).resourceId());
-        Assertions.assertEquals(true, model.enableDiagnostics());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InstanceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"accountName\":\"wrlyxwjkcprb\",\"iotHubs\":[{\"resourceId\":\"xgjvtbv\"}],\"enableDiagnostics\":false,\"diagnosticStorageProperties\":{\"authenticationType\":\"KeyBased\",\"connectionString\":\"nruj\",\"resourceId\":\"guhmuouqfpr\"}},\"location\":\"wbnguitnwui\",\"tags\":{\"ckyfih\":\"zxufiz\"},\"id\":\"fidfvzw\",\"name\":\"zuhtymwisdkfthwx\",\"type\":\"nteiwaopv\"}")
+            .toObject(InstanceInner.class);
+        Assertions.assertEquals("wbnguitnwui", model.location());
+        Assertions.assertEquals("zxufiz", model.tags().get("ckyfih"));
+        Assertions.assertEquals("xgjvtbv", model.iotHubs().get(0).resourceId());
+        Assertions.assertEquals(false, model.enableDiagnostics());
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.diagnosticStorageProperties().authenticationType());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.diagnosticStorageProperties().connectionString());
-        Assertions.assertEquals("kujysvlejuvfq", model.diagnosticStorageProperties().resourceId());
+        Assertions.assertEquals("nruj", model.diagnosticStorageProperties().connectionString());
+        Assertions.assertEquals("guhmuouqfpr", model.diagnosticStorageProperties().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        InstanceInner model =
-            new InstanceInner()
-                .withLocation("rlyxwjkcprbnw")
-                .withTags(mapOf("dnrujqguhmuouqfp", "jvtbvpyss", "uizga", "wzwbnguitn"))
-                .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("fpsalgbqu")))
-                .withEnableDiagnostics(true)
-                .withDiagnosticStorageProperties(
-                    new DiagnosticStorageProperties()
-                        .withAuthenticationType(AuthenticationType.KEY_BASED)
-                        .withConnectionString("gzjaoyfhrtxilne")
-                        .withResourceId("kujysvlejuvfq"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InstanceInner model = new InstanceInner().withLocation("wbnguitnwui").withTags(mapOf("ckyfih", "zxufiz"))
+            .withIotHubs(Arrays.asList(new IotHubSettings().withResourceId("xgjvtbv"))).withEnableDiagnostics(false)
+            .withDiagnosticStorageProperties(
+                new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
+                    .withConnectionString("nruj").withResourceId("guhmuouqfpr"));
         model = BinaryData.fromObject(model).toObject(InstanceInner.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.location());
-        Assertions.assertEquals("jvtbvpyss", model.tags().get("dnrujqguhmuouqfp"));
-        Assertions.assertEquals("fpsalgbqu", model.iotHubs().get(0).resourceId());
-        Assertions.assertEquals(true, model.enableDiagnostics());
+        Assertions.assertEquals("wbnguitnwui", model.location());
+        Assertions.assertEquals("zxufiz", model.tags().get("ckyfih"));
+        Assertions.assertEquals("xgjvtbv", model.iotHubs().get(0).resourceId());
+        Assertions.assertEquals(false, model.enableDiagnostics());
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.diagnosticStorageProperties().authenticationType());
-        Assertions.assertEquals("gzjaoyfhrtxilne", model.diagnosticStorageProperties().connectionString());
-        Assertions.assertEquals("kujysvlejuvfq", model.diagnosticStorageProperties().resourceId());
+        Assertions.assertEquals("nruj", model.diagnosticStorageProperties().connectionString());
+        Assertions.assertEquals("guhmuouqfpr", model.diagnosticStorageProperties().resourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of dataset resources. */
+/**
+ * A list of dataset resources.
+ */
 @Fluent
 public final class DatasetListResponse {
     /*
@@ -23,12 +25,15 @@ public final class DatasetListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DatasetListResponse class. */
-    public DatasetListResponse() {}
+    /**
+     * Creates an instance of DatasetListResponse class.
+     */
+    public DatasetListResponse() {
+    }
 
     /**
      * Get the value property: List of datasets.
-     *
+     * 
      * @return the value value.
      */
     public List<DatasetResource> getValue() {
@@ -37,7 +42,7 @@ public final class DatasetListResponse {
 
     /**
      * Set the value property: List of datasets.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatasetListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class DatasetListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class DatasetListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DatasetListResponse object itself.
      */

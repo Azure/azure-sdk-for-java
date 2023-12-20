@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnServerConfigurationsClient. */
-public interface VpnServerConfigurationsClient
-    extends InnerSupportsGet<VpnServerConfigurationInner>,
-        InnerSupportsListing<VpnServerConfigurationInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in VpnServerConfigurationsClient.
+ */
+public interface VpnServerConfigurationsClient extends InnerSupportsGet<VpnServerConfigurationInner>,
+    InnerSupportsListing<VpnServerConfigurationInner>, InnerSupportsDelete<Void> {
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,12 +38,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName);
+    Mono<Response<VpnServerConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName);
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,12 +52,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnServerConfigurationInner> getByResourceGroupAsync(
-        String resourceGroupName, String vpnServerConfigurationName);
+    Mono<VpnServerConfigurationInner> getByResourceGroupAsync(String resourceGroupName,
+        String vpnServerConfigurationName);
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @param context The context to associate with this operation.
@@ -67,12 +67,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vpnServerConfigurationName, Context context);
+    Response<VpnServerConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, Context context);
 
     /**
      * Retrieves the details of a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +85,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -95,14 +95,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, VpnServerConfigurationInner vpnServerConfigurationParameters);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -113,13 +111,12 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+        String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -130,13 +127,12 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+        String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -148,14 +144,12 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
-        Context context);
+        String resourceGroupName, String vpnServerConfigurationName,
+        VpnServerConfigurationInner vpnServerConfigurationParameters, Context context);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -165,14 +159,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnServerConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+    Mono<VpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -182,14 +174,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
+    VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
         VpnServerConfigurationInner vpnServerConfigurationParameters);
 
     /**
      * Creates a VpnServerConfiguration resource if it doesn't exist else updates the existing VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
      * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
@@ -200,15 +190,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        VpnServerConfigurationInner vpnServerConfigurationParameters,
-        Context context);
+    VpnServerConfigurationInner createOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
+        VpnServerConfigurationInner vpnServerConfigurationParameters, Context context);
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -218,12 +205,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
+    Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -233,12 +220,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnServerConfigurationInner> updateTagsAsync(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
+    Mono<VpnServerConfigurationInner> updateTagsAsync(String resourceGroupName, String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters);
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -249,15 +236,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VpnServerConfigurationInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String vpnServerConfigurationName,
-        TagsObject vpnServerConfigurationParameters,
-        Context context);
+    Response<VpnServerConfigurationInner> updateTagsWithResponse(String resourceGroupName,
+        String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters, Context context);
 
     /**
      * Updates VpnServerConfiguration tags.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
      * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
@@ -267,12 +251,12 @@ public interface VpnServerConfigurationsClient
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner updateTags(
-        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
+    VpnServerConfigurationInner updateTags(String resourceGroupName, String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters);
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,12 +265,12 @@ public interface VpnServerConfigurationsClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String vpnServerConfigurationName);
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +283,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,7 +296,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -322,12 +306,12 @@ public interface VpnServerConfigurationsClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vpnServerConfigurationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName,
+        Context context);
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +324,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,7 +336,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Deletes a VpnServerConfiguration.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being deleted.
      * @param context The context to associate with this operation.
@@ -365,7 +349,7 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -377,34 +361,34 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the vpnServerConfigurations in a resource group.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnServerConfigurationInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all VpnServerConfigurations as paginated response with {@link PagedFlux}.
@@ -414,24 +398,24 @@ public interface VpnServerConfigurationsClient
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnServerConfigurationInner> list();
 
     /**
      * Lists all the VpnServerConfigurations in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all VpnServerConfigurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list all VpnServerConfigurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnServerConfigurationInner> list(Context context);

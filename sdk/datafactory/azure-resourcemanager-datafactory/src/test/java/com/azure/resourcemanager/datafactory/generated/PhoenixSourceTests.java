@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.PhoenixSource;
 public final class PhoenixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PhoenixSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PhoenixSource\",\"query\":\"datajkwltnsnhuvmok\",\"queryTimeout\":\"datasclpnbidnlodk\",\"additionalColumns\":\"dataqnkptixa\",\"sourceRetryCount\":\"datay\",\"sourceRetryWait\":\"dataaevry\",\"maxConcurrentConnections\":\"datagccpzmh\",\"disableMetricsCollection\":\"datalqtzgtpsbym\",\"\":{\"rqzbqy\":\"datat\",\"ahbynlbwcnnfp\":\"datagfqqrarolc\"}}")
-                .toObject(PhoenixSource.class);
+        PhoenixSource model = BinaryData.fromString(
+            "{\"type\":\"PhoenixSource\",\"query\":\"dataoqldnhwdfxgec\",\"queryTimeout\":\"datakkdbzbhsnimompxd\",\"additionalColumns\":\"datap\",\"sourceRetryCount\":\"databdmoawh\",\"sourceRetryWait\":\"dataxxnmyxzh\",\"maxConcurrentConnections\":\"datacqoyd\",\"disableMetricsCollection\":\"datazhfnylgbwdsa\",\"\":{\"jinlsktprnknnqlt\":\"datawa\",\"wgen\":\"datagyeyxmuwgnwxtm\",\"ew\":\"datamoswcxlgzquq\"}}")
+            .toObject(PhoenixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixSource model =
-            new PhoenixSource()
-                .withSourceRetryCount("datay")
-                .withSourceRetryWait("dataaevry")
-                .withMaxConcurrentConnections("datagccpzmh")
-                .withDisableMetricsCollection("datalqtzgtpsbym")
-                .withQueryTimeout("datasclpnbidnlodk")
-                .withAdditionalColumns("dataqnkptixa")
-                .withQuery("datajkwltnsnhuvmok");
+        PhoenixSource model
+            = new PhoenixSource().withSourceRetryCount("databdmoawh").withSourceRetryWait("dataxxnmyxzh")
+                .withMaxConcurrentConnections("datacqoyd").withDisableMetricsCollection("datazhfnylgbwdsa")
+                .withQueryTimeout("datakkdbzbhsnimompxd").withAdditionalColumns("datap").withQuery("dataoqldnhwdfxgec");
         model = BinaryData.fromObject(model).toObject(PhoenixSource.class);
     }
 }

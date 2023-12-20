@@ -27,13 +27,15 @@ public final class ApplicationGatewayPrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkResourceListResult class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkResourceListResult class.
+     */
     public ApplicationGatewayPrivateLinkResourceListResult() {
     }
 
     /**
      * Get the value property: List of private link resources of an application gateway.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationGatewayPrivateLinkResourceInner> value() {
@@ -42,19 +44,19 @@ public final class ApplicationGatewayPrivateLinkResourceListResult {
 
     /**
      * Set the value property: List of private link resources of an application gateway.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationGatewayPrivateLinkResourceListResult object itself.
      */
-    public ApplicationGatewayPrivateLinkResourceListResult withValue(
-        List<ApplicationGatewayPrivateLinkResourceInner> value) {
+    public ApplicationGatewayPrivateLinkResourceListResult
+        withValue(List<ApplicationGatewayPrivateLinkResourceInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class ApplicationGatewayPrivateLinkResourceListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplicationGatewayPrivateLinkResourceListResult object itself.
      */
@@ -74,7 +76,7 @@ public final class ApplicationGatewayPrivateLinkResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

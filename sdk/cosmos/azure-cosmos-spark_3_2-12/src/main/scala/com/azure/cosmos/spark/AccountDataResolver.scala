@@ -3,6 +3,6 @@
 
 package com.azure.cosmos.spark
 
-trait AccountDataResolver {
+private trait AccountDataResolver {
     def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
 }

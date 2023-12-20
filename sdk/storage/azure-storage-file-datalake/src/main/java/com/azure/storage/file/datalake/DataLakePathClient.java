@@ -714,6 +714,7 @@ public class DataLakePathClient {
      * <pre>
      * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
      *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
      *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
      * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
      * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
@@ -748,11 +749,26 @@ public class DataLakePathClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     * PathAccessControlEntry ownerEntry = new PathAccessControlEntry&#40;&#41;
      *     .setEntityId&#40;&quot;entityId&quot;&#41;
-     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;
+     *         .setExecutePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry groupEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.GROUP&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry otherEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.OTHER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;&#41;;
+     *
      * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
-     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * pathAccessControlEntries.add&#40;ownerEntry&#41;;
+     * pathAccessControlEntries.add&#40;groupEntry&#41;;
+     * pathAccessControlEntries.add&#40;otherEntry&#41;;
      *
      * Integer batchSize = 2;
      * Integer maxBatches = 10;
@@ -806,11 +822,26 @@ public class DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursive#List -->
      * <pre>
-     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     * PathAccessControlEntry ownerEntry = new PathAccessControlEntry&#40;&#41;
      *     .setEntityId&#40;&quot;entityId&quot;&#41;
-     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;
+     *         .setExecutePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry groupEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.GROUP&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry otherEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.OTHER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;&#41;;
+     *
      * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
-     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * pathAccessControlEntries.add&#40;ownerEntry&#41;;
+     * pathAccessControlEntries.add&#40;groupEntry&#41;;
+     * pathAccessControlEntries.add&#40;otherEntry&#41;;
      *
      * AccessControlChangeResult response = client.updateAccessControlRecursive&#40;pathAccessControlEntries&#41;;
      *
@@ -842,11 +873,26 @@ public class DataLakePathClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     * PathAccessControlEntry ownerEntry = new PathAccessControlEntry&#40;&#41;
      *     .setEntityId&#40;&quot;entityId&quot;&#41;
-     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;
+     *         .setExecutePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry groupEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.GROUP&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;&#41;;
+     *
+     * PathAccessControlEntry otherEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.OTHER&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;&#41;;
+     *
      * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
-     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * pathAccessControlEntries.add&#40;ownerEntry&#41;;
+     * pathAccessControlEntries.add&#40;groupEntry&#41;;
+     * pathAccessControlEntries.add&#40;otherEntry&#41;;
      *
      * Integer batchSize = 2;
      * Integer maxBatches = 10;
@@ -900,10 +946,24 @@ public class DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursive#List -->
      * <pre>
-     * PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry&#40;&#41;
-     *     .setEntityId&#40;&quot;entityId&quot;&#41;;
+     * PathRemoveAccessControlEntry ownerEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
+     *     .setDefaultScope&#40;true&#41;;
+     *
+     * PathRemoveAccessControlEntry groupEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.GROUP&#41;
+     *     .setDefaultScope&#40;true&#41;;
+     *
+     * PathRemoveAccessControlEntry otherEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.OTHER&#41;
+     *     .setDefaultScope&#40;true&#41;;
      * List&lt;PathRemoveAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
-     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * pathAccessControlEntries.add&#40;ownerEntry&#41;;
+     * pathAccessControlEntries.add&#40;groupEntry&#41;;
+     * pathAccessControlEntries.add&#40;otherEntry&#41;;
      *
      * AccessControlChangeResult response = client.removeAccessControlRecursive&#40;pathAccessControlEntries&#41;;
      *
@@ -936,10 +996,24 @@ public class DataLakePathClient {
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry&#40;&#41;
-     *     .setEntityId&#40;&quot;entityId&quot;&#41;;
+     * PathRemoveAccessControlEntry ownerEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.USER&#41;
+     *     .setDefaultScope&#40;true&#41;;
+     *
+     * PathRemoveAccessControlEntry groupEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.GROUP&#41;
+     *     .setDefaultScope&#40;true&#41;;
+     *
+     * PathRemoveAccessControlEntry otherEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setAccessControlType&#40;AccessControlType.OTHER&#41;
+     *     .setDefaultScope&#40;true&#41;;
      * List&lt;PathRemoveAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
-     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * pathAccessControlEntries.add&#40;ownerEntry&#41;;
+     * pathAccessControlEntries.add&#40;groupEntry&#41;;
+     * pathAccessControlEntries.add&#40;otherEntry&#41;;
      *
      * Integer batchSize = 2;
      * Integer maxBatches = 10;

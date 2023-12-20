@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the disallowed configuration for a virtual machine image. */
+/**
+ * Specifies the disallowed configuration for a virtual machine image.
+ */
 @Fluent
 public final class DisallowedConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class DisallowedConfiguration {
     @JsonProperty(value = "vmDiskType")
     private VmDiskTypes vmDiskType;
 
-    /** Creates an instance of DisallowedConfiguration class. */
+    /**
+     * Creates an instance of DisallowedConfiguration class.
+     */
     public DisallowedConfiguration() {
     }
 
     /**
      * Get the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @return the vmDiskType value.
      */
     public VmDiskTypes vmDiskType() {
@@ -31,7 +35,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Set the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @param vmDiskType the vmDiskType value to set.
      * @return the DisallowedConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

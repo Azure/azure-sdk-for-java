@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Dataset reference type. */
+/**
+ * Dataset reference type.
+ */
 @Fluent
 public final class DatasetReference {
     /*
@@ -32,14 +34,15 @@ public final class DatasetReference {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
-    /** Creates an instance of DatasetReference class. */
+    /**
+     * Creates an instance of DatasetReference class.
+     */
     public DatasetReference() {
-        type = "DatasetReference";
     }
 
     /**
      * Get the type property: Dataset reference type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -48,7 +51,7 @@ public final class DatasetReference {
 
     /**
      * Set the type property: Dataset reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DatasetReference object itself.
      */
@@ -59,7 +62,7 @@ public final class DatasetReference {
 
     /**
      * Get the referenceName property: Reference dataset name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -68,7 +71,7 @@ public final class DatasetReference {
 
     /**
      * Set the referenceName property: Reference dataset name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the DatasetReference object itself.
      */
@@ -79,7 +82,7 @@ public final class DatasetReference {
 
     /**
      * Get the parameters property: Arguments for dataset.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> parameters() {
@@ -88,7 +91,7 @@ public final class DatasetReference {
 
     /**
      * Set the parameters property: Arguments for dataset.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatasetReference object itself.
      */
@@ -99,14 +102,13 @@ public final class DatasetReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property referenceName in model DatasetReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property referenceName in model DatasetReference"));
         }
     }
 

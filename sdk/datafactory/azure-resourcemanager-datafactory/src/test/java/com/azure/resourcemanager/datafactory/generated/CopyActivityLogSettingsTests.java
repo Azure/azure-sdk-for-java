@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.models.CopyActivityLogSettings;
 public final class CopyActivityLogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyActivityLogSettings model =
-            BinaryData
-                .fromString("{\"logLevel\":\"datavlyaprjzbx\",\"enableReliableLogging\":\"dataqfrntzbhmxl\"}")
-                .toObject(CopyActivityLogSettings.class);
+        CopyActivityLogSettings model = BinaryData
+            .fromString("{\"logLevel\":\"datavoaoavezwclmzm\",\"enableReliableLogging\":\"datavlghlrcdiq\"}")
+            .toObject(CopyActivityLogSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyActivityLogSettings model =
-            new CopyActivityLogSettings().withLogLevel("datavlyaprjzbx").withEnableReliableLogging("dataqfrntzbhmxl");
+        CopyActivityLogSettings model = new CopyActivityLogSettings().withLogLevel("datavoaoavezwclmzm")
+            .withEnableReliableLogging("datavlghlrcdiq");
         model = BinaryData.fromObject(model).toObject(CopyActivityLogSettings.class);
     }
 }

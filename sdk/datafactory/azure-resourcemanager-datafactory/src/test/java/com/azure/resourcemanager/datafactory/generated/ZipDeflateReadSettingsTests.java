@@ -10,16 +10,14 @@ import com.azure.resourcemanager.datafactory.models.ZipDeflateReadSettings;
 public final class ZipDeflateReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ZipDeflateReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ZipDeflateReadSettings\",\"preserveZipFileNameAsFolder\":\"datarwxf\",\"\":{\"ofegrzfsfuloo\":\"dataghwfiy\"}}")
-                .toObject(ZipDeflateReadSettings.class);
+        ZipDeflateReadSettings model = BinaryData.fromString(
+            "{\"type\":\"ZipDeflateReadSettings\",\"preserveZipFileNameAsFolder\":\"dataufzqvv\",\"\":{\"kzhvf\":\"datazofyld\",\"ui\":\"datajcvnhpe\",\"dbdnmguifq\":\"datawkysgqacbeauv\",\"jpzauugdarfumit\":\"datatoxzxb\"}}")
+            .toObject(ZipDeflateReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZipDeflateReadSettings model = new ZipDeflateReadSettings().withPreserveZipFileNameAsFolder("datarwxf");
+        ZipDeflateReadSettings model = new ZipDeflateReadSettings().withPreserveZipFileNameAsFolder("dataufzqvv");
         model = BinaryData.fromObject(model).toObject(ZipDeflateReadSettings.class);
     }
 }

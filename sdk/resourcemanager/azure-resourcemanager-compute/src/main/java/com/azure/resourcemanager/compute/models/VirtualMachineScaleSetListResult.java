@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Virtual Machine operation response. */
+/**
+ * The List Virtual Machine operation response.
+ */
 @Fluent
 public final class VirtualMachineScaleSetListResult {
     /*
@@ -26,13 +28,15 @@ public final class VirtualMachineScaleSetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualMachineScaleSetListResult class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetListResult class.
+     */
     public VirtualMachineScaleSetListResult() {
     }
 
     /**
      * Get the value property: The list of virtual machine scale sets.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineScaleSetInner> value() {
@@ -41,7 +45,7 @@ public final class VirtualMachineScaleSetListResult {
 
     /**
      * Set the value property: The list of virtual machine scale sets.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineScaleSetListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class VirtualMachineScaleSetListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of Virtual Machine Scale Sets. Call ListNext() with
      * this to fetch the next page of VMSS.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class VirtualMachineScaleSetListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of Virtual Machine Scale Sets. Call ListNext() with
      * this to fetch the next page of VMSS.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineScaleSetListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class VirtualMachineScaleSetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineScaleSetListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model VirtualMachineScaleSetListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

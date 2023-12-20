@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoUserDefinitionResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters to create and update an Azure Cosmos DB Mongo User Definition. */
+/**
+ * Parameters to create and update an Azure Cosmos DB Mongo User Definition.
+ */
 @Fluent
 public final class MongoUserDefinitionCreateUpdateParameters {
     /*
@@ -18,13 +20,15 @@ public final class MongoUserDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
-    /** Creates an instance of MongoUserDefinitionCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoUserDefinitionCreateUpdateParameters class.
+     */
     public MongoUserDefinitionCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB Mongo User Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoUserDefinitionResource innerProperties() {
@@ -33,7 +37,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the username property: The user name for User Definition.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -42,7 +46,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the username property: The user name for User Definition.
-     *
+     * 
      * @param username the username value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -56,7 +60,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -65,7 +69,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @param password the password value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -79,7 +83,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -88,7 +92,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -102,7 +106,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -111,7 +115,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @param customData the customData value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -125,7 +129,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @return the roles value.
      */
     public List<Role> roles() {
@@ -134,7 +138,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -148,7 +152,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Get the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @return the mechanisms value.
      */
     public String mechanisms() {
@@ -157,7 +161,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Set the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @param mechanisms the mechanisms value to set.
      * @return the MongoUserDefinitionCreateUpdateParameters object itself.
      */
@@ -171,7 +175,7 @@ public final class MongoUserDefinitionCreateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

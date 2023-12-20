@@ -9,11 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A custom action that can be performed with a Gallery Application Version. */
+/**
+ * A custom action that can be performed with a Gallery Application Version.
+ */
 @Fluent
 public final class GalleryApplicationCustomAction {
     /*
-     * The name of the custom action.  Must be unique within the Gallery Application Version.
+     * The name of the custom action. Must be unique within the Gallery Application Version.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -36,13 +38,15 @@ public final class GalleryApplicationCustomAction {
     @JsonProperty(value = "parameters")
     private List<GalleryApplicationCustomActionParameter> parameters;
 
-    /** Creates an instance of GalleryApplicationCustomAction class. */
+    /**
+     * Creates an instance of GalleryApplicationCustomAction class.
+     */
     public GalleryApplicationCustomAction() {
     }
 
     /**
      * Get the name property: The name of the custom action. Must be unique within the Gallery Application Version.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Set the name property: The name of the custom action. Must be unique within the Gallery Application Version.
-     *
+     * 
      * @param name the name value to set.
      * @return the GalleryApplicationCustomAction object itself.
      */
@@ -62,7 +66,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Get the script property: The script to run when executing this custom action.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -71,7 +75,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Set the script property: The script to run when executing this custom action.
-     *
+     * 
      * @param script the script value to set.
      * @return the GalleryApplicationCustomAction object itself.
      */
@@ -82,7 +86,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Get the description property: Description to help the users understand what this custom action does.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -91,7 +95,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Set the description property: Description to help the users understand what this custom action does.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryApplicationCustomAction object itself.
      */
@@ -102,7 +106,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Get the parameters property: The parameters that this custom action uses.
-     *
+     * 
      * @return the parameters value.
      */
     public List<GalleryApplicationCustomActionParameter> parameters() {
@@ -111,7 +115,7 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Set the parameters property: The parameters that this custom action uses.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the GalleryApplicationCustomAction object itself.
      */
@@ -122,21 +126,17 @@ public final class GalleryApplicationCustomAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model GalleryApplicationCustomAction"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model GalleryApplicationCustomAction"));
         }
         if (script() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property script in model GalleryApplicationCustomAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property script in model GalleryApplicationCustomAction"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

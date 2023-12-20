@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"origin\":\"tzopbsphrupidgsy\",\"display\":{\"description\":\"jhphoyc\",\"provider\":\"xaobhdxbmtqioqjz\",\"resource\":\"tbmufpo\",\"operation\":\"oizh\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{},{},{}]}}},{\"name\":\"oqijgkdmbpaz\",\"origin\":\"bc\",\"display\":{\"description\":\"dznrbtcqq\",\"provider\":\"qglhq\",\"resource\":\"ufo\",\"operation\":\"jywif\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{}]}}},{\"name\":\"f\",\"origin\":\"lzl\",\"display\":{\"description\":\"rifkwm\",\"provider\":\"ktsizntocipaou\",\"resource\":\"psqucmpoyf\",\"operation\":\"fogknygjofjdde\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}],\"metricSpecifications\":[{},{}]}}}],\"nextLink\":\"wnw\"}")
-                .toObject(OperationListResponse.class);
+        OperationListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"origin\":\"tzopbsphrupidgsy\",\"display\":{\"description\":\"jhphoyc\",\"provider\":\"xaobhdxbmtqioqjz\",\"resource\":\"tbmufpo\",\"operation\":\"oizh\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{},{},{}]}}},{\"name\":\"oqijgkdmbpaz\",\"origin\":\"bc\",\"display\":{\"description\":\"dznrbtcqq\",\"provider\":\"qglhq\",\"resource\":\"ufo\",\"operation\":\"jywif\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{}]}}},{\"name\":\"f\",\"origin\":\"lzl\",\"display\":{\"description\":\"rifkwm\",\"provider\":\"ktsizntocipaou\",\"resource\":\"psqucmpoyf\",\"operation\":\"fogknygjofjdde\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}],\"metricSpecifications\":[{},{}]}}}],\"nextLink\":\"wnw\"}")
+            .toObject(OperationListResponse.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals("tzopbsphrupidgsy", model.value().get(0).origin());
         Assertions.assertEquals("jhphoyc", model.value().get(0).display().description());
@@ -33,74 +31,33 @@ public final class OperationListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResponse model =
-            new OperationListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner()
-                                .withName("quvgjxpybczme")
-                                .withOrigin("tzopbsphrupidgsy")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withDescription("jhphoyc")
-                                        .withProvider("xaobhdxbmtqioqjz")
-                                        .withResource("tbmufpo")
-                                        .withOperation("oizh"))
-                                .withServiceSpecification(
-                                    new OperationServiceSpecification()
-                                        .withLogSpecifications(
-                                            Arrays
-                                                .asList(
-                                                    new OperationLogSpecification(),
-                                                    new OperationLogSpecification(),
-                                                    new OperationLogSpecification()))
-                                        .withMetricSpecifications(
-                                            Arrays
-                                                .asList(
-                                                    new OperationMetricSpecification(),
-                                                    new OperationMetricSpecification(),
-                                                    new OperationMetricSpecification()))),
-                            new OperationInner()
-                                .withName("oqijgkdmbpaz")
-                                .withOrigin("bc")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withDescription("dznrbtcqq")
-                                        .withProvider("qglhq")
-                                        .withResource("ufo")
-                                        .withOperation("jywif"))
-                                .withServiceSpecification(
-                                    new OperationServiceSpecification()
-                                        .withLogSpecifications(
-                                            Arrays
-                                                .asList(
-                                                    new OperationLogSpecification(), new OperationLogSpecification()))
-                                        .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification()))),
-                            new OperationInner()
-                                .withName("f")
-                                .withOrigin("lzl")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withDescription("rifkwm")
-                                        .withProvider("ktsizntocipaou")
-                                        .withResource("psqucmpoyf")
-                                        .withOperation("fogknygjofjdde"))
-                                .withServiceSpecification(
-                                    new OperationServiceSpecification()
-                                        .withLogSpecifications(
-                                            Arrays
-                                                .asList(
-                                                    new OperationLogSpecification(),
-                                                    new OperationLogSpecification(),
-                                                    new OperationLogSpecification(),
-                                                    new OperationLogSpecification()))
-                                        .withMetricSpecifications(
-                                            Arrays
-                                                .asList(
-                                                    new OperationMetricSpecification(),
-                                                    new OperationMetricSpecification())))))
-                .withNextLink("wnw");
+        OperationListResponse model = new OperationListResponse()
+            .withValue(Arrays.asList(
+                new OperationInner().withName("quvgjxpybczme").withOrigin("tzopbsphrupidgsy")
+                    .withDisplay(new OperationDisplay().withDescription("jhphoyc").withProvider("xaobhdxbmtqioqjz")
+                        .withResource("tbmufpo").withOperation("oizh"))
+                    .withServiceSpecification(new OperationServiceSpecification()
+                        .withLogSpecifications(Arrays.asList(new OperationLogSpecification(),
+                            new OperationLogSpecification(), new OperationLogSpecification()))
+                        .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification(),
+                            new OperationMetricSpecification(), new OperationMetricSpecification()))),
+                new OperationInner().withName("oqijgkdmbpaz").withOrigin("bc")
+                    .withDisplay(new OperationDisplay().withDescription("dznrbtcqq").withProvider("qglhq")
+                        .withResource("ufo").withOperation("jywif"))
+                    .withServiceSpecification(new OperationServiceSpecification()
+                        .withLogSpecifications(
+                            Arrays.asList(new OperationLogSpecification(), new OperationLogSpecification()))
+                        .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification()))),
+                new OperationInner().withName("f").withOrigin("lzl")
+                    .withDisplay(new OperationDisplay().withDescription("rifkwm").withProvider("ktsizntocipaou")
+                        .withResource("psqucmpoyf").withOperation("fogknygjofjdde"))
+                    .withServiceSpecification(new OperationServiceSpecification()
+                        .withLogSpecifications(
+                            Arrays.asList(new OperationLogSpecification(), new OperationLogSpecification(),
+                                new OperationLogSpecification(), new OperationLogSpecification()))
+                        .withMetricSpecifications(
+                            Arrays.asList(new OperationMetricSpecification(), new OperationMetricSpecification())))))
+            .withNextLink("wnw");
         model = BinaryData.fromObject(model).toObject(OperationListResponse.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals("tzopbsphrupidgsy", model.value().get(0).origin());

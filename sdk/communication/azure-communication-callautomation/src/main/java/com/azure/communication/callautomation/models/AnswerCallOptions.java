@@ -25,11 +25,16 @@ public final class AnswerCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+    /**
+     * Transcription Configuration.
      */
-    private String azureCognitiveServicesUrl;
-    
+    private TranscriptionOptions transcriptionOptions;
+
+    /*
+     * AI options for the call.
+     */
+    private CallIntelligenceOptions callIntelligenceOptions;
+
     /**
      * The operational context
      */
@@ -65,24 +70,14 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the Transcription configuration.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the transcriptionConfiguration.
      */
-    public String getAzureCognitiveServicesUrl() {
-        return this.azureCognitiveServicesUrl;
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
     }
 
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-    
     /**
      * Get the operationContext.
      *
@@ -93,28 +88,16 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Set the media streaming configuration.
+     * Set the transcription configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param transcriptionOptions The transcription configuration.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
+    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
-        return this;
-    }
-    
      /**
      * Set the operationContext.
      *
@@ -123,6 +106,46 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+    /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingOptions The media streaming configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }

@@ -20,7 +20,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Firewall resource. */
+/**
+ * Azure Firewall resource.
+ */
 @Fluent
 public final class AzureFirewallInner extends Resource {
     /*
@@ -47,13 +49,15 @@ public final class AzureFirewallInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of AzureFirewallInner class. */
+    /**
+     * Creates an instance of AzureFirewallInner class.
+     */
     public AzureFirewallInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureFirewallPropertiesFormat innerProperties() {
@@ -62,7 +66,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -71,7 +75,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -82,7 +86,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -91,7 +95,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -100,7 +104,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -109,14 +113,18 @@ public final class AzureFirewallInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFirewallInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFirewallInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -125,7 +133,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     *
+     * 
      * @return the applicationRuleCollections value.
      */
     public List<AzureFirewallApplicationRuleCollection> applicationRuleCollections() {
@@ -134,12 +142,12 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     *
+     * 
      * @param applicationRuleCollections the applicationRuleCollections value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withApplicationRuleCollections(
-        List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
+    public AzureFirewallInner
+        withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
@@ -149,7 +157,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     *
+     * 
      * @return the natRuleCollections value.
      */
     public List<AzureFirewallNatRuleCollection> natRuleCollections() {
@@ -158,7 +166,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     *
+     * 
      * @param natRuleCollections the natRuleCollections value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -172,7 +180,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     *
+     * 
      * @return the networkRuleCollections value.
      */
     public List<AzureFirewallNetworkRuleCollection> networkRuleCollections() {
@@ -181,12 +189,12 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     *
+     * 
      * @param networkRuleCollections the networkRuleCollections value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withNetworkRuleCollections(
-        List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
+    public AzureFirewallInner
+        withNetworkRuleCollections(List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
@@ -196,7 +204,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<AzureFirewallIpConfiguration> ipConfigurations() {
@@ -205,7 +213,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -219,7 +227,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     *
+     * 
      * @return the managementIpConfiguration value.
      */
     public AzureFirewallIpConfiguration managementIpConfiguration() {
@@ -228,7 +236,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     *
+     * 
      * @param managementIpConfiguration the managementIpConfiguration value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -242,7 +250,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -251,7 +259,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -260,7 +268,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -274,7 +282,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the virtualHub property: The virtualHub to which the firewall belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -283,7 +291,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the virtualHub property: The virtualHub to which the firewall belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -297,7 +305,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     *
+     * 
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
@@ -306,7 +314,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     *
+     * 
      * @param firewallPolicy the firewallPolicy value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -320,7 +328,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     *
+     * 
      * @return the hubIpAddresses value.
      */
     public HubIpAddresses hubIpAddresses() {
@@ -329,7 +337,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     *
+     * 
      * @param hubIpAddresses the hubIpAddresses value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -343,7 +351,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the ipGroups property: IpGroups associated with AzureFirewall.
-     *
+     * 
      * @return the ipGroups value.
      */
     public List<AzureFirewallIpGroups> ipGroups() {
@@ -352,7 +360,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the sku property: The Azure Firewall Resource SKU.
-     *
+     * 
      * @return the sku value.
      */
     public AzureFirewallSku sku() {
@@ -361,7 +369,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the sku property: The Azure Firewall Resource SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -375,7 +383,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Get the additionalProperties property: The additional properties used to further config this azure firewall.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Map<String, String> additionalProperties() {
@@ -384,7 +392,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Set the additionalProperties property: The additional properties used to further config this azure firewall.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the AzureFirewallInner object itself.
      */
@@ -398,7 +406,7 @@ public final class AzureFirewallInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Worker pool of an App Service Environment ARM resource. */
+/**
+ * Worker pool of an App Service Environment ARM resource.
+ */
 @Fluent
 public final class WorkerPoolResourceInner extends ProxyOnlyResource {
     /*
@@ -26,13 +28,15 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "sku")
     private SkuDescription sku;
 
-    /** Creates an instance of WorkerPoolResourceInner class. */
+    /**
+     * Creates an instance of WorkerPoolResourceInner class.
+     */
     public WorkerPoolResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkerPool innerProperties() {
@@ -41,7 +45,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the sku property: Description of a SKU for a scalable resource.
-     *
+     * 
      * @return the sku value.
      */
     public SkuDescription sku() {
@@ -50,7 +54,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the sku property: Description of a SKU for a scalable resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WorkerPoolResourceInner object itself.
      */
@@ -59,7 +63,9 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkerPoolResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -68,7 +74,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the workerSizeId property: Worker size ID for referencing this worker pool.
-     *
+     * 
      * @return the workerSizeId value.
      */
     public Integer workerSizeId() {
@@ -77,7 +83,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the workerSizeId property: Worker size ID for referencing this worker pool.
-     *
+     * 
      * @param workerSizeId the workerSizeId value to set.
      * @return the WorkerPoolResourceInner object itself.
      */
@@ -91,7 +97,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the computeMode property: Shared or dedicated app hosting.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -100,7 +106,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the computeMode property: Shared or dedicated app hosting.
-     *
+     * 
      * @param computeMode the computeMode value to set.
      * @return the WorkerPoolResourceInner object itself.
      */
@@ -114,7 +120,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the workerSize property: VM size of the worker pool instances.
-     *
+     * 
      * @return the workerSize value.
      */
     public String workerSize() {
@@ -123,7 +129,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the workerSize property: VM size of the worker pool instances.
-     *
+     * 
      * @param workerSize the workerSize value to set.
      * @return the WorkerPoolResourceInner object itself.
      */
@@ -137,7 +143,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the workerCount property: Number of instances in the worker pool.
-     *
+     * 
      * @return the workerCount value.
      */
     public Integer workerCount() {
@@ -146,7 +152,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the workerCount property: Number of instances in the worker pool.
-     *
+     * 
      * @param workerCount the workerCount value to set.
      * @return the WorkerPoolResourceInner object itself.
      */
@@ -160,7 +166,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the instanceNames property: Names of all instances in the worker pool (read only).
-     *
+     * 
      * @return the instanceNames value.
      */
     public List<String> instanceNames() {
@@ -169,7 +175,7 @@ public final class WorkerPoolResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

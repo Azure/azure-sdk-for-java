@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Network profile resource. */
+/**
+ * Network profile resource.
+ */
 @Fluent
 public final class NetworkProfileInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class NetworkProfileInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkProfileInner class. */
+    /**
+     * Creates an instance of NetworkProfileInner class.
+     */
     public NetworkProfileInner() {
     }
 
     /**
      * Get the innerProperties property: Network profile properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkProfilePropertiesFormat innerProperties() {
@@ -49,7 +53,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -58,7 +62,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +71,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkProfileInner object itself.
      */
@@ -76,14 +80,18 @@ public final class NetworkProfileInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +100,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Get the containerNetworkInterfaces property: List of child container network interfaces.
-     *
+     * 
      * @return the containerNetworkInterfaces value.
      */
     public List<ContainerNetworkInterface> containerNetworkInterfaces() {
@@ -102,7 +110,7 @@ public final class NetworkProfileInner extends Resource {
     /**
      * Get the containerNetworkInterfaceConfigurations property: List of chid container network interface
      * configurations.
-     *
+     * 
      * @return the containerNetworkInterfaceConfigurations value.
      */
     public List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations() {
@@ -112,7 +120,7 @@ public final class NetworkProfileInner extends Resource {
     /**
      * Set the containerNetworkInterfaceConfigurations property: List of chid container network interface
      * configurations.
-     *
+     * 
      * @param containerNetworkInterfaceConfigurations the containerNetworkInterfaceConfigurations value to set.
      * @return the NetworkProfileInner object itself.
      */
@@ -127,7 +135,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network profile resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -136,7 +144,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network profile resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -145,7 +153,7 @@ public final class NetworkProfileInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

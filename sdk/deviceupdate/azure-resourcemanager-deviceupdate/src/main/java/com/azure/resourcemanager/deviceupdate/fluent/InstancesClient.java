@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceupdate.fluent.models.InstanceInner;
 import com.azure.resourcemanager.deviceupdate.models.TagUpdate;
 
-/** An instance of this class provides access to all the operations defined in InstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InstancesClient.
+ */
 public interface InstancesClient {
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface InstancesClient {
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -45,7 +47,23 @@ public interface InstancesClient {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update instance details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InstanceInner> getWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context);
+
+    /**
+     * Returns instance details for the given instance and account name.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -58,37 +76,8 @@ public interface InstancesClient {
     InstanceInner get(String resourceGroupName, String accountName, String instanceName);
 
     /**
-     * Returns instance details for the given instance and account name.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InstanceInner> getWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context);
-
-    /**
      * Checks whether instance exists.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void head(String resourceGroupName, String accountName, String instanceName);
-
-    /**
-     * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -102,8 +91,21 @@ public interface InstancesClient {
     Response<Void> headWithResponse(String resourceGroupName, String accountName, String instanceName, Context context);
 
     /**
+     * Checks whether instance exists.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void head(String resourceGroupName, String accountName, String instanceName);
+
+    /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -114,12 +116,12 @@ public interface InstancesClient {
      * @return the {@link SyncPoller} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance);
+    SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(String resourceGroupName, String accountName,
+        String instanceName, InstanceInner instance);
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -131,12 +133,12 @@ public interface InstancesClient {
      * @return the {@link SyncPoller} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context);
+    SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(String resourceGroupName, String accountName,
+        String instanceName, InstanceInner instance, Context context);
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -151,7 +153,7 @@ public interface InstancesClient {
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -163,12 +165,12 @@ public interface InstancesClient {
      * @return device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InstanceInner create(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context);
+    InstanceInner create(String resourceGroupName, String accountName, String instanceName, InstanceInner instance,
+        Context context);
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -182,7 +184,7 @@ public interface InstancesClient {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -193,12 +195,12 @@ public interface InstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String instanceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String instanceName,
+        Context context);
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -211,7 +213,7 @@ public interface InstancesClient {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -225,22 +227,7 @@ public interface InstancesClient {
 
     /**
      * Updates instance's tags.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @param tagUpdatePayload Updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InstanceInner update(String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload);
-
-    /**
-     * Updates instance's tags.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -252,6 +239,21 @@ public interface InstancesClient {
      * @return device Update instance details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InstanceInner> updateWithResponse(
-        String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload, Context context);
+    Response<InstanceInner> updateWithResponse(String resourceGroupName, String accountName, String instanceName,
+        TagUpdate tagUpdatePayload, Context context);
+
+    /**
+     * Updates instance's tags.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @param tagUpdatePayload Updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update instance details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    InstanceInner update(String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload);
 }

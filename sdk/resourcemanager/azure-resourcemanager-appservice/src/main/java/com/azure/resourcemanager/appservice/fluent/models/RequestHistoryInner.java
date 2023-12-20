@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The request history. */
+/**
+ * The request history.
+ */
 @Fluent
 public final class RequestHistoryInner extends WorkflowResource {
     /*
@@ -19,13 +21,15 @@ public final class RequestHistoryInner extends WorkflowResource {
     @JsonProperty(value = "properties")
     private RequestHistoryProperties properties;
 
-    /** Creates an instance of RequestHistoryInner class. */
+    /**
+     * Creates an instance of RequestHistoryInner class.
+     */
     public RequestHistoryInner() {
     }
 
     /**
      * Get the properties property: The request history properties.
-     *
+     * 
      * @return the properties value.
      */
     public RequestHistoryProperties properties() {
@@ -34,7 +38,7 @@ public final class RequestHistoryInner extends WorkflowResource {
 
     /**
      * Set the properties property: The request history properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RequestHistoryInner object itself.
      */
@@ -43,14 +47,18 @@ public final class RequestHistoryInner extends WorkflowResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestHistoryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestHistoryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -59,7 +67,7 @@ public final class RequestHistoryInner extends WorkflowResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

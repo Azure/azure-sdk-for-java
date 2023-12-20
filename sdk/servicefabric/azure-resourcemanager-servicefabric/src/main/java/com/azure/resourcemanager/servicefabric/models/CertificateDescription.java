@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the certificate details. */
+/**
+ * Describes the certificate details.
+ */
 @Fluent
 public final class CertificateDescription {
     /*
@@ -29,13 +31,15 @@ public final class CertificateDescription {
     @JsonProperty(value = "x509StoreName")
     private StoreName x509StoreName;
 
-    /** Creates an instance of CertificateDescription class. */
+    /**
+     * Creates an instance of CertificateDescription class.
+     */
     public CertificateDescription() {
     }
 
     /**
      * Get the thumbprint property: Thumbprint of the primary certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -44,7 +48,7 @@ public final class CertificateDescription {
 
     /**
      * Set the thumbprint property: Thumbprint of the primary certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateDescription object itself.
      */
@@ -55,7 +59,7 @@ public final class CertificateDescription {
 
     /**
      * Get the thumbprintSecondary property: Thumbprint of the secondary certificate.
-     *
+     * 
      * @return the thumbprintSecondary value.
      */
     public String thumbprintSecondary() {
@@ -64,7 +68,7 @@ public final class CertificateDescription {
 
     /**
      * Set the thumbprintSecondary property: Thumbprint of the secondary certificate.
-     *
+     * 
      * @param thumbprintSecondary the thumbprintSecondary value to set.
      * @return the CertificateDescription object itself.
      */
@@ -75,7 +79,7 @@ public final class CertificateDescription {
 
     /**
      * Get the x509StoreName property: The local certificate store location.
-     *
+     * 
      * @return the x509StoreName value.
      */
     public StoreName x509StoreName() {
@@ -84,7 +88,7 @@ public final class CertificateDescription {
 
     /**
      * Set the x509StoreName property: The local certificate store location.
-     *
+     * 
      * @param x509StoreName the x509StoreName value to set.
      * @return the CertificateDescription object itself.
      */
@@ -95,15 +99,13 @@ public final class CertificateDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (thumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property thumbprint in model CertificateDescription"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property thumbprint in model CertificateDescription"));
         }
     }
 

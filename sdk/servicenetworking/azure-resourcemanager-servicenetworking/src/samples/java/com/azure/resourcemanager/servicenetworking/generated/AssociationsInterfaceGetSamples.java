@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-/** Samples for AssociationsInterface Get. */
+/**
+ * Samples for AssociationsInterface Get.
+ */
 public final class AssociationsInterfaceGetSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/AssociationGet.json
+     * x-ms-original-file:
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * AssociationGet.json
      */
     /**
      * Sample code: Get Association.
-     *
+     * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {

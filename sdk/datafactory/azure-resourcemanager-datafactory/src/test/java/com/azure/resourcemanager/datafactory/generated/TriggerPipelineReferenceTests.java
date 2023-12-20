@@ -14,21 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerPipelineReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerPipelineReference model =
-            BinaryData
-                .fromString(
-                    "{\"pipelineReference\":{\"referenceName\":\"wkpphefsb\",\"name\":\"lbzxomeikjc\"},\"parameters\":{\"qbxyxoyfpuqqi\":\"dataacnmwpfsuqtaaz\"}}")
-                .toObject(TriggerPipelineReference.class);
+        TriggerPipelineReference model = BinaryData.fromString(
+            "{\"pipelineReference\":{\"referenceName\":\"wkpphefsb\",\"name\":\"lbzxomeikjc\"},\"parameters\":{\"qbxyxoyfpuqqi\":\"dataacnmwpfsuqtaaz\"}}")
+            .toObject(TriggerPipelineReference.class);
         Assertions.assertEquals("wkpphefsb", model.pipelineReference().referenceName());
         Assertions.assertEquals("lbzxomeikjc", model.pipelineReference().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerPipelineReference model =
-            new TriggerPipelineReference()
-                .withPipelineReference(new PipelineReference().withReferenceName("wkpphefsb").withName("lbzxomeikjc"))
-                .withParameters(mapOf("qbxyxoyfpuqqi", "dataacnmwpfsuqtaaz"));
+        TriggerPipelineReference model = new TriggerPipelineReference()
+            .withPipelineReference(new PipelineReference().withReferenceName("wkpphefsb").withName("lbzxomeikjc"))
+            .withParameters(mapOf("qbxyxoyfpuqqi", "dataacnmwpfsuqtaaz"));
         model = BinaryData.fromObject(model).toObject(TriggerPipelineReference.class);
         Assertions.assertEquals("wkpphefsb", model.pipelineReference().referenceName());
         Assertions.assertEquals("lbzxomeikjc", model.pipelineReference().name());

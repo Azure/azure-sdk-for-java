@@ -5,67 +5,69 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
-/** The SeriesResult model. */
+/**
+ * The SeriesResult model.
+ */
 @Fluent
-public final class SeriesResult {
+public final class SeriesResult implements JsonSerializable<SeriesResult> {
     /*
      * The series property.
      */
-    @JsonProperty(value = "series", required = true)
     private SeriesIdentity series;
 
     /*
      * timestamps of the series
      */
-    @JsonProperty(value = "timestampList", required = true)
     private List<OffsetDateTime> timestampList;
 
     /*
      * values of the series
      */
-    @JsonProperty(value = "valueList", required = true)
     private List<Double> valueList;
 
     /*
      * whether points of the series are anomalies
      */
-    @JsonProperty(value = "isAnomalyList", required = true)
     private List<Boolean> isAnomalyList;
 
     /*
      * period calculated on each point of the series
      */
-    @JsonProperty(value = "periodList", required = true)
     private List<Integer> periodList;
 
     /*
      * expected values of the series given by smart detector
      */
-    @JsonProperty(value = "expectedValueList", required = true)
     private List<Double> expectedValueList;
 
     /*
      * lower boundary list of the series given by smart detector
      */
-    @JsonProperty(value = "lowerBoundaryList", required = true)
     private List<Double> lowerBoundaryList;
 
     /*
      * upper boundary list of the series given by smart detector
      */
-    @JsonProperty(value = "upperBoundaryList", required = true)
     private List<Double> upperBoundaryList;
 
-    /** Creates an instance of SeriesResult class. */
-    public SeriesResult() {}
+    /**
+     * Creates an instance of SeriesResult class.
+     */
+    public SeriesResult() {
+    }
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public SeriesIdentity getSeries() {
@@ -74,7 +76,7 @@ public final class SeriesResult {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the SeriesResult object itself.
      */
@@ -85,7 +87,7 @@ public final class SeriesResult {
 
     /**
      * Get the timestampList property: timestamps of the series.
-     *
+     * 
      * @return the timestampList value.
      */
     public List<OffsetDateTime> getTimestampList() {
@@ -94,7 +96,7 @@ public final class SeriesResult {
 
     /**
      * Set the timestampList property: timestamps of the series.
-     *
+     * 
      * @param timestampList the timestampList value to set.
      * @return the SeriesResult object itself.
      */
@@ -105,7 +107,7 @@ public final class SeriesResult {
 
     /**
      * Get the valueList property: values of the series.
-     *
+     * 
      * @return the valueList value.
      */
     public List<Double> getValueList() {
@@ -114,7 +116,7 @@ public final class SeriesResult {
 
     /**
      * Set the valueList property: values of the series.
-     *
+     * 
      * @param valueList the valueList value to set.
      * @return the SeriesResult object itself.
      */
@@ -125,7 +127,7 @@ public final class SeriesResult {
 
     /**
      * Get the isAnomalyList property: whether points of the series are anomalies.
-     *
+     * 
      * @return the isAnomalyList value.
      */
     public List<Boolean> getIsAnomalyList() {
@@ -134,7 +136,7 @@ public final class SeriesResult {
 
     /**
      * Set the isAnomalyList property: whether points of the series are anomalies.
-     *
+     * 
      * @param isAnomalyList the isAnomalyList value to set.
      * @return the SeriesResult object itself.
      */
@@ -145,7 +147,7 @@ public final class SeriesResult {
 
     /**
      * Get the periodList property: period calculated on each point of the series.
-     *
+     * 
      * @return the periodList value.
      */
     public List<Integer> getPeriodList() {
@@ -154,7 +156,7 @@ public final class SeriesResult {
 
     /**
      * Set the periodList property: period calculated on each point of the series.
-     *
+     * 
      * @param periodList the periodList value to set.
      * @return the SeriesResult object itself.
      */
@@ -165,7 +167,7 @@ public final class SeriesResult {
 
     /**
      * Get the expectedValueList property: expected values of the series given by smart detector.
-     *
+     * 
      * @return the expectedValueList value.
      */
     public List<Double> getExpectedValueList() {
@@ -174,7 +176,7 @@ public final class SeriesResult {
 
     /**
      * Set the expectedValueList property: expected values of the series given by smart detector.
-     *
+     * 
      * @param expectedValueList the expectedValueList value to set.
      * @return the SeriesResult object itself.
      */
@@ -185,7 +187,7 @@ public final class SeriesResult {
 
     /**
      * Get the lowerBoundaryList property: lower boundary list of the series given by smart detector.
-     *
+     * 
      * @return the lowerBoundaryList value.
      */
     public List<Double> getLowerBoundaryList() {
@@ -194,7 +196,7 @@ public final class SeriesResult {
 
     /**
      * Set the lowerBoundaryList property: lower boundary list of the series given by smart detector.
-     *
+     * 
      * @param lowerBoundaryList the lowerBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
@@ -205,7 +207,7 @@ public final class SeriesResult {
 
     /**
      * Get the upperBoundaryList property: upper boundary list of the series given by smart detector.
-     *
+     * 
      * @return the upperBoundaryList value.
      */
     public List<Double> getUpperBoundaryList() {
@@ -214,12 +216,80 @@ public final class SeriesResult {
 
     /**
      * Set the upperBoundaryList property: upper boundary list of the series given by smart detector.
-     *
+     * 
      * @param upperBoundaryList the upperBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
     public SeriesResult setUpperBoundaryList(List<Double> upperBoundaryList) {
         this.upperBoundaryList = upperBoundaryList;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("series", this.series);
+        jsonWriter.writeArrayField("timestampList", this.timestampList,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("valueList", this.valueList, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("isAnomalyList", this.isAnomalyList,
+            (writer, element) -> writer.writeBoolean(element));
+        jsonWriter.writeArrayField("periodList", this.periodList, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("expectedValueList", this.expectedValueList,
+            (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("lowerBoundaryList", this.lowerBoundaryList,
+            (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("upperBoundaryList", this.upperBoundaryList,
+            (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SeriesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SeriesResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SeriesResult.
+     */
+    public static SeriesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SeriesResult deserializedSeriesResult = new SeriesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("series".equals(fieldName)) {
+                    deserializedSeriesResult.series = SeriesIdentity.fromJson(reader);
+                } else if ("timestampList".equals(fieldName)) {
+                    List<OffsetDateTime> timestampList = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedSeriesResult.timestampList = timestampList;
+                } else if ("valueList".equals(fieldName)) {
+                    List<Double> valueList = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSeriesResult.valueList = valueList;
+                } else if ("isAnomalyList".equals(fieldName)) {
+                    List<Boolean> isAnomalyList = reader.readArray(reader1 -> reader1.getBoolean());
+                    deserializedSeriesResult.isAnomalyList = isAnomalyList;
+                } else if ("periodList".equals(fieldName)) {
+                    List<Integer> periodList = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedSeriesResult.periodList = periodList;
+                } else if ("expectedValueList".equals(fieldName)) {
+                    List<Double> expectedValueList = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSeriesResult.expectedValueList = expectedValueList;
+                } else if ("lowerBoundaryList".equals(fieldName)) {
+                    List<Double> lowerBoundaryList = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSeriesResult.lowerBoundaryList = lowerBoundaryList;
+                } else if ("upperBoundaryList".equals(fieldName)) {
+                    List<Double> upperBoundaryList = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSeriesResult.upperBoundaryList = upperBoundaryList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSeriesResult;
+        });
     }
 }

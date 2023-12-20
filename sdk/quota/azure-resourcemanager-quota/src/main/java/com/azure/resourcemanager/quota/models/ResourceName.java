@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quota.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Name of the resource provided by the resource Provider. When requesting quota, use this property name. */
+/**
+ * Name of the resource provided by the resource Provider. When requesting quota, use this property name.
+ */
 @Fluent
 public final class ResourceName {
     /*
@@ -22,13 +24,15 @@ public final class ResourceName {
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
-    /** Creates an instance of ResourceName class. */
+    /**
+     * Creates an instance of ResourceName class.
+     */
     public ResourceName() {
     }
 
     /**
      * Get the value property: Resource name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class ResourceName {
 
     /**
      * Set the value property: Resource name.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceName object itself.
      */
@@ -48,7 +52,7 @@ public final class ResourceName {
 
     /**
      * Get the localizedValue property: Resource display name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class ResourceName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Installation of Azure PowerShell type properties. */
+/**
+ * Installation of Azure PowerShell type properties.
+ */
 @Fluent
 public final class AzPowerShellSetupTypeProperties {
     /*
@@ -17,13 +19,15 @@ public final class AzPowerShellSetupTypeProperties {
     @JsonProperty(value = "version", required = true)
     private String version;
 
-    /** Creates an instance of AzPowerShellSetupTypeProperties class. */
+    /**
+     * Creates an instance of AzPowerShellSetupTypeProperties class.
+     */
     public AzPowerShellSetupTypeProperties() {
     }
 
     /**
      * Get the version property: The required version of Azure PowerShell to install.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -32,7 +36,7 @@ public final class AzPowerShellSetupTypeProperties {
 
     /**
      * Set the version property: The required version of Azure PowerShell to install.
-     *
+     * 
      * @param version the version value to set.
      * @return the AzPowerShellSetupTypeProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class AzPowerShellSetupTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (version() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property version in model AzPowerShellSetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property version in model AzPowerShellSetupTypeProperties"));
         }
     }
 

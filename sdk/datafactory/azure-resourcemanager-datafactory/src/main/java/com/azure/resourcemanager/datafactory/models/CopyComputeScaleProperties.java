@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** CopyComputeScale properties for managed integration runtime. */
+/**
+ * CopyComputeScale properties for managed integration runtime.
+ */
 @Fluent
 public final class CopyComputeScaleProperties {
     /*
@@ -30,16 +32,19 @@ public final class CopyComputeScaleProperties {
     /*
      * CopyComputeScale properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CopyComputeScaleProperties class. */
+    /**
+     * Creates an instance of CopyComputeScaleProperties class.
+     */
     public CopyComputeScaleProperties() {
     }
 
     /**
      * Get the dataIntegrationUnit property: DIU number setting reserved for copy activity execution. Supported values
      * are multiples of 4 in range 4-256.
-     *
+     * 
      * @return the dataIntegrationUnit value.
      */
     public Integer dataIntegrationUnit() {
@@ -49,7 +54,7 @@ public final class CopyComputeScaleProperties {
     /**
      * Set the dataIntegrationUnit property: DIU number setting reserved for copy activity execution. Supported values
      * are multiples of 4 in range 4-256.
-     *
+     * 
      * @param dataIntegrationUnit the dataIntegrationUnit value to set.
      * @return the CopyComputeScaleProperties object itself.
      */
@@ -61,7 +66,7 @@ public final class CopyComputeScaleProperties {
     /**
      * Get the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute copy
      * activity.
-     *
+     * 
      * @return the timeToLive value.
      */
     public Integer timeToLive() {
@@ -71,7 +76,7 @@ public final class CopyComputeScaleProperties {
     /**
      * Set the timeToLive property: Time to live (in minutes) setting of integration runtime which will execute copy
      * activity.
-     *
+     * 
      * @param timeToLive the timeToLive value to set.
      * @return the CopyComputeScaleProperties object itself.
      */
@@ -82,7 +87,7 @@ public final class CopyComputeScaleProperties {
 
     /**
      * Get the additionalProperties property: CopyComputeScale properties for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -92,7 +97,7 @@ public final class CopyComputeScaleProperties {
 
     /**
      * Set the additionalProperties property: CopyComputeScale properties for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopyComputeScaleProperties object itself.
      */
@@ -111,7 +116,7 @@ public final class CopyComputeScaleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

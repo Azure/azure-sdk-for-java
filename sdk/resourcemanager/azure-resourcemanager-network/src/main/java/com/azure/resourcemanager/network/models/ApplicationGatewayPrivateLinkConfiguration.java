@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivate
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private Link Configuration on an application gateway. */
+/**
+ * Private Link Configuration on an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkConfiguration class.
+     */
     public ApplicationGatewayPrivateLinkConfiguration() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway private link configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPrivateLinkConfigurationProperties innerProperties() {
@@ -52,7 +56,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Get the name property: Name of the private link configuration that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Set the name property: Name of the private link configuration that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPrivateLinkConfiguration object itself.
      */
@@ -72,7 +76,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPrivateLinkConfiguration withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations() {
@@ -106,12 +112,12 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Set the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ApplicationGatewayPrivateLinkConfiguration object itself.
      */
-    public ApplicationGatewayPrivateLinkConfiguration withIpConfigurations(
-        List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations) {
+    public ApplicationGatewayPrivateLinkConfiguration
+        withIpConfigurations(List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPrivateLinkConfigurationProperties();
         }
@@ -120,8 +126,9 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the application gateway private link configuration.
-     *
+     * Get the provisioningState property: The provisioning state of the application gateway private link
+     * configuration.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,7 +137,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

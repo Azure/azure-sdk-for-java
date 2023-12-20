@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The architecture of the image. Applicable to OS disks only. */
+/**
+ * The architecture of the image. Applicable to OS disks only.
+ */
 public final class Architecture extends ExpandableStringEnum<Architecture> {
-    /** Static value x64 for Architecture. */
+    /**
+     * Static value x64 for Architecture.
+     */
     public static final Architecture X64 = fromString("x64");
 
-    /** Static value Arm64 for Architecture. */
+    /**
+     * Static value Arm64 for Architecture.
+     */
     public static final Architecture ARM64 = fromString("Arm64");
 
     /**
      * Creates a new instance of Architecture value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
 
     /**
      * Creates or finds a Architecture from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Architecture.
      */
@@ -38,7 +44,7 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
 
     /**
      * Gets known Architecture values.
-     *
+     * 
      * @return known Architecture values.
      */
     public static Collection<Architecture> values() {

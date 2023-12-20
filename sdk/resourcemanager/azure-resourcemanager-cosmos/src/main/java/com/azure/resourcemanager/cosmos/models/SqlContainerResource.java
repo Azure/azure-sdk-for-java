@@ -7,8 +7,11 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Cosmos DB SQL container resource object. */
+/**
+ * Cosmos DB SQL container resource object.
+ */
 @Fluent
 public class SqlContainerResource {
     /*
@@ -61,13 +64,33 @@ public class SqlContainerResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
-    /** Creates an instance of SqlContainerResource class. */
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
+    /*
+     * List of computed properties
+     */
+    @JsonProperty(value = "computedProperties")
+    private List<ComputedProperty> computedProperties;
+
+    /**
+     * Creates an instance of SqlContainerResource class.
+     */
     public SqlContainerResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB SQL container.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +99,7 @@ public class SqlContainerResource {
 
     /**
      * Set the id property: Name of the Cosmos DB SQL container.
-     *
+     * 
      * @param id the id value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -88,7 +111,7 @@ public class SqlContainerResource {
     /**
      * Get the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the container.
-     *
+     * 
      * @return the indexingPolicy value.
      */
     public IndexingPolicy indexingPolicy() {
@@ -98,7 +121,7 @@ public class SqlContainerResource {
     /**
      * Set the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the container.
-     *
+     * 
      * @param indexingPolicy the indexingPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -110,7 +133,7 @@ public class SqlContainerResource {
     /**
      * Get the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     *
+     * 
      * @return the partitionKey value.
      */
     public ContainerPartitionKey partitionKey() {
@@ -120,7 +143,7 @@ public class SqlContainerResource {
     /**
      * Set the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -131,7 +154,7 @@ public class SqlContainerResource {
 
     /**
      * Get the defaultTtl property: Default time to live.
-     *
+     * 
      * @return the defaultTtl value.
      */
     public Integer defaultTtl() {
@@ -140,7 +163,7 @@ public class SqlContainerResource {
 
     /**
      * Set the defaultTtl property: Default time to live.
-     *
+     * 
      * @param defaultTtl the defaultTtl value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -152,7 +175,7 @@ public class SqlContainerResource {
     /**
      * Get the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     *
+     * 
      * @return the uniqueKeyPolicy value.
      */
     public UniqueKeyPolicy uniqueKeyPolicy() {
@@ -162,7 +185,7 @@ public class SqlContainerResource {
     /**
      * Set the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     *
+     * 
      * @param uniqueKeyPolicy the uniqueKeyPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -173,7 +196,7 @@ public class SqlContainerResource {
 
     /**
      * Get the conflictResolutionPolicy property: The conflict resolution policy for the container.
-     *
+     * 
      * @return the conflictResolutionPolicy value.
      */
     public ConflictResolutionPolicy conflictResolutionPolicy() {
@@ -182,7 +205,7 @@ public class SqlContainerResource {
 
     /**
      * Set the conflictResolutionPolicy property: The conflict resolution policy for the container.
-     *
+     * 
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -193,7 +216,7 @@ public class SqlContainerResource {
 
     /**
      * Get the clientEncryptionPolicy property: The client encryption policy for the container.
-     *
+     * 
      * @return the clientEncryptionPolicy value.
      */
     public ClientEncryptionPolicy clientEncryptionPolicy() {
@@ -202,7 +225,7 @@ public class SqlContainerResource {
 
     /**
      * Set the clientEncryptionPolicy property: The client encryption policy for the container.
-     *
+     * 
      * @param clientEncryptionPolicy the clientEncryptionPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -213,7 +236,7 @@ public class SqlContainerResource {
 
     /**
      * Get the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @return the analyticalStorageTtl value.
      */
     public Long analyticalStorageTtl() {
@@ -222,7 +245,7 @@ public class SqlContainerResource {
 
     /**
      * Set the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @param analyticalStorageTtl the analyticalStorageTtl value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -232,15 +255,74 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
+     * Get the computedProperties property: List of computed properties.
+     * 
+     * @return the computedProperties value.
+     */
+    public List<ComputedProperty> computedProperties() {
+        return this.computedProperties;
+    }
+
+    /**
+     * Set the computedProperties property: List of computed properties.
+     * 
+     * @param computedProperties the computedProperties value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withComputedProperties(List<ComputedProperty> computedProperties) {
+        this.computedProperties = computedProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();
@@ -256,6 +338,12 @@ public class SqlContainerResource {
         }
         if (clientEncryptionPolicy() != null) {
             clientEncryptionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+        if (computedProperties() != null) {
+            computedProperties().forEach(e -> e.validate());
         }
     }
 

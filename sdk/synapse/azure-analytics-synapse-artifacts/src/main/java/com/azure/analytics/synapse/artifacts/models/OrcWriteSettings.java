@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Orc write settings. */
+/**
+ * Orc write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OrcWriteSettings")
 @Fluent
@@ -28,13 +30,16 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
-    /** Creates an instance of OrcWriteSettings class. */
-    public OrcWriteSettings() {}
+    /**
+     * Creates an instance of OrcWriteSettings class.
+     */
+    public OrcWriteSettings() {
+    }
 
     /**
      * Get the maxRowsPerFile property: Limit the written file's row count to be smaller than or equal to the specified
      * count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxRowsPerFile value.
      */
     public Object getMaxRowsPerFile() {
@@ -44,7 +49,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
     /**
      * Set the maxRowsPerFile property: Limit the written file's row count to be smaller than or equal to the specified
      * count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxRowsPerFile the maxRowsPerFile value to set.
      * @return the OrcWriteSettings object itself.
      */
@@ -57,7 +62,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * Get the fileNamePrefix property: Specifies the file name pattern
      * &lt;fileNamePrefix&gt;_&lt;fileIndex&gt;.&lt;fileExtension&gt; when copy from non-file based store without
      * partitionOptions. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileNamePrefix value.
      */
     public Object getFileNamePrefix() {
@@ -68,7 +73,7 @@ public final class OrcWriteSettings extends FormatWriteSettings {
      * Set the fileNamePrefix property: Specifies the file name pattern
      * &lt;fileNamePrefix&gt;_&lt;fileIndex&gt;.&lt;fileExtension&gt; when copy from non-file based store without
      * partitionOptions. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileNamePrefix the fileNamePrefix value to set.
      * @return the OrcWriteSettings object itself.
      */

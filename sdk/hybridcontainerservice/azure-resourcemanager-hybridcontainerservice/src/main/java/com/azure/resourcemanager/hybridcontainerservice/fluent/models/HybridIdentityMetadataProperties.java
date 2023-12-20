@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterIdentity;
+import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the resource properties. */
+/**
+ * Defines the resource properties.
+ */
 @Fluent
 public final class HybridIdentityMetadataProperties {
     /*
@@ -24,24 +26,20 @@ public final class HybridIdentityMetadataProperties {
     private String publicKey;
 
     /*
-     * The identity of the provisioned cluster.
-     */
-    @JsonProperty(value = "identity")
-    private ProvisionedClusterIdentity identity;
-
-    /*
-     * provisioning state of the hybridIdentityMetadata resource.
+     * Provisioning state of the resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ResourceProvisioningState provisioningState;
 
-    /** Creates an instance of HybridIdentityMetadataProperties class. */
+    /**
+     * Creates an instance of HybridIdentityMetadataProperties class.
+     */
     public HybridIdentityMetadataProperties() {
     }
 
     /**
      * Get the resourceUid property: Unique id of the parent provisioned cluster resource.
-     *
+     * 
      * @return the resourceUid value.
      */
     public String resourceUid() {
@@ -50,7 +48,7 @@ public final class HybridIdentityMetadataProperties {
 
     /**
      * Set the resourceUid property: Unique id of the parent provisioned cluster resource.
-     *
+     * 
      * @param resourceUid the resourceUid value to set.
      * @return the HybridIdentityMetadataProperties object itself.
      */
@@ -62,7 +60,7 @@ public final class HybridIdentityMetadataProperties {
     /**
      * Get the publicKey property: Onboarding public key for provisioning the Managed identity for the HybridAKS
      * cluster.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -72,7 +70,7 @@ public final class HybridIdentityMetadataProperties {
     /**
      * Set the publicKey property: Onboarding public key for provisioning the Managed identity for the HybridAKS
      * cluster.
-     *
+     * 
      * @param publicKey the publicKey value to set.
      * @return the HybridIdentityMetadataProperties object itself.
      */
@@ -82,42 +80,19 @@ public final class HybridIdentityMetadataProperties {
     }
 
     /**
-     * Get the identity property: The identity of the provisioned cluster.
-     *
-     * @return the identity value.
-     */
-    public ProvisionedClusterIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The identity of the provisioned cluster.
-     *
-     * @param identity the identity value to set.
-     * @return the HybridIdentityMetadataProperties object itself.
-     */
-    public HybridIdentityMetadataProperties withIdentity(ProvisionedClusterIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: provisioning state of the hybridIdentityMetadata resource.
-     *
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
     }
 }
