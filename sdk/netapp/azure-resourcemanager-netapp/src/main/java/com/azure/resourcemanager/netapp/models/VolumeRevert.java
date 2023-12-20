@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** revert a volume to the snapshot. */
+/**
+ * revert a volume to the snapshot.
+ */
 @Fluent
 public final class VolumeRevert {
     /*
@@ -16,13 +18,15 @@ public final class VolumeRevert {
     @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
-    /** Creates an instance of VolumeRevert class. */
+    /**
+     * Creates an instance of VolumeRevert class.
+     */
     public VolumeRevert() {
     }
 
     /**
      * Get the snapshotId property: Resource id of the snapshot.
-     *
+     * 
      * @return the snapshotId value.
      */
     public String snapshotId() {
@@ -31,7 +35,7 @@ public final class VolumeRevert {
 
     /**
      * Set the snapshotId property: Resource id of the snapshot.
-     *
+     * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeRevert object itself.
      */
@@ -42,7 +46,7 @@ public final class VolumeRevert {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

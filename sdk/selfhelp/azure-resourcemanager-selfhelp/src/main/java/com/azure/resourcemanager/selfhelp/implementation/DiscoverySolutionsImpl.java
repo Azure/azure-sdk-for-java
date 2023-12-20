@@ -19,8 +19,8 @@ public final class DiscoverySolutionsImpl implements DiscoverySolutions {
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    public DiscoverySolutionsImpl(
-        DiscoverySolutionsClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    public DiscoverySolutionsImpl(DiscoverySolutionsClient innerClient,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -30,10 +30,10 @@ public final class DiscoverySolutionsImpl implements DiscoverySolutions {
         return Utils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SolutionMetadataResource> list(
-        String scope, String filter, String skiptoken, Context context) {
-        PagedIterable<SolutionMetadataResourceInner> inner =
-            this.serviceClient().list(scope, filter, skiptoken, context);
+    public PagedIterable<SolutionMetadataResource> list(String scope, String filter, String skiptoken,
+        Context context) {
+        PagedIterable<SolutionMetadataResourceInner> inner
+            = this.serviceClient().list(scope, filter, skiptoken, context);
         return Utils.mapPage(inner, inner1 -> new SolutionMetadataResourceImpl(inner1, this.manager()));
     }
 

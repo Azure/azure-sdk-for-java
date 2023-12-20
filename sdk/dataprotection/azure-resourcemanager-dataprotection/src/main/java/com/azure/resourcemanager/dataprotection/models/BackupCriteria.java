@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * BackupCriteria
- *
- * <p>BackupCriteria base class.
+ * 
+ * BackupCriteria base class.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -20,16 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "objectType",
     defaultImpl = BackupCriteria.class)
 @JsonTypeName("BackupCriteria")
-@JsonSubTypes({@JsonSubTypes.Type(name = "ScheduleBasedBackupCriteria", value = ScheduleBasedBackupCriteria.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "ScheduleBasedBackupCriteria", value = ScheduleBasedBackupCriteria.class) })
 @Immutable
 public class BackupCriteria {
-    /** Creates an instance of BackupCriteria class. */
+    /**
+     * Creates an instance of BackupCriteria class.
+     */
     public BackupCriteria() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

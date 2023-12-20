@@ -12,8 +12,7 @@ public final class CheckNameAvailabilityResponseImpl implements CheckNameAvailab
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    CheckNameAvailabilityResponseImpl(
-        CheckNameAvailabilityResponseInner innerObject,
+    CheckNameAvailabilityResponseImpl(CheckNameAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

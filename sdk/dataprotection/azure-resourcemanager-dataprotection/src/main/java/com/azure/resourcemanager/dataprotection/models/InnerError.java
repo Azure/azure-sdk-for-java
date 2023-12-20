@@ -11,13 +11,13 @@ import java.util.Map;
 
 /**
  * InnerError
- *
- * <p>Inner Error.
+ * 
+ * Inner Error.
  */
 @Fluent
 public final class InnerError {
     /*
-     * Any Key value pairs that can be provided to the client for additional  verbose information.
+     * Any Key value pairs that can be provided to the client for additional verbose information.
      */
     @JsonProperty(value = "additionalInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -31,20 +31,22 @@ public final class InnerError {
 
     /*
      * InnerError
-     *
+     * 
      * Child Inner Error, to allow Nesting.
      */
     @JsonProperty(value = "embeddedInnerError")
     private InnerError embeddedInnerError;
 
-    /** Creates an instance of InnerError class. */
+    /**
+     * Creates an instance of InnerError class.
+     */
     public InnerError() {
     }
 
     /**
      * Get the additionalInfo property: Any Key value pairs that can be provided to the client for additional verbose
      * information.
-     *
+     * 
      * @return the additionalInfo value.
      */
     public Map<String, String> additionalInfo() {
@@ -54,7 +56,7 @@ public final class InnerError {
     /**
      * Set the additionalInfo property: Any Key value pairs that can be provided to the client for additional verbose
      * information.
-     *
+     * 
      * @param additionalInfo the additionalInfo value to set.
      * @return the InnerError object itself.
      */
@@ -65,7 +67,7 @@ public final class InnerError {
 
     /**
      * Get the code property: Unique code for this error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -74,7 +76,7 @@ public final class InnerError {
 
     /**
      * Set the code property: Unique code for this error.
-     *
+     * 
      * @param code the code value to set.
      * @return the InnerError object itself.
      */
@@ -85,9 +87,9 @@ public final class InnerError {
 
     /**
      * Get the embeddedInnerError property: InnerError
-     *
-     * <p>Child Inner Error, to allow Nesting.
-     *
+     * 
+     * Child Inner Error, to allow Nesting.
+     * 
      * @return the embeddedInnerError value.
      */
     public InnerError embeddedInnerError() {
@@ -96,9 +98,9 @@ public final class InnerError {
 
     /**
      * Set the embeddedInnerError property: InnerError
-     *
-     * <p>Child Inner Error, to allow Nesting.
-     *
+     * 
+     * Child Inner Error, to allow Nesting.
+     * 
      * @param embeddedInnerError the embeddedInnerError value to set.
      * @return the InnerError object itself.
      */
@@ -109,7 +111,7 @@ public final class InnerError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

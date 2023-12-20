@@ -20,6 +20,7 @@ import reactor.util.annotation.Nullable;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.LOG;
 import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
@@ -41,7 +42,7 @@ public class LogDataMapper {
 
     static {
         MappingsBuilder mappingsBuilder =
-            new MappingsBuilder()
+            new MappingsBuilder(LOG)
                 .prefix(
                     LOG4J_MDC_PREFIX,
                     (telemetryBuilder, key, value) -> {

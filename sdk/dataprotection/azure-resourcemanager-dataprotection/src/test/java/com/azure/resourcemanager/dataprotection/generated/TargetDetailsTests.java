@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetDetails model =
-            BinaryData
-                .fromString(
-                    "{\"filePrefix\":\"m\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"gqqqxh\",\"targetResourceArmId\":\"xrxc\"}")
-                .toObject(TargetDetails.class);
-        Assertions.assertEquals("m", model.filePrefix());
+        TargetDetails model = BinaryData.fromString(
+            "{\"filePrefix\":\"fgfb\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"ubdyhgk\",\"targetResourceArmId\":\"in\"}")
+            .toObject(TargetDetails.class);
+        Assertions.assertEquals("fgfb", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("gqqqxh", model.url());
-        Assertions.assertEquals("xrxc", model.targetResourceArmId());
+        Assertions.assertEquals("ubdyhgk", model.url());
+        Assertions.assertEquals("in", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDetails model =
-            new TargetDetails()
-                .withFilePrefix("m")
-                .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
-                .withUrl("gqqqxh")
-                .withTargetResourceArmId("xrxc");
+        TargetDetails model = new TargetDetails().withFilePrefix("fgfb")
+            .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID).withUrl("ubdyhgk")
+            .withTargetResourceArmId("in");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("m", model.filePrefix());
+        Assertions.assertEquals("fgfb", model.filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
-        Assertions.assertEquals("gqqqxh", model.url());
-        Assertions.assertEquals("xrxc", model.targetResourceArmId());
+        Assertions.assertEquals("ubdyhgk", model.url());
+        Assertions.assertEquals("in", model.targetResourceArmId());
     }
 }

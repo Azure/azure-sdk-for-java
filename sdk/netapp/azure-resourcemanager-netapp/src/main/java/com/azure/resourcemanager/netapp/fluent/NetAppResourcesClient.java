@@ -19,14 +19,16 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
 
-/** An instance of this class provides access to all the operations defined in NetAppResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetAppResourcesClient.
+ */
 public interface NetAppResourcesClient {
     /**
      * Check resource name availability
-     *
-     * <p>Check if a resource name is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a resource name is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,15 +37,15 @@ public interface NetAppResourcesClient {
      * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        String location, ResourceNameAvailabilityRequest body, Context context);
+    Response<CheckAvailabilityResponseInner> checkNameAvailabilityWithResponse(String location,
+        ResourceNameAvailabilityRequest body, Context context);
 
     /**
      * Check resource name availability
-     *
-     * <p>Check if a resource name is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a resource name is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,10 +57,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Check file path availability
-     *
-     * <p>Check if a file path is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a file path is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body File path availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,15 +69,15 @@ public interface NetAppResourcesClient {
      * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckAvailabilityResponseInner> checkFilePathAvailabilityWithResponse(
-        String location, FilePathAvailabilityRequest body, Context context);
+    Response<CheckAvailabilityResponseInner> checkFilePathAvailabilityWithResponse(String location,
+        FilePathAvailabilityRequest body, Context context);
 
     /**
      * Check file path availability
-     *
-     * <p>Check if a file path is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a file path is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,10 +89,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Check quota availability
-     *
-     * <p>Check if a quota is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a quota is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Quota availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,15 +101,15 @@ public interface NetAppResourcesClient {
      * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckAvailabilityResponseInner> checkQuotaAvailabilityWithResponse(
-        String location, QuotaAvailabilityRequest body, Context context);
+    Response<CheckAvailabilityResponseInner> checkQuotaAvailabilityWithResponse(String location,
+        QuotaAvailabilityRequest body, Context context);
 
     /**
      * Check quota availability
-     *
-     * <p>Check if a quota is available.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Check if a quota is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,10 +121,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Describes region specific information.
-     *
-     * <p>Provides storage to network proximity and logical zone mapping information.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Provides storage to network proximity and logical zone mapping information.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,10 +136,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Describes region specific information.
-     *
-     * <p>Provides storage to network proximity and logical zone mapping information.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Provides storage to network proximity and logical zone mapping information.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,10 +150,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Describe a network sibling set
-     *
-     * <p>Get details of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get details of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Network sibling set to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,15 +162,15 @@ public interface NetAppResourcesClient {
      * @return details of the specified network sibling set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkSiblingSetInner> queryNetworkSiblingSetWithResponse(
-        String location, QueryNetworkSiblingSetRequest body, Context context);
+    Response<NetworkSiblingSetInner> queryNetworkSiblingSetWithResponse(String location,
+        QueryNetworkSiblingSetRequest body, Context context);
 
     /**
      * Describe a network sibling set
-     *
-     * <p>Get details of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get details of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Network sibling set to query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,10 +182,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Update the network features of a network sibling set
-     *
-     * <p>Update the network features of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,15 +193,15 @@ public interface NetAppResourcesClient {
      * @return the {@link SyncPoller} for polling of network sibling set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
-        String location, UpdateNetworkSiblingSetRequest body);
+    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(String location,
+        UpdateNetworkSiblingSetRequest body);
 
     /**
      * Update the network features of a network sibling set
-     *
-     * <p>Update the network features of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,15 +210,15 @@ public interface NetAppResourcesClient {
      * @return the {@link SyncPoller} for polling of network sibling set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
-        String location, UpdateNetworkSiblingSetRequest body, Context context);
+    SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(String location,
+        UpdateNetworkSiblingSetRequest body, Context context);
 
     /**
      * Update the network features of a network sibling set
-     *
-     * <p>Update the network features of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,10 +230,10 @@ public interface NetAppResourcesClient {
 
     /**
      * Update the network features of a network sibling set
-     *
-     * <p>Update the network features of the specified network sibling set.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
      * @param body Update for the specified network sibling set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,6 +242,6 @@ public interface NetAppResourcesClient {
      * @return network sibling set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkSiblingSetInner updateNetworkSiblingSet(
-        String location, UpdateNetworkSiblingSetRequest body, Context context);
+    NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body,
+        Context context);
 }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DppResource
- *
- * <p>Resource class.
+ * 
+ * Resource class.
  */
 @Immutable
 public class DppResource extends ProxyResource {
@@ -22,13 +22,15 @@ public class DppResource extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DppResource class. */
+    /**
+     * Creates an instance of DppResource class.
+     */
     public DppResource() {
     }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -37,7 +39,7 @@ public class DppResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

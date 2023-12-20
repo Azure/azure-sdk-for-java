@@ -25,13 +25,15 @@ public final class TriggerCriterion {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of TriggerCriterion class. */
+    /**
+     * Creates an instance of TriggerCriterion class.
+     */
     public TriggerCriterion() {
     }
 
     /**
      * Get the name property: Trigger criterion name.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -40,7 +42,7 @@ public final class TriggerCriterion {
 
     /**
      * Set the name property: Trigger criterion name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TriggerCriterion object itself.
      */
@@ -51,7 +53,7 @@ public final class TriggerCriterion {
 
     /**
      * Get the value property: Trigger criterion value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -60,7 +62,7 @@ public final class TriggerCriterion {
 
     /**
      * Set the value property: Trigger criterion value.
-     *
+     * 
      * @param value the value value to set.
      * @return the TriggerCriterion object itself.
      */
@@ -71,7 +73,7 @@ public final class TriggerCriterion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
