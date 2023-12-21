@@ -25,6 +25,16 @@ jobs:
             python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
       - task: Maven@3
+        displayName: 'Print effective POM'
+        inputs:
+          options: '$(DefaultOptions)'
+          mavenPomFile: sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: 'help:effective-pom'
+      - task: Maven@3
         displayName: 'Run tests'
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
