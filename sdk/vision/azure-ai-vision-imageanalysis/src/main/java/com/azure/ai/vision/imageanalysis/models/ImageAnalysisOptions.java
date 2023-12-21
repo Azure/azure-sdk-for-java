@@ -7,7 +7,7 @@ import java.util.List;
 /**
  *  Options for a single Image Analysis operation.
  *  An object of this class can only be constructed through the
- *  build() method of the ImageAnalysisOptionsBuilder class.
+ *  {@link ImageAnalysisOptionsBuilder#build() build} method of the {@link ImageAnalysisOptionsBuilder} class.
  */
 public final class ImageAnalysisOptions {
 
