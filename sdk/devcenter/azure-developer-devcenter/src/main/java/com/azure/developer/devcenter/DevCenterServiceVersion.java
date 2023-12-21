@@ -6,9 +6,13 @@ package com.azure.developer.devcenter;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of DevCenterServiceClient. */
+/**
+ * Service version of DevCenterServiceClient.
+ */
 public enum DevCenterServiceVersion implements ServiceVersion {
-    /** Enum value 2023-04-01. */
+    /**
+     * Enum value 2023-04-01.
+     */
     V2023_04_01("2023-04-01");
 
     private final String version;
@@ -17,7 +21,9 @@ public enum DevCenterServiceVersion implements ServiceVersion {
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,7 +31,7 @@ public enum DevCenterServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link DevCenterServiceVersion}.
      */
     public static DevCenterServiceVersion getLatest() {

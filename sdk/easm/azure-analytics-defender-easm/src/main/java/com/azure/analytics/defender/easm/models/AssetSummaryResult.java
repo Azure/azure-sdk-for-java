@@ -9,12 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The collection of asset summaries. */
+/**
+ * The collection of asset summaries.
+ */
 @Immutable
 public final class AssetSummaryResult {
 
     /*
-     * The name of the summary response.  Depending on the request time this will either be the asset filter, risk
+     * The name of the summary response. Depending on the request time this will either be the asset filter, risk
      * category, or risk metric.
      */
     @Generated
@@ -22,7 +24,7 @@ public final class AssetSummaryResult {
     private String displayName;
 
     /*
-     * The description of the summary response.  Filters don't have a description.
+     * The description of the summary response. Filters don't have a description.
      */
     @Generated
     @JsonProperty(value = "description")
@@ -79,20 +81,23 @@ public final class AssetSummaryResult {
     private String link;
 
     /*
-     * The corresponding child entities.  For metric categories this will contain metrics.  For filters with groupBy
+     * The corresponding child entities. For metric categories this will contain metrics. For filters with groupBy
      * and segmentBy this will contain facets.
      */
     @Generated
     @JsonProperty(value = "children")
     private List<AssetSummaryResult> children;
 
-    /** Creates an instance of AssetSummaryResult class. */
+    /**
+     * Creates an instance of AssetSummaryResult class.
+     */
     @Generated
-    private AssetSummaryResult() {}
+    private AssetSummaryResult() {
+    }
 
     /**
-     * Get the displayName property: The name of the summary response. Depending on the request time this will either be
-     * the asset filter, risk category, or risk metric.
+     * Get the displayName property: The name of the summary response. Depending on the request time this will either
+     * be the asset filter, risk category, or risk metric.
      *
      * @return the displayName value.
      */
@@ -184,8 +189,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the children property: The corresponding child entities. For metric categories this will contain metrics. For
-     * filters with groupBy and segmentBy this will contain facets.
+     * Get the children property: The corresponding child entities. For metric categories this will contain metrics.
+     * For filters with groupBy and segmentBy this will contain facets.
      *
      * @return the children value.
      */

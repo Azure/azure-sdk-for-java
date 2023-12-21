@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** RelayServiceConnectionEntity resource specific properties. */
+/**
+ * RelayServiceConnectionEntity resource specific properties.
+ */
 @Fluent
 public final class RelayServiceConnectionEntityProperties {
     /*
@@ -52,13 +54,15 @@ public final class RelayServiceConnectionEntityProperties {
     @JsonProperty(value = "biztalkUri")
     private String biztalkUri;
 
-    /** Creates an instance of RelayServiceConnectionEntityProperties class. */
+    /**
+     * Creates an instance of RelayServiceConnectionEntityProperties class.
+     */
     public RelayServiceConnectionEntityProperties() {
     }
 
     /**
      * Get the entityName property: The entityName property.
-     *
+     * 
      * @return the entityName value.
      */
     public String entityName() {
@@ -67,7 +71,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the entityName property: The entityName property.
-     *
+     * 
      * @param entityName the entityName value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the entityConnectionString property: The entityConnectionString property.
-     *
+     * 
      * @return the entityConnectionString value.
      */
     public String entityConnectionString() {
@@ -87,7 +91,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the entityConnectionString property: The entityConnectionString property.
-     *
+     * 
      * @param entityConnectionString the entityConnectionString value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the resourceType property: The resourceType property.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -107,7 +111,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the resourceType property: The resourceType property.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the resourceConnectionString property: The resourceConnectionString property.
-     *
+     * 
      * @return the resourceConnectionString value.
      */
     public String resourceConnectionString() {
@@ -127,7 +131,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the resourceConnectionString property: The resourceConnectionString property.
-     *
+     * 
      * @param resourceConnectionString the resourceConnectionString value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -138,7 +142,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the hostname property: The hostname property.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -147,7 +151,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the hostname property: The hostname property.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the port property: The port property.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -167,7 +171,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the port property: The port property.
-     *
+     * 
      * @param port the port value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Get the biztalkUri property: The biztalkUri property.
-     *
+     * 
      * @return the biztalkUri value.
      */
     public String biztalkUri() {
@@ -187,7 +191,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Set the biztalkUri property: The biztalkUri property.
-     *
+     * 
      * @param biztalkUri the biztalkUri value to set.
      * @return the RelayServiceConnectionEntityProperties object itself.
      */
@@ -198,7 +202,7 @@ public final class RelayServiceConnectionEntityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

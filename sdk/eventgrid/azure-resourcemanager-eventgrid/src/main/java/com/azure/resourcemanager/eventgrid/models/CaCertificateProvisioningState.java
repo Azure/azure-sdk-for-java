@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the CA Certificate resource. */
+/**
+ * Provisioning state of the CA Certificate resource.
+ */
 public final class CaCertificateProvisioningState extends ExpandableStringEnum<CaCertificateProvisioningState> {
-    /** Static value Creating for CaCertificateProvisioningState. */
+    /**
+     * Static value Creating for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for CaCertificateProvisioningState. */
+    /**
+     * Static value Updating for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for CaCertificateProvisioningState. */
+    /**
+     * Static value Deleting for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for CaCertificateProvisioningState. */
+    /**
+     * Static value Succeeded for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for CaCertificateProvisioningState. */
+    /**
+     * Static value Canceled for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for CaCertificateProvisioningState. */
+    /**
+     * Static value Failed for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleted for CaCertificateProvisioningState. */
+    /**
+     * Static value Deleted for CaCertificateProvisioningState.
+     */
     public static final CaCertificateProvisioningState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of CaCertificateProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class CaCertificateProvisioningState extends ExpandableStringEnum<C
 
     /**
      * Creates or finds a CaCertificateProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CaCertificateProvisioningState.
      */
@@ -53,7 +69,7 @@ public final class CaCertificateProvisioningState extends ExpandableStringEnum<C
 
     /**
      * Gets known CaCertificateProvisioningState values.
-     *
+     * 
      * @return known CaCertificateProvisioningState values.
      */
     public static Collection<CaCertificateProvisioningState> values() {

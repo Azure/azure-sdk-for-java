@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The IpBlockAsset model. */
+/**
+ * The IpBlockAsset model.
+ */
 @Immutable
 public final class IpBlockAsset extends InventoryAsset {
 
@@ -230,9 +232,12 @@ public final class IpBlockAsset extends InventoryAsset {
     @JsonProperty(value = "ipv6")
     private Boolean ipv6;
 
-    /** Creates an instance of IpBlockAsset class. */
+    /**
+     * Creates an instance of IpBlockAsset class.
+     */
     @Generated
-    private IpBlockAsset() {}
+    private IpBlockAsset() {
+    }
 
     /**
      * Get the ipBlock property: The ipBlock property.

@@ -13,17 +13,19 @@ import com.azure.resourcemanager.appservice.fluent.models.SnapshotInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalsClient.
+ */
 public interface GlobalsClient {
     /**
      * Get deleted app for a subscription.
-     *
-     * <p>Description for Get deleted app for a subscription.
-     *
+     * 
+     * Description for Get deleted app for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -32,13 +34,13 @@ public interface GlobalsClient {
 
     /**
      * Get deleted app for a subscription.
-     *
-     * <p>Description for Get deleted app for a subscription.
-     *
+     * 
+     * Description for Get deleted app for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app on successful completion of {@link Mono}.
      */
@@ -47,14 +49,14 @@ public interface GlobalsClient {
 
     /**
      * Get deleted app for a subscription.
-     *
-     * <p>Description for Get deleted app for a subscription.
-     *
+     * 
+     * Description for Get deleted app for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app along with {@link Response}.
      */
@@ -63,13 +65,13 @@ public interface GlobalsClient {
 
     /**
      * Get deleted app for a subscription.
-     *
-     * <p>Description for Get deleted app for a subscription.
-     *
+     * 
+     * Description for Get deleted app for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted app.
      */
@@ -78,13 +80,13 @@ public interface GlobalsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -93,13 +95,13 @@ public interface GlobalsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Snapshot on successful completion of {@link Mono}.
      */
@@ -108,14 +110,14 @@ public interface GlobalsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Snapshot along with {@link Response}.
      */
@@ -124,13 +126,13 @@ public interface GlobalsClient {
 
     /**
      * Get all deleted apps for a subscription.
-     *
-     * <p>Description for Get all deleted apps for a subscription.
-     *
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Snapshot.
      */
@@ -139,31 +141,31 @@ public interface GlobalsClient {
 
     /**
      * Gets an operation in a subscription and given region
-     *
-     * <p>Description for Gets an operation in a subscription and given region.
-     *
+     * 
+     * Description for Gets an operation in a subscription and given region.
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
-        String location, String operationId);
+    Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(String location,
+        String operationId);
 
     /**
      * Gets an operation in a subscription and given region
-     *
-     * <p>Description for Gets an operation in a subscription and given region.
-     *
+     * 
+     * Description for Gets an operation in a subscription and given region.
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -172,32 +174,32 @@ public interface GlobalsClient {
 
     /**
      * Gets an operation in a subscription and given region
-     *
-     * <p>Description for Gets an operation in a subscription and given region.
-     *
+     * 
+     * Description for Gets an operation in a subscription and given region.
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(
-        String location, String operationId, Context context);
+    Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(String location, String operationId,
+        Context context);
 
     /**
      * Gets an operation in a subscription and given region
-     *
-     * <p>Description for Gets an operation in a subscription and given region.
-     *
+     * 
+     * Description for Gets an operation in a subscription and given region.
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

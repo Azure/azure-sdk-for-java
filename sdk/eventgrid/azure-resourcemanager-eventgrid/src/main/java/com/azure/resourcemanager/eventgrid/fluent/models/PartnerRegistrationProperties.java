@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisionin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Properties of the partner registration. */
+/**
+ * Properties of the partner registration.
+ */
 @Fluent
 public final class PartnerRegistrationProperties {
     /*
@@ -25,13 +27,15 @@ public final class PartnerRegistrationProperties {
     @JsonProperty(value = "partnerRegistrationImmutableId")
     private UUID partnerRegistrationImmutableId;
 
-    /** Creates an instance of PartnerRegistrationProperties class. */
+    /**
+     * Creates an instance of PartnerRegistrationProperties class.
+     */
     public PartnerRegistrationProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the partner registration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerRegistrationProvisioningState provisioningState() {
@@ -39,9 +43,9 @@ public final class PartnerRegistrationProperties {
     }
 
     /**
-     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration. Note:
-     * This property is marked for deprecation and is not supported in any future GA API version.
-     *
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     * Note: This property is marked for deprecation and is not supported in any future GA API version.
+     * 
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -49,9 +53,9 @@ public final class PartnerRegistrationProperties {
     }
 
     /**
-     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration. Note:
-     * This property is marked for deprecation and is not supported in any future GA API version.
-     *
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     * Note: This property is marked for deprecation and is not supported in any future GA API version.
+     * 
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerRegistrationProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class PartnerRegistrationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

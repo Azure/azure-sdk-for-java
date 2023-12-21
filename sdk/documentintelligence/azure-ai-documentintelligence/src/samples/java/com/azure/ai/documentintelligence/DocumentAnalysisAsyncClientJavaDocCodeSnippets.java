@@ -4,6 +4,7 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
 import com.azure.ai.documentintelligence.models.ContentFormat;
 import com.azure.ai.documentintelligence.models.SplitMode;
@@ -21,18 +22,18 @@ import java.nio.file.Files;
 import java.util.List;
 
 /**
- * Code snippet for {@link DocumentAnalysisAsyncClient}
+ * Code snippet for {@link DocumentIntelligenceAsyncClient}
  */
 public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
-    private final DocumentAnalysisAsyncClient documentAnalysisAsyncClient
-        = new DocumentAnalysisClientBuilder().buildAsyncClient();
+    private final DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient
+        = new DocumentIntelligenceClientBuilder().buildAsyncClient();
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisAsyncClient}
+     * Code snippet for creating a {@link DocumentIntelligenceAsyncClient}
      */
     public void createDocumentAnalysisAsyncClient() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.instantiation
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
@@ -40,7 +41,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisAsyncClient} with pipeline
+     * Code snippet for creating a {@link DocumentIntelligenceAsyncClient} with pipeline
      */
     public void createDocumentAnalysisAsyncClientWithPipeline() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.pipeline.instantiation
@@ -48,7 +49,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
             .policies(/* add policies */)
             .build();
 
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
@@ -57,13 +58,13 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
+     * Code snippet for {@link DocumentIntelligenceAsyncClient#beginAnalyzeDocument(String, String, String, StringIndexType, List, List, ContentFormat, AnalyzeDocumentRequest)}
      */
     public void beginAnalyzeDocumentFromUrl() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#String-String-String-StringIndexType-List-List-ContentFormat-AnalyzeDocumentRequest
         String documentUrl = "{document_url}";
         String modelId = "{model_id}";
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId,
+        documentIntelligenceAsyncClient.beginAnalyzeDocument(modelId,
                 null,
                 null,
                 null,
@@ -73,6 +74,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 new AnalyzeDocumentRequest().setUrlSource(documentUrl))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
+            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
                     .forEach(document ->
@@ -87,7 +89,7 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisAsyncClient#beginClassifyDocument(String, ClassifyDocumentRequest, StringIndexType, SplitMode)}
+     * {@link DocumentIntelligenceAsyncClient#beginClassifyDocument(String, ClassifyDocumentRequest, StringIndexType, SplitMode)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
@@ -100,9 +102,10 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Binary Data
         BinaryData buffer = BinaryData.fromStream(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
+        documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
+            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()

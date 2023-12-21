@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specification for using a Virtual Network. */
+/**
+ * Specification for using a Virtual Network.
+ */
 @Fluent
 public final class VirtualNetworkProfile {
     /*
@@ -35,13 +37,15 @@ public final class VirtualNetworkProfile {
     @JsonProperty(value = "subnet")
     private String subnet;
 
-    /** Creates an instance of VirtualNetworkProfile class. */
+    /**
+     * Creates an instance of VirtualNetworkProfile class.
+     */
     public VirtualNetworkProfile() {
     }
 
     /**
      * Get the id property: Resource id of the Virtual Network.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Set the id property: Resource id of the Virtual Network.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkProfile object itself.
      */
@@ -61,7 +65,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Get the name property: Name of the Virtual Network (read-only).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Get the type property: Resource type of the Virtual Network (read-only).
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -79,7 +83,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Get the subnet property: Subnet within the Virtual Network.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -88,7 +92,7 @@ public final class VirtualNetworkProfile {
 
     /**
      * Set the subnet property: Subnet within the Virtual Network.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualNetworkProfile object itself.
      */
@@ -99,14 +103,13 @@ public final class VirtualNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model VirtualNetworkProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model VirtualNetworkProfile"));
         }
     }
 

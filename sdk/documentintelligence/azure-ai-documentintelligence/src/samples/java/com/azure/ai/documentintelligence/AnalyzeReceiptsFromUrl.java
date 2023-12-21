@@ -30,7 +30,7 @@ public class AnalyzeReceiptsFromUrl {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -39,7 +39,7 @@ public class AnalyzeReceiptsFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence"
                 + "/azure-ai-documentintelligence/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -49,7 +49,7 @@ public class AnalyzeReceiptsFromUrl {
                 null,
                 new AnalyzeDocumentRequest().setUrlSource(receiptUrl));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);

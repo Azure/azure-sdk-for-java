@@ -77,20 +77,14 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCaCertificates().createOrUpdate(resourceGroupName,
+            namespaceName, caCertificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CaCertificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCaCertificates().createOrUpdate(resourceGroupName,
+            namespaceName, caCertificateName, this.innerModel(), context);
         return this;
     }
 
@@ -105,25 +99,19 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCaCertificates().createOrUpdate(resourceGroupName,
+            namespaceName, caCertificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CaCertificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .createOrUpdate(resourceGroupName, namespaceName, caCertificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCaCertificates().createOrUpdate(resourceGroupName,
+            namespaceName, caCertificateName, this.innerModel(), context);
         return this;
     }
 
-    CaCertificateImpl(
-        CaCertificateInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    CaCertificateImpl(CaCertificateInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -132,22 +120,14 @@ public final class CaCertificateImpl implements CaCertificate, CaCertificate.Def
     }
 
     public CaCertificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .getWithResponse(resourceGroupName, namespaceName, caCertificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCaCertificates()
+            .getWithResponse(resourceGroupName, namespaceName, caCertificateName, Context.NONE).getValue();
         return this;
     }
 
     public CaCertificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaCertificates()
-                .getWithResponse(resourceGroupName, namespaceName, caCertificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCaCertificates()
+            .getWithResponse(resourceGroupName, namespaceName, caCertificateName, context).getValue();
         return this;
     }
 

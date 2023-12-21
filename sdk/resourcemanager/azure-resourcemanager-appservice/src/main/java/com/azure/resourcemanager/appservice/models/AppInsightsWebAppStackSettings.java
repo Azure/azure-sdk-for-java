@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** App Insights Web App stack settings. */
+/**
+ * App Insights Web App stack settings.
+ */
 @Immutable
 public final class AppInsightsWebAppStackSettings {
     /*
@@ -22,14 +24,16 @@ public final class AppInsightsWebAppStackSettings {
     @JsonProperty(value = "isDefaultOff", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefaultOff;
 
-    /** Creates an instance of AppInsightsWebAppStackSettings class. */
+    /**
+     * Creates an instance of AppInsightsWebAppStackSettings class.
+     */
     public AppInsightsWebAppStackSettings() {
     }
 
     /**
      * Get the isSupported property: &lt;code&gt;true&lt;/code&gt; if remote Application Insights is supported for the
      * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isSupported value.
      */
     public Boolean isSupported() {
@@ -39,7 +43,7 @@ public final class AppInsightsWebAppStackSettings {
     /**
      * Get the isDefaultOff property: &lt;code&gt;true&lt;/code&gt; if Application Insights is disabled by default for
      * the stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDefaultOff value.
      */
     public Boolean isDefaultOff() {
@@ -48,7 +52,7 @@ public final class AppInsightsWebAppStackSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

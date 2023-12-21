@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A paragraph object consisting with contiguous lines generally with common alignment and spacing. */
+/**
+ * A paragraph object consisting with contiguous lines generally with common
+ * alignment and spacing.
+ */
 @Immutable
 public final class DocumentParagraph {
     /*
@@ -43,21 +46,21 @@ public final class DocumentParagraph {
 
     /**
      * Creates an instance of DocumentParagraph class.
-     *
+     * 
      * @param content the content value to set.
      * @param spans the spans value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentParagraph(
-            @JsonProperty(value = "content") String content, @JsonProperty(value = "spans") List<DocumentSpan> spans) {
+    private DocumentParagraph(@JsonProperty(value = "content") String content,
+        @JsonProperty(value = "spans") List<DocumentSpan> spans) {
         this.content = content;
         this.spans = spans;
     }
 
     /**
      * Get the role property: Semantic role of the paragraph.
-     *
+     * 
      * @return the role value.
      */
     @Generated
@@ -67,7 +70,7 @@ public final class DocumentParagraph {
 
     /**
      * Get the content property: Concatenated content of the paragraph in reading order.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -77,7 +80,7 @@ public final class DocumentParagraph {
 
     /**
      * Get the boundingRegions property: Bounding regions covering the paragraph.
-     *
+     * 
      * @return the boundingRegions value.
      */
     @Generated
@@ -87,7 +90,7 @@ public final class DocumentParagraph {
 
     /**
      * Get the spans property: Location of the paragraph in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     @Generated

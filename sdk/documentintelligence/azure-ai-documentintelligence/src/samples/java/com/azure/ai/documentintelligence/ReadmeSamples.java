@@ -15,12 +15,12 @@ import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentBuildMode;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
+import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.DocumentTable;
 import com.azure.ai.documentintelligence.models.ResourceDetails;
 import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -36,12 +36,12 @@ import java.util.List;
 import java.util.Map;
 
 public final class ReadmeSamples {
-    DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
-    DocumentModelAdministrationClient administrationClient = new DocumentModelAdministrationClientBuilder()
+    DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder().buildClient();
+    DocumentIntelligenceAdministrationClient administrationClient = new DocumentIntelligenceAdministrationClientBuilder()
         .buildClient();
     public void createWithKeyCredential() throws IOException {
         // BEGIN: com.azure.ai.documentintelligence.readme.createDocumentAnalysisClient
-        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient documentIntelligenceClient = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
@@ -49,11 +49,11 @@ public final class ReadmeSamples {
     }
 
     /**
-     * Code snippet for creating a {@link DocumentAnalysisAsyncClient}
+     * Code snippet for creating a {@link DocumentIntelligenceAsyncClient}
      */
     public void createDocumentAnalysisClientWithAAD() {
         // BEGIN: com.azure.ai.documentanalysis.readme.DocumentAnalysisAsyncClient.withAAD
-        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceAsyncClient documentIntelligenceAsyncClient = new DocumentIntelligenceClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildAsyncClient();
@@ -66,8 +66,8 @@ public final class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout",
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+            documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
                 null,
@@ -76,7 +76,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
 
         // pages
         analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -119,8 +119,8 @@ public final class ReadmeSamples {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-receipt",
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+            documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
                 null,
@@ -129,7 +129,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);
@@ -180,7 +180,7 @@ public final class ReadmeSamples {
         // Build custom document analysis model
         String blobContainerUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<PollResult, DocumentModelDetails> buildOperationPoller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildOperationPoller =
             administrationClient.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)));
 
@@ -207,7 +207,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentAnalysisClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -216,7 +216,7 @@ public final class ReadmeSamples {
             ContentFormat.TEXT,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

@@ -11,8 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A word object consisting of a contiguous sequence of characters. For non-space delimited languages, such as Chinese,
- * Japanese, and Korean, each character is represented as its own word.
+ * A word object consisting of a contiguous sequence of characters. For non-space
+ * delimited languages, such as Chinese, Japanese, and Korean, each character is
+ * represented as its own word.
  */
 @Immutable
 public final class DocumentWord {
@@ -49,17 +50,15 @@ public final class DocumentWord {
 
     /**
      * Creates an instance of DocumentWord class.
-     *
+     * 
      * @param content the content value to set.
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
     @Generated
     @JsonCreator
-    private DocumentWord(
-            @JsonProperty(value = "content") String content,
-            @JsonProperty(value = "span") DocumentSpan span,
-            @JsonProperty(value = "confidence") double confidence) {
+    private DocumentWord(@JsonProperty(value = "content") String content,
+        @JsonProperty(value = "span") DocumentSpan span, @JsonProperty(value = "confidence") double confidence) {
         this.content = content;
         this.span = span;
         this.confidence = confidence;
@@ -67,7 +66,7 @@ public final class DocumentWord {
 
     /**
      * Get the content property: Text content of the word.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -76,10 +75,11 @@ public final class DocumentWord {
     }
 
     /**
-     * Get the polygon property: Bounding polygon of the word, with coordinates specified relative to the top-left of
-     * the page. The numbers represent the x, y values of the polygon vertices, clockwise from the left (-180 degrees
-     * inclusive) relative to the element orientation.
-     *
+     * Get the polygon property: Bounding polygon of the word, with coordinates specified relative to the
+     * top-left of the page. The numbers represent the x, y values of the polygon
+     * vertices, clockwise from the left (-180 degrees inclusive) relative to the
+     * element orientation.
+     * 
      * @return the polygon value.
      */
     @Generated
@@ -89,7 +89,7 @@ public final class DocumentWord {
 
     /**
      * Get the span property: Location of the word in the reading order concatenated content.
-     *
+     * 
      * @return the span value.
      */
     @Generated
@@ -99,7 +99,7 @@ public final class DocumentWord {
 
     /**
      * Get the confidence property: Confidence of correctly extracting the word.
-     *
+     * 
      * @return the confidence value.
      */
     @Generated

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DomainAsset model. */
+/**
+ * The DomainAsset model.
+ */
 @Immutable
 public final class DomainAsset extends InventoryAsset {
 
@@ -230,9 +232,12 @@ public final class DomainAsset extends InventoryAsset {
     @JsonProperty(value = "technicalPhones")
     private List<ObservedString> technicalPhones;
 
-    /** Creates an instance of DomainAsset class. */
+    /**
+     * Creates an instance of DomainAsset class.
+     */
     @Generated
-    private DomainAsset() {}
+    private DomainAsset() {
+    }
 
     /**
      * Get the domain property: The domain property.

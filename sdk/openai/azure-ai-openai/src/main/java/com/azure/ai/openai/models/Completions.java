@@ -13,8 +13,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- * Representation of the response data from a completions request. Completions support a wide variety of tasks and
- * generate text that continues from or "completes" provided prompt data.
+ * Representation of the response data from a completions request.
+ * Completions support a wide variety of tasks and generate text that continues from or "completes"
+ * provided prompt data.
  */
 @Immutable
 public final class Completions {
@@ -54,8 +55,8 @@ public final class Completions {
 
     /**
      * Get the choices property: The collection of completions choices associated with this completions response.
-     * Generally, `n` choices are generated per provided prompt with a default value of 1. Token limits and other
-     * settings may limit the number of choices generated.
+     * Generally, `n` choices are generated per provided prompt with a default value of 1.
+     * Token limits and other settings may limit the number of choices generated.
      *
      * @return the choices value.
      */
@@ -132,17 +133,15 @@ public final class Completions {
 
     @Generated
     @JsonCreator
-    private Completions(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") long createdAt,
-            @JsonProperty(value = "choices") List<Choice> choices,
-            @JsonProperty(value = "usage") CompletionsUsage usage) {
+    private Completions(@JsonProperty(value = "id") String id, @JsonProperty(value = "created") long createdAt,
+        @JsonProperty(value = "choices") List<Choice> choices, @JsonProperty(value = "usage") CompletionsUsage usage) {
         this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 
     /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
-     * response, represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
+     * response,
+     * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
      *
      * @return the createdAt value.
      */

@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the namespace topic. */
+/**
+ * Provisioning state of the namespace topic.
+ */
 public final class NamespaceTopicProvisioningState extends ExpandableStringEnum<NamespaceTopicProvisioningState> {
-    /** Static value Creating for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Creating for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Updating for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Deleting for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Succeeded for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Canceled for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Failed for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleted for NamespaceTopicProvisioningState. */
+    /**
+     * Static value Deleted for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState DELETED = fromString("Deleted");
 
-    /** Static value DeleteFailed for NamespaceTopicProvisioningState. */
+    /**
+     * Static value DeleteFailed for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState DELETE_FAILED = fromString("DeleteFailed");
 
-    /** Static value CreateFailed for NamespaceTopicProvisioningState. */
+    /**
+     * Static value CreateFailed for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState CREATE_FAILED = fromString("CreateFailed");
 
-    /** Static value UpdatedFailed for NamespaceTopicProvisioningState. */
+    /**
+     * Static value UpdatedFailed for NamespaceTopicProvisioningState.
+     */
     public static final NamespaceTopicProvisioningState UPDATED_FAILED = fromString("UpdatedFailed");
 
     /**
      * Creates a new instance of NamespaceTopicProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class NamespaceTopicProvisioningState extends ExpandableStringEnum<
 
     /**
      * Creates or finds a NamespaceTopicProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NamespaceTopicProvisioningState.
      */
@@ -62,7 +84,7 @@ public final class NamespaceTopicProvisioningState extends ExpandableStringEnum<
 
     /**
      * Gets known NamespaceTopicProvisioningState values.
-     *
+     * 
      * @return known NamespaceTopicProvisioningState values.
      */
     public static Collection<NamespaceTopicProvisioningState> values() {

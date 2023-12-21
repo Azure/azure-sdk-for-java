@@ -82,10 +82,6 @@ public final class SemanticDebugInfo implements JsonSerializable<SemanticDebugIn
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("titleField", this.titleField);
-        jsonWriter.writeArrayField("contentFields", this.contentFields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("keywordFields", this.keywordFields, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("rerankerInput", this.rerankerInput);
         return jsonWriter.writeEndObject();
     }
 

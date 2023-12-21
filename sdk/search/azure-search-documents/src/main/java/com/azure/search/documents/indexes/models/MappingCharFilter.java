@@ -22,11 +22,6 @@ import java.util.List;
 @Immutable
 public final class MappingCharFilter extends CharFilter {
     /*
-     * Identifies the concrete type of the char filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.MappingCharFilter";
-
-    /*
      * A list of mappings of the following format: "a=>b" (all occurrences of the character "a" will be replaced with
      * character "b").
      */
@@ -56,7 +51,7 @@ public final class MappingCharFilter extends CharFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.MappingCharFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("mappings", this.mappings, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -85,11 +80,9 @@ public final class MappingCharFilter extends CharFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.MappingCharFilter".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MappingCharFilter'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

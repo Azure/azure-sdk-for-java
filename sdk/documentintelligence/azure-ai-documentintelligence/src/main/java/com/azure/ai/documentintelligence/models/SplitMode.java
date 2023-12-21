@@ -9,29 +9,41 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Document splitting mode. */
+/**
+ * Document splitting mode.
+ */
 public final class SplitMode extends ExpandableStringEnum<SplitMode> {
-    /** Automatically split file into documents. */
-    @Generated public static final SplitMode AUTO = fromString("auto");
+    /**
+     * Automatically split file into documents.
+     */
+    @Generated
+    public static final SplitMode AUTO = fromString("auto");
 
-    /** Treat the entire file as a single document. */
-    @Generated public static final SplitMode NONE = fromString("none");
+    /**
+     * Treat the entire file as a single document.
+     */
+    @Generated
+    public static final SplitMode NONE = fromString("none");
 
-    /** Treat each page in the file as a separate document. */
-    @Generated public static final SplitMode PER_PAGE = fromString("perPage");
+    /**
+     * Treat each page in the file as a separate document.
+     */
+    @Generated
+    public static final SplitMode PER_PAGE = fromString("perPage");
 
     /**
      * Creates a new instance of SplitMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public SplitMode() {}
+    public SplitMode() {
+    }
 
     /**
      * Creates or finds a SplitMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SplitMode.
      */
@@ -43,7 +55,7 @@ public final class SplitMode extends ExpandableStringEnum<SplitMode> {
 
     /**
      * Gets known SplitMode values.
-     *
+     * 
      * @return known SplitMode values.
      */
     @Generated

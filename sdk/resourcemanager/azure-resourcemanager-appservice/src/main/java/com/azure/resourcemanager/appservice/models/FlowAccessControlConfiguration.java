@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The access control configuration. */
+/**
+ * The access control configuration.
+ */
 @Fluent
 public final class FlowAccessControlConfiguration {
     /*
@@ -34,13 +36,15 @@ public final class FlowAccessControlConfiguration {
     @JsonProperty(value = "workflowManagement")
     private FlowAccessControlConfigurationPolicy workflowManagement;
 
-    /** Creates an instance of FlowAccessControlConfiguration class. */
+    /**
+     * Creates an instance of FlowAccessControlConfiguration class.
+     */
     public FlowAccessControlConfiguration() {
     }
 
     /**
      * Get the triggers property: The access control configuration for invoking workflow triggers.
-     *
+     * 
      * @return the triggers value.
      */
     public FlowAccessControlConfigurationPolicy triggers() {
@@ -49,7 +53,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Set the triggers property: The access control configuration for invoking workflow triggers.
-     *
+     * 
      * @param triggers the triggers value to set.
      * @return the FlowAccessControlConfiguration object itself.
      */
@@ -60,7 +64,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Get the contents property: The access control configuration for accessing workflow run contents.
-     *
+     * 
      * @return the contents value.
      */
     public FlowAccessControlConfigurationPolicy contents() {
@@ -69,7 +73,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Set the contents property: The access control configuration for accessing workflow run contents.
-     *
+     * 
      * @param contents the contents value to set.
      * @return the FlowAccessControlConfiguration object itself.
      */
@@ -80,7 +84,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Get the actions property: The access control configuration for workflow actions.
-     *
+     * 
      * @return the actions value.
      */
     public FlowAccessControlConfigurationPolicy actions() {
@@ -89,7 +93,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Set the actions property: The access control configuration for workflow actions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the FlowAccessControlConfiguration object itself.
      */
@@ -100,7 +104,7 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Get the workflowManagement property: The access control configuration for workflow management.
-     *
+     * 
      * @return the workflowManagement value.
      */
     public FlowAccessControlConfigurationPolicy workflowManagement() {
@@ -109,19 +113,19 @@ public final class FlowAccessControlConfiguration {
 
     /**
      * Set the workflowManagement property: The access control configuration for workflow management.
-     *
+     * 
      * @param workflowManagement the workflowManagement value to set.
      * @return the FlowAccessControlConfiguration object itself.
      */
-    public FlowAccessControlConfiguration withWorkflowManagement(
-        FlowAccessControlConfigurationPolicy workflowManagement) {
+    public FlowAccessControlConfiguration
+        withWorkflowManagement(FlowAccessControlConfigurationPolicy workflowManagement) {
         this.workflowManagement = workflowManagement;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

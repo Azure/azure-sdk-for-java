@@ -45,7 +45,6 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.skillsets, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 

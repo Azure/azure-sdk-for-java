@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Status and result of the analyze operation. */
+/**
+ * Status and result of the analyze operation.
+ */
 @Immutable
 public final class AnalyzeResultOperation {
     /*
@@ -50,17 +52,16 @@ public final class AnalyzeResultOperation {
 
     /**
      * Creates an instance of AnalyzeResultOperation class.
-     *
+     * 
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      */
     @Generated
     @JsonCreator
-    private AnalyzeResultOperation(
-            @JsonProperty(value = "status") OperationStatus status,
-            @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime) {
+    private AnalyzeResultOperation(@JsonProperty(value = "status") OperationStatus status,
+        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
+        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime) {
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -68,7 +69,7 @@ public final class AnalyzeResultOperation {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     @Generated
@@ -78,7 +79,7 @@ public final class AnalyzeResultOperation {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the analyze operation was submitted.
-     *
+     * 
      * @return the createdDateTime value.
      */
     @Generated
@@ -88,7 +89,7 @@ public final class AnalyzeResultOperation {
 
     /**
      * Get the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
-     *
+     * 
      * @return the lastUpdatedDateTime value.
      */
     @Generated
@@ -98,7 +99,7 @@ public final class AnalyzeResultOperation {
 
     /**
      * Get the error property: Encountered error during document analysis.
-     *
+     * 
      * @return the error value.
      */
     @Generated
@@ -108,7 +109,7 @@ public final class AnalyzeResultOperation {
 
     /**
      * Get the analyzeResult property: Document analysis result.
-     *
+     * 
      * @return the analyzeResult value.
      */
     @Generated

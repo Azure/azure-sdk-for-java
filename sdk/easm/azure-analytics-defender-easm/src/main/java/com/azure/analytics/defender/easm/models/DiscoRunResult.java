@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The latest run of this disco group with some limited information, null if the group has never been run. */
+/**
+ * The latest run of this disco group with some limited information, null if the group has never been run.
+ */
 @Immutable
 public final class DiscoRunResult {
 
@@ -76,9 +78,12 @@ public final class DiscoRunResult {
     @JsonProperty(value = "names")
     private List<String> names;
 
-    /** Creates an instance of DiscoRunResult class. */
+    /**
+     * Creates an instance of DiscoRunResult class.
+     */
     @Generated
-    private DiscoRunResult() {}
+    private DiscoRunResult() {
+    }
 
     /**
      * Get the submittedDate property: The date for when the disco run was created in the system.

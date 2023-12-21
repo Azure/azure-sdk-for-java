@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DependentResource model. */
+/**
+ * The DependentResource model.
+ */
 @Immutable
 public final class DependentResource {
 
@@ -181,9 +183,12 @@ public final class DependentResource {
     @JsonProperty(value = "lastObservedExpectedSriHash")
     private String lastObservedExpectedSriHash;
 
-    /** Creates an instance of DependentResource class. */
+    /**
+     * Creates an instance of DependentResource class.
+     */
     @Generated
-    private DependentResource() {}
+    private DependentResource() {
+    }
 
     /**
      * Get the md5 property: The md5 property.
