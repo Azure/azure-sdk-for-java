@@ -20,32 +20,28 @@ public final class OperationResultsImpl implements OperationResults {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient,
+    public OperationResultsImpl(OperationResultsClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationResultsDescription> getWithResponse(String locationName, String operationResultId,
+        Context context) {
+        Response<OperationResultsDescriptionInner> inner
+            = this.serviceClient().getWithResponse(locationName, operationResultId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResultsDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationResultsDescription get(String locationName, String operationResultId) {
         OperationResultsDescriptionInner inner = this.serviceClient().get(locationName, operationResultId);
         if (inner != null) {
             return new OperationResultsDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationResultsDescription> getWithResponse(
-        String locationName, String operationResultId, Context context) {
-        Response<OperationResultsDescriptionInner> inner =
-            this.serviceClient().getWithResponse(locationName, operationResultId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResultsDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

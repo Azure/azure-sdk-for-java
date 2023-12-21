@@ -15,8 +15,7 @@ public final class PrivateLinkResourceDescriptionImpl implements PrivateLinkReso
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    PrivateLinkResourceDescriptionImpl(
-        PrivateLinkResourceDescriptionInner innerObject,
+    PrivateLinkResourceDescriptionImpl(PrivateLinkResourceDescriptionInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

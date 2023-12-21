@@ -7,11 +7,13 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceListResultDescriptionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkResourceListResultDescription. */
+/**
+ * An immutable client-side representation of PrivateLinkResourceListResultDescription.
+ */
 public interface PrivateLinkResourceListResultDescription {
     /**
      * Gets the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     List<PrivateLinkResourceDescription> value();
@@ -19,7 +21,7 @@ public interface PrivateLinkResourceListResultDescription {
     /**
      * Gets the inner
      * com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceListResultDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourceListResultDescriptionInner innerModel();
