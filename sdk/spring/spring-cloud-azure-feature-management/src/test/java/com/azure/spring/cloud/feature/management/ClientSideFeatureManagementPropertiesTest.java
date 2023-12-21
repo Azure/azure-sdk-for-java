@@ -5,43 +5,42 @@
 
 package com.azure.spring.cloud.feature.management;
 
-import com.azure.spring.cloud.feature.management.implementation.ServerSideFeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.ClientSideFeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@EnableConfigurationProperties(value = ServerSideFeatureManagementProperties.class)
-@TestPropertySource("classpath:server-side-schema-test.yaml")
+@EnableConfigurationProperties(value = ClientSideFeatureManagementProperties.class)
+@TestPropertySource(locations = {"classpath:client-side-schema-test.yaml"})
 @SpringBootTest(classes = { SpringBootTest.class })
-public class ServerSideFeatureManagementPropertiesTest {
+public class ClientSideFeatureManagementPropertiesTest {
     @Autowired
-    private ServerSideFeatureManagementProperties serverSideProperties;
+    private ClientSideFeatureManagementProperties clientSideProperties;
 
     @Test
     void onOffMapTest() {
-        assertTrue(serverSideProperties.getOnOff().get("Gamma"));
+        assertTrue(clientSideProperties.getOnOff().get("gamma"));
     }
 
     @Test
     void featureManagementTest() {
-        final Feature alphaFeatureItem = serverSideProperties.getFeatureManagement().get("Alpha");
-        assertEquals(alphaFeatureItem.getKey(), "Alpha");
+        final Feature alphaFeatureItem = clientSideProperties.getFeatureManagement().get("alpha");
+        assertEquals(alphaFeatureItem.getKey(), "alpha");
         assertEquals(alphaFeatureItem.getEnabledFor().size(), 1);
-        assertEquals(alphaFeatureItem.getEnabledFor().get(0).getName(), "Microsoft.Random");
+        assertEquals(alphaFeatureItem.getEnabledFor().get(0).getName(), "random");
 
-        final Feature betaFeatureItem = serverSideProperties.getFeatureManagement().get("Beta");
-        assertEquals(betaFeatureItem.getKey(), "Beta");
+        final Feature betaFeatureItem = clientSideProperties.getFeatureManagement().get("beta");
+        assertEquals(betaFeatureItem.getKey(), "beta");
         assertEquals(betaFeatureItem.getEnabledFor().size(), 1);
-        assertEquals(betaFeatureItem.getEnabledFor().get(0).getName(), "Microsoft.TimeWindowFilter");
+        assertEquals(betaFeatureItem.getEnabledFor().get(0).getName(), "timeWindowFilter");
     }
-
 }
