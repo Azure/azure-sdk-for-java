@@ -7,15 +7,23 @@ package com.azure.resourcemanager.cosmos.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Indicates whether the Role Definition was built-in or user created. */
+/**
+ * Indicates whether the Role Definition was built-in or user created.
+ */
 public enum RoleDefinitionType {
-    /** Enum value BuiltInRole. */
+    /**
+     * Enum value BuiltInRole.
+     */
     BUILT_IN_ROLE("BuiltInRole"),
 
-    /** Enum value CustomRole. */
+    /**
+     * Enum value CustomRole.
+     */
     CUSTOM_ROLE("CustomRole");
 
-    /** The actual serialized value for a RoleDefinitionType instance. */
+    /**
+     * The actual serialized value for a RoleDefinitionType instance.
+     */
     private final String value;
 
     RoleDefinitionType(String value) {
@@ -24,7 +32,7 @@ public enum RoleDefinitionType {
 
     /**
      * Parses a serialized value to a RoleDefinitionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RoleDefinitionType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum RoleDefinitionType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

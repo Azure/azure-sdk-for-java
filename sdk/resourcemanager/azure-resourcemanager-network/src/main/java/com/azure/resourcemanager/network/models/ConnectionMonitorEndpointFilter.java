@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the connection monitor endpoint filter. */
+/**
+ * Describes the connection monitor endpoint filter.
+ */
 @Fluent
 public final class ConnectionMonitorEndpointFilter {
     /*
@@ -23,13 +25,15 @@ public final class ConnectionMonitorEndpointFilter {
     @JsonProperty(value = "items")
     private List<ConnectionMonitorEndpointFilterItem> items;
 
-    /** Creates an instance of ConnectionMonitorEndpointFilter class. */
+    /**
+     * Creates an instance of ConnectionMonitorEndpointFilter class.
+     */
     public ConnectionMonitorEndpointFilter() {
     }
 
     /**
      * Get the type property: The behavior of the endpoint filter. Currently only 'Include' is supported.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionMonitorEndpointFilterType type() {
@@ -38,7 +42,7 @@ public final class ConnectionMonitorEndpointFilter {
 
     /**
      * Set the type property: The behavior of the endpoint filter. Currently only 'Include' is supported.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnectionMonitorEndpointFilter object itself.
      */
@@ -49,7 +53,7 @@ public final class ConnectionMonitorEndpointFilter {
 
     /**
      * Get the items property: List of items in the filter.
-     *
+     * 
      * @return the items value.
      */
     public List<ConnectionMonitorEndpointFilterItem> items() {
@@ -58,7 +62,7 @@ public final class ConnectionMonitorEndpointFilter {
 
     /**
      * Set the items property: List of items in the filter.
-     *
+     * 
      * @param items the items value to set.
      * @return the ConnectionMonitorEndpointFilter object itself.
      */
@@ -69,7 +73,7 @@ public final class ConnectionMonitorEndpointFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

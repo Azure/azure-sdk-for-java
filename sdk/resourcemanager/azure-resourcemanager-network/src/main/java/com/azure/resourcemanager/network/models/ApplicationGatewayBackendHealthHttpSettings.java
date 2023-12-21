@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackend
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application gateway BackendHealthHttp settings. */
+/**
+ * Application gateway BackendHealthHttp settings.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthHttpSettings {
     /*
@@ -24,13 +26,15 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
     @JsonProperty(value = "servers")
     private List<ApplicationGatewayBackendHealthServerInner> servers;
 
-    /** Creates an instance of ApplicationGatewayBackendHealthHttpSettings class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHealthHttpSettings class.
+     */
     public ApplicationGatewayBackendHealthHttpSettings() {
     }
 
     /**
      * Get the backendHttpSettings property: Reference to an ApplicationGatewayBackendHttpSettings resource.
-     *
+     * 
      * @return the backendHttpSettings value.
      */
     public ApplicationGatewayBackendHttpSettings backendHttpSettings() {
@@ -39,19 +43,19 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
 
     /**
      * Set the backendHttpSettings property: Reference to an ApplicationGatewayBackendHttpSettings resource.
-     *
+     * 
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayBackendHealthHttpSettings object itself.
      */
-    public ApplicationGatewayBackendHealthHttpSettings withBackendHttpSettings(
-        ApplicationGatewayBackendHttpSettings backendHttpSettings) {
+    public ApplicationGatewayBackendHealthHttpSettings
+        withBackendHttpSettings(ApplicationGatewayBackendHttpSettings backendHttpSettings) {
         this.backendHttpSettings = backendHttpSettings;
         return this;
     }
 
     /**
      * Get the servers property: List of ApplicationGatewayBackendHealthServer resources.
-     *
+     * 
      * @return the servers value.
      */
     public List<ApplicationGatewayBackendHealthServerInner> servers() {
@@ -60,19 +64,19 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
 
     /**
      * Set the servers property: List of ApplicationGatewayBackendHealthServer resources.
-     *
+     * 
      * @param servers the servers value to set.
      * @return the ApplicationGatewayBackendHealthHttpSettings object itself.
      */
-    public ApplicationGatewayBackendHealthHttpSettings withServers(
-        List<ApplicationGatewayBackendHealthServerInner> servers) {
+    public ApplicationGatewayBackendHealthHttpSettings
+        withServers(List<ApplicationGatewayBackendHealthServerInner> servers) {
         this.servers = servers;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

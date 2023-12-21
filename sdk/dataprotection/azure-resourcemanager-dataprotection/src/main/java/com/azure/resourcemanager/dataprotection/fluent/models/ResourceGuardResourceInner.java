@@ -10,7 +10,9 @@ import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ResourceGuardResource model. */
+/**
+ * The ResourceGuardResource model.
+ */
 @Fluent
 public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
     /*
@@ -19,13 +21,15 @@ public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
     @JsonProperty(value = "properties")
     private ResourceGuard properties;
 
-    /** Creates an instance of ResourceGuardResourceInner class. */
+    /**
+     * Creates an instance of ResourceGuardResourceInner class.
+     */
     public ResourceGuardResourceInner() {
     }
 
     /**
      * Get the properties property: ResourceGuardResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGuard properties() {
@@ -34,7 +38,7 @@ public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
 
     /**
      * Set the properties property: ResourceGuardResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGuardResourceInner object itself.
      */
@@ -43,21 +47,27 @@ public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardResourceInner withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +76,7 @@ public final class ResourceGuardResourceInner extends DppBaseTrackedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

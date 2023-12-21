@@ -13,14 +13,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class NotebookOperationResultClient {
-    @Generated private final NotebookOperationResultsImpl serviceClient;
+    @Generated
+    private final NotebookOperationResultsImpl serviceClient;
 
     /**
      * Initializes an instance of NotebookOperationResultClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -30,7 +33,7 @@ public final class NotebookOperationResultClient {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +49,7 @@ public final class NotebookOperationResultClient {
 
     /**
      * Get notebook operation result.
-     *
+     * 
      * @param operationId Operation ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

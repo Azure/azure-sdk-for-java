@@ -21,8 +21,8 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
 
     private final com.azure.resourcemanager.quota.QuotaManager serviceManager;
 
-    public QuotaRequestStatusImpl(
-        QuotaRequestStatusClient innerClient, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
+    public QuotaRequestStatusImpl(QuotaRequestStatusClient innerClient,
+        com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -30,10 +30,7 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
     public Response<QuotaRequestDetails> getWithResponse(String id, String scope, Context context) {
         Response<QuotaRequestDetailsInner> inner = this.serviceClient().getWithResponse(id, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,10 +51,10 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
         return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QuotaRequestDetails> list(
-        String scope, String filter, Integer top, String skiptoken, Context context) {
-        PagedIterable<QuotaRequestDetailsInner> inner =
-            this.serviceClient().list(scope, filter, top, skiptoken, context);
+    public PagedIterable<QuotaRequestDetails> list(String scope, String filter, Integer top, String skiptoken,
+        Context context) {
+        PagedIterable<QuotaRequestDetailsInner> inner
+            = this.serviceClient().list(scope, filter, top, skiptoken, context);
         return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 

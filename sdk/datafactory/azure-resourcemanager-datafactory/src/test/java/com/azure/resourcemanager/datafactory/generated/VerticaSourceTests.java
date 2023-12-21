@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.VerticaSource;
 public final class VerticaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VerticaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"VerticaSource\",\"query\":\"datahsvsnedhkji\",\"queryTimeout\":\"datavetwf\",\"additionalColumns\":\"dataqvflrrtj\",\"sourceRetryCount\":\"dataikqzd\",\"sourceRetryWait\":\"dataqalxpmiytpjis\",\"maxConcurrentConnections\":\"datasolkwipvlsljut\",\"disableMetricsCollection\":\"datag\",\"\":{\"eaeyjlyxd\":\"dataodrfclehlopipv\",\"yavcbmzem\":\"dataxho\"}}")
-                .toObject(VerticaSource.class);
+        VerticaSource model = BinaryData.fromString(
+            "{\"type\":\"VerticaSource\",\"query\":\"datambpgcbltthsuzx\",\"queryTimeout\":\"datavifl\",\"additionalColumns\":\"datarknsc\",\"sourceRetryCount\":\"datah\",\"sourceRetryWait\":\"dataljsvpokvh\",\"maxConcurrentConnections\":\"dataygffuzhnusrfffag\",\"disableMetricsCollection\":\"datavfwzysv\",\"\":{\"pv\":\"datafjgbx\",\"novwujearowrmesz\":\"datag\"}}")
+            .toObject(VerticaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerticaSource model =
-            new VerticaSource()
-                .withSourceRetryCount("dataikqzd")
-                .withSourceRetryWait("dataqalxpmiytpjis")
-                .withMaxConcurrentConnections("datasolkwipvlsljut")
-                .withDisableMetricsCollection("datag")
-                .withQueryTimeout("datavetwf")
-                .withAdditionalColumns("dataqvflrrtj")
-                .withQuery("datahsvsnedhkji");
+        VerticaSource model = new VerticaSource().withSourceRetryCount("datah").withSourceRetryWait("dataljsvpokvh")
+            .withMaxConcurrentConnections("dataygffuzhnusrfffag").withDisableMetricsCollection("datavfwzysv")
+            .withQueryTimeout("datavifl").withAdditionalColumns("datarknsc").withQuery("datambpgcbltthsuzx");
         model = BinaryData.fromObject(model).toObject(VerticaSource.class);
     }
 }

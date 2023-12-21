@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.deviceupdate.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Accounts GetByResourceGroup. */
+/**
+ * Samples for Accounts GetByResourceGroup.
+ */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Get.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Get.json
      */
     /**
      * Sample code: Gets Account details.
-     *
+     * 
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void getsAccountDetails(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.accounts().getByResourceGroupWithResponse("test-rg", "contoso", Context.NONE);
+        manager.accounts().getByResourceGroupWithResponse("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }

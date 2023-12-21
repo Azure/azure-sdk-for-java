@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Amazon RDS for SQL Server dataset. */
+/**
+ * The Amazon RDS for SQL Server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRdsForSqlServerTable")
 @Fluent
@@ -23,62 +25,78 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of AmazonRdsForSqlServerTableDataset class. */
+    /**
+     * Creates an instance of AmazonRdsForSqlServerTableDataset class.
+     */
     public AmazonRdsForSqlServerTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: The Amazon RDS for SQL Server dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     /**
      * Get the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schemaTypePropertiesSchema() {
@@ -98,7 +116,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     /**
      * Set the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AmazonRdsForSqlServerTableDataset object itself.
      */
@@ -113,7 +131,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     /**
      * Get the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -123,7 +141,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
     /**
      * Set the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AmazonRdsForSqlServerTableDataset object itself.
      */
@@ -137,7 +155,7 @@ public final class AmazonRdsForSqlServerTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

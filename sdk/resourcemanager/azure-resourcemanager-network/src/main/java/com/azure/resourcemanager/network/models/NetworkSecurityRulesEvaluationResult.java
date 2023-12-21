@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network security rules evaluation result. */
+/**
+ * Network security rules evaluation result.
+ */
 @Fluent
 public final class NetworkSecurityRulesEvaluationResult {
     /*
@@ -46,13 +48,15 @@ public final class NetworkSecurityRulesEvaluationResult {
     @JsonProperty(value = "destinationPortMatched")
     private Boolean destinationPortMatched;
 
-    /** Creates an instance of NetworkSecurityRulesEvaluationResult class. */
+    /**
+     * Creates an instance of NetworkSecurityRulesEvaluationResult class.
+     */
     public NetworkSecurityRulesEvaluationResult() {
     }
 
     /**
      * Get the name property: Name of the network security rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the name property: Name of the network security rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -72,7 +76,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the protocolMatched property: Value indicating whether protocol is matched.
-     *
+     * 
      * @return the protocolMatched value.
      */
     public Boolean protocolMatched() {
@@ -81,7 +85,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the protocolMatched property: Value indicating whether protocol is matched.
-     *
+     * 
      * @param protocolMatched the protocolMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -92,7 +96,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the sourceMatched property: Value indicating whether source is matched.
-     *
+     * 
      * @return the sourceMatched value.
      */
     public Boolean sourceMatched() {
@@ -101,7 +105,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the sourceMatched property: Value indicating whether source is matched.
-     *
+     * 
      * @param sourceMatched the sourceMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -112,7 +116,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the sourcePortMatched property: Value indicating whether source port is matched.
-     *
+     * 
      * @return the sourcePortMatched value.
      */
     public Boolean sourcePortMatched() {
@@ -121,7 +125,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the sourcePortMatched property: Value indicating whether source port is matched.
-     *
+     * 
      * @param sourcePortMatched the sourcePortMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -132,7 +136,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the destinationMatched property: Value indicating whether destination is matched.
-     *
+     * 
      * @return the destinationMatched value.
      */
     public Boolean destinationMatched() {
@@ -141,7 +145,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the destinationMatched property: Value indicating whether destination is matched.
-     *
+     * 
      * @param destinationMatched the destinationMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -152,7 +156,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the destinationPortMatched property: Value indicating whether destination port is matched.
-     *
+     * 
      * @return the destinationPortMatched value.
      */
     public Boolean destinationPortMatched() {
@@ -161,7 +165,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the destinationPortMatched property: Value indicating whether destination port is matched.
-     *
+     * 
      * @param destinationPortMatched the destinationPortMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -172,7 +176,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

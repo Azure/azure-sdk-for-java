@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the Shared Image Gallery that you want to update. */
+/**
+ * Specifies information about the Shared Image Gallery that you want to update.
+ */
 @Fluent
 public final class GalleryUpdate extends UpdateResourceDefinition {
     /*
@@ -18,20 +20,24 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties")
     private GalleryProperties innerProperties;
 
-    /** Creates an instance of GalleryUpdate class. */
+    /**
+     * Creates an instance of GalleryUpdate class.
+     */
     public GalleryUpdate() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,7 +46,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -49,7 +55,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryUpdate object itself.
      */
@@ -63,7 +69,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -72,7 +78,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GalleryUpdate object itself.
      */
@@ -86,9 +92,9 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * 
+     * The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -97,7 +103,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
@@ -106,7 +112,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the GalleryUpdate object itself.
      */
@@ -120,7 +126,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @return the softDeletePolicy value.
      */
     public SoftDeletePolicy softDeletePolicy() {
@@ -129,7 +135,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @param softDeletePolicy the softDeletePolicy value to set.
      * @return the GalleryUpdate object itself.
      */
@@ -143,7 +149,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the sharingStatus property: Sharing status of current gallery.
-     *
+     * 
      * @return the sharingStatus value.
      */
     public SharingStatus sharingStatus() {
@@ -152,7 +158,7 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

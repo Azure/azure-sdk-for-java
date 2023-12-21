@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Tier of an Azure Firewall. */
+/**
+ * Tier of an Azure Firewall.
+ */
 public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewallSkuTier> {
-    /** Static value Standard for AzureFirewallSkuTier. */
+    /**
+     * Static value Standard for AzureFirewallSkuTier.
+     */
     public static final AzureFirewallSkuTier STANDARD = fromString("Standard");
 
-    /** Static value Premium for AzureFirewallSkuTier. */
+    /**
+     * Static value Premium for AzureFirewallSkuTier.
+     */
     public static final AzureFirewallSkuTier PREMIUM = fromString("Premium");
 
-    /** Static value Basic for AzureFirewallSkuTier. */
+    /**
+     * Static value Basic for AzureFirewallSkuTier.
+     */
     public static final AzureFirewallSkuTier BASIC = fromString("Basic");
 
     /**
      * Creates a new instance of AzureFirewallSkuTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewa
 
     /**
      * Creates or finds a AzureFirewallSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFirewallSkuTier.
      */
@@ -41,7 +49,7 @@ public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewa
 
     /**
      * Gets known AzureFirewallSkuTier values.
-     *
+     * 
      * @return known AzureFirewallSkuTier values.
      */
     public static Collection<AzureFirewallSkuTier> values() {

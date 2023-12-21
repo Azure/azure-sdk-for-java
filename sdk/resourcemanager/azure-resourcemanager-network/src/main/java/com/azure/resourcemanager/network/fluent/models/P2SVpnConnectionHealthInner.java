@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** P2S Vpn connection detailed health written to sas url. */
+/**
+ * P2S Vpn connection detailed health written to sas url.
+ */
 @Fluent
 public final class P2SVpnConnectionHealthInner {
     /*
@@ -16,14 +18,16 @@ public final class P2SVpnConnectionHealthInner {
     @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
-    /** Creates an instance of P2SVpnConnectionHealthInner class. */
+    /**
+     * Creates an instance of P2SVpnConnectionHealthInner class.
+     */
     public P2SVpnConnectionHealthInner() {
     }
 
     /**
      * Get the sasUrl property: Returned sas url of the blob to which the p2s vpn connection detailed health will be
      * written.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -33,7 +37,7 @@ public final class P2SVpnConnectionHealthInner {
     /**
      * Set the sasUrl property: Returned sas url of the blob to which the p2s vpn connection detailed health will be
      * written.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the P2SVpnConnectionHealthInner object itself.
      */
@@ -44,7 +48,7 @@ public final class P2SVpnConnectionHealthInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

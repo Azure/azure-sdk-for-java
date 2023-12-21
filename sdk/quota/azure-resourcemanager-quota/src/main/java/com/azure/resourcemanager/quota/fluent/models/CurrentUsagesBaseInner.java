@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.quota.models.UsagesProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource usage. */
+/**
+ * Resource usage.
+ */
 @Fluent
 public final class CurrentUsagesBaseInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class CurrentUsagesBaseInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private UsagesProperties properties;
 
-    /** Creates an instance of CurrentUsagesBaseInner class. */
+    /**
+     * Creates an instance of CurrentUsagesBaseInner class.
+     */
     public CurrentUsagesBaseInner() {
     }
 
     /**
      * Get the properties property: Usage properties for the specified resource.
-     *
+     * 
      * @return the properties value.
      */
     public UsagesProperties properties() {
@@ -33,7 +37,7 @@ public final class CurrentUsagesBaseInner extends ProxyResource {
 
     /**
      * Set the properties property: Usage properties for the specified resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CurrentUsagesBaseInner object itself.
      */
@@ -44,7 +48,7 @@ public final class CurrentUsagesBaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Input for InstallPatches on a Linux VM, as directly received by the API. */
+/**
+ * Input for InstallPatches on a Linux VM, as directly received by the API.
+ */
 @Fluent
 public final class LinuxParameters {
     /*
@@ -35,14 +37,16 @@ public final class LinuxParameters {
     @JsonProperty(value = "maintenanceRunId")
     private String maintenanceRunId;
 
-    /** Creates an instance of LinuxParameters class. */
+    /**
+     * Creates an instance of LinuxParameters class.
+     */
     public LinuxParameters() {
     }
 
     /**
      * Get the classificationsToInclude property: The update classifications to select when installing patches for
      * Linux.
-     *
+     * 
      * @return the classificationsToInclude value.
      */
     public List<VMGuestPatchClassificationLinux> classificationsToInclude() {
@@ -52,12 +56,12 @@ public final class LinuxParameters {
     /**
      * Set the classificationsToInclude property: The update classifications to select when installing patches for
      * Linux.
-     *
+     * 
      * @param classificationsToInclude the classificationsToInclude value to set.
      * @return the LinuxParameters object itself.
      */
-    public LinuxParameters withClassificationsToInclude(
-        List<VMGuestPatchClassificationLinux> classificationsToInclude) {
+    public LinuxParameters
+        withClassificationsToInclude(List<VMGuestPatchClassificationLinux> classificationsToInclude) {
         this.classificationsToInclude = classificationsToInclude;
         return this;
     }
@@ -65,7 +69,7 @@ public final class LinuxParameters {
     /**
      * Get the packageNameMasksToInclude property: packages to include in the patch operation. Format:
      * packageName_packageVersion.
-     *
+     * 
      * @return the packageNameMasksToInclude value.
      */
     public List<String> packageNameMasksToInclude() {
@@ -75,7 +79,7 @@ public final class LinuxParameters {
     /**
      * Set the packageNameMasksToInclude property: packages to include in the patch operation. Format:
      * packageName_packageVersion.
-     *
+     * 
      * @param packageNameMasksToInclude the packageNameMasksToInclude value to set.
      * @return the LinuxParameters object itself.
      */
@@ -87,7 +91,7 @@ public final class LinuxParameters {
     /**
      * Get the packageNameMasksToExclude property: packages to exclude in the patch operation. Format:
      * packageName_packageVersion.
-     *
+     * 
      * @return the packageNameMasksToExclude value.
      */
     public List<String> packageNameMasksToExclude() {
@@ -97,7 +101,7 @@ public final class LinuxParameters {
     /**
      * Set the packageNameMasksToExclude property: packages to exclude in the patch operation. Format:
      * packageName_packageVersion.
-     *
+     * 
      * @param packageNameMasksToExclude the packageNameMasksToExclude value to set.
      * @return the LinuxParameters object itself.
      */
@@ -109,7 +113,7 @@ public final class LinuxParameters {
     /**
      * Get the maintenanceRunId property: This is used as a maintenance run identifier for Auto VM Guest Patching in
      * Linux.
-     *
+     * 
      * @return the maintenanceRunId value.
      */
     public String maintenanceRunId() {
@@ -119,7 +123,7 @@ public final class LinuxParameters {
     /**
      * Set the maintenanceRunId property: This is used as a maintenance run identifier for Auto VM Guest Patching in
      * Linux.
-     *
+     * 
      * @param maintenanceRunId the maintenanceRunId value to set.
      * @return the LinuxParameters object itself.
      */
@@ -130,7 +134,7 @@ public final class LinuxParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

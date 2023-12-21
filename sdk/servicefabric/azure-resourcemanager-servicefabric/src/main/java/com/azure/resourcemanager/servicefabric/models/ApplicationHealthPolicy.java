@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines a health policy used to evaluate the health of an application or one of its children entities. */
+/**
+ * Defines a health policy used to evaluate the health of an application or one of its children entities.
+ */
 @Fluent
 public final class ApplicationHealthPolicy {
     /*
@@ -25,14 +27,16 @@ public final class ApplicationHealthPolicy {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies;
 
-    /** Creates an instance of ApplicationHealthPolicy class. */
+    /**
+     * Creates an instance of ApplicationHealthPolicy class.
+     */
     public ApplicationHealthPolicy() {
     }
 
     /**
      * Get the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @return the defaultServiceTypeHealthPolicy value.
      */
     public ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy() {
@@ -42,12 +46,12 @@ public final class ApplicationHealthPolicy {
     /**
      * Set the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @param defaultServiceTypeHealthPolicy the defaultServiceTypeHealthPolicy value to set.
      * @return the ApplicationHealthPolicy object itself.
      */
-    public ApplicationHealthPolicy withDefaultServiceTypeHealthPolicy(
-        ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
+    public ApplicationHealthPolicy
+        withDefaultServiceTypeHealthPolicy(ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
         this.defaultServiceTypeHealthPolicy = defaultServiceTypeHealthPolicy;
         return this;
     }
@@ -55,7 +59,7 @@ public final class ApplicationHealthPolicy {
     /**
      * Get the serviceTypeHealthPolicies property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @return the serviceTypeHealthPolicies value.
      */
     public Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies() {
@@ -65,19 +69,19 @@ public final class ApplicationHealthPolicy {
     /**
      * Set the serviceTypeHealthPolicies property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @param serviceTypeHealthPolicies the serviceTypeHealthPolicies value to set.
      * @return the ApplicationHealthPolicy object itself.
      */
-    public ApplicationHealthPolicy withServiceTypeHealthPolicies(
-        Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies) {
+    public ApplicationHealthPolicy
+        withServiceTypeHealthPolicies(Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies) {
         this.serviceTypeHealthPolicies = serviceTypeHealthPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -85,14 +89,11 @@ public final class ApplicationHealthPolicy {
             defaultServiceTypeHealthPolicy().validate();
         }
         if (serviceTypeHealthPolicies() != null) {
-            serviceTypeHealthPolicies()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            serviceTypeHealthPolicies().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

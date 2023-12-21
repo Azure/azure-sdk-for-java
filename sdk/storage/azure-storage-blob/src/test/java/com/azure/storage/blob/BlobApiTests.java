@@ -2891,13 +2891,17 @@ public class BlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> getBlobNameSupplier() {
         return Stream.of(
-            Arguments.of("blobName", "blobName"), // standard names should be preserved
-            // encoded names should be decoded (not double decoded))
-            Arguments.of(Utility.urlEncode("dir1/a%20b.txt"), "dir1/a%20b.txt"));
+            Arguments.of("blobName", "blobName"),
+            Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
+            Arguments.of("path/to]a blob", "path/to]a blob"),
+            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"),
+            Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點", "斑點"));
     }
 
     @ParameterizedTest
-    @MethodSource("getBlobNameAndBuildClientSupplier")
+    @MethodSource("getBlobNameSupplier")
     public void getBlobNameAndBuildClient(String originalBlobName, String finalBlobName) {
         BlobClient client = cc.getBlobClient(originalBlobName);
         BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
@@ -2905,13 +2909,52 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(baseClient.getBlobName(), finalBlobName);
     }
 
-    private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
+    private static Stream<Arguments> getNonEncodedBlobNameSupplier() {
         return Stream.of(
-            Arguments.of("blob", "blob"),
-            Arguments.of("path/to]a blob", "path/to]a blob"),
-            Arguments.of("path%2Fto%5Da%20blob", "path/to]a blob"),
-            Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點"));
+            Arguments.of("test%test"),
+            Arguments.of("ab2a7d5f-b973-4222-83ba-d0581817a819 %Россия 한국 中国!?/file"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedBlobNameSupplier")
+    public void getNonEncodedBlobName(String originalBlobName) {
+        BlobClient client = cc.getBlobClient(originalBlobName);
+        BlockBlobClient blockBlobClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedSpecializedBlob() {
+        String originalBlobName = "test%test";
+        SpecializedBlobClientBuilder specializedBlobClientBuilder = getSpecializedBuilder(cc.getBlobContainerUrl());
+        specializedBlobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
+
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedBlobClient() {
+        String originalBlobName = "test%test";
+        BlobClientBuilder blobClientBuilder = getBlobClientBuilder(cc.getBlobContainerUrl());
+        blobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
+
+        BlobClient blobClient = blobClientBuilder.buildClient();
+        assertEquals(blobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
     }
 
     @Test

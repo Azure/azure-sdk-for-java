@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-/** Samples for Domains ListByEmailServiceResource. */
+/**
+ * Samples for Domains ListByEmailServiceResource.
+ */
 public final class DomainsListByEmailServiceResourceSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/domains/listByEmailService.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/domains/
+     * listByEmailService.json
      */
     /**
      * Sample code: List Domains resources by EmailServiceName.
-     *
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void listDomainsResourcesByEmailServiceName(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager
-            .domains()
-            .listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE);
+    public static void
+        listDomainsResourcesByEmailServiceName(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.domains().listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource",
+            com.azure.core.util.Context.NONE);
     }
 }

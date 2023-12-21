@@ -14,8 +14,8 @@ public final class ReplicationStatusImpl implements ReplicationStatus {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    ReplicationStatusImpl(
-        ReplicationStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    ReplicationStatusImpl(ReplicationStatusInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

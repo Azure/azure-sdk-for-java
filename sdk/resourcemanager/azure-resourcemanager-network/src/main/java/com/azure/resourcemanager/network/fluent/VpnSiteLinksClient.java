@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnSiteLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VpnSiteLinksClient.
+ */
 public interface VpnSiteLinksClient {
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -27,12 +29,12 @@ public interface VpnSiteLinksClient {
      * @return vpnSiteLink Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName);
+    Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(String resourceGroupName, String vpnSiteName,
+        String vpnSiteLinkName);
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -46,7 +48,7 @@ public interface VpnSiteLinksClient {
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -57,12 +59,12 @@ public interface VpnSiteLinksClient {
      * @return vpnSiteLink Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VpnSiteLinkInner> getWithResponse(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName, Context context);
+    Response<VpnSiteLinkInner> getWithResponse(String resourceGroupName, String vpnSiteName, String vpnSiteLinkName,
+        Context context);
 
     /**
      * Retrieves the details of a VPN site link.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
@@ -76,7 +78,7 @@ public interface VpnSiteLinksClient {
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface VpnSiteLinksClient {
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +104,7 @@ public interface VpnSiteLinksClient {
 
     /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite.
      * @param context The context to associate with this operation.

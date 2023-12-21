@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AdhocBasedTriggerContext
- *
- * <p>Adhoc trigger context.
+ * 
+ * Adhoc trigger context.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AdhocBasedTriggerContext")
@@ -21,21 +21,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class AdhocBasedTriggerContext extends TriggerContext {
     /*
      * AdhocBasedTaggingCriteria
-     *
+     * 
      * Tagging Criteria containing retention tag for adhoc backup.
      */
     @JsonProperty(value = "taggingCriteria", required = true)
     private AdhocBasedTaggingCriteria taggingCriteria;
 
-    /** Creates an instance of AdhocBasedTriggerContext class. */
+    /**
+     * Creates an instance of AdhocBasedTriggerContext class.
+     */
     public AdhocBasedTriggerContext() {
     }
 
     /**
      * Get the taggingCriteria property: AdhocBasedTaggingCriteria
-     *
-     * <p>Tagging Criteria containing retention tag for adhoc backup.
-     *
+     * 
+     * Tagging Criteria containing retention tag for adhoc backup.
+     * 
      * @return the taggingCriteria value.
      */
     public AdhocBasedTaggingCriteria taggingCriteria() {
@@ -44,9 +46,9 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
 
     /**
      * Set the taggingCriteria property: AdhocBasedTaggingCriteria
-     *
-     * <p>Tagging Criteria containing retention tag for adhoc backup.
-     *
+     * 
+     * Tagging Criteria containing retention tag for adhoc backup.
+     * 
      * @param taggingCriteria the taggingCriteria value to set.
      * @return the AdhocBasedTriggerContext object itself.
      */
@@ -57,17 +59,15 @@ public final class AdhocBasedTriggerContext extends TriggerContext {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (taggingCriteria() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property taggingCriteria in model AdhocBasedTriggerContext"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property taggingCriteria in model AdhocBasedTriggerContext"));
         } else {
             taggingCriteria().validate();
         }

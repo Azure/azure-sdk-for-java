@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Troubleshooter restart response. */
+/**
+ * Troubleshooter restart response.
+ */
 @Immutable
 public final class RestartTroubleshooterResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class RestartTroubleshooterResponseInner {
     @JsonProperty(value = "troubleshooterResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String troubleshooterResourceName;
 
-    /** Creates an instance of RestartTroubleshooterResponseInner class. */
+    /**
+     * Creates an instance of RestartTroubleshooterResponseInner class.
+     */
     public RestartTroubleshooterResponseInner() {
     }
 
     /**
      * Get the troubleshooterResourceName property: Updated TroubleshooterResource Name .
-     *
+     * 
      * @return the troubleshooterResourceName value.
      */
     public String troubleshooterResourceName() {
@@ -31,7 +35,7 @@ public final class RestartTroubleshooterResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

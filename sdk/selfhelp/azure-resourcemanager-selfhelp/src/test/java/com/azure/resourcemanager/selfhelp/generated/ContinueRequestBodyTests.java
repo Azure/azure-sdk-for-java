@@ -14,33 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ContinueRequestBodyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContinueRequestBody model =
-            BinaryData
-                .fromString(
-                    "{\"stepId\":\"ofyyvoqacpi\",\"responses\":[{\"questionId\":\"tg\",\"questionType\":\"TextInput\",\"response\":\"oenwashr\"}]}")
-                .toObject(ContinueRequestBody.class);
-        Assertions.assertEquals("ofyyvoqacpi", model.stepId());
-        Assertions.assertEquals("tg", model.responses().get(0).questionId());
-        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.responses().get(0).questionType());
-        Assertions.assertEquals("oenwashr", model.responses().get(0).response());
+        ContinueRequestBody model = BinaryData.fromString(
+            "{\"stepId\":\"ulpjr\",\"responses\":[{\"questionId\":\"l\",\"questionType\":\"Dropdown\",\"response\":\"jwosytxitcskfck\"}]}")
+            .toObject(ContinueRequestBody.class);
+        Assertions.assertEquals("ulpjr", model.stepId());
+        Assertions.assertEquals("l", model.responses().get(0).questionId());
+        Assertions.assertEquals(QuestionType.DROPDOWN, model.responses().get(0).questionType());
+        Assertions.assertEquals("jwosytxitcskfck", model.responses().get(0).response());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContinueRequestBody model =
-            new ContinueRequestBody()
-                .withStepId("ofyyvoqacpi")
-                .withResponses(
-                    Arrays
-                        .asList(
-                            new TroubleshooterResponse()
-                                .withQuestionId("tg")
-                                .withQuestionType(QuestionType.TEXT_INPUT)
-                                .withResponse("oenwashr")));
+        ContinueRequestBody model
+            = new ContinueRequestBody().withStepId("ulpjr").withResponses(Arrays.asList(new TroubleshooterResponse()
+                .withQuestionId("l").withQuestionType(QuestionType.DROPDOWN).withResponse("jwosytxitcskfck")));
         model = BinaryData.fromObject(model).toObject(ContinueRequestBody.class);
-        Assertions.assertEquals("ofyyvoqacpi", model.stepId());
-        Assertions.assertEquals("tg", model.responses().get(0).questionId());
-        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.responses().get(0).questionType());
-        Assertions.assertEquals("oenwashr", model.responses().get(0).response());
+        Assertions.assertEquals("ulpjr", model.stepId());
+        Assertions.assertEquals("l", model.responses().get(0).questionId());
+        Assertions.assertEquals(QuestionType.DROPDOWN, model.responses().get(0).questionType());
+        Assertions.assertEquals("jwosytxitcskfck", model.responses().get(0).response());
     }
 }

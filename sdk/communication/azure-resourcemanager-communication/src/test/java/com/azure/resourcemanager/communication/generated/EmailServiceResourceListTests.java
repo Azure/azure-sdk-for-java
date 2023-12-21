@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailServiceResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailServiceResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"dataLocation\":\"c\"},\"location\":\"nfnbacfionlebxe\",\"tags\":{\"jfeallnwsub\":\"tzxdpnqbqqwx\",\"zscxaqwo\":\"snjampmng\"},\"id\":\"chcbonqvpkvlrxnj\",\"name\":\"ase\",\"type\":\"pheoflokeyy\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"bdlwtgrhpdjpj\"},\"location\":\"asxazjpqyegualhb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"},{\"properties\":{\"provisioningState\":\"Running\",\"dataLocation\":\"mohctb\"},\"location\":\"udwxdndnvowguj\",\"tags\":{\"zj\":\"wdkcglhsl\",\"kuofqweykhme\":\"yggdtjixh\",\"yvdcsitynnaa\":\"evfyexfwhybcib\"},\"id\":\"dectehfiqsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"yyvxyqjpkcattpn\"},\"location\":\"cr\",\"tags\":{\"sounqecanoaeu\":\"sqpjhvmdajvn\",\"u\":\"fhyhltrpmopjmcma\",\"aodsfcpkv\":\"kthfui\",\"uaxbezyiuokkt\":\"odpuozmyzydag\"},\"id\":\"hrdxwzywqsmbs\",\"name\":\"reximoryocfs\",\"type\":\"ksymd\"}],\"nextLink\":\"stkiiuxhqyud\"}")
-                .toObject(EmailServiceResourceList.class);
+        EmailServiceResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"dataLocation\":\"c\"},\"location\":\"nfnbacfionlebxe\",\"tags\":{\"jfeallnwsub\":\"tzxdpnqbqqwx\",\"zscxaqwo\":\"snjampmng\"},\"id\":\"chcbonqvpkvlrxnj\",\"name\":\"ase\",\"type\":\"pheoflokeyy\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"bdlwtgrhpdjpj\"},\"location\":\"asxazjpqyegualhb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"},{\"properties\":{\"provisioningState\":\"Running\",\"dataLocation\":\"mohctb\"},\"location\":\"udwxdndnvowguj\",\"tags\":{\"zj\":\"wdkcglhsl\",\"kuofqweykhme\":\"yggdtjixh\",\"yvdcsitynnaa\":\"evfyexfwhybcib\"},\"id\":\"dectehfiqsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"yyvxyqjpkcattpn\"},\"location\":\"cr\",\"tags\":{\"sounqecanoaeu\":\"sqpjhvmdajvn\",\"u\":\"fhyhltrpmopjmcma\",\"aodsfcpkv\":\"kthfui\",\"uaxbezyiuokkt\":\"odpuozmyzydag\"},\"id\":\"hrdxwzywqsmbs\",\"name\":\"reximoryocfs\",\"type\":\"ksymd\"}],\"nextLink\":\"stkiiuxhqyud\"}")
+            .toObject(EmailServiceResourceList.class);
         Assertions.assertEquals("nfnbacfionlebxe", model.value().get(0).location());
         Assertions.assertEquals("tzxdpnqbqqwx", model.value().get(0).tags().get("jfeallnwsub"));
         Assertions.assertEquals("c", model.value().get(0).dataLocation());
@@ -28,44 +26,20 @@ public final class EmailServiceResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailServiceResourceList model =
-            new EmailServiceResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EmailServiceResourceInner()
-                                .withLocation("nfnbacfionlebxe")
-                                .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng"))
-                                .withDataLocation("c"),
-                            new EmailServiceResourceInner()
-                                .withLocation("asxazjpqyegualhb")
-                                .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy"))
-                                .withDataLocation("bdlwtgrhpdjpj"),
-                            new EmailServiceResourceInner()
-                                .withLocation("udwxdndnvowguj")
-                                .withTags(
-                                    mapOf(
-                                        "zj",
-                                        "wdkcglhsl",
-                                        "kuofqweykhme",
-                                        "yggdtjixh",
-                                        "yvdcsitynnaa",
-                                        "evfyexfwhybcib"))
-                                .withDataLocation("mohctb"),
-                            new EmailServiceResourceInner()
-                                .withLocation("cr")
-                                .withTags(
-                                    mapOf(
-                                        "sounqecanoaeu",
-                                        "sqpjhvmdajvn",
-                                        "u",
-                                        "fhyhltrpmopjmcma",
-                                        "aodsfcpkv",
-                                        "kthfui",
-                                        "uaxbezyiuokkt",
-                                        "odpuozmyzydag"))
-                                .withDataLocation("yyvxyqjpkcattpn")))
-                .withNextLink("stkiiuxhqyud");
+        EmailServiceResourceList model = new EmailServiceResourceList()
+            .withValue(Arrays.asList(
+                new EmailServiceResourceInner().withLocation("nfnbacfionlebxe")
+                    .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng")).withDataLocation("c"),
+                new EmailServiceResourceInner().withLocation("asxazjpqyegualhb")
+                    .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy")).withDataLocation("bdlwtgrhpdjpj"),
+                new EmailServiceResourceInner().withLocation("udwxdndnvowguj")
+                    .withTags(mapOf("zj", "wdkcglhsl", "kuofqweykhme", "yggdtjixh", "yvdcsitynnaa", "evfyexfwhybcib"))
+                    .withDataLocation("mohctb"),
+                new EmailServiceResourceInner().withLocation("cr")
+                    .withTags(mapOf("sounqecanoaeu", "sqpjhvmdajvn", "u", "fhyhltrpmopjmcma", "aodsfcpkv", "kthfui",
+                        "uaxbezyiuokkt", "odpuozmyzydag"))
+                    .withDataLocation("yyvxyqjpkcattpn")))
+            .withNextLink("stkiiuxhqyud");
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceList.class);
         Assertions.assertEquals("nfnbacfionlebxe", model.value().get(0).location());
         Assertions.assertEquals("tzxdpnqbqqwx", model.value().get(0).tags().get("jfeallnwsub"));

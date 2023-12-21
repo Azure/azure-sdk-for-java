@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datafactory.models.SftpLocation;
 public final class SftpLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SftpLocation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SftpLocation\",\"folderPath\":\"dataw\",\"fileName\":\"datavxakglh\",\"\":{\"qiy\":\"datasrfga\",\"yqyxyjrcbqpbis\":\"datavxcgdhyhgoqgs\",\"yjz\":\"dataglqjoxtdahneaoov\",\"fsr\":\"dataivfwjlofze\"}}")
-                .toObject(SftpLocation.class);
+        SftpLocation model = BinaryData.fromString(
+            "{\"type\":\"SftpLocation\",\"folderPath\":\"dataw\",\"fileName\":\"datavxakglh\",\"\":{\"qiy\":\"datasrfga\",\"yqyxyjrcbqpbis\":\"datavxcgdhyhgoqgs\",\"yjz\":\"dataglqjoxtdahneaoov\",\"fsr\":\"dataivfwjlofze\"}}")
+            .toObject(SftpLocation.class);
     }
 
     @org.junit.jupiter.api.Test

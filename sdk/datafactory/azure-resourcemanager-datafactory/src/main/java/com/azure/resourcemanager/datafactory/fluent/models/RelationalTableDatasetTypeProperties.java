@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Relational table dataset properties. */
+/**
+ * Relational table dataset properties.
+ */
 @Fluent
 public final class RelationalTableDatasetTypeProperties {
     /*
@@ -16,13 +18,15 @@ public final class RelationalTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
-    /** Creates an instance of RelationalTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of RelationalTableDatasetTypeProperties class.
+     */
     public RelationalTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -31,7 +35,7 @@ public final class RelationalTableDatasetTypeProperties {
 
     /**
      * Set the tableName property: The relational table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the RelationalTableDatasetTypeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class RelationalTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

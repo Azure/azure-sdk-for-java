@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request for a VIP swap. */
+/**
+ * The request for a VIP swap.
+ */
 @Fluent
 public final class LoadBalancerVipSwapRequest {
     /*
@@ -17,13 +19,15 @@ public final class LoadBalancerVipSwapRequest {
     @JsonProperty(value = "frontendIPConfigurations")
     private List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations;
 
-    /** Creates an instance of LoadBalancerVipSwapRequest class. */
+    /**
+     * Creates an instance of LoadBalancerVipSwapRequest class.
+     */
     public LoadBalancerVipSwapRequest() {
     }
 
     /**
      * Get the frontendIpConfigurations property: A list of frontend IP configuration resources that should swap VIPs.
-     *
+     * 
      * @return the frontendIpConfigurations value.
      */
     public List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations() {
@@ -32,19 +36,19 @@ public final class LoadBalancerVipSwapRequest {
 
     /**
      * Set the frontendIpConfigurations property: A list of frontend IP configuration resources that should swap VIPs.
-     *
+     * 
      * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the LoadBalancerVipSwapRequest object itself.
      */
-    public LoadBalancerVipSwapRequest withFrontendIpConfigurations(
-        List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
+    public LoadBalancerVipSwapRequest
+        withFrontendIpConfigurations(List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
         this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

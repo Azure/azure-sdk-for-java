@@ -4,6 +4,10 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
@@ -33,6 +37,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import java.util.stream.Collectors;
@@ -217,22 +222,113 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a distribution policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param distributionPolicyId The unique identifier of the policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.updateDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions)
+            .map(response -> response.getValue());
+    }
+
+    /**
      * Creates a distribution policy.
      *
      * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return response The response instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createDistributionPolicyWithResponse(
-        CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
+    public Mono<Response<DistributionPolicy>>
+        createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         DistributionPolicyInternal distributionPolicy
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
-            BinaryData.fromObject(distributionPolicy), requestOptions);
+            BinaryData.fromObject(distributionPolicy), requestOptions)
+                .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), DistributionPolicyConstructorProxy
+                        .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+    }
+
+    /**
+     * Creates a distribution policy.
+     *
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
+     * @return response The response instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DistributionPolicy>
+        createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return createDistributionPolicyWithResponse(createDistributionPolicyOptions)
+            .map(response -> response.getValue());
     }
 
     /**
@@ -518,22 +614,110 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a classification policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     classificationPolicyId: String (Required)
+     *     name: String (Optional)
+     *     fallbackQueueId: String (Optional)
+     *     queueSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     prioritizationRule (Optional): {
+     *     }
+     *     workerSelectors (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param classificationPolicyId Unique identifier of this policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.updateClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions)
+            .map(response -> response.getValue());
+    }
+
+    /**
      * Creates a classification policy.
      *
      * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return response The response instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createClassificationPolicyWithResponse(
-        CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
+    public Mono<Response<ClassificationPolicy>>
+        createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
-            BinaryData.fromObject(classificationPolicy), requestOptions);
+            BinaryData.fromObject(classificationPolicy), requestOptions)
+                .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(), ClassificationPolicyConstructorProxy
+                        .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
     }
 
     /**
@@ -548,10 +732,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy>
         createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        return createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class));
+        return createClassificationPolicyWithResponse(createClassificationPolicyOptions)
+            .map(response -> response.getValue());
     }
 
     /**
@@ -845,22 +1027,119 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a exception policy.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param exceptionPolicyId The Id of the exception policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions)
+            .map(response -> response.getValue());
+    }
+
+    /**
      * Creates an exception policy.
      *
      * @param createExceptionPolicyOptions Create options for Exception Policy.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return response The response instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createExceptionPolicyWithResponse(
-        CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
+    public Mono<Response<ExceptionPolicy>>
+        createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         ExceptionPolicyInternal exceptionPolicy
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
-            BinaryData.fromObject(exceptionPolicy), requestOptions);
+            BinaryData.fromObject(exceptionPolicy), requestOptions)
+                .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), ExceptionPolicyConstructorProxy
+                        .create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+    }
+
+    /**
+     * Creates an exception policy.
+     *
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
+     * @return response The response instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
+        return createExceptionPolicyWithResponse(createExceptionPolicyOptions).map(response -> response.getValue());
     }
 
     /**
@@ -1014,7 +1293,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1029,7 +1308,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1130,20 +1409,111 @@ public final class JobRouterAdministrationAsyncClient {
     }
 
     /**
+     * Updates a queue.
+     *
+     * <p>
+     * <strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>If-Match</td>
+     * <td>String</td>
+     * <td>No</td>
+     * <td>The request should only proceed if an entity matches this string.</td>
+     * </tr>
+     * <tr>
+     * <td>If-Unmodified-Since</td>
+     * <td>OffsetDateTime</td>
+     * <td>No</td>
+     * <td>The request should only proceed if the entity was not modified after this time.</td>
+     * </tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param queueId The Id of this queue.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return result object.
+     * Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
+        return this.upsertQueueWithResponse(queueId, resource, requestOptions).map(response -> response.getValue());
+    }
+
+    /**
      * Create a queue.
      *
      * @param createQueueOptions Container for inputs to create a queue.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return response The response instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createQueueWithResponse(CreateQueueOptions createQueueOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<RouterQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
-        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions);
+        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
+            .map(response -> new SimpleResponse<RouterQueue>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                RouterQueueConstructorProxy.create(response.getValue().toObject(RouterQueueInternal.class))));
+    }
+
+    /**
+     * Create a queue.
+     *
+     * @param createQueueOptions Container for inputs to create a queue.
+     * @return response The response instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
+        return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
+            .map(response -> response.getValue().toObject(RouterQueueInternal.class))
+            .map(internal -> RouterQueueConstructorProxy.create(internal));
     }
 
     /**
@@ -1158,7 +1528,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -1210,7 +1580,7 @@ public final class JobRouterAdministrationAsyncClient {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }

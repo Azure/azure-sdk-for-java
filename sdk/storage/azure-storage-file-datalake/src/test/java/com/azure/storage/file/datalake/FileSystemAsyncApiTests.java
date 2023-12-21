@@ -7,7 +7,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -2026,6 +2025,18 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsCreationTimeParse() {
+        // this test is ensuring that we're handling the date format that the service returns for the creation time
+        // it can be returned in two formats: RFC 1123 date string or Windows file time
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+
+        // assert that NumberFormatException is not thrown
+        assertDoesNotThrow(() -> dataLakeFileSystemAsyncClient.listPaths(options).blockLast());
+    }
+
+    @Test
     public void listPathsReturnUpn() {
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
         dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
@@ -2123,10 +2134,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(dc2.getPropertiesWithResponse(null), 200);
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths())
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir2", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file2", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir1", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir2", r.getName()))
+            .assertNext(r -> assertEquals(name + "file1", r.getName()))
+            .assertNext(r -> assertEquals(name + "file2", r.getName()))
             .verifyComplete();
     }
 

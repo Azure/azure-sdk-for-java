@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.24 (Unreleased)
+## 1.0.0-beta.25 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,49 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.24 (2023-11-22)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.LakeHouseTableDataset` was added
+
+* `models.LakeHouseLinkedService` was added
+
+* `models.LakeHouseWriteSettings` was added
+
+* `models.LakeHouseReadSettings` was added
+
+* `models.LakeHouseLocation` was added
+
+* `models.LakeHouseTableSource` was added
+
+* `models.ParquetReadSettings` was added
+
+* `models.LakeHouseTableSink` was added
+
+#### `models.WebhookActivity` was modified
+
+* `policy()` was added
+* `withPolicy(models.SecureInputOutputPolicy)` was added
+
+#### `models.ParquetSource` was modified
+
+* `formatSettings()` was added
+* `withFormatSettings(models.ParquetReadSettings)` was added
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `googleAdsApiVersion()` was added
+* `withSupportLegacyDataTypes(java.lang.Object)` was added
+* `supportLegacyDataTypes()` was added
+* `privateKey()` was added
+* `withPrivateKey(models.SecretBase)` was added
+* `withGoogleAdsApiVersion(java.lang.Object)` was added
+* `withLoginCustomerId(java.lang.Object)` was added
+* `loginCustomerId()` was added
 
 ## 1.0.0-beta.23 (2023-09-27)
 

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of AgentPoolListResult. */
+/**
+ * An immutable client-side representation of AgentPoolListResult.
+ */
 public interface AgentPoolListResult {
     /**
      * Gets the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     List<AgentPool> value();
 
     /**
      * Gets the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     AgentPoolListResultInner innerModel();

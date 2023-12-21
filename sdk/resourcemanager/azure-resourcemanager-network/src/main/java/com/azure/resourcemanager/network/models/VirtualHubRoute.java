@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHub route. */
+/**
+ * VirtualHub route.
+ */
 @Fluent
 public final class VirtualHubRoute {
     /*
@@ -23,13 +25,15 @@ public final class VirtualHubRoute {
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
 
-    /** Creates an instance of VirtualHubRoute class. */
+    /**
+     * Creates an instance of VirtualHubRoute class.
+     */
     public VirtualHubRoute() {
     }
 
     /**
      * Get the addressPrefixes property: List of all addressPrefixes.
-     *
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -38,7 +42,7 @@ public final class VirtualHubRoute {
 
     /**
      * Set the addressPrefixes property: List of all addressPrefixes.
-     *
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the VirtualHubRoute object itself.
      */
@@ -49,7 +53,7 @@ public final class VirtualHubRoute {
 
     /**
      * Get the nextHopIpAddress property: NextHop ip address.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -58,7 +62,7 @@ public final class VirtualHubRoute {
 
     /**
      * Set the nextHopIpAddress property: NextHop ip address.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the VirtualHubRoute object itself.
      */
@@ -69,7 +73,7 @@ public final class VirtualHubRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

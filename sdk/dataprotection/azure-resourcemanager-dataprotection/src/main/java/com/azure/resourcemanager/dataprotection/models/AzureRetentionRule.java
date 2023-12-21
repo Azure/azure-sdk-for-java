@@ -13,8 +13,8 @@ import java.util.List;
 
 /**
  * AzureRetentionRule
- *
- * <p>Azure retention rule.
+ * 
+ * Azure retention rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureRetentionRule")
@@ -32,13 +32,15 @@ public final class AzureRetentionRule extends BasePolicyRule {
     @JsonProperty(value = "lifecycles", required = true)
     private List<SourceLifeCycle> lifecycles;
 
-    /** Creates an instance of AzureRetentionRule class. */
+    /**
+     * Creates an instance of AzureRetentionRule class.
+     */
     public AzureRetentionRule() {
     }
 
     /**
      * Get the isDefault property: The isDefault property.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -47,7 +49,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Set the isDefault property: The isDefault property.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the AzureRetentionRule object itself.
      */
@@ -58,7 +60,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Get the lifecycles property: The lifecycles property.
-     *
+     * 
      * @return the lifecycles value.
      */
     public List<SourceLifeCycle> lifecycles() {
@@ -67,7 +69,7 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Set the lifecycles property: The lifecycles property.
-     *
+     * 
      * @param lifecycles the lifecycles value to set.
      * @return the AzureRetentionRule object itself.
      */
@@ -76,7 +78,9 @@ public final class AzureRetentionRule extends BasePolicyRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureRetentionRule withName(String name) {
         super.withName(name);
@@ -85,16 +89,15 @@ public final class AzureRetentionRule extends BasePolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (lifecycles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property lifecycles in model AzureRetentionRule"));
         } else {
             lifecycles().forEach(e -> e.validate());
         }

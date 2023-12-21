@@ -2595,8 +2595,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path/to]a file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,斑點"})
+    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileAsyncClient client = dataLakeFileSystemAsyncClient.getFileAsyncClient(originalFileName);
 
@@ -2841,6 +2841,24 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(fc.getProperties())
             .assertNext(r -> assertEquals(dataSize, r.getFileSize()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void uploadFromFileEmptyFile() {
+        File file = getRandomFile(0);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        StepVerifier.create(fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null))
+            .assertNext(r -> {
+                // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty
+                // file, it will return 201 since only createWithResponse gets called
+                assertEquals(201, r.getStatusCode());
+                assertNotNull(r.getValue().getETag());
+            }).then(() -> StepVerifier.create(fc.getProperties())
+                .assertNext(r -> assertEquals(0, r.getFileSize()))
+                .verifyComplete())
             .verifyComplete();
     }
 

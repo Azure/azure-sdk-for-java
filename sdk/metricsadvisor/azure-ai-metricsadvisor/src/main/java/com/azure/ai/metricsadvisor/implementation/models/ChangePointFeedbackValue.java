@@ -6,23 +6,32 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.ChangePointValue;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The ChangePointFeedbackValue model. */
+/**
+ * The ChangePointFeedbackValue model.
+ */
 @Fluent
-public final class ChangePointFeedbackValue {
+public final class ChangePointFeedbackValue implements JsonSerializable<ChangePointFeedbackValue> {
     /*
      * The changePointValue property.
      */
-    @JsonProperty(value = "changePointValue", required = true)
     private ChangePointValue changePointValue;
 
-    /** Creates an instance of ChangePointFeedbackValue class. */
-    public ChangePointFeedbackValue() {}
+    /**
+     * Creates an instance of ChangePointFeedbackValue class.
+     */
+    public ChangePointFeedbackValue() {
+    }
 
     /**
      * Get the changePointValue property: The changePointValue property.
-     *
+     * 
      * @return the changePointValue value.
      */
     public ChangePointValue getChangePointValue() {
@@ -31,12 +40,47 @@ public final class ChangePointFeedbackValue {
 
     /**
      * Set the changePointValue property: The changePointValue property.
-     *
+     * 
      * @param changePointValue the changePointValue value to set.
      * @return the ChangePointFeedbackValue object itself.
      */
     public ChangePointFeedbackValue setChangePointValue(ChangePointValue changePointValue) {
         this.changePointValue = changePointValue;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("changePointValue", Objects.toString(this.changePointValue, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangePointFeedbackValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangePointFeedbackValue if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChangePointFeedbackValue.
+     */
+    public static ChangePointFeedbackValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangePointFeedbackValue deserializedChangePointFeedbackValue = new ChangePointFeedbackValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("changePointValue".equals(fieldName)) {
+                    deserializedChangePointFeedbackValue.changePointValue
+                        = ChangePointValue.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangePointFeedbackValue;
+        });
     }
 }

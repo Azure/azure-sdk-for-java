@@ -11,14 +11,14 @@ import java.util.Map;
 
 /**
  * PatchResourceRequestInput
- *
- * <p>Patch Request content for Microsoft.DataProtection resources.
+ * 
+ * Patch Request content for Microsoft.DataProtection resources.
  */
 @Fluent
 public final class PatchResourceRequestInput {
     /*
      * DppIdentityDetails
-     *
+     * 
      * Input Managed Identity Details
      */
     @JsonProperty(value = "identity")
@@ -37,15 +37,17 @@ public final class PatchResourceRequestInput {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PatchResourceRequestInput class. */
+    /**
+     * Creates an instance of PatchResourceRequestInput class.
+     */
     public PatchResourceRequestInput() {
     }
 
     /**
      * Get the identity property: DppIdentityDetails
-     *
-     * <p>Input Managed Identity Details.
-     *
+     * 
+     * Input Managed Identity Details.
+     * 
      * @return the identity value.
      */
     public DppIdentityDetails identity() {
@@ -54,9 +56,9 @@ public final class PatchResourceRequestInput {
 
     /**
      * Set the identity property: DppIdentityDetails
-     *
-     * <p>Input Managed Identity Details.
-     *
+     * 
+     * Input Managed Identity Details.
+     * 
      * @param identity the identity value to set.
      * @return the PatchResourceRequestInput object itself.
      */
@@ -67,7 +69,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Get the properties property: Resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public PatchBackupVaultInput properties() {
@@ -76,7 +78,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Set the properties property: Resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PatchResourceRequestInput object itself.
      */
@@ -87,7 +89,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -96,7 +98,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchResourceRequestInput object itself.
      */
@@ -107,7 +109,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

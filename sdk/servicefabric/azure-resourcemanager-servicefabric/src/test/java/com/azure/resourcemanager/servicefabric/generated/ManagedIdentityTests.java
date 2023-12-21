@@ -15,25 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"fssxqukkfplg\",\"tenantId\":\"sxnkjzkdeslpvlo\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"upedeojnabckhs\":{\"principalId\":\"hxpkd\",\"clientId\":\"baiuebbaumny\"},\"htldwk\":{\"principalId\":\"xpsiebtfhvpes\",\"clientId\":\"skrdqmhjj\"}}}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"hcdhmdual\",\"tenantId\":\"xqpvfadmw\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"isgwbnbbeldawkz\":{\"principalId\":\"xpvgo\",\"clientId\":\"lf\"}}}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("upedeojnabckhs", new UserAssignedIdentity(), "htldwk", new UserAssignedIdentity()));
+        ManagedIdentity model = new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("isgwbnbbeldawkz", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

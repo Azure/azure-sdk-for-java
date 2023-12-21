@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of the Service Fabric runtime versions. */
+/**
+ * The result of the Service Fabric runtime versions.
+ */
 @Fluent
 public final class ClusterCodeVersionsResult {
     /*
@@ -35,13 +37,15 @@ public final class ClusterCodeVersionsResult {
     @JsonProperty(value = "properties")
     private ClusterVersionDetails innerProperties;
 
-    /** Creates an instance of ClusterCodeVersionsResult class. */
+    /**
+     * Creates an instance of ClusterCodeVersionsResult class.
+     */
     public ClusterCodeVersionsResult() {
     }
 
     /**
      * Get the id property: The identification of the result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the id property: The identification of the result.
-     *
+     * 
      * @param id the id value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -61,7 +65,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the name property: The name of the result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the name property: The name of the result.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -81,7 +85,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the type property: The result resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +94,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the type property: The result resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -101,7 +105,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the innerProperties property: The detail of the Service Fabric runtime version result.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterVersionDetails innerProperties() {
@@ -110,7 +114,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @return the codeVersion value.
      */
     public String codeVersion() {
@@ -119,7 +123,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @param codeVersion the codeVersion value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -133,7 +137,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @return the supportExpiryUtc value.
      */
     public String supportExpiryUtc() {
@@ -142,7 +146,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @param supportExpiryUtc the supportExpiryUtc value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -156,7 +160,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @return the environment value.
      */
     public ClusterEnvironment environment() {
@@ -165,7 +169,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -179,7 +183,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -27,14 +27,16 @@ public final class PriorityMixPolicy {
     @JsonProperty(value = "regularPriorityPercentageAboveBase")
     private Integer regularPriorityPercentageAboveBase;
 
-    /** Creates an instance of PriorityMixPolicy class. */
+    /**
+     * Creates an instance of PriorityMixPolicy class.
+     */
     public PriorityMixPolicy() {
     }
 
     /**
      * Get the baseRegularPriorityCount property: The base number of regular priority VMs that will be created in this
      * scale set as it scales out.
-     *
+     * 
      * @return the baseRegularPriorityCount value.
      */
     public Integer baseRegularPriorityCount() {
@@ -44,7 +46,7 @@ public final class PriorityMixPolicy {
     /**
      * Set the baseRegularPriorityCount property: The base number of regular priority VMs that will be created in this
      * scale set as it scales out.
-     *
+     * 
      * @param baseRegularPriorityCount the baseRegularPriorityCount value to set.
      * @return the PriorityMixPolicy object itself.
      */
@@ -56,7 +58,7 @@ public final class PriorityMixPolicy {
     /**
      * Get the regularPriorityPercentageAboveBase property: The percentage of VM instances, after the base regular
      * priority count has been reached, that are expected to use regular priority.
-     *
+     * 
      * @return the regularPriorityPercentageAboveBase value.
      */
     public Integer regularPriorityPercentageAboveBase() {
@@ -66,7 +68,7 @@ public final class PriorityMixPolicy {
     /**
      * Set the regularPriorityPercentageAboveBase property: The percentage of VM instances, after the base regular
      * priority count has been reached, that are expected to use regular priority.
-     *
+     * 
      * @param regularPriorityPercentageAboveBase the regularPriorityPercentageAboveBase value to set.
      * @return the PriorityMixPolicy object itself.
      */
@@ -77,7 +79,7 @@ public final class PriorityMixPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

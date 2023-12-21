@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Volumes associated with snapshot policy. */
+/**
+ * Volumes associated with snapshot policy.
+ */
 @Fluent
 public final class SnapshotPolicyVolumeListInner {
     /*
@@ -17,13 +19,15 @@ public final class SnapshotPolicyVolumeListInner {
     @JsonProperty(value = "value")
     private List<VolumeInner> value;
 
-    /** Creates an instance of SnapshotPolicyVolumeListInner class. */
+    /**
+     * Creates an instance of SnapshotPolicyVolumeListInner class.
+     */
     public SnapshotPolicyVolumeListInner() {
     }
 
     /**
      * Get the value property: List of volumes.
-     *
+     * 
      * @return the value value.
      */
     public List<VolumeInner> value() {
@@ -32,7 +36,7 @@ public final class SnapshotPolicyVolumeListInner {
 
     /**
      * Set the value property: List of volumes.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotPolicyVolumeListInner object itself.
      */
@@ -43,7 +47,7 @@ public final class SnapshotPolicyVolumeListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view of a disk restore point. */
+/**
+ * The instance view of a disk restore point.
+ */
 @Fluent
 public final class DiskRestorePointInstanceView {
     /*
@@ -22,13 +24,15 @@ public final class DiskRestorePointInstanceView {
     @JsonProperty(value = "replicationStatus")
     private DiskRestorePointReplicationStatus replicationStatus;
 
-    /** Creates an instance of DiskRestorePointInstanceView class. */
+    /**
+     * Creates an instance of DiskRestorePointInstanceView class.
+     */
     public DiskRestorePointInstanceView() {
     }
 
     /**
      * Get the id property: Disk restore point Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class DiskRestorePointInstanceView {
 
     /**
      * Set the id property: Disk restore point Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the DiskRestorePointInstanceView object itself.
      */
@@ -48,7 +52,7 @@ public final class DiskRestorePointInstanceView {
 
     /**
      * Get the replicationStatus property: The disk restore point replication status information.
-     *
+     * 
      * @return the replicationStatus value.
      */
     public DiskRestorePointReplicationStatus replicationStatus() {
@@ -57,7 +61,7 @@ public final class DiskRestorePointInstanceView {
 
     /**
      * Set the replicationStatus property: The disk restore point replication status information.
-     *
+     * 
      * @param replicationStatus the replicationStatus value to set.
      * @return the DiskRestorePointInstanceView object itself.
      */
@@ -68,7 +72,7 @@ public final class DiskRestorePointInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

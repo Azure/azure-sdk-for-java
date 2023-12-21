@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Event Subscription Status. */
+/**
+ * Event Subscription Status.
+ */
 public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSubscriptionStatus> {
-    /** Static value Enabled for EventSubscriptionStatus. */
+    /**
+     * Static value Enabled for EventSubscriptionStatus.
+     */
     public static final EventSubscriptionStatus ENABLED = fromString("Enabled");
 
-    /** Static value Provisioning for EventSubscriptionStatus. */
+    /**
+     * Static value Provisioning for EventSubscriptionStatus.
+     */
     public static final EventSubscriptionStatus PROVISIONING = fromString("Provisioning");
 
-    /** Static value Deprovisioning for EventSubscriptionStatus. */
+    /**
+     * Static value Deprovisioning for EventSubscriptionStatus.
+     */
     public static final EventSubscriptionStatus DEPROVISIONING = fromString("Deprovisioning");
 
-    /** Static value Disabled for EventSubscriptionStatus. */
+    /**
+     * Static value Disabled for EventSubscriptionStatus.
+     */
     public static final EventSubscriptionStatus DISABLED = fromString("Disabled");
 
-    /** Static value Unknown for EventSubscriptionStatus. */
+    /**
+     * Static value Unknown for EventSubscriptionStatus.
+     */
     public static final EventSubscriptionStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of EventSubscriptionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
 
     /**
      * Creates or finds a EventSubscriptionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSubscriptionStatus.
      */
@@ -47,7 +59,7 @@ public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSub
 
     /**
      * Gets known EventSubscriptionStatus values.
-     *
+     * 
      * @return known EventSubscriptionStatus values.
      */
     public static Collection<EventSubscriptionStatus> values() {

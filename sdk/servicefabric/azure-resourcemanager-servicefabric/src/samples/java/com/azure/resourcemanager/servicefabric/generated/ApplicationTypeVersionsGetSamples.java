@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.servicefabric.generated;
 
-/** Samples for ApplicationTypeVersions Get. */
+/**
+ * Samples for ApplicationTypeVersions Get.
+ */
 public final class ApplicationTypeVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationTypeVersionGetOperation_example.json
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeVersionGetOperation_example.json
      */
     /**
      * Sample code: Get an application type version.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getAnApplicationTypeVersion(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applicationTypeVersions()
-            .getWithResponse("resRg", "myCluster", "myAppType", "1.0", com.azure.core.util.Context.NONE);
+    public static void
+        getAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applicationTypeVersions().getWithResponse("resRg", "myCluster", "myAppType", "1.0",
+            com.azure.core.util.Context.NONE);
     }
 }

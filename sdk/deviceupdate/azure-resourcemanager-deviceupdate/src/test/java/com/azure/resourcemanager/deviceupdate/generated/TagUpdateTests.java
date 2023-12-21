@@ -9,30 +9,25 @@ import com.azure.resourcemanager.deviceupdate.models.TagUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TagUpdateTests {
-    @Test
-    public void testDeserialize() {
-        TagUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"xwrljdouskcqvkoc\":\"kzgcwrwcl\",\"sqrglssainq\":\"cjdkwtnhxbnjbi\",\"eebvmgxsab\":\"jwnzlljfmp\"}}")
-                .toObject(TagUpdate.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TagUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"xwrljdouskcqvkoc\":\"kzgcwrwcl\",\"sqrglssainq\":\"cjdkwtnhxbnjbi\",\"eebvmgxsab\":\"jwnzlljfmp\"}}")
+            .toObject(TagUpdate.class);
         Assertions.assertEquals("kzgcwrwcl", model.tags().get("xwrljdouskcqvkoc"));
     }
 
-    @Test
-    public void testSerialize() {
-        TagUpdate model =
-            new TagUpdate()
-                .withTags(
-                    mapOf(
-                        "xwrljdouskcqvkoc", "kzgcwrwcl", "sqrglssainq", "cjdkwtnhxbnjbi", "eebvmgxsab", "jwnzlljfmp"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TagUpdate model = new TagUpdate().withTags(
+            mapOf("xwrljdouskcqvkoc", "kzgcwrwcl", "sqrglssainq", "cjdkwtnhxbnjbi", "eebvmgxsab", "jwnzlljfmp"));
         model = BinaryData.fromObject(model).toObject(TagUpdate.class);
         Assertions.assertEquals("kzgcwrwcl", model.tags().get("xwrljdouskcqvkoc"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

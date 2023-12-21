@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ScheduleTriggerRecurrence;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schedule Trigger properties. */
+/**
+ * Schedule Trigger properties.
+ */
 @Fluent
 public final class ScheduleTriggerTypeProperties {
     /*
@@ -18,13 +20,15 @@ public final class ScheduleTriggerTypeProperties {
     @JsonProperty(value = "recurrence", required = true)
     private ScheduleTriggerRecurrence recurrence;
 
-    /** Creates an instance of ScheduleTriggerTypeProperties class. */
+    /**
+     * Creates an instance of ScheduleTriggerTypeProperties class.
+     */
     public ScheduleTriggerTypeProperties() {
     }
 
     /**
      * Get the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @return the recurrence value.
      */
     public ScheduleTriggerRecurrence recurrence() {
@@ -33,7 +37,7 @@ public final class ScheduleTriggerTypeProperties {
 
     /**
      * Set the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the ScheduleTriggerTypeProperties object itself.
      */
@@ -44,15 +48,13 @@ public final class ScheduleTriggerTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recurrence() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recurrence in model ScheduleTriggerTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recurrence in model ScheduleTriggerTypeProperties"));
         } else {
             recurrence().validate();
         }
