@@ -10,7 +10,9 @@ import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IoT Connector properties. */
+/**
+ * IoT Connector properties.
+ */
 @Fluent
 public final class IotConnectorProperties {
     /*
@@ -32,8 +34,14 @@ public final class IotConnectorProperties {
     private IotMappingProperties deviceMapping;
 
     /**
+     * Creates an instance of IotConnectorProperties class.
+     */
+    public IotConnectorProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -42,7 +50,7 @@ public final class IotConnectorProperties {
 
     /**
      * Get the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @return the ingestionEndpointConfiguration value.
      */
     public IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration() {
@@ -51,19 +59,19 @@ public final class IotConnectorProperties {
 
     /**
      * Set the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @param ingestionEndpointConfiguration the ingestionEndpointConfiguration value to set.
      * @return the IotConnectorProperties object itself.
      */
-    public IotConnectorProperties withIngestionEndpointConfiguration(
-        IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
+    public IotConnectorProperties
+        withIngestionEndpointConfiguration(IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
         this.ingestionEndpointConfiguration = ingestionEndpointConfiguration;
         return this;
     }
 
     /**
      * Get the deviceMapping property: Device Mappings.
-     *
+     * 
      * @return the deviceMapping value.
      */
     public IotMappingProperties deviceMapping() {
@@ -72,7 +80,7 @@ public final class IotConnectorProperties {
 
     /**
      * Set the deviceMapping property: Device Mappings.
-     *
+     * 
      * @param deviceMapping the deviceMapping value to set.
      * @return the IotConnectorProperties object itself.
      */
@@ -83,7 +91,7 @@ public final class IotConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

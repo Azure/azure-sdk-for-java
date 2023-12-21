@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.healthcareapis.models.CorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.DicomServiceAuthenticationConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dicom Service properties. */
+/**
+ * Dicom Service properties.
+ */
 @Fluent
 public final class DicomServiceProperties {
     /*
@@ -28,28 +33,50 @@ public final class DicomServiceProperties {
     private DicomServiceAuthenticationConfiguration authenticationConfiguration;
 
     /*
+     * Dicom Service Cors configuration.
+     */
+    @JsonProperty(value = "corsConfiguration")
+    private CorsConfiguration corsConfiguration;
+
+    /*
      * The url of the Dicom Services.
      */
     @JsonProperty(value = "serviceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceUrl;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /*
+     * DICOM Service event support status.
+     */
+    @JsonProperty(value = "eventState", access = JsonProperty.Access.WRITE_ONLY)
+    private ServiceEventState eventState;
+
+    /*
+     * The encryption settings of the DICOM service
+     */
+    @JsonProperty(value = "encryption")
+    private Encryption encryption;
+
+    /**
+     * Creates an instance of DicomServiceProperties class.
+     */
+    public DicomServiceProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +85,7 @@ public final class DicomServiceProperties {
 
     /**
      * Get the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public DicomServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -67,19 +94,39 @@ public final class DicomServiceProperties {
 
     /**
      * Set the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the DicomServiceProperties object itself.
      */
-    public DicomServiceProperties withAuthenticationConfiguration(
-        DicomServiceAuthenticationConfiguration authenticationConfiguration) {
+    public DicomServiceProperties
+        withAuthenticationConfiguration(DicomServiceAuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
         return this;
     }
 
     /**
+     * Get the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @return the corsConfiguration value.
+     */
+    public CorsConfiguration corsConfiguration() {
+        return this.corsConfiguration;
+    }
+
+    /**
+     * Set the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @param corsConfiguration the corsConfiguration value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withCorsConfiguration(CorsConfiguration corsConfiguration) {
+        this.corsConfiguration = corsConfiguration;
+        return this;
+    }
+
+    /**
      * Get the serviceUrl property: The url of the Dicom Services.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -89,7 +136,7 @@ public final class DicomServiceProperties {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -97,9 +144,9 @@ public final class DicomServiceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -107,9 +154,9 @@ public final class DicomServiceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceProperties object itself.
      */
@@ -119,16 +166,51 @@ public final class DicomServiceProperties {
     }
 
     /**
+     * Get the eventState property: DICOM Service event support status.
+     * 
+     * @return the eventState value.
+     */
+    public ServiceEventState eventState() {
+        return this.eventState;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationConfiguration() != null) {
             authenticationConfiguration().validate();
         }
+        if (corsConfiguration() != null) {
+            corsConfiguration().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }
