@@ -21,5 +21,3 @@ FeatureManagement:
         -
             id: Gamma
             enabled: true
-            conditions:
-                client_filters: []

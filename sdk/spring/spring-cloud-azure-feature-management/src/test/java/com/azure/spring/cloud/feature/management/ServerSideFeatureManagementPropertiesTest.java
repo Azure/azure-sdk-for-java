@@ -1,11 +1,9 @@
-/*
- * // Copyright (c) Microsoft Corporation. All rights reserved.
- * // Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.spring.cloud.feature.management;
 
-import com.azure.spring.cloud.feature.management.implementation.ServerSideFeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@EnableConfigurationProperties(value = ServerSideFeatureManagementProperties.class)
+@EnableConfigurationProperties(value = FeatureManagementProperties.class)
 @TestPropertySource("classpath:server-side-schema-test.yaml")
 @SpringBootTest(classes = { SpringBootTest.class })
 public class ServerSideFeatureManagementPropertiesTest {
     @Autowired
-    private ServerSideFeatureManagementProperties serverSideProperties;
+    private FeatureManagementProperties serverSideProperties;
 
     @Test
     void onOffMapTest() {

@@ -8,9 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.azure.spring.cloud.feature.management.implementation.ClientSideFeatureManagementProperties;
-import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
-import com.azure.spring.cloud.feature.management.implementation.ServerSideFeatureManagementProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -19,6 +16,7 @@ import org.springframework.util.ReflectionUtils;
 
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -34,8 +32,7 @@ public class FeatureManager {
 
     private transient ApplicationContext context;
 
-    private final ClientSideFeatureManagementProperties clientSideConfigurations;
-    private final ServerSideFeatureManagementProperties serverSideConfigurations;
+    private final FeatureManagementProperties featureManagementConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
 
@@ -43,15 +40,13 @@ public class FeatureManager {
      * Can be called to check if a feature is enabled or disabled.
      *
      * @param context ApplicationContext
-     * @param clientSideConfigurations Configuration Properties for Feature Flags
+     * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
      */
-    FeatureManager(ApplicationContext context, ClientSideFeatureManagementProperties clientSideConfigurations,
-        ServerSideFeatureManagementProperties serverSideConfigurations,
+    FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties) {
         this.context = context;
-        this.clientSideConfigurations = clientSideConfigurations;
-        this.serverSideConfigurations = serverSideConfigurations;
+        this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
     }
 
@@ -82,23 +77,19 @@ public class FeatureManager {
     }
 
     private boolean checkFeature(String feature) throws FilterNotFoundException {
-        if (clientSideConfigurations.getFeatureManagement() == null
-            || clientSideConfigurations.getOnOff() == null
-            || serverSideConfigurations.getFeatureManagement() == null
-            || serverSideConfigurations.getOnOff() == null) {
+        if (featureManagementConfigurations.getFeatureManagement() == null
+            || featureManagementConfigurations.getOnOff() == null) {
             return false;
         }
 
-        final boolean hasServerSideConfigurations = serverSideConfigurations.getOnOff().size() > 0
-            || serverSideConfigurations.getFeatureManagement().size() > 0;
-        final FeatureManagementProperties configurations = hasServerSideConfigurations ? serverSideConfigurations : clientSideConfigurations;
+        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
 
-        Boolean boolFeature = configurations.getOnOff().get(feature);
         if (boolFeature != null) {
             return boolFeature;
         }
 
-        Feature featureItem = configurations.getFeatureManagement().get(feature);
+        Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
+
         if (featureItem == null || !featureItem.getEvaluate()) {
             return false;
         }
@@ -140,8 +131,8 @@ public class FeatureManager {
     public Set<String> getAllFeatureNames() {
         Set<String> allFeatures = new HashSet<>();
 
-        allFeatures.addAll(clientSideConfigurations.getOnOff().keySet());
-        allFeatures.addAll(clientSideConfigurations.getFeatureManagement().keySet());
+        allFeatures.addAll(featureManagementConfigurations.getOnOff().keySet());
+        allFeatures.addAll(featureManagementConfigurations.getFeatureManagement().keySet());
         return allFeatures;
     }
 
@@ -149,16 +140,14 @@ public class FeatureManager {
      * @return the featureManagement
      */
     Map<String, Feature> getFeatureManagement() {
-        // todo need to check which configuration we should use
-        return clientSideConfigurations.getFeatureManagement();
+        return featureManagementConfigurations.getFeatureManagement();
     }
 
     /**
      * @return the onOff
      */
     Map<String, Boolean> getOnOff() {
-        // todo need to check which configuration we should use
-        return clientSideConfigurations.getOnOff();
+        return featureManagementConfigurations.getOnOff();
     }
 
 }

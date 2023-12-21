@@ -13,8 +13,6 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import com.azure.spring.cloud.feature.management.implementation.ClientSideFeatureManagementProperties;
-import com.azure.spring.cloud.feature.management.implementation.ServerSideFeatureManagementProperties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.TestConfiguration;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
@@ -47,17 +46,14 @@ public class FeatureManagerTest {
     private FeatureManagementConfigProperties properties;
 
     @Mock
-    private ClientSideFeatureManagementProperties clientSidePropertiesMock;
-
-    @Mock
-    private ServerSideFeatureManagementProperties serverSidePropertiesMock;
+    private FeatureManagementProperties featureManagementPropertiesMock;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, clientSidePropertiesMock, serverSidePropertiesMock, properties);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties);
     }
 
     @AfterEach
@@ -68,30 +64,30 @@ public class FeatureManagerTest {
     @Test
     public void isEnabledFeatureNotFound() {
         assertFalse(featureManager.isEnabledAsync("Non Existed Feature").block());
-        verify(clientSidePropertiesMock, times(2)).getOnOff();
-        verify(clientSidePropertiesMock, times(2)).getFeatureManagement();
+        verify(featureManagementPropertiesMock, times(2)).getOnOff();
+        verify(featureManagementPropertiesMock, times(2)).getFeatureManagement();
     }
 
     @Test
     public void isEnabledFeatureOff() {
         HashMap<String, Boolean> features = new HashMap<>();
         features.put("Off", false);
-        when(clientSidePropertiesMock.getOnOff()).thenReturn(features);
+        when(featureManagementPropertiesMock.getOnOff()).thenReturn(features);
 
         assertFalse(featureManager.isEnabledAsync("Off").block());
-        verify(clientSidePropertiesMock, times(2)).getOnOff();
-        verify(clientSidePropertiesMock, times(1)).getFeatureManagement();
+        verify(featureManagementPropertiesMock, times(2)).getOnOff();
+        verify(featureManagementPropertiesMock, times(1)).getFeatureManagement();
     }
 
     @Test
     public void isEnabledOnBoolean() throws InterruptedException, ExecutionException, FilterNotFoundException {
         HashMap<String, Boolean> features = new HashMap<>();
         features.put("On", true);
-        when(clientSidePropertiesMock.getOnOff()).thenReturn(features);
+        when(featureManagementPropertiesMock.getOnOff()).thenReturn(features);
 
         assertTrue(featureManager.isEnabledAsync("On").block());
-        verify(clientSidePropertiesMock, times(2)).getOnOff();
-        verify(clientSidePropertiesMock, times(1)).getFeatureManagement();
+        verify(featureManagementPropertiesMock, times(2)).getOnOff();
+        verify(featureManagementPropertiesMock, times(1)).getFeatureManagement();
     }
 
     @Test
@@ -101,7 +97,7 @@ public class FeatureManagerTest {
         noFilters.setKey("NoFilters");
         noFilters.setEnabledFor(new HashMap<Integer, FeatureFilterEvaluationContext>());
         features.put("NoFilters", noFilters);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         assertFalse(featureManager.isEnabledAsync("NoFilters").block());
     }
@@ -117,7 +113,7 @@ public class FeatureManagerTest {
         filters.put(0, alwaysOn);
         onFeature.setEnabledFor(filters);
         features.put("On", onFeature);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
 
@@ -135,7 +131,7 @@ public class FeatureManagerTest {
         filters.put(0, alwaysOn);
         onFeature.setEnabledFor(filters);
         features.put("Off", onFeature);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOff"))).thenThrow(new NoSuchBeanDefinitionException(""));
 
@@ -157,7 +153,7 @@ public class FeatureManagerTest {
         onFeature.setEnabledFor(filters);
         onFeature.setRequirementType("All");
         features.put("On", onFeature);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter())
             .thenReturn(new AlwaysOnFilter());
@@ -178,7 +174,7 @@ public class FeatureManagerTest {
         onFeature.setEnabledFor(filters);
         onFeature.setRequirementType("Any");
         features.put("On", onFeature);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter())
             .thenReturn(new AlwaysOffFilter());
@@ -199,7 +195,7 @@ public class FeatureManagerTest {
         onFeature.setEnabledFor(filters);
         onFeature.setRequirementType("All");
         features.put("On", onFeature);
-        when(clientSidePropertiesMock.getFeatureManagement()).thenReturn(features);
+        when(featureManagementPropertiesMock.getFeatureManagement()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter())
             .thenReturn(new AlwaysOffFilter());
