@@ -134,7 +134,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
 
         final String firstKey = features.keySet().stream().findFirst().get();
-        return firstKey.equalsIgnoreCase("featureFlags");
+        return "featureFlags".equalsIgnoreCase(firstKey);
     }
 
     /**
