@@ -61,6 +61,7 @@ stages:
             GenerateVMJobs: true
         MatrixFilters:
           - TestFromSource=^$|false
+          - JavaTestVersion=1.21
           - ${{ parameters.MatrixFilters }}
         MatrixReplace:
           - AZURE_TEST.*=.*/
