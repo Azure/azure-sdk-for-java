@@ -55,10 +55,15 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     private void createClient(String endpointEnvVar, String keyEnvVar, Boolean sync, List<Entry<String, String>> queryParams) {
+
         String endpoint = Configuration.getGlobalConfiguration().get(endpointEnvVar); // Read endpoint URL from environment variable
-        String key = "00000000000000000000000000000000"; // Default fake key used for authentication failure tests
-        if (keyEnvVar != "VISION_KEY_FAKE") {
-            key = Configuration.getGlobalConfiguration().get(keyEnvVar); // Read real key from environment variable
+        if (endpoint == null) {
+            endpoint = "https://fake-resource-name.cognitiveservices.azure.com";
+        }
+
+        String key = Configuration.getGlobalConfiguration().get(keyEnvVar); // Read real key from environment variable 
+        if (key == null || keyEnvVar == "VISION_KEY_FAKE") {
+            key = "00000000000000000000000000000000";
         }
 
         ImageAnalysisClientBuilder imageAnalysisClientBuilder =
