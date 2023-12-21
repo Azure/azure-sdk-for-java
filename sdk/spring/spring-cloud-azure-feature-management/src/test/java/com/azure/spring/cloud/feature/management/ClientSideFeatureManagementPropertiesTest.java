@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = FeatureManagementProperties.class)
-@TestPropertySource(locations = {"classpath:client-side-schema-test.yaml"})
+@TestPropertySource(locations = {"classpath:client-side-schema-test.yaml"})     // todo not work
 @SpringBootTest(classes = { SpringBootTest.class })
 public class ClientSideFeatureManagementPropertiesTest {
     @Autowired
@@ -26,7 +26,7 @@ public class ClientSideFeatureManagementPropertiesTest {
 
     @Test
     void onOffMapTest() {
-        assertTrue(clientSideProperties.getOnOff().get("gamma"));
+        assertTrue(clientSideProperties.getOnOff().get("feature-flags.gamma"));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ClientSideFeatureManagementPropertiesTest {
         final Feature alphaFeatureItem = clientSideProperties.getFeatureManagement().get("alpha");
         assertEquals(alphaFeatureItem.getKey(), "alpha");
         assertEquals(alphaFeatureItem.getEnabledFor().size(), 1);
-        assertEquals(alphaFeatureItem.getEnabledFor().get(0).getName(), "random");
+        assertEquals(alphaFeatureItem.getEnabledFor().get(0).getName(), "randomFilter");
 
         final Feature betaFeatureItem = clientSideProperties.getFeatureManagement().get("beta");
         assertEquals(betaFeatureItem.getKey(), "beta");

@@ -127,6 +127,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
+    // todo what is the best way to decide whether is backend schema?
     private boolean isBackendSchema(Map<? extends String, ? extends Object> features) {
         if (features.keySet().isEmpty()) {
             return false;

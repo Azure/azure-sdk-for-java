@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = FeatureManagementProperties.class)
-@TestPropertySource("classpath:server-side-schema-test.yaml")
+@TestPropertySource("classpath:server-side-schema-test.yaml")   // todo not work
 @SpringBootTest(classes = { SpringBootTest.class })
 public class ServerSideFeatureManagementPropertiesTest {
     @Autowired
@@ -26,7 +26,7 @@ public class ServerSideFeatureManagementPropertiesTest {
 
     @Test
     void onOffMapTest() {
-        assertTrue(serverSideProperties.getOnOff().get("Gamma"));
+        assertTrue(serverSideProperties.getOnOff().get("Gamma"));   // todo this should be "FeatureFlags.Gamma"? or "Gamma"?
     }
 
     @Test
