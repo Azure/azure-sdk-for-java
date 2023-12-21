@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -90,16 +89,17 @@ public class FeatureManager {
             return false;
         }
 
-        final boolean hasClientSideConfigurations = clientSideConfigurations.getOnOff().size() > 0
-            || clientSideConfigurations.getFeatureManagement().size() > 0;
-        final FeatureManagementProperties configurations = hasClientSideConfigurations ? clientSideConfigurations : serverSideConfigurations;
+        final boolean hasServerSideConfigurations = serverSideConfigurations.getOnOff().size() > 0
+            || serverSideConfigurations.getFeatureManagement().size() > 0;
+        final FeatureManagementProperties configurations = hasServerSideConfigurations ? serverSideConfigurations : clientSideConfigurations;
 
         Boolean boolFeature = configurations.getOnOff().get(feature);
         if (boolFeature != null) {
             return boolFeature;
         }
+
         Feature featureItem = configurations.getFeatureManagement().get(feature);
-        if (featureItem != null && !featureItem.getEvaluate()) {
+        if (featureItem == null || !featureItem.getEvaluate()) {
             return false;
         }
 
@@ -149,6 +149,7 @@ public class FeatureManager {
      * @return the featureManagement
      */
     Map<String, Feature> getFeatureManagement() {
+        // todo need to check which configuration we should use
         return clientSideConfigurations.getFeatureManagement();
     }
 
@@ -156,6 +157,7 @@ public class FeatureManager {
      * @return the onOff
      */
     Map<String, Boolean> getOnOff() {
+        // todo need to check which configuration we should use
         return clientSideConfigurations.getOnOff();
     }
 
