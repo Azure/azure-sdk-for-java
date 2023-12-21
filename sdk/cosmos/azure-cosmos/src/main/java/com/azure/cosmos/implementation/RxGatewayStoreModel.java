@@ -55,7 +55,6 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel {
-    private final static byte[] EMPTY_BYTE_ARRAY = {};
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
@@ -368,7 +367,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     StoreResponse rsp;
 
                     int size;
-                    if (content != null && (size = content.readableBytes()) > 0) {
+                    if ((size = content.readableBytes()) > 0) {
                         rsp = new StoreResponse(httpResponseStatus,
                             HttpUtils.unescape(httpResponseHeaders.toMap()),
                             new ByteBufInputStream(content, true),
