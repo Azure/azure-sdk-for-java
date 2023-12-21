@@ -2421,6 +2421,16 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @ParameterizedTest
+    @ValueSource(strings = {"\u200B", "\u200C", "\u200D", "\uFEFF"})
+    public void renameWithUnicodeChars(String specialChar) {
+        ShareFileClient fileClient = shareClient.getFileClient("test-file-source" + specialChar + " pdf.txt");
+        fileClient.create(512);
+        ShareFileClient destClient = fileClient.rename("test-file-destination" + specialChar + " pdf.txt");
+        assertNotNull(destClient);
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void renameWithResponse() {
         primaryFileClient.create(512);
