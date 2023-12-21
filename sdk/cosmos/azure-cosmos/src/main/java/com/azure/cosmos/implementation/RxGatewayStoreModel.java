@@ -352,9 +352,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable = httpResponse
-                .bodyAsByteArray()
-                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
+            Mono<ByteBuf> contentObservable = httpResponse
+                .body()
+                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
             return contentObservable
                 .map(content -> {
@@ -369,13 +369,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
                     StoreResponse rsp;
 
-                    if (content != null && content.length > 0) {
-                        final ByteBuf buffer = Unpooled.wrappedBuffer(content);
-
+                    int size;
+                    if (content != null && (size = content.readableBytes()) > 0) {
                         rsp = new StoreResponse(httpResponseStatus,
                             HttpUtils.unescape(httpResponseHeaders.toMap()),
-                            new ByteBufInputStream(buffer, true),
-                            content.length);
+                            new ByteBufInputStream(content, true),
+                            size);
                     } else {
                         rsp = new StoreResponse(httpResponseStatus,
                             HttpUtils.unescape(httpResponseHeaders.toMap()),
@@ -489,7 +488,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
                                  HttpHeaders headers,
-                                 byte[] bodyAsBytes) {
+                                 ByteBuf bodyAsByteBuf) {
 
         int statusCode = status.code();
 
@@ -498,7 +497,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 ? status.reasonPhrase().replace(" ", "")
                 : "";
 
-            String body = bodyAsBytes != null ? new String(bodyAsBytes, StandardCharsets.UTF_8) : null;
+            String body = bodyAsByteBuf != null ?bodyAsByteBuf.toString(StandardCharsets.UTF_8) : null;
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,

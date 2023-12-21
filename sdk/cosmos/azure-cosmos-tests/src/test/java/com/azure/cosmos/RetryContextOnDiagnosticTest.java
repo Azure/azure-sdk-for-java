@@ -944,19 +944,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             }
 
             @Override
-            public Flux<ByteBuf> body() {
+            public Mono<ByteBuf> body() {
                 try {
-                    return Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
+                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
                         OBJECT_MAPPER.writeValueAsString(getTestPojoObject())));
-                } catch (JsonProcessingException e) {
-                    return Flux.error(e);
-                }
-            }
-
-            @Override
-            public Mono<byte[]> bodyAsByteArray() {
-                try {
-                    return Mono.just(Utils.getUTF8Bytes(OBJECT_MAPPER.writeValueAsString(getTestPojoObject())));
                 } catch (JsonProcessingException e) {
                     return Mono.error(e);
                 }
@@ -964,15 +955,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
             @Override
             public Mono<String> bodyAsString() {
-                try {
-                    return Mono.just(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
-                }
-            }
-
-            @Override
-            public Mono<String> bodyAsString(Charset charset) {
                 try {
                     return Mono.just(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
                 } catch (JsonProcessingException e) {

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -18,11 +19,12 @@ class ResponseUtils {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<byte[]> contentObservable = httpClientResponse.bodyAsByteArray().switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
+        Mono<ByteBuf> contentObservable = httpClientResponse.body().switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
-        return contentObservable.map(byteArrayContent -> {
+        return contentObservable.map(byteBufContent -> {
             // transforms to Mono<StoreResponse>
-            if (byteArrayContent == null || byteArrayContent.length == 0) {
+            int size = 0;
+            if (byteBufContent == null || (size = byteBufContent.readableBytes()) == 0) {
                 return new StoreResponse(
                     httpClientResponse.statusCode(),
                     HttpUtils.unescape(httpResponseHeaders.toMap()),
@@ -33,8 +35,8 @@ class ResponseUtils {
             return new StoreResponse(
                 httpClientResponse.statusCode(),
                 HttpUtils.unescape(httpResponseHeaders.toMap()),
-                new ByteBufInputStream(Unpooled.wrappedBuffer(byteArrayContent), true),
-                byteArrayContent.length);
+                new ByteBufInputStream(byteBufContent, true),
+                size);
         });
     }
 }

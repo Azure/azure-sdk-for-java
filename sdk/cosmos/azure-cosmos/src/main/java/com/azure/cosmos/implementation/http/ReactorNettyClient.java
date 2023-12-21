@@ -306,15 +306,9 @@ public class ReactorNettyClient implements HttpClient {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Mono<ByteBuf> body() {
             return bodyIntern()
-                .doOnSubscribe(this::updateSubscriptionState);
-        }
-
-        @Override
-        public Mono<byte[]> bodyAsByteArray() {
-            return bodyIntern().aggregate()
-                .asByteArray()
+                .aggregate()
                 .doOnSubscribe(this::updateSubscriptionState);
         }
 
@@ -322,13 +316,6 @@ public class ReactorNettyClient implements HttpClient {
         public Mono<String> bodyAsString() {
             return bodyIntern().aggregate()
                 .asString()
-                .doOnSubscribe(this::updateSubscriptionState);
-        }
-
-        @Override
-        public Mono<String> bodyAsString(Charset charset) {
-            return bodyIntern().aggregate()
-                .asString(charset)
                 .doOnSubscribe(this::updateSubscriptionState);
         }
 
