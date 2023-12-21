@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 class ResponseUtils {

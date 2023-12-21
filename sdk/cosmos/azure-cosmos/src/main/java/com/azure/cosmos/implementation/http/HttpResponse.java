@@ -5,10 +5,7 @@ package com.azure.cosmos.implementation.http;
 
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
-
-import java.nio.charset.Charset;
 
 /**
  * The type representing response of {@link HttpRequest}.

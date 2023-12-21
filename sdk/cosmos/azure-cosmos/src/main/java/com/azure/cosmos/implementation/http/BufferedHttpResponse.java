@@ -5,11 +5,8 @@ package com.azure.cosmos.implementation.http;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.IllegalReferenceCountException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -24,7 +21,7 @@ public class BufferedHttpResponse extends HttpResponse {
      *
      * @param innerHttpResponse The HTTP response to buffer
      */
-    public BufferedHttpResponse(HttpResponse innerHttpResponse) {
+    BufferedHttpResponse(HttpResponse innerHttpResponse) {
         this.innerHttpResponse = innerHttpResponse;
         Mono<byte[]> bodyAsByteArrayMono = innerHttpResponse
             .body()
