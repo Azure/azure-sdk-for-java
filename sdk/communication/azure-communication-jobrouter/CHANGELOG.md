@@ -12,13 +12,6 @@
 
 ### Other Changes
 
-## 1.1.0-beta.1 (2023-07-27)
-
-### Features Added
-### Breaking Changes
-### Bugs Fixed
-### Other Changes
-
 ## 1.0.0 (2023-12-05)
 
 ### Breaking Changes
