@@ -1782,6 +1782,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
+            // reset the endToEnd config
+            this.getClientBuilder().endToEndOperationLatencyPolicyConfig(null);
             safeClose(clientWithE2ETimeoutConfig);
 
             // Allow some time for the collections to be deleted before exiting.
