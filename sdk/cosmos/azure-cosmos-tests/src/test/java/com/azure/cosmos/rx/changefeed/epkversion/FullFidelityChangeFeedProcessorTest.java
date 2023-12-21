@@ -98,10 +98,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
-            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions()
-//                .setLeasePrefix(leasePrefix)
-                .setStartFromBeginning(false)
-                .setMaxItemCount(1);
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
