@@ -1288,7 +1288,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
         CosmosAsyncDatabase database = clientWithThroughputControl.getDatabase(this.createdDatabase.getId());
 
-        CosmosAsyncContainer createdFeedCollection = createFeedCollection(database, FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(database, 4000); // using a large value as we plan to create more docs
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(database, LEASE_COLLECTION_THROUGHPUT);
 
         ThroughputControlGroupConfig throughputControlGroupConfig =
