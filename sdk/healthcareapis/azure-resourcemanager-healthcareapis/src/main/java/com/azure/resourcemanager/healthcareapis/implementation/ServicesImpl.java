@@ -24,31 +24,28 @@ public final class ServicesImpl implements Services {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public ServicesImpl(
-        ServicesClient innerClient, com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
+    public ServicesImpl(ServicesClient innerClient,
+        com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ServicesDescription> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<ServicesDescriptionInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServicesDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ServicesDescription getByResourceGroup(String resourceGroupName, String resourceName) {
         ServicesDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
             return new ServicesDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ServicesDescription> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ServicesDescriptionInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ServicesDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -78,32 +75,29 @@ public final class ServicesImpl implements Services {
     }
 
     public PagedIterable<ServicesDescription> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ServicesDescriptionInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<ServicesDescriptionInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new ServicesDescriptionImpl(inner1, this.manager()));
     }
 
-    public ServicesNameAvailabilityInfo checkNameAvailability(
-        CheckNameAvailabilityParameters checkNameAvailabilityInputs) {
-        ServicesNameAvailabilityInfoInner inner =
-            this.serviceClient().checkNameAvailability(checkNameAvailabilityInputs);
+    public Response<ServicesNameAvailabilityInfo> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityParameters checkNameAvailabilityInputs, Context context) {
+        Response<ServicesNameAvailabilityInfoInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityInputs, context);
         if (inner != null) {
-            return new ServicesNameAvailabilityInfoImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServicesNameAvailabilityInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ServicesNameAvailabilityInfo> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityParameters checkNameAvailabilityInputs, Context context) {
-        Response<ServicesNameAvailabilityInfoInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityInputs, context);
+    public ServicesNameAvailabilityInfo
+        checkNameAvailability(CheckNameAvailabilityParameters checkNameAvailabilityInputs) {
+        ServicesNameAvailabilityInfoInner inner
+            = this.serviceClient().checkNameAvailability(checkNameAvailabilityInputs);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ServicesNameAvailabilityInfoImpl(inner.getValue(), this.manager()));
+            return new ServicesNameAvailabilityInfoImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -112,18 +106,13 @@ public final class ServicesImpl implements Services {
     public ServicesDescription getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "services");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
@@ -131,18 +120,13 @@ public final class ServicesImpl implements Services {
     public Response<ServicesDescription> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "services");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
@@ -150,18 +134,13 @@ public final class ServicesImpl implements Services {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "services");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
@@ -169,18 +148,13 @@ public final class ServicesImpl implements Services {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "services");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }
