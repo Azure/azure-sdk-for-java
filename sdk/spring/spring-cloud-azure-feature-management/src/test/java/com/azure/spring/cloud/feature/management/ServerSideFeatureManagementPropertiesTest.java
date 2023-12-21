@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = FeatureManagementProperties.class)
-@TestPropertySource("classpath:server-side-schema-test.yaml")   // todo not work
 @SpringBootTest(classes = { SpringBootTest.class })
+@ActiveProfiles("server")
 public class ServerSideFeatureManagementPropertiesTest {
     @Autowired
     private FeatureManagementProperties serverSideProperties;
