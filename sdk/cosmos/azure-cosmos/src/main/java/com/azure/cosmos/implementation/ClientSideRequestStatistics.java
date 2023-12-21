@@ -625,6 +625,10 @@ public class ClientSideRequestStatistics {
         return this.sessionTokenToRegionContactedMapping;
     }
 
+    public void setSessionTokenToRegionContactedMapping(Map<String, String> sessionTokenToRegionContactedMapping) {
+        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>(sessionTokenToRegionContactedMapping);
+    }
+
     public List<GatewayStatistics> getGatewayStatisticsList() {
         return this.gatewayStatisticsList;
     }

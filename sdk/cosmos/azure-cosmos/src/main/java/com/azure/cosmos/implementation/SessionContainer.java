@@ -232,10 +232,7 @@ public final class SessionContainer implements ISessionContainer {
                     Long rid = this.collectionNameToCollectionResourceId.get(collectionName);
                     this.collectionResourceIdToCollectionName.remove(rid);
                     this.collectionNameToCollectionResourceId.remove(collectionName);
-
-                    if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                        this.collectionResourceIdToRegionScopedSessionTokens.remove(rid);
-                    }
+                    this.collectionResourceIdToRegionScopedSessionTokens.remove(rid);
                 }
             } finally {
                 this.writeLock.unlock();
@@ -255,10 +252,7 @@ public final class SessionContainer implements ISessionContainer {
                         String collectionName = this.collectionResourceIdToCollectionName.get(rid);
                         this.collectionResourceIdToCollectionName.remove(rid);
                         this.collectionNameToCollectionResourceId.remove(collectionName);
-
-                        if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                            this.collectionResourceIdToRegionScopedSessionTokens.remove(rid);
-                        }
+                        this.collectionResourceIdToRegionScopedSessionTokens.remove(rid);
                     }
                 } finally {
                     this.writeLock.unlock();
@@ -409,55 +403,53 @@ public final class SessionContainer implements ISessionContainer {
                 diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics) : null;
         }
 
-        if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-            // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
-            if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
+        // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
+        if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
 
-                if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal,
-                    partitionKeyDefinition, this.sessionConsistencyOptions)) {
-                    this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
-                    this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping,
-                        partitionKeyInternal.v, partitionKeyDefinition.v);
+            if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal,
+                partitionKeyDefinition, this.sessionConsistencyOptions)) {
+                this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
+                this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping,
+                    partitionKeyInternal.v, partitionKeyDefinition.v);
+            }
+
+            this.recordRegionScopedSessionToken(
+                pkRangeBasedRegionScopedSessionTokenRegistry,
+                sessionTokenToRegionMapping,
+                partitionKeyRangeId);
+
+        } else {
+            // populate pkRangeBasedRegionScopedSessionTokenRegistry
+            this.collectionResourceIdToRegionScopedSessionTokens.compute(
+                resourceId.getUniqueDocumentCollectionId(), (k,
+                                                             pkRangeBasedRegionScopedSessionTokenRegistryAsVal) -> {
+
+                    if (pkRangeBasedRegionScopedSessionTokenRegistryAsVal == null) {
+                        logger.info("Registering a new collection resourceId [{}] in "
+                            + "RegionScopedSessionTokenRegistry", resourceId);
+                        pkRangeBasedRegionScopedSessionTokenRegistryAsVal =
+                            new PkRangeBasedRegionScopedSessionTokenRegistry();
+                    }
+
+                    return pkRangeBasedRegionScopedSessionTokenRegistryAsVal;
                 }
+            );
 
+            pkRangeBasedRegionScopedSessionTokenRegistry =
+                this.collectionResourceIdToRegionScopedSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
+
+            if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
                 this.recordRegionScopedSessionToken(
                     pkRangeBasedRegionScopedSessionTokenRegistry,
                     sessionTokenToRegionMapping,
                     partitionKeyRangeId);
+            }
 
-            } else {
-                // populate pkRangeBasedRegionScopedSessionTokenRegistry
-                this.collectionResourceIdToRegionScopedSessionTokens.compute(
-                    resourceId.getUniqueDocumentCollectionId(), (k,
-                                                                 pkRangeBasedRegionScopedSessionTokenRegistryAsVal) -> {
-
-                        if (pkRangeBasedRegionScopedSessionTokenRegistryAsVal == null) {
-                            logger.info("Registering a new collection resourceId [{}] in "
-                                + "RegionScopedSessionTokenRegistry", resourceId);
-                            pkRangeBasedRegionScopedSessionTokenRegistryAsVal =
-                                new PkRangeBasedRegionScopedSessionTokenRegistry();
-                        }
-
-                        return pkRangeBasedRegionScopedSessionTokenRegistryAsVal;
-                    }
-                );
-
-                pkRangeBasedRegionScopedSessionTokenRegistry =
-                    this.collectionResourceIdToRegionScopedSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
-
-                if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
-                    this.recordRegionScopedSessionToken(
-                        pkRangeBasedRegionScopedSessionTokenRegistry,
-                        sessionTokenToRegionMapping,
-                        partitionKeyRangeId);
-                }
-
-                if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal,
-                    partitionKeyDefinition, this.sessionConsistencyOptions)) {
-                    this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
-                    this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping,
-                        partitionKeyInternal.v, partitionKeyDefinition.v);
-                }
+            if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal,
+                partitionKeyDefinition, this.sessionConsistencyOptions)) {
+                this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
+                this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping,
+                    partitionKeyInternal.v, partitionKeyDefinition.v);
             }
         }
     }
