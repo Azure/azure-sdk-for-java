@@ -10,14 +10,11 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.blob.stress.utils.TelemetryHelper;
+import com.azure.storage.stress.CrcOutputStream;
 import com.azure.storage.stress.StorageStressOptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.Objects;
+import java.io.IOException;
 
 public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(DownloadStream.class);
@@ -35,21 +32,18 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
+    protected boolean runInternal(Context span) throws IOException {
+        try (CrcOutputStream outputStream = new CrcOutputStream()) {
             syncClient.downloadStreamWithResponse(outputStream, null, null, null, false, null, span);
-            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromBytes(outputStream.toByteArray()), span).block().booleanValue();
-        } catch (Exception e) {
-            LOGGER.error("Failed to download blob", e);
-            return false;
+            outputStream.close();
+            return ORIGINAL_CONTENT.checkMatch(outputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
     protected Mono<Boolean> runInternalAsync(Context span) {
         return asyncClient.downloadStreamWithResponse(null, null, null, false)
-            .flatMap(response -> ORIGINAL_CONTENT.checkMatch(BinaryData.fromFlux(response.getValue()).block(), span));
+            .flatMap(response -> ORIGINAL_CONTENT.checkMatch(response.getValue(), span));
     }
 
     @Override
@@ -63,5 +57,4 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
         return asyncNoFaultClient.delete()
             .then(super.globalCleanupAsync());
     }
-
 }
