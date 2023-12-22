@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateBaseProperties model =
-            BinaryData
-                .fromString("{\"thumbprintAlgorithm\":\"tki\",\"thumbprint\":\"xhqyudxorrqnb\",\"format\":\"Pfx\"}")
-                .toObject(CertificateBaseProperties.class);
+        CertificateBaseProperties model = BinaryData
+            .fromString("{\"thumbprintAlgorithm\":\"tki\",\"thumbprint\":\"xhqyudxorrqnb\",\"format\":\"Pfx\"}")
+            .toObject(CertificateBaseProperties.class);
         Assertions.assertEquals("tki", model.thumbprintAlgorithm());
         Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());
         Assertions.assertEquals(CertificateFormat.PFX, model.format());
@@ -23,11 +22,8 @@ public final class CertificateBasePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateBaseProperties model =
-            new CertificateBaseProperties()
-                .withThumbprintAlgorithm("tki")
-                .withThumbprint("xhqyudxorrqnb")
-                .withFormat(CertificateFormat.PFX);
+        CertificateBaseProperties model = new CertificateBaseProperties().withThumbprintAlgorithm("tki")
+            .withThumbprint("xhqyudxorrqnb").withFormat(CertificateFormat.PFX);
         model = BinaryData.fromObject(model).toObject(CertificateBaseProperties.class);
         Assertions.assertEquals("tki", model.thumbprintAlgorithm());
         Assertions.assertEquals("xhqyudxorrqnb", model.thumbprint());

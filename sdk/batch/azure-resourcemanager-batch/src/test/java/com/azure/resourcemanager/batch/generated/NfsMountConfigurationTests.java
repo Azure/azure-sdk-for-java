@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NfsMountConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NfsMountConfiguration model =
-            BinaryData
-                .fromString("{\"source\":\"fz\",\"relativeMountPath\":\"whxxbuyqax\",\"mountOptions\":\"eqz\"}")
-                .toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("fz", model.source());
-        Assertions.assertEquals("whxxbuyqax", model.relativeMountPath());
-        Assertions.assertEquals("eqz", model.mountOptions());
+        NfsMountConfiguration model = BinaryData
+            .fromString(
+                "{\"source\":\"uqlcvydy\",\"relativeMountPath\":\"atdooaojkniod\",\"mountOptions\":\"oebwnujhemms\"}")
+            .toObject(NfsMountConfiguration.class);
+        Assertions.assertEquals("uqlcvydy", model.source());
+        Assertions.assertEquals("atdooaojkniod", model.relativeMountPath());
+        Assertions.assertEquals("oebwnujhemms", model.mountOptions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsMountConfiguration model =
-            new NfsMountConfiguration().withSource("fz").withRelativeMountPath("whxxbuyqax").withMountOptions("eqz");
+        NfsMountConfiguration model = new NfsMountConfiguration().withSource("uqlcvydy")
+            .withRelativeMountPath("atdooaojkniod").withMountOptions("oebwnujhemms");
         model = BinaryData.fromObject(model).toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("fz", model.source());
-        Assertions.assertEquals("whxxbuyqax", model.relativeMountPath());
-        Assertions.assertEquals("eqz", model.mountOptions());
+        Assertions.assertEquals("uqlcvydy", model.source());
+        Assertions.assertEquals("atdooaojkniod", model.relativeMountPath());
+        Assertions.assertEquals("oebwnujhemms", model.mountOptions());
     }
 }
