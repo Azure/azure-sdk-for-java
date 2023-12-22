@@ -35,14 +35,13 @@ Add the following method to the bottom of the class ImagePoint in file ImagePoin
 
 ## Add new class ImageAnalysisOptions and ImageAnalysisOptionsBuilder
 
-Copy files ImageAnalysisOptions.java and ImageAnalysisOptionsBuilder.java in to the models folder: `src\main\java\com\azure\ai\vision\imageanalysis\models\`
+Copy new files ImageAnalysisOptions.java and ImageAnalysisOptionsBuilder.java in to the models folder: `src\main\java\com\azure\ai\vision\imageanalysis`
 
 ## Updates to ImageAnalysisClient.java
 
 Add the following two methods at the bottom of the source file:
 
 ```java
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import java.net.URL;
 
     /**
@@ -63,12 +62,13 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
-    public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures, ImageAnalysisOptions options) {
+    public ImageAnalysisResult analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions options) {
         if (options == null) {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
         } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(), options.getGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
+                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 
@@ -90,12 +90,13 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
-    public ImageAnalysisResult analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures, ImageAnalysisOptions options) {
+    public ImageAnalysisResult analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions options) {
         if (options == null) {
             return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(), options.getGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 ```
@@ -105,7 +106,6 @@ import java.net.URL;
 Add the following two methods at the bottom of the source file:
 
 ```java
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import java.net.URL;
 
     /**
@@ -126,12 +126,13 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures, ImageAnalysisOptions options) {
+    public Mono<ImageAnalysisResult> analyze(URL imageUrl, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions options) {
         if (options == null) {
             return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), null, null, null, null);
         } else {
-            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(), options.getGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromUrl(visualFeatures, new ImageUrl(imageUrl.toString()), options.getLanguage(),
+                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 
@@ -153,12 +154,13 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures, ImageAnalysisOptions options) {
+    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions options) {
         if (options == null) {
             return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(), options.getGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 ```

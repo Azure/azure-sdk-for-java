@@ -11,7 +11,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.net.MalformedURLException;
 
 import org.junit.jupiter.api.Test;
-
+import com.azure.ai.vision.imageanalysis.*;
 import com.azure.ai.vision.imageanalysis.models.*;
 
 class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {

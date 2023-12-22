@@ -27,15 +27,15 @@
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
 //     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
-import java.util.Arrays;
-import java.io.File;
-import com.azure.core.credential.KeyCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import com.azure.core.credential.KeyCredential;
+import com.azure.core.util.BinaryData;
+import java.io.File;
+import java.util.Arrays;
 
 public class SampleCaptionImageFileAsync {
 

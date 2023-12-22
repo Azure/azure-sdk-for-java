@@ -51,9 +51,9 @@ To authenticate the `ImageAnalysisClient`, you will need the endpoint and key fr
 Once you define the environment variables, this Java code will create and authenticate a synchronous `ImageAnalysisClient`:
 
 ```java imports-for-create-client-snippet
-import com.azure.core.credential.KeyCredential;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
+import com.azure.core.credential.KeyCredential;
 ```
 ```java create-client-snippet
 String endpoint = System.getenv("VISION_ENDPOINT");
@@ -138,6 +138,14 @@ Notes:
 * Caption is only available in some Azure regions. See [Prerequisites](#prerequisites).
 * Caption is only supported in English at the moment.
 
+```java imports-caption-file-snippet
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
+import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import com.azure.core.util.BinaryData;
+import java.io.File;
+import java.util.Arrays;
+```
 ```java caption-file-snippet
 ImageAnalysisResult result = client.analyze(
     BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
@@ -157,6 +165,13 @@ To generate captions for additional images, simply call the `analyze` multiple t
 
 This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
 
+```java imports-caption-url-snippet
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
+import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import java.net.URL;
+import java.util.Arrays;
+```
 ```java caption-url-snippet
 ImageAnalysisResult result = client.analyze(
     new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
@@ -176,6 +191,15 @@ This example demonstrates how to extract printed or hand-written text for the im
 A call to `getRead()` on the result will return a `ReadResult` object.
 It includes a list of text lines and a bounding polygon surrounding each text line. For each line, it also returns a list of words in the text line and a bounding polygon surrounding each word.
 
+```java imports-ocr-file-snippet
+import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
+import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
+import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import com.azure.core.util.BinaryData;
+import java.io.File;
+import java.util.Arrays;
+```
 ```java ocr-file-snippet
 ImageAnalysisResult result = client.analyze(
     BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
@@ -203,6 +227,14 @@ To extract text for additional images, simply call the `analyze` multiple times.
 
 This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
 
+```java imports-ocr-url-snippet
+import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
+import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
+import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import java.net.URL;
+import java.util.Arrays;
+```
 ```java ocr-url-snippet
 ImageAnalysisResult result = client.analyze(
     new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze

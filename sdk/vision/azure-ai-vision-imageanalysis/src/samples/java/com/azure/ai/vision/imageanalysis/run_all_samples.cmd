@@ -29,6 +29,8 @@ echo "===> SampleOcrImageFile"
 java -cp ".;target\dependency\*" SampleOcrImageFile
 echo "===> SampleOcrImageUrl"
 java -cp ".;target\dependency\*" SampleOcrImageUrl
+echo "===> SampleOcrImageUrlAsync"
+java -cp ".;target\dependency\*" SampleOcrImageUrlAsync
 echo "===> SamplePeopleImageFile"
 java -cp ".;target\dependency\*" SamplePeopleImageFile
 echo "===> SampleSmartCropsImageFile"

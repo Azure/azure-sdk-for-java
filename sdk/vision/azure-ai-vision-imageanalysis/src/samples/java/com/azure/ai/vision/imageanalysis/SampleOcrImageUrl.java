@@ -31,16 +31,19 @@
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
 //     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
-import java.util.Arrays;
-import java.net.URL;
-import java.net.MalformedURLException;
-import com.azure.core.credential.KeyCredential;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
+import com.azure.core.credential.KeyCredential;
+import java.net.MalformedURLException;
+
+// BEGIN: imports-ocr-url-snippet
+import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
+import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
-import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
+import java.net.URL;
+import java.util.Arrays;
+// END: imports-ocr-url-snippet
 
 public class SampleOcrImageUrl {
 

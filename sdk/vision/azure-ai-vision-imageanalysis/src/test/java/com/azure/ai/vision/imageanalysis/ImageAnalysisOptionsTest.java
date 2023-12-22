@@ -6,6 +6,7 @@ package com.azure.ai.vision.imageanalysis.tests;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import com.azure.ai.vision.imageanalysis.*;
 import com.azure.ai.vision.imageanalysis.models.*;
 
 class ImageAnalysisOptionsTest {

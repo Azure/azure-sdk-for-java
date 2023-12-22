@@ -27,15 +27,18 @@
 //                          where `your-resource-name` is your unique Azure Computer Vision resource name.
 //     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
-import java.util.Arrays;
-import java.net.URL;
-import java.net.MalformedURLException;
-import com.azure.core.credential.KeyCredential;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptionsBuilder;
+import com.azure.core.credential.KeyCredential;
+import java.net.MalformedURLException;
+
+// BEGIN: imports-caption-url-snippet
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import java.net.URL;
+import java.util.Arrays;
+// END: imports-caption-url-snippet
 
 public class SampleCaptionImageUrl {
 
