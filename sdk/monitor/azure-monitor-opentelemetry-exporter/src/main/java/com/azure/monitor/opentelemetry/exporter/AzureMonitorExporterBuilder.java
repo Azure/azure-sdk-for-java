@@ -380,7 +380,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private Set<Feature> initStatsbeatFeatures() {
-        if(isGraalVmNativeExecution()) {
+        if (isGraalVmNativeExecution()) {
             return Collections.singleton(Feature.GRAAL_VM_NATIVE);
         }
         return Collections.emptySet();
