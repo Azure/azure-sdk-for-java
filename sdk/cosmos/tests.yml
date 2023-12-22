@@ -16,7 +16,7 @@ stages:
       Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
-          Path: sdk/cosmos/platform-matrix.json
+          Path: sdk/cosmos/live-live-platform-matrix.json
           Selection: all
           GenerateVMJobs: true
       ServiceDirectory: cosmos

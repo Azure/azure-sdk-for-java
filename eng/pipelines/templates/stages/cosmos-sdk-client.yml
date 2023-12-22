@@ -55,7 +55,7 @@ stages:
         SDKType: ${{parameters.SDKType}}
         MatrixConfigs:
           - Name: Cosmos_ci_test
-            Path: eng/pipelines/templates/stages/platform-matrix.json
+            Path: sdk/cosmos/ci-platform-matrix.json
             Selection: sparse
             NonSparseParameters: Agent
             GenerateVMJobs: true

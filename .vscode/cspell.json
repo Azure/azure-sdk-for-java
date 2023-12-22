@@ -697,7 +697,7 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",
