@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Instrumentations.AZURE_OPENTELEMETRY;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.EXPORTER_MAPPING_ERROR;
 
 /**
@@ -30,15 +32,16 @@ final class AzureMonitorTraceExporter implements SpanExporter {
 
     private final TelemetryItemExporter telemetryItemExporter;
     private final SpanDataMapper mapper;
+    private final StatsbeatModule statsbeatModule;
 
     /**
      * Creates an instance of exporter that is configured with given exporter client that sends
      * telemetry events to Application Insights resource identified by the instrumentation key.
      */
-    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
-
+    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter, StatsbeatModule statsbeatModule) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
+        this.statsbeatModule = statsbeatModule;
     }
 
     /**
@@ -50,6 +53,7 @@ final class AzureMonitorTraceExporter implements SpanExporter {
 
         for (SpanData span : spans) {
             LOGGER.verbose("exporting span: {}", span);
+            addInstrumentationToStatBeat(span);
             try {
                 mapper.map(span, telemetryItems::add);
                 OPERATION_LOGGER.recordSuccess();
@@ -60,6 +64,19 @@ final class AzureMonitorTraceExporter implements SpanExporter {
         }
 
         return telemetryItemExporter.send(telemetryItems);
+    }
+
+    private void addInstrumentationToStatBeat(SpanData span) {
+        if (span.getInstrumentationScopeInfo() == null || span.getInstrumentationScopeInfo().getName() == null) {
+            return;
+        }
+        String instrumentationScopeName = span.getInstrumentationScopeInfo().getName();
+        boolean isAnAzureLibraryInstrumentation = instrumentationScopeName.startsWith(
+            "azure-");
+        if (isAnAzureLibraryInstrumentation) {
+            instrumentationScopeName = AZURE_OPENTELEMETRY;
+        }
+        statsbeatModule.getInstrumentationStatsbeat().addInstrumentation(instrumentationScopeName);
     }
 
     /**

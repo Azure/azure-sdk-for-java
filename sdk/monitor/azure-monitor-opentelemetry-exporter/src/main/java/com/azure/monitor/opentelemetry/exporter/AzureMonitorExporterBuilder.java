@@ -99,6 +99,10 @@ public final class AzureMonitorExporterBuilder {
     // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
+    // this is only populated after the builder is frozen
+    private StatsbeatModule statsbeatModule;
+
+
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
@@ -352,7 +356,7 @@ public final class AzureMonitorExporterBuilder {
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
-            StatsbeatModule statsbeatModule = initStatsbeatModule(configProperties);
+            statsbeatModule = initStatsbeatModule(configProperties);
             File tempDir =
                 TempDirs.getApplicationInsightsTempDir(
                     LOGGER,
@@ -365,7 +369,7 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter, statsbeatModule);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
@@ -376,8 +380,15 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private Set<Feature> initStatsbeatFeatures() {
-        // TODO (jean): start tracking native image usage based on a system property or env var to indicate it's from the native image path
+        if(isGraalVmNativeExecution()) {
+            return Collections.singleton(Feature.GRAAL_VM_NATIVE);
+        }
         return Collections.emptySet();
+    }
+
+    private static boolean isGraalVmNativeExecution() {
+        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
+        return imageCode != null;
     }
 
     private StatsbeatConnectionString getStatsbeatConnectionString() {
