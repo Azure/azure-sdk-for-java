@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information used to connect to an NFS file system. */
+/**
+ * Information used to connect to an NFS file system.
+ */
 @Fluent
 public final class NfsMountConfiguration {
     /*
@@ -19,7 +21,7 @@ public final class NfsMountConfiguration {
 
     /*
      * The relative path on the compute node where the file system will be mounted
-     *
+     * 
      * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
      * environment variable.
      */
@@ -28,19 +30,21 @@ public final class NfsMountConfiguration {
 
     /*
      * Additional command line options to pass to the mount command.
-     *
+     * 
      * These are 'net use' options in Windows and 'mount' options in Linux.
      */
     @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
-    /** Creates an instance of NfsMountConfiguration class. */
+    /**
+     * Creates an instance of NfsMountConfiguration class.
+     */
     public NfsMountConfiguration() {
     }
 
     /**
      * Get the source property: The URI of the file system to mount.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -49,7 +53,7 @@ public final class NfsMountConfiguration {
 
     /**
      * Set the source property: The URI of the file system to mount.
-     *
+     * 
      * @param source the source value to set.
      * @return the NfsMountConfiguration object itself.
      */
@@ -60,10 +64,10 @@ public final class NfsMountConfiguration {
 
     /**
      * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     *
-     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
-     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
-     *
+     * 
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
+     * 
      * @return the relativeMountPath value.
      */
     public String relativeMountPath() {
@@ -72,10 +76,10 @@ public final class NfsMountConfiguration {
 
     /**
      * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     *
-     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
-     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
-     *
+     * 
+     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
+     * environment variable.
+     * 
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the NfsMountConfiguration object itself.
      */
@@ -86,9 +90,9 @@ public final class NfsMountConfiguration {
 
     /**
      * Get the mountOptions property: Additional command line options to pass to the mount command.
-     *
-     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
-     *
+     * 
+     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * 
      * @return the mountOptions value.
      */
     public String mountOptions() {
@@ -97,9 +101,9 @@ public final class NfsMountConfiguration {
 
     /**
      * Set the mountOptions property: Additional command line options to pass to the mount command.
-     *
-     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
-     *
+     * 
+     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * 
      * @param mountOptions the mountOptions value to set.
      * @return the NfsMountConfiguration object itself.
      */
@@ -110,20 +114,17 @@ public final class NfsMountConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model NfsMountConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property source in model NfsMountConfiguration"));
         }
         if (relativeMountPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relativeMountPath in model NfsMountConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property relativeMountPath in model NfsMountConfiguration"));
         }
     }
 
