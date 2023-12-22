@@ -2,25 +2,29 @@
 // Licensed under the MIT License.
 //
 // DESCRIPTION:
-//     This sample demonstrates how to generate a human-readable sentence that describes the content
-//     of the image file sample.jpg, using an asynchronous client.
-//
-//     By default the caption may contain gender terms such as "man", "woman", or "boy", "girl".
-//     You have the option to request gender-neutral terms such as "person" or "child" by setting
-//     `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
+//     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
+//     image URL, using an asynchronous client.
 //
 //     The asynchronous `analyze` method call returns an `ImageAnalysisResult` object.
-//     A call to `getCaption()` on this result will return a `CaptionResult` object. It contains:
-//     - The text of the caption. Captions are only supported in English at the moment. 
+//     A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
+//     `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
+//     not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
+//     list of `DetectedTextLine` object. Each one includes: 
+//     - The text content of the line.
+//     - A polygon coordinates in pixels, for a polygon surrounding the line of text in the image.
+//     - A list of `DetectedTextWord` objects.
+//     Each `DetectedTextWord` object contains:
+//     - The text content of the word.
+//     - A polygon coordinates in pixels, for a polygon surrounding the word in the image.
 //     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
-//       the caption.
+//       the recognition of the word. 
 //
 // USAGE:
 //     Compile the sample:
 //         mvn clean dependency:copy-dependencies
-//         javac SampleCaptionImageFileAsync.java -cp target\dependency\*
+//         javac SampleOcrImageUrlAsync.java -cp target\dependency\*
 //     Run the sample:
-//         java -cp ".;target\dependency\*" SampleCaptionImageFileAsync
+//         java -cp ".;target\dependency\*" SampleOcrImageUrlAsync
 //
 //     Set these two environment variables before running the sample:
 //     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
@@ -28,16 +32,16 @@
 //     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import java.util.Arrays;
-import java.io.File;
+import java.net.URL;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptionsBuilder;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
+import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
+import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 
-public class SampleCaptionImageFileAsync {
+public class SampleOcrImageUrlAsync {
 
     public static void main(String[] args) {
 
@@ -50,21 +54,19 @@ public class SampleCaptionImageFileAsync {
             System.exit(1);
         }
 
-        // BEGIN: create-async-client-snippet
         // Create an asynchronous Image Analysis client.
         ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
             .endpoint(endpoint)
             .credential(new KeyCredential(key))
             .buildAsyncClient();
-        // END: create-async-client-snippet
 
         try {
-            // Generate a caption for an input image buffer. This is an synchronous (non-blocking) call, but here we block until the service responds.
+            // Extract text from an input image URL. This is an synchronous (non-blocking) call, but here we block until the service responds.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
-                Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-                new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
-                .block(); 
+                new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze
+                Arrays.asList(VisualFeatures.READ), // visualFeatures
+                null)
+                .block();
 
             printAnalysisResults(result);
         } catch (Exception e) {
@@ -76,9 +78,16 @@ public class SampleCaptionImageFileAsync {
     public static void printAnalysisResults(ImageAnalysisResult result) {
 
         System.out.println("Image analysis results:");
-        System.out.println(" Caption:");
-        System.out.println("   \"" + result.getCaption().getText() + "\", Confidence " 
-            + String.format("%.4f", result.getCaption().getConfidence()));
+        System.out.println(" Read:");
+        for (DetectedTextLine line : result.getRead().getBlocks().get(0).getLines()) {
+            System.out.println("   Line: '" + line.getText()
+                + "', Bounding polygon " + line.getBoundingPolygon());
+            for (DetectedTextWord word : line.getWords()) {
+                System.out.println("     Word: '" + word.getText()
+                    + "', Bounding polygon " + word.getBoundingPolygon()
+                    + ", Confidence " + String.format("%.4f", word.getConfidence()));
+            }
+        }
         System.out.println(" Image height = " + result.getMetadata().getHeight());
         System.out.println(" Image width = " + result.getMetadata().getWidth());
         System.out.println(" Model version = " + result.getModelVersion());

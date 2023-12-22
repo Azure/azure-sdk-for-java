@@ -12,12 +12,6 @@
       <artifactId>azure-ai-vision-imageanalysis</artifactId>
       <version>1.0.0-beta.1</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.azure/azure-core-http-netty -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.6</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
     <dependency>
       <groupId>org.slf4j</groupId>

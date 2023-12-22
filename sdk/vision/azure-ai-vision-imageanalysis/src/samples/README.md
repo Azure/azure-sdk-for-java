@@ -10,7 +10,7 @@ urlFragment: image-analysis-java-samples
 
 # Samples for Image Analysis client library for Java
 
-These are runnable console Java programs that show how to use the Image Analysis client library. They cover all the supported visual features. Most use the a synchronous client to analyze an image file or image URL. One sample uses the asynchronous client. The concepts are similar, you can easily modify any of the samples to your needs.
+These are runnable console Java programs that show how to use the Image Analysis client library. They cover all the supported visual features. Most use the a synchronous client to analyze an image file or image URL. Two samples use the asynchronous client. The concepts are similar, you can easily modify any of the samples to your needs.
 
 ## Synchronous client samples
 
@@ -30,6 +30,7 @@ These are runnable console Java programs that show how to use the Image Analysis
 |**File Name**|**Description**|
 |----------------|-------------|
 |[SampleCaptionImageFileAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileAsync.java) | Generate a human-readable sentence that describes the content of an image file, using an asynchronous client. |
+|[SampleOcrImageUrlAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlAsync.java) | Extract printed or handwritten text from an image URL, using an asynchronous client. |
 
 ## Prerequisites
 
