@@ -40,8 +40,9 @@ variables:
 stages:
   - stage: Build
     jobs:
-    - template: /eng/pipelines/templates/jobs/ci.yml
+    - template: /eng/pipelines/templates/jobs/cosmos-ci.yml
       parameters:
+        JavaBuildVersion: "1.17"
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
         ReleaseArtifacts:
