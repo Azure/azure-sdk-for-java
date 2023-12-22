@@ -249,10 +249,12 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+                .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
                 .create();
         Assertions.assertNotNull(functionApp1);
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_8);
         Assertions.assertFalse(functionApp1.alwaysOn());
+        Assertions.assertEquals("connectionValue", functionApp1.getConnectionStrings().get("connectionName").value());
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
@@ -511,7 +513,9 @@ public class FunctionAppsTests extends AppServiceTest {
             .withMaxReplicas(10)
             .withMinReplicas(3)
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
-            .withConnectionString("connectionStringName", "connectionStringValue", ConnectionStringType.CUSTOM)
+            // backend has bug, it returns Array instead of Object:
+            // https://github.com/Azure/azure-rest-api-specs/issues/27176
+//            .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
             .create();
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
@@ -521,7 +525,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(3, functionApp.minReplicas());
 
         Assertions.assertNotNull(functionApp.getAppSettings());
-        Assertions.assertEquals("connectionStringValue", functionApp.getConnectionStrings().get("connectionStringName").value());
+//        Assertions.assertEquals("connectionValue", functionApp.getConnectionStrings().get("connectionName").value());
 
         functionApp.update()
             .withMaxReplicas(15)
