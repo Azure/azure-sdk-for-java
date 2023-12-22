@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
+import com.azure.resourcemanager.sql.fluent.models.RefreshExternalGovernanceStatusOperationResultInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.models.ImportNewDatabaseDefinition;
@@ -26,26 +27,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServersClient.
+ */
 public interface ServersClient
     extends InnerSupportsGet<ServerInner>, InnerSupportsListing<ServerInner>, InnerSupportsDelete<Void> {
     /**
      * Determines whether a resource can be created with the specified name.
-     *
+     * 
      * @param parameters The name availability request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of a name availability check along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest parameters);
+    Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest parameters);
 
     /**
      * Determines whether a resource can be created with the specified name.
-     *
+     * 
      * @param parameters The name availability request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,7 +60,7 @@ public interface ServersClient
 
     /**
      * Determines whether a resource can be created with the specified name.
-     *
+     * 
      * @param parameters The name availability request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,12 +69,12 @@ public interface ServersClient
      * @return the result of a name availability check along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest parameters, Context context);
+    Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest parameters, Context context);
 
     /**
      * Determines whether a resource can be created with the specified name.
-     *
+     * 
      * @param parameters The name availability request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -83,7 +86,7 @@ public interface ServersClient
 
     /**
      * Gets a list of all servers in the subscription.
-     *
+     * 
      * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +98,7 @@ public interface ServersClient
 
     /**
      * Gets a list of all servers in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
@@ -105,7 +108,7 @@ public interface ServersClient
 
     /**
      * Gets a list of all servers in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
@@ -115,7 +118,7 @@ public interface ServersClient
 
     /**
      * Gets a list of all servers in the subscription.
-     *
+     * 
      * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +131,9 @@ public interface ServersClient
 
     /**
      * Gets a list of servers in a resource groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,9 +145,9 @@ public interface ServersClient
 
     /**
      * Gets a list of servers in a resource groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,9 +158,9 @@ public interface ServersClient
 
     /**
      * Gets a list of servers in a resource groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -168,9 +171,9 @@ public interface ServersClient
 
     /**
      * Gets a list of servers in a resource groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,9 +186,9 @@ public interface ServersClient
 
     /**
      * Gets a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,14 +197,14 @@ public interface ServersClient
      * @return a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String serverName, String expand);
+    Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String serverName,
+        String expand);
 
     /**
      * Gets a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,9 +216,9 @@ public interface ServersClient
 
     /**
      * Gets a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
@@ -225,14 +228,14 @@ public interface ServersClient
      * @return a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serverName, String expand, Context context);
+    Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName, String expand,
+        Context context);
 
     /**
      * Gets a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -244,9 +247,9 @@ public interface ServersClient
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,14 +258,14 @@ public interface ServersClient
      * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        ServerInner parameters);
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,14 +274,14 @@ public interface ServersClient
      * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, ServerInner parameters);
+    PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, ServerInner parameters);
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,14 +290,14 @@ public interface ServersClient
      * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, ServerInner parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ServerInner parameters);
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
@@ -304,14 +307,14 @@ public interface ServersClient
      * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, ServerInner parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(String resourceGroupName, String serverName,
+        ServerInner parameters, Context context);
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,9 +327,9 @@ public interface ServersClient
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,9 +342,9 @@ public interface ServersClient
 
     /**
      * Creates or updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
@@ -355,9 +358,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,9 +372,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -383,9 +386,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -397,9 +400,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,9 +415,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -426,9 +429,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -439,9 +442,9 @@ public interface ServersClient
 
     /**
      * Deletes a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,9 +456,9 @@ public interface ServersClient
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,14 +467,14 @@ public interface ServersClient
      * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        ServerUpdate parameters);
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,14 +483,14 @@ public interface ServersClient
      * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, ServerUpdate parameters);
+    PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(String resourceGroupName, String serverName,
+        ServerUpdate parameters);
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,14 +499,14 @@ public interface ServersClient
      * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdate parameters);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdate parameters);
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
@@ -513,14 +516,14 @@ public interface ServersClient
      * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
-        String resourceGroupName, String serverName, ServerUpdate parameters, Context context);
+    SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(String resourceGroupName, String serverName,
+        ServerUpdate parameters, Context context);
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,9 +536,9 @@ public interface ServersClient
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,9 +551,9 @@ public interface ServersClient
 
     /**
      * Updates a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
@@ -564,26 +567,26 @@ public interface ServersClient
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> importDatabaseWithResponseAsync(String resourceGroupName, String serverName,
+        ImportNewDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -592,14 +595,14 @@ public interface ServersClient
      * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportDatabaseAsync(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+    PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
+        beginImportDatabaseAsync(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -608,14 +611,14 @@ public interface ServersClient
      * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportDatabase(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+    SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
+        beginImportDatabase(String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @param context The context to associate with this operation.
@@ -630,9 +633,9 @@ public interface ServersClient
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -641,14 +644,14 @@ public interface ServersClient
      * @return an ImportExport operation result resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ImportExportOperationResultInner> importDatabaseAsync(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+    Mono<ImportExportOperationResultInner> importDatabaseAsync(String resourceGroupName, String serverName,
+        ImportNewDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -657,14 +660,14 @@ public interface ServersClient
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner importDatabase(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters);
+    ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
+        ImportNewDatabaseDefinition parameters);
 
     /**
      * Imports a bacpac into a new database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The database import request parameters.
      * @param context The context to associate with this operation.
@@ -674,6 +677,112 @@ public interface ServersClient
      * @return an ImportExport operation result resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImportExportOperationResultInner importDatabase(
-        String resourceGroupName, String serverName, ImportNewDatabaseDefinition parameters, Context context);
+    ImportExportOperationResultInner importDatabase(String resourceGroupName, String serverName,
+        ImportNewDatabaseDefinition parameters, Context context);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatusAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultInner>, RefreshExternalGovernanceStatusOperationResultInner>
+        beginRefreshStatus(String resourceGroupName, String serverName, Context context);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RefreshExternalGovernanceStatusOperationResultInner> refreshStatusAsync(String resourceGroupName,
+        String serverName);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName, String serverName);
+
+    /**
+     * Refresh external governance enablement status.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an RefreshExternalGovernanceStatus operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RefreshExternalGovernanceStatusOperationResultInner refreshStatus(String resourceGroupName, String serverName,
+        Context context);
 }

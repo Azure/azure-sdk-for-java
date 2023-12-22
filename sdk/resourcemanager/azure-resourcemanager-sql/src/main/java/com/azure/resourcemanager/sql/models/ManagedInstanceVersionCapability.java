@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The managed instance capability. */
+/**
+ * The managed instance capability.
+ */
 @Fluent
 public final class ManagedInstanceVersionCapability {
     /*
@@ -41,13 +43,15 @@ public final class ManagedInstanceVersionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceVersionCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceVersionCapability class.
+     */
     public ManagedInstanceVersionCapability() {
     }
 
     /**
      * Get the name property: The server version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the supportedEditions property: The list of supported managed instance editions.
-     *
+     * 
      * @return the supportedEditions value.
      */
     public List<ManagedInstanceEditionCapability> supportedEditions() {
@@ -65,7 +69,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the supportedInstancePoolEditions property: The list of supported instance pool editions.
-     *
+     * 
      * @return the supportedInstancePoolEditions value.
      */
     public List<InstancePoolEditionCapability> supportedInstancePoolEditions() {
@@ -74,7 +78,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +87,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +96,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceVersionCapability object itself.
      */
@@ -103,7 +107,7 @@ public final class ManagedInstanceVersionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

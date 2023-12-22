@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedTransparentDataEncrypt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of managed transparent data encryptions. */
+/**
+ * A list of managed transparent data encryptions.
+ */
 @Immutable
 public final class ManagedTransparentDataEncryptionListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedTransparentDataEncryptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedTransparentDataEncryptionListResult class. */
+    /**
+     * Creates an instance of ManagedTransparentDataEncryptionListResult class.
+     */
     public ManagedTransparentDataEncryptionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedTransparentDataEncryptionInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedTransparentDataEncryptionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedTransparentDataEncryptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

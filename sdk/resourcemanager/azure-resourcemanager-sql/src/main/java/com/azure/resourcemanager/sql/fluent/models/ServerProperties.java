@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The properties of a server. */
+/**
+ * The properties of a server.
+ */
 @Fluent
 public final class ServerProperties {
     /*
@@ -53,17 +58,17 @@ public final class ServerProperties {
     private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'
+     * Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'
      */
     @JsonProperty(value = "minimalTlsVersion")
-    private String minimalTlsVersion;
+    private MinimalTlsVersion minimalTlsVersion;
 
     /*
-     * Whether or not public endpoint access is allowed for this server.  Value is optional but if passed in, must be
-     * 'Enabled' or 'Disabled'
+     * Whether or not public endpoint access is allowed for this server. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled' or 'SecuredByPerimeter'
      */
     @JsonProperty(value = "publicNetworkAccess")
-    private ServerNetworkAccessFlag publicNetworkAccess;
+    private ServerPublicNetworkAccessFlag publicNetworkAccess;
 
     /*
      * Whether or not existing server has a workspace created and if it allows connection from workspace
@@ -90,25 +95,42 @@ public final class ServerProperties {
     private String keyId;
 
     /*
-     * The Azure Active Directory administrator of the server.
+     * The Azure Active Directory administrator of the server. This can only be used at server create time. If used for
+     * server update, it will be ignored or it will result in an error. For updates individual APIs will need to be
+     * used.
      */
     @JsonProperty(value = "administrators")
     private ServerExternalAdministrator administrators;
 
     /*
-     * Whether or not to restrict outbound network access for this server.  Value is optional but if passed in, must be
+     * Whether or not to restrict outbound network access for this server. Value is optional but if passed in, must be
      * 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "restrictOutboundNetworkAccess")
     private ServerNetworkAccessFlag restrictOutboundNetworkAccess;
 
-    /** Creates an instance of ServerProperties class. */
+    /*
+     * Whether or not to enable IPv6 support for this server. Value is optional but if passed in, must be 'Enabled' or
+     * 'Disabled'
+     */
+    @JsonProperty(value = "isIPv6Enabled")
+    private ServerNetworkAccessFlag isIPv6Enabled;
+
+    /*
+     * Status of external governance.
+     */
+    @JsonProperty(value = "externalGovernanceStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private ExternalGovernanceStatus externalGovernanceStatus;
+
+    /**
+     * Creates an instance of ServerProperties class.
+     */
     public ServerProperties() {
     }
 
     /**
      * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -117,7 +139,7 @@ public final class ServerProperties {
 
     /**
      * Set the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerProperties object itself.
      */
@@ -128,7 +150,7 @@ public final class ServerProperties {
 
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -137,7 +159,7 @@ public final class ServerProperties {
 
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerProperties object itself.
      */
@@ -148,7 +170,7 @@ public final class ServerProperties {
 
     /**
      * Get the version property: The version of the server.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -157,7 +179,7 @@ public final class ServerProperties {
 
     /**
      * Set the version property: The version of the server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerProperties object itself.
      */
@@ -168,7 +190,7 @@ public final class ServerProperties {
 
     /**
      * Get the state property: The state of the server.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -177,7 +199,7 @@ public final class ServerProperties {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -186,7 +208,7 @@ public final class ServerProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a server.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -194,43 +216,43 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @return the minimalTlsVersion value.
      */
-    public String minimalTlsVersion() {
+    public MinimalTlsVersion minimalTlsVersion() {
         return this.minimalTlsVersion;
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withMinimalTlsVersion(String minimalTlsVersion) {
+    public ServerProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
         return this;
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerProperties withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
@@ -238,7 +260,7 @@ public final class ServerProperties {
     /**
      * Get the workspaceFeature property: Whether or not existing server has a workspace created and if it allows
      * connection from workspace.
-     *
+     * 
      * @return the workspaceFeature value.
      */
     public ServerWorkspaceFeature workspaceFeature() {
@@ -248,7 +270,7 @@ public final class ServerProperties {
     /**
      * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -258,7 +280,7 @@ public final class ServerProperties {
     /**
      * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the ServerProperties object itself.
      */
@@ -269,7 +291,7 @@ public final class ServerProperties {
 
     /**
      * Get the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @return the federatedClientId value.
      */
     public UUID federatedClientId() {
@@ -278,7 +300,7 @@ public final class ServerProperties {
 
     /**
      * Set the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerProperties object itself.
      */
@@ -289,7 +311,7 @@ public final class ServerProperties {
 
     /**
      * Get the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -298,7 +320,7 @@ public final class ServerProperties {
 
     /**
      * Set the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ServerProperties object itself.
      */
@@ -308,8 +330,10 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Get the administrators property: The Azure Active Directory administrator of the server. This can only be used
+     * at server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @return the administrators value.
      */
     public ServerExternalAdministrator administrators() {
@@ -317,8 +341,10 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Set the administrators property: The Azure Active Directory administrator of the server. This can only be used
+     * at server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @param administrators the administrators value to set.
      * @return the ServerProperties object itself.
      */
@@ -330,7 +356,7 @@ public final class ServerProperties {
     /**
      * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public ServerNetworkAccessFlag restrictOutboundNetworkAccess() {
@@ -340,7 +366,7 @@ public final class ServerProperties {
     /**
      * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
@@ -350,8 +376,39 @@ public final class ServerProperties {
     }
 
     /**
+     * Get the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the isIPv6Enabled value.
+     */
+    public ServerNetworkAccessFlag isIPv6Enabled() {
+        return this.isIPv6Enabled;
+    }
+
+    /**
+     * Set the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param isIPv6Enabled the isIPv6Enabled value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withIsIPv6Enabled(ServerNetworkAccessFlag isIPv6Enabled) {
+        this.isIPv6Enabled = isIPv6Enabled;
+        return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.externalGovernanceStatus;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

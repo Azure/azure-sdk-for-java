@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The type of restore point. */
+/**
+ * The type of restore point.
+ */
 public enum RestorePointType {
-    /** Enum value CONTINUOUS. */
+    /**
+     * Enum value CONTINUOUS.
+     */
     CONTINUOUS("CONTINUOUS"),
 
-    /** Enum value DISCRETE. */
+    /**
+     * Enum value DISCRETE.
+     */
     DISCRETE("DISCRETE");
 
-    /** The actual serialized value for a RestorePointType instance. */
+    /**
+     * The actual serialized value for a RestorePointType instance.
+     */
     private final String value;
 
     RestorePointType(String value) {
@@ -24,7 +32,7 @@ public enum RestorePointType {
 
     /**
      * Parses a serialized value to a RestorePointType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RestorePointType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum RestorePointType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

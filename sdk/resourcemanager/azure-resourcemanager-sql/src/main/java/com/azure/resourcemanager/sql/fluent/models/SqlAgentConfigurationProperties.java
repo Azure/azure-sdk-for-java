@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.SqlAgentConfigurationPropertiesState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sql agent configuration properties. */
+/**
+ * Sql agent configuration properties.
+ */
 @Fluent
 public final class SqlAgentConfigurationProperties {
     /*
@@ -17,13 +19,15 @@ public final class SqlAgentConfigurationProperties {
     @JsonProperty(value = "state")
     private SqlAgentConfigurationPropertiesState state;
 
-    /** Creates an instance of SqlAgentConfigurationProperties class. */
+    /**
+     * Creates an instance of SqlAgentConfigurationProperties class.
+     */
     public SqlAgentConfigurationProperties() {
     }
 
     /**
      * Get the state property: The state of Sql Agent.
-     *
+     * 
      * @return the state value.
      */
     public SqlAgentConfigurationPropertiesState state() {
@@ -32,7 +36,7 @@ public final class SqlAgentConfigurationProperties {
 
     /**
      * Set the state property: The state of Sql Agent.
-     *
+     * 
      * @param state the state value to set.
      * @return the SqlAgentConfigurationProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class SqlAgentConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the column in the table of database full schema. */
+/**
+ * Properties of the column in the table of database full schema.
+ */
 @Immutable
 public final class SyncFullSchemaTableColumn {
     /*
@@ -52,13 +54,15 @@ public final class SyncFullSchemaTableColumn {
     @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
-    /** Creates an instance of SyncFullSchemaTableColumn class. */
+    /**
+     * Creates an instance of SyncFullSchemaTableColumn class.
+     */
     public SyncFullSchemaTableColumn() {
     }
 
     /**
      * Get the dataSize property: Data size of the column.
-     *
+     * 
      * @return the dataSize value.
      */
     public String dataSize() {
@@ -67,7 +71,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -76,7 +80,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the errorId property: Error id of the column.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -85,7 +89,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the hasError property: If there is error in the table.
-     *
+     * 
      * @return the hasError value.
      */
     public Boolean hasError() {
@@ -94,7 +98,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the isPrimaryKey property: If it is the primary key of the table.
-     *
+     * 
      * @return the isPrimaryKey value.
      */
     public Boolean isPrimaryKey() {
@@ -103,7 +107,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the name property: Name of the column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -112,7 +116,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Get the quotedName property: Quoted name of the column.
-     *
+     * 
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -121,7 +125,7 @@ public final class SyncFullSchemaTableColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

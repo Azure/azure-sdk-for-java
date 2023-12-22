@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Display metadata associated with the operation. */
+/**
+ * Display metadata associated with the operation.
+ */
 @Immutable
 public final class OperationDisplay {
     /*
@@ -34,13 +36,15 @@ public final class OperationDisplay {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: The localized friendly form of the resource type related to this action/operation.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -58,7 +62,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: The localized friendly name for the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -67,7 +71,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: The localized friendly description for the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,7 +80,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

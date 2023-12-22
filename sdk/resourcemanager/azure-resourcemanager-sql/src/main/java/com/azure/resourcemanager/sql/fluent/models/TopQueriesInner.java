@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TopQueries model. */
+/**
+ * The TopQueries model.
+ */
 @Fluent
 public final class TopQueriesInner {
     /*
@@ -54,13 +56,15 @@ public final class TopQueriesInner {
     @JsonProperty(value = "queries")
     private List<QueryStatisticsProperties> queries;
 
-    /** Creates an instance of TopQueriesInner class. */
+    /**
+     * Creates an instance of TopQueriesInner class.
+     */
     public TopQueriesInner() {
     }
 
     /**
      * Get the numberOfQueries property: Requested number of top queries.
-     *
+     * 
      * @return the numberOfQueries value.
      */
     public Integer numberOfQueries() {
@@ -69,7 +73,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the aggregationFunction property: Aggregation function used to calculate query metrics.
-     *
+     * 
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
@@ -78,7 +82,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the observationMetric property: Metric used to rank queries.
-     *
+     * 
      * @return the observationMetric value.
      */
     public String observationMetric() {
@@ -87,7 +91,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the intervalType property: Interval type (length).
-     *
+     * 
      * @return the intervalType value.
      */
     public QueryTimeGrainType intervalType() {
@@ -96,7 +100,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -105,7 +109,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -114,7 +118,7 @@ public final class TopQueriesInner {
 
     /**
      * Get the queries property: List of top resource consuming queries with appropriate metric data.
-     *
+     * 
      * @return the queries value.
      */
     public List<QueryStatisticsProperties> queries() {
@@ -123,7 +127,7 @@ public final class TopQueriesInner {
 
     /**
      * Set the queries property: List of top resource consuming queries with appropriate metric data.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the TopQueriesInner object itself.
      */
@@ -134,7 +138,7 @@ public final class TopQueriesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.ManagementOperationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a database operation. */
+/**
+ * The properties of a database operation.
+ */
 @Immutable
 public final class DatabaseOperationProperties {
     /*
@@ -96,13 +98,15 @@ public final class DatabaseOperationProperties {
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
-    /** Creates an instance of DatabaseOperationProperties class. */
+    /**
+     * Creates an instance of DatabaseOperationProperties class.
+     */
     public DatabaseOperationProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database the operation is being performed on.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -111,7 +115,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the operation property: The name of operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -120,7 +124,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the operationFriendlyName property: The friendly name of operation.
-     *
+     * 
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
@@ -129,7 +133,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the percentComplete property: The percentage of the operation completed.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -138,7 +142,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the serverName property: The name of the server.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -147,7 +151,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the startTime property: The operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -156,7 +160,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the state property: The operation state.
-     *
+     * 
      * @return the state value.
      */
     public ManagementOperationState state() {
@@ -165,7 +169,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorCode property: The operation error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -174,7 +178,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorDescription property: The operation error description.
-     *
+     * 
      * @return the errorDescription value.
      */
     public String errorDescription() {
@@ -183,7 +187,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the errorSeverity property: The operation error severity.
-     *
+     * 
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -192,7 +196,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the isUserError property: Whether or not the error is a user error.
-     *
+     * 
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -201,7 +205,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the estimatedCompletionTime property: The estimated completion time of the operation.
-     *
+     * 
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
@@ -210,7 +214,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the description property: The operation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -219,7 +223,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Get the isCancellable property: Whether the operation can be cancelled.
-     *
+     * 
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
@@ -228,7 +232,7 @@ public final class DatabaseOperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

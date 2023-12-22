@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A server Advanced Threat Protection. */
+/**
+ * A server Advanced Threat Protection.
+ */
 @Fluent
 public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdvancedThreatProtectionProperties innerProperties;
 
-    /** Creates an instance of ServerAdvancedThreatProtectionInner class. */
+    /**
+     * Creates an instance of ServerAdvancedThreatProtectionInner class.
+     */
     public ServerAdvancedThreatProtectionInner() {
     }
 
     /**
      * Get the systemData property: SystemData of AdvancedThreatProtectionResource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -41,7 +45,7 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdvancedThreatProtectionProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
     /**
      * Get the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @return the state value.
      */
     public AdvancedThreatProtectionState state() {
@@ -61,7 +65,7 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
     /**
      * Set the state property: Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
      * or a state has not been applied yet on the specific database or server.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerAdvancedThreatProtectionInner object itself.
      */
@@ -75,7 +79,7 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -84,7 +88,7 @@ public final class ServerAdvancedThreatProtectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

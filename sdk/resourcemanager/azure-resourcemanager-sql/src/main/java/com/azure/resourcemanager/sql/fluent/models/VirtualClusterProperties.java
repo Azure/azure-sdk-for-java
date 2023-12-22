@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a virtual cluster. */
+/**
+ * The properties of a virtual cluster.
+ */
 @Fluent
 public final class VirtualClusterProperties {
     /*
@@ -18,10 +20,10 @@ public final class VirtualClusterProperties {
     private String subnetId;
 
     /*
-     * If the service has different generations of hardware, for the same SKU, then that can be captured here.
+     * Virtual cluster version.
      */
-    @JsonProperty(value = "family")
-    private String family;
+    @JsonProperty(value = "version")
+    private String version;
 
     /*
      * List of resources in this virtual cluster.
@@ -29,19 +31,15 @@ public final class VirtualClusterProperties {
     @JsonProperty(value = "childResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> childResources;
 
-    /*
-     * Specifies maintenance configuration id to apply to this virtual cluster.
+    /**
+     * Creates an instance of VirtualClusterProperties class.
      */
-    @JsonProperty(value = "maintenanceConfigurationId")
-    private String maintenanceConfigurationId;
-
-    /** Creates an instance of VirtualClusterProperties class. */
     public VirtualClusterProperties() {
     }
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -49,30 +47,28 @@ public final class VirtualClusterProperties {
     }
 
     /**
-     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @return the family value.
+     * Get the version property: Virtual cluster version.
+     * 
+     * @return the version value.
      */
-    public String family() {
-        return this.family;
+    public String version() {
+        return this.version;
     }
 
     /**
-     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @param family the family value to set.
+     * Set the version property: Virtual cluster version.
+     * 
+     * @param version the version value to set.
      * @return the VirtualClusterProperties object itself.
      */
-    public VirtualClusterProperties withFamily(String family) {
-        this.family = family;
+    public VirtualClusterProperties withVersion(String version) {
+        this.version = version;
         return this;
     }
 
     /**
      * Get the childResources property: List of resources in this virtual cluster.
-     *
+     * 
      * @return the childResources value.
      */
     public List<String> childResources() {
@@ -80,30 +76,8 @@ public final class VirtualClusterProperties {
     }
 
     /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     *
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the VirtualClusterProperties object itself.
-     */
-    public VirtualClusterProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseOperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list database operations request. */
+/**
+ * The response to a list database operations request.
+ */
 @Immutable
 public final class DatabaseOperationListResult {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseOperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseOperationListResult class. */
+    /**
+     * Creates an instance of DatabaseOperationListResult class.
+     */
     public DatabaseOperationListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseOperationInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseOperationListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DatabaseOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

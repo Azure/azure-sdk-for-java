@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.MaintenanceWindowTimeRange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Maintenance windows resource properties. */
+/**
+ * Maintenance windows resource properties.
+ */
 @Fluent
 public final class MaintenanceWindowsProperties {
     /*
@@ -18,13 +20,15 @@ public final class MaintenanceWindowsProperties {
     @JsonProperty(value = "timeRanges")
     private List<MaintenanceWindowTimeRange> timeRanges;
 
-    /** Creates an instance of MaintenanceWindowsProperties class. */
+    /**
+     * Creates an instance of MaintenanceWindowsProperties class.
+     */
     public MaintenanceWindowsProperties() {
     }
 
     /**
      * Get the timeRanges property: The timeRanges property.
-     *
+     * 
      * @return the timeRanges value.
      */
     public List<MaintenanceWindowTimeRange> timeRanges() {
@@ -33,7 +37,7 @@ public final class MaintenanceWindowsProperties {
 
     /**
      * Set the timeRanges property: The timeRanges property.
-     *
+     * 
      * @param timeRanges the timeRanges value to set.
      * @return the MaintenanceWindowsProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class MaintenanceWindowsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

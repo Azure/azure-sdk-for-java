@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported auto pause delay time range. */
+/**
+ * Supported auto pause delay time range.
+ */
 @Immutable
 public final class AutoPauseDelayTimeRange {
     /*
@@ -46,13 +48,15 @@ public final class AutoPauseDelayTimeRange {
     @JsonProperty(value = "doNotPauseValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer doNotPauseValue;
 
-    /** Creates an instance of AutoPauseDelayTimeRange class. */
+    /**
+     * Creates an instance of AutoPauseDelayTimeRange class.
+     */
     public AutoPauseDelayTimeRange() {
     }
 
     /**
      * Get the minValue property: Minimum value.
-     *
+     * 
      * @return the minValue value.
      */
     public Integer minValue() {
@@ -61,7 +65,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the maxValue property: Maximum value.
-     *
+     * 
      * @return the maxValue value.
      */
     public Integer maxValue() {
@@ -70,7 +74,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the stepSize property: Step value for discrete values between the minimum value and the maximum value.
-     *
+     * 
      * @return the stepSize value.
      */
     public Integer stepSize() {
@@ -79,7 +83,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the defaultProperty property: Default value is no value is provided.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -88,7 +92,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the unit property: Unit of time that delay is expressed in.
-     *
+     * 
      * @return the unit value.
      */
     public PauseDelayTimeUnit unit() {
@@ -97,7 +101,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Get the doNotPauseValue property: Value that is used to not pause (infinite delay before pause).
-     *
+     * 
      * @return the doNotPauseValue value.
      */
     public Integer doNotPauseValue() {
@@ -106,7 +110,7 @@ public final class AutoPauseDelayTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

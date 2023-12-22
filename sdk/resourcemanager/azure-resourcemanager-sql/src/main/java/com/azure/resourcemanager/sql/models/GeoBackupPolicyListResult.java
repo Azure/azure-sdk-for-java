@@ -4,33 +4,31 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.fluent.models.GeoBackupPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of geo backup policies. */
-@Immutable
+/**
+ * The response to a list geo backup policies request.
+ */
+@Fluent
 public final class GeoBackupPolicyListResult {
     /*
-     * Array of results.
+     * The list of geo backup policies.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private List<GeoBackupPolicyInner> value;
 
-    /*
-     * Link to retrieve next page of results.
+    /**
+     * Creates an instance of GeoBackupPolicyListResult class.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
-    /** Creates an instance of GeoBackupPolicyListResult class. */
     public GeoBackupPolicyListResult() {
     }
 
     /**
-     * Get the value property: Array of results.
-     *
+     * Get the value property: The list of geo backup policies.
+     * 
      * @return the value value.
      */
     public List<GeoBackupPolicyInner> value() {
@@ -38,17 +36,19 @@ public final class GeoBackupPolicyListResult {
     }
 
     /**
-     * Get the nextLink property: Link to retrieve next page of results.
-     *
-     * @return the nextLink value.
+     * Set the value property: The list of geo backup policies.
+     * 
+     * @param value the value value to set.
+     * @return the GeoBackupPolicyListResult object itself.
      */
-    public String nextLink() {
-        return this.nextLink;
+    public GeoBackupPolicyListResult withValue(List<GeoBackupPolicyInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

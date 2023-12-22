@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.RestorePointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of a database restore point. */
+/**
+ * Properties of a database restore point.
+ */
 @Immutable
 public final class RestorePointProperties {
     /*
@@ -36,13 +38,15 @@ public final class RestorePointProperties {
     @JsonProperty(value = "restorePointLabel", access = JsonProperty.Access.WRITE_ONLY)
     private String restorePointLabel;
 
-    /** Creates an instance of RestorePointProperties class. */
+    /**
+     * Creates an instance of RestorePointProperties class.
+     */
     public RestorePointProperties() {
     }
 
     /**
      * Get the restorePointType property: The type of restore point.
-     *
+     * 
      * @return the restorePointType value.
      */
     public RestorePointType restorePointType() {
@@ -51,7 +55,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest time to which this database can be restored.
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -60,7 +64,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the restorePointCreationDate property: The time the backup was taken.
-     *
+     * 
      * @return the restorePointCreationDate value.
      */
     public OffsetDateTime restorePointCreationDate() {
@@ -69,7 +73,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the restorePointLabel property: The label of restore point for backup request by user.
-     *
+     * 
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {
@@ -78,7 +82,7 @@ public final class RestorePointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
