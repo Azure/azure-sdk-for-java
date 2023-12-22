@@ -99,12 +99,6 @@ public final class Test implements JsonSerializable<Test> {
     private String subnetId;
 
     /*
-     * Type of test.
-     */
-    @Generated
-    private TestType testType;
-
-    /*
      * Type of the managed identity referencing the Key vault.
      */
     @Generated
@@ -117,7 +111,7 @@ public final class Test implements JsonSerializable<Test> {
     private String keyvaultReferenceIdentityId;
 
     /*
-     * The creation datetime(ISO 8601 literal format).
+     * The creation datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime createdDateTime;
@@ -129,7 +123,7 @@ public final class Test implements JsonSerializable<Test> {
     private String createdBy;
 
     /*
-     * The last Modified datetime(ISO 8601 literal format).
+     * The last Modified datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime lastModifiedDateTime;
@@ -403,28 +397,6 @@ public final class Test implements JsonSerializable<Test> {
     }
 
     /**
-     * Get the testType property: Type of test.
-     *
-     * @return the testType value.
-     */
-    @Generated
-    public TestType getTestType() {
-        return this.testType;
-    }
-
-    /**
-     * Set the testType property: Type of test.
-     *
-     * @param testType the testType value to set.
-     * @return the Test object itself.
-     */
-    @Generated
-    public Test setTestType(TestType testType) {
-        this.testType = testType;
-        return this;
-    }
-
-    /**
      * Get the keyvaultReferenceIdentityType property: Type of the managed identity referencing the Key vault.
      *
      * @return the keyvaultReferenceIdentityType value.
@@ -469,7 +441,7 @@ public final class Test implements JsonSerializable<Test> {
     }
 
     /**
-     * Get the createdDateTime property: The creation datetime(ISO 8601 literal format).
+     * Get the createdDateTime property: The creation datetime(RFC 3339 literal format).
      *
      * @return the createdDateTime value.
      */
@@ -489,7 +461,7 @@ public final class Test implements JsonSerializable<Test> {
     }
 
     /**
-     * Get the lastModifiedDateTime property: The last Modified datetime(ISO 8601 literal format).
+     * Get the lastModifiedDateTime property: The last Modified datetime(RFC 3339 literal format).
      *
      * @return the lastModifiedDateTime value.
      */
@@ -627,5 +599,61 @@ public final class Test implements JsonSerializable<Test> {
             deserializedTest.lastModifiedBy = lastModifiedBy;
             return deserializedTest;
         });
+    }
+
+    /*
+     * Kind of test.
+     */
+    @Generated
+    private TestKind kind;
+
+    /*
+     * Inject load test engines without deploying public IP for outbound access
+     */
+    @Generated
+    private Boolean publicIPDisabled;
+
+    /**
+     * Get the kind property: Kind of test.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public TestKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of test.
+     *
+     * @param kind the kind value to set.
+     * @return the Test object itself.
+     */
+    @Generated
+    public Test setKind(TestKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @return the publicIPDisabled value.
+     */
+    @Generated
+    public Boolean isPublicIPDisabled() {
+        return this.publicIPDisabled;
+    }
+
+    /**
+     * Set the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @param publicIPDisabled the publicIPDisabled value to set.
+     * @return the Test object itself.
+     */
+    @Generated
+    public Test setPublicIPDisabled(Boolean publicIPDisabled) {
+        this.publicIPDisabled = publicIPDisabled;
+        return this;
     }
 }

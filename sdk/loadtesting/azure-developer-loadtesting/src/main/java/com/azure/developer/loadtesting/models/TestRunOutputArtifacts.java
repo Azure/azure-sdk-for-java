@@ -33,7 +33,7 @@ public final class TestRunOutputArtifacts implements JsonSerializable<TestRunOut
      * The container for test run artifacts.
      */
     @Generated
-    private ContainerInfo artifactsContainerInfo;
+    private ArtifactsContainerInfo artifactsContainerInfo;
 
     /**
      * Creates an instance of TestRunOutputArtifacts class.
@@ -68,7 +68,7 @@ public final class TestRunOutputArtifacts implements JsonSerializable<TestRunOut
      * @return the artifactsContainerInfo value.
      */
     @Generated
-    public ContainerInfo getArtifactsContainerInfo() {
+    public ArtifactsContainerInfo getArtifactsContainerInfo() {
         return this.artifactsContainerInfo;
     }
 

@@ -37,7 +37,7 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
     private FileType fileType;
 
     /*
-     * Expiry time of the file (ISO 8601 literal format)
+     * Expiry time of the file (RFC 3339 literal format)
      */
     @Generated
     private OffsetDateTime expireDateTime;
@@ -92,7 +92,7 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
     }
 
     /**
-     * Get the expireDateTime property: Expiry time of the file (ISO 8601 literal format).
+     * Get the expireDateTime property: Expiry time of the file (RFC 3339 literal format).
      *
      * @return the expireDateTime value.
      */

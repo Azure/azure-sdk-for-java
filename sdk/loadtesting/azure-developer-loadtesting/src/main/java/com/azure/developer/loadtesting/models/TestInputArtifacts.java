@@ -43,12 +43,6 @@ public final class TestInputArtifacts implements JsonSerializable<TestInputArtif
     private TestFileInfo inputArtifactsZipFileInfo;
 
     /*
-     * The config json file for url based test
-     */
-    @Generated
-    private TestFileInfo urlTestsConfigFileInfo;
-
-    /*
      * Additional supported files for the test run
      */
     @Generated
@@ -99,16 +93,6 @@ public final class TestInputArtifacts implements JsonSerializable<TestInputArtif
     @Generated
     public TestFileInfo getInputArtifactsZipFileInfo() {
         return this.inputArtifactsZipFileInfo;
-    }
-
-    /**
-     * Get the urlTestsConfigFileInfo property: The config json file for url based test.
-     *
-     * @return the urlTestsConfigFileInfo value.
-     */
-    @Generated
-    public TestFileInfo getUrlTestsConfigFileInfo() {
-        return this.urlTestsConfigFileInfo;
     }
 
     /**
@@ -165,5 +149,21 @@ public final class TestInputArtifacts implements JsonSerializable<TestInputArtif
             }
             return deserializedTestInputArtifacts;
         });
+    }
+
+    /*
+     * The config json file for url based test
+     */
+    @Generated
+    private TestFileInfo urlTestConfigFileInfo;
+
+    /**
+     * Get the urlTestConfigFileInfo property: The config json file for url based test.
+     *
+     * @return the urlTestConfigFileInfo value.
+     */
+    @Generated
+    public TestFileInfo getUrlTestConfigFileInfo() {
+        return this.urlTestConfigFileInfo;
     }
 }

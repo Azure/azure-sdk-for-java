@@ -24,18 +24,6 @@ public final class OptionalLoadTestConfig implements JsonSerializable<OptionalLo
     private String endpointUrl;
 
     /*
-     * Throughput required (requests per second).
-     */
-    @Generated
-    private Integer rps;
-
-    /*
-     * Maximum response time in milliseconds of the API/endpoint.
-     */
-    @Generated
-    private Integer maxResponseTime;
-
-    /*
      * No of concurrent virtual users.
      */
     @Generated
@@ -81,50 +69,6 @@ public final class OptionalLoadTestConfig implements JsonSerializable<OptionalLo
     @Generated
     public OptionalLoadTestConfig setEndpointUrl(String endpointUrl) {
         this.endpointUrl = endpointUrl;
-        return this;
-    }
-
-    /**
-     * Get the rps property: Throughput required (requests per second).
-     *
-     * @return the rps value.
-     */
-    @Generated
-    public Integer getRps() {
-        return this.rps;
-    }
-
-    /**
-     * Set the rps property: Throughput required (requests per second).
-     *
-     * @param rps the rps value to set.
-     * @return the OptionalLoadTestConfig object itself.
-     */
-    @Generated
-    public OptionalLoadTestConfig setRps(Integer rps) {
-        this.rps = rps;
-        return this;
-    }
-
-    /**
-     * Get the maxResponseTime property: Maximum response time in milliseconds of the API/endpoint.
-     *
-     * @return the maxResponseTime value.
-     */
-    @Generated
-    public Integer getMaxResponseTime() {
-        return this.maxResponseTime;
-    }
-
-    /**
-     * Set the maxResponseTime property: Maximum response time in milliseconds of the API/endpoint.
-     *
-     * @param maxResponseTime the maxResponseTime value to set.
-     * @return the OptionalLoadTestConfig object itself.
-     */
-    @Generated
-    public OptionalLoadTestConfig setMaxResponseTime(Integer maxResponseTime) {
-        this.maxResponseTime = maxResponseTime;
         return this;
     }
 
@@ -238,5 +182,64 @@ public final class OptionalLoadTestConfig implements JsonSerializable<OptionalLo
             }
             return deserializedOptionalLoadTestConfig;
         });
+    }
+
+    /*
+     * Target throughput (requests per second). This may not be necessarily achieved. The actual throughput will be
+     * lower if the application is not capable of handling it.
+     */
+    @Generated
+    private Integer requestsPerSecond;
+
+    /*
+     * Maximum response time in milliseconds of the API/endpoint.
+     */
+    @Generated
+    private Integer maxResponseTimeInMs;
+
+    /**
+     * Get the requestsPerSecond property: Target throughput (requests per second). This may not be necessarily
+     * achieved. The actual throughput will be lower if the application is not capable of handling it.
+     *
+     * @return the requestsPerSecond value.
+     */
+    @Generated
+    public Integer getRequestsPerSecond() {
+        return this.requestsPerSecond;
+    }
+
+    /**
+     * Set the requestsPerSecond property: Target throughput (requests per second). This may not be necessarily
+     * achieved. The actual throughput will be lower if the application is not capable of handling it.
+     *
+     * @param requestsPerSecond the requestsPerSecond value to set.
+     * @return the OptionalLoadTestConfig object itself.
+     */
+    @Generated
+    public OptionalLoadTestConfig setRequestsPerSecond(Integer requestsPerSecond) {
+        this.requestsPerSecond = requestsPerSecond;
+        return this;
+    }
+
+    /**
+     * Get the maxResponseTimeInMs property: Maximum response time in milliseconds of the API/endpoint.
+     *
+     * @return the maxResponseTimeInMs value.
+     */
+    @Generated
+    public Integer getMaxResponseTimeInMs() {
+        return this.maxResponseTimeInMs;
+    }
+
+    /**
+     * Set the maxResponseTimeInMs property: Maximum response time in milliseconds of the API/endpoint.
+     *
+     * @param maxResponseTimeInMs the maxResponseTimeInMs value to set.
+     * @return the OptionalLoadTestConfig object itself.
+     */
+    @Generated
+    public OptionalLoadTestConfig setMaxResponseTimeInMs(Integer maxResponseTimeInMs) {
+        this.maxResponseTimeInMs = maxResponseTimeInMs;
+        return this;
     }
 }

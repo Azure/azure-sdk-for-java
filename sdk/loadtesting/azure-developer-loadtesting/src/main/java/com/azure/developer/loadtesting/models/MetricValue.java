@@ -20,7 +20,7 @@ import java.util.Objects;
 public final class MetricValue implements JsonSerializable<MetricValue> {
 
     /*
-     * The timestamp for the metric value in ISO 8601 format.
+     * The timestamp for the metric value in RFC 3339 format.
      */
     @Generated
     private OffsetDateTime timestamp;
@@ -39,7 +39,7 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     }
 
     /**
-     * Get the timestamp property: The timestamp for the metric value in ISO 8601 format.
+     * Get the timestamp property: The timestamp for the metric value in RFC 3339 format.
      *
      * @return the timestamp value.
      */

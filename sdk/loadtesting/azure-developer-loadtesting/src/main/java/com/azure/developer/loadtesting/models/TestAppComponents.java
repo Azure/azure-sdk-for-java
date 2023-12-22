@@ -36,7 +36,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
     private String testId;
 
     /*
-     * The creation datetime(ISO 8601 literal format).
+     * The creation datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime createdDateTime;
@@ -48,7 +48,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
     private String createdBy;
 
     /*
-     * The last Modified datetime(ISO 8601 literal format).
+     * The last Modified datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime lastModifiedDateTime;
@@ -92,7 +92,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
     }
 
     /**
-     * Get the createdDateTime property: The creation datetime(ISO 8601 literal format).
+     * Get the createdDateTime property: The creation datetime(RFC 3339 literal format).
      *
      * @return the createdDateTime value.
      */
@@ -112,7 +112,7 @@ public final class TestAppComponents implements JsonSerializable<TestAppComponen
     }
 
     /**
-     * Get the lastModifiedDateTime property: The last Modified datetime(ISO 8601 literal format).
+     * Get the lastModifiedDateTime property: The last Modified datetime(RFC 3339 literal format).
      *
      * @return the lastModifiedDateTime value.
      */

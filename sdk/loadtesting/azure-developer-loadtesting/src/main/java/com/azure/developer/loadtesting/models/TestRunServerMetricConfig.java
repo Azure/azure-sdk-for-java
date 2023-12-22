@@ -34,7 +34,7 @@ public final class TestRunServerMetricConfig implements JsonSerializable<TestRun
     private Map<String, ResourceMetric> metrics;
 
     /*
-     * The creation datetime(ISO 8601 literal format).
+     * The creation datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime createdDateTime;
@@ -46,7 +46,7 @@ public final class TestRunServerMetricConfig implements JsonSerializable<TestRun
     private String createdBy;
 
     /*
-     * The last Modified datetime(ISO 8601 literal format).
+     * The last Modified datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime lastModifiedDateTime;
@@ -101,7 +101,7 @@ public final class TestRunServerMetricConfig implements JsonSerializable<TestRun
     }
 
     /**
-     * Get the createdDateTime property: The creation datetime(ISO 8601 literal format).
+     * Get the createdDateTime property: The creation datetime(RFC 3339 literal format).
      *
      * @return the createdDateTime value.
      */
@@ -121,7 +121,7 @@ public final class TestRunServerMetricConfig implements JsonSerializable<TestRun
     }
 
     /**
-     * Get the lastModifiedDateTime property: The last Modified datetime(ISO 8601 literal format).
+     * Get the lastModifiedDateTime property: The last Modified datetime(RFC 3339 literal format).
      *
      * @return the lastModifiedDateTime value.
      */

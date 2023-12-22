@@ -141,7 +141,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     fileName: String (Required)
      *     url: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
@@ -172,7 +172,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -185,12 +185,12 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -201,7 +201,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -209,8 +209,8 @@ public final class LoadTestAdministrationClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -221,7 +221,7 @@ public final class LoadTestAdministrationClient {
      *         configFileInfo (Optional): {
      *             fileName: String (Required)
      *             url: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *             validationFailureDetails: String (Optional)
@@ -229,7 +229,7 @@ public final class LoadTestAdministrationClient {
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *         urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *         additionalFileInfo (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -238,7 +238,8 @@ public final class LoadTestAdministrationClient {
      *     description: String (Optional)
      *     displayName: String (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     keyvaultReferenceIdentityType: String (Optional)
      *     keyvaultReferenceIdentityId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -254,7 +255,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -267,12 +268,12 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -283,7 +284,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -291,8 +292,8 @@ public final class LoadTestAdministrationClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -303,7 +304,7 @@ public final class LoadTestAdministrationClient {
      *         configFileInfo (Optional): {
      *             fileName: String (Required)
      *             url: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *             validationFailureDetails: String (Optional)
@@ -311,7 +312,7 @@ public final class LoadTestAdministrationClient {
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *         urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *         additionalFileInfo (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -320,7 +321,8 @@ public final class LoadTestAdministrationClient {
      *     description: String (Optional)
      *     displayName: String (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     keyvaultReferenceIdentityType: String (Optional)
      *     keyvaultReferenceIdentityId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -330,9 +332,9 @@ public final class LoadTestAdministrationClient {
      * }
      * }</pre>
      *
-     * @param testId Unique Id for the load test, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param body Load test model.
+     * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
+     * underscore or hyphen characters.
+     * @param body The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -375,7 +377,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -388,12 +390,12 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -404,7 +406,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -412,8 +414,8 @@ public final class LoadTestAdministrationClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -424,7 +426,7 @@ public final class LoadTestAdministrationClient {
      *         configFileInfo (Optional): {
      *             fileName: String (Required)
      *             url: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *             validationFailureDetails: String (Optional)
@@ -432,7 +434,7 @@ public final class LoadTestAdministrationClient {
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *         urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *         additionalFileInfo (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -441,7 +443,8 @@ public final class LoadTestAdministrationClient {
      *     description: String (Optional)
      *     displayName: String (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     keyvaultReferenceIdentityType: String (Optional)
      *     keyvaultReferenceIdentityId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -499,13 +502,13 @@ public final class LoadTestAdministrationClient {
      * <td>lastModifiedStartTime</td>
      * <td>OffsetDateTime</td>
      * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
+     * <td>Start DateTime(RFC 3339 literal format) of the last updated time range to filter tests.</td>
      * </tr>
      * <tr>
      * <td>lastModifiedEndTime</td>
      * <td>OffsetDateTime</td>
      * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
+     * <td>End DateTime(RFC 3339 literal format) of the last updated time range to filter tests.</td>
      * </tr>
      * <tr>
      * <td>maxpagesize</td>
@@ -522,7 +525,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -535,12 +538,12 @@ public final class LoadTestAdministrationClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -551,7 +554,7 @@ public final class LoadTestAdministrationClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     loadTestConfiguration (Optional): {
      *         engineInstances: Integer (Optional)
@@ -559,8 +562,8 @@ public final class LoadTestAdministrationClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -571,7 +574,7 @@ public final class LoadTestAdministrationClient {
      *         configFileInfo (Optional): {
      *             fileName: String (Required)
      *             url: String (Optional)
-     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *             fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *             expireDateTime: OffsetDateTime (Optional)
      *             validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *             validationFailureDetails: String (Optional)
@@ -579,7 +582,7 @@ public final class LoadTestAdministrationClient {
      *         testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *         userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *         inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *         urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *         urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *         additionalFileInfo (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -588,7 +591,8 @@ public final class LoadTestAdministrationClient {
      *     description: String (Optional)
      *     displayName: String (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     keyvaultReferenceIdentityType: String (Optional)
      *     keyvaultReferenceIdentityId: String (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
@@ -685,7 +689,7 @@ public final class LoadTestAdministrationClient {
      * {
      *     fileName: String (Required)
      *     url: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
@@ -995,9 +999,9 @@ public final class LoadTestAdministrationClient {
      * @param search Prefix based, case sensitive search on searchable fields - displayName,
      * createdBy. For example, to search for a test, with display name is Login Test,
      * the search parameter can be Login.
-     * @param lastModifiedStartTime Start DateTime(ISO 8601 literal format) of the last updated time range to filter
+     * @param lastModifiedStartTime Start DateTime(RFC 3339 literal format) of the last updated time range to filter
      * tests.
-     * @param lastModifiedEndTime End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.
+     * @param lastModifiedEndTime End DateTime(RFC 3339 literal format) of the last updated time range to filter tests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

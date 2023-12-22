@@ -19,51 +19,17 @@ import java.io.IOException;
 public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria> {
 
     /*
-     * Whether auto-stop should be enabled.
-     */
-    @Generated
-    private Boolean autoStopEnabled;
-
-    /*
      * Threshold percentage of errors on which test run should be automatically stopped. Allowed values are in range of
      * 0.0-100.0
      */
     @Generated
     private Double errorRate;
 
-    /*
-     * Time window during which the error percentage should be evaluated in seconds.
-     */
-    @Generated
-    private Integer errorRateTimeWindow;
-
     /**
      * Creates an instance of AutoStopCriteria class.
      */
     @Generated
     public AutoStopCriteria() {
-    }
-
-    /**
-     * Get the autoStopEnabled property: Whether auto-stop should be enabled.
-     *
-     * @return the autoStopEnabled value.
-     */
-    @Generated
-    public Boolean isAutoStopEnabled() {
-        return this.autoStopEnabled;
-    }
-
-    /**
-     * Set the autoStopEnabled property: Whether auto-stop should be enabled.
-     *
-     * @param autoStopEnabled the autoStopEnabled value to set.
-     * @return the AutoStopCriteria object itself.
-     */
-    @Generated
-    public AutoStopCriteria setAutoStopEnabled(Boolean autoStopEnabled) {
-        this.autoStopEnabled = autoStopEnabled;
-        return this;
     }
 
     /**
@@ -87,30 +53,6 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
     @Generated
     public AutoStopCriteria setErrorRate(Double errorRate) {
         this.errorRate = errorRate;
-        return this;
-    }
-
-    /**
-     * Get the errorRateTimeWindow property: Time window during which the error percentage should be evaluated in
-     * seconds.
-     *
-     * @return the errorRateTimeWindow value.
-     */
-    @Generated
-    public Integer getErrorRateTimeWindow() {
-        return this.errorRateTimeWindow;
-    }
-
-    /**
-     * Set the errorRateTimeWindow property: Time window during which the error percentage should be evaluated in
-     * seconds.
-     *
-     * @param errorRateTimeWindow the errorRateTimeWindow value to set.
-     * @return the AutoStopCriteria object itself.
-     */
-    @Generated
-    public AutoStopCriteria setErrorRateTimeWindow(Integer errorRateTimeWindow) {
-        this.errorRateTimeWindow = errorRateTimeWindow;
         return this;
     }
 
@@ -149,5 +91,63 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
             }
             return deserializedAutoStopCriteria;
         });
+    }
+
+    /*
+     * Whether auto-stop should be disabled. The default value is false.
+     */
+    @Generated
+    private Boolean autoStopDisabled;
+
+    /*
+     * Time window during which the error percentage should be evaluated in seconds.
+     */
+    @Generated
+    private Integer errorRateTimeWindowInSeconds;
+
+    /**
+     * Get the autoStopDisabled property: Whether auto-stop should be disabled. The default value is false.
+     *
+     * @return the autoStopDisabled value.
+     */
+    @Generated
+    public Boolean isAutoStopDisabled() {
+        return this.autoStopDisabled;
+    }
+
+    /**
+     * Set the autoStopDisabled property: Whether auto-stop should be disabled. The default value is false.
+     *
+     * @param autoStopDisabled the autoStopDisabled value to set.
+     * @return the AutoStopCriteria object itself.
+     */
+    @Generated
+    public AutoStopCriteria setAutoStopDisabled(Boolean autoStopDisabled) {
+        this.autoStopDisabled = autoStopDisabled;
+        return this;
+    }
+
+    /**
+     * Get the errorRateTimeWindowInSeconds property: Time window during which the error percentage should be evaluated
+     * in seconds.
+     *
+     * @return the errorRateTimeWindowInSeconds value.
+     */
+    @Generated
+    public Integer getErrorRateTimeWindowInSeconds() {
+        return this.errorRateTimeWindowInSeconds;
+    }
+
+    /**
+     * Set the errorRateTimeWindowInSeconds property: Time window during which the error percentage should be evaluated
+     * in seconds.
+     *
+     * @param errorRateTimeWindowInSeconds the errorRateTimeWindowInSeconds value to set.
+     * @return the AutoStopCriteria object itself.
+     */
+    @Generated
+    public AutoStopCriteria setErrorRateTimeWindowInSeconds(Integer errorRateTimeWindowInSeconds) {
+        this.errorRateTimeWindowInSeconds = errorRateTimeWindowInSeconds;
+        return this;
     }
 }

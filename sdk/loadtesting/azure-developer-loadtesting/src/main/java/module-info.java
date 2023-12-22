@@ -10,4 +10,5 @@ module com.azure.developer.loadtesting {
     exports com.azure.developer.loadtesting.models;
 
     opens com.azure.developer.loadtesting.models to com.azure.core;
+    opens com.azure.developer.loadtesting.models to com.azure.core, com.fasterxml.jackson.databind;
 }

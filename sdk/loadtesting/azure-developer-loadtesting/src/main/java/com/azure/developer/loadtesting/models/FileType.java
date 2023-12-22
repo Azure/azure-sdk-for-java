@@ -37,12 +37,6 @@ public final class FileType extends ExpandableStringEnum<FileType> {
     public static final FileType ZIPPED_ARTIFACTS = fromString("ZIPPED_ARTIFACTS");
 
     /**
-     * If the file is a JSON config file to define the requests for a URL test.
-     */
-    @Generated
-    public static final FileType URL_TEST_CONFIG = fromString("URL_TEST_CONFIG");
-
-    /**
      * Creates a new instance of FileType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -72,4 +66,10 @@ public final class FileType extends ExpandableStringEnum<FileType> {
     public static Collection<FileType> values() {
         return values(FileType.class);
     }
+
+    /**
+     * If the file is a JSON config file to define the requests for a URL test.
+     */
+    @Generated
+    public static final FileType URL_TEST_CONFIG_JSON = fromString("URL_TEST_CONFIG_JSON");
 }

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An Azure resource object (Refer azure generic resource model :
- * https://docs.microsoft.com/en-us/rest/api/resources/resources/get-by-id#genericresource).
+ * An Azure resource object (Refer azure generic resource model
+ * :https://docs.microsoft.com/en-us/rest/api/resources/resources/get-by-id#genericresource).
  */
 @Fluent
 public final class AppComponent implements JsonSerializable<AppComponent> {

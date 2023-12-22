@@ -123,13 +123,13 @@ public final class TestRun implements JsonSerializable<TestRun> {
     private Status status;
 
     /*
-     * The test run start DateTime(ISO 8601 literal format).
+     * The test run start DateTime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime startDateTime;
 
     /*
-     * The test run end DateTime(ISO 8601 literal format).
+     * The test run end DateTime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime endDateTime;
@@ -159,13 +159,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     private String subnetId;
 
     /*
-     * Type of test.
-     */
-    @Generated
-    private TestType testType;
-
-    /*
-     * The creation datetime(ISO 8601 literal format).
+     * The creation datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime createdDateTime;
@@ -177,7 +171,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     private String createdBy;
 
     /*
-     * The last Modified datetime(ISO 8601 literal format).
+     * The last Modified datetime(RFC 3339 literal format).
      */
     @Generated
     private OffsetDateTime lastModifiedDateTime;
@@ -477,7 +471,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Get the startDateTime property: The test run start DateTime(ISO 8601 literal format).
+     * Get the startDateTime property: The test run start DateTime(RFC 3339 literal format).
      *
      * @return the startDateTime value.
      */
@@ -487,7 +481,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Get the endDateTime property: The test run end DateTime(ISO 8601 literal format).
+     * Get the endDateTime property: The test run end DateTime(RFC 3339 literal format).
      *
      * @return the endDateTime value.
      */
@@ -537,17 +531,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Get the testType property: Type of test.
-     *
-     * @return the testType value.
-     */
-    @Generated
-    public TestType getTestType() {
-        return this.testType;
-    }
-
-    /**
-     * Get the createdDateTime property: The creation datetime(ISO 8601 literal format).
+     * Get the createdDateTime property: The creation datetime(RFC 3339 literal format).
      *
      * @return the createdDateTime value.
      */
@@ -567,7 +551,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Get the lastModifiedDateTime property: The last Modified datetime(ISO 8601 literal format).
+     * Get the lastModifiedDateTime property: The last Modified datetime(RFC 3339 literal format).
      *
      * @return the lastModifiedDateTime value.
      */
@@ -735,5 +719,37 @@ public final class TestRun implements JsonSerializable<TestRun> {
             deserializedTestRun.lastModifiedBy = lastModifiedBy;
             return deserializedTestRun;
         });
+    }
+
+    /*
+     * Type of test.
+     */
+    @Generated
+    private TestKind kind;
+
+    /*
+     * Inject load test engines without deploying public IP for outbound access
+     */
+    @Generated
+    private Boolean publicIPDisabled;
+
+    /**
+     * Get the kind property: Type of test.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public TestKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @return the publicIPDisabled value.
+     */
+    @Generated
+    public Boolean isPublicIPDisabled() {
+        return this.publicIPDisabled;
     }
 }

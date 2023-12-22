@@ -59,7 +59,7 @@ public final class LoadTestRunAsyncClient {
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -83,7 +83,7 @@ public final class LoadTestRunAsyncClient {
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -401,7 +401,7 @@ public final class LoadTestRunAsyncClient {
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             id: String (Optional)
      *             resourceId: String (Required)
      *             metricNamespace: String (Required)
@@ -706,7 +706,7 @@ public final class LoadTestRunAsyncClient {
      *     testRunId: String (Required)
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -719,12 +719,12 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -735,7 +735,7 @@ public final class LoadTestRunAsyncClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
@@ -743,7 +743,7 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      *     testRunStatistics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             transaction: String (Optional)
      *             sampleCount: Double (Optional)
      *             errorCount: Double (Optional)
@@ -766,8 +766,8 @@ public final class LoadTestRunAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -778,7 +778,7 @@ public final class LoadTestRunAsyncClient {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -786,7 +786,7 @@ public final class LoadTestRunAsyncClient {
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *             inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *             urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *             urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *             additionalFileInfo (Optional): [
      *                 (recursive schema, see above)
      *             ]
@@ -812,7 +812,8 @@ public final class LoadTestRunAsyncClient {
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -864,7 +865,7 @@ public final class LoadTestRunAsyncClient {
      * {
      *     fileName: String (Required)
      *     url: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *     expireDateTime: OffsetDateTime (Optional)
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
@@ -926,13 +927,13 @@ public final class LoadTestRunAsyncClient {
      * <td>executionFrom</td>
      * <td>OffsetDateTime</td>
      * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
+     * <td>Start DateTime(RFC 3339 literal format) of test-run execution time filter range.</td>
      * </tr>
      * <tr>
      * <td>executionTo</td>
      * <td>OffsetDateTime</td>
      * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
+     * <td>End DateTime(RFC 3339 literal format) of test-run execution time filter range.</td>
      * </tr>
      * <tr>
      * <td>status</td>
@@ -956,7 +957,7 @@ public final class LoadTestRunAsyncClient {
      *     testRunId: String (Required)
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -969,12 +970,12 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -985,7 +986,7 @@ public final class LoadTestRunAsyncClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
@@ -993,7 +994,7 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      *     testRunStatistics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             transaction: String (Optional)
      *             sampleCount: Double (Optional)
      *             errorCount: Double (Optional)
@@ -1016,8 +1017,8 @@ public final class LoadTestRunAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -1028,7 +1029,7 @@ public final class LoadTestRunAsyncClient {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -1036,7 +1037,7 @@ public final class LoadTestRunAsyncClient {
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *             inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *             urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *             urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *             additionalFileInfo (Optional): [
      *                 (recursive schema, see above)
      *             ]
@@ -1062,7 +1063,8 @@ public final class LoadTestRunAsyncClient {
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1093,7 +1095,7 @@ public final class LoadTestRunAsyncClient {
      *     testRunId: String (Required)
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
-     *             String (Optional): {
+     *             String (Required): {
      *                 clientMetric: String(response_time_ms/latency/error/requests/requests_per_sec) (Optional)
      *                 aggregate: String(count/percentage/avg/p50/p90/p95/p99/min/max) (Optional)
      *                 condition: String (Optional)
@@ -1106,12 +1108,12 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     }
      *     autoStopCriteria (Optional): {
-     *         autoStopEnabled: Boolean (Optional)
+     *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindow: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Integer (Optional)
      *     }
      *     secrets (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             value: String (Optional)
      *             type: String(AKV_SECRET_URI/SECRET_VALUE) (Optional)
      *         }
@@ -1122,7 +1124,7 @@ public final class LoadTestRunAsyncClient {
      *         name: String (Optional)
      *     }
      *     environmentVariables (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     errorDetails (Optional): [
      *          (Optional){
@@ -1130,7 +1132,7 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      *     testRunStatistics (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             transaction: String (Optional)
      *             sampleCount: Double (Optional)
      *             errorCount: Double (Optional)
@@ -1153,8 +1155,8 @@ public final class LoadTestRunAsyncClient {
      *         quickStartTest: Boolean (Optional)
      *         optionalLoadTestConfig (Optional): {
      *             endpointUrl: String (Optional)
-     *             rps: Integer (Optional)
-     *             maxResponseTime: Integer (Optional)
+     *             requestsPerSecond: Integer (Optional)
+     *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
      *             duration: Integer (Optional)
@@ -1165,7 +1167,7 @@ public final class LoadTestRunAsyncClient {
      *             configFileInfo (Optional): {
      *                 fileName: String (Required)
      *                 url: String (Optional)
-     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG) (Optional)
+     *                 fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS/ZIPPED_ARTIFACTS/URL_TEST_CONFIG_JSON) (Optional)
      *                 expireDateTime: OffsetDateTime (Optional)
      *                 validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *                 validationFailureDetails: String (Optional)
@@ -1173,7 +1175,7 @@ public final class LoadTestRunAsyncClient {
      *             testScriptFileInfo (Optional): (recursive schema, see testScriptFileInfo above)
      *             userPropFileInfo (Optional): (recursive schema, see userPropFileInfo above)
      *             inputArtifactsZipFileInfo (Optional): (recursive schema, see inputArtifactsZipFileInfo above)
-     *             urlTestsConfigFileInfo (Optional): (recursive schema, see urlTestsConfigFileInfo above)
+     *             urlTestConfigFileInfo (Optional): (recursive schema, see urlTestConfigFileInfo above)
      *             additionalFileInfo (Optional): [
      *                 (recursive schema, see above)
      *             ]
@@ -1199,7 +1201,8 @@ public final class LoadTestRunAsyncClient {
      *     portalUrl: String (Optional)
      *     duration: Long (Optional)
      *     subnetId: String (Optional)
-     *     testType: String(URL/JMX) (Optional)
+     *     kind: String(URL/JMX) (Optional)
+     *     publicIPDisabled: Boolean (Optional)
      *     createdDateTime: OffsetDateTime (Optional)
      *     createdBy: String (Optional)
      *     lastModifiedDateTime: OffsetDateTime (Optional)
@@ -1601,8 +1604,8 @@ public final class LoadTestRunAsyncClient {
      * executedUser. For example, to search for a test run, with description 500 VUs,
      * the search parameter can be 500.
      * @param testId Unique name of an existing load test.
-     * @param executionFrom Start DateTime(ISO 8601 literal format) of test-run execution time filter range.
-     * @param executionTo End DateTime(ISO 8601 literal format) of test-run execution time filter range.
+     * @param executionFrom Start DateTime(RFC 3339 literal format) of test-run execution time filter range.
+     * @param executionTo End DateTime(RFC 3339 literal format) of test-run execution time filter range.
      * @param status Comma separated list of test run status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
