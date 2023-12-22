@@ -1,18 +1,12 @@
 # Release History
 
-## 2.34.0-beta.1 (Unreleased)
+## 2.34.0 (2023-12-22)
 
 ### Features Added
 
 - Supported Function App in Azure Container Apps environment.
   - Supported `withManagedEnvironmentId` for `FunctionApp`.
   - Supported `withMaxReplica` and `withMinReplica` for `FunctionApp`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.33.0 (2023-11-24)
 
