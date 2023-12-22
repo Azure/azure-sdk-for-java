@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 class ResponseUtils {
     private static final byte[] EMPTY_BYTE_ARRAY = {};
 
-    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, HttpRequest httpRequest) {
+    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse) {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 

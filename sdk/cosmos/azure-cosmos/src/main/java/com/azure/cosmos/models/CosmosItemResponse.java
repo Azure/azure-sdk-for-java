@@ -64,7 +64,6 @@ public class CosmosItemResponse<T> {
         this.itemBodyOverride = itemBodyOverride;
         boolean hasPayloadStaticValue = item != null;
         this.hasPayload = () -> hasPayloadStaticValue;
-        this.itemBodyOverride = null;
     }
 
     /**

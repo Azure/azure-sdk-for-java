@@ -6,20 +6,15 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,9 +23,6 @@ import java.util.List;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class BatchResponseParser {
-
-    private final static Logger logger = LoggerFactory.getLogger(BatchResponseParser.class);
-    private final static char HYBRID_V1 = 129;
 
     /** Creates a transactional batch response from a documentServiceResponse.
      *
@@ -109,10 +101,6 @@ public final class BatchResponseParser {
 
         final List<CosmosBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
         final ArrayNode responseContent = (ArrayNode)documentServiceResponse.getResponseBody();
-
-        // Read from a json response body. To enable hybrid row just complete the else part
-        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
         final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
         final ObjectNode[] objectNodes = new ObjectNode[responseContent.size()];
         int i = 0;

@@ -85,7 +85,7 @@ public class HttpClientMockWrapper {
 
             HttpResponse resp = Mockito.mock(HttpResponse.class);
             Mockito.doReturn(this.status).when(resp).statusCode();
-            Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, this.content))).when(resp).body();
+            Mockito.doReturn(Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, this.content))).when(resp).body();
             Mockito.doReturn(Mono.just(this.content)).when(resp).bodyAsString();
             Mockito.doReturn(Mono.just(this.content != null ? Unpooled.wrappedBuffer(Utils.getUTF8Bytes(this.content)) : Unpooled.EMPTY_BUFFER)).when(resp).body();
             Mockito.doReturn(this.httpHeaders).when(resp).headers();

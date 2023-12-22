@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * Used internally to represents a response from the store.
  */
 public class StoreResponse {
+    private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
@@ -62,11 +65,15 @@ public class StoreResponse {
         this.status = status;
         replicaStatusList = new ArrayList<>();
         if (contentStream != null) {
-            this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
             try {
-                contentStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+            }
+            finally {
+                try {
+                    contentStream.close();
+                } catch (IOException e) {
+                    logger.debug("Could not successfully close content stream.", e);
+                }
             }
         } else {
             this.responsePayload = null;

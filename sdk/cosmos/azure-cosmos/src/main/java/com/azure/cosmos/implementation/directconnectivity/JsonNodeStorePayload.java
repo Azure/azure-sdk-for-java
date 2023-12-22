@@ -6,32 +6,28 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
-    final static Logger LOGGER = LoggerFactory.getLogger(JsonNodeStorePayload.class);
     private final int responsePayloadSize;
     private final JsonNode jsonValue;
 
     public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes) {
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = fromJson(bufferStream, readableBytes);
+            this.jsonValue = fromJson(bufferStream);
         } else {
             this.responsePayloadSize = 0;
             this.jsonValue = null;
         }
     }
 
-    private static JsonNode fromJson(ByteBufInputStream bufferStream, int responsePayloadSize){
+    private static JsonNode fromJson(ByteBufInputStream bufferStream){
         try {
             return Utils.getSimpleObjectMapper().readTree(bufferStream);
         } catch (IOException e) {
-            throw new IllegalStateException(String.format("Unable to parse JSON."), e);
+            throw new IllegalStateException("Unable to parse JSON.", e);
         }
     }
 
