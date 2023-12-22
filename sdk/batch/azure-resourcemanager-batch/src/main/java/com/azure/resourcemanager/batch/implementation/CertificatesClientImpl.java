@@ -45,22 +45,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
 public final class CertificatesClientImpl implements CertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BatchManagementClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CertificatesClientImpl(BatchManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,141 +77,100 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @Host("{$host}")
     @ServiceInterface(name = "BatchManagementClien")
     public interface CertificatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListCertificatesResult>> listByBatchAccount(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("$select") String select,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListCertificatesResult>> listByBatchAccount(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("$select") String select,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<CertificatesCreateResponse> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("certificateName") String certificateName,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion,
+        Mono<CertificatesCreateResponse> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CertificateCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<CertificatesUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("certificateName") String certificateName,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<CertificatesUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CertificateCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<CertificatesGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<CertificatesGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}/cancelDelete")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/certificates/{certificateName}/cancelDelete")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<CertificatesCancelDeletionResponse> cancelDeletion(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("certificateName") String certificateName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<CertificatesCancelDeletionResponse> cancelDeletion(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("certificateName") String certificateName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListCertificatesResult>> listByBatchAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are "properties/provisioningState",
-     *     "properties/provisioningStateTransitionTime", "name".
+     * "properties/provisioningStateTransitionTime", "name".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Integer maxresults, String select, String filter) {
+    private Mono<PagedResponse<CertificateInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults, String select, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,72 +180,45 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByBatchAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            maxresults,
-                            select,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByBatchAccount(this.client.getEndpoint(), resourceGroupName,
+                accountName, maxresults, select, filter, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are "properties/provisioningState",
-     *     "properties/provisioningStateTransitionTime", "name".
+     * "properties/provisioningStateTransitionTime", "name".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults, String select, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -290,57 +228,39 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBatchAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                maxresults,
-                select,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBatchAccount(this.client.getEndpoint(), resourceGroupName, accountName, maxresults, select, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are "properties/provisioningState",
-     *     "properties/provisioningStateTransitionTime", "name".
+     * "properties/provisioningStateTransitionTime", "name".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByBatchAccountAsync(
-        String resourceGroupName, String accountName, Integer maxresults, String select, String filter) {
+    private PagedFlux<CertificateInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults, String select, String filter) {
         return new PagedFlux<>(
             () -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults, select, filter),
             nextLink -> listByBatchAccountNextSinglePageAsync(nextLink));
@@ -348,10 +268,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,17 +291,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are "properties/provisioningState",
-     *     "properties/provisioningStateTransitionTime", "name".
+     * "properties/provisioningStateTransitionTime", "name".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -389,25 +309,18 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listByBatchAccountAsync(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults, select, filter, context),
-            nextLink -> listByBatchAccountNextSinglePageAsync(nextLink, context));
+    private PagedFlux<CertificateInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults, String select, String filter, Context context) {
+        return new PagedFlux<>(() -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults,
+            select, filter, context), nextLink -> listByBatchAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,17 +338,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Lists all of the certificates in the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @param select Comma separated list of properties that should be returned. e.g. "properties/provisioningState".
-     *     Only top level properties under properties/ are valid for selection.
+     * Only top level properties under properties/ are valid for selection.
      * @param filter OData filter expression. Valid properties for filtering are "properties/provisioningState",
-     *     "properties/provisioningStateTransitionTime", "name".
+     * "properties/provisioningStateTransitionTime", "name".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,50 +356,38 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> listByBatchAccount(
-        String resourceGroupName,
-        String accountName,
-        Integer maxresults,
-        String select,
-        String filter,
-        Context context) {
+    public PagedIterable<CertificateInner> listByBatchAccount(String resourceGroupName, String accountName,
+        Integer maxresults, String select, String filter, Context context) {
         return new PagedIterable<>(
             listByBatchAccountAsync(resourceGroupName, accountName, maxresults, select, filter, context));
     }
 
     /**
      * Creates a new certificate inside the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param parameters Additional parameters for certificate creation.
      * @param ifMatch The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply
-     *     the operation only if the certificate already exists. If omitted, this operation will always be applied.
+     * the operation only if the certificate already exists. If omitted, this operation will always be applied.
      * @param ifNoneMatch Set to '*' to allow a new certificate to be created, but to prevent updating an existing
-     *     certificate. Other values will be ignored.
+     * certificate. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesCreateResponse> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<CertificatesCreateResponse> createWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -500,10 +401,195 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, accountName,
+                certificateName, ifMatch, ifNoneMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates a new certificate inside the specified account.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Additional parameters for certificate creation.
+     * @param ifMatch The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply
+     * the operation only if the certificate already exists. If omitted, this operation will always be applied.
+     * @param ifNoneMatch Set to '*' to allow a new certificate to be created, but to prevent updating an existing
+     * certificate. Other values will be ignored.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CertificatesCreateResponse> createWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch, String ifNoneMatch,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, accountName, certificateName, ifMatch,
+            ifNoneMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Creates a new certificate inside the specified account.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Additional parameters for certificate creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CertificateInner> createAsync(String resourceGroupName, String accountName, String certificateName,
+        CertificateCreateOrUpdateParameters parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch,
+            ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a new certificate inside the specified account.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Additional parameters for certificate creation.
+     * @param ifMatch The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply
+     * the operation only if the certificate already exists. If omitted, this operation will always be applied.
+     * @param ifNoneMatch Set to '*' to allow a new certificate to be created, but to prevent updating an existing
+     * certificate. Other values will be ignored.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificatesCreateResponse createWithResponse(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch, String ifNoneMatch,
+        Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch,
+            ifNoneMatch, context).block();
+    }
+
+    /**
+     * Creates a new certificate inside the specified account.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Additional parameters for certificate creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateInner create(String resourceGroupName, String accountName, String certificateName,
+        CertificateCreateOrUpdateParameters parameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return createWithResponse(resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Updates the properties of an existing certificate.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Certificate entity to update.
+     * @param ifMatch The entity state (ETag) version of the certificate to update. This value can be omitted or set to
+     * "*" to apply the operation unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a certificate on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CertificatesUpdateResponse> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (certificateName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -513,38 +599,24 @@ public final class CertificatesClientImpl implements CertificatesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            certificateName,
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, accountName, certificateName,
+                    ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates a new certificate inside the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Updates the properties of an existing certificate.
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Additional parameters for certificate creation.
-     * @param ifMatch The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply
-     *     the operation only if the certificate already exists. If omitted, this operation will always be applied.
-     * @param ifNoneMatch Set to '*' to allow a new certificate to be created, but to prevent updating an existing
-     *     certificate. Other values will be ignored.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * @param parameters Certificate entity to update.
+     * @param ifMatch The entity state (ETag) version of the certificate to update. This value can be omitted or set to
+     * "*" to apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -552,19 +624,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesCreateResponse> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<CertificatesUpdateResponse> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -578,10 +642,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -590,267 +652,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                certificateName,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates a new certificate inside the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Additional parameters for certificate creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createWithResponseAsync(
-                resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates a new certificate inside the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Additional parameters for certificate creation.
-     * @param ifMatch The entity state (ETag) version of the certificate to update. A value of "*" can be used to apply
-     *     the operation only if the certificate already exists. If omitted, this operation will always be applied.
-     * @param ifNoneMatch Set to '*' to allow a new certificate to be created, but to prevent updating an existing
-     *     certificate. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatesCreateResponse createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch, context)
-            .block();
-    }
-
-    /**
-     * Creates a new certificate inside the specified account.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Additional parameters for certificate creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner create(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters) {
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        return createWithResponse(
-                resourceGroupName, accountName, certificateName, parameters, ifMatch, ifNoneMatch, Context.NONE)
-            .getValue();
+        return service.update(this.client.getEndpoint(), resourceGroupName, accountName, certificateName, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates the properties of an existing certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Certificate entity to update.
-     * @param ifMatch The entity state (ETag) version of the certificate to update. This value can be omitted or set to
-     *     "*" to apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            certificateName,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Updates the properties of an existing certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
-     * @param parameters Certificate entity to update.
-     * @param ifMatch The entity state (ETag) version of the certificate to update. This value can be omitted or set to
-     *     "*" to apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a certificate on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (certificateName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                certificateName,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Updates the properties of an existing certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param parameters Certificate entity to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -858,10 +673,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
+    private Mono<CertificateInner> updateAsync(String resourceGroupName, String accountName, String certificateName,
         CertificateCreateOrUpdateParameters parameters) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch)
@@ -870,17 +682,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Updates the properties of an existing certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param parameters Certificate entity to update.
      * @param ifMatch The entity state (ETag) version of the certificate to update. This value can be omitted or set to
-     *     "*" to apply the operation unconditionally.
+     * "*" to apply the operation unconditionally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,27 +700,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
-        CertificateCreateOrUpdateParameters parameters,
-        String ifMatch,
-        Context context) {
+    public CertificatesUpdateResponse updateWithResponse(String resourceGroupName, String accountName,
+        String certificateName, CertificateCreateOrUpdateParameters parameters, String ifMatch, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, certificateName, parameters, ifMatch, context)
             .block();
     }
 
     /**
      * Updates the properties of an existing certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param parameters Certificate entity to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,10 +723,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName,
-        String accountName,
-        String certificateName,
+    public CertificateInner update(String resourceGroupName, String accountName, String certificateName,
         CertificateCreateOrUpdateParameters parameters) {
         final String ifMatch = null;
         return updateWithResponse(resourceGroupName, accountName, certificateName, parameters, ifMatch, Context.NONE)
@@ -928,27 +732,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -962,38 +764,26 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName,
+                certificateName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1001,13 +791,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1021,61 +809,49 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                certificateName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, certificateName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String certificateName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, certificateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String certificateName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, certificateName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,47 +859,46 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String certificateName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, certificateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, certificateName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String certificateName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String certificateName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, certificateName).getSyncPoller();
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1131,21 +906,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String certificateName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, certificateName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1153,21 +928,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, accountName, certificateName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, certificateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1175,23 +949,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, certificateName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String certificateName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, certificateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1203,14 +976,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Deletes the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1223,27 +996,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Gets information about the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName) {
+    private Mono<CertificatesGetResponse> getWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1257,38 +1028,26 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, accountName,
+                certificateName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1296,13 +1055,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesGetResponse> getWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    private Mono<CertificatesGetResponse> getWithResponseAsync(String resourceGroupName, String accountName,
+        String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1316,35 +1073,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                certificateName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, certificateName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1358,14 +1105,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Gets information about the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1373,21 +1120,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatesGetResponse getWithResponse(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    public CertificatesGetResponse getWithResponse(String resourceGroupName, String accountName, String certificateName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, certificateName, context).block();
     }
 
     /**
      * Gets information about the specified certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1400,33 +1147,31 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     *
-     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * 
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesCancelDeletionResponse> cancelDeletionWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName) {
+    private Mono<CertificatesCancelDeletionResponse> cancelDeletionWithResponseAsync(String resourceGroupName,
+        String accountName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1440,44 +1185,32 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancelDeletion(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            certificateName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.cancelDeletion(this.client.getEndpoint(), resourceGroupName, accountName,
+                certificateName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     *
-     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * 
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1485,13 +1218,11 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificatesCancelDeletionResponse> cancelDeletionWithResponseAsync(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    private Mono<CertificatesCancelDeletionResponse> cancelDeletionWithResponseAsync(String resourceGroupName,
+        String accountName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1505,69 +1236,59 @@ public final class CertificatesClientImpl implements CertificatesClient {
                 .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancelDeletion(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                certificateName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.cancelDeletion(this.client.getEndpoint(), resourceGroupName, accountName, certificateName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     *
-     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * 
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a certificate on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateInner> cancelDeletionAsync(
-        String resourceGroupName, String accountName, String certificateName) {
+    private Mono<CertificateInner> cancelDeletionAsync(String resourceGroupName, String accountName,
+        String certificateName) {
         return cancelDeletionWithResponseAsync(resourceGroupName, accountName, certificateName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     *
-     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * 
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1575,27 +1296,27 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return contains information about a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificatesCancelDeletionResponse cancelDeletionWithResponse(
-        String resourceGroupName, String accountName, String certificateName, Context context) {
+    public CertificatesCancelDeletionResponse cancelDeletionWithResponse(String resourceGroupName, String accountName,
+        String certificateName, Context context) {
         return cancelDeletionWithResponseAsync(resourceGroupName, accountName, certificateName, context).block();
     }
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
-     *
-     * <p>If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
+     * 
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate
      * changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
      * operation to set the status of the certificate back to active. If you intend to delete the certificate, you do
      * not need to run this operation after the deletion failed. You must make sure that the certificate is not being
      * used by any resources, and then you can try again to delete the certificate.
-     *
-     * <p>Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * 
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param certificateName The identifier for the certificate. This must be made up of algorithm and thumbprint
-     *     separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
+     * separated by a dash, and must match the certificate data in the request. For example SHA1-a3d1c5.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1608,14 +1329,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByBatchAccountNextSinglePageAsync(String nextLink) {
@@ -1623,63 +1345,45 @@ public final class CertificatesClientImpl implements CertificatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByBatchAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByBatchAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

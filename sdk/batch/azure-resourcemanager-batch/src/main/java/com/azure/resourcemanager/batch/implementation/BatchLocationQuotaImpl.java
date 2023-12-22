@@ -12,8 +12,8 @@ public final class BatchLocationQuotaImpl implements BatchLocationQuota {
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    BatchLocationQuotaImpl(
-        BatchLocationQuotaInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    BatchLocationQuotaImpl(BatchLocationQuotaInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
