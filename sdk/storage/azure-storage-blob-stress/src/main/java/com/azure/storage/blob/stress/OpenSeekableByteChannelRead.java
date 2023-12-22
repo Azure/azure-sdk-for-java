@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -12,11 +11,13 @@ import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.blob.stress.utils.TelemetryHelper;
+import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.nio.channels.SeekableByteChannel;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -34,15 +35,15 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
     }
 
     @Override
-    protected boolean runInternal(Context span) {
-        try {
-            BlobSeekableByteChannelReadResult result = syncClient.openSeekableByteChannelRead(
-                new BlobSeekableByteChannelReadOptions(), null);
-            SeekableByteChannel channel = result.getChannel();
-            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromStream(Channels.newInputStream(channel)), span).block().booleanValue();
-        } catch (Exception e) {
-            LOGGER.error("Failed to download blob with open seekable byte channel", e);
-            return false;
+    protected boolean runInternal(Context span) throws IOException {
+        BlobSeekableByteChannelReadResult result = syncClient.openSeekableByteChannelRead(
+                new BlobSeekableByteChannelReadOptions(), span);
+        try (CrcInputStream crcStream = new CrcInputStream(Channels.newInputStream(result.getChannel()))) {
+            byte[] buffer = new byte[8192];
+            while (crcStream.read(buffer) != -1) {
+                // do nothing
+            }
+            return ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
         }
     }
 
