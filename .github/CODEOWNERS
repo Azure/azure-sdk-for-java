@@ -20,7 +20,7 @@
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                           @chenrujun @netyyyy @saragluna @moarychan
 
-/eng/versioning/external_dependencies.txt           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/eng/versioning/external_dependencies.txt           @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
