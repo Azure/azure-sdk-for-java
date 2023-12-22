@@ -29,12 +29,7 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected boolean runInternal(Context span) {
-        try {
-            return ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block().booleanValue();
-        } catch (Exception e) {
-            LOGGER.error("Failed to download blob", e);
-            return false;
-        }
+        return ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block();
     }
 
     @Override

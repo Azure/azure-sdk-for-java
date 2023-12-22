@@ -19,6 +19,7 @@ import com.azure.storage.stress.HttpFaultInjectingHttpClient;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
@@ -85,7 +86,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
             } else {
                 telemetryHelper.trackMismatch(span);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
                 telemetryHelper.trackCancellation(span);
             } else {
@@ -112,12 +113,12 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span))
                 .then()
                 .onErrorResume(e -> Mono.empty());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return Mono.empty();
         }
     }
 
-    protected abstract boolean runInternal(Context context);
+    protected abstract boolean runInternal(Context context) throws Exception;
     protected abstract Mono<Boolean> runInternalAsync(Context context);
 
     protected BlobContainerClient getSyncContainerClient() {
