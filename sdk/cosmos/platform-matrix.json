@@ -19,6 +19,11 @@
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": ""
   },
+  "exclude": [
+    {
+      "JavaTestVersion": "1.21"
+    }
+  ],
   "include": [
     {
       "ConsistencyConfig": {
