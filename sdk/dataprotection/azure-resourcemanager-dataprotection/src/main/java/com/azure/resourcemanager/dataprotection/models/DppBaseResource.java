@@ -6,18 +6,20 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner;
 
-/** An immutable client-side representation of DppBaseResource. */
+/**
+ * An immutable client-side representation of DppBaseResource.
+ */
 public interface DppBaseResource {
     /**
      * Gets the id property: Resource Id represents the complete path to the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Resource name associated with the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -25,14 +27,14 @@ public interface DppBaseResource {
     /**
      * Gets the type property: Resource type represents the complete path of the form
      * Namespace/ResourceType/ResourceType/...
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.DppBaseResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DppBaseResourceInner innerModel();

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.healthcareapis.models.WorkspaceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Workspace resource. */
+/**
+ * Workspace resource.
+ */
 @Fluent
 public final class WorkspaceInner extends TaggedResource {
     /*
@@ -27,8 +29,14 @@ public final class WorkspaceInner extends TaggedResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of WorkspaceInner class.
+     */
+    public WorkspaceInner() {
+    }
+
+    /**
      * Get the properties property: Workspaces resource specific properties.
-     *
+     * 
      * @return the properties value.
      */
     public WorkspaceProperties properties() {
@@ -37,7 +45,7 @@ public final class WorkspaceInner extends TaggedResource {
 
     /**
      * Set the properties property: Workspaces resource specific properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -48,28 +56,34 @@ public final class WorkspaceInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withEtag(String etag) {
         super.withEtag(etag);
@@ -78,7 +92,7 @@ public final class WorkspaceInner extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

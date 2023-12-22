@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SpatialSpec model. */
+/**
+ * The SpatialSpec model.
+ */
 @Fluent
 public final class SpatialSpec {
     /*
@@ -24,14 +26,16 @@ public final class SpatialSpec {
     @JsonProperty(value = "types")
     private List<SpatialType> types;
 
-    /** Creates an instance of SpatialSpec class. */
+    /**
+     * Creates an instance of SpatialSpec class.
+     */
     public SpatialSpec() {
     }
 
     /**
-     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @return the path value.
      */
     public String path() {
@@ -39,9 +43,9 @@ public final class SpatialSpec {
     }
 
     /**
-     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
-     *
+     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
+     * 
      * @param path the path value to set.
      * @return the SpatialSpec object itself.
      */
@@ -52,7 +56,7 @@ public final class SpatialSpec {
 
     /**
      * Get the types property: List of path's spatial type.
-     *
+     * 
      * @return the types value.
      */
     public List<SpatialType> types() {
@@ -61,7 +65,7 @@ public final class SpatialSpec {
 
     /**
      * Set the types property: List of path's spatial type.
-     *
+     * 
      * @param types the types value to set.
      * @return the SpatialSpec object itself.
      */
@@ -72,7 +76,7 @@ public final class SpatialSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

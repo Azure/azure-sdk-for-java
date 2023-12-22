@@ -10,14 +10,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * QueryNetworkSiblingSetRequest
- *
- * <p>Network sibling set query.
+ * 
+ * Network sibling set query.
  */
 @Fluent
 public final class QueryNetworkSiblingSetRequest {
     /*
      * Network Sibling Set ID
-     *
+     * 
      * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
      */
     @JsonProperty(value = "networkSiblingSetId", required = true)
@@ -25,22 +25,25 @@ public final class QueryNetworkSiblingSetRequest {
 
     /*
      * Subnet resource Id
-     *
+     * 
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
-     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}
+     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
+     * subnets/{mySubnet}
      */
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
-    /** Creates an instance of QueryNetworkSiblingSetRequest class. */
+    /**
+     * Creates an instance of QueryNetworkSiblingSetRequest class.
+     */
     public QueryNetworkSiblingSetRequest() {
     }
 
     /**
      * Get the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
-     *
+     * 
+     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * 
      * @return the networkSiblingSetId value.
      */
     public String networkSiblingSetId() {
@@ -49,9 +52,9 @@ public final class QueryNetworkSiblingSetRequest {
 
     /**
      * Set the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
-     *
+     * 
+     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * 
      * @param networkSiblingSetId the networkSiblingSetId value to set.
      * @return the QueryNetworkSiblingSetRequest object itself.
      */
@@ -62,10 +65,10 @@ public final class QueryNetworkSiblingSetRequest {
 
     /**
      * Get the subnetId property: Subnet resource Id
-     *
-     * <p>The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * 
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -74,10 +77,10 @@ public final class QueryNetworkSiblingSetRequest {
 
     /**
      * Set the subnetId property: Subnet resource Id
-     *
-     * <p>The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * 
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the QueryNetworkSiblingSetRequest object itself.
      */
@@ -88,21 +91,17 @@ public final class QueryNetworkSiblingSetRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkSiblingSetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkSiblingSetId in model QueryNetworkSiblingSetRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkSiblingSetId in model QueryNetworkSiblingSetRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model QueryNetworkSiblingSetRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnetId in model QueryNetworkSiblingSetRequest"));
         }
     }
 

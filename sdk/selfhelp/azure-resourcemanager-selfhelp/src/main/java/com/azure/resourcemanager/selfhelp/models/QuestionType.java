@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Text Input. Will be a single line input. */
+/**
+ * Type of Question.
+ */
 public final class QuestionType extends ExpandableStringEnum<QuestionType> {
-    /** Static value RadioButton for QuestionType. */
+    /**
+     * Static value RadioButton for QuestionType.
+     */
     public static final QuestionType RADIO_BUTTON = fromString("RadioButton");
 
-    /** Static value Dropdown for QuestionType. */
+    /**
+     * Static value Dropdown for QuestionType.
+     */
     public static final QuestionType DROPDOWN = fromString("Dropdown");
 
-    /** Static value TextInput for QuestionType. */
+    /**
+     * Static value TextInput for QuestionType.
+     */
     public static final QuestionType TEXT_INPUT = fromString("TextInput");
 
-    /** Static value MultiLineInfoBox for QuestionType. */
+    /**
+     * Static value MultiLineInfoBox for QuestionType.
+     */
     public static final QuestionType MULTI_LINE_INFO_BOX = fromString("MultiLineInfoBox");
 
     /**
      * Creates a new instance of QuestionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class QuestionType extends ExpandableStringEnum<QuestionType> {
 
     /**
      * Creates or finds a QuestionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QuestionType.
      */
@@ -44,7 +54,7 @@ public final class QuestionType extends ExpandableStringEnum<QuestionType> {
 
     /**
      * Gets known QuestionType values.
-     *
+     * 
      * @return known QuestionType values.
      */
     public static Collection<QuestionType> values() {

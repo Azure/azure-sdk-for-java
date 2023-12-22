@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AbsoluteMarker. */
+/**
+ * Defines values for AbsoluteMarker.
+ */
 public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
-    /** Static value AllBackup for AbsoluteMarker. */
+    /**
+     * Static value AllBackup for AbsoluteMarker.
+     */
     public static final AbsoluteMarker ALL_BACKUP = fromString("AllBackup");
 
-    /** Static value FirstOfDay for AbsoluteMarker. */
+    /**
+     * Static value FirstOfDay for AbsoluteMarker.
+     */
     public static final AbsoluteMarker FIRST_OF_DAY = fromString("FirstOfDay");
 
-    /** Static value FirstOfMonth for AbsoluteMarker. */
+    /**
+     * Static value FirstOfMonth for AbsoluteMarker.
+     */
     public static final AbsoluteMarker FIRST_OF_MONTH = fromString("FirstOfMonth");
 
-    /** Static value FirstOfWeek for AbsoluteMarker. */
+    /**
+     * Static value FirstOfWeek for AbsoluteMarker.
+     */
     public static final AbsoluteMarker FIRST_OF_WEEK = fromString("FirstOfWeek");
 
-    /** Static value FirstOfYear for AbsoluteMarker. */
+    /**
+     * Static value FirstOfYear for AbsoluteMarker.
+     */
     public static final AbsoluteMarker FIRST_OF_YEAR = fromString("FirstOfYear");
 
     /**
      * Creates a new instance of AbsoluteMarker value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
 
     /**
      * Creates or finds a AbsoluteMarker from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AbsoluteMarker.
      */
@@ -47,7 +59,7 @@ public final class AbsoluteMarker extends ExpandableStringEnum<AbsoluteMarker> {
 
     /**
      * Gets known AbsoluteMarker values.
-     *
+     * 
      * @return known AbsoluteMarker values.
      */
     public static Collection<AbsoluteMarker> values() {

@@ -10,13 +10,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtendedInfoInner;
 import com.azure.resourcemanager.dataprotection.models.OperationResultsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in OperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationResultsClient.
+ */
 public interface OperationResultsClient {
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -30,9 +32,9 @@ public interface OperationResultsClient {
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.resourcemanager.netapp.models.Volume;
+import com.azure.resourcemanager.netapp.models.VolumeBackupProperties;
+import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 
-/** Samples for Volumes Update. */
+/**
+ * Samples for Volumes Update.
+ */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Volumes_Update.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        Volume resource =
-            manager
-                .volumes()
-                .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().apply();
+        Volume resource = manager.volumes()
+            .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDataProtection(new VolumePatchPropertiesDataProtection().withBackup(
+            new VolumeBackupProperties().withPolicyEnforced(false).withBackupEnabled(true).withBackupVaultId(
+                "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRP/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1")))
+            .apply();
     }
 }

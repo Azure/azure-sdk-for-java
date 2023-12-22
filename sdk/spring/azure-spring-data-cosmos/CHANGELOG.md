@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 38029](https://github.com/Azure/azure-sdk-for-java/pull/38029).
 
 ### 5.8.0 (2023-12-14)
 
@@ -18,7 +19,6 @@
 * Fixed a bug with annotated queries that contain new lines in the query definition - See [PR 38098](https://github.com/Azure/azure-sdk-for-java/pull/38098).
 
 #### Other Changes
-* Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 38029](https://github.com/Azure/azure-sdk-for-java/pull/38029).
 * Updated `azure-cosmos` to version `4.53.1`.
 * Updated `Spring Data Commons` to version `3.2.0`.
 
@@ -65,6 +65,8 @@
 #### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
 * Updated `azure-cosmos` to version `4.45.1`.
+* Updated `Spring Boot` to version `2.7.11`.
+* Updated `Spring Data Commons` to version `2.7.11`.
 
 ### 3.34.0 (2023-04-21)
 #### Breaking Changes

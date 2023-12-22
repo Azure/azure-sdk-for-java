@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesOptio
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB MongoDB database. */
+/**
+ * The properties of an Azure Cosmos DB MongoDB database.
+ */
 @Fluent
 public final class MongoDBDatabaseGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class MongoDBDatabaseGetProperties {
     @JsonProperty(value = "options")
     private MongoDBDatabaseGetPropertiesOptions options;
 
-    /** Creates an instance of MongoDBDatabaseGetProperties class. */
+    /**
+     * Creates an instance of MongoDBDatabaseGetProperties class.
+     */
     public MongoDBDatabaseGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBDatabaseGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class MongoDBDatabaseGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBDatabaseGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class MongoDBDatabaseGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public MongoDBDatabaseGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class MongoDBDatabaseGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBDatabaseGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class MongoDBDatabaseGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

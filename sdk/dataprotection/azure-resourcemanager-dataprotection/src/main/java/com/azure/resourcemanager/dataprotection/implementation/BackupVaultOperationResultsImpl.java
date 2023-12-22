@@ -21,22 +21,18 @@ public final class BackupVaultOperationResultsImpl implements BackupVaultOperati
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public BackupVaultOperationResultsImpl(
-        BackupVaultOperationResultsClient innerClient,
+    public BackupVaultOperationResultsImpl(BackupVaultOperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<BackupVaultResource> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        BackupVaultOperationResultsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
+    public Response<BackupVaultResource> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context) {
+        BackupVaultOperationResultsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupVaultResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

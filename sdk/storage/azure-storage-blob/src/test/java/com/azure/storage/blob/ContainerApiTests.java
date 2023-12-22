@@ -1834,9 +1834,39 @@ public class ContainerApiTests extends BlobTestBase {
 
         Iterator<BlobItem> blobs = cc.listBlobs().iterator();
 
-        assertEquals(Utility.urlDecode(name), blobs.next().getName());
-        assertEquals(Utility.urlDecode(name) + "2", blobs.next().getName());
-        assertEquals(Utility.urlDecode(name) + "3", blobs.next().getName());
+        assertEquals(name, blobs.next().getName());
+        assertEquals(name + "2", blobs.next().getName());
+        assertEquals(name + "3", blobs.next().getName());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "%E4%B8%AD%E6%96%87",
+        "az%5B%5D",
+        "hello%20world",
+        "hello%2Fworld",
+        "hello%26world",
+        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"
+    })
+    public void createURLSpecialCharsDecoded(String name) {
+        // This test checks that we handle blob names with encoded special characters correctly.
+        String decodedName = Utility.urlDecode(name);
+        AppendBlobClient bu2 = cc.getBlobClient(decodedName).getAppendBlobClient();
+        PageBlobClient bu3 = cc.getBlobClient(decodedName + "2").getPageBlobClient();
+        BlockBlobClient bu4 = cc.getBlobClient(decodedName + "3").getBlockBlobClient();
+        BlockBlobClient bu5 = cc.getBlobClient(decodedName).getBlockBlobClient();
+
+        assertResponseStatusCode(bu2.createWithResponse(null, null, null, null, null), 201);
+        assertResponseStatusCode(bu5.getPropertiesWithResponse(null, null, null), 200);
+        assertResponseStatusCode(bu3.createWithResponse(512, null, null, null, null, null, null), 201);
+        assertResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null,
+            null, null, null, null, null, null), 201);
+
+        Iterator<BlobItem> blobs = cc.listBlobs().iterator();
+
+        assertEquals(decodedName, blobs.next().getName());
+        assertEquals(decodedName + "2", blobs.next().getName());
+        assertEquals(decodedName + "3", blobs.next().getName());
     }
 
     @Test

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Snapshots. */
+/**
+ * List of Snapshots.
+ */
 @Fluent
 public final class SnapshotsList {
     /*
@@ -18,13 +20,15 @@ public final class SnapshotsList {
     @JsonProperty(value = "value")
     private List<SnapshotInner> value;
 
-    /** Creates an instance of SnapshotsList class. */
+    /**
+     * Creates an instance of SnapshotsList class.
+     */
     public SnapshotsList() {
     }
 
     /**
      * Get the value property: A list of Snapshots.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -33,7 +37,7 @@ public final class SnapshotsList {
 
     /**
      * Set the value property: A list of Snapshots.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotsList object itself.
      */
@@ -44,7 +48,7 @@ public final class SnapshotsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

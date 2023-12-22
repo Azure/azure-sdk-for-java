@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Dimension model =
-            BinaryData
-                .fromString("{\"name\":\"mddystkiiux\",\"displayName\":\"yudxorrqnbp\"}")
-                .toObject(Dimension.class);
+        Dimension model = BinaryData.fromString("{\"name\":\"mddystkiiux\",\"displayName\":\"yudxorrqnbp\"}")
+            .toObject(Dimension.class);
         Assertions.assertEquals("mddystkiiux", model.name());
         Assertions.assertEquals("yudxorrqnbp", model.displayName());
     }

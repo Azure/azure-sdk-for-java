@@ -21,8 +21,8 @@ public final class FhirServicesImpl implements FhirServices {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public FhirServicesImpl(
-        FhirServicesClient innerClient, com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
+    public FhirServicesImpl(FhirServicesClient innerClient,
+        com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,30 +33,27 @@ public final class FhirServicesImpl implements FhirServices {
     }
 
     public PagedIterable<FhirService> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<FhirServiceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        PagedIterable<FhirServiceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new FhirServiceImpl(inner1, this.manager()));
+    }
+
+    public Response<FhirService> getWithResponse(String resourceGroupName, String workspaceName, String fhirServiceName,
+        Context context) {
+        Response<FhirServiceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FhirServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FhirService get(String resourceGroupName, String workspaceName, String fhirServiceName) {
         FhirServiceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, fhirServiceName);
         if (inner != null) {
             return new FhirServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<FhirService> getWithResponse(
-        String resourceGroupName, String workspaceName, String fhirServiceName, Context context) {
-        Response<FhirServiceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FhirServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -73,25 +70,18 @@ public final class FhirServicesImpl implements FhirServices {
     public FhirService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fhirServiceName = Utils.getValueFromIdByName(id, "fhirservices");
         if (fhirServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE).getValue();
     }
@@ -99,25 +89,18 @@ public final class FhirServicesImpl implements FhirServices {
     public Response<FhirService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String fhirServiceName = Utils.getValueFromIdByName(id, "fhirservices");
         if (fhirServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context);
     }
@@ -125,25 +108,18 @@ public final class FhirServicesImpl implements FhirServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String fhirServiceName = Utils.getValueFromIdByName(id, "fhirservices");
         if (fhirServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         this.delete(resourceGroupName, fhirServiceName, workspaceName, Context.NONE);
     }
@@ -151,25 +127,18 @@ public final class FhirServicesImpl implements FhirServices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String fhirServiceName = Utils.getValueFromIdByName(id, "fhirservices");
         if (fhirServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fhirservices'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         this.delete(resourceGroupName, fhirServiceName, workspaceName, context);
     }

@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AzureBackupRehydrationRequest
- *
- * <p>Azure Backup Rehydrate Request.
+ * 
+ * Azure Backup Rehydrate Request.
  */
 @Fluent
 public final class AzureBackupRehydrationRequest {
@@ -33,13 +33,15 @@ public final class AzureBackupRehydrationRequest {
     @JsonProperty(value = "rehydrationRetentionDuration", required = true)
     private String rehydrationRetentionDuration;
 
-    /** Creates an instance of AzureBackupRehydrationRequest class. */
+    /**
+     * Creates an instance of AzureBackupRehydrationRequest class.
+     */
     public AzureBackupRehydrationRequest() {
     }
 
     /**
      * Get the recoveryPointId property: Id of the recovery point to be recovered.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -48,7 +50,7 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Set the recoveryPointId property: Id of the recovery point to be recovered.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the AzureBackupRehydrationRequest object itself.
      */
@@ -59,7 +61,7 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Get the rehydrationPriority property: Priority to be used for rehydration. Values High or Standard.
-     *
+     * 
      * @return the rehydrationPriority value.
      */
     public RehydrationPriority rehydrationPriority() {
@@ -68,7 +70,7 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Set the rehydrationPriority property: Priority to be used for rehydration. Values High or Standard.
-     *
+     * 
      * @param rehydrationPriority the rehydrationPriority value to set.
      * @return the AzureBackupRehydrationRequest object itself.
      */
@@ -79,7 +81,7 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Get the rehydrationRetentionDuration property: Retention duration in ISO 8601 format i.e P10D .
-     *
+     * 
      * @return the rehydrationRetentionDuration value.
      */
     public String rehydrationRetentionDuration() {
@@ -88,7 +90,7 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Set the rehydrationRetentionDuration property: Retention duration in ISO 8601 format i.e P10D .
-     *
+     * 
      * @param rehydrationRetentionDuration the rehydrationRetentionDuration value to set.
      * @return the AzureBackupRehydrationRequest object itself.
      */
@@ -99,22 +101,17 @@ public final class AzureBackupRehydrationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recoveryPointId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointId in model AzureBackupRehydrationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointId in model AzureBackupRehydrationRequest"));
         }
         if (rehydrationRetentionDuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rehydrationRetentionDuration in model"
-                            + " AzureBackupRehydrationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rehydrationRetentionDuration in model AzureBackupRehydrationRequest"));
         }
     }
 

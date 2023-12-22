@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionsTroubleshootersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionsTroubleshooters model =
-            BinaryData
-                .fromString("{\"solutionId\":\"yocf\",\"title\":\"ksymd\",\"summary\":\"stkiiuxhqyud\"}")
+        SolutionsTroubleshooters model
+            = BinaryData.fromString("{\"solutionId\":\"yocf\",\"title\":\"ksymd\",\"summary\":\"stkiiuxhqyud\"}")
                 .toObject(SolutionsTroubleshooters.class);
         Assertions.assertEquals("yocf", model.solutionId());
         Assertions.assertEquals("ksymd", model.title());
@@ -22,8 +21,8 @@ public final class SolutionsTroubleshootersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionsTroubleshooters model =
-            new SolutionsTroubleshooters().withSolutionId("yocf").withTitle("ksymd").withSummary("stkiiuxhqyud");
+        SolutionsTroubleshooters model
+            = new SolutionsTroubleshooters().withSolutionId("yocf").withTitle("ksymd").withSummary("stkiiuxhqyud");
         model = BinaryData.fromObject(model).toObject(SolutionsTroubleshooters.class);
         Assertions.assertEquals("yocf", model.solutionId());
         Assertions.assertEquals("ksymd", model.title());

@@ -8,25 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.GroupInformationProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GroupInformationPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        GroupInformationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"groupId\":\"ayvvtpgvdf\",\"requiredMembers\":[\"tkftutqxlngx\",\"efgugnxk\",\"xdqmidtthzrvqdra\",\"hjybigehoqfbo\"],\"requiredZoneNames\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]}")
-                .toObject(GroupInformationProperties.class);
-        Assertions.assertEquals("anyktzlcuiywg", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GroupInformationProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Succeeded\",\"groupId\":\"qsl\",\"requiredMembers\":[\"vxyqjpkcattpngjc\",\"cczsq\"],\"requiredZoneNames\":[\"vmdajvnysou\",\"q\",\"canoaeupf\",\"yhltrpmopjmcm\"]}")
+            .toObject(GroupInformationProperties.class);
+        Assertions.assertEquals("vmdajvnysou", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        GroupInformationProperties model =
-            new GroupInformationProperties()
-                .withRequiredZoneNames(Arrays.asList("anyktzlcuiywg", "ywgndrv", "nhzgpphrcgyn", "ocpecfvmmco"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GroupInformationProperties model = new GroupInformationProperties()
+            .withRequiredZoneNames(Arrays.asList("vmdajvnysou", "q", "canoaeupf", "yhltrpmopjmcm"));
         model = BinaryData.fromObject(model).toObject(GroupInformationProperties.class);
-        Assertions.assertEquals("anyktzlcuiywg", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("vmdajvnysou", model.requiredZoneNames().get(0));
     }
 }
