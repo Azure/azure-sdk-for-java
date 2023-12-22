@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
@@ -510,6 +511,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withMaxReplicas(10)
             .withMinReplicas(3)
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            .withConnectionString("connectionStringName", "connectionStringValue", ConnectionStringType.CUSTOM)
             .create();
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
@@ -517,6 +519,9 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
+
+        Assertions.assertNotNull(functionApp.getAppSettings());
+        Assertions.assertEquals("connectionStringValue", functionApp.getConnectionStrings().get("connectionStringName").value());
 
         functionApp.update()
             .withMaxReplicas(15)
