@@ -6,11 +6,13 @@ package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.resourcemanager.selfhelp.fluent.models.CheckNameAvailabilityResponseInner;
 
-/** An immutable client-side representation of CheckNameAvailabilityResponse. */
+/**
+ * An immutable client-side representation of CheckNameAvailabilityResponse.
+ */
 public interface CheckNameAvailabilityResponse {
     /**
      * Gets the nameAvailable property: Returns true or false depending on the availability of the name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
@@ -18,7 +20,7 @@ public interface CheckNameAvailabilityResponse {
     /**
      * Gets the reason property: Reason for why value is not available. This field is returned if nameAvailable is
      * false.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
@@ -26,14 +28,14 @@ public interface CheckNameAvailabilityResponse {
     /**
      * Gets the message property: Gets an error message explaining the 'reason' value with more details. This field is
      * returned iif nameAvailable is false.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.CheckNameAvailabilityResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CheckNameAvailabilityResponseInner innerModel();

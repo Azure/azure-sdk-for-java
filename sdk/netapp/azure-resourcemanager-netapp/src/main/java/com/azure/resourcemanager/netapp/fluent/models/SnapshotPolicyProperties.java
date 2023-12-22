@@ -11,7 +11,9 @@ import com.azure.resourcemanager.netapp.models.MonthlySchedule;
 import com.azure.resourcemanager.netapp.models.WeeklySchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Snapshot policy properties. */
+/**
+ * Snapshot policy properties.
+ */
 @Fluent
 public final class SnapshotPolicyProperties {
     /*
@@ -50,13 +52,15 @@ public final class SnapshotPolicyProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of SnapshotPolicyProperties class. */
+    /**
+     * Creates an instance of SnapshotPolicyProperties class.
+     */
     public SnapshotPolicyProperties() {
     }
 
     /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @return the hourlySchedule value.
      */
     public HourlySchedule hourlySchedule() {
@@ -65,7 +69,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Set the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @param hourlySchedule the hourlySchedule value to set.
      * @return the SnapshotPolicyProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Get the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @return the dailySchedule value.
      */
     public DailySchedule dailySchedule() {
@@ -85,7 +89,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Set the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @param dailySchedule the dailySchedule value to set.
      * @return the SnapshotPolicyProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Get the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @return the weeklySchedule value.
      */
     public WeeklySchedule weeklySchedule() {
@@ -105,7 +109,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Set the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @param weeklySchedule the weeklySchedule value to set.
      * @return the SnapshotPolicyProperties object itself.
      */
@@ -116,7 +120,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Get the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @return the monthlySchedule value.
      */
     public MonthlySchedule monthlySchedule() {
@@ -125,7 +129,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Set the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @param monthlySchedule the monthlySchedule value to set.
      * @return the SnapshotPolicyProperties object itself.
      */
@@ -136,7 +140,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -145,7 +149,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SnapshotPolicyProperties object itself.
      */
@@ -156,7 +160,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -165,7 +169,7 @@ public final class SnapshotPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

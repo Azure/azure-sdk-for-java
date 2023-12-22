@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.DataCenterResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A managed Cassandra data center. */
+/**
+ * A managed Cassandra data center.
+ */
 @Fluent
 public final class DataCenterResourceInner extends ArmProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class DataCenterResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private DataCenterResourceProperties properties;
 
-    /** Creates an instance of DataCenterResourceInner class. */
+    /**
+     * Creates an instance of DataCenterResourceInner class.
+     */
     public DataCenterResourceInner() {
     }
 
     /**
      * Get the properties property: Properties of a managed Cassandra data center.
-     *
+     * 
      * @return the properties value.
      */
     public DataCenterResourceProperties properties() {
@@ -33,7 +37,7 @@ public final class DataCenterResourceInner extends ArmProxyResource {
 
     /**
      * Set the properties property: Properties of a managed Cassandra data center.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataCenterResourceInner object itself.
      */
@@ -44,7 +48,7 @@ public final class DataCenterResourceInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,20 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of solution provisioning. */
+/**
+ * Status of solution provisioning.
+ */
 public final class SolutionProvisioningState extends ExpandableStringEnum<SolutionProvisioningState> {
-    /** Static value Succeeded for SolutionProvisioningState. */
+    /**
+     * Static value Succeeded for SolutionProvisioningState.
+     */
     public static final SolutionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for SolutionProvisioningState. */
+    /**
+     * Static value PartialComplete for SolutionProvisioningState.
+     */
+    public static final SolutionProvisioningState PARTIAL_COMPLETE = fromString("PartialComplete");
+
+    /**
+     * Static value Failed for SolutionProvisioningState.
+     */
     public static final SolutionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for SolutionProvisioningState. */
+    /**
+     * Static value Running for SolutionProvisioningState.
+     */
+    public static final SolutionProvisioningState RUNNING = fromString("Running");
+
+    /**
+     * Static value Canceled for SolutionProvisioningState.
+     */
     public static final SolutionProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of SolutionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +48,7 @@ public final class SolutionProvisioningState extends ExpandableStringEnum<Soluti
 
     /**
      * Creates or finds a SolutionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SolutionProvisioningState.
      */
@@ -41,7 +59,7 @@ public final class SolutionProvisioningState extends ExpandableStringEnum<Soluti
 
     /**
      * Gets known SolutionProvisioningState values.
-     *
+     * 
      * @return known SolutionProvisioningState values.
      */
     public static Collection<SolutionProvisioningState> values() {

@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Available cluster add-on features. */
+/**
+ * Available cluster add-on features.
+ */
 public final class AddOnFeatures extends ExpandableStringEnum<AddOnFeatures> {
-    /** Static value RepairManager for AddOnFeatures. */
+    /**
+     * Static value RepairManager for AddOnFeatures.
+     */
     public static final AddOnFeatures REPAIR_MANAGER = fromString("RepairManager");
 
-    /** Static value DnsService for AddOnFeatures. */
+    /**
+     * Static value DnsService for AddOnFeatures.
+     */
     public static final AddOnFeatures DNS_SERVICE = fromString("DnsService");
 
-    /** Static value BackupRestoreService for AddOnFeatures. */
+    /**
+     * Static value BackupRestoreService for AddOnFeatures.
+     */
     public static final AddOnFeatures BACKUP_RESTORE_SERVICE = fromString("BackupRestoreService");
 
-    /** Static value ResourceMonitorService for AddOnFeatures. */
+    /**
+     * Static value ResourceMonitorService for AddOnFeatures.
+     */
     public static final AddOnFeatures RESOURCE_MONITOR_SERVICE = fromString("ResourceMonitorService");
 
     /**
      * Creates a new instance of AddOnFeatures value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class AddOnFeatures extends ExpandableStringEnum<AddOnFeatures> {
 
     /**
      * Creates or finds a AddOnFeatures from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AddOnFeatures.
      */
@@ -44,7 +54,7 @@ public final class AddOnFeatures extends ExpandableStringEnum<AddOnFeatures> {
 
     /**
      * Gets known AddOnFeatures values.
-     *
+     * 
      * @return known AddOnFeatures values.
      */
     public static Collection<AddOnFeatures> values() {

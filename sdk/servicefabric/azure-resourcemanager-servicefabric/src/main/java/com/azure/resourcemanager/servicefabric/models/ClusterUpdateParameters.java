@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Cluster update request. */
+/**
+ * Cluster update request.
+ */
 @Fluent
 public final class ClusterUpdateParameters {
     /*
@@ -28,14 +30,16 @@ public final class ClusterUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ClusterUpdateParameters class. */
+    /**
+     * Creates an instance of ClusterUpdateParameters class.
+     */
     public ClusterUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Describes the cluster resource properties that can be updated during PATCH
      * operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterPropertiesUpdateParameters innerProperties() {
@@ -44,7 +48,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the tags property: Cluster update parameters.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -53,7 +57,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the tags property: Cluster update parameters.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -64,7 +68,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the addOnFeatures property: The list of add-on features to enable in the cluster.
-     *
+     * 
      * @return the addOnFeatures value.
      */
     public List<AddOnFeatures> addOnFeatures() {
@@ -73,7 +77,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the addOnFeatures property: The list of add-on features to enable in the cluster.
-     *
+     * 
      * @param addOnFeatures the addOnFeatures value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -89,7 +93,7 @@ public final class ClusterUpdateParameters {
      * Get the certificate property: The certificate to use for securing the cluster. The certificate provided will be
      * used for node to node security within the cluster, SSL certificate for cluster management endpoint and default
      * admin client.
-     *
+     * 
      * @return the certificate value.
      */
     public CertificateDescription certificate() {
@@ -100,7 +104,7 @@ public final class ClusterUpdateParameters {
      * Set the certificate property: The certificate to use for securing the cluster. The certificate provided will be
      * used for node to node security within the cluster, SSL certificate for cluster management endpoint and default
      * admin client.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -115,7 +119,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the certificateCommonNames property: Describes a list of server certificates referenced by common name that
      * are used to secure the cluster.
-     *
+     * 
      * @return the certificateCommonNames value.
      */
     public ServerCertificateCommonNames certificateCommonNames() {
@@ -125,7 +129,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the certificateCommonNames property: Describes a list of server certificates referenced by common name that
      * are used to secure the cluster.
-     *
+     * 
      * @param certificateCommonNames the certificateCommonNames value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -138,9 +142,9 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
-     * allowed to manage the cluster. This will overwrite the existing list.
-     *
+     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that
+     * are allowed to manage the cluster. This will overwrite the existing list.
+     * 
      * @return the clientCertificateCommonNames value.
      */
     public List<ClientCertificateCommonName> clientCertificateCommonNames() {
@@ -148,14 +152,14 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
-     * allowed to manage the cluster. This will overwrite the existing list.
-     *
+     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that
+     * are allowed to manage the cluster. This will overwrite the existing list.
+     * 
      * @param clientCertificateCommonNames the clientCertificateCommonNames value to set.
      * @return the ClusterUpdateParameters object itself.
      */
-    public ClusterUpdateParameters withClientCertificateCommonNames(
-        List<ClientCertificateCommonName> clientCertificateCommonNames) {
+    public ClusterUpdateParameters
+        withClientCertificateCommonNames(List<ClientCertificateCommonName> clientCertificateCommonNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPropertiesUpdateParameters();
         }
@@ -166,7 +170,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the clientCertificateThumbprints property: The list of client certificates referenced by thumbprint that are
      * allowed to manage the cluster. This will overwrite the existing list.
-     *
+     * 
      * @return the clientCertificateThumbprints value.
      */
     public List<ClientCertificateThumbprint> clientCertificateThumbprints() {
@@ -176,12 +180,12 @@ public final class ClusterUpdateParameters {
     /**
      * Set the clientCertificateThumbprints property: The list of client certificates referenced by thumbprint that are
      * allowed to manage the cluster. This will overwrite the existing list.
-     *
+     * 
      * @param clientCertificateThumbprints the clientCertificateThumbprints value to set.
      * @return the ClusterUpdateParameters object itself.
      */
-    public ClusterUpdateParameters withClientCertificateThumbprints(
-        List<ClientCertificateThumbprint> clientCertificateThumbprints) {
+    public ClusterUpdateParameters
+        withClientCertificateThumbprints(List<ClientCertificateThumbprint> clientCertificateThumbprints) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPropertiesUpdateParameters();
         }
@@ -190,11 +194,11 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
-     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
-     * clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing
-     * clusters use **availableClusterVersions**.
-     *
+     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
+     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
+     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
+     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * 
      * @return the clusterCodeVersion value.
      */
     public String clusterCodeVersion() {
@@ -202,11 +206,11 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
-     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
-     * clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing
-     * clusters use **availableClusterVersions**.
-     *
+     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
+     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
+     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
+     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * 
      * @param clusterCodeVersion the clusterCodeVersion value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -220,7 +224,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the eventStoreServiceEnabled property: Indicates if the event store service is enabled.
-     *
+     * 
      * @return the eventStoreServiceEnabled value.
      */
     public Boolean eventStoreServiceEnabled() {
@@ -229,7 +233,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the eventStoreServiceEnabled property: Indicates if the event store service is enabled.
-     *
+     * 
      * @param eventStoreServiceEnabled the eventStoreServiceEnabled value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -242,9 +246,9 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the fabricSettings property: The list of custom fabric settings to configure the cluster. This will overwrite
-     * the existing list.
-     *
+     * Get the fabricSettings property: The list of custom fabric settings to configure the cluster. This will
+     * overwrite the existing list.
+     * 
      * @return the fabricSettings value.
      */
     public List<SettingsSectionDescription> fabricSettings() {
@@ -252,9 +256,9 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the fabricSettings property: The list of custom fabric settings to configure the cluster. This will overwrite
-     * the existing list.
-     *
+     * Set the fabricSettings property: The list of custom fabric settings to configure the cluster. This will
+     * overwrite the existing list.
+     * 
      * @param fabricSettings the fabricSettings value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -268,7 +272,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the nodeTypes property: The list of node types in the cluster. This will overwrite the existing list.
-     *
+     * 
      * @return the nodeTypes value.
      */
     public List<NodeTypeDescription> nodeTypes() {
@@ -277,7 +281,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the nodeTypes property: The list of node types in the cluster. This will overwrite the existing list.
-     *
+     * 
      * @param nodeTypes the nodeTypes value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -292,13 +296,15 @@ public final class ClusterUpdateParameters {
     /**
      * Get the reliabilityLevel property: The reliability level sets the replica set size of system services. Learn
      * about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
-     *
-     * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test
-     * clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for
-     * test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System
-     * services with a target replica set count of 7. - Platinum - Run the System services with a target replica set
-     * count of 9.
-     *
+     * 
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
+     * - Silver - Run the System services with a target replica set count of 5.
+     * - Gold - Run the System services with a target replica set count of 7.
+     * - Platinum - Run the System services with a target replica set count of 9.
+     * 
      * @return the reliabilityLevel value.
      */
     public ReliabilityLevel reliabilityLevel() {
@@ -308,13 +314,15 @@ public final class ClusterUpdateParameters {
     /**
      * Set the reliabilityLevel property: The reliability level sets the replica set size of system services. Learn
      * about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
-     *
-     * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test
-     * clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for
-     * test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System
-     * services with a target replica set count of 7. - Platinum - Run the System services with a target replica set
-     * count of 9.
-     *
+     * 
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
+     * - Silver - Run the System services with a target replica set count of 5.
+     * - Gold - Run the System services with a target replica set count of 7.
+     * - Platinum - Run the System services with a target replica set count of 9.
+     * 
      * @param reliabilityLevel the reliabilityLevel value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -328,7 +336,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the reverseProxyCertificate property: The server certificate used by reverse proxy.
-     *
+     * 
      * @return the reverseProxyCertificate value.
      */
     public CertificateDescription reverseProxyCertificate() {
@@ -337,7 +345,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the reverseProxyCertificate property: The server certificate used by reverse proxy.
-     *
+     * 
      * @param reverseProxyCertificate the reverseProxyCertificate value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -351,7 +359,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the upgradeDescription property: The policy to use when upgrading the cluster.
-     *
+     * 
      * @return the upgradeDescription value.
      */
     public ClusterUpgradePolicy upgradeDescription() {
@@ -360,7 +368,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the upgradeDescription property: The policy to use when upgrading the cluster.
-     *
+     * 
      * @param upgradeDescription the upgradeDescription value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -374,7 +382,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
-     *
+     * 
      * @return the applicationTypeVersionsCleanupPolicy value.
      */
     public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
@@ -383,7 +391,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
-     *
+     * 
      * @param applicationTypeVersionsCleanupPolicy the applicationTypeVersionsCleanupPolicy value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -399,7 +407,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
-     *
+     * 
      * @return the upgradeMode value.
      */
     public UpgradeMode upgradeMode() {
@@ -409,7 +417,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
-     *
+     * 
      * @param upgradeMode the upgradeMode value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -422,10 +430,10 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
-     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
+     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
-     *
+     * 
      * @return the sfZonalUpgradeMode value.
      */
     public SfZonalUpgradeMode sfZonalUpgradeMode() {
@@ -433,10 +441,10 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
-     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
+     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
-     *
+     * 
      * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -451,7 +459,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
      * it is mandatory if a node type with multiple Availability Zones is added.
-     *
+     * 
      * @return the vmssZonalUpgradeMode value.
      */
     public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
@@ -461,7 +469,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
      * it is mandatory if a node type with multiple Availability Zones is added.
-     *
+     * 
      * @param vmssZonalUpgradeMode the vmssZonalUpgradeMode value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -475,7 +483,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
-     *
+     * 
      * @return the infrastructureServiceManager value.
      */
     public Boolean infrastructureServiceManager() {
@@ -484,7 +492,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
-     *
+     * 
      * @param infrastructureServiceManager the infrastructureServiceManager value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -499,7 +507,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
      * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
-     *
+     * 
      * @return the upgradeWave value.
      */
     public ClusterUpgradeCadence upgradeWave() {
@@ -509,7 +517,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
      * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
-     *
+     * 
      * @param upgradeWave the upgradeWave value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -524,7 +532,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
      * cluster (UTC).
-     *
+     * 
      * @return the upgradePauseStartTimestampUtc value.
      */
     public OffsetDateTime upgradePauseStartTimestampUtc() {
@@ -534,7 +542,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
      * cluster (UTC).
-     *
+     * 
      * @param upgradePauseStartTimestampUtc the upgradePauseStartTimestampUtc value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -549,7 +557,7 @@ public final class ClusterUpdateParameters {
     /**
      * Get the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
      * (UTC).
-     *
+     * 
      * @return the upgradePauseEndTimestampUtc value.
      */
     public OffsetDateTime upgradePauseEndTimestampUtc() {
@@ -559,7 +567,7 @@ public final class ClusterUpdateParameters {
     /**
      * Set the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
      * (UTC).
-     *
+     * 
      * @param upgradePauseEndTimestampUtc the upgradePauseEndTimestampUtc value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -573,7 +581,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
-     *
+     * 
      * @return the waveUpgradePaused value.
      */
     public Boolean waveUpgradePaused() {
@@ -582,7 +590,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
-     *
+     * 
      * @param waveUpgradePaused the waveUpgradePaused value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -596,7 +604,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Get the notifications property: Indicates a list of notification channels for cluster events.
-     *
+     * 
      * @return the notifications value.
      */
     public List<Notification> notifications() {
@@ -605,7 +613,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Set the notifications property: Indicates a list of notification channels for cluster events.
-     *
+     * 
      * @param notifications the notifications value to set.
      * @return the ClusterUpdateParameters object itself.
      */
@@ -619,7 +627,7 @@ public final class ClusterUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

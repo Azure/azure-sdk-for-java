@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DppBaseTrackedResource model. */
+/**
+ * The DppBaseTrackedResource model.
+ */
 @Fluent
 public class DppBaseTrackedResource extends Resource {
     /*
@@ -25,13 +27,15 @@ public class DppBaseTrackedResource extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DppBaseTrackedResource class. */
+    /**
+     * Creates an instance of DppBaseTrackedResource class.
+     */
     public DppBaseTrackedResource() {
     }
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -40,7 +44,7 @@ public class DppBaseTrackedResource extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DppBaseTrackedResource object itself.
      */
@@ -51,21 +55,25 @@ public class DppBaseTrackedResource extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DppBaseTrackedResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DppBaseTrackedResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -74,7 +82,7 @@ public class DppBaseTrackedResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

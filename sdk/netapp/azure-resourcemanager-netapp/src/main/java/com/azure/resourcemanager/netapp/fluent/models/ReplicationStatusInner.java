@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication status. */
+/**
+ * Replication status.
+ */
 @Fluent
 public final class ReplicationStatusInner {
     /*
@@ -42,13 +44,15 @@ public final class ReplicationStatusInner {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of ReplicationStatusInner class. */
+    /**
+     * Creates an instance of ReplicationStatusInner class.
+     */
     public ReplicationStatusInner() {
     }
 
     /**
      * Get the healthy property: Replication health check.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean healthy() {
@@ -57,7 +61,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the healthy property: Replication health check.
-     *
+     * 
      * @param healthy the healthy value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -68,7 +72,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the relationshipStatus property: Status of the mirror relationship.
-     *
+     * 
      * @return the relationshipStatus value.
      */
     public RelationshipStatus relationshipStatus() {
@@ -77,7 +81,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the relationshipStatus property: Status of the mirror relationship.
-     *
+     * 
      * @param relationshipStatus the relationshipStatus value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -88,7 +92,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the mirrorState property: The status of the replication.
-     *
+     * 
      * @return the mirrorState value.
      */
     public MirrorState mirrorState() {
@@ -97,7 +101,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the mirrorState property: The status of the replication.
-     *
+     * 
      * @param mirrorState the mirrorState value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -108,7 +112,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the totalProgress property: The progress of the replication.
-     *
+     * 
      * @return the totalProgress value.
      */
     public String totalProgress() {
@@ -117,7 +121,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the totalProgress property: The progress of the replication.
-     *
+     * 
      * @param totalProgress the totalProgress value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -128,7 +132,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the errorMessage property: Displays error message if the replication is in an error state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -137,7 +141,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the errorMessage property: Displays error message if the replication is in an error state.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -148,7 +152,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

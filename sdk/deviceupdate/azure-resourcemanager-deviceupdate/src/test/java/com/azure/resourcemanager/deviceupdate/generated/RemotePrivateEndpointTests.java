@@ -6,6 +6,7 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.ConnectionDetails;
+import com.azure.resourcemanager.deviceupdate.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnectionState;
@@ -14,132 +15,142 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxyRemo
 import com.azure.resourcemanager.deviceupdate.models.RemotePrivateEndpoint;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RemotePrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
-        RemotePrivateEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ljyoxgvcltb\",\"location\":\"ncghkje\",\"immutableSubscriptionId\":\"zhbijhtxfv\",\"immutableResourceId\":\"bfs\",\"vnetTrafficTag\":\"nehmpvecx\",\"manualPrivateLinkServiceConnections\":[{\"name\":\"bfqkkr\",\"groupIds\":[\"ukgri\",\"flz\",\"fbxzpuzycisp\",\"qzahmgkbrp\"],\"requestMessage\":\"dhibnuq\"},{\"name\":\"pikad\",\"groupIds\":[\"tqagnbuynh\"],\"requestMessage\":\"gg\"},{\"name\":\"bfs\",\"groupIds\":[\"butr\"],\"requestMessage\":\"pnazzm\"},{\"name\":\"runmp\",\"groupIds\":[\"dbhrbnlankxm\",\"skpbhenbtkcxywn\",\"tnrsyn\"],\"requestMessage\":\"idybyxczf\"}],\"privateLinkServiceConnections\":[{\"name\":\"axdbabph\",\"groupIds\":[\"qlfktsths\",\"cocmnyyaztt\",\"twwrqp\",\"edckzywbiexzfey\"],\"requestMessage\":\"axibxujw\"},{\"name\":\"qwalmuzyoxaepd\",\"groupIds\":[\"ancuxrhd\",\"bavxbniwdjswzt\"],\"requestMessage\":\"bpg\"},{\"name\":\"ytxhp\",\"groupIds\":[\"zpfzabglc\",\"hxw\"],\"requestMessage\":\"tyq\"}],\"privateLinkServiceProxies\":[{\"id\":\"bovpl\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"gy\",\"actionsRequired\":\"uosvmkfssxqukk\"},\"remotePrivateEndpointConnection\":{\"id\":\"gmgsxnkjzkde\"},\"groupConnectivityInformation\":[]},{\"id\":\"lopwiyig\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wzbaiue\",\"actionsRequired\":\"a\"},\"remotePrivateEndpointConnection\":{\"id\":\"yqupedeojnabckh\"},\"groupConnectivityInformation\":[]}],\"connectionDetails\":[{\"id\":\"ie\",\"privateIpAddress\":\"fhvpesaps\",\"linkIdentifier\":\"dqmh\",\"groupId\":\"dhtldwkyz\",\"memberName\":\"utknc\"},{\"id\":\"cwsvlxotog\",\"privateIpAddress\":\"rupqsxvnmicy\",\"linkIdentifier\":\"ceoveilovno\",\"groupId\":\"fj\",\"memberName\":\"njbkcnxdhbttkph\"},{\"id\":\"pnvjtoqnermclf\",\"privateIpAddress\":\"phoxus\",\"linkIdentifier\":\"pabgyeps\",\"groupId\":\"tazqugxywpmueefj\",\"memberName\":\"fqkquj\"}]}")
-                .toObject(RemotePrivateEndpoint.class);
-        Assertions.assertEquals("ljyoxgvcltb", model.id());
-        Assertions.assertEquals("ncghkje", model.location());
-        Assertions.assertEquals("zhbijhtxfv", model.immutableSubscriptionId());
-        Assertions.assertEquals("bfs", model.immutableResourceId());
-        Assertions.assertEquals("nehmpvecx", model.vnetTrafficTag());
-        Assertions.assertEquals("bfqkkr", model.manualPrivateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("ukgri", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("dhibnuq", model.manualPrivateLinkServiceConnections().get(0).requestMessage());
-        Assertions.assertEquals("axdbabph", model.privateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("qlfktsths", model.privateLinkServiceConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("axibxujw", model.privateLinkServiceConnections().get(0).requestMessage());
-        Assertions.assertEquals("bovpl", model.privateLinkServiceProxies().get(0).id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING,
-                model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "gy", model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "uosvmkfssxqukk",
-                model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().actionsRequired());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemotePrivateEndpoint model = BinaryData.fromString(
+            "{\"id\":\"qytjrybnwjewgd\",\"location\":\"ervnaenqpehi\",\"immutableSubscriptionId\":\"oygmift\",\"immutableResourceId\":\"zdnds\",\"vnetTrafficTag\":\"nayqi\",\"manualPrivateLinkServiceConnections\":[{\"name\":\"uhavhql\",\"groupIds\":[\"umaq\",\"lbg\",\"cdui\"],\"requestMessage\":\"tgccymvaolpss\"},{\"name\":\"lfmmdnbbglzpswi\",\"groupIds\":[\"cwyhzdxssa\",\"bzmnvdfznud\",\"od\",\"xzb\"],\"requestMessage\":\"blylpstdbh\"},{\"name\":\"srzdzucerscdn\",\"groupIds\":[\"vfiwjmygtdss\",\"s\",\"tmweriofzpyq\"],\"requestMessage\":\"mwabnetshhszhedp\"},{\"name\":\"wiwubm\",\"groupIds\":[\"esl\",\"nkww\",\"pp\",\"flcxoga\"],\"requestMessage\":\"onz\"}],\"privateLinkServiceConnections\":[{\"name\":\"kvmkqzeqq\",\"groupIds\":[\"tfz\"],\"requestMessage\":\"hhvh\"},{\"name\":\"r\",\"groupIds\":[\"kwobdagxtibq\",\"xbxwa\",\"bogqxndlkzgxhu\"],\"requestMessage\":\"plbpodxun\"},{\"name\":\"ebxmubyynt\",\"groupIds\":[\"bqtkoievseotgqr\",\"ltmuwlauwzizx\"],\"requestMessage\":\"pgcjefuzmuvp\"},{\"name\":\"tdum\",\"groupIds\":[\"pxebmnzbt\"],\"requestMessage\":\"jpglkfgohdne\"}],\"privateLinkServiceProxies\":[{\"id\":\"phsdyhto\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"owwquuvxz\",\"actionsRequired\":\"lvithhqzonosgg\"},\"remotePrivateEndpointConnection\":{\"id\":\"ohfwds\"},\"groupConnectivityInformation\":[{\"groupId\":\"ljuti\",\"memberName\":\"wacf\",\"customerVisibleFqdns\":[\"k\",\"zewk\",\"vhqcrail\",\"pnppfuf\"],\"internalFqdn\":\"wdmhdlxyjrxs\",\"redirectMapId\":\"afcnih\",\"privateLinkServiceArmRegion\":\"qapnedgfbcv\"}]},{\"id\":\"vq\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"dcvd\",\"actionsRequired\":\"vo\"},\"remotePrivateEndpointConnection\":{\"id\":\"otbobzdopcj\"},\"groupConnectivityInformation\":[{\"groupId\":\"dldwmgxc\",\"memberName\":\"slpmutwuo\",\"customerVisibleFqdns\":[\"pkhjwni\",\"qsluicp\"],\"internalFqdn\":\"gk\",\"redirectMapId\":\"lvmbmpaxmodfvuef\",\"privateLinkServiceArmRegion\":\"sbpfvmwyhr\"},{\"groupId\":\"uyfta\",\"memberName\":\"cpwi\",\"customerVisibleFqdns\":[\"qtmnubexkpzk\",\"mond\"],\"internalFqdn\":\"quxvypomgkop\",\"redirectMapId\":\"hojvpajqgxysmocm\",\"privateLinkServiceArmRegion\":\"fqvm\"},{\"groupId\":\"xozap\",\"memberName\":\"elxprglyatddck\",\"customerVisibleFqdns\":[\"uejrjxgc\",\"qibrhosxsdqrhzoy\",\"i\"],\"internalFqdn\":\"rq\",\"redirectMapId\":\"bahwfl\",\"privateLinkServiceArmRegion\":\"zdtmhrkwofy\"}]},{\"id\":\"oqac\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"btgiwbwoenwas\",\"actionsRequired\":\"tdtkcn\"},\"remotePrivateEndpointConnection\":{\"id\":\"bpokulpiujwaasip\"},\"groupConnectivityInformation\":[{\"groupId\":\"byuqerpqlp\",\"memberName\":\"cciuqgbdbutau\",\"customerVisibleFqdns\":[\"tkuwhhmhykojo\",\"afnn\"],\"internalFqdn\":\"pichkoymkcdy\",\"redirectMapId\":\"pkkpw\",\"privateLinkServiceArmRegion\":\"eqnovvqfovl\"},{\"groupId\":\"ywsuwsy\",\"memberName\":\"ndsytgadg\",\"customerVisibleFqdns\":[\"ea\",\"neqn\",\"arrwlquu\",\"jfqka\"],\"internalFqdn\":\"wiipfpub\",\"redirectMapId\":\"bwwift\",\"privateLinkServiceArmRegion\":\"qkvpuvksgplsakn\"}]},{\"id\":\"fsynljphuop\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"iyntorzihle\",\"actionsRequired\":\"jswsrmslyz\"},\"remotePrivateEndpointConnection\":{\"id\":\"bchckqqzqio\"},\"groupConnectivityInformation\":[{\"groupId\":\"uiizynke\",\"memberName\":\"atrwyhqmibzyh\",\"customerVisibleFqdns\":[\"smypyynpc\",\"pumnz\",\"mwzn\"],\"internalFqdn\":\"biknsorgjhxbld\",\"redirectMapId\":\"wwrlkdmtncv\",\"privateLinkServiceArmRegion\":\"otllxdyhgsyo\"},{\"groupId\":\"gjltdtbnnhado\",\"memberName\":\"rkvcikhnvpa\",\"customerVisibleFqdns\":[\"x\",\"queziky\",\"ggxkallatmelwuip\"],\"internalFqdn\":\"cjzkzivgvvcna\",\"redirectMapId\":\"hyrnxxmu\",\"privateLinkServiceArmRegion\":\"dndrdvstkwqqtche\"},{\"groupId\":\"mfmtdaaygdvw\",\"memberName\":\"piohgwxrtfu\",\"customerVisibleFqdns\":[\"pxgy\",\"agvrvmnpkuk\",\"himdbl\"],\"internalFqdn\":\"wi\",\"redirectMapId\":\"njhf\",\"privateLinkServiceArmRegion\":\"wmszkk\"},{\"groupId\":\"qreyfkzi\",\"memberName\":\"jawneaiv\",\"customerVisibleFqdns\":[\"zel\",\"c\",\"r\"],\"internalFqdn\":\"sfeaenwabfat\",\"redirectMapId\":\"ddxbjhwuaanoz\",\"privateLinkServiceArmRegion\":\"sphyoulpjrvxa\"}]}],\"connectionDetails\":[{\"id\":\"imjwosyt\",\"privateIpAddress\":\"tcs\",\"linkIdentifier\":\"cktqumiekkezzi\",\"groupId\":\"ly\",\"memberName\":\"hdgqggeb\"},{\"id\":\"nyga\",\"privateIpAddress\":\"idb\",\"linkIdentifier\":\"atpxl\",\"groupId\":\"xcyjmoadsuvarmy\",\"memberName\":\"mjsjqb\"},{\"id\":\"hyxxrwlycoduhpk\",\"privateIpAddress\":\"gymare\",\"linkIdentifier\":\"ajxq\",\"groupId\":\"jhkycub\",\"memberName\":\"dgssofwqmzqal\"},{\"id\":\"mnjijpxacqqudf\",\"privateIpAddress\":\"yxbaaabjyvayf\",\"linkIdentifier\":\"m\",\"groupId\":\"rtuzqogs\",\"memberName\":\"nevfdnw\"}]}")
+            .toObject(RemotePrivateEndpoint.class);
+        Assertions.assertEquals("qytjrybnwjewgd", model.id());
+        Assertions.assertEquals("ervnaenqpehi", model.location());
+        Assertions.assertEquals("oygmift", model.immutableSubscriptionId());
+        Assertions.assertEquals("zdnds", model.immutableResourceId());
+        Assertions.assertEquals("nayqi", model.vnetTrafficTag());
+        Assertions.assertEquals("uhavhql", model.manualPrivateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("umaq", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("tgccymvaolpss", model.manualPrivateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("kvmkqzeqq", model.privateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("tfz", model.privateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("hhvh", model.privateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("phsdyhto", model.privateLinkServiceProxies().get(0).id());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().status());
+        Assertions.assertEquals("owwquuvxz",
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lvithhqzonosgg",
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("k", model.privateLinkServiceProxies().get(0).groupConnectivityInformation().get(0)
+            .customerVisibleFqdns().get(0));
+        Assertions.assertEquals("afcnih",
+            model.privateLinkServiceProxies().get(0).groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("qapnedgfbcv", model.privateLinkServiceProxies().get(0).groupConnectivityInformation()
+            .get(0).privateLinkServiceArmRegion());
     }
 
-    @Test
-    public void testSerialize() {
-        RemotePrivateEndpoint model =
-            new RemotePrivateEndpoint()
-                .withId("ljyoxgvcltb")
-                .withLocation("ncghkje")
-                .withImmutableSubscriptionId("zhbijhtxfv")
-                .withImmutableResourceId("bfs")
-                .withVnetTrafficTag("nehmpvecx")
-                .withManualPrivateLinkServiceConnections(
-                    Arrays
-                        .asList(
-                            new PrivateLinkServiceConnection()
-                                .withName("bfqkkr")
-                                .withGroupIds(Arrays.asList("ukgri", "flz", "fbxzpuzycisp", "qzahmgkbrp"))
-                                .withRequestMessage("dhibnuq"),
-                            new PrivateLinkServiceConnection()
-                                .withName("pikad")
-                                .withGroupIds(Arrays.asList("tqagnbuynh"))
-                                .withRequestMessage("gg"),
-                            new PrivateLinkServiceConnection()
-                                .withName("bfs")
-                                .withGroupIds(Arrays.asList("butr"))
-                                .withRequestMessage("pnazzm"),
-                            new PrivateLinkServiceConnection()
-                                .withName("runmp")
-                                .withGroupIds(Arrays.asList("dbhrbnlankxm", "skpbhenbtkcxywn", "tnrsyn"))
-                                .withRequestMessage("idybyxczf")))
-                .withPrivateLinkServiceConnections(
-                    Arrays
-                        .asList(
-                            new PrivateLinkServiceConnection()
-                                .withName("axdbabph")
-                                .withGroupIds(Arrays.asList("qlfktsths", "cocmnyyaztt", "twwrqp", "edckzywbiexzfey"))
-                                .withRequestMessage("axibxujw"),
-                            new PrivateLinkServiceConnection()
-                                .withName("qwalmuzyoxaepd")
-                                .withGroupIds(Arrays.asList("ancuxrhd", "bavxbniwdjswzt"))
-                                .withRequestMessage("bpg"),
-                            new PrivateLinkServiceConnection()
-                                .withName("ytxhp")
-                                .withGroupIds(Arrays.asList("zpfzabglc", "hxw"))
-                                .withRequestMessage("tyq")))
-                .withPrivateLinkServiceProxies(
-                    Arrays
-                        .asList(
-                            new PrivateLinkServiceProxy()
-                                .withId("bovpl")
-                                .withRemotePrivateLinkServiceConnectionState(
-                                    new PrivateLinkServiceConnectionState()
-                                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                                        .withDescription("gy")
-                                        .withActionsRequired("uosvmkfssxqukk"))
-                                .withRemotePrivateEndpointConnection(
-                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                                .withGroupConnectivityInformation(Arrays.asList()),
-                            new PrivateLinkServiceProxy()
-                                .withId("lopwiyig")
-                                .withRemotePrivateLinkServiceConnectionState(
-                                    new PrivateLinkServiceConnectionState()
-                                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                                        .withDescription("wzbaiue")
-                                        .withActionsRequired("a"))
-                                .withRemotePrivateEndpointConnection(
-                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                                .withGroupConnectivityInformation(Arrays.asList())))
-                .withConnectionDetails(
-                    Arrays.asList(new ConnectionDetails(), new ConnectionDetails(), new ConnectionDetails()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RemotePrivateEndpoint model = new RemotePrivateEndpoint().withId("qytjrybnwjewgd").withLocation("ervnaenqpehi")
+            .withImmutableSubscriptionId("oygmift").withImmutableResourceId("zdnds").withVnetTrafficTag("nayqi")
+            .withManualPrivateLinkServiceConnections(Arrays.asList(
+                new PrivateLinkServiceConnection().withName("uhavhql")
+                    .withGroupIds(Arrays.asList("umaq", "lbg", "cdui")).withRequestMessage("tgccymvaolpss"),
+                new PrivateLinkServiceConnection().withName("lfmmdnbbglzpswi")
+                    .withGroupIds(Arrays.asList("cwyhzdxssa", "bzmnvdfznud", "od", "xzb"))
+                    .withRequestMessage("blylpstdbh"),
+                new PrivateLinkServiceConnection().withName("srzdzucerscdn")
+                    .withGroupIds(Arrays.asList("vfiwjmygtdss", "s", "tmweriofzpyq"))
+                    .withRequestMessage("mwabnetshhszhedp"),
+                new PrivateLinkServiceConnection().withName("wiwubm")
+                    .withGroupIds(Arrays.asList("esl", "nkww", "pp", "flcxoga")).withRequestMessage("onz")))
+            .withPrivateLinkServiceConnections(Arrays.asList(
+                new PrivateLinkServiceConnection().withName("kvmkqzeqq").withGroupIds(Arrays.asList("tfz"))
+                    .withRequestMessage("hhvh"),
+                new PrivateLinkServiceConnection().withName("r")
+                    .withGroupIds(Arrays.asList("kwobdagxtibq", "xbxwa", "bogqxndlkzgxhu"))
+                    .withRequestMessage("plbpodxun"),
+                new PrivateLinkServiceConnection().withName("ebxmubyynt")
+                    .withGroupIds(Arrays.asList("bqtkoievseotgqr", "ltmuwlauwzizx")).withRequestMessage("pgcjefuzmuvp"),
+                new PrivateLinkServiceConnection().withName("tdum").withGroupIds(Arrays.asList("pxebmnzbt"))
+                    .withRequestMessage("jpglkfgohdne")))
+            .withPrivateLinkServiceProxies(Arrays.asList(
+                new PrivateLinkServiceProxy().withId("phsdyhto")
+                    .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED).withDescription("owwquuvxz")
+                        .withActionsRequired("lvithhqzonosgg"))
+                    .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                    .withGroupConnectivityInformation(Arrays.asList(new GroupConnectivityInformation()
+                        .withCustomerVisibleFqdns(Arrays.asList("k", "zewk", "vhqcrail", "pnppfuf"))
+                        .withRedirectMapId("afcnih").withPrivateLinkServiceArmRegion("qapnedgfbcv"))),
+                new PrivateLinkServiceProxy().withId("vq")
+                    .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("dcvd")
+                        .withActionsRequired("vo"))
+                    .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                    .withGroupConnectivityInformation(Arrays.asList(
+                        new GroupConnectivityInformation().withCustomerVisibleFqdns(Arrays.asList("pkhjwni", "qsluicp"))
+                            .withRedirectMapId("lvmbmpaxmodfvuef").withPrivateLinkServiceArmRegion("sbpfvmwyhr"),
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("qtmnubexkpzk", "mond"))
+                            .withRedirectMapId("hojvpajqgxysmocm").withPrivateLinkServiceArmRegion("fqvm"),
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("uejrjxgc", "qibrhosxsdqrhzoy", "i"))
+                            .withRedirectMapId("bahwfl").withPrivateLinkServiceArmRegion("zdtmhrkwofy"))),
+                new PrivateLinkServiceProxy().withId("oqac")
+                    .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("btgiwbwoenwas")
+                        .withActionsRequired("tdtkcn"))
+                    .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                    .withGroupConnectivityInformation(Arrays.asList(
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("tkuwhhmhykojo", "afnn")).withRedirectMapId("pkkpw")
+                            .withPrivateLinkServiceArmRegion("eqnovvqfovl"),
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("ea", "neqn", "arrwlquu", "jfqka"))
+                            .withRedirectMapId("bwwift").withPrivateLinkServiceArmRegion("qkvpuvksgplsakn"))),
+                new PrivateLinkServiceProxy().withId("fsynljphuop")
+                    .withRemotePrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("iyntorzihle")
+                        .withActionsRequired("jswsrmslyz"))
+                    .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                    .withGroupConnectivityInformation(Arrays.asList(
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("smypyynpc", "pumnz", "mwzn"))
+                            .withRedirectMapId("wwrlkdmtncv").withPrivateLinkServiceArmRegion("otllxdyhgsyo"),
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("x", "queziky", "ggxkallatmelwuip"))
+                            .withRedirectMapId("hyrnxxmu").withPrivateLinkServiceArmRegion("dndrdvstkwqqtche"),
+                        new GroupConnectivityInformation()
+                            .withCustomerVisibleFqdns(Arrays.asList("pxgy", "agvrvmnpkuk", "himdbl"))
+                            .withRedirectMapId("njhf").withPrivateLinkServiceArmRegion("wmszkk"),
+                        new GroupConnectivityInformation().withCustomerVisibleFqdns(Arrays.asList("zel", "c", "r"))
+                            .withRedirectMapId("ddxbjhwuaanoz").withPrivateLinkServiceArmRegion("sphyoulpjrvxa")))))
+            .withConnectionDetails(Arrays.asList(new ConnectionDetails(), new ConnectionDetails(),
+                new ConnectionDetails(), new ConnectionDetails()));
         model = BinaryData.fromObject(model).toObject(RemotePrivateEndpoint.class);
-        Assertions.assertEquals("ljyoxgvcltb", model.id());
-        Assertions.assertEquals("ncghkje", model.location());
-        Assertions.assertEquals("zhbijhtxfv", model.immutableSubscriptionId());
-        Assertions.assertEquals("bfs", model.immutableResourceId());
-        Assertions.assertEquals("nehmpvecx", model.vnetTrafficTag());
-        Assertions.assertEquals("bfqkkr", model.manualPrivateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("ukgri", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("dhibnuq", model.manualPrivateLinkServiceConnections().get(0).requestMessage());
-        Assertions.assertEquals("axdbabph", model.privateLinkServiceConnections().get(0).name());
-        Assertions.assertEquals("qlfktsths", model.privateLinkServiceConnections().get(0).groupIds().get(0));
-        Assertions.assertEquals("axibxujw", model.privateLinkServiceConnections().get(0).requestMessage());
-        Assertions.assertEquals("bovpl", model.privateLinkServiceProxies().get(0).id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING,
-                model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "gy", model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "uosvmkfssxqukk",
-                model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("qytjrybnwjewgd", model.id());
+        Assertions.assertEquals("ervnaenqpehi", model.location());
+        Assertions.assertEquals("oygmift", model.immutableSubscriptionId());
+        Assertions.assertEquals("zdnds", model.immutableResourceId());
+        Assertions.assertEquals("nayqi", model.vnetTrafficTag());
+        Assertions.assertEquals("uhavhql", model.manualPrivateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("umaq", model.manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("tgccymvaolpss", model.manualPrivateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("kvmkqzeqq", model.privateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("tfz", model.privateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("hhvh", model.privateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("phsdyhto", model.privateLinkServiceProxies().get(0).id());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().status());
+        Assertions.assertEquals("owwquuvxz",
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lvithhqzonosgg",
+            model.privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("k", model.privateLinkServiceProxies().get(0).groupConnectivityInformation().get(0)
+            .customerVisibleFqdns().get(0));
+        Assertions.assertEquals("afcnih",
+            model.privateLinkServiceProxies().get(0).groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("qapnedgfbcv", model.privateLinkServiceProxies().get(0).groupConnectivityInformation()
+            .get(0).privateLinkServiceArmRegion());
     }
 }

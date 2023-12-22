@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Group connectivity details. */
+/**
+ * Group connectivity details.
+ */
 @Fluent
 public final class GroupConnectivityInformation {
     /*
@@ -48,8 +50,14 @@ public final class GroupConnectivityInformation {
     private String privateLinkServiceArmRegion;
 
     /**
+     * Creates an instance of GroupConnectivityInformation class.
+     */
+    public GroupConnectivityInformation() {
+    }
+
+    /**
      * Get the groupId property: Group ID.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -58,7 +66,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Get the memberName property: Member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -67,7 +75,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Get the customerVisibleFqdns property: List of customer visible FQDNs.
-     *
+     * 
      * @return the customerVisibleFqdns value.
      */
     public List<String> customerVisibleFqdns() {
@@ -76,7 +84,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Set the customerVisibleFqdns property: List of customer visible FQDNs.
-     *
+     * 
      * @param customerVisibleFqdns the customerVisibleFqdns value to set.
      * @return the GroupConnectivityInformation object itself.
      */
@@ -87,7 +95,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Get the internalFqdn property: Internal FQDN.
-     *
+     * 
      * @return the internalFqdn value.
      */
     public String internalFqdn() {
@@ -96,7 +104,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Get the redirectMapId property: Redirect map ID.
-     *
+     * 
      * @return the redirectMapId value.
      */
     public String redirectMapId() {
@@ -105,7 +113,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Set the redirectMapId property: Redirect map ID.
-     *
+     * 
      * @param redirectMapId the redirectMapId value to set.
      * @return the GroupConnectivityInformation object itself.
      */
@@ -116,7 +124,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Get the privateLinkServiceArmRegion property: PrivateLinkService ARM region.
-     *
+     * 
      * @return the privateLinkServiceArmRegion value.
      */
     public String privateLinkServiceArmRegion() {
@@ -125,7 +133,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Set the privateLinkServiceArmRegion property: PrivateLinkService ARM region.
-     *
+     * 
      * @param privateLinkServiceArmRegion the privateLinkServiceArmRegion value to set.
      * @return the GroupConnectivityInformation object itself.
      */
@@ -136,7 +144,7 @@ public final class GroupConnectivityInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

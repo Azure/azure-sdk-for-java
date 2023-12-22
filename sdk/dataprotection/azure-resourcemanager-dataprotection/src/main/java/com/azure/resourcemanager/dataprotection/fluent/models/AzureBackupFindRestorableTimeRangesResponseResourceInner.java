@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorable
 import com.azure.resourcemanager.dataprotection.models.DppResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List Restore Ranges Response. */
+/**
+ * List Restore Ranges Response.
+ */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesResponseResourceInner extends DppResource {
     /*
@@ -18,13 +20,15 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
     @JsonProperty(value = "properties")
     private AzureBackupFindRestorableTimeRangesResponse properties;
 
-    /** Creates an instance of AzureBackupFindRestorableTimeRangesResponseResourceInner class. */
+    /**
+     * Creates an instance of AzureBackupFindRestorableTimeRangesResponseResourceInner class.
+     */
     public AzureBackupFindRestorableTimeRangesResponseResourceInner() {
     }
 
     /**
      * Get the properties property: AzureBackupFindRestorableTimeRangesResponseResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public AzureBackupFindRestorableTimeRangesResponse properties() {
@@ -33,19 +37,19 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInner exte
 
     /**
      * Set the properties property: AzureBackupFindRestorableTimeRangesResponseResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AzureBackupFindRestorableTimeRangesResponseResourceInner object itself.
      */
-    public AzureBackupFindRestorableTimeRangesResponseResourceInner withProperties(
-        AzureBackupFindRestorableTimeRangesResponse properties) {
+    public AzureBackupFindRestorableTimeRangesResponseResourceInner
+        withProperties(AzureBackupFindRestorableTimeRangesResponse properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

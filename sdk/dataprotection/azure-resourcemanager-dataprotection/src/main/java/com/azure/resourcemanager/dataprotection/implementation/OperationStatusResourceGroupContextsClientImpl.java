@@ -31,24 +31,24 @@ import reactor.core.publisher.Mono;
  */
 public final class OperationStatusResourceGroupContextsClientImpl
     implements OperationStatusResourceGroupContextsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationStatusResourceGroupContextsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of OperationStatusResourceGroupContextsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusResourceGroupContextsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    OperationStatusResourceGroupContextsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(OperationStatusResourceGroupContextsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,73 +59,55 @@ public final class OperationStatusResourceGroupContextsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface OperationStatusResourceGroupContextsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/operationStatus/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/operationStatus/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status for an operation over a ResourceGroup's context along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String operationId) {
+    private Mono<Response<OperationResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -133,53 +115,42 @@ public final class OperationStatusResourceGroupContextsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status for an operation over a ResourceGroup's context along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String operationId, Context context) {
+    private Mono<Response<OperationResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                operationId,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), operationId, accept, context);
     }
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for an operation over a ResourceGroup's context on successful completion of {@link
-     *     Mono}.
+     * @return the operation status for an operation over a ResourceGroup's context on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResourceInner> getByResourceGroupAsync(String resourceGroupName, String operationId) {
@@ -189,7 +160,7 @@ public final class OperationStatusResourceGroupContextsClientImpl
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -199,14 +170,14 @@ public final class OperationStatusResourceGroupContextsClientImpl
      * @return the operation status for an operation over a ResourceGroup's context along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String operationId, Context context) {
+    public Response<OperationResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String operationId,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, operationId, context).block();
     }
 
     /**
      * Gets the operation status for an operation over a ResourceGroup's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

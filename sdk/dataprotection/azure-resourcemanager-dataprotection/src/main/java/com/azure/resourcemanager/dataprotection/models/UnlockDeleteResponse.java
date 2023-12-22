@@ -6,18 +6,20 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.resourcemanager.dataprotection.fluent.models.UnlockDeleteResponseInner;
 
-/** An immutable client-side representation of UnlockDeleteResponse. */
+/**
+ * An immutable client-side representation of UnlockDeleteResponse.
+ */
 public interface UnlockDeleteResponse {
     /**
      * Gets the unlockDeleteExpiryTime property: This is the time when unlock delete privileges will get expired.
-     *
+     * 
      * @return the unlockDeleteExpiryTime value.
      */
     String unlockDeleteExpiryTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.UnlockDeleteResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     UnlockDeleteResponseInner innerModel();

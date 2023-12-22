@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the HelpRPImpl type. */
-@ServiceClientBuilder(serviceClients = {HelpRPImpl.class})
+/**
+ * A builder for creating a new instance of the HelpRPImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { HelpRPImpl.class })
 public final class HelpRPBuilder {
     /*
      * server parameter
@@ -24,7 +26,7 @@ public final class HelpRPBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the HelpRPBuilder.
      */
@@ -40,7 +42,7 @@ public final class HelpRPBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the HelpRPBuilder.
      */
@@ -56,7 +58,7 @@ public final class HelpRPBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the HelpRPBuilder.
      */
@@ -72,7 +74,7 @@ public final class HelpRPBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the HelpRPBuilder.
      */
@@ -88,7 +90,7 @@ public final class HelpRPBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the HelpRPBuilder.
      */
@@ -99,25 +101,20 @@ public final class HelpRPBuilder {
 
     /**
      * Builds an instance of HelpRPImpl with the provided parameters.
-     *
+     * 
      * @return an instance of HelpRPImpl.
      */
     public HelpRPImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        HelpRPImpl client =
-            new HelpRPImpl(
-                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        HelpRPImpl client = new HelpRPImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, localEndpoint);
         return client;
     }
 }

@@ -10,14 +10,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * TargetCopySetting
- *
- * <p>Target copy settings.
+ * 
+ * Target copy settings.
  */
 @Fluent
 public final class TargetCopySetting {
     /*
      * CopyOption
-     *
+     * 
      * It can be CustomCopyOption or ImmediateCopyOption.
      */
     @JsonProperty(value = "copyAfter", required = true)
@@ -25,21 +25,23 @@ public final class TargetCopySetting {
 
     /*
      * DataStoreInfoBase
-     *
+     * 
      * Info of target datastore
      */
     @JsonProperty(value = "dataStore", required = true)
     private DataStoreInfoBase dataStore;
 
-    /** Creates an instance of TargetCopySetting class. */
+    /**
+     * Creates an instance of TargetCopySetting class.
+     */
     public TargetCopySetting() {
     }
 
     /**
      * Get the copyAfter property: CopyOption
-     *
-     * <p>It can be CustomCopyOption or ImmediateCopyOption.
-     *
+     * 
+     * It can be CustomCopyOption or ImmediateCopyOption.
+     * 
      * @return the copyAfter value.
      */
     public CopyOption copyAfter() {
@@ -48,9 +50,9 @@ public final class TargetCopySetting {
 
     /**
      * Set the copyAfter property: CopyOption
-     *
-     * <p>It can be CustomCopyOption or ImmediateCopyOption.
-     *
+     * 
+     * It can be CustomCopyOption or ImmediateCopyOption.
+     * 
      * @param copyAfter the copyAfter value to set.
      * @return the TargetCopySetting object itself.
      */
@@ -61,9 +63,9 @@ public final class TargetCopySetting {
 
     /**
      * Get the dataStore property: DataStoreInfoBase
-     *
-     * <p>Info of target datastore.
-     *
+     * 
+     * Info of target datastore.
+     * 
      * @return the dataStore value.
      */
     public DataStoreInfoBase dataStore() {
@@ -72,9 +74,9 @@ public final class TargetCopySetting {
 
     /**
      * Set the dataStore property: DataStoreInfoBase
-     *
-     * <p>Info of target datastore.
-     *
+     * 
+     * Info of target datastore.
+     * 
      * @param dataStore the dataStore value to set.
      * @return the TargetCopySetting object itself.
      */
@@ -85,21 +87,19 @@ public final class TargetCopySetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (copyAfter() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
         } else {
             copyAfter().validate();
         }
         if (dataStore() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
         } else {
             dataStore().validate();
         }

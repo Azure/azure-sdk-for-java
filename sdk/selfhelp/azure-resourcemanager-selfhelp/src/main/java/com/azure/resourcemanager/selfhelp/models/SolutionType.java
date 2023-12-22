@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Solution Type. */
+/**
+ * Solution Type.
+ */
 public final class SolutionType extends ExpandableStringEnum<SolutionType> {
-    /** Static value Diagnostics for SolutionType. */
+    /**
+     * Static value Diagnostics for SolutionType.
+     */
     public static final SolutionType DIAGNOSTICS = fromString("Diagnostics");
 
-    /** Static value Solutions for SolutionType. */
+    /**
+     * Static value Solutions for SolutionType.
+     */
     public static final SolutionType SOLUTIONS = fromString("Solutions");
 
     /**
      * Creates a new instance of SolutionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
 
     /**
      * Creates or finds a SolutionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SolutionType.
      */
@@ -38,7 +44,7 @@ public final class SolutionType extends ExpandableStringEnum<SolutionType> {
 
     /**
      * Gets known SolutionType values.
-     *
+     * 
      * @return known SolutionType values.
      */
     public static Collection<SolutionType> values() {

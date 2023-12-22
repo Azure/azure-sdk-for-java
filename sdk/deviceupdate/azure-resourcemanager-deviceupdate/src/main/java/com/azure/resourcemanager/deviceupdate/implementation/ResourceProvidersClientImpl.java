@@ -27,22 +27,28 @@ import com.azure.resourcemanager.deviceupdate.fluent.models.CheckNameAvailabilit
 import com.azure.resourcemanager.deviceupdate.models.CheckNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeviceUpdateImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DeviceUpdateImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,23 +58,20 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeviceUpdateResource")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DeviceUpdate/checknameavailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CheckNameAvailabilityRequest request,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") CheckNameAvailabilityRequest request, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Checks ADU resource name availability.
-     *
+     * 
      * @param request Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -76,19 +79,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest request) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest request) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -97,22 +96,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            request,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks ADU resource name availability.
-     *
+     * 
      * @param request Check Name Availability Request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,19 +112,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequest request, Context context) {
+    private Mono<Response<CheckNameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -142,19 +129,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                request,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), request, accept, context);
     }
 
     /**
      * Checks ADU resource name availability.
-     *
+     * 
      * @param request Check Name Availability Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -168,21 +149,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks ADU resource name availability.
-     *
-     * @param request Check Name Availability Request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request) {
-        return checkNameAvailabilityAsync(request).block();
-    }
-
-    /**
-     * Checks ADU resource name availability.
-     *
+     * 
      * @param request Check Name Availability Request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,8 +158,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context) {
+    public Response<CheckNameAvailabilityResponseInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request, Context context) {
         return checkNameAvailabilityWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Checks ADU resource name availability.
+     * 
+     * @param request Check Name Availability Request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request) {
+        return checkNameAvailabilityWithResponse(request, Context.NONE).getValue();
     }
 }

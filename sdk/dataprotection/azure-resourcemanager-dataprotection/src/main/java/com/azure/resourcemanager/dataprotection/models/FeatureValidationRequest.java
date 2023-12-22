@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for feature object. */
+/**
+ * Base class for feature object.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("FeatureValidationRequest")
 @Fluent
@@ -26,13 +28,15 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
     @JsonProperty(value = "featureName")
     private String featureName;
 
-    /** Creates an instance of FeatureValidationRequest class. */
+    /**
+     * Creates an instance of FeatureValidationRequest class.
+     */
     public FeatureValidationRequest() {
     }
 
     /**
      * Get the featureType property: backup support feature type.
-     *
+     * 
      * @return the featureType value.
      */
     public FeatureType featureType() {
@@ -41,7 +45,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Set the featureType property: backup support feature type.
-     *
+     * 
      * @param featureType the featureType value to set.
      * @return the FeatureValidationRequest object itself.
      */
@@ -52,7 +56,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Get the featureName property: backup support feature name.
-     *
+     * 
      * @return the featureName value.
      */
     public String featureName() {
@@ -61,7 +65,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Set the featureName property: backup support feature name.
-     *
+     * 
      * @param featureName the featureName value to set.
      * @return the FeatureValidationRequest object itself.
      */
@@ -72,7 +76,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

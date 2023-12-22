@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotebookWorkspaceName. */
+/**
+ * Defines values for NotebookWorkspaceName.
+ */
 public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWorkspaceName> {
-    /** Static value default for NotebookWorkspaceName. */
+    /**
+     * Static value default for NotebookWorkspaceName.
+     */
     public static final NotebookWorkspaceName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of NotebookWorkspaceName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
 
     /**
      * Creates or finds a NotebookWorkspaceName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NotebookWorkspaceName.
      */
@@ -35,7 +39,7 @@ public final class NotebookWorkspaceName extends ExpandableStringEnum<NotebookWo
 
     /**
      * Gets known NotebookWorkspaceName values.
-     *
+     * 
      * @return known NotebookWorkspaceName values.
      */
     public static Collection<NotebookWorkspaceName> values() {

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Restore target info for Item level restore operation. */
+/**
+ * Restore target info for Item level restore operation.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ItemLevelRestoreTargetInfo")
 @Fluent
@@ -24,7 +26,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /*
      * Datasource
-     *
+     * 
      * Information of target DS
      */
     @JsonProperty(value = "datasourceInfo", required = true)
@@ -32,7 +34,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /*
      * DatasourceSet
-     *
+     * 
      * Information of target DS Set
      */
     @JsonProperty(value = "datasourceSetInfo")
@@ -44,13 +46,15 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
     @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
 
-    /** Creates an instance of ItemLevelRestoreTargetInfo class. */
+    /**
+     * Creates an instance of ItemLevelRestoreTargetInfo class.
+     */
     public ItemLevelRestoreTargetInfo() {
     }
 
     /**
      * Get the restoreCriteria property: Restore Criteria.
-     *
+     * 
      * @return the restoreCriteria value.
      */
     public List<ItemLevelRestoreCriteria> restoreCriteria() {
@@ -59,7 +63,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the restoreCriteria property: Restore Criteria.
-     *
+     * 
      * @param restoreCriteria the restoreCriteria value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
      */
@@ -70,9 +74,9 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceInfo property: Datasource
-     *
-     * <p>Information of target DS.
-     *
+     * 
+     * Information of target DS.
+     * 
      * @return the datasourceInfo value.
      */
     public Datasource datasourceInfo() {
@@ -81,9 +85,9 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceInfo property: Datasource
-     *
-     * <p>Information of target DS.
-     *
+     * 
+     * Information of target DS.
+     * 
      * @param datasourceInfo the datasourceInfo value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
      */
@@ -94,9 +98,9 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceSetInfo property: DatasourceSet
-     *
-     * <p>Information of target DS Set.
-     *
+     * 
+     * Information of target DS Set.
+     * 
      * @return the datasourceSetInfo value.
      */
     public DatasourceSet datasourceSetInfo() {
@@ -105,9 +109,9 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceSetInfo property: DatasourceSet
-     *
-     * <p>Information of target DS Set.
-     *
+     * 
+     * Information of target DS Set.
+     * 
      * @param datasourceSetInfo the datasourceSetInfo value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
      */
@@ -118,7 +122,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @return the datasourceAuthCredentials value.
      */
     public AuthCredentials datasourceAuthCredentials() {
@@ -127,7 +131,7 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @param datasourceAuthCredentials the datasourceAuthCredentials value to set.
      * @return the ItemLevelRestoreTargetInfo object itself.
      */
@@ -136,14 +140,18 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ItemLevelRestoreTargetInfo withRecoveryOption(RecoveryOption recoveryOption) {
         super.withRecoveryOption(recoveryOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ItemLevelRestoreTargetInfo withRestoreLocation(String restoreLocation) {
         super.withRestoreLocation(restoreLocation);
@@ -152,25 +160,21 @@ public final class ItemLevelRestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (restoreCriteria() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restoreCriteria in model ItemLevelRestoreTargetInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restoreCriteria in model ItemLevelRestoreTargetInfo"));
         } else {
             restoreCriteria().forEach(e -> e.validate());
         }
         if (datasourceInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property datasourceInfo in model ItemLevelRestoreTargetInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property datasourceInfo in model ItemLevelRestoreTargetInfo"));
         } else {
             datasourceInfo().validate();
         }

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * StorageSetting
- *
- * <p>Storage setting.
+ * 
+ * Storage setting.
  */
 @Fluent
 public final class StorageSetting {
@@ -26,13 +26,15 @@ public final class StorageSetting {
     @JsonProperty(value = "type")
     private StorageSettingTypes type;
 
-    /** Creates an instance of StorageSetting class. */
+    /**
+     * Creates an instance of StorageSetting class.
+     */
     public StorageSetting() {
     }
 
     /**
      * Get the datastoreType property: Gets or sets the type of the datastore.
-     *
+     * 
      * @return the datastoreType value.
      */
     public StorageSettingStoreTypes datastoreType() {
@@ -41,7 +43,7 @@ public final class StorageSetting {
 
     /**
      * Set the datastoreType property: Gets or sets the type of the datastore.
-     *
+     * 
      * @param datastoreType the datastoreType value to set.
      * @return the StorageSetting object itself.
      */
@@ -52,7 +54,7 @@ public final class StorageSetting {
 
     /**
      * Get the type property: Gets or sets the type.
-     *
+     * 
      * @return the type value.
      */
     public StorageSettingTypes type() {
@@ -61,7 +63,7 @@ public final class StorageSetting {
 
     /**
      * Set the type property: Gets or sets the type.
-     *
+     * 
      * @param type the type value to set.
      * @return the StorageSetting object itself.
      */
@@ -72,7 +74,7 @@ public final class StorageSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

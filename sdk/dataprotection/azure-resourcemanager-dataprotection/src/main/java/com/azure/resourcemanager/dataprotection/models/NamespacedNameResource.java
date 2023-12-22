@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * NamespacedNameResource
- *
- * <p>Class to refer resources which contains namespace and name.
+ * 
+ * Class to refer resources which contains namespace and name.
  */
 @Fluent
 public final class NamespacedNameResource {
@@ -26,13 +26,15 @@ public final class NamespacedNameResource {
     @JsonProperty(value = "namespace")
     private String namespace;
 
-    /** Creates an instance of NamespacedNameResource class. */
+    /**
+     * Creates an instance of NamespacedNameResource class.
+     */
     public NamespacedNameResource() {
     }
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +43,7 @@ public final class NamespacedNameResource {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the NamespacedNameResource object itself.
      */
@@ -52,7 +54,7 @@ public final class NamespacedNameResource {
 
     /**
      * Get the namespace property: Namespace in which the resource exists.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -61,7 +63,7 @@ public final class NamespacedNameResource {
 
     /**
      * Set the namespace property: Namespace in which the resource exists.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the NamespacedNameResource object itself.
      */
@@ -72,7 +74,7 @@ public final class NamespacedNameResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.servicefabric.models.AvailableOperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Available operation list result. */
+/**
+ * Available operation list result.
+ */
 @Fluent
 public final class OperationResultInner {
     /*
@@ -41,13 +43,15 @@ public final class OperationResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationResultInner class. */
+    /**
+     * Creates an instance of OperationResultInner class.
+     */
     public OperationResultInner() {
     }
 
     /**
      * Get the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class OperationResultInner {
 
     /**
      * Set the name property: The name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResultInner object itself.
      */
@@ -67,7 +71,7 @@ public final class OperationResultInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -76,7 +80,7 @@ public final class OperationResultInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationResultInner object itself.
      */
@@ -87,7 +91,7 @@ public final class OperationResultInner {
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public AvailableOperationDisplay display() {
@@ -96,7 +100,7 @@ public final class OperationResultInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationResultInner object itself.
      */
@@ -107,7 +111,7 @@ public final class OperationResultInner {
 
     /**
      * Get the origin property: Origin result.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -116,7 +120,7 @@ public final class OperationResultInner {
 
     /**
      * Set the origin property: Origin result.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationResultInner object itself.
      */
@@ -127,7 +131,7 @@ public final class OperationResultInner {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -136,7 +140,7 @@ public final class OperationResultInner {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationResultInner object itself.
      */
@@ -147,7 +151,7 @@ public final class OperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
