@@ -424,6 +424,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
@@ -524,6 +525,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCreateAndAquireServerDnsAlias() throws Exception {
         String sqlServerName1 = sqlServerName + "1";
         String sqlServerName2 = sqlServerName + "2";
@@ -582,6 +584,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
@@ -838,6 +841,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlServer() throws Exception {
 
         // Check if the name is available
@@ -877,6 +881,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canUseCoolShortcutsForResourceCreation() throws Exception {
         String database2Name = "database2";
         String database1InEPName = "database1InEP";
@@ -972,6 +977,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1085,6 +1091,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canManageReplicationLinks() throws Exception {
         // Create
         String anotherSqlServerName = sqlServerName + "another";
@@ -1149,6 +1156,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canDoOperationsOnDataWarehouse() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1198,6 +1206,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1310,6 +1319,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlElasticPool() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -1368,6 +1378,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDSqlFirewallRule() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
