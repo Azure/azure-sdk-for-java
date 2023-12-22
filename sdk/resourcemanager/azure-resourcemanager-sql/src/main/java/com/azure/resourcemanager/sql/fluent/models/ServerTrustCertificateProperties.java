@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server trust certificate. */
+/**
+ * The properties of a server trust certificate.
+ */
 @Fluent
 public final class ServerTrustCertificateProperties {
     /*
@@ -28,13 +30,15 @@ public final class ServerTrustCertificateProperties {
     @JsonProperty(value = "certificateName", access = JsonProperty.Access.WRITE_ONLY)
     private String certificateName;
 
-    /** Creates an instance of ServerTrustCertificateProperties class. */
+    /**
+     * Creates an instance of ServerTrustCertificateProperties class.
+     */
     public ServerTrustCertificateProperties() {
     }
 
     /**
      * Get the publicBlob property: The certificate public blob.
-     *
+     * 
      * @return the publicBlob value.
      */
     public String publicBlob() {
@@ -43,7 +47,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Set the publicBlob property: The certificate public blob.
-     *
+     * 
      * @param publicBlob the publicBlob value to set.
      * @return the ServerTrustCertificateProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Get the thumbprint property: The certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -63,7 +67,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Get the certificateName property: The certificate name.
-     *
+     * 
      * @return the certificateName value.
      */
     public String certificateName() {
@@ -72,7 +76,7 @@ public final class ServerTrustCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

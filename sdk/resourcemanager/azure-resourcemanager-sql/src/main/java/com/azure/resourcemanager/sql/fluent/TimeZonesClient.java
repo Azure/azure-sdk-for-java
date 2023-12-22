@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.TimeZoneInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TimeZonesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TimeZonesClient.
+ */
 public interface TimeZonesClient {
     /**
      * Gets a list of managed instance time zones by location.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +31,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a list of managed instance time zones by location.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a list of managed instance time zones by location.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +56,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a managed instance time zone.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @param timeZoneId The timeZoneId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a managed instance time zone.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @param timeZoneId The timeZoneId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a managed instance time zone.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @param timeZoneId The timeZoneId parameter.
      * @param context The context to associate with this operation.
@@ -94,7 +96,7 @@ public interface TimeZonesClient {
 
     /**
      * Gets a managed instance time zone.
-     *
+     * 
      * @param locationName The locationName parameter.
      * @param timeZoneId The timeZoneId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

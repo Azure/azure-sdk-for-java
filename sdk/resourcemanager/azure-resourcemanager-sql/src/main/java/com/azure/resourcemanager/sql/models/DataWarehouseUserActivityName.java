@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataWarehouseUserActivityName. */
+/**
+ * Defines values for DataWarehouseUserActivityName.
+ */
 public final class DataWarehouseUserActivityName extends ExpandableStringEnum<DataWarehouseUserActivityName> {
-    /** Static value current for DataWarehouseUserActivityName. */
+    /**
+     * Static value current for DataWarehouseUserActivityName.
+     */
     public static final DataWarehouseUserActivityName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of DataWarehouseUserActivityName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataWarehouseUserActivityName() {
+    }
+
+    /**
      * Creates or finds a DataWarehouseUserActivityName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataWarehouseUserActivityName.
      */
@@ -26,7 +39,7 @@ public final class DataWarehouseUserActivityName extends ExpandableStringEnum<Da
 
     /**
      * Gets known DataWarehouseUserActivityName values.
-     *
+     * 
      * @return known DataWarehouseUserActivityName values.
      */
     public static Collection<DataWarehouseUserActivityName> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains error information for an Azure SQL Database, Server or Elastic Pool Recommended Action. */
+/**
+ * Contains error information for an Azure SQL Database, Server or Elastic Pool Recommended Action.
+ */
 @Immutable
 public final class RecommendedActionErrorInfo {
     /*
@@ -22,14 +24,16 @@ public final class RecommendedActionErrorInfo {
     @JsonProperty(value = "isRetryable", access = JsonProperty.Access.WRITE_ONLY)
     private IsRetryable isRetryable;
 
-    /** Creates an instance of RecommendedActionErrorInfo class. */
+    /**
+     * Creates an instance of RecommendedActionErrorInfo class.
+     */
     public RecommendedActionErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Gets the reason why the recommended action was put to error state. e.g.,
      * DatabaseHasQdsOff, IndexAlreadyExists.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -39,7 +43,7 @@ public final class RecommendedActionErrorInfo {
     /**
      * Get the isRetryable property: Gets whether the error could be ignored and recommended action could be retried.
      * Possible values are: Yes/No.
-     *
+     * 
      * @return the isRetryable value.
      */
     public IsRetryable isRetryable() {
@@ -48,7 +52,7 @@ public final class RecommendedActionErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

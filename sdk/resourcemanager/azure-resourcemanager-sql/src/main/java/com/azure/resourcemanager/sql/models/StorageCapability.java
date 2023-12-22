@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The storage account type capability. */
+/**
+ * The storage account type capability.
+ */
 @Fluent
 public final class StorageCapability {
     /*
@@ -28,13 +30,15 @@ public final class StorageCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of StorageCapability class. */
+    /**
+     * Creates an instance of StorageCapability class.
+     */
     public StorageCapability() {
     }
 
     /**
      * Get the storageAccountType property: The storage account type for the database's backups.
-     *
+     * 
      * @return the storageAccountType value.
      */
     public StorageCapabilityStorageAccountType storageAccountType() {
@@ -43,7 +47,7 @@ public final class StorageCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -52,7 +56,7 @@ public final class StorageCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -61,7 +65,7 @@ public final class StorageCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the StorageCapability object itself.
      */
@@ -72,7 +76,7 @@ public final class StorageCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

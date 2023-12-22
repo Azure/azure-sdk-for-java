@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono;
 public interface RestorableDroppedManagedDatabasesClient {
     /**
      * Gets a list of restorable dropped managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,14 +29,14 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a list of restorable dropped managed databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RestorableDroppedManagedDatabaseInner> listByInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<RestorableDroppedManagedDatabaseInner> listByInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of restorable dropped managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,14 +44,14 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName);
+    PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of restorable dropped managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,31 +60,31 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a list of restorable dropped managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<RestorableDroppedManagedDatabaseInner> listByInstance(String resourceGroupName,
+        String managedInstanceName, Context context);
 
     /**
      * Gets a restorable dropped managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped managed database along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a restorable dropped managed database along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
+    Mono<Response<RestorableDroppedManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId);
 
     /**
      * Gets a restorable dropped managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,14 +93,14 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a restorable dropped managed database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RestorableDroppedManagedDatabaseInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
+    Mono<RestorableDroppedManagedDatabaseInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId);
 
     /**
      * Gets a restorable dropped managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @param context The context to associate with this operation.
@@ -110,14 +110,14 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a restorable dropped managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RestorableDroppedManagedDatabaseInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context);
+    Response<RestorableDroppedManagedDatabaseInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, String restorableDroppedDatabaseId, Context context);
 
     /**
      * Gets a restorable dropped managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,6 +126,6 @@ public interface RestorableDroppedManagedDatabasesClient {
      * @return a restorable dropped managed database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorableDroppedManagedDatabaseInner get(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId);
+    RestorableDroppedManagedDatabaseInner get(String resourceGroupName, String managedInstanceName,
+        String restorableDroppedDatabaseId);
 }

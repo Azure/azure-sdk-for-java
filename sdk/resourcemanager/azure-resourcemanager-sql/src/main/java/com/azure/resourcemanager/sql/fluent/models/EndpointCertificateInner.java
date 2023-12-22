@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Certificate used on an endpoint on the Managed Instance. */
+/**
+ * Certificate used on an endpoint on the Managed Instance.
+ */
 @Fluent
 public final class EndpointCertificateInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class EndpointCertificateInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EndpointCertificateProperties innerProperties;
 
-    /** Creates an instance of EndpointCertificateInner class. */
+    /**
+     * Creates an instance of EndpointCertificateInner class.
+     */
     public EndpointCertificateInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EndpointCertificateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class EndpointCertificateInner extends ProxyResource {
 
     /**
      * Get the publicBlob property: The certificate public blob.
-     *
+     * 
      * @return the publicBlob value.
      */
     public String publicBlob() {
@@ -41,7 +45,7 @@ public final class EndpointCertificateInner extends ProxyResource {
 
     /**
      * Set the publicBlob property: The certificate public blob.
-     *
+     * 
      * @param publicBlob the publicBlob value to set.
      * @return the EndpointCertificateInner object itself.
      */
@@ -55,7 +59,7 @@ public final class EndpointCertificateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

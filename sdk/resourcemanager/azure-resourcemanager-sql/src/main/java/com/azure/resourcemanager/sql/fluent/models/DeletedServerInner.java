@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A deleted server. */
+/**
+ * A deleted server.
+ */
 @Immutable
 public final class DeletedServerInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class DeletedServerInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DeletedServerProperties innerProperties;
 
-    /** Creates an instance of DeletedServerInner class. */
+    /**
+     * Creates an instance of DeletedServerInner class.
+     */
     public DeletedServerInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedServerProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class DeletedServerInner extends ProxyResource {
 
     /**
      * Get the version property: The version of the deleted server.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -42,7 +46,7 @@ public final class DeletedServerInner extends ProxyResource {
 
     /**
      * Get the deletionTime property: The deletion time of the deleted server.
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -51,7 +55,7 @@ public final class DeletedServerInner extends ProxyResource {
 
     /**
      * Get the originalId property: The original ID of the server before deletion.
-     *
+     * 
      * @return the originalId value.
      */
     public String originalId() {
@@ -60,7 +64,7 @@ public final class DeletedServerInner extends ProxyResource {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -69,7 +73,7 @@ public final class DeletedServerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,11 +6,15 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsBackupSetProperties;
+import com.azure.resourcemanager.sql.models.ManagedDatabaseRestoreDetailsUnrestorableFileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A managed database restore details. */
+/**
+ * A managed database restore details.
+ */
 @Immutable
 public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResource {
     /*
@@ -19,13 +23,15 @@ public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResourc
     @JsonProperty(value = "properties")
     private ManagedDatabaseRestoreDetailsProperties innerProperties;
 
-    /** Creates an instance of ManagedDatabaseRestoreDetailsResultInner class. */
+    /**
+     * Creates an instance of ManagedDatabaseRestoreDetailsResultInner class.
+     */
     public ManagedDatabaseRestoreDetailsResultInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedDatabaseRestoreDetailsProperties innerProperties() {
@@ -33,8 +39,17 @@ public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResourc
     }
 
     /**
+     * Get the type property: Restore type.
+     * 
+     * @return the type value.
+     */
+    public String typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
      * Get the status property: Restore status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -42,62 +57,17 @@ public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResourc
     }
 
     /**
-     * Get the currentRestoringFileName property: Current restoring file name.
-     *
-     * @return the currentRestoringFileName value.
+     * Get the blockReason property: The reason why restore is in Blocked state.
+     * 
+     * @return the blockReason value.
      */
-    public String currentRestoringFileName() {
-        return this.innerProperties() == null ? null : this.innerProperties().currentRestoringFileName();
-    }
-
-    /**
-     * Get the lastRestoredFileName property: Last restored file name.
-     *
-     * @return the lastRestoredFileName value.
-     */
-    public String lastRestoredFileName() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileName();
-    }
-
-    /**
-     * Get the lastRestoredFileTime property: Last restored file time.
-     *
-     * @return the lastRestoredFileTime value.
-     */
-    public OffsetDateTime lastRestoredFileTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileTime();
-    }
-
-    /**
-     * Get the percentCompleted property: Percent completed.
-     *
-     * @return the percentCompleted value.
-     */
-    public Double percentCompleted() {
-        return this.innerProperties() == null ? null : this.innerProperties().percentCompleted();
-    }
-
-    /**
-     * Get the unrestorableFiles property: List of unrestorable files.
-     *
-     * @return the unrestorableFiles value.
-     */
-    public List<String> unrestorableFiles() {
-        return this.innerProperties() == null ? null : this.innerProperties().unrestorableFiles();
-    }
-
-    /**
-     * Get the numberOfFilesDetected property: Number of files detected.
-     *
-     * @return the numberOfFilesDetected value.
-     */
-    public Long numberOfFilesDetected() {
-        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesDetected();
+    public String blockReason() {
+        return this.innerProperties() == null ? null : this.innerProperties().blockReason();
     }
 
     /**
      * Get the lastUploadedFileName property: Last uploaded file name.
-     *
+     * 
      * @return the lastUploadedFileName value.
      */
     public String lastUploadedFileName() {
@@ -106,7 +76,7 @@ public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResourc
 
     /**
      * Get the lastUploadedFileTime property: Last uploaded file time.
-     *
+     * 
      * @return the lastUploadedFileTime value.
      */
     public OffsetDateTime lastUploadedFileTime() {
@@ -114,17 +84,161 @@ public final class ManagedDatabaseRestoreDetailsResultInner extends ProxyResourc
     }
 
     /**
-     * Get the blockReason property: The reason why restore is in Blocked state.
-     *
-     * @return the blockReason value.
+     * Get the lastRestoredFileName property: Last restored file name.
+     * 
+     * @return the lastRestoredFileName value.
      */
-    public String blockReason() {
-        return this.innerProperties() == null ? null : this.innerProperties().blockReason();
+    public String lastRestoredFileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileName();
+    }
+
+    /**
+     * Get the lastRestoredFileTime property: Last restored file time.
+     * 
+     * @return the lastRestoredFileTime value.
+     */
+    public OffsetDateTime lastRestoredFileTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastRestoredFileTime();
+    }
+
+    /**
+     * Get the percentCompleted property: Percent completed.
+     * 
+     * @return the percentCompleted value.
+     */
+    public Integer percentCompleted() {
+        return this.innerProperties() == null ? null : this.innerProperties().percentCompleted();
+    }
+
+    /**
+     * Get the currentRestoredSizeMB property: Current restored size MB.
+     * 
+     * @return the currentRestoredSizeMB value.
+     */
+    public Integer currentRestoredSizeMB() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentRestoredSizeMB();
+    }
+
+    /**
+     * Get the currentRestorePlanSizeMB property: Current restore plan size MB.
+     * 
+     * @return the currentRestorePlanSizeMB value.
+     */
+    public Integer currentRestorePlanSizeMB() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentRestorePlanSizeMB();
+    }
+
+    /**
+     * Get the currentBackupType property: Current backup type.
+     * 
+     * @return the currentBackupType value.
+     */
+    public String currentBackupType() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentBackupType();
+    }
+
+    /**
+     * Get the currentRestoringFileName property: Current restoring file name.
+     * 
+     * @return the currentRestoringFileName value.
+     */
+    public String currentRestoringFileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentRestoringFileName();
+    }
+
+    /**
+     * Get the numberOfFilesDetected property: Number of files detected.
+     * 
+     * @return the numberOfFilesDetected value.
+     */
+    public Integer numberOfFilesDetected() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesDetected();
+    }
+
+    /**
+     * Get the numberOfFilesQueued property: Number of files queued.
+     * 
+     * @return the numberOfFilesQueued value.
+     */
+    public Integer numberOfFilesQueued() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesQueued();
+    }
+
+    /**
+     * Get the numberOfFilesSkipped property: Number of files skipped.
+     * 
+     * @return the numberOfFilesSkipped value.
+     */
+    public Integer numberOfFilesSkipped() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesSkipped();
+    }
+
+    /**
+     * Get the numberOfFilesRestoring property: Number of files restoring.
+     * 
+     * @return the numberOfFilesRestoring value.
+     */
+    public Integer numberOfFilesRestoring() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesRestoring();
+    }
+
+    /**
+     * Get the numberOfFilesRestored property: Number of files restored.
+     * 
+     * @return the numberOfFilesRestored value.
+     */
+    public Integer numberOfFilesRestored() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesRestored();
+    }
+
+    /**
+     * Get the numberOfFilesUnrestorable property: Number of files unrestorable.
+     * 
+     * @return the numberOfFilesUnrestorable value.
+     */
+    public Integer numberOfFilesUnrestorable() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfFilesUnrestorable();
+    }
+
+    /**
+     * Get the fullBackupSets property: Full backup sets.
+     * 
+     * @return the fullBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> fullBackupSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().fullBackupSets();
+    }
+
+    /**
+     * Get the diffBackupSets property: Diff backup sets.
+     * 
+     * @return the diffBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> diffBackupSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().diffBackupSets();
+    }
+
+    /**
+     * Get the logBackupSets property: Log backup sets.
+     * 
+     * @return the logBackupSets value.
+     */
+    public List<ManagedDatabaseRestoreDetailsBackupSetProperties> logBackupSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().logBackupSets();
+    }
+
+    /**
+     * Get the unrestorableFiles property: Unrestorable files.
+     * 
+     * @return the unrestorableFiles value.
+     */
+    public List<ManagedDatabaseRestoreDetailsUnrestorableFileProperties> unrestorableFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().unrestorableFiles();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

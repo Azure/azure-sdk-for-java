@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.SubscriptionUsageInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubscriptionUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubscriptionUsagesClient.
+ */
 public interface SubscriptionUsagesClient {
     /**
      * Gets all subscription usage metrics in a given location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +31,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets all subscription usage metrics in a given location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets all subscription usage metrics in a given location.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +56,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets a subscription usage metric.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets a subscription usage metric.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets a subscription usage metric.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param usageName Name of usage metric to return.
      * @param context The context to associate with this operation.
@@ -94,7 +96,7 @@ public interface SubscriptionUsagesClient {
 
     /**
      * Gets a subscription usage metric.
-     *
+     * 
      * @param locationName The name of the region where the resource is located.
      * @param usageName Name of usage metric to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

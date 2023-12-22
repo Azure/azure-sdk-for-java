@@ -12,31 +12,33 @@ import com.azure.resourcemanager.sql.fluent.models.RecommendedActionInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseRecommendedActionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseRecommendedActionsClient.
+ */
 public interface DatabaseRecommendedActionsClient {
     /**
      * Gets list of Database Recommended Actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Database Recommended Actions along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return list of Database Recommended Actions along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<RecommendedActionInner>>> listByDatabaseAdvisorWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String advisorName);
+    Mono<Response<List<RecommendedActionInner>>> listByDatabaseAdvisorWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String advisorName);
 
     /**
      * Gets list of Database Recommended Actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -46,14 +48,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return list of Database Recommended Actions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<RecommendedActionInner>> listByDatabaseAdvisorAsync(
-        String resourceGroupName, String serverName, String databaseName, String advisorName);
+    Mono<List<RecommendedActionInner>> listByDatabaseAdvisorAsync(String resourceGroupName, String serverName,
+        String databaseName, String advisorName);
 
     /**
      * Gets list of Database Recommended Actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -64,14 +66,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return list of Database Recommended Actions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<RecommendedActionInner>> listByDatabaseAdvisorWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String advisorName, Context context);
+    Response<List<RecommendedActionInner>> listByDatabaseAdvisorWithResponse(String resourceGroupName,
+        String serverName, String databaseName, String advisorName, Context context);
 
     /**
      * Gets list of Database Recommended Actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -81,14 +83,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return list of Database Recommended Actions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<RecommendedActionInner> listByDatabaseAdvisor(
-        String resourceGroupName, String serverName, String databaseName, String advisorName);
+    List<RecommendedActionInner> listByDatabaseAdvisor(String resourceGroupName, String serverName, String databaseName,
+        String advisorName);
 
     /**
      * Gets a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -99,18 +101,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return a database recommended action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecommendedActionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName);
+    Mono<Response<RecommendedActionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String advisorName, String recommendedActionName);
 
     /**
      * Gets a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -121,18 +119,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return a database recommended action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecommendedActionInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName);
+    Mono<RecommendedActionInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String advisorName, String recommendedActionName);
 
     /**
      * Gets a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -144,19 +138,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return a database recommended action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecommendedActionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName,
-        Context context);
+    Response<RecommendedActionInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String advisorName, String recommendedActionName, Context context);
 
     /**
      * Gets a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -167,18 +156,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return a database recommended action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecommendedActionInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
+    RecommendedActionInner get(String resourceGroupName, String serverName, String databaseName, String advisorName,
         String recommendedActionName);
 
     /**
      * Updates a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -188,22 +173,17 @@ public interface DatabaseRecommendedActionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database, Server or Elastic Pool Recommended Action along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RecommendedActionInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName,
-        RecommendedActionInner parameters);
+    Mono<Response<RecommendedActionInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String advisorName, String recommendedActionName, RecommendedActionInner parameters);
 
     /**
      * Updates a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -215,19 +195,14 @@ public interface DatabaseRecommendedActionsClient {
      * @return database, Server or Elastic Pool Recommended Action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RecommendedActionInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName,
-        RecommendedActionInner parameters);
+    Mono<RecommendedActionInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        String advisorName, String recommendedActionName, RecommendedActionInner parameters);
 
     /**
      * Updates a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -240,20 +215,15 @@ public interface DatabaseRecommendedActionsClient {
      * @return database, Server or Elastic Pool Recommended Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecommendedActionInner> updateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName,
-        RecommendedActionInner parameters,
+    Response<RecommendedActionInner> updateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, String advisorName, String recommendedActionName, RecommendedActionInner parameters,
         Context context);
 
     /**
      * Updates a database recommended action.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advisorName The name of the Database Advisor.
@@ -265,11 +235,6 @@ public interface DatabaseRecommendedActionsClient {
      * @return database, Server or Elastic Pool Recommended Action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecommendedActionInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String advisorName,
-        String recommendedActionName,
-        RecommendedActionInner parameters);
+    RecommendedActionInner update(String resourceGroupName, String serverName, String databaseName, String advisorName,
+        String recommendedActionName, RecommendedActionInner parameters);
 }

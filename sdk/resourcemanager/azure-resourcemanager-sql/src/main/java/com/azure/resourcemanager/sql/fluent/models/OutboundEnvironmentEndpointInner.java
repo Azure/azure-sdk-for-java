@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An endpoint that the managed instance service requires outbound network access to. */
+/**
+ * An endpoint that the managed instance service requires outbound network access to.
+ */
 @Immutable
 public final class OutboundEnvironmentEndpointInner {
     /*
@@ -24,14 +26,16 @@ public final class OutboundEnvironmentEndpointInner {
     @JsonProperty(value = "endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of OutboundEnvironmentEndpointInner class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointInner class.
+     */
     public OutboundEnvironmentEndpointInner() {
     }
 
     /**
      * Get the category property: The type of service accessed by the managed instance service, e.g., Azure Storage,
      * Azure Active Directory, etc.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -41,7 +45,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Get the endpoints property: The endpoints that the managed instance service communicates with in order to
      * function correctly.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -50,7 +54,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

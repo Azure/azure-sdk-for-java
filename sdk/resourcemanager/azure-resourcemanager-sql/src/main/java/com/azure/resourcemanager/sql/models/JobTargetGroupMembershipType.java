@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Whether the target is included or excluded from the group. */
+/**
+ * Whether the target is included or excluded from the group.
+ */
 public enum JobTargetGroupMembershipType {
-    /** Enum value Include. */
+    /**
+     * Enum value Include.
+     */
     INCLUDE("Include"),
 
-    /** Enum value Exclude. */
+    /**
+     * Enum value Exclude.
+     */
     EXCLUDE("Exclude");
 
-    /** The actual serialized value for a JobTargetGroupMembershipType instance. */
+    /**
+     * The actual serialized value for a JobTargetGroupMembershipType instance.
+     */
     private final String value;
 
     JobTargetGroupMembershipType(String value) {
@@ -24,7 +32,7 @@ public enum JobTargetGroupMembershipType {
 
     /**
      * Parses a serialized value to a JobTargetGroupMembershipType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed JobTargetGroupMembershipType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum JobTargetGroupMembershipType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ImportExportExtensionsOperati
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Import export operation extensions list. */
+/**
+ * Import export operation extensions list.
+ */
 @Immutable
 public final class ImportExportExtensionsOperationListResult {
     /*
@@ -24,13 +26,15 @@ public final class ImportExportExtensionsOperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ImportExportExtensionsOperationListResult class. */
+    /**
+     * Creates an instance of ImportExportExtensionsOperationListResult class.
+     */
     public ImportExportExtensionsOperationListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ImportExportExtensionsOperationResultInner> value() {
@@ -39,7 +43,7 @@ public final class ImportExportExtensionsOperationListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ImportExportExtensionsOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

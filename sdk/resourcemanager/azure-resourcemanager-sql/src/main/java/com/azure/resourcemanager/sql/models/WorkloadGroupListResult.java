@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.WorkloadGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of workload groups. */
+/**
+ * A list of workload groups.
+ */
 @Immutable
 public final class WorkloadGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class WorkloadGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkloadGroupListResult class. */
+    /**
+     * Creates an instance of WorkloadGroupListResult class.
+     */
     public WorkloadGroupListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkloadGroupInner> value() {
@@ -39,7 +43,7 @@ public final class WorkloadGroupListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class WorkloadGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

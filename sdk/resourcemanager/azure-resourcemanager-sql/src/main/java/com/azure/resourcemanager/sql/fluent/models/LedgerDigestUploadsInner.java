@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.LedgerDigestUploadsState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure SQL Database ledger digest upload settings. */
+/**
+ * Azure SQL Database ledger digest upload settings.
+ */
 @Fluent
 public final class LedgerDigestUploadsInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class LedgerDigestUploadsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private LedgerDigestUploadsProperties innerProperties;
 
-    /** Creates an instance of LedgerDigestUploadsInner class. */
+    /**
+     * Creates an instance of LedgerDigestUploadsInner class.
+     */
     public LedgerDigestUploadsInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LedgerDigestUploadsProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class LedgerDigestUploadsInner extends ProxyResource {
     /**
      * Get the digestStorageEndpoint property: The digest storage endpoint, which must be either an Azure blob storage
      * endpoint or an URI for Azure Confidential Ledger.
-     *
+     * 
      * @return the digestStorageEndpoint value.
      */
     public String digestStorageEndpoint() {
@@ -44,7 +48,7 @@ public final class LedgerDigestUploadsInner extends ProxyResource {
     /**
      * Set the digestStorageEndpoint property: The digest storage endpoint, which must be either an Azure blob storage
      * endpoint or an URI for Azure Confidential Ledger.
-     *
+     * 
      * @param digestStorageEndpoint the digestStorageEndpoint value to set.
      * @return the LedgerDigestUploadsInner object itself.
      */
@@ -58,7 +62,7 @@ public final class LedgerDigestUploadsInner extends ProxyResource {
 
     /**
      * Get the state property: Specifies the state of ledger digest upload.
-     *
+     * 
      * @return the state value.
      */
     public LedgerDigestUploadsState state() {
@@ -67,7 +71,7 @@ public final class LedgerDigestUploadsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

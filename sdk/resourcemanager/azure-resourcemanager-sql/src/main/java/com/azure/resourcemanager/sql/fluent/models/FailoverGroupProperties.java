@@ -13,7 +13,9 @@ import com.azure.resourcemanager.sql.models.PartnerInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a failover group. */
+/**
+ * Properties of a failover group.
+ */
 @Fluent
 public final class FailoverGroupProperties {
     /*
@@ -52,13 +54,15 @@ public final class FailoverGroupProperties {
     @JsonProperty(value = "databases")
     private List<String> databases;
 
-    /** Creates an instance of FailoverGroupProperties class. */
+    /**
+     * Creates an instance of FailoverGroupProperties class.
+     */
     public FailoverGroupProperties() {
     }
 
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -67,7 +71,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -87,7 +91,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the replicationRole property: Local replication role of the failover group instance.
-     *
+     * 
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
@@ -107,7 +111,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the replicationState property: Replication state of the failover group instance.
-     *
+     * 
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -116,7 +120,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @return the partnerServers value.
      */
     public List<PartnerInfo> partnerServers() {
@@ -125,7 +129,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the partnerServers property: List of partner server information for the failover group.
-     *
+     * 
      * @param partnerServers the partnerServers value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -136,7 +140,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     *
+     * 
      * @return the databases value.
      */
     public List<String> databases() {
@@ -145,7 +149,7 @@ public final class FailoverGroupProperties {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the FailoverGroupProperties object itself.
      */
@@ -156,15 +160,13 @@ public final class FailoverGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (readWriteEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property readWriteEndpoint in model FailoverGroupProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property readWriteEndpoint in model FailoverGroupProperties"));
         } else {
             readWriteEndpoint().validate();
         }
@@ -172,10 +174,8 @@ public final class FailoverGroupProperties {
             readOnlyEndpoint().validate();
         }
         if (partnerServers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerServers in model FailoverGroupProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property partnerServers in model FailoverGroupProperties"));
         } else {
             partnerServers().forEach(e -> e.validate());
         }

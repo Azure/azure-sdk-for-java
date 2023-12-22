@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.TimeZoneInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of time zones. */
+/**
+ * A list of time zones.
+ */
 @Immutable
 public final class TimeZoneListResult {
     /*
@@ -24,13 +26,15 @@ public final class TimeZoneListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TimeZoneListResult class. */
+    /**
+     * Creates an instance of TimeZoneListResult class.
+     */
     public TimeZoneListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<TimeZoneInner> value() {
@@ -39,7 +43,7 @@ public final class TimeZoneListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class TimeZoneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
