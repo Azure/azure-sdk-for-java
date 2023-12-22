@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User activities of a data warehouse. */
+/**
+ * User activities of a data warehouse.
+ */
 @Immutable
 public final class DataWarehouseUserActivitiesInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class DataWarehouseUserActivitiesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DataWarehouseUserActivitiesProperties innerProperties;
 
-    /** Creates an instance of DataWarehouseUserActivitiesInner class. */
+    /**
+     * Creates an instance of DataWarehouseUserActivitiesInner class.
+     */
     public DataWarehouseUserActivitiesInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataWarehouseUserActivitiesProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class DataWarehouseUserActivitiesInner extends ProxyResource {
 
     /**
      * Get the activeQueriesCount property: Count of running and suspended queries.
-     *
+     * 
      * @return the activeQueriesCount value.
      */
     public Integer activeQueriesCount() {
@@ -41,7 +45,7 @@ public final class DataWarehouseUserActivitiesInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

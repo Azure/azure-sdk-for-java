@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.JobSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a job. */
+/**
+ * Properties of a job.
+ */
 @Fluent
 public final class JobProperties {
     /*
@@ -29,13 +31,15 @@ public final class JobProperties {
     @JsonProperty(value = "schedule")
     private JobSchedule schedule;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the description property: User-defined description of the job.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -44,7 +48,7 @@ public final class JobProperties {
 
     /**
      * Set the description property: User-defined description of the job.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class JobProperties {
 
     /**
      * Get the version property: The job version number.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -64,7 +68,7 @@ public final class JobProperties {
 
     /**
      * Get the schedule property: Schedule properties of the job.
-     *
+     * 
      * @return the schedule value.
      */
     public JobSchedule schedule() {
@@ -73,7 +77,7 @@ public final class JobProperties {
 
     /**
      * Set the schedule property: Schedule properties of the job.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the JobProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

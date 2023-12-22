@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload group operations for a data warehouse. */
+/**
+ * Workload group operations for a data warehouse.
+ */
 @Fluent
 public final class WorkloadGroupInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class WorkloadGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkloadGroupProperties innerProperties;
 
-    /** Creates an instance of WorkloadGroupInner class. */
+    /**
+     * Creates an instance of WorkloadGroupInner class.
+     */
     public WorkloadGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkloadGroupProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @return the minResourcePercent value.
      */
     public Integer minResourcePercent() {
@@ -41,7 +45,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the minResourcePercent property: The workload group minimum percentage resource.
-     *
+     * 
      * @param minResourcePercent the minResourcePercent value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -55,7 +59,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @return the maxResourcePercent value.
      */
     public Integer maxResourcePercent() {
@@ -64,7 +68,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the maxResourcePercent property: The workload group cap percentage resource.
-     *
+     * 
      * @param maxResourcePercent the maxResourcePercent value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -78,7 +82,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @return the minResourcePercentPerRequest value.
      */
     public Double minResourcePercentPerRequest() {
@@ -87,7 +91,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the minResourcePercentPerRequest property: The workload group request minimum grant percentage.
-     *
+     * 
      * @param minResourcePercentPerRequest the minResourcePercentPerRequest value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -101,7 +105,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @return the maxResourcePercentPerRequest value.
      */
     public Double maxResourcePercentPerRequest() {
@@ -110,7 +114,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the maxResourcePercentPerRequest property: The workload group request maximum grant percentage.
-     *
+     * 
      * @param maxResourcePercentPerRequest the maxResourcePercentPerRequest value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -124,7 +128,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the importance property: The workload group importance level.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -133,7 +137,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the importance property: The workload group importance level.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -147,7 +151,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Get the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @return the queryExecutionTimeout value.
      */
     public Integer queryExecutionTimeout() {
@@ -156,7 +160,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Set the queryExecutionTimeout property: The workload group query execution timeout.
-     *
+     * 
      * @param queryExecutionTimeout the queryExecutionTimeout value to set.
      * @return the WorkloadGroupInner object itself.
      */
@@ -170,7 +174,7 @@ public final class WorkloadGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceLongTermRetent
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of long term retention backups for managed database(s). */
+/**
+ * A list of long term retention backups for managed database(s).
+ */
 @Immutable
 public final class ManagedInstanceLongTermRetentionBackupListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedInstanceLongTermRetentionBackupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionBackupListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionBackupListResult class.
+     */
     public ManagedInstanceLongTermRetentionBackupListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceLongTermRetentionBackupInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedInstanceLongTermRetentionBackupListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedInstanceLongTermRetentionBackupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SensitivityLabelSource. */
+/**
+ * Defines values for SensitivityLabelSource.
+ */
 public enum SensitivityLabelSource {
-    /** Enum value current. */
+    /**
+     * Enum value current.
+     */
     CURRENT("current"),
 
-    /** Enum value recommended. */
+    /**
+     * Enum value recommended.
+     */
     RECOMMENDED("recommended");
 
-    /** The actual serialized value for a SensitivityLabelSource instance. */
+    /**
+     * The actual serialized value for a SensitivityLabelSource instance.
+     */
     private final String value;
 
     SensitivityLabelSource(String value) {
@@ -24,7 +32,7 @@ public enum SensitivityLabelSource {
 
     /**
      * Parses a serialized value to a SensitivityLabelSource instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SensitivityLabelSource object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum SensitivityLabelSource {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

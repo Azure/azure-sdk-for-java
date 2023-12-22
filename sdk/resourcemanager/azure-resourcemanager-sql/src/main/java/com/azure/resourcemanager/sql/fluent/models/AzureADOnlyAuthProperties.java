@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a active directory only authentication. */
+/**
+ * Properties of a active directory only authentication.
+ */
 @Fluent
 public final class AzureADOnlyAuthProperties {
     /*
@@ -16,13 +18,15 @@ public final class AzureADOnlyAuthProperties {
     @JsonProperty(value = "azureADOnlyAuthentication", required = true)
     private boolean azureADOnlyAuthentication;
 
-    /** Creates an instance of AzureADOnlyAuthProperties class. */
+    /**
+     * Creates an instance of AzureADOnlyAuthProperties class.
+     */
     public AzureADOnlyAuthProperties() {
     }
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public boolean azureADOnlyAuthentication() {
@@ -31,7 +35,7 @@ public final class AzureADOnlyAuthProperties {
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the AzureADOnlyAuthProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureADOnlyAuthProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

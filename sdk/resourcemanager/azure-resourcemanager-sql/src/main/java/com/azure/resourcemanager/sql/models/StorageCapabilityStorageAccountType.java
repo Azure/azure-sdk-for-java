@@ -8,24 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The storage account type for the database's backups. */
+/**
+ * The storage account type for the database's backups.
+ */
 public final class StorageCapabilityStorageAccountType
     extends ExpandableStringEnum<StorageCapabilityStorageAccountType> {
-    /** Static value GRS for StorageCapabilityStorageAccountType. */
+    /**
+     * Static value GRS for StorageCapabilityStorageAccountType.
+     */
     public static final StorageCapabilityStorageAccountType GRS = fromString("GRS");
 
-    /** Static value LRS for StorageCapabilityStorageAccountType. */
+    /**
+     * Static value LRS for StorageCapabilityStorageAccountType.
+     */
     public static final StorageCapabilityStorageAccountType LRS = fromString("LRS");
 
-    /** Static value ZRS for StorageCapabilityStorageAccountType. */
+    /**
+     * Static value ZRS for StorageCapabilityStorageAccountType.
+     */
     public static final StorageCapabilityStorageAccountType ZRS = fromString("ZRS");
 
-    /** Static value GZRS for StorageCapabilityStorageAccountType. */
-    public static final StorageCapabilityStorageAccountType GZRS = fromString("GZRS");
+    /**
+     * Creates a new instance of StorageCapabilityStorageAccountType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageCapabilityStorageAccountType() {
+    }
 
     /**
      * Creates or finds a StorageCapabilityStorageAccountType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageCapabilityStorageAccountType.
      */
@@ -36,7 +50,7 @@ public final class StorageCapabilityStorageAccountType
 
     /**
      * Gets known StorageCapabilityStorageAccountType values.
-     *
+     * 
      * @return known StorageCapabilityStorageAccountType values.
      */
     public static Collection<StorageCapabilityStorageAccountType> values() {

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.sql.models.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A replication link. */
+/**
+ * A replication link.
+ */
 @Immutable
 public final class ReplicationLinkInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class ReplicationLinkInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ReplicationLinkProperties innerProperties;
 
-    /** Creates an instance of ReplicationLinkInner class. */
+    /**
+     * Creates an instance of ReplicationLinkInner class.
+     */
     public ReplicationLinkInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicationLinkProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerServer property: Resource partner server.
-     *
+     * 
      * @return the partnerServer value.
      */
     public String partnerServer() {
@@ -45,7 +49,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerDatabase property: Resource partner database.
-     *
+     * 
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
@@ -54,7 +58,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerLocation property: Resource partner location.
-     *
+     * 
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
@@ -63,7 +67,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the role property: Local replication role.
-     *
+     * 
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -72,7 +76,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerRole property: Partner replication role.
-     *
+     * 
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
@@ -81,7 +85,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the replicationMode property: Replication mode.
-     *
+     * 
      * @return the replicationMode value.
      */
     public String replicationMode() {
@@ -90,7 +94,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the startTime property: Time at which the link was created.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -99,7 +103,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: Seeding completion percentage for the link.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -108,7 +112,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the replicationState property: Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
-     *
+     * 
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
@@ -117,7 +121,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the isTerminationAllowed property: Whether the user is currently allowed to terminate the link.
-     *
+     * 
      * @return the isTerminationAllowed value.
      */
     public Boolean isTerminationAllowed() {
@@ -126,7 +130,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the linkType property: Link type (GEO, NAMED, STANDBY).
-     *
+     * 
      * @return the linkType value.
      */
     public ReplicationLinkType linkType() {
@@ -135,7 +139,7 @@ public final class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

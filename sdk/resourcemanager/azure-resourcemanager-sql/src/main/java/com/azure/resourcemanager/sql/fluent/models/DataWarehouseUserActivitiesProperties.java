@@ -19,13 +19,15 @@ public final class DataWarehouseUserActivitiesProperties {
     @JsonProperty(value = "activeQueriesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer activeQueriesCount;
 
-    /** Creates an instance of DataWarehouseUserActivitiesProperties class. */
+    /**
+     * Creates an instance of DataWarehouseUserActivitiesProperties class.
+     */
     public DataWarehouseUserActivitiesProperties() {
     }
 
     /**
      * Get the activeQueriesCount property: Count of running and suspended queries.
-     *
+     * 
      * @return the activeQueriesCount value.
      */
     public Integer activeQueriesCount() {
@@ -34,7 +36,7 @@ public final class DataWarehouseUserActivitiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

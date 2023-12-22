@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A managed instance key. */
+/**
+ * A managed instance key.
+ */
 @Fluent
 public final class ManagedInstanceKeyInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagedInstanceKeyProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceKeyInner class. */
+    /**
+     * Creates an instance of ManagedInstanceKeyInner class.
+     */
     public ManagedInstanceKeyInner() {
     }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -40,7 +44,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceKeyProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -58,7 +62,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Set the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceKeyInner object itself.
      */
@@ -72,7 +76,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -81,7 +85,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Set the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ManagedInstanceKeyInner object itself.
      */
@@ -95,7 +99,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -104,7 +108,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -113,7 +117,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -122,7 +126,7 @@ public final class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,17 @@ import com.azure.resourcemanager.sql.models.DataMaskingFunction;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A database data masking rule. */
+/**
+ * Represents a database data masking rule.
+ */
 @Fluent
 public final class DataMaskingRuleInner extends ProxyResource {
+    /*
+     * The properties of the resource.
+     */
+    @JsonProperty(value = "properties")
+    private DataMaskingRuleProperties innerProperties;
+
     /*
      * The location of the data masking rule.
      */
@@ -25,19 +33,24 @@ public final class DataMaskingRuleInner extends ProxyResource {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /*
-     * Resource properties.
+    /**
+     * Creates an instance of DataMaskingRuleInner class.
      */
-    @JsonProperty(value = "properties")
-    private DataMaskingRuleProperties innerProperties;
-
-    /** Creates an instance of DataMaskingRuleInner class. */
     public DataMaskingRuleInner() {
     }
 
     /**
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
+     */
+    private DataMaskingRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the location property: The location of the data masking rule.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -46,7 +59,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Get the kind property: The kind of Data Masking Rule. Metadata, used for Azure portal.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -54,17 +67,8 @@ public final class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
-     */
-    private DataMaskingRuleProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /**
      * Get the id property: The rule Id.
-     *
+     * 
      * @return the id value.
      */
     public String idPropertiesId() {
@@ -72,11 +76,34 @@ public final class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     * 
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleInner object itself.
+     */
+    public DataMaskingRuleInner withAliasName(String aliasName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withAliasName(aliasName);
+        return this;
+    }
+
+    /**
      * Get the ruleState property: The rule state. Used to delete a rule. To delete an existing rule, specify the
      * schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule
      * doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value
      * of ruleState.
-     *
+     * 
      * @return the ruleState value.
      */
     public DataMaskingRuleState ruleState() {
@@ -88,7 +115,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
      * schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule
      * doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value
      * of ruleState.
-     *
+     * 
      * @param ruleState the ruleState value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -102,7 +129,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Get the schemaName property: The schema name on which the data masking rule is applied.
-     *
+     * 
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -111,7 +138,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Set the schemaName property: The schema name on which the data masking rule is applied.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -125,7 +152,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Get the tableName property: The table name on which the data masking rule is applied.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -134,7 +161,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Set the tableName property: The table name on which the data masking rule is applied.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -148,7 +175,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Get the columnName property: The column name on which the data masking rule is applied.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -157,7 +184,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Set the columnName property: The column name on which the data masking rule is applied.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -170,31 +197,8 @@ public final class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleInner object itself.
-     */
-    public DataMaskingRuleInner withAliasName(String aliasName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DataMaskingRuleProperties();
-        }
-        this.innerProperties().withAliasName(aliasName);
-        return this;
-    }
-
-    /**
      * Get the maskingFunction property: The masking function that is used for the data masking rule.
-     *
+     * 
      * @return the maskingFunction value.
      */
     public DataMaskingFunction maskingFunction() {
@@ -203,7 +207,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Set the maskingFunction property: The masking function that is used for the data masking rule.
-     *
+     * 
      * @param maskingFunction the maskingFunction value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -218,7 +222,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Get the numberFrom property: The numberFrom property of the masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @return the numberFrom value.
      */
     public String numberFrom() {
@@ -228,7 +232,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Set the numberFrom property: The numberFrom property of the masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @param numberFrom the numberFrom value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -243,7 +247,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Get the numberTo property: The numberTo property of the data masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @return the numberTo value.
      */
     public String numberTo() {
@@ -253,7 +257,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Set the numberTo property: The numberTo property of the data masking rule. Required if maskingFunction is set to
      * Number, otherwise this parameter will be ignored.
-     *
+     * 
      * @param numberTo the numberTo value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -268,7 +272,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Get the prefixSize property: If maskingFunction is set to Text, the number of characters to show unmasked in the
      * beginning of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the prefixSize value.
      */
     public String prefixSize() {
@@ -278,7 +282,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Set the prefixSize property: If maskingFunction is set to Text, the number of characters to show unmasked in the
      * beginning of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param prefixSize the prefixSize value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -293,7 +297,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Get the suffixSize property: If maskingFunction is set to Text, the number of characters to show unmasked at the
      * end of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the suffixSize value.
      */
     public String suffixSize() {
@@ -303,7 +307,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Set the suffixSize property: If maskingFunction is set to Text, the number of characters to show unmasked at the
      * end of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param suffixSize the suffixSize value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -318,7 +322,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Get the replacementString property: If maskingFunction is set to Text, the character to use for masking the
      * unexposed part of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @return the replacementString value.
      */
     public String replacementString() {
@@ -328,7 +332,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
     /**
      * Set the replacementString property: If maskingFunction is set to Text, the character to use for masking the
      * unexposed part of the string. Otherwise, this parameter will be ignored.
-     *
+     * 
      * @param replacementString the replacementString value to set.
      * @return the DataMaskingRuleInner object itself.
      */
@@ -342,7 +346,7 @@ public final class DataMaskingRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

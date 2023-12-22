@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ARM resource. */
+/**
+ * ARM resource.
+ */
 @Fluent
 public class ResourceWithWritableName extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public class ResourceWithWritableName extends ProxyResource {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ResourceWithWritableName class. */
+    /**
+     * Creates an instance of ResourceWithWritableName class.
+     */
     public ResourceWithWritableName() {
     }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -32,7 +36,7 @@ public class ResourceWithWritableName extends ProxyResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceWithWritableName object itself.
      */
@@ -43,7 +47,7 @@ public class ResourceWithWritableName extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

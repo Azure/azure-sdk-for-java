@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The maintenance configuration capability. */
+/**
+ * The maintenance configuration capability.
+ */
 @Fluent
 public final class ManagedInstanceMaintenanceConfigurationCapability {
     /*
@@ -28,13 +30,15 @@ public final class ManagedInstanceMaintenanceConfigurationCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceMaintenanceConfigurationCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceMaintenanceConfigurationCapability class.
+     */
     public ManagedInstanceMaintenanceConfigurationCapability() {
     }
 
     /**
      * Get the name property: Maintenance configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class ManagedInstanceMaintenanceConfigurationCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -52,7 +56,7 @@ public final class ManagedInstanceMaintenanceConfigurationCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -61,7 +65,7 @@ public final class ManagedInstanceMaintenanceConfigurationCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceMaintenanceConfigurationCapability object itself.
      */
@@ -72,7 +76,7 @@ public final class ManagedInstanceMaintenanceConfigurationCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

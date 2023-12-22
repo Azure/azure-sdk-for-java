@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a time zone. */
+/**
+ * The properties of a time zone.
+ */
 @Immutable
 public final class TimeZoneProperties {
     /*
@@ -22,13 +24,15 @@ public final class TimeZoneProperties {
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
-    /** Creates an instance of TimeZoneProperties class. */
+    /**
+     * Creates an instance of TimeZoneProperties class.
+     */
     public TimeZoneProperties() {
     }
 
     /**
      * Get the timeZoneId property: The time zone id.
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -37,7 +41,7 @@ public final class TimeZoneProperties {
 
     /**
      * Get the displayName property: The time zone display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -46,7 +50,7 @@ public final class TimeZoneProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

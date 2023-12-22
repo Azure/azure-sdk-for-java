@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.IPv6FirewallRuleInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IPv6FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IPv6FirewallRulesClient.
+ */
 public interface IPv6FirewallRulesClient {
     /**
      * Gets a list of IPv6 firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,9 +33,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Gets a list of IPv6 firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,9 +47,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Gets a list of IPv6 firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,9 +62,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Gets an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,14 +73,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<IPv6FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String firewallRuleName);
+    Mono<Response<IPv6FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String firewallRuleName);
 
     /**
      * Gets an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,9 +93,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Gets an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -103,14 +105,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IPv6FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context);
+    Response<IPv6FirewallRuleInner> getWithResponse(String resourceGroupName, String serverName,
+        String firewallRuleName, Context context);
 
     /**
      * Gets an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,9 +125,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Creates or updates an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters The required parameters for creating or updating an IPv6 firewall rule.
@@ -135,14 +137,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<IPv6FirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String firewallRuleName, IPv6FirewallRuleInner parameters);
+    Mono<Response<IPv6FirewallRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String firewallRuleName, IPv6FirewallRuleInner parameters);
 
     /**
      * Creates or updates an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters The required parameters for creating or updating an IPv6 firewall rule.
@@ -152,14 +154,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IPv6FirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String firewallRuleName, IPv6FirewallRuleInner parameters);
+    Mono<IPv6FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String firewallRuleName, IPv6FirewallRuleInner parameters);
 
     /**
      * Creates or updates an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters The required parameters for creating or updating an IPv6 firewall rule.
@@ -170,18 +172,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 server firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IPv6FirewallRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String firewallRuleName,
-        IPv6FirewallRuleInner parameters,
-        Context context);
+    Response<IPv6FirewallRuleInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String firewallRuleName, IPv6FirewallRuleInner parameters, Context context);
 
     /**
      * Creates or updates an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param parameters The required parameters for creating or updating an IPv6 firewall rule.
@@ -191,14 +189,14 @@ public interface IPv6FirewallRulesClient {
      * @return an IPv6 server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IPv6FirewallRuleInner createOrUpdate(
-        String resourceGroupName, String serverName, String firewallRuleName, IPv6FirewallRuleInner parameters);
+    IPv6FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
+        IPv6FirewallRuleInner parameters);
 
     /**
      * Deletes an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,9 +209,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Deletes an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +224,9 @@ public interface IPv6FirewallRulesClient {
 
     /**
      * Deletes an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @param context The context to associate with this operation.
@@ -238,14 +236,14 @@ public interface IPv6FirewallRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String firewallRuleName,
+        Context context);
 
     /**
      * Deletes an IPv6 firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

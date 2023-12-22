@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The license type capability. */
+/**
+ * The license type capability.
+ */
 @Fluent
 public final class LicenseTypeCapability {
     /*
@@ -28,13 +30,15 @@ public final class LicenseTypeCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of LicenseTypeCapability class. */
+    /**
+     * Creates an instance of LicenseTypeCapability class.
+     */
     public LicenseTypeCapability() {
     }
 
     /**
      * Get the name property: License type identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class LicenseTypeCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -52,7 +56,7 @@ public final class LicenseTypeCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -61,7 +65,7 @@ public final class LicenseTypeCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the LicenseTypeCapability object itself.
      */
@@ -72,7 +76,7 @@ public final class LicenseTypeCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

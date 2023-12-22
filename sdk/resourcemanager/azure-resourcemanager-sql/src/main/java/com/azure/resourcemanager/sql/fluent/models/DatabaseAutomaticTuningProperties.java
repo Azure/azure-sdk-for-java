@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Database-level Automatic Tuning properties. */
+/**
+ * Database-level Automatic Tuning properties.
+ */
 @Fluent
 public final class DatabaseAutomaticTuningProperties {
     /*
@@ -33,13 +35,15 @@ public final class DatabaseAutomaticTuningProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AutomaticTuningOptions> options;
 
-    /** Creates an instance of DatabaseAutomaticTuningProperties class. */
+    /**
+     * Creates an instance of DatabaseAutomaticTuningProperties class.
+     */
     public DatabaseAutomaticTuningProperties() {
     }
 
     /**
      * Get the desiredState property: Automatic tuning desired state.
-     *
+     * 
      * @return the desiredState value.
      */
     public AutomaticTuningMode desiredState() {
@@ -48,7 +52,7 @@ public final class DatabaseAutomaticTuningProperties {
 
     /**
      * Set the desiredState property: Automatic tuning desired state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the DatabaseAutomaticTuningProperties object itself.
      */
@@ -59,7 +63,7 @@ public final class DatabaseAutomaticTuningProperties {
 
     /**
      * Get the actualState property: Automatic tuning actual state.
-     *
+     * 
      * @return the actualState value.
      */
     public AutomaticTuningMode actualState() {
@@ -68,7 +72,7 @@ public final class DatabaseAutomaticTuningProperties {
 
     /**
      * Get the options property: Automatic tuning options definition.
-     *
+     * 
      * @return the options value.
      */
     public Map<String, AutomaticTuningOptions> options() {
@@ -77,7 +81,7 @@ public final class DatabaseAutomaticTuningProperties {
 
     /**
      * Set the options property: Automatic tuning options definition.
-     *
+     * 
      * @param options the options value to set.
      * @return the DatabaseAutomaticTuningProperties object itself.
      */
@@ -88,19 +92,16 @@ public final class DatabaseAutomaticTuningProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (options() != null) {
-            options()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            options().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

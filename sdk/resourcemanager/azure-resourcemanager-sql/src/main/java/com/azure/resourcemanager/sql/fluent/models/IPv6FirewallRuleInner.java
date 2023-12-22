@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.ProxyResourceWithWritableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An IPv6 server firewall rule. */
+/**
+ * An IPv6 server firewall rule.
+ */
 @Fluent
 public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     /*
@@ -17,20 +19,24 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
     @JsonProperty(value = "properties")
     private IPv6ServerFirewallRuleProperties innerProperties;
 
-    /** Creates an instance of IPv6FirewallRuleInner class. */
+    /**
+     * Creates an instance of IPv6FirewallRuleInner class.
+     */
     public IPv6FirewallRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IPv6ServerFirewallRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IPv6FirewallRuleInner withName(String name) {
         super.withName(name);
@@ -39,7 +45,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Get the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @return the startIPv6Address value.
      */
     public String startIPv6Address() {
@@ -48,7 +54,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Set the startIPv6Address property: The start IP address of the firewall rule. Must be IPv6 format.
-     *
+     * 
      * @param startIPv6Address the startIPv6Address value to set.
      * @return the IPv6FirewallRuleInner object itself.
      */
@@ -62,8 +68,8 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Get the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
-     *
+     * than or equal to startIpv6Address.
+     * 
      * @return the endIPv6Address value.
      */
     public String endIPv6Address() {
@@ -72,8 +78,8 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Set the endIPv6Address property: The end IP address of the firewall rule. Must be IPv6 format. Must be greater
-     * than or equal to startIpAddress.
-     *
+     * than or equal to startIpv6Address.
+     * 
      * @param endIPv6Address the endIPv6Address value to set.
      * @return the IPv6FirewallRuleInner object itself.
      */
@@ -87,7 +93,7 @@ public final class IPv6FirewallRuleInner extends ProxyResourceWithWritableName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

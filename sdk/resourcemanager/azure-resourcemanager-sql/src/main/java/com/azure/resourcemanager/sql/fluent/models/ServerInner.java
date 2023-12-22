@@ -6,17 +6,22 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.ExternalGovernanceStatus;
+import com.azure.resourcemanager.sql.models.MinimalTlsVersion;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
 import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** An Azure SQL Database server. */
+/**
+ * An Azure SQL Database server.
+ */
 @Fluent
 public final class ServerInner extends Resource {
     /*
@@ -37,13 +42,15 @@ public final class ServerInner extends Resource {
     @JsonProperty(value = "properties")
     private ServerProperties innerProperties;
 
-    /** Creates an instance of ServerInner class. */
+    /**
+     * Creates an instance of ServerInner class.
+     */
     public ServerInner() {
     }
 
     /**
      * Get the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -52,7 +59,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the identity property: The Azure Active Directory identity of the server.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServerInner object itself.
      */
@@ -63,7 +70,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the kind property: Kind of sql server. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -72,21 +79,25 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,7 +106,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -104,7 +115,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerInner object itself.
      */
@@ -118,7 +129,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -127,7 +138,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for server creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerInner object itself.
      */
@@ -141,7 +152,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the version property: The version of the server.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -150,7 +161,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the version property: The version of the server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerInner object itself.
      */
@@ -164,7 +175,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the state property: The state of the server.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -173,7 +184,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -182,7 +193,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections on a server.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
@@ -190,21 +201,21 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @return the minimalTlsVersion value.
      */
-    public String minimalTlsVersion() {
+    public MinimalTlsVersion minimalTlsVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
-     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'.
-     *
+     * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', 1.0', '1.1', '1.2', '1.3'.
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withMinimalTlsVersion(String minimalTlsVersion) {
+    public ServerInner withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -213,23 +224,23 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @return the publicNetworkAccess value.
      */
-    public ServerNetworkAccessFlag publicNetworkAccess() {
+    public ServerPublicNetworkAccessFlag publicNetworkAccess() {
         return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled' or 'SecuredByPerimeter'.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
-    public ServerInner withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
+    public ServerInner withPublicNetworkAccess(ServerPublicNetworkAccessFlag publicNetworkAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ServerProperties();
         }
@@ -240,7 +251,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the workspaceFeature property: Whether or not existing server has a workspace created and if it allows
      * connection from workspace.
-     *
+     * 
      * @return the workspaceFeature value.
      */
     public ServerWorkspaceFeature workspaceFeature() {
@@ -250,7 +261,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -260,7 +271,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
      * default.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the ServerInner object itself.
      */
@@ -274,7 +285,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @return the federatedClientId value.
      */
     public UUID federatedClientId() {
@@ -283,7 +294,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the federatedClientId property: The Client id used for cross tenant CMK scenario.
-     *
+     * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the ServerInner object itself.
      */
@@ -297,7 +308,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -306,7 +317,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the keyId property: A CMK URI of the key to use for encryption.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ServerInner object itself.
      */
@@ -319,8 +330,10 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Get the administrators property: The Azure Active Directory administrator of the server. This can only be used
+     * at server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @return the administrators value.
      */
     public ServerExternalAdministrator administrators() {
@@ -328,8 +341,10 @@ public final class ServerInner extends Resource {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator of the server.
-     *
+     * Set the administrators property: The Azure Active Directory administrator of the server. This can only be used
+     * at server create time. If used for server update, it will be ignored or it will result in an error. For updates
+     * individual APIs will need to be used.
+     * 
      * @param administrators the administrators value to set.
      * @return the ServerInner object itself.
      */
@@ -344,7 +359,7 @@ public final class ServerInner extends Resource {
     /**
      * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public ServerNetworkAccessFlag restrictOutboundNetworkAccess() {
@@ -354,7 +369,7 @@ public final class ServerInner extends Resource {
     /**
      * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
      * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
      * @return the ServerInner object itself.
      */
@@ -367,8 +382,42 @@ public final class ServerInner extends Resource {
     }
 
     /**
+     * Get the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the isIPv6Enabled value.
+     */
+    public ServerNetworkAccessFlag isIPv6Enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isIPv6Enabled();
+    }
+
+    /**
+     * Set the isIPv6Enabled property: Whether or not to enable IPv6 support for this server. Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param isIPv6Enabled the isIPv6Enabled value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIsIPv6Enabled(ServerNetworkAccessFlag isIPv6Enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withIsIPv6Enabled(isIPv6Enabled);
+        return this;
+    }
+
+    /**
+     * Get the externalGovernanceStatus property: Status of external governance.
+     * 
+     * @return the externalGovernanceStatus value.
+     */
+    public ExternalGovernanceStatus externalGovernanceStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalGovernanceStatus();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
