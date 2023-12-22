@@ -20,14 +20,58 @@
     "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": ""
   },
   "matrix": {
-    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" },
+      "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" },
+      "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" }
+    },
+    "JavaTestVersion": [ "1.8", "1.17" ],
+    "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestFromSource": false,
+    "RunAggregateReports": false,
+    "TestGoals": "surefire:test",
+    "TestOptions": ""
   },
   "exclude": [
     {
-      "JavaTestVersion": "1.21"
+      "Pool": "azsdk-pool-mms-win-2022-general",
+      "JavaTestVersion": "1.17"
     }
   ],
   "include": [
+    {
+      "Agent": {
+        "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" }
+      },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "RunAggregateReports": true,
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": "1.11",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "RunAggregateReports": false,
+      "TestGoals": "surefire:test",
+      "TestOptions": ""
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "RunAggregateReports": false,
+      "TestGoals": "surefire:test",
+      "TestOptions": ""
+    },
     {
       "ConsistencyConfig": {
         "Session": {
@@ -128,48 +172,6 @@
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
-    },
-    {
-      "Agent": {
-        "ubuntu-20.04": {
-          "OSVmImage": "MMSUbuntu20.04",
-          "Pool": "azsdk-pool-mms-ubuntu-2004-general"
-        }
-      },
-      "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": false,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
-    },
-    {
-      "Agent": {
-        "windows-2022": {
-          "OSVmImage": "windows-2022",
-          "Pool": "azsdk-pool-mms-win-2022-general"
-        }
-      },
-      "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": false,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
-    },
-    {
-      "Agent": {
-        "macos-11": {
-          "OSVmImage": "macos-11",
-          "Pool": "Azure Pipelines"
-        }
-      },
-      "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": false,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
     }
   ]
 }
