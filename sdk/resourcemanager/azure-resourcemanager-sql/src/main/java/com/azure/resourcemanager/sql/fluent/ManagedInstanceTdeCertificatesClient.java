@@ -16,13 +16,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedInstanceTdeCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedInstanceTdeCertificatesClient.
+ */
 public interface ManagedInstanceTdeCertificatesClient {
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,14 +33,14 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,14 +49,14 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCreateAsync(
-        String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+    PollerFlux<PollResult<Void>, Void> beginCreateAsync(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,14 +65,14 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String managedInstanceName, TdeCertificate parameters);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters);
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @param context The context to associate with this operation.
@@ -80,14 +82,14 @@ public interface ManagedInstanceTdeCertificatesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreate(
-        String resourceGroupName, String managedInstanceName, TdeCertificate parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String managedInstanceName,
+        TdeCertificate parameters, Context context);
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,9 +102,9 @@ public interface ManagedInstanceTdeCertificatesClient {
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,9 +116,9 @@ public interface ManagedInstanceTdeCertificatesClient {
 
     /**
      * Creates a TDE certificate for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param parameters The requested TDE certificate to be created or updated.
      * @param context The context to associate with this operation.

@@ -7,18 +7,28 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The type of the security event. */
+/**
+ * The type of the security event.
+ */
 public enum SecurityEventType {
-    /** Enum value Undefined. */
+    /**
+     * Enum value Undefined.
+     */
     UNDEFINED("Undefined"),
 
-    /** Enum value SqlInjectionVulnerability. */
+    /**
+     * Enum value SqlInjectionVulnerability.
+     */
     SQL_INJECTION_VULNERABILITY("SqlInjectionVulnerability"),
 
-    /** Enum value SqlInjectionExploit. */
+    /**
+     * Enum value SqlInjectionExploit.
+     */
     SQL_INJECTION_EXPLOIT("SqlInjectionExploit");
 
-    /** The actual serialized value for a SecurityEventType instance. */
+    /**
+     * The actual serialized value for a SecurityEventType instance.
+     */
     private final String value;
 
     SecurityEventType(String value) {
@@ -27,7 +37,7 @@ public enum SecurityEventType {
 
     /**
      * Parses a serialized value to a SecurityEventType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SecurityEventType object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum SecurityEventType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

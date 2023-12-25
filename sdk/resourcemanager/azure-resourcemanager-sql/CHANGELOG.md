@@ -1,5 +1,9 @@
 # Release History
 
+## 2.34.0-beta.1 (2023-12-22)
+
+- Azure Resource Manager Sql client library for Java. This package contains Microsoft Azure SDK for Sql Management SDK. Package tag package-composite-v5. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
 ## 2.33.0 (2023-11-24)
 
 ### Other Changes

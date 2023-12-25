@@ -18,60 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkloadGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkloadGroupsClient.
+ */
 public interface WorkloadGroupsClient {
     /**
-     * Gets the list of workload groups.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<WorkloadGroupInner> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets the list of workload groups.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets the list of workload groups.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadGroupInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
      * Gets a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -81,14 +36,14 @@ public interface WorkloadGroupsClient {
      * @return a workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+    Mono<Response<WorkloadGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName);
 
     /**
      * Gets a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -98,14 +53,14 @@ public interface WorkloadGroupsClient {
      * @return a workload group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WorkloadGroupInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+    Mono<WorkloadGroupInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName);
 
     /**
      * Gets a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -116,14 +71,14 @@ public interface WorkloadGroupsClient {
      * @return a workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadGroupInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
+    Response<WorkloadGroupInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, Context context);
 
     /**
      * Gets a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -137,9 +92,9 @@ public interface WorkloadGroupsClient {
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -148,21 +103,17 @@ public interface WorkloadGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload group operations for a data warehouse along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -173,18 +124,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link PollerFlux} for polling of workload group operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -195,18 +142,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -218,19 +161,15 @@ public interface WorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName, WorkloadGroupInner parameters,
         Context context);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -241,18 +180,14 @@ public interface WorkloadGroupsClient {
      * @return workload group operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WorkloadGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    Mono<WorkloadGroupInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -263,18 +198,14 @@ public interface WorkloadGroupsClient {
      * @return workload group operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
      * Creates or updates a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group.
@@ -286,19 +217,14 @@ public interface WorkloadGroupsClient {
      * @return workload group operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, WorkloadGroupInner parameters, Context context);
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -308,14 +234,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName);
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -325,14 +251,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName);
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -342,14 +268,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName);
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -360,14 +286,14 @@ public interface WorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, Context context);
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -381,9 +307,9 @@ public interface WorkloadGroupsClient {
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -396,9 +322,9 @@ public interface WorkloadGroupsClient {
 
     /**
      * Deletes a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group to delete.
@@ -408,6 +334,53 @@ public interface WorkloadGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context);
+    void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        Context context);
+
+    /**
+     * Gets the list of workload groups.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WorkloadGroupInner> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets the list of workload groups.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets the list of workload groups.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workload groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadGroupInner> listByDatabase(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 }

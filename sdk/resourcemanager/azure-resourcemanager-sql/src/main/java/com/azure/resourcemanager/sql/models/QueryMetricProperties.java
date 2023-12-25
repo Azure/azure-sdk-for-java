@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a topquery metric in one interval. */
+/**
+ * Properties of a topquery metric in one interval.
+ */
 @Immutable
 public final class QueryMetricProperties {
     /*
@@ -64,13 +66,15 @@ public final class QueryMetricProperties {
     @JsonProperty(value = "stdev", access = JsonProperty.Access.WRITE_ONLY)
     private Double stdev;
 
-    /** Creates an instance of QueryMetricProperties class. */
+    /**
+     * Creates an instance of QueryMetricProperties class.
+     */
     public QueryMetricProperties() {
     }
 
     /**
      * Get the name property: The name information for the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +83,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the displayName property: The UI appropriate name for the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +92,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public QueryMetricUnitType unit() {
@@ -97,7 +101,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the value property: The value of the metric.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -106,7 +110,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the min property: Metric value when min() aggregate function is used over the interval.
-     *
+     * 
      * @return the min value.
      */
     public Double min() {
@@ -115,7 +119,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the max property: Metric value when max() aggregate function is used over the interval.
-     *
+     * 
      * @return the max value.
      */
     public Double max() {
@@ -124,7 +128,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the avg property: Metric value when avg() aggregate function is used over the interval.
-     *
+     * 
      * @return the avg value.
      */
     public Double avg() {
@@ -133,7 +137,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the sum property: Metric value when sum() aggregate function is used over the interval.
-     *
+     * 
      * @return the sum value.
      */
     public Double sum() {
@@ -142,7 +146,7 @@ public final class QueryMetricProperties {
 
     /**
      * Get the stdev property: Metric value when stdev aggregate function is used over the interval.
-     *
+     * 
      * @return the stdev value.
      */
     public Double stdev() {
@@ -151,7 +155,7 @@ public final class QueryMetricProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

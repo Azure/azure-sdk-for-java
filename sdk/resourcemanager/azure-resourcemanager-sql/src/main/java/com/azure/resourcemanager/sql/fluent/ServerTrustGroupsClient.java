@@ -18,56 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerTrustGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerTrustGroupsClient.
+ */
 public interface ServerTrustGroupsClient {
     /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServerTrustGroupInner> listByLocationAsync(String resourceGroupName, String locationName);
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName);
-
-    /**
-     * Lists a server trust group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param locationName The name of the region where the resource is located.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName, Context context);
-
-    /**
      * Gets a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,14 +35,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerTrustGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String locationName, String serverTrustGroupName);
+    Mono<Response<ServerTrustGroupInner>> getWithResponseAsync(String resourceGroupName, String locationName,
+        String serverTrustGroupName);
 
     /**
      * Gets a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +55,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Gets a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param context The context to associate with this operation.
@@ -108,14 +67,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerTrustGroupInner> getWithResponse(
-        String resourceGroupName, String locationName, String serverTrustGroupName, Context context);
+    Response<ServerTrustGroupInner> getWithResponse(String resourceGroupName, String locationName,
+        String serverTrustGroupName, Context context);
 
     /**
      * Gets a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +87,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -140,14 +99,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String locationName,
+        String serverTrustGroupName, ServerTrustGroupInner parameters);
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -162,9 +121,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -174,14 +133,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link SyncPoller} for polling of a server trust group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters);
+    SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters);
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -192,18 +151,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link SyncPoller} for polling of a server trust group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String locationName,
-        String serverTrustGroupName,
-        ServerTrustGroupInner parameters,
-        Context context);
+    SyncPoller<PollResult<ServerTrustGroupInner>, ServerTrustGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters, Context context);
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -213,14 +168,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerTrustGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters);
+    Mono<ServerTrustGroupInner> createOrUpdateAsync(String resourceGroupName, String locationName,
+        String serverTrustGroupName, ServerTrustGroupInner parameters);
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -230,14 +185,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerTrustGroupInner createOrUpdate(
-        String resourceGroupName, String locationName, String serverTrustGroupName, ServerTrustGroupInner parameters);
+    ServerTrustGroupInner createOrUpdate(String resourceGroupName, String locationName, String serverTrustGroupName,
+        ServerTrustGroupInner parameters);
 
     /**
      * Creates or updates a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param parameters The server trust group parameters.
@@ -248,18 +203,14 @@ public interface ServerTrustGroupsClient {
      * @return a server trust group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerTrustGroupInner createOrUpdate(
-        String resourceGroupName,
-        String locationName,
-        String serverTrustGroupName,
-        ServerTrustGroupInner parameters,
-        Context context);
+    ServerTrustGroupInner createOrUpdate(String resourceGroupName, String locationName, String serverTrustGroupName,
+        ServerTrustGroupInner parameters, Context context);
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,14 +219,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String locationName, String serverTrustGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String locationName,
+        String serverTrustGroupName);
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,14 +235,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String locationName, String serverTrustGroupName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String locationName,
+        String serverTrustGroupName);
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,14 +251,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String locationName, String serverTrustGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String locationName,
+        String serverTrustGroupName);
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param context The context to associate with this operation.
@@ -317,14 +268,14 @@ public interface ServerTrustGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String locationName, String serverTrustGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String locationName,
+        String serverTrustGroupName, Context context);
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,9 +288,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,9 +302,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Deletes a server trust group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param serverTrustGroupName The name of the server trust group.
      * @param context The context to associate with this operation.
@@ -365,10 +316,53 @@ public interface ServerTrustGroupsClient {
     void delete(String resourceGroupName, String locationName, String serverTrustGroupName, Context context);
 
     /**
-     * Gets a server trust groups by instance name.
-     *
+     * Lists a server trust group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ServerTrustGroupInner> listByLocationAsync(String resourceGroupName, String locationName);
+
+    /**
+     * Lists a server trust group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName);
+
+    /**
+     * Lists a server trust group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of server trust groups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerTrustGroupInner> listByLocation(String resourceGroupName, String locationName, Context context);
+
+    /**
+     * Gets a server trust groups by instance name.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -380,9 +374,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Gets a server trust groups by instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -394,9 +388,9 @@ public interface ServerTrustGroupsClient {
 
     /**
      * Gets a server trust groups by instance name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,6 +399,6 @@ public interface ServerTrustGroupsClient {
      * @return a server trust groups by instance name as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerTrustGroupInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ServerTrustGroupInner> listByInstance(String resourceGroupName, String managedInstanceName,
+        Context context);
 }

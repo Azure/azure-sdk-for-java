@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.ManagedInstancePrivateEndpointProper
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a private endpoint connection. */
+/**
+ * Properties of a private endpoint connection.
+ */
 @Fluent
 public final class ManagedInstancePrivateEndpointConnectionProperties {
     /*
@@ -30,13 +32,15 @@ public final class ManagedInstancePrivateEndpointConnectionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of ManagedInstancePrivateEndpointConnectionProperties class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateEndpointConnectionProperties class.
+     */
     public ManagedInstancePrivateEndpointConnectionProperties() {
     }
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ManagedInstancePrivateEndpointProperty privateEndpoint() {
@@ -45,19 +49,19 @@ public final class ManagedInstancePrivateEndpointConnectionProperties {
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the ManagedInstancePrivateEndpointConnectionProperties object itself.
      */
-    public ManagedInstancePrivateEndpointConnectionProperties withPrivateEndpoint(
-        ManagedInstancePrivateEndpointProperty privateEndpoint) {
+    public ManagedInstancePrivateEndpointConnectionProperties
+        withPrivateEndpoint(ManagedInstancePrivateEndpointProperty privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
     }
 
     /**
      * Get the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public ManagedInstancePrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
@@ -66,7 +70,7 @@ public final class ManagedInstancePrivateEndpointConnectionProperties {
 
     /**
      * Set the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ManagedInstancePrivateEndpointConnectionProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class ManagedInstancePrivateEndpointConnectionProperties {
 
     /**
      * Get the provisioningState property: State of the Private Endpoint Connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -87,7 +91,7 @@ public final class ManagedInstancePrivateEndpointConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

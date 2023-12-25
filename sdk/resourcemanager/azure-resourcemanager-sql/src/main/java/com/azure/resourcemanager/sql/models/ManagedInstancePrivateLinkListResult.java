@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstancePrivateLinkInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Immutable
 public final class ManagedInstancePrivateLinkListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedInstancePrivateLinkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstancePrivateLinkListResult class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateLinkListResult class.
+     */
     public ManagedInstancePrivateLinkListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstancePrivateLinkInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedInstancePrivateLinkListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedInstancePrivateLinkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

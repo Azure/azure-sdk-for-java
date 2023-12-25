@@ -4,13 +4,18 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.DatabaseKey;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** The restorable dropped database's properties. */
-@Immutable
+/**
+ * The restorable dropped database's properties.
+ */
+@Fluent
 public final class RestorableDroppedDatabaseProperties {
     /*
      * The name of the database.
@@ -48,13 +53,22 @@ public final class RestorableDroppedDatabaseProperties {
     @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy backupStorageRedundancy;
 
-    /** Creates an instance of RestorableDroppedDatabaseProperties class. */
+    /*
+     * The resource ids of the user assigned identities to use
+     */
+    @JsonProperty(value = "keys")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, DatabaseKey> keys;
+
+    /**
+     * Creates an instance of RestorableDroppedDatabaseProperties class.
+     */
     public RestorableDroppedDatabaseProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -63,7 +77,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the maxSizeBytes property: The max size of the database expressed in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -72,7 +86,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -81,7 +95,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -90,7 +104,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -99,7 +113,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the backupStorageRedundancy property: The storage account type used to store backups for this database.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -107,10 +121,37 @@ public final class RestorableDroppedDatabaseProperties {
     }
 
     /**
+     * Get the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @return the keys value.
+     */
+    public Map<String, DatabaseKey> keys() {
+        return this.keys;
+    }
+
+    /**
+     * Set the keys property: The resource ids of the user assigned identities to use.
+     * 
+     * @param keys the keys value to set.
+     * @return the RestorableDroppedDatabaseProperties object itself.
+     */
+    public RestorableDroppedDatabaseProperties withKeys(Map<String, DatabaseKey> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (keys() != null) {
+            keys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 }

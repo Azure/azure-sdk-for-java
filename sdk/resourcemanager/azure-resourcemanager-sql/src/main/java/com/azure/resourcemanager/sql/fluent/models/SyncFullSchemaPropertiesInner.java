@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of the database full schema. */
+/**
+ * Properties of the database full schema.
+ */
 @Immutable
 public final class SyncFullSchemaPropertiesInner {
     /*
@@ -25,13 +27,15 @@ public final class SyncFullSchemaPropertiesInner {
     @JsonProperty(value = "lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdateTime;
 
-    /** Creates an instance of SyncFullSchemaPropertiesInner class. */
+    /**
+     * Creates an instance of SyncFullSchemaPropertiesInner class.
+     */
     public SyncFullSchemaPropertiesInner() {
     }
 
     /**
      * Get the tables property: List of tables in the database full schema.
-     *
+     * 
      * @return the tables value.
      */
     public List<SyncFullSchemaTable> tables() {
@@ -40,7 +44,7 @@ public final class SyncFullSchemaPropertiesInner {
 
     /**
      * Get the lastUpdateTime property: Last update time of the database schema.
-     *
+     * 
      * @return the lastUpdateTime value.
      */
     public OffsetDateTime lastUpdateTime() {
@@ -49,7 +53,7 @@ public final class SyncFullSchemaPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

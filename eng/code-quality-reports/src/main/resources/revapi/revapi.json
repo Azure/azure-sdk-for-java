@@ -297,6 +297,11 @@
         },
         {
           "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.sql.models.StorageCapabilityStorageAccountType.GZRS",
+          "justification": "Remove this because GZRS is deprecated"
+        },
+        {
+          "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
         },

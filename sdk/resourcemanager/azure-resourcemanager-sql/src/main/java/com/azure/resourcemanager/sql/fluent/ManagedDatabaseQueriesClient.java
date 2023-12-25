@@ -15,13 +15,15 @@ import com.azure.resourcemanager.sql.fluent.models.QueryStatisticsInner;
 import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabaseQueriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabaseQueriesClient.
+ */
 public interface ManagedDatabaseQueriesClient {
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -31,14 +33,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query by query id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId);
+    Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId);
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -48,14 +50,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query by query id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceQueryInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId);
+    Mono<ManagedInstanceQueryInner> getAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        String queryId);
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -66,14 +68,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query by query id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedInstanceQueryInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId, Context context);
+    Response<ManagedInstanceQueryInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, Context context);
 
     /**
      * Get query by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -83,14 +85,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query by query id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedInstanceQueryInner get(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId);
+    ManagedInstanceQueryInner get(String resourceGroupName, String managedInstanceName, String databaseName,
+        String queryId);
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -103,20 +105,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<QueryStatisticsInner> listByQueryAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval);
+    PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval);
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -126,14 +122,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<QueryStatisticsInner> listByQueryAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId);
+    PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId);
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -143,14 +139,14 @@ public interface ManagedDatabaseQueriesClient {
      * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticsInner> listByQuery(
-        String resourceGroupName, String managedInstanceName, String databaseName, String queryId);
+    PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId);
 
     /**
      * Get query execution statistics by query id.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param queryId The queryId parameter.
@@ -164,13 +160,7 @@ public interface ManagedDatabaseQueriesClient {
      * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryStatisticsInner> listByQuery(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        String queryId,
-        String startTime,
-        String endTime,
-        QueryTimeGrainType interval,
+    PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
+        String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval,
         Context context);
 }

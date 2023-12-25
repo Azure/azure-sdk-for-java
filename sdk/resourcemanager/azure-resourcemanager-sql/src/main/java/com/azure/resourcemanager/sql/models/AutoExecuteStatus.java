@@ -12,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * are 'Enabled' and 'Disabled'.
  */
 public enum AutoExecuteStatus {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default");
 
-    /** The actual serialized value for a AutoExecuteStatus instance. */
+    /**
+     * The actual serialized value for a AutoExecuteStatus instance.
+     */
     private final String value;
 
     AutoExecuteStatus(String value) {
@@ -30,7 +38,7 @@ public enum AutoExecuteStatus {
 
     /**
      * Parses a serialized value to a AutoExecuteStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutoExecuteStatus object, or null if unable to parse.
      */
@@ -48,7 +56,9 @@ public enum AutoExecuteStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

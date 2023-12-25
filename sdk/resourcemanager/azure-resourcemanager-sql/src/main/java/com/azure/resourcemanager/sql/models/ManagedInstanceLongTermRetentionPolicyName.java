@@ -8,15 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedInstanceLongTermRetentionPolicyName. */
+/**
+ * Defines values for ManagedInstanceLongTermRetentionPolicyName.
+ */
 public final class ManagedInstanceLongTermRetentionPolicyName
     extends ExpandableStringEnum<ManagedInstanceLongTermRetentionPolicyName> {
-    /** Static value default for ManagedInstanceLongTermRetentionPolicyName. */
+    /**
+     * Static value default for ManagedInstanceLongTermRetentionPolicyName.
+     */
     public static final ManagedInstanceLongTermRetentionPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of ManagedInstanceLongTermRetentionPolicyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceLongTermRetentionPolicyName() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceLongTermRetentionPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedInstanceLongTermRetentionPolicyName.
      */
@@ -27,7 +40,7 @@ public final class ManagedInstanceLongTermRetentionPolicyName
 
     /**
      * Gets known ManagedInstanceLongTermRetentionPolicyName values.
-     *
+     * 
      * @return known ManagedInstanceLongTermRetentionPolicyName values.
      */
     public static Collection<ManagedInstanceLongTermRetentionPolicyName> values() {

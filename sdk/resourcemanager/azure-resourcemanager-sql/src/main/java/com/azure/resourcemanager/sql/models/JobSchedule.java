@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Scheduling properties of a job. */
+/**
+ * Scheduling properties of a job.
+ */
 @Fluent
 public final class JobSchedule {
     /*
@@ -41,13 +43,15 @@ public final class JobSchedule {
     @JsonProperty(value = "interval")
     private String interval;
 
-    /** Creates an instance of JobSchedule class. */
+    /**
+     * Creates an instance of JobSchedule class.
+     */
     public JobSchedule() {
     }
 
     /**
      * Get the startTime property: Schedule start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -56,7 +60,7 @@ public final class JobSchedule {
 
     /**
      * Set the startTime property: Schedule start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobSchedule object itself.
      */
@@ -67,7 +71,7 @@ public final class JobSchedule {
 
     /**
      * Get the endTime property: Schedule end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -76,7 +80,7 @@ public final class JobSchedule {
 
     /**
      * Set the endTime property: Schedule end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobSchedule object itself.
      */
@@ -87,7 +91,7 @@ public final class JobSchedule {
 
     /**
      * Get the type property: Schedule interval type.
-     *
+     * 
      * @return the type value.
      */
     public JobScheduleType type() {
@@ -96,7 +100,7 @@ public final class JobSchedule {
 
     /**
      * Set the type property: Schedule interval type.
-     *
+     * 
      * @param type the type value to set.
      * @return the JobSchedule object itself.
      */
@@ -107,7 +111,7 @@ public final class JobSchedule {
 
     /**
      * Get the enabled property: Whether or not the schedule is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -116,7 +120,7 @@ public final class JobSchedule {
 
     /**
      * Set the enabled property: Whether or not the schedule is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the JobSchedule object itself.
      */
@@ -128,7 +132,7 @@ public final class JobSchedule {
     /**
      * Get the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
-     *
+     * 
      * @return the interval value.
      */
     public String interval() {
@@ -138,7 +142,7 @@ public final class JobSchedule {
     /**
      * Set the interval property: Value of the schedule's recurring interval, if the ScheduleType is recurring. ISO8601
      * duration format.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the JobSchedule object itself.
      */
@@ -149,7 +153,7 @@ public final class JobSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

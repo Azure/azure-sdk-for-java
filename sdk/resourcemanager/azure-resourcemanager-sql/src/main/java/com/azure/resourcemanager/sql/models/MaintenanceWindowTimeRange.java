@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Maintenance window time range. */
+/**
+ * Maintenance window time range.
+ */
 @Fluent
 public final class MaintenanceWindowTimeRange {
     /*
@@ -28,13 +30,15 @@ public final class MaintenanceWindowTimeRange {
     @JsonProperty(value = "duration")
     private String duration;
 
-    /** Creates an instance of MaintenanceWindowTimeRange class. */
+    /**
+     * Creates an instance of MaintenanceWindowTimeRange class.
+     */
     public MaintenanceWindowTimeRange() {
     }
 
     /**
      * Get the dayOfWeek property: Day of maintenance window.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public DayOfWeek dayOfWeek() {
@@ -43,7 +47,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Set the dayOfWeek property: Day of maintenance window.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the MaintenanceWindowTimeRange object itself.
      */
@@ -54,7 +58,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Get the startTime property: Start time minutes offset from 12am.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -63,7 +67,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Set the startTime property: Start time minutes offset from 12am.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MaintenanceWindowTimeRange object itself.
      */
@@ -74,7 +78,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Get the duration property: Duration of maintenance window in minutes.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -83,7 +87,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Set the duration property: Duration of maintenance window in minutes.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MaintenanceWindowTimeRange object itself.
      */
@@ -94,7 +98,7 @@ public final class MaintenanceWindowTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

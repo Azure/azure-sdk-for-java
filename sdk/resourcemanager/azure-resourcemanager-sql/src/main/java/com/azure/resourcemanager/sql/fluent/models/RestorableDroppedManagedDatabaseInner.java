@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A restorable dropped managed database resource. */
+/**
+ * A restorable dropped managed database resource.
+ */
 @Fluent
 public final class RestorableDroppedManagedDatabaseInner extends Resource {
     /*
@@ -19,27 +21,33 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
     @JsonProperty(value = "properties")
     private RestorableDroppedManagedDatabaseProperties innerProperties;
 
-    /** Creates an instance of RestorableDroppedManagedDatabaseInner class. */
+    /**
+     * Creates an instance of RestorableDroppedManagedDatabaseInner class.
+     */
     public RestorableDroppedManagedDatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableDroppedManagedDatabaseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestorableDroppedManagedDatabaseInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestorableDroppedManagedDatabaseInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -57,7 +65,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -66,7 +74,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -75,7 +83,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -84,7 +92,7 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

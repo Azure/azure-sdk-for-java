@@ -11,13 +11,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Specifies the state of the audit. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required.
  */
 public enum BlobAuditingPolicyState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a BlobAuditingPolicyState instance. */
+    /**
+     * The actual serialized value for a BlobAuditingPolicyState instance.
+     */
     private final String value;
 
     BlobAuditingPolicyState(String value) {
@@ -26,7 +32,7 @@ public enum BlobAuditingPolicyState {
 
     /**
      * Parses a serialized value to a BlobAuditingPolicyState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BlobAuditingPolicyState object, or null if unable to parse.
      */
@@ -44,7 +50,9 @@ public enum BlobAuditingPolicyState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

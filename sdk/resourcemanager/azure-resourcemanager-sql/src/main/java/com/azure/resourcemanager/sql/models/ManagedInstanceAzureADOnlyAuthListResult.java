@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAzureADOnlyAut
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of active directory only authentications. */
+/**
+ * A list of active directory only authentications.
+ */
 @Immutable
 public final class ManagedInstanceAzureADOnlyAuthListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedInstanceAzureADOnlyAuthListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceAzureADOnlyAuthListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceAzureADOnlyAuthListResult class.
+     */
     public ManagedInstanceAzureADOnlyAuthListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceAzureADOnlyAuthenticationInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedInstanceAzureADOnlyAuthListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedInstanceAzureADOnlyAuthListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
