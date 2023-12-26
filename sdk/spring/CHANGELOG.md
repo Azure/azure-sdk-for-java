@@ -8,6 +8,9 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fix CVE-2023-34062 [#38066](https://github.com/Azure/azure-sdk-for-java/issues/38066).
 
+#### Other Changes
+- Unsupported basic tier for ServiceBus JMS because of the [limitation of Azure Service Bus](https://learn.microsoft.com/azure/service-bus-messaging/jms-developer-guide?tabs=JMS-20%2Csystem-assigned-managed-identity-backed-authentication#java-message-service-jms-programming-model) [#]().
+
 ## 5.8.0 (2023-12-14)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.6, 3.2.0-3.2.0. (Note: 3.0.x (x>13), 3.1.y (y>6) and 3.2.z (z>0) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.4, 2023.0.0-2023.0.0. (Note: 2022.0.x (x>4) and 2023.0.y (y>0) should be supported, but they aren't tested with this release.)
