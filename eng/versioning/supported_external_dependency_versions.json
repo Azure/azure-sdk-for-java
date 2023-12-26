@@ -105,8 +105,8 @@
   [
     { "io.projectreactor.netty:reactor-netty": "1.1.0" },
     { "io.projectreactor.netty:reactor-netty-http": "1.1.0" },
-    { "io.projectreactor:reactor-core": "3.6.0-M3" },
-    { "io.projectreactor:reactor-test": "3.6.0-M3" }
+    { "io.projectreactor:reactor-core": "3.6.0" },
+    { "io.projectreactor:reactor-test": "3.6.0" }
   ],
   "reactor_2022":
   [
