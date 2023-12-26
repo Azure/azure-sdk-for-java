@@ -1,6 +1,7 @@
 # Release History
 
 ## 4.15.0 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.2.1 and Spring Cloud dependencies version to 2023.0.0
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
