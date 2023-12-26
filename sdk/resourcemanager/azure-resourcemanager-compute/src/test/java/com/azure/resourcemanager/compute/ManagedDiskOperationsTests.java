@@ -408,7 +408,6 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateAndUpdateManagedDiskWithHyperVGeneration() {
-        // logical sector size is null for standard SKU
         Disk disk =
             computeManager
                 .disks()

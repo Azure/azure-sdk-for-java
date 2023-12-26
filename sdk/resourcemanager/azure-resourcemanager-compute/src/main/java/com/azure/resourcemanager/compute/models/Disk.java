@@ -545,12 +545,12 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             Update withoutHibernationSupport();
         }
 
-        /** The stage of the managed disk definition allowing to specify hypervisor generation. */
+        /** The stage of the managed disk update allowing to specify hypervisor generation. */
         interface WithHyperVGeneration {
             /**
              * Specifies the hypervisor generation.
              * @param hyperVGeneration the hypervisor generation
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update withHyperVGeneration(HyperVGeneration hyperVGeneration);
         }
