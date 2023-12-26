@@ -198,6 +198,7 @@ extends:
                 - jackson_2.12
                 - jackson_2.14
                 - jackson_2.15
+                - jackson_2.16
                 - reactor_2020
                 - reactor_2022
                 - reactor_2023
@@ -226,6 +227,7 @@ extends:
                 - jackson_2.13
                 - jackson_2.14
                 - jackson_2.15
+                - jackson_2.16
               TestGoals: surefire:test
 
     LiveTestStages:
