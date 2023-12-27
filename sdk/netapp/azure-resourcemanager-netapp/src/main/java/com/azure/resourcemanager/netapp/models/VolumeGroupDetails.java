@@ -9,94 +9,104 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupDetailsInner;
 import java.util.List;
 
-/** An immutable client-side representation of VolumeGroupDetails. */
+/**
+ * An immutable client-side representation of VolumeGroupDetails.
+ */
 public interface VolumeGroupDetails {
     /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the groupMetadata property: Volume group details.
-     *
+     * 
      * @return the groupMetadata value.
      */
     VolumeGroupMetadata groupMetadata();
 
     /**
      * Gets the volumes property: List of volumes from group.
-     *
+     * 
      * @return the volumes value.
      */
     List<VolumeGroupVolumeProperties> volumes();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.VolumeGroupDetailsInner object.
-     *
+     * 
      * @return the inner object.
      */
     VolumeGroupDetailsInner innerModel();
 
-    /** The entirety of the VolumeGroupDetails definition. */
+    /**
+     * The entirety of the VolumeGroupDetails definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The VolumeGroupDetails definition stages. */
+    /**
+     * The VolumeGroupDetails definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the VolumeGroupDetails definition. */
+        /**
+         * The first stage of the VolumeGroupDetails definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the VolumeGroupDetails definition allowing to specify parent resource. */
+        /**
+         * The stage of the VolumeGroupDetails definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @return the next definition stage.
@@ -112,25 +122,27 @@ public interface VolumeGroupDetails {
             extends DefinitionStages.WithLocation, DefinitionStages.WithGroupMetadata, DefinitionStages.WithVolumes {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             VolumeGroupDetails create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             VolumeGroupDetails create(Context context);
         }
 
-        /** The stage of the VolumeGroupDetails definition allowing to specify location. */
+        /**
+         * The stage of the VolumeGroupDetails definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
@@ -138,29 +150,33 @@ public interface VolumeGroupDetails {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);
         }
 
-        /** The stage of the VolumeGroupDetails definition allowing to specify groupMetadata. */
+        /**
+         * The stage of the VolumeGroupDetails definition allowing to specify groupMetadata.
+         */
         interface WithGroupMetadata {
             /**
              * Specifies the groupMetadata property: Volume group details.
-             *
+             * 
              * @param groupMetadata Volume group details.
              * @return the next definition stage.
              */
             WithCreate withGroupMetadata(VolumeGroupMetadata groupMetadata);
         }
 
-        /** The stage of the VolumeGroupDetails definition allowing to specify volumes. */
+        /**
+         * The stage of the VolumeGroupDetails definition allowing to specify volumes.
+         */
         interface WithVolumes {
             /**
              * Specifies the volumes property: List of volumes from group.
-             *
+             * 
              * @param volumes List of volumes from group.
              * @return the next definition stage.
              */
@@ -170,14 +186,14 @@ public interface VolumeGroupDetails {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     VolumeGroupDetails refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

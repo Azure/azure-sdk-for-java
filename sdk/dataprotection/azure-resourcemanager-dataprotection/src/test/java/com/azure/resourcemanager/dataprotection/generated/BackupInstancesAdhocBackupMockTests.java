@@ -33,49 +33,29 @@ public final class BackupInstancesAdhocBackupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"gyyprotwy\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"ybnnustg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationJobExtendedInfo response =
-            manager
-                .backupInstances()
-                .adhocBackup(
-                    "mexiitdfuxt",
-                    "asiibmiybnnust",
-                    "nlj",
-                    new TriggerBackupRequest()
-                        .withBackupRuleOptions(
-                            new AdHocBackupRuleOptions()
-                                .withRuleName("nmgixh")
-                                .withTriggerOption(
-                                    new AdhocBackupTriggerOption().withRetentionTagOverride("avmqfoudor"))),
-                    com.azure.core.util.Context.NONE);
+        OperationJobExtendedInfo response
+            = manager.backupInstances().adhocBackup("linmfgv", "irpghriypoqeyh", "qhykprlpyzn",
+                new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("ciqdsme")
+                    .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("itdfuxtyasiib"))),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gyyprotwy", response.jobId());
+        Assertions.assertEquals("ybnnustg", response.jobId());
     }
 }

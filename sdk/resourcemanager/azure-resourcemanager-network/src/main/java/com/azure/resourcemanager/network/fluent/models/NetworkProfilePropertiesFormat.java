@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network profile properties. */
+/**
+ * Network profile properties.
+ */
 @Fluent
 public final class NetworkProfilePropertiesFormat {
     /*
@@ -38,13 +40,15 @@ public final class NetworkProfilePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkProfilePropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkProfilePropertiesFormat class.
+     */
     public NetworkProfilePropertiesFormat() {
     }
 
     /**
      * Get the containerNetworkInterfaces property: List of child container network interfaces.
-     *
+     * 
      * @return the containerNetworkInterfaces value.
      */
     public List<ContainerNetworkInterface> containerNetworkInterfaces() {
@@ -54,7 +58,7 @@ public final class NetworkProfilePropertiesFormat {
     /**
      * Get the containerNetworkInterfaceConfigurations property: List of chid container network interface
      * configurations.
-     *
+     * 
      * @return the containerNetworkInterfaceConfigurations value.
      */
     public List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations() {
@@ -64,7 +68,7 @@ public final class NetworkProfilePropertiesFormat {
     /**
      * Set the containerNetworkInterfaceConfigurations property: List of chid container network interface
      * configurations.
-     *
+     * 
      * @param containerNetworkInterfaceConfigurations the containerNetworkInterfaceConfigurations value to set.
      * @return the NetworkProfilePropertiesFormat object itself.
      */
@@ -76,7 +80,7 @@ public final class NetworkProfilePropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network profile resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -85,7 +89,7 @@ public final class NetworkProfilePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the network profile resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -94,7 +98,7 @@ public final class NetworkProfilePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

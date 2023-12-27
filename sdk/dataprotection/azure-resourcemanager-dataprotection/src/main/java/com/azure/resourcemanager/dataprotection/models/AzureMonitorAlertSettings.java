@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for Azure Monitor based alerts. */
+/**
+ * Settings for Azure Monitor based alerts.
+ */
 @Fluent
 public final class AzureMonitorAlertSettings {
     /*
@@ -16,13 +18,15 @@ public final class AzureMonitorAlertSettings {
     @JsonProperty(value = "alertsForAllJobFailures")
     private AlertsState alertsForAllJobFailures;
 
-    /** Creates an instance of AzureMonitorAlertSettings class. */
+    /**
+     * Creates an instance of AzureMonitorAlertSettings class.
+     */
     public AzureMonitorAlertSettings() {
     }
 
     /**
      * Get the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @return the alertsForAllJobFailures value.
      */
     public AlertsState alertsForAllJobFailures() {
@@ -31,7 +35,7 @@ public final class AzureMonitorAlertSettings {
 
     /**
      * Set the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @param alertsForAllJobFailures the alertsForAllJobFailures value to set.
      * @return the AzureMonitorAlertSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureMonitorAlertSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

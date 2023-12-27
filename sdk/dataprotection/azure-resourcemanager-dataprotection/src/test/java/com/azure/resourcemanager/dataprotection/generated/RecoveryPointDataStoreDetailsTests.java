@@ -12,38 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointDataStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointDataStoreDetails model =
-            BinaryData
-                .fromString(
-                    "{\"creationTime\":\"2021-10-02T02:42:21Z\",\"expiryTime\":\"2021-09-17T13:51:22Z\",\"id\":\"llqwjygvjayvblmh\",\"metaData\":\"zuhbxvvyhgsopb\",\"state\":\"qufegxuvwzfbn\",\"type\":\"mctlpdngitv\",\"visible\":true,\"rehydrationExpiryTime\":\"2021-02-28T20:17:33Z\",\"rehydrationStatus\":\"DELETE_IN_PROGRESS\"}")
-                .toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T02:42:21Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T13:51:22Z"), model.expiryTime());
-        Assertions.assertEquals("llqwjygvjayvblmh", model.id());
-        Assertions.assertEquals("zuhbxvvyhgsopb", model.metadata());
-        Assertions.assertEquals("qufegxuvwzfbn", model.state());
-        Assertions.assertEquals("mctlpdngitv", model.type());
-        Assertions.assertEquals(true, model.visible());
+        RecoveryPointDataStoreDetails model = BinaryData.fromString(
+            "{\"creationTime\":\"2021-07-13T15:08:06Z\",\"expiryTime\":\"2021-02-06T22:33:53Z\",\"id\":\"bopgxedkowepbqp\",\"metaData\":\"fkbw\",\"state\":\"snjvcdwxlpqekftn\",\"type\":\"tjsyin\",\"visible\":false,\"rehydrationExpiryTime\":\"2021-02-20T13:18:06Z\",\"rehydrationStatus\":\"COMPLETED\"}")
+            .toObject(RecoveryPointDataStoreDetails.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:08:06Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:33:53Z"), model.expiryTime());
+        Assertions.assertEquals("bopgxedkowepbqp", model.id());
+        Assertions.assertEquals("fkbw", model.metadata());
+        Assertions.assertEquals("snjvcdwxlpqekftn", model.state());
+        Assertions.assertEquals("tjsyin", model.type());
+        Assertions.assertEquals(false, model.visible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointDataStoreDetails model =
-            new RecoveryPointDataStoreDetails()
-                .withCreationTime(OffsetDateTime.parse("2021-10-02T02:42:21Z"))
-                .withExpiryTime(OffsetDateTime.parse("2021-09-17T13:51:22Z"))
-                .withId("llqwjygvjayvblmh")
-                .withMetadata("zuhbxvvyhgsopb")
-                .withState("qufegxuvwzfbn")
-                .withType("mctlpdngitv")
-                .withVisible(true);
+        RecoveryPointDataStoreDetails model
+            = new RecoveryPointDataStoreDetails().withCreationTime(OffsetDateTime.parse("2021-07-13T15:08:06Z"))
+                .withExpiryTime(OffsetDateTime.parse("2021-02-06T22:33:53Z")).withId("bopgxedkowepbqp")
+                .withMetadata("fkbw").withState("snjvcdwxlpqekftn").withType("tjsyin").withVisible(false);
         model = BinaryData.fromObject(model).toObject(RecoveryPointDataStoreDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T02:42:21Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T13:51:22Z"), model.expiryTime());
-        Assertions.assertEquals("llqwjygvjayvblmh", model.id());
-        Assertions.assertEquals("zuhbxvvyhgsopb", model.metadata());
-        Assertions.assertEquals("qufegxuvwzfbn", model.state());
-        Assertions.assertEquals("mctlpdngitv", model.type());
-        Assertions.assertEquals(true, model.visible());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T15:08:06Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:33:53Z"), model.expiryTime());
+        Assertions.assertEquals("bopgxedkowepbqp", model.id());
+        Assertions.assertEquals("fkbw", model.metadata());
+        Assertions.assertEquals("snjvcdwxlpqekftn", model.state());
+        Assertions.assertEquals("tjsyin", model.type());
+        Assertions.assertEquals(false, model.visible());
     }
 }

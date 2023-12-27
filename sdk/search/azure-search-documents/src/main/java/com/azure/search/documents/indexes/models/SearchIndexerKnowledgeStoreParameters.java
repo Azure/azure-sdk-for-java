@@ -16,12 +16,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property. Each
- * value must be of a primitive type.
+ * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
+ * Each value must be of a primitive type.
  */
 @Fluent
 public final class SearchIndexerKnowledgeStoreParameters
-        implements JsonSerializable<SearchIndexerKnowledgeStoreParameters> {
+    implements JsonSerializable<SearchIndexerKnowledgeStoreParameters> {
     /*
      * Whether or not projections should synthesize a generated key name if one isn't already present.
      */
@@ -33,13 +33,16 @@ public final class SearchIndexerKnowledgeStoreParameters
      */
     private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SearchIndexerKnowledgeStoreParameters class. */
-    public SearchIndexerKnowledgeStoreParameters() {}
+    /**
+     * Creates an instance of SearchIndexerKnowledgeStoreParameters class.
+     */
+    public SearchIndexerKnowledgeStoreParameters() {
+    }
 
     /**
-     * Get the synthesizeGeneratedKeyName property: Whether or not projections should synthesize a generated key name if
-     * one isn't already present.
-     *
+     * Get the synthesizeGeneratedKeyName property: Whether or not projections should synthesize a generated key name
+     * if one isn't already present.
+     * 
      * @return the synthesizeGeneratedKeyName value.
      */
     public Boolean isSynthesizeGeneratedKeyName() {
@@ -47,9 +50,9 @@ public final class SearchIndexerKnowledgeStoreParameters
     }
 
     /**
-     * Set the synthesizeGeneratedKeyName property: Whether or not projections should synthesize a generated key name if
-     * one isn't already present.
-     *
+     * Set the synthesizeGeneratedKeyName property: Whether or not projections should synthesize a generated key name
+     * if one isn't already present.
+     * 
      * @param synthesizeGeneratedKeyName the synthesizeGeneratedKeyName value to set.
      * @return the SearchIndexerKnowledgeStoreParameters object itself.
      */
@@ -61,7 +64,7 @@ public final class SearchIndexerKnowledgeStoreParameters
     /**
      * Get the additionalProperties property: A dictionary of knowledge store-specific configuration properties. Each
      * name is the name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -71,7 +74,7 @@ public final class SearchIndexerKnowledgeStoreParameters
     /**
      * Set the additionalProperties property: A dictionary of knowledge store-specific configuration properties. Each
      * name is the name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchIndexerKnowledgeStoreParameters object itself.
      */
@@ -94,36 +97,35 @@ public final class SearchIndexerKnowledgeStoreParameters
 
     /**
      * Reads an instance of SearchIndexerKnowledgeStoreParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerKnowledgeStoreParameters if the JsonReader was pointing to an instance of it,
-     *     or null if it was pointing to JSON null.
+     * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreParameters.
      */
     public static SearchIndexerKnowledgeStoreParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SearchIndexerKnowledgeStoreParameters deserializedSearchIndexerKnowledgeStoreParameters =
-                            new SearchIndexerKnowledgeStoreParameters();
-                    Map<String, Object> additionalProperties = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SearchIndexerKnowledgeStoreParameters deserializedSearchIndexerKnowledgeStoreParameters
+                = new SearchIndexerKnowledgeStoreParameters();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("synthesizeGeneratedKeyName".equals(fieldName)) {
-                            deserializedSearchIndexerKnowledgeStoreParameters.synthesizeGeneratedKeyName =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            if (additionalProperties == null) {
-                                additionalProperties = new LinkedHashMap<>();
-                            }
-
-                            additionalProperties.put(fieldName, reader.readUntyped());
-                        }
+                if ("synthesizeGeneratedKeyName".equals(fieldName)) {
+                    deserializedSearchIndexerKnowledgeStoreParameters.synthesizeGeneratedKeyName
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
                     }
-                    deserializedSearchIndexerKnowledgeStoreParameters.additionalProperties = additionalProperties;
 
-                    return deserializedSearchIndexerKnowledgeStoreParameters;
-                });
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSearchIndexerKnowledgeStoreParameters.additionalProperties = additionalProperties;
+
+            return deserializedSearchIndexerKnowledgeStoreParameters;
+        });
     }
 }

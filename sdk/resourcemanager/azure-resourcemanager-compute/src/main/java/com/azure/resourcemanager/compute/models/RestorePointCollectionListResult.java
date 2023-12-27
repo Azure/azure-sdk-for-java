@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.RestorePointCollectionInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List restore point collection operation response. */
+/**
+ * The List restore point collection operation response.
+ */
 @Fluent
 public final class RestorePointCollectionListResult {
     /*
@@ -25,13 +27,15 @@ public final class RestorePointCollectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RestorePointCollectionListResult class. */
+    /**
+     * Creates an instance of RestorePointCollectionListResult class.
+     */
     public RestorePointCollectionListResult() {
     }
 
     /**
      * Get the value property: Gets the list of restore point collections.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorePointCollectionInner> value() {
@@ -40,7 +44,7 @@ public final class RestorePointCollectionListResult {
 
     /**
      * Set the value property: Gets the list of restore point collections.
-     *
+     * 
      * @param value the value value to set.
      * @return the RestorePointCollectionListResult object itself.
      */
@@ -52,7 +56,7 @@ public final class RestorePointCollectionListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of RestorePointCollections. Call ListNext() with this
      * to fetch the next page of RestorePointCollections.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class RestorePointCollectionListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of RestorePointCollections. Call ListNext() with this
      * to fetch the next page of RestorePointCollections.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RestorePointCollectionListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class RestorePointCollectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

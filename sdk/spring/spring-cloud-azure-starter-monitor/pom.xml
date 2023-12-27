@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -123,7 +123,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.17</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

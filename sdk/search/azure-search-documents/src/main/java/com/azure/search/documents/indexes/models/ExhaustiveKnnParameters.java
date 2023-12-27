@@ -12,9 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** Contains the parameters specific to exhaustive KNN algorithm. */
+/**
+ * Contains the parameters specific to exhaustive KNN algorithm.
+ */
 @Fluent
 public final class ExhaustiveKnnParameters implements JsonSerializable<ExhaustiveKnnParameters> {
     /*
@@ -22,12 +23,15 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
      */
     private VectorSearchAlgorithmMetric metric;
 
-    /** Creates an instance of ExhaustiveKnnParameters class. */
-    public ExhaustiveKnnParameters() {}
+    /**
+     * Creates an instance of ExhaustiveKnnParameters class.
+     */
+    public ExhaustiveKnnParameters() {
+    }
 
     /**
      * Get the metric property: The similarity metric to use for vector comparisons.
-     *
+     * 
      * @return the metric value.
      */
     public VectorSearchAlgorithmMetric getMetric() {
@@ -36,7 +40,7 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
 
     /**
      * Set the metric property: The similarity metric to use for vector comparisons.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the ExhaustiveKnnParameters object itself.
      */
@@ -48,35 +52,34 @@ public final class ExhaustiveKnnParameters implements JsonSerializable<Exhaustiv
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("metric", Objects.toString(this.metric, null));
+        jsonWriter.writeStringField("metric", this.metric == null ? null : this.metric.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ExhaustiveKnnParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ExhaustiveKnnParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExhaustiveKnnParameters.
      */
     public static ExhaustiveKnnParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ExhaustiveKnnParameters deserializedExhaustiveKnnParameters = new ExhaustiveKnnParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ExhaustiveKnnParameters deserializedExhaustiveKnnParameters = new ExhaustiveKnnParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("metric".equals(fieldName)) {
-                            deserializedExhaustiveKnnParameters.metric =
-                                    VectorSearchAlgorithmMetric.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("metric".equals(fieldName)) {
+                    deserializedExhaustiveKnnParameters.metric
+                        = VectorSearchAlgorithmMetric.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedExhaustiveKnnParameters;
-                });
+            return deserializedExhaustiveKnnParameters;
+        });
     }
 }

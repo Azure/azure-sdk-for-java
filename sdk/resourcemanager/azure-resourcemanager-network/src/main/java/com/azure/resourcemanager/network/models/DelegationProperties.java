@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the delegation. */
+/**
+ * Properties of the delegation.
+ */
 @Fluent
 public final class DelegationProperties {
     /*
@@ -22,13 +24,15 @@ public final class DelegationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of DelegationProperties class. */
+    /**
+     * Creates an instance of DelegationProperties class.
+     */
     public DelegationProperties() {
     }
 
     /**
      * Get the serviceName property: The service name to which the NVA is delegated.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -37,7 +41,7 @@ public final class DelegationProperties {
 
     /**
      * Set the serviceName property: The service name to which the NVA is delegated.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the DelegationProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class DelegationProperties {
 
     /**
      * Get the provisioningState property: The current provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -57,7 +61,7 @@ public final class DelegationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

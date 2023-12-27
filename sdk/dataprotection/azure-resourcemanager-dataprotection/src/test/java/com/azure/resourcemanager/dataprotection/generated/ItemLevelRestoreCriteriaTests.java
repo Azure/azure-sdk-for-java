@@ -10,10 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.ItemLevelRestoreCriteria;
 public final class ItemLevelRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ItemLevelRestoreCriteria model =
-            BinaryData
-                .fromString("{\"objectType\":\"ItemLevelRestoreCriteria\"}")
-                .toObject(ItemLevelRestoreCriteria.class);
+        ItemLevelRestoreCriteria model = BinaryData.fromString("{\"objectType\":\"ItemLevelRestoreCriteria\"}")
+            .toObject(ItemLevelRestoreCriteria.class);
     }
 
     @org.junit.jupiter.api.Test

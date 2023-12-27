@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application specific parameters for the placement of volumes in the volume group. */
+/**
+ * Application specific parameters for the placement of volumes in the volume group.
+ */
 @Fluent
 public final class PlacementKeyValuePairs {
     /*
@@ -23,13 +25,16 @@ public final class PlacementKeyValuePairs {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of PlacementKeyValuePairs class. */
+    /**
+     * Creates an instance of PlacementKeyValuePairs class.
+     */
     public PlacementKeyValuePairs() {
     }
 
     /**
-     * Get the key property: Key for an application specific parameter for the placement of volumes in the volume group.
-     *
+     * Get the key property: Key for an application specific parameter for the placement of volumes in the volume
+     * group.
+     * 
      * @return the key value.
      */
     public String key() {
@@ -37,8 +42,9 @@ public final class PlacementKeyValuePairs {
     }
 
     /**
-     * Set the key property: Key for an application specific parameter for the placement of volumes in the volume group.
-     *
+     * Set the key property: Key for an application specific parameter for the placement of volumes in the volume
+     * group.
+     * 
      * @param key the key value to set.
      * @return the PlacementKeyValuePairs object itself.
      */
@@ -50,7 +56,7 @@ public final class PlacementKeyValuePairs {
     /**
      * Get the value property: Value for an application specific parameter for the placement of volumes in the volume
      * group.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -60,7 +66,7 @@ public final class PlacementKeyValuePairs {
     /**
      * Set the value property: Value for an application specific parameter for the placement of volumes in the volume
      * group.
-     *
+     * 
      * @param value the value value to set.
      * @return the PlacementKeyValuePairs object itself.
      */
@@ -71,19 +77,17 @@ public final class PlacementKeyValuePairs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model PlacementKeyValuePairs"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model PlacementKeyValuePairs"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model PlacementKeyValuePairs"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PlacementKeyValuePairs"));
         }
     }
 

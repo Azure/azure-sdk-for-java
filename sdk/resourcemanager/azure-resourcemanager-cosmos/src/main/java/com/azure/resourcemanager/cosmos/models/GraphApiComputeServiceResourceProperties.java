@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for GraphAPIComputeServiceResource. */
+/**
+ * Properties for GraphAPIComputeServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("GraphAPICompute")
 @Fluent
@@ -27,13 +29,15 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<GraphApiComputeRegionalServiceResource> locations;
 
-    /** Creates an instance of GraphApiComputeServiceResourceProperties class. */
+    /**
+     * Creates an instance of GraphApiComputeServiceResourceProperties class.
+     */
     public GraphApiComputeServiceResourceProperties() {
     }
 
     /**
      * Get the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     *
+     * 
      * @return the graphApiComputeEndpoint value.
      */
     public String graphApiComputeEndpoint() {
@@ -42,7 +46,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Set the graphApiComputeEndpoint property: GraphAPICompute endpoint for the service.
-     *
+     * 
      * @param graphApiComputeEndpoint the graphApiComputeEndpoint value to set.
      * @return the GraphApiComputeServiceResourceProperties object itself.
      */
@@ -53,21 +57,25 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Get the locations property: An array that contains all of the locations for the service.
-     *
+     * 
      * @return the locations value.
      */
     public List<GraphApiComputeRegionalServiceResource> locations() {
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GraphApiComputeServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GraphApiComputeServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
@@ -76,7 +84,7 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

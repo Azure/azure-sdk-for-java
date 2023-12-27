@@ -32,6 +32,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     private final PartitionLoadBalancingStrategy partitionLoadBalancingStrategy;
     private final Duration leaseAcquireInterval;
     private final Scheduler scheduler;
+    private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     private CancellationTokenSource cancellationTokenSource;
 
@@ -44,7 +45,8 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
             LeaseContainer leaseContainer,
             PartitionLoadBalancingStrategy partitionLoadBalancingStrategy,
             Duration leaseAcquireInterval,
-            Scheduler scheduler) {
+            Scheduler scheduler,
+            FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
 
         checkNotNull(partitionController, "Argument 'partitionController' can not be null");
         checkNotNull(leaseContainer, "Argument 'leaseContainer' can not be null");
@@ -57,6 +59,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
         this.partitionLoadBalancingStrategy = partitionLoadBalancingStrategy;
         this.leaseAcquireInterval = leaseAcquireInterval;
         this.scheduler = scheduler;
+        this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
 
         this.started = false;
         this.lock = new Object();
@@ -105,13 +108,20 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
                 }
 
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
-                return Flux.fromIterable(leasesToTake)
-                    .limitRate(1)
-                    .flatMap(lease -> {
-                        if (cancellationToken.isCancellationRequested()) return Mono.empty();
-                        return this.partitionController.addOrUpdateLease(lease);
-                    })
-                    .then();
+
+                // refresh the throughputControlConfigManager before taking leases
+                return this.refreshFeedRangeThroughputControlManagerIfApplicable(allLeases)
+                    .flatMap(data -> {
+                        return Flux.fromIterable(leasesToTake)
+                            .limitRate(1)
+                            .flatMap(lease -> {
+                                if (cancellationToken.isCancellationRequested()) {
+                                    return Mono.empty();
+                                }
+                                return this.partitionController.addOrUpdateLease(lease);
+                            })
+                            .then();
+                    });
             })
             .onErrorResume(throwable -> {
                 // "catch all" exception handler to keep the loop going until the user stops the change feed processor
@@ -141,5 +151,15 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
                 logger.info("Partition load balancer task stopped.");
                 return this.stop();
             });
+    }
+
+    private Mono<PartitionLoadBalancerImpl> refreshFeedRangeThroughputControlManagerIfApplicable(List<Lease> allLeases) {
+        return Mono.justOrEmpty(this.feedRangeThroughputControlConfigManager)
+            .flatMap(throughputControlConfigManager -> throughputControlConfigManager.refresh(allLeases))
+            .onErrorResume(throwable -> {
+                logger.warn("Refresh feedRangeThroughputControlManager failed", throwable);
+                return Mono.empty();
+            })
+            .then(Mono.just(this));
     }
 }

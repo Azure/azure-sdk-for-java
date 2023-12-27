@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.SingleQueryResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Query result. */
+/**
+ * Query result.
+ */
 @Fluent
 public final class QueryResultsInner {
     /*
@@ -24,13 +26,15 @@ public final class QueryResultsInner {
     @JsonProperty(value = "signatures")
     private List<SingleQueryResult> signatures;
 
-    /** Creates an instance of QueryResultsInner class. */
+    /**
+     * Creates an instance of QueryResultsInner class.
+     */
     public QueryResultsInner() {
     }
 
     /**
      * Get the matchingRecordsCount property: Number of total records matching the query.
-     *
+     * 
      * @return the matchingRecordsCount value.
      */
     public Long matchingRecordsCount() {
@@ -39,7 +43,7 @@ public final class QueryResultsInner {
 
     /**
      * Set the matchingRecordsCount property: Number of total records matching the query.
-     *
+     * 
      * @param matchingRecordsCount the matchingRecordsCount value to set.
      * @return the QueryResultsInner object itself.
      */
@@ -50,7 +54,7 @@ public final class QueryResultsInner {
 
     /**
      * Get the signatures property: Array containing the results of the query.
-     *
+     * 
      * @return the signatures value.
      */
     public List<SingleQueryResult> signatures() {
@@ -59,7 +63,7 @@ public final class QueryResultsInner {
 
     /**
      * Set the signatures property: Array containing the results of the query.
-     *
+     * 
      * @param signatures the signatures value to set.
      * @return the QueryResultsInner object itself.
      */
@@ -70,7 +74,7 @@ public final class QueryResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

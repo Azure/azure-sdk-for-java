@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Swap resource properties. */
+/**
+ * Swap resource properties.
+ */
 @Fluent
 public final class SwapResourceProperties {
     /*
@@ -16,13 +18,15 @@ public final class SwapResourceProperties {
     @JsonProperty(value = "slotType")
     private SlotType slotType;
 
-    /** Creates an instance of SwapResourceProperties class. */
+    /**
+     * Creates an instance of SwapResourceProperties class.
+     */
     public SwapResourceProperties() {
     }
 
     /**
      * Get the slotType property: Specifies slot info on a cloud service.
-     *
+     * 
      * @return the slotType value.
      */
     public SlotType slotType() {
@@ -31,7 +35,7 @@ public final class SwapResourceProperties {
 
     /**
      * Set the slotType property: Specifies slot info on a cloud service.
-     *
+     * 
      * @param slotType the slotType value to set.
      * @return the SwapResourceProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class SwapResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

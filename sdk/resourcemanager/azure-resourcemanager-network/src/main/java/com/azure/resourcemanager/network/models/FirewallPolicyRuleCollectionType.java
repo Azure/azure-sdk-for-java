@@ -8,19 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the rule collection. */
+/**
+ * The type of the rule collection.
+ */
 public final class FirewallPolicyRuleCollectionType extends ExpandableStringEnum<FirewallPolicyRuleCollectionType> {
-    /** Static value FirewallPolicyNatRuleCollection for FirewallPolicyRuleCollectionType. */
-    public static final FirewallPolicyRuleCollectionType FIREWALL_POLICY_NAT_RULE_COLLECTION =
-        fromString("FirewallPolicyNatRuleCollection");
+    /**
+     * Static value FirewallPolicyNatRuleCollection for FirewallPolicyRuleCollectionType.
+     */
+    public static final FirewallPolicyRuleCollectionType FIREWALL_POLICY_NAT_RULE_COLLECTION
+        = fromString("FirewallPolicyNatRuleCollection");
 
-    /** Static value FirewallPolicyFilterRuleCollection for FirewallPolicyRuleCollectionType. */
-    public static final FirewallPolicyRuleCollectionType FIREWALL_POLICY_FILTER_RULE_COLLECTION =
-        fromString("FirewallPolicyFilterRuleCollection");
+    /**
+     * Static value FirewallPolicyFilterRuleCollection for FirewallPolicyRuleCollectionType.
+     */
+    public static final FirewallPolicyRuleCollectionType FIREWALL_POLICY_FILTER_RULE_COLLECTION
+        = fromString("FirewallPolicyFilterRuleCollection");
 
     /**
      * Creates a new instance of FirewallPolicyRuleCollectionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +35,7 @@ public final class FirewallPolicyRuleCollectionType extends ExpandableStringEnum
 
     /**
      * Creates or finds a FirewallPolicyRuleCollectionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyRuleCollectionType.
      */
@@ -40,7 +46,7 @@ public final class FirewallPolicyRuleCollectionType extends ExpandableStringEnum
 
     /**
      * Gets known FirewallPolicyRuleCollectionType values.
-     *
+     * 
      * @return known FirewallPolicyRuleCollectionType values.
      */
     public static Collection<FirewallPolicyRuleCollectionType> values() {

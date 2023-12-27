@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** SAP HANA Table properties. */
+/**
+ * SAP HANA Table properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapHanaTable")
 @JsonFlatten
@@ -30,13 +32,16 @@ public class SapHanaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of SapHanaTableDataset class. */
-    public SapHanaTableDataset() {}
+    /**
+     * Creates an instance of SapHanaTableDataset class.
+     */
+    public SapHanaTableDataset() {
+    }
 
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of SAP HANA. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -46,7 +51,7 @@ public class SapHanaTableDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of SAP HANA. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the SapHanaTableDataset object itself.
      */
@@ -57,7 +62,7 @@ public class SapHanaTableDataset extends Dataset {
 
     /**
      * Get the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -66,7 +71,7 @@ public class SapHanaTableDataset extends Dataset {
 
     /**
      * Set the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SapHanaTableDataset object itself.
      */
@@ -75,49 +80,63 @@ public class SapHanaTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Auxiliary sku of Network Interface resource. */
+/**
+ * Auxiliary sku of Network Interface resource.
+ */
 public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<NetworkInterfaceAuxiliarySku> {
-    /** Static value None for NetworkInterfaceAuxiliarySku. */
+    /**
+     * Static value None for NetworkInterfaceAuxiliarySku.
+     */
     public static final NetworkInterfaceAuxiliarySku NONE = fromString("None");
 
-    /** Static value A1 for NetworkInterfaceAuxiliarySku. */
+    /**
+     * Static value A1 for NetworkInterfaceAuxiliarySku.
+     */
     public static final NetworkInterfaceAuxiliarySku A1 = fromString("A1");
 
-    /** Static value A2 for NetworkInterfaceAuxiliarySku. */
+    /**
+     * Static value A2 for NetworkInterfaceAuxiliarySku.
+     */
     public static final NetworkInterfaceAuxiliarySku A2 = fromString("A2");
 
-    /** Static value A4 for NetworkInterfaceAuxiliarySku. */
+    /**
+     * Static value A4 for NetworkInterfaceAuxiliarySku.
+     */
     public static final NetworkInterfaceAuxiliarySku A4 = fromString("A4");
 
-    /** Static value A8 for NetworkInterfaceAuxiliarySku. */
+    /**
+     * Static value A8 for NetworkInterfaceAuxiliarySku.
+     */
     public static final NetworkInterfaceAuxiliarySku A8 = fromString("A8");
 
     /**
      * Creates a new instance of NetworkInterfaceAuxiliarySku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
 
     /**
      * Creates or finds a NetworkInterfaceAuxiliarySku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkInterfaceAuxiliarySku.
      */
@@ -47,7 +59,7 @@ public final class NetworkInterfaceAuxiliarySku extends ExpandableStringEnum<Net
 
     /**
      * Gets known NetworkInterfaceAuxiliarySku values.
-     *
+     * 
      * @return known NetworkInterfaceAuxiliarySku values.
      */
     public static Collection<NetworkInterfaceAuxiliarySku> values() {

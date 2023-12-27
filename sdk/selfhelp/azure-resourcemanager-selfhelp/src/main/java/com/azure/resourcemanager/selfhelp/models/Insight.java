@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed insights(s) obtained via the invocation of an insight diagnostic. */
+/**
+ * Detailed insights(s) obtained via the invocation of an insight diagnostic.
+ */
 @Fluent
 public final class Insight {
     /*
@@ -34,13 +36,15 @@ public final class Insight {
     @JsonProperty(value = "importanceLevel")
     private ImportanceLevel importanceLevel;
 
-    /** Creates an instance of Insight class. */
+    /**
+     * Creates an instance of Insight class.
+     */
     public Insight() {
     }
 
     /**
      * Get the id property: Article id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class Insight {
 
     /**
      * Set the id property: Article id.
-     *
+     * 
      * @param id the id value to set.
      * @return the Insight object itself.
      */
@@ -60,7 +64,7 @@ public final class Insight {
 
     /**
      * Get the title property: This insight's title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -69,7 +73,7 @@ public final class Insight {
 
     /**
      * Set the title property: This insight's title.
-     *
+     * 
      * @param title the title value to set.
      * @return the Insight object itself.
      */
@@ -80,7 +84,7 @@ public final class Insight {
 
     /**
      * Get the results property: Detailed result content.
-     *
+     * 
      * @return the results value.
      */
     public String results() {
@@ -89,7 +93,7 @@ public final class Insight {
 
     /**
      * Set the results property: Detailed result content.
-     *
+     * 
      * @param results the results value to set.
      * @return the Insight object itself.
      */
@@ -100,7 +104,7 @@ public final class Insight {
 
     /**
      * Get the importanceLevel property: Importance level of the insight.
-     *
+     * 
      * @return the importanceLevel value.
      */
     public ImportanceLevel importanceLevel() {
@@ -109,7 +113,7 @@ public final class Insight {
 
     /**
      * Set the importanceLevel property: Importance level of the insight.
-     *
+     * 
      * @param importanceLevel the importanceLevel value to set.
      * @return the Insight object itself.
      */
@@ -120,7 +124,7 @@ public final class Insight {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

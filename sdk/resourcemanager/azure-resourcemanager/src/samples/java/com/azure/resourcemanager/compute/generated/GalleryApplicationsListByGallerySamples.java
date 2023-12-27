@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-/** Samples for GalleryApplications ListByGallery. */
+/**
+ * Samples for GalleryApplications ListByGallery.
+ */
 public final class GalleryApplicationsListByGallerySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_ListByGallery.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * GalleryApplication_ListByGallery.json
      */
     /**
      * Sample code: List gallery Applications in a gallery.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listGalleryApplicationsInAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getGalleryApplications()
-            .listByGallery("myResourceGroup", "myGalleryName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines().manager().serviceClient().getGalleryApplications().listByGallery("myResourceGroup",
+            "myGalleryName", com.azure.core.util.Context.NONE);
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.DppResource;
 public final class DppResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppResource model =
-            BinaryData
-                .fromString("{\"id\":\"dwtiukbldngkp\",\"name\":\"cipazyxoegukgjnp\",\"type\":\"ucgygevqz\"}")
+        DppResource model
+            = BinaryData.fromString("{\"id\":\"dwtiukbldngkp\",\"name\":\"cipazyxoegukgjnp\",\"type\":\"ucgygevqz\"}")
                 .toObject(DppResource.class);
     }
 

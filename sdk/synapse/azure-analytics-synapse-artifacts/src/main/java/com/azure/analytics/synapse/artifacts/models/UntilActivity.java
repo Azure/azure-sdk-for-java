@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * This activity executes inner activities until the specified boolean expression results to true or timeout is reached,
- * whichever is earlier.
+ * This activity executes inner activities until the specified boolean expression results to true or timeout is
+ * reached, whichever is earlier.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Until")
@@ -41,13 +41,16 @@ public class UntilActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of UntilActivity class. */
-    public UntilActivity() {}
+    /**
+     * Creates an instance of UntilActivity class.
+     */
+    public UntilActivity() {
+    }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @return the expression value.
      */
     public Expression getExpression() {
@@ -57,7 +60,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * Set the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the UntilActivity object itself.
      */
@@ -67,11 +70,11 @@ public class UntilActivity extends ControlActivity {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the timeout value.
      */
     public Object getTimeout() {
@@ -79,11 +82,11 @@ public class UntilActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
+     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the UntilActivity object itself.
      */
@@ -94,7 +97,7 @@ public class UntilActivity extends ControlActivity {
 
     /**
      * Get the activities property: List of activities to execute.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> getActivities() {
@@ -103,7 +106,7 @@ public class UntilActivity extends ControlActivity {
 
     /**
      * Set the activities property: List of activities to execute.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the UntilActivity object itself.
      */
@@ -112,42 +115,54 @@ public class UntilActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

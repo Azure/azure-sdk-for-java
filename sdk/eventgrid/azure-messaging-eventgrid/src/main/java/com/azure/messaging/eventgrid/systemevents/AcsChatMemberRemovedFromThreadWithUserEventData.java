@@ -30,6 +30,13 @@ public final class AcsChatMemberRemovedFromThreadWithUserEventData extends AcsCh
     private AcsChatThreadMemberProperties memberRemoved;
 
     /**
+     * Creates an instance of AcsChatMemberRemovedFromThreadWithUserEventData class
+     */
+    public AcsChatMemberRemovedFromThreadWithUserEventData() {
+
+    }
+
+    /**
      * Get the time property: The time at which the user was removed to the thread.
      *
      * @return the time value.

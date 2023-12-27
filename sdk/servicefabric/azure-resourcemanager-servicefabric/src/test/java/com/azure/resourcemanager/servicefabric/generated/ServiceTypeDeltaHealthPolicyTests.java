@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceTypeDeltaHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTypeDeltaHealthPolicy model =
-            BinaryData
-                .fromString("{\"maxPercentDeltaUnhealthyServices\":1154149650}")
-                .toObject(ServiceTypeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1154149650, model.maxPercentDeltaUnhealthyServices());
+        ServiceTypeDeltaHealthPolicy model = BinaryData.fromString("{\"maxPercentDeltaUnhealthyServices\":1475325470}")
+            .toObject(ServiceTypeDeltaHealthPolicy.class);
+        Assertions.assertEquals(1475325470, model.maxPercentDeltaUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTypeDeltaHealthPolicy model =
-            new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1154149650);
+        ServiceTypeDeltaHealthPolicy model
+            = new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1475325470);
         model = BinaryData.fromObject(model).toObject(ServiceTypeDeltaHealthPolicy.class);
-        Assertions.assertEquals(1154149650, model.maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(1475325470, model.maxPercentDeltaUnhealthyServices());
     }
 }

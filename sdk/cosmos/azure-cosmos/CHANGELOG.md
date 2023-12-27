@@ -1,5 +1,18 @@
 ## Release History
 
+### 4.54.0-beta.1 (Unreleased)
+
+#### Features Added
+* Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed issue where AAD/Entra ID related exceptions are not fully propagated to the caller when CosmosAsyncClient is created, causing ambiguity for user on the root cause of the error - See [PR 37977](https://github.com/Azure/azure-sdk-for-java/pull/37977) 
+* Fixed a `NullPointerException` issue in `MetadataRequestRetryPolicy` when `locationEndpointToRoute` is not set. - See [PR 38094](https://github.com/Azure/azure-sdk-for-java/pull/38094)
+
+#### Other Changes
+
 ### 4.53.1 (2023-12-06)
 
 #### Bugs Fixed

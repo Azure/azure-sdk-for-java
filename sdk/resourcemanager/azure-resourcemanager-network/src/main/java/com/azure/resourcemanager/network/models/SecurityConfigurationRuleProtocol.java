@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Network protocol this rule applies to. */
+/**
+ * Network protocol this rule applies to.
+ */
 public final class SecurityConfigurationRuleProtocol extends ExpandableStringEnum<SecurityConfigurationRuleProtocol> {
-    /** Static value Tcp for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Tcp for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol TCP = fromString("Tcp");
 
-    /** Static value Udp for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Udp for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol UDP = fromString("Udp");
 
-    /** Static value Icmp for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Icmp for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol ICMP = fromString("Icmp");
 
-    /** Static value Esp for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Esp for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol ESP = fromString("Esp");
 
-    /** Static value Any for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Any for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol ANY = fromString("Any");
 
-    /** Static value Ah for SecurityConfigurationRuleProtocol. */
+    /**
+     * Static value Ah for SecurityConfigurationRuleProtocol.
+     */
     public static final SecurityConfigurationRuleProtocol AH = fromString("Ah");
 
     /**
      * Creates a new instance of SecurityConfigurationRuleProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class SecurityConfigurationRuleProtocol extends ExpandableStringEnu
 
     /**
      * Creates or finds a SecurityConfigurationRuleProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityConfigurationRuleProtocol.
      */
@@ -50,7 +64,7 @@ public final class SecurityConfigurationRuleProtocol extends ExpandableStringEnu
 
     /**
      * Gets known SecurityConfigurationRuleProtocol values.
-     *
+     * 
      * @return known SecurityConfigurationRuleProtocol values.
      */
     public static Collection<SecurityConfigurationRuleProtocol> values() {

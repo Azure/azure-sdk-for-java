@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define a resource to query flow log and traffic analytics (optional) status. */
+/**
+ * Parameters that define a resource to query flow log and traffic analytics (optional) status.
+ */
 @Fluent
 public final class FlowLogStatusParameters {
     /*
@@ -17,14 +19,16 @@ public final class FlowLogStatusParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
-    /** Creates an instance of FlowLogStatusParameters class. */
+    /**
+     * Creates an instance of FlowLogStatusParameters class.
+     */
     public FlowLogStatusParameters() {
     }
 
     /**
      * Get the targetResourceId property: The target resource where getting the flow log and traffic analytics
      * (optional) status.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -34,7 +38,7 @@ public final class FlowLogStatusParameters {
     /**
      * Set the targetResourceId property: The target resource where getting the flow log and traffic analytics
      * (optional) status.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogStatusParameters object itself.
      */
@@ -45,15 +49,13 @@ public final class FlowLogStatusParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogStatusParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model FlowLogStatusParameters"));
         }
     }
 

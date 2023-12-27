@@ -24,7 +24,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A common class for general resource information. */
+/**
+ * A common class for general resource information.
+ */
 @Fluent
 public final class VirtualNetworkGatewayInner extends Resource {
     /*
@@ -51,13 +53,15 @@ public final class VirtualNetworkGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VirtualNetworkGatewayInner class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayInner class.
+     */
     public VirtualNetworkGatewayInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the virtual network gateway.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkGatewayPropertiesFormat innerProperties() {
@@ -66,7 +70,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extended location of type local virtual network gateway.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -75,7 +79,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of type local virtual network gateway.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -86,7 +90,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -95,7 +99,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -104,7 +108,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -113,14 +117,18 @@ public final class VirtualNetworkGatewayInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -129,7 +137,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
-     *
+     * 
      * @return the autoScaleConfiguration value.
      */
     public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
@@ -138,12 +146,12 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
-     *
+     * 
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withAutoScaleConfiguration(
-        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+    public VirtualNetworkGatewayInner
+        withAutoScaleConfiguration(VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
@@ -153,7 +161,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the ipConfigurations property: IP configurations for virtual network gateway.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations() {
@@ -162,12 +170,12 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the ipConfigurations property: IP configurations for virtual network gateway.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withIpConfigurations(
-        List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
+    public VirtualNetworkGatewayInner
+        withIpConfigurations(List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
@@ -177,7 +185,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the gatewayType property: The type of this virtual network gateway.
-     *
+     * 
      * @return the gatewayType value.
      */
     public VirtualNetworkGatewayType gatewayType() {
@@ -186,7 +194,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the gatewayType property: The type of this virtual network gateway.
-     *
+     * 
      * @param gatewayType the gatewayType value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -200,7 +208,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the vpnType property: The type of this virtual network gateway.
-     *
+     * 
      * @return the vpnType value.
      */
     public VpnType vpnType() {
@@ -209,7 +217,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the vpnType property: The type of this virtual network gateway.
-     *
+     * 
      * @param vpnType the vpnType value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -222,9 +230,9 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
+     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if
+     * gatewayType is not VPN.
+     * 
      * @return the vpnGatewayGeneration value.
      */
     public VpnGatewayGeneration vpnGatewayGeneration() {
@@ -232,9 +240,9 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
+     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if
+     * gatewayType is not VPN.
+     * 
      * @param vpnGatewayGeneration the vpnGatewayGeneration value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -248,7 +256,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the enableBgp property: Whether BGP is enabled for this virtual network gateway or not.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -257,7 +265,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the enableBgp property: Whether BGP is enabled for this virtual network gateway or not.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -272,7 +280,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
      * or not.
-     *
+     * 
      * @return the enablePrivateIpAddress value.
      */
     public Boolean enablePrivateIpAddress() {
@@ -282,7 +290,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
      * or not.
-     *
+     * 
      * @param enablePrivateIpAddress the enablePrivateIpAddress value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -296,7 +304,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the active property: ActiveActive flag.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -305,7 +313,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the active property: ActiveActive flag.
-     *
+     * 
      * @param active the active value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -319,7 +327,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
-     *
+     * 
      * @return the disableIpSecReplayProtection value.
      */
     public Boolean disableIpSecReplayProtection() {
@@ -328,7 +336,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
-     *
+     * 
      * @param disableIpSecReplayProtection the disableIpSecReplayProtection value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -343,7 +351,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
-     *
+     * 
      * @return the gatewayDefaultSite value.
      */
     public SubResource gatewayDefaultSite() {
@@ -353,7 +361,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
-     *
+     * 
      * @param gatewayDefaultSite the gatewayDefaultSite value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -368,7 +376,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
-     *
+     * 
      * @return the sku value.
      */
     public VirtualNetworkGatewaySku sku() {
@@ -378,7 +386,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -393,7 +401,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
-     *
+     * 
      * @return the vpnClientConfiguration value.
      */
     public VpnClientConfiguration vpnClientConfiguration() {
@@ -403,7 +411,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
-     *
+     * 
      * @param vpnClientConfiguration the vpnClientConfiguration value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -418,7 +426,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
      * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
-     *
+     * 
      * @return the virtualNetworkGatewayPolicyGroups value.
      */
     public List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups() {
@@ -428,7 +436,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
      * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
-     *
+     * 
      * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -443,7 +451,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
-     *
+     * 
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -452,7 +460,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the bgpSettings property: Virtual network gateway's BGP speaker settings.
-     *
+     * 
      * @param bgpSettings the bgpSettings value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -467,7 +475,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the customRoutes property: The reference to the address space resource which represents the custom routes
      * address space specified by the customer for virtual network gateway and VpnClient.
-     *
+     * 
      * @return the customRoutes value.
      */
     public AddressSpace customRoutes() {
@@ -477,7 +485,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the customRoutes property: The reference to the address space resource which represents the custom routes
      * address space specified by the customer for virtual network gateway and VpnClient.
-     *
+     * 
      * @param customRoutes the customRoutes value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -491,7 +499,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the virtual network gateway resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -500,7 +508,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -509,7 +517,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
+     * 
      * @return the enableDnsForwarding value.
      */
     public Boolean enableDnsForwarding() {
@@ -518,7 +526,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
+     * 
      * @param enableDnsForwarding the enableDnsForwarding value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -533,7 +541,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the inboundDnsForwardingEndpoint property: The IP address allocated by the gateway to which dns requests can
      * be sent.
-     *
+     * 
      * @return the inboundDnsForwardingEndpoint value.
      */
     public String inboundDnsForwardingEndpoint() {
@@ -543,7 +551,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
      * gateway is associated with the customer vnet.
-     *
+     * 
      * @return the vNetExtendedLocationResourceId value.
      */
     public String vNetExtendedLocationResourceId() {
@@ -553,7 +561,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
      * gateway is associated with the customer vnet.
-     *
+     * 
      * @param vNetExtendedLocationResourceId the vNetExtendedLocationResourceId value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -567,7 +575,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the natRules property: NatRules for virtual network gateway.
-     *
+     * 
      * @return the natRules value.
      */
     public List<VirtualNetworkGatewayNatRuleInner> natRules() {
@@ -576,7 +584,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the natRules property: NatRules for virtual network gateway.
-     *
+     * 
      * @param natRules the natRules value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -590,7 +598,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Get the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
+     * 
      * @return the enableBgpRouteTranslationForNat value.
      */
     public Boolean enableBgpRouteTranslationForNat() {
@@ -599,7 +607,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Set the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
+     * 
      * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -614,7 +622,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
      * networks.
-     *
+     * 
      * @return the allowVirtualWanTraffic value.
      */
     public Boolean allowVirtualWanTraffic() {
@@ -624,7 +632,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
      * networks.
-     *
+     * 
      * @param allowVirtualWanTraffic the allowVirtualWanTraffic value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -639,7 +647,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
      * Networks. This configuration does not support connectivity to Azure Virtual WAN.
-     *
+     * 
      * @return the allowRemoteVnetTraffic value.
      */
     public Boolean allowRemoteVnetTraffic() {
@@ -649,7 +657,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
      * Networks. This configuration does not support connectivity to Azure Virtual WAN.
-     *
+     * 
      * @param allowRemoteVnetTraffic the allowRemoteVnetTraffic value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -664,7 +672,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Get the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
      * multiple Express Route Gateways in the vnet.
-     *
+     * 
      * @return the adminState value.
      */
     public AdminState adminState() {
@@ -674,7 +682,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     /**
      * Set the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
      * multiple Express Route Gateways in the vnet.
-     *
+     * 
      * @param adminState the adminState value to set.
      * @return the VirtualNetworkGatewayInner object itself.
      */
@@ -688,15 +696,13 @@ public final class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
         } else {
             innerProperties().validate();
         }
