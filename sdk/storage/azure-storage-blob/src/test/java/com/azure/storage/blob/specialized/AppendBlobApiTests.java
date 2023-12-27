@@ -25,6 +25,7 @@ import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -485,11 +486,8 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockRetryOnTransientFailure() {
-        AppendBlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            bc.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        ).getAppendBlobClient();
+        AppendBlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getAppendBlobClient();
 
         clientWithFailure.appendBlock(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 

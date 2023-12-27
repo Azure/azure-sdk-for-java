@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.storage.file.share.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
@@ -13,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     private final File targetFile;
@@ -23,8 +23,8 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
         try {
-            String fileName = "perfstress-file-" + UUID.randomUUID().toString();
-            targetFile = new File(UUID.randomUUID().toString());
+            String fileName = "perfstress-file-" + CoreUtils.randomUuid();
+            targetFile = new File(CoreUtils.randomUuid().toString());
             targetFilePath = targetFile.getAbsolutePath();
             cloudFile = cloudFileDirectory.getFileReference(fileName);
         } catch (URISyntaxException | StorageException e) {

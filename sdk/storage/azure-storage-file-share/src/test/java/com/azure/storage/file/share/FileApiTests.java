@@ -19,6 +19,7 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
@@ -455,10 +456,8 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void uploadSuccessfulRetry() {
         primaryFileClient.create(DATA.getDefaultDataSize());
-        ShareFileClient clientWithFailure = getFileClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryFileClient.getFileUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy());
+        ShareFileClient clientWithFailure = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryFileClient.getFileUrl(), new TransientFailureInjectingHttpPipelinePolicy());
         clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(DATA.getDefaultInputStream()), null, null);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         primaryFileClient.download(os);
@@ -770,11 +769,8 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void uploadDataRetryOnTransientFailure() {
-        ShareFileClient clientWithFailure = getFileClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryFileClient.getFileUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        );
+        ShareFileClient clientWithFailure = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryFileClient.getFileUrl(), new TransientFailureInjectingHttpPipelinePolicy());
 
         primaryFileClient.create(1024);
         clientWithFailure.uploadRange(DATA.getDefaultInputStream(), DATA.getDefaultDataSizeLong());

@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -78,7 +79,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -103,7 +103,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     @BeforeAll
     public static void setupSpec() throws JsonProcessingException, MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            vlwContainerName = UUID.randomUUID().toString();
+            vlwContainerName = CoreUtils.randomUuid().toString();
 
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
@@ -647,9 +647,9 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        SyncPoller<BlobCopyInfo, Void> poller = destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true).setPollInterval(getPollingDuration(1000)));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
+                .setImmutabilityPolicy(immutabilityPolicy).setLegalHold(true)));
         poller.waitForCompletion();
 
         BlobProperties response = destination.getProperties();

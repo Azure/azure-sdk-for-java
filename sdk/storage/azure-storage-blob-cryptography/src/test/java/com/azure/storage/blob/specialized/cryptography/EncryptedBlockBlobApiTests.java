@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -45,6 +46,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy;
@@ -91,7 +93,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -584,7 +585,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @EnumSource(EncryptionVersion.class)
     public void encryptedDownloadFile(EncryptionVersion version) throws IOException {
-        String path = UUID.randomUUID() + ".txt";
+        String path = CoreUtils.randomUuid() + ".txt";
         //def dataFlux = Flux.just(defaultData).map{buf -> buf.duplicate()}
         beac = getEncryptionAsyncClient(version);
 
@@ -1624,18 +1625,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     private static HttpPipelinePolicy getPerCallVersionPolicy() {
-        return new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09");
-                return next.process();
-            }
-
-            @Override
-            public HttpPipelinePosition getPipelinePosition() {
-                return HttpPipelinePosition.PER_CALL;
-            }
-        };
+        return new PerCallVersionPolicy("2017-11-09");
     }
 
 

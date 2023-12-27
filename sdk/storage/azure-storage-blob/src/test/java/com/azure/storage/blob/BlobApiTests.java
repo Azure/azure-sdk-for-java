@@ -77,6 +77,7 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -1859,7 +1860,8 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void copy() {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null));
 
         AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
         BlobProperties properties = copyDestBlob.getProperties().block();
@@ -1879,7 +1881,8 @@ public class BlobApiTests extends BlobTestBase {
     public void copyMin() {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null));
         StepVerifier.create(poller.take(1)).assertNext(it -> {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
@@ -1897,8 +1900,8 @@ public class BlobApiTests extends BlobTestBase {
     public void copyPoller() {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null,
-            null, null, null, getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null));
 
         AsyncPollResponse<BlobCopyInfo, Void> lastResponse = poller.doOnNext(it -> {
             assertNotNull(it.getValue());
@@ -1935,8 +1938,8 @@ public class BlobApiTests extends BlobTestBase {
             metadata.put(key2, value2);
         }
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null,
-            null, null, getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, null));
         poller.blockLast();
 
         StepVerifier.create(bu2.getProperties()).assertNext(it -> assertEquals(metadata, it.getMetadata()))
@@ -1956,8 +1959,8 @@ public class BlobApiTests extends BlobTestBase {
             tags.put(key2, value2);
         }
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
-            .setPollInterval(getPollingDuration(1000)));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)));
         poller.blockLast();
 
         StepVerifier.create(bu2.getTags()).assertNext(it -> assertEquals(it, tags)).verifyComplete();
@@ -1982,9 +1985,8 @@ public class BlobApiTests extends BlobTestBase {
 
         AppendBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl())
-            .setSealDestination(destination)
-            .setPollInterval(getPollingDuration(1000)));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)));
         poller.blockLast();
 
         StepVerifier.create(bu2.getProperties()).assertNext(it ->
@@ -2071,8 +2073,8 @@ public class BlobApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
-            getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, null));
         AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
         assertNotNull(response);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
@@ -2116,8 +2118,8 @@ public class BlobApiTests extends BlobTestBase {
         String leaseId = setupBlobLeaseCondition(bu2, RECEIVED_LEASE_ID);
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null,
-            null, blobRequestConditions, getPollingDuration(500));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
         BlobCopyInfo blobCopyInfo = response.getValue();
@@ -2145,8 +2147,8 @@ public class BlobApiTests extends BlobTestBase {
         cu2.create();
         BlobClient bu2 = cu2.getBlobClient(generateBlobName());
 
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null,
-            null, null, getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
@@ -2178,8 +2180,8 @@ public class BlobApiTests extends BlobTestBase {
         String leaseId = setupBlobLeaseCondition(bu2, RECEIVED_LEASE_ID);
         BlobRequestConditions blobAccess = new BlobRequestConditions().setLeaseId(leaseId);
 
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null,
-            null, blobAccess, getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
 
         assertNotNull(lastResponse);

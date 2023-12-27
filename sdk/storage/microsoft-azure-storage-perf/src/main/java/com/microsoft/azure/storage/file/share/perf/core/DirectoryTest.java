@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.storage.file.share.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFileDirectory;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
-import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends ShareTest<TOptions> {
     protected final CloudFileDirectory cloudFileDirectory;
@@ -18,7 +18,7 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
         super(options);
         // Setup the container clients
         try {
-            String directoryName = "perfstress-directory-" + UUID.randomUUID().toString();
+            String directoryName = "perfstress-directory-" + CoreUtils.randomUuid();
             cloudFileDirectory = cloudFileShare.getRootDirectoryReference().getDirectoryReference(directoryName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);

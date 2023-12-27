@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -58,6 +59,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -353,10 +355,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         byte[] data = getRandomByteArray(10);
         String blockId = getBlockID();
@@ -369,17 +369,14 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailureWithRetriableBinaryData() {
         List<BinaryData> binaryDataList = Arrays.asList(
             BinaryData.fromBytes(DATA.getDefaultBytes()),
             BinaryData.fromString(DATA.getDefaultText()),
             BinaryData.fromFile(DATA.getDefaultFile()));
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         for (BinaryData binaryData : binaryDataList) {
             String blockId = getBlockID();
@@ -1512,11 +1509,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void uploadRetryOnTransientFailure() {
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        ).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         clientWithFailure.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true);
 
@@ -1870,11 +1864,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @MethodSource("bufferedUploadHandlePathingHotFluxWithTransientFailureSupplier")
     @LiveOnly
     public void bufferedUploadHandlePathingHotFluxWithTransientFailure(int[] dataSizeList, int blockCount) {
-        BlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        );
+        BlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy());
 
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
@@ -2173,8 +2164,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         blockBlobAsyncClient.upload(Flux.just(DATA.getDefaultData()), DATA.getDefaultDataSize(), true).block();
 
         // Mock a response that will always be retried.
-        HttpResponse mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT,
-            new URL("https://www.fake.com")));
+        HttpResponse mockHttpResponse = new MockHttpResponse(new HttpRequest(HttpMethod.PUT, "https://www.fake.com"),
+            500);
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         ByteBuffer localData = DATA.getDefaultData();

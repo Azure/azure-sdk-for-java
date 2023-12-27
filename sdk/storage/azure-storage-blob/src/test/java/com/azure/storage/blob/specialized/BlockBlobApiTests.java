@@ -51,6 +51,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -317,10 +318,8 @@ public class BlockBlobApiTests extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
-        BlockBlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobClient();
+        BlockBlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobClient();
 
         byte[] data = getRandomByteArray(10);
         String blockId = getBlockID();
@@ -339,10 +338,8 @@ public class BlockBlobApiTests extends BlobTestBase {
             BinaryData.fromBytes(DATA.getDefaultBytes()),
             BinaryData.fromString(DATA.getDefaultText()),
             BinaryData.fromFile(DATA.getDefaultFile()));
-        BlockBlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobClient();
+        BlockBlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobClient();
 
         for (BinaryData binaryData : binaryDataList) {
             String blockId = getBlockID();
@@ -1300,11 +1297,8 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void uploadRetryOnTransientFailure() {
-        BlockBlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        ).getBlockBlobClient();
+        BlockBlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobClient();
 
         byte[] data = getRandomByteArray(10);
         clientWithFailure.upload(new ByteArrayInputStream(data), data.length, true);
@@ -1322,11 +1316,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
         supports retries in all cases for the sync client.
          */
-        BlobClient clientWithFailure = getBlobClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        );
+        BlobClient clientWithFailure = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy());
 
         byte[] data = getRandomByteArray(dataSize);
         clientWithFailure.uploadWithResponse(new ByteArrayInputStream(data), dataSize,

@@ -3,8 +3,7 @@
 
 package com.microsoft.azure.storage.blob.perf;
 
-import java.util.UUID;
-
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.NullInputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.blob.perf.core.ContainerTest;
@@ -20,7 +19,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
-                .map(i -> "getblobstest-" + UUID.randomUUID())
+                .map(i -> "getblobstest-" + CoreUtils.randomUuid())
                 .flatMap(b -> upload(b).then(Mono.just(1)))
                 .then());
     }

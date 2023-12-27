@@ -459,7 +459,7 @@ public class ShareApiTests extends FileShareTestBase {
         client.create();
         Response<Boolean> initialResponse = client.deleteIfExistsWithResponse(null, null, null);
         // Calling delete again after garbage collection is completed
-        sleepIfRecord(45000);
+        sleepIfRunningAgainstService(45000);
         Response<Boolean> secondResponse = client.deleteIfExistsWithResponse(null, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 202);

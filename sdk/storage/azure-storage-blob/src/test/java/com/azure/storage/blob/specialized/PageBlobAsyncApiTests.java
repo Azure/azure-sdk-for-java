@@ -34,6 +34,7 @@ import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -514,9 +515,8 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void uploadPageRetryOnTransientFailure() {
-        PageBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getPageBlobAsyncClient();
+        PageBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getPageBlobAsyncClient();
 
         byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
 

@@ -4,13 +4,16 @@
 package com.azure.storage.file.share.specialized;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.FileShareTestBase;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -22,14 +25,12 @@ import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -277,7 +278,7 @@ public class LeaseApiTests extends FileShareTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -342,7 +343,7 @@ public class LeaseApiTests extends FileShareTestBase {
         ShareLeaseClient leaseClient = createLeaseClient(shareClient, leaseID);
 
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRecord(16000);
+        sleepIfRunningAgainstService(16000);
         Response<String> renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null);
         assertEquals(leaseClient.getLeaseId(), renewLeaseResponse.getValue());
         assertEquals(LeaseStateType.LEASED, shareClient.getProperties().getLeaseState());
@@ -437,7 +438,7 @@ public class LeaseApiTests extends FileShareTestBase {
         validateBasicHeaders(breakLeaseResponse.getHeaders());
         if (breakPeriod != null) {
             // If running in live mode wait for the lease to break so we can delete the share after the test completes
-            sleepIfRecord(breakPeriod * 1000);
+            sleepIfRunningAgainstService(breakPeriod * 1000);
         }
     }
 

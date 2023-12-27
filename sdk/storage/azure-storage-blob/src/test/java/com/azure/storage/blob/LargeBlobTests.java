@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
@@ -29,7 +30,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.UUID;
 import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,12 +58,12 @@ public class LargeBlobTests extends BlobTestBase {
 
     @BeforeEach
     public void setup() {
-        String containerName = UUID.randomUUID().toString();
+        String containerName = CoreUtils.randomUuid().toString();
         BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
         BlobContainerAsyncClient blobContainerAsyncClient =
             blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         blobContainerClient.create();
-        String blobName = UUID.randomUUID().toString();
+        String blobName = CoreUtils.randomUuid().toString();
         blobClient = blobContainerClient.getBlobClient(blobName);
         blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
@@ -72,7 +72,7 @@ public class LargeBlobTests extends BlobTestBase {
     @Test
     public void stageRealLargeBlob() {
         InputStream stream = createLargeInputStream(LARGE_BLOCK_SIZE);
-        String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString()
+        String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString()
             .getBytes(StandardCharsets.UTF_8));
 
         blobClient.getBlockBlobClient().stageBlock(blockId, stream, LARGE_BLOCK_SIZE);
@@ -219,7 +219,7 @@ public class LargeBlobTests extends BlobTestBase {
     }
 
     File getRandomLargeFile(long size) throws IOException {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
 

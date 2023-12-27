@@ -263,7 +263,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
                     .setIncludeDeleted(true)).next()).block();
-        sleepIfLiveTesting(30000);
+        sleepIfRunningAgainstService(30000);
         assertNotNull(shareItem);
         Mono<ShareAsyncClient> restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShare(
             shareItem.getName(), shareItem.getVersion());
@@ -283,7 +283,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
                     .setIncludeDeleted(true)).next()).block();
-        sleepIfLiveTesting(30000);
+        sleepIfRunningAgainstService(30000);
 
         assertNotNull(shareItem);
         Mono<ShareAsyncClient> restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShareWithResponse(

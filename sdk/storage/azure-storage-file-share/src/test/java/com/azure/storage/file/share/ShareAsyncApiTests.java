@@ -242,7 +242,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
 
         Response<Boolean> initialResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
-        sleepIfRecord(45000);
+        sleepIfRunningAgainstService(45000);
         // Calling delete again after garbage collection is completed
         Response<Boolean> secondResponse = primaryShareAsyncClient.deleteIfExistsWithResponse(null, null).block();
 

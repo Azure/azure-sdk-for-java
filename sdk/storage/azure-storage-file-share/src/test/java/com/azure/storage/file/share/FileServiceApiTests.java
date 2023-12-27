@@ -364,7 +364,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         shareClient.getFileClient(fileName).create(2);
         shareClient.delete();
-        sleepIfLiveTesting(30000);
+        sleepIfRunningAgainstService(30000);
         ShareItem shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())
@@ -385,7 +385,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         shareClient.getFileClient(fileName).create(2);
         shareClient.delete();
-        sleepIfLiveTesting(30000);
+        sleepIfRunningAgainstService(30000);
         ShareItem shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())
@@ -410,8 +410,8 @@ public class FileServiceApiTests extends FileShareTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        ShareServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy());
+        ShareServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
         Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }

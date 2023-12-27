@@ -732,8 +732,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // TODO: SasToken auth cannot be used until the logging redaction
         String sourceURL = primaryFileAsyncClient.getFileUrl();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            new ShareFileCopyOptions(), getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId()))
             .expectComplete().verify(Duration.ofMinutes(1));
     }
@@ -753,9 +753,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
             smbProperties.setFilePermissionKey(filePermissionKey);
         }
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, smbProperties,
-            setFilePermission ? FILE_PERMISSION : null, permissionType, ignoreReadOnly, setArchiveAttribute, null,
-            getPollingDuration(1000), null);
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, smbProperties, setFilePermission ? FILE_PERMISSION : null,
+                permissionType, ignoreReadOnly, setArchiveAttribute, null, null, null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -769,8 +769,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // TODO: SasToken auth cannot be used until the logging redaction
         String sourceURL = primaryFileAsyncClient.getFileUrl();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            new ShareFileCopyOptions(), getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, new ShareFileCopyOptions(), null));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -785,8 +785,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         String sourceURL = primaryFileAsyncClient.getFileUrl();
         String leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, getPollingDuration(1000), new ShareRequestConditions().setLeaseId(leaseId));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false, false, null, null,
+                new ShareRequestConditions().setLeaseId(leaseId)));
         StepVerifier.create(poller).assertNext(it -> {
             assertNotNull(it.getValue().getCopyId());
         }).expectComplete().verify(Duration.ofMinutes(1));
@@ -802,9 +803,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         String sourceURL = primaryFileAsyncClient.getFileUrl();
         createLeaseClient(primaryFileAsyncClient).acquireLease().block();
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, null, null, null,
-            false, false, null, getPollingDuration(1000), new ShareRequestConditions()
-                .setLeaseId(testResourceNamer.randomUuid()));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false, false, null, null,
+                new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid())));
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
     }
@@ -830,8 +831,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -845,8 +846,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setIgnoreReadOnly(true)
             .setArchiveAttribute(true);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -871,8 +872,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
 
         StepVerifier.create(poller).assertNext(it -> assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -901,8 +902,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
 
@@ -930,8 +931,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setSmbProperties(smbProperties)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete()
             .verify(Duration.ofMinutes(1));
@@ -956,8 +957,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setDestinationRequestConditions(conditions);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
     }
@@ -973,8 +974,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setDestinationRequestConditions(conditions);
 
         // exception: LeaseNotPresentWithFileOperation
-        assertThrows(ShareStorageException.class, () -> primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000)).blockFirst());
+        assertThrows(ShareStorageException.class, () -> setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null)).blockFirst());
     }
 
     @Test
@@ -984,8 +985,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setMetadata(testMetadata);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
     }
@@ -1014,8 +1015,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setDestinationRequestConditions(conditions)
             .setSmbPropertiesToCopy(list);
 
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000));
+        PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null));
         StepVerifier.create(poller).assertNext(it ->
             assertNotNull(it.getValue().getCopyId())).expectComplete().verify(Duration.ofMinutes(1));
 
@@ -1053,8 +1054,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
             .setSmbPropertiesToCopy(list);
 
-        assertThrows(IllegalArgumentException.class, () -> primaryFileAsyncClient.beginCopy(sourceURL, options,
-            getPollingDuration(1000)));
+        assertThrows(IllegalArgumentException.class, () -> setPlaybackPollerFluxPollInterval(
+            primaryFileAsyncClient.beginCopy(sourceURL, options, null)));
     }
 
     @Disabled("TODO: Need to find a way of mocking pending copy status")

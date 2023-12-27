@@ -828,7 +828,7 @@ public class ContainerApiTests extends BlobTestBase {
         normal.create(512);
 
         PageBlobClient copyBlob = cc.getBlobClient(copyName).getPageBlobClient();
-        copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000)).waitForCompletion();
+        setPlaybackSyncPollerPollInterval(copyBlob.beginCopy(normal.getBlobUrl(), null)).waitForCompletion();
 
         PageBlobClient metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient();
         Map<String, String> metadata = new HashMap<>();

@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -29,7 +30,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,7 +74,7 @@ public class LeaseApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -465,7 +465,7 @@ public class LeaseApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
