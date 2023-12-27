@@ -103,7 +103,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "Ba", " " })
+    @ValueSource(strings = { "Ba", " ", "basic" })
     void contextFailedByPricingTierNotCorrectlyConfigured(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -117,8 +117,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard" })
-    void autoconfigurationEnabledAndContextSuccessWithNonpremiumTier(String pricingTier) {
+    @ValueSource(strings = { "standard" })
+    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -155,7 +155,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void autoconfigurationDisabled(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -178,8 +178,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
-    void doesnotHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
+    @ValueSource(strings = { "standard", "premium" })
+    void doesNotHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -190,7 +190,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic" })
+    @ValueSource(strings = { "standard", "premium" })
     void doesHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -212,7 +212,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void connectionFactoryIsAutowiredIntoJmsTemplateBean(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -225,7 +225,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void jmsPropertiesConfiguredCorrectly(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -249,7 +249,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void jmsServiceBusPropertiesConfigured(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -266,7 +266,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void jmsListenerContainerFactoryConfiguredCorrectly(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -289,7 +289,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void cachingConnectionFactoryBeanConfiguredAsDefault(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -303,7 +303,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void cachingConnectionFactoryBeanConfiguredExplicitly(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
@@ -318,8 +318,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
-    void nativeConnectionFactoryBeanConfiguredByProperteyCondition(String pricingTier) {
+    @ValueSource(strings = { "standard", "premium" })
+    void nativeConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -335,7 +335,7 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard", "premium" })
+    @ValueSource(strings = { "standard", "premium" })
     void jmsPoolConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
