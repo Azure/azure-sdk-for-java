@@ -4,7 +4,6 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -15,6 +14,7 @@ import com.generic.core.http.okhttp.implementation.OkHttpResponse;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.FileBinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.util.ClientLogger;

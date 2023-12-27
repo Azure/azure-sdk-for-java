@@ -137,21 +137,6 @@ public class DefaultHttpClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpClientProvider} implementation that should be used to construct an instance of
-     * {@link HttpClient}.
-     *
-     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
-     * {@link HttpClient}.
-     *
-     * @return The updated {@link DefaultHttpClientBuilder} object.
-     */
-    public DefaultHttpClientBuilder setHttpClientProvider(HttpClientProvider httpClientProvider) {
-        this.httpClientProvider = httpClientProvider;
-
-        return this;
-    }
-
-    /**
      * Build an {@link HttpClient} with the current configuration. If an {@link HttpClientProvider} was set using
      * {@link DefaultHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise,
      * a new {@link HttpClient} will be created using the configuration set in this
