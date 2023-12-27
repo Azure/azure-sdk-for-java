@@ -40,8 +40,6 @@ public class StoreResultDiagnostics {
     private boolean isThroughputControlRequestRateTooLargeException;
     private final Double backendLatencyInMs;
     private final Double retryAfterInMs;
-    private final int statusCode;
-    private final int subStatusCode;
 
     //  StoreResponse and CosmosException fields
     private StoreResponseDiagnostics storeResponseDiagnostics;
@@ -71,10 +69,6 @@ public class StoreResultDiagnostics {
         this.itemLSN = storeResult.itemLSN;
         this.backendLatencyInMs = storeResult.backendLatencyInMs;
         this.retryAfterInMs = storeResult.retryAfterInMs;
-
-        // TODO (abhmohanty) : double check this
-        this.statusCode = storeResult.getStoreResponse() != null ? storeResult.getStoreResponse().getStatus() : 0;
-        this.subStatusCode = storeResult.getStoreResponse() != null ? storeResult.getStoreResponse().getSubStatusCode() : HttpConstants.SubStatusCodes.UNKNOWN;
     }
 
     private StoreResultDiagnostics(StoreResult storeResult, CosmosException e, RxDocumentServiceRequest request) {
@@ -186,15 +180,6 @@ public class StoreResultDiagnostics {
     }
 
     public Double getRetryAfterInMs() { return retryAfterInMs; }
-
-    // TODO: (abhmohanty) - double check
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public int getSubStatusCode() {
-        return subStatusCode;
-    }
 
     public StoreResponseDiagnostics getStoreResponseDiagnostics() {
         return storeResponseDiagnostics;
