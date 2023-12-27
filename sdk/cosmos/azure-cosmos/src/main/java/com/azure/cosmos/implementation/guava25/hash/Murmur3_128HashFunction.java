@@ -93,6 +93,7 @@ final class Murmur3_128HashFunction extends AbstractHashFunction implements Seri
         }
 
         @Override
+        @SuppressWarnings("fallthrough")
         protected void processRemaining(ByteBuffer bb) {
             long k1 = 0;
             long k2 = 0;
