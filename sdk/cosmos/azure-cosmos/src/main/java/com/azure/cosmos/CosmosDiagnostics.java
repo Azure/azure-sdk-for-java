@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -476,12 +477,18 @@ public final class CosmosDiagnostics {
 
                 @Override
                 public Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics) {
-                    return cosmosDiagnostics.getSessionTokenToRegionMapping();
+                    if (cosmosDiagnostics != null) {
+                        return cosmosDiagnostics.getSessionTokenToRegionMapping();
+                    }
+
+                    return null;
                 }
 
                 @Override
                 public void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMapping) {
-                    cosmosDiagnostics.setSessionTokenToRegionMapping(sessionTokenToRegionMapping);
+                    if (cosmosDiagnostics != null) {
+                        cosmosDiagnostics.setSessionTokenToRegionMapping(sessionTokenToRegionMapping);
+                    }
                 }
             });
     }

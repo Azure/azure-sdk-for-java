@@ -523,7 +523,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager, this.sessionConsistencyOptions);
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
@@ -1250,20 +1250,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
-
-                           // set the session token
-                           if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                               this.sessionContainer.setSessionToken(
-                                   request,
-                                   resourceResponse.getResource().getResourceId(),
-                                   getAltLink(resourceResponse.getResource()),
-                                   resourceResponse.getResponseHeaders());
-                           } else {
-                               this.sessionContainer.setSessionToken(
-                                   resourceResponse.getResource().getResourceId(),
-                                   getAltLink(resourceResponse.getResource()),
-                                   resourceResponse.getResponseHeaders());
-                           }
+                           this.sessionContainer.setSessionToken(
+                               request,
+                               resourceResponse.getResource().getResourceId(),
+                               getAltLink(resourceResponse.getResource()),
+                               resourceResponse.getResponseHeaders());
                 });
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
@@ -1315,18 +1306,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                            this.sessionContainer.setSessionToken(
-                                request,
-                                resourceResponse.getResource().getResourceId(),
-                                getAltLink(resourceResponse.getResource()),
-                                resourceResponse.getResponseHeaders());
-                        } else {
-                            this.sessionContainer.setSessionToken(
-                                resourceResponse.getResource().getResourceId(),
-                                getAltLink(resourceResponse.getResource()),
-                                resourceResponse.getResponseHeaders());
-                        }
+                        this.sessionContainer.setSessionToken(
+                            request,
+                            resourceResponse.getResource().getResourceId(),
+                            getAltLink(resourceResponse.getResource()),
+                            resourceResponse.getResponseHeaders());
                     }
                 });
 

@@ -119,7 +119,7 @@ public class SessionTokenHelper {
                                                            Long collectionRid,
                                                            String partitionKeyRangeId,
                                                            String firstPreferredWritableRegion,
-                                                           boolean canUseRegionScopedSessionTokens) {
+                                                           boolean canUseBloomFilter) {
 
         if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
 
@@ -127,7 +127,7 @@ public class SessionTokenHelper {
 
             if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
 
-                if (canUseRegionScopedSessionTokens) {
+                if (canUseBloomFilter) {
                     partitionKeyPossibleRegions =
                         pkBasedBloomFilter.tryResolvePartitionKeyPossibleRegions(collectionRid, partitionKey,
                             partitionKeyDefinition);
@@ -135,6 +135,7 @@ public class SessionTokenHelper {
                     return pkRangeBasedRegionScopedSessionTokenRegistry
                         .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
                             partitionKeyRangeId, true);
+
                 }
 
                 return pkRangeBasedRegionScopedSessionTokenRegistry
@@ -142,7 +143,7 @@ public class SessionTokenHelper {
                         partitionKeyRangeId, false);
 
             } else {
-                if (canUseRegionScopedSessionTokens) {
+                if (canUseBloomFilter) {
                     partitionKeyPossibleRegions =
                         pkBasedBloomFilter.tryResolvePartitionKeyPossibleRegions(collectionRid, partitionKey,
                             partitionKeyDefinition);
@@ -158,15 +159,17 @@ public class SessionTokenHelper {
                         if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(parentId)) {
                             // A partition can have more than 1 parent (merge). In that case, we apply Merge to
                             // generate a token with both parent's max LSNs
+                            ISessionToken resolvedSessionTokenForParentPkRangeId = null;
 
-                            ISessionToken resolvedSessionTokenForParentId = pkRangeBasedRegionScopedSessionTokenRegistry
+                            resolvedSessionTokenForParentPkRangeId = pkRangeBasedRegionScopedSessionTokenRegistry
                                 .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
-                                    parentId, canUseRegionScopedSessionTokens);
+                                    parentId, canUseBloomFilter);
 
-                            if (resolvedSessionTokenForParentId != null) {
+
+                            if (resolvedSessionTokenForParentPkRangeId != null) {
                                 parentSessionToken = parentSessionToken != null ?
-                                    parentSessionToken.merge(resolvedSessionTokenForParentId) :
-                                    resolvedSessionTokenForParentId;
+                                    parentSessionToken.merge(resolvedSessionTokenForParentPkRangeId) :
+                                    resolvedSessionTokenForParentPkRangeId;
                             }
                         }
                     }
