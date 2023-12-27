@@ -3,6 +3,10 @@ package com.azure.cosmos.implementation.guava25.hash;
 import com.azure.cosmos.implementation.guava25.annotations.GwtIncompatible;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+
+import static io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess.UNSAFE;
 
 /**
  * A package-local class holding common representation and mechanics for classes supporting dynamic
@@ -84,6 +88,7 @@ abstract class Striped64 extends Number {
     static final class Cell {
         volatile long p0, p1, p2, p3, p4, p5, p6;
         volatile long value;
+        static final AtomicLongFieldUpdater<Cell> valueFieldUpdater = AtomicLongFieldUpdater.newUpdater(Cell.class, "value");
         volatile long q0, q1, q2, q3, q4, q5, q6;
 
         Cell(long x) {
@@ -91,22 +96,23 @@ abstract class Striped64 extends Number {
         }
 
         final boolean cas(long cmp, long val) {
-            return UNSAFE.compareAndSwapLong(this, valueOffset, cmp, val);
+            // return UNSAFE.compareAndSwapLong(this, valueOffset, cmp, val);
+            return valueFieldUpdater.compareAndSet(this, cmp, val);
         }
 
         // Unsafe mechanics
-        private static final sun.misc.Unsafe UNSAFE;
-        private static final long valueOffset;
-
-        static {
-            try {
-                UNSAFE = getUnsafe();
-                Class<?> ak = Cell.class;
-                valueOffset = UNSAFE.objectFieldOffset(ak.getDeclaredField("value"));
-            } catch (Exception e) {
-                throw new Error(e);
-            }
-        }
+//        private static final sun.misc.Unsafe UNSAFE;
+//        private static final long valueOffset;
+//
+//        static {
+//            try {
+//                UNSAFE = getUnsafe();
+//                Class<?> ak = Cell.class;
+//                valueOffset = UNSAFE.objectFieldOffset(ak.getDeclaredField("value"));
+//            } catch (Exception e) {
+//                throw new Error(e);
+//            }
+//        }
     }
 
     /**
@@ -131,20 +137,26 @@ abstract class Striped64 extends Number {
      */
     transient volatile long base;
 
+    static final AtomicLongFieldUpdater<Striped64> baseFieldUpdater = AtomicLongFieldUpdater.newUpdater(Striped64.class, "base");
+
     /** Spinlock (locked via CAS) used when resizing and/or creating Cells. */
     transient volatile int busy;
+
+    static final AtomicIntegerFieldUpdater<Striped64> busyFieldUpdater = AtomicIntegerFieldUpdater.newUpdater(Striped64.class, "busy");
 
     /** Package-private default constructor */
     Striped64() {}
 
     /** CASes the base field. */
     final boolean casBase(long cmp, long val) {
-        return UNSAFE.compareAndSwapLong(this, baseOffset, cmp, val);
+        // return UNSAFE.compareAndSwapLong(this, baseOffset, cmp, val);
+        return baseFieldUpdater.compareAndSet(this, cmp, val);
     }
 
     /** CASes the busy field from 0 to 1 to acquire lock. */
     final boolean casBusy() {
-        return UNSAFE.compareAndSwapInt(this, busyOffset, 0, 1);
+        // return UNSAFE.compareAndSwapInt(this, busyOffset, 0, 1);
+        return busyFieldUpdater.compareAndSet(this, 0, 1);
     }
 
     /**
@@ -253,20 +265,20 @@ abstract class Striped64 extends Number {
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe UNSAFE;
-    private static final long baseOffset;
-    private static final long busyOffset;
+//    private static final sun.misc.Unsafe UNSAFE;
+//    private static final long baseOffset;
+//    private static final long busyOffset;
 
-    static {
-        try {
-            UNSAFE = getUnsafe();
-            Class<?> sk = Striped64.class;
-            baseOffset = UNSAFE.objectFieldOffset(sk.getDeclaredField("base"));
-            busyOffset = UNSAFE.objectFieldOffset(sk.getDeclaredField("busy"));
-        } catch (Exception e) {
-            throw new Error(e);
-        }
-    }
+//    static {
+//        try {
+//            UNSAFE = getUnsafe();
+//            Class<?> sk = Striped64.class;
+//            baseOffset = UNSAFE.objectFieldOffset(sk.getDeclaredField("base"));
+//            busyOffset = UNSAFE.objectFieldOffset(sk.getDeclaredField("busy"));
+//        } catch (Exception e) {
+//            throw new Error(e);
+//        }
+//    }
 
     /**
      * Returns a sun.misc.Unsafe. Suitable for use in a 3rd party package. Replace with a simple call
@@ -274,9 +286,9 @@ abstract class Striped64 extends Number {
      *
      * @return a sun.misc.Unsafe
      */
-    private static sun.misc.Unsafe getUnsafe() {
+//    private static sun.misc.Unsafe getUnsafe() {
 //        try {
-            return sun.misc.Unsafe.getUnsafe();
+//            return sun.misc.Unsafe.getUnsafe();
 //        } catch (SecurityException tryReflectionInstead) {
 //        }
 //        try {
@@ -295,5 +307,5 @@ abstract class Striped64 extends Number {
 //        } catch (java.security.PrivilegedActionException e) {
 //            throw new RuntimeException("Could not initialize intrinsics", e.getCause());
 //        }
-    }
+//    }
 }

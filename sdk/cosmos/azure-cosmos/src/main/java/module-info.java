@@ -27,7 +27,7 @@ module com.azure.cosmos {
     //  This is only required by guava shaded libraries
     requires java.logging;
 	requires HdrHistogram;
-    requires jdk.unsupported;
+    // requires jdk.unsupported;
 
     // public API surface area
     exports com.azure.cosmos;
