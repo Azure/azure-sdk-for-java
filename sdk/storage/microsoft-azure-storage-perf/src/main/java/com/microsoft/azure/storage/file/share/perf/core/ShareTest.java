@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.storage.file.share.perf.core;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFileShare;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 public abstract class ShareTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
     protected final CloudFileShare cloudFileShare;
@@ -18,7 +18,7 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
         super(options);
         // Setup the container clients
         try {
-            String shareName = "perfstress-share-" + CoreUtils.randomUuid();
+            String shareName = "perfstress-share-" + UUID.randomUUID().toString();
             cloudFileShare = cloudFileClient.getShareReference(shareName);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);

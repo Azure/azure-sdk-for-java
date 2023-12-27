@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.storage.file.share.perf.core;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFile;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
 
@@ -19,7 +19,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
     public FileTestBase(TOptions options) {
         super(options);
 
-        String fileName = "randomfiletest-" + CoreUtils.randomUuid();
+        String fileName = "randomfiletest-" + UUID.randomUUID().toString();
 
         try {
             cloudFile = cloudFileDirectory.getFileReference(fileName);

@@ -3,13 +3,14 @@
 
 package com.microsoft.azure.storage.blob.perf;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.NullInputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
+import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public ListBlobsTest(PerfStressOptions options) {
@@ -19,7 +20,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
-                .map(i -> "getblobstest-" + CoreUtils.randomUuid())
+                .map(i -> "getblobstest-" + UUID.randomUUID())
                 .flatMap(b -> upload(b).then(Mono.just(1)))
                 .then());
     }

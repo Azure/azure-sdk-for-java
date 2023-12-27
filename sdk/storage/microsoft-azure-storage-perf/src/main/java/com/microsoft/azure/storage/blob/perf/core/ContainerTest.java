@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.storage.blob.perf.core;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -11,9 +10,10 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    protected static final String CONTAINER_NAME = "perfstress-" + CoreUtils.randomUuid();
+    protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID().toString();
 
     protected final CloudBlobContainer cloudBlobContainer;
 
