@@ -26,7 +26,6 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
 /**
  * Used internally to cache the collections' session tokens in the Azure Cosmos DB database service.
  */
-// todo (abhmohanty): remove commented or dead code
 public final class SessionContainer implements ISessionContainer {
 
     private static final

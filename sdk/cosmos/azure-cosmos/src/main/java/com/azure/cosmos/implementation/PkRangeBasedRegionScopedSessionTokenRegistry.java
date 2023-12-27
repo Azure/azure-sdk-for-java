@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PkRangeBasedRegionScopedSessionTokenRegistry {
@@ -20,6 +21,23 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
     public ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> getPkRangeIdToRegionScopedSessionTokens() {
         return this.pkRangeIdToRegionScopedSessionTokens;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PkRangeBasedRegionScopedSessionTokenRegistry that = (PkRangeBasedRegionScopedSessionTokenRegistry) o;
+        return Objects.equals(this.pkRangeIdToRegionScopedSessionTokens, that.pkRangeIdToRegionScopedSessionTokens);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pkRangeIdToRegionScopedSessionTokens);
     }
 
     public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId) {
