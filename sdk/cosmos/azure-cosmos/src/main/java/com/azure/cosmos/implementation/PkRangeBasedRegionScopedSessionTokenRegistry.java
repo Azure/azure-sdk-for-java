@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
@@ -122,10 +123,10 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
     private ISessionToken resolveSessionTokenRepresentingAllRegions(String partitionKeyRangeId) {
         ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistryInner = this.pkRangeIdToRegionScopedSessionTokens.get(partitionKeyRangeId);
-        List<ISessionToken> sessionTokensAcrossAllRegions;
+        List<ISessionToken> sessionTokensAcrossAllRegions = new ArrayList<>();
 
         if (pkRangeIdSpecificSessionTokenRegistryInner != null) {
-            sessionTokensAcrossAllRegions = pkRangeIdSpecificSessionTokenRegistryInner.values().stream().toList();
+            sessionTokensAcrossAllRegions = new ArrayList<>(pkRangeIdSpecificSessionTokenRegistryInner.values());
             return mergeSessionToken(sessionTokensAcrossAllRegions);
         }
 
