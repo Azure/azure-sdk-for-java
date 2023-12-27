@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
 import com.azure.cosmos.implementation.guava25.hash.Funnel;
+import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -29,10 +30,15 @@ public class PartitionKeyBasedBloomFilter {
     public PartitionKeyBasedBloomFilter() {
         this.recordedRegions = ConcurrentHashMap.newKeySet();
         this.isBloomFilterInitialized = new AtomicBoolean(false);
-        this.funnel = (from, into) -> into
-            .putLong(from.collectionRid)
-            .putString(from.partitionKeyAsStringifiedJson, StandardCharsets.UTF_8)
-            .putString(from.region, StandardCharsets.UTF_8);
+        this.funnel = new Funnel<PartitionKeyBasedBloomFilterType>() {
+            @Override
+            public void funnel(PartitionKeyBasedBloomFilterType from, PrimitiveSink into) {
+                into
+                    .putLong(from.collectionRid)
+                    .putString(from.partitionKeyAsStringifiedJson, StandardCharsets.UTF_8)
+                    .putString(from.region, StandardCharsets.UTF_8);
+            }
+        };
     }
 
     public void tryInitializeBloomFilter() {
