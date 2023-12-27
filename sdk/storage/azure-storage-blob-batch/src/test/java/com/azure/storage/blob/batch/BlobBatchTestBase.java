@@ -200,10 +200,6 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         return responseLeaseId;
     }
 
-    protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
-        return createLeaseClient(blobClient, null);
-    }
-
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
         return new BlobLeaseClientBuilder()
             .blobClient(blobClient)

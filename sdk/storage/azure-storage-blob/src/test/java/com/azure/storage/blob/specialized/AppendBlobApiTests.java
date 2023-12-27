@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -23,10 +24,10 @@ import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -140,7 +141,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createTagsSupplier")
     public void createTags(String key1, String value1, String key2, String value2) {
@@ -166,7 +167,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createACSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -311,7 +312,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createIfNotExistsTagsSupplier")
     public void createIfNotExistsTags(String key1, String value1, String key2, String value2) {
@@ -401,7 +402,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertExceptionStatusCodeAndMessage(e, 400, BlobErrorCode.MD5MISMATCH);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockSupplier")
     public void appendBlockAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -497,7 +498,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(DATA.getDefaultBytes(), os.toByteArray());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2022-11-02")
     @Test
     public void appendBlockHighThroughput() {
         int size = 5 * Constants.MB;
@@ -572,7 +573,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, Context.NONE));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockSupplier")
     public void appendBlockFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -602,7 +603,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             null), 201);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -630,7 +631,7 @@ public class AppendBlobApiTests extends BlobTestBase {
             null, bac, null, null, Context.NONE));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFromURLSupplier")
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
@@ -662,7 +663,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("appendBlockFromURLFailSupplier")
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
@@ -714,7 +715,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void sealDefaults() {
         Response<Void> sealResponse = bc.sealWithResponse(null, null, null);
@@ -722,7 +723,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertEquals("true", sealResponse.getHeaders().getValue("x-ms-blob-sealed"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void sealMin() {
         bc.seal();
@@ -732,14 +733,14 @@ public class AppendBlobApiTests extends BlobTestBase {
             .getDeserializedHeaders().isSealed());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void sealError() {
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         assertThrows(BlobStorageException.class, () -> bc.seal());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("sealACSupplier")
     public void sealAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -771,7 +772,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("sealACFailSupplier")
     public void sealACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,

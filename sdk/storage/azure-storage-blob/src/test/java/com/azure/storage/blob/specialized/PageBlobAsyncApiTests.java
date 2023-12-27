@@ -11,6 +11,7 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -32,9 +33,9 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -158,7 +159,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createTagsSupplier")
     public void createTags(String key1, String value1, String key2, String value2) {
@@ -188,7 +189,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -341,7 +342,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createIfNotExistsTagsSupplier")
     public void createIfNotExistsTags(String key1, String value1, String key2, String value2) {
@@ -431,7 +432,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void uploadPageAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -604,7 +605,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void uploadPageFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -747,7 +748,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("uploadPageACSupplier")
     public void clearPagesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -829,7 +830,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -877,7 +878,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPageRanges() {
         bc.create(4 * Constants.KB, true).block();
@@ -898,7 +899,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesPageSize() {
         bc.create(4 * Constants.KB, true).block();
@@ -923,7 +924,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesContinuationToken() {
         bc.create(4 * Constants.KB, true).block();
@@ -943,7 +944,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRange() {
         bc.create(4 * Constants.KB, true).block();
@@ -958,7 +959,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPagesRangesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -981,7 +982,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1092,7 +1093,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPageRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1141,7 +1142,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiff() {
         bc.create(4 * Constants.KB, true).block();
@@ -1174,7 +1175,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesRangesDiffPageSize() {
         bc.create(4 * Constants.KB, true).block();
@@ -1200,7 +1201,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffContinuationToken() {
         bc.create(4 * Constants.KB, true).block();
@@ -1222,7 +1223,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @Test
     public void listPagesDiffRange() {
         bc.create(4 * Constants.KB, true).block();
@@ -1241,7 +1242,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void listPageRangesDiffAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1270,7 +1271,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void listPageRangesDiffACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -1326,7 +1327,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         assertAsyncResponseStatusCode(bc.resizeWithResponse(PageBlobClient.PAGE_BYTES, null),  200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void resizeAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1396,7 +1397,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             null, null), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void sequenceNumberAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1476,7 +1477,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         assertAsyncResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null), 202);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,

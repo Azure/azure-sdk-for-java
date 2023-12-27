@@ -935,46 +935,4 @@ public class DataLakeTestBase extends TestProxyTestBase {
             sleepIfLiveTesting(delayMillis);
         }
     }
-
-    public static boolean isLiveMode() {
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
-    }
-
-    private static boolean olderThan20200210ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_02_10);
-    }
-
-    private static boolean olderThan20201206ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_12_06);
-    }
-
-    private static boolean olderThan20200612ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_06_12);
-    }
-
-    private static boolean olderThan20210608ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2021_06_08);
-    }
-
-    private static boolean olderThan20230803ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2023_08_03);
-    }
-
-    private static boolean olderThan20200804ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_08_04);
-    }
-
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2019_12_12);
-    }
-
-    private static boolean olderThan20201002ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2020_10_02);
-    }
-
-    private static boolean olderThan20210410ServiceVersion() {
-        return olderThan(DataLakeServiceVersion.V2021_04_10);
-    }
-
-
 }

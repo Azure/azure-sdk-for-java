@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.test.TestMode;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -61,7 +61,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
         fileSystemClient.delete().block();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void restorePath() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
@@ -100,7 +100,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @ParameterizedTest
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
         " my cool directory ", "directory"})
@@ -175,7 +175,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void listDeletedPathsPath() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
@@ -197,7 +197,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     }
 
     // TODO (gapra): Add more get paths tests (Github issue created)
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void listDeletedPaths() {
         DataLakeFileAsyncClient fc1 = fileSystemClient.getFileAsyncClient(generatePathName());

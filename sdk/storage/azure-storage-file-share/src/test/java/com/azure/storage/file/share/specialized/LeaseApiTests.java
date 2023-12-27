@@ -67,7 +67,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(LeaseDurationType.INFINITE, properties.getLeaseDuration());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void acquireAndReleaseFileLeaseTrailingDot() {
         ShareFileClient shareFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
@@ -84,7 +84,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(200, releaseResponse.getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void acquireAndReleaseFileLeaseOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -147,7 +147,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertDoesNotThrow(() -> createLeaseClient(primaryFileClient).breakLease());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void breakFileLeaseTrailingDot() {
         ShareFileClient primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
@@ -165,7 +165,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(LeaseStateType.BROKEN, leaseState);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void breakFileLeaseOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -213,7 +213,7 @@ public class LeaseApiTests extends FileShareTestBase {
             .changeLease(testResourceNamer.randomUuid()));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void changeFileLeaseTrailingDot() {
         ShareFileClient primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
@@ -228,7 +228,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(leaseID, newLeaseID);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void changeFileLeaseOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -255,7 +255,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, () -> createLeaseClient(fc, "id").changeLease("id"));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("acquireShareLeaseSupplier")
     public void acquireShareLease(String proposedID, int leaseTime, LeaseStateType leaseState,
@@ -281,13 +281,13 @@ public class LeaseApiTests extends FileShareTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void acquireShareLeaseMin() {
         assertEquals(201, createLeaseClient(shareClient).acquireLeaseWithResponse(null, null, null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void acquireShareLeaseSnapshot() throws InterruptedException {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
@@ -335,7 +335,7 @@ public class LeaseApiTests extends FileShareTestBase {
                 null, null));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void renewShareLease() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
@@ -349,14 +349,14 @@ public class LeaseApiTests extends FileShareTestBase {
         validateBasicHeaders(renewLeaseResponse.getHeaders());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void renewShareLeaseMin() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
         assertEquals(200, createLeaseClient(shareClient, leaseID).renewLeaseWithResponse(null, null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void renewShareLeaseSnapshot() {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
@@ -381,7 +381,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, () -> createLeaseClient(shareClient, "id").renewLease());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void releaseShareLease() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
@@ -392,14 +392,14 @@ public class LeaseApiTests extends FileShareTestBase {
         validateBasicHeaders(releaseLeaseResponse.getHeaders());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void releaseShareLeaseMin() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
         assertEquals(200, createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void releaseShareLeaseSnapshot() {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
@@ -423,7 +423,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, () -> createLeaseClient(shareClient, "id").releaseLease());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("breakShareLeaseSupplier")
     public void breakShareLease(int leaseTime, Long breakPeriod) {
@@ -445,7 +445,7 @@ public class LeaseApiTests extends FileShareTestBase {
         return Stream.of(Arguments.of(-1, null), Arguments.of(-1, 20L), Arguments.of(20, 15L));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void breakShareLeaseMin() {
         setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
@@ -453,7 +453,7 @@ public class LeaseApiTests extends FileShareTestBase {
             null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void breakShareLeaseSnapshot() {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
@@ -478,7 +478,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, () -> createLeaseClient(shareClient).breakLease());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void changeShareLease() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
@@ -492,7 +492,7 @@ public class LeaseApiTests extends FileShareTestBase {
         validateBasicHeaders(changeLeaseResponse.getHeaders());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void changeShareLeaseMin() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
@@ -500,7 +500,7 @@ public class LeaseApiTests extends FileShareTestBase {
             .changeLeaseWithResponse(testResourceNamer.randomUuid(), null, null).getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void changeShareLeaseSnapshot() {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();

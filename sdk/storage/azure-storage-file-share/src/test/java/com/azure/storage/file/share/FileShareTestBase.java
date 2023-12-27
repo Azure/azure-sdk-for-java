@@ -27,7 +27,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
@@ -78,8 +77,6 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final ClientLogger LOGGER = new ClientLogger(FileShareTestBase.class);
 
     protected String prefix;
 
@@ -665,63 +662,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
-    protected static boolean olderThan20190707ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2019_07_07);
-    }
-
-    protected static boolean olderThan20191212ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2019_12_12);
-    }
-
-    protected static boolean olderThan20200210ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2020_02_10);
-    }
-
-    protected static boolean olderThan20201002ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2020_10_02);
-    }
-
-    protected static boolean olderThan20210212ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2021_02_12);
-    }
-
-    protected static boolean olderThan20210608ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2021_06_08);
-    }
-
-    protected static boolean olderThan20210410ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2021_04_10);
-    }
-
-    protected static boolean olderThan20211202ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2021_12_02);
-    }
-
-    protected static boolean olderThan20221102ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2022_11_02);
-    }
-
-    protected static boolean olderThan20230103ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2023_01_03);
-    }
-
-    protected static boolean olderThan20240204ServiceVersion() {
-        return olderThan(ShareServiceVersion.V2024_02_04);
-    }
-
-    protected static boolean olderThan(ShareServiceVersion targetVersion) {
-        String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
-        ShareServiceVersion version = (targetServiceVersionFromEnvironment != null)
-            ? Enum.valueOf(ShareServiceVersion.class, targetServiceVersionFromEnvironment)
-            : ShareServiceVersion.getLatest();
-
-        return version.ordinal() < targetVersion.ordinal();
-    }
-
-    public static boolean isLiveMode() {
-        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
-    }
-
     protected Duration getPollingDuration(long liveTestDurationInMillis) {
         return (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(10)
             : Duration.ofMillis(liveTestDurationInMillis);
@@ -729,9 +669,5 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean isServiceVersionSpecified() {
         return ENVIRONMENT.getServiceVersion() != null;
-    }
-
-    protected static boolean isPlaybackMode() {
-        return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
     }
 }

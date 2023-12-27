@@ -52,7 +52,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
      * Code snippets for {@link DataLakeDirectoryClient#delete()},
      * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)},
      * {@link DataLakeDirectoryClient#deleteRecursively()} and
-     * {@link DataLakeDirectoryClient#deleteRecursivelyWithResponse(DataLakeRequestConditions, Duration, Context)
+     * {@link DataLakeDirectoryClient#deleteRecursivelyWithResponse(DataLakeRequestConditions, Duration, Context)}
      */
     public void deleteCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.delete

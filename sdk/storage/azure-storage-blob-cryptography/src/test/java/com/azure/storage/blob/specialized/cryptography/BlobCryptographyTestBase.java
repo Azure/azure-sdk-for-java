@@ -529,8 +529,4 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             return interceptorManager.getPlaybackClient();
         }
     }
-
-    public static boolean liveOnly() {
-        return ENV.getTestMode() == TestMode.LIVE;
-    }
 }
