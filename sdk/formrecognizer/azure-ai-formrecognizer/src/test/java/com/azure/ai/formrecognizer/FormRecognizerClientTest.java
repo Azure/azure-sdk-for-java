@@ -303,10 +303,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        // TODO: (https://github.com/Azure/azure-sdk-for-java/issues/20012)
         urlRunner(receiptUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
                 = client.beginRecognizeReceiptsFromUrl(receiptUrl).setPollInterval(durationTestMode);
