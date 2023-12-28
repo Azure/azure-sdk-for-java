@@ -198,11 +198,24 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Indicates whether partition keys are to be tracked for session consistency purposes.
+     *
+     * @param partitionKeyScopedSessionCapturingEnabled a boolean
+     * @return this CosmosClientBuilder
+     * */
     public CosmosClientBuilder partitionKeyScopedSessionCapturingEnabled(boolean partitionKeyScopedSessionCapturingEnabled) {
         this.partitionKeyScopedSessionCapturingEnabled = partitionKeyScopedSessionCapturingEnabled;
         return this;
     }
 
+
+    /**
+     * Indicates whether session token is used for "write" operations.
+     *
+     * @param sessionConsistencyDisabledForWrites a boolean
+     * @return this CosmosClientBuilder
+     * */
     public CosmosClientBuilder sessionConsistencyDisabledForWrites(boolean sessionConsistencyDisabledForWrites) {
         this.sessionConsistencyDisabledForWrites = sessionConsistencyDisabledForWrites;
         return this;
