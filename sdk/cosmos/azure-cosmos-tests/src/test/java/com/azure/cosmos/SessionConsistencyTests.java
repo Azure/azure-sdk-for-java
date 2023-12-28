@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class SessionConsistencyTests extends TestSuiteBase {
 
@@ -123,7 +124,7 @@ public class SessionConsistencyTests extends TestSuiteBase {
             .partitionKeyScopedSessionCapturingEnabled(true)
             .multipleWriteRegionsEnabled(true)
             .consistencyLevel(ConsistencyLevel.SESSION)
-            .preferredRegions(this.writeRegionMap.keySet().stream().toList())
+            .preferredRegions(this.writeRegionMap.keySet().stream().collect(Collectors.toList()))
             .sessionRetryOptions(new SessionRetryOptionsBuilder()
                 .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
                 .build());
