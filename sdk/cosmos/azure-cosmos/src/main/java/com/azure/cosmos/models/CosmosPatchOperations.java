@@ -291,6 +291,48 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    /**
+     * The operator will first check if all the segments in the path provided (in the request) exist in the document.
+     * In case they do not, the operator will create them and set the provided value at the leaf segment of the provided path.
+     * In case the path already exists, the operator will not perform any modifications to the existing document at all.
+     *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.createIfNotExists("/a/x/y", 15); // will add the path /a/x/y and set the value to 15
+     *     cosmosPatch.createIfNotExists("/a/b/c", "new value"); // will not perform any modification as the path already exists
+     * </code>
+     *
+     * To add or update an optional field, use createIfNotExists followed by add/set
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.createIfNotExists("/g", []); // will add the path /g if it doesn't exist and initialize it with []. Will be a no-op if /g already exists
+     *     cosmosPatch.set("/g", [0,1,2]); // will set /g with the desired content
+     * </code>
+     *
+     * Note: When the path already exists, createIfNotExists operation would return a 304 Not Modified response.
+     * This operation is idempotent as it will add the path and set the value if the path does not exist and does
+     * no modification if the path exists.
+     *
+     * @param <T> The type of item to be added.
+     *
+     * @param path the operation path.
+     * @param value the value which will be added.
+     *
+     * @return same instance of {@link CosmosPatchOperations}
+     */
+    public <T> CosmosPatchOperations createIfNotExists(String path, T value) {
+        checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
+
+        this.patchOperations.add(
+            new PatchOperationCore<>(
+                PatchOperationType.CREATE_IF_NOT_EXISTS,
+                path,
+                value));
+
+        return this;
+    }
+
     // NOTE returning this patchOperations means any
     // modifications - like adding new entries is still
     // thread-safe - but enumerating over the collection is not

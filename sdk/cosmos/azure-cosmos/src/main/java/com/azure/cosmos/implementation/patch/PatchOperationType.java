@@ -10,7 +10,8 @@ public enum PatchOperationType {
     REPLACE(PatchConstants.OperationTypeNames_Replace),
     MOVE(PatchConstants.OperationTypeNames_Move),
     SET(PatchConstants.OperationTypeNames_Set),
-    INCREMENT(PatchConstants.OperationTypeNames_Increment);
+    INCREMENT(PatchConstants.OperationTypeNames_Increment),
+    CREATE_IF_NOT_EXISTS(PatchConstants.OperationTypeNames_CreateIfNotExists);
 
     PatchOperationType(String operationValue) {
         this.operationValue = operationValue;
