@@ -4,6 +4,7 @@
 
 #### Features Added
 * Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
+* Added `CreateIfNotExists` operator in PatchOperations - See [PR 38173](https://github.com/Azure/azure-sdk-for-java/pull/38173)
 
 #### Breaking Changes
 
