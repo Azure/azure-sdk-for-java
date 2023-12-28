@@ -8,90 +8,103 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
 
-/** An immutable client-side representation of IntegrationRuntimeResource. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeResource.
+ */
 public interface IntegrationRuntimeResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     IntegrationRuntime properties();
 
     /**
      * Gets the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeResourceInner innerModel();
 
-    /** The entirety of the IntegrationRuntimeResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the IntegrationRuntimeResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
-    /** The IntegrationRuntimeResource definition stages. */
+
+    /**
+     * The IntegrationRuntimeResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the IntegrationRuntimeResource definition. */
+        /**
+         * The first stage of the IntegrationRuntimeResource definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the IntegrationRuntimeResource definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the IntegrationRuntimeResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, factoryName.
-             *
+             * 
              * @param resourceGroupName The resource group name.
              * @param factoryName The factory name.
              * @return the next definition stage.
              */
             WithProperties withExistingFactory(String resourceGroupName, String factoryName);
         }
-        /** The stage of the IntegrationRuntimeResource definition allowing to specify properties. */
+
+        /**
+         * The stage of the IntegrationRuntimeResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Integration runtime properties..
-             *
+             * 
              * @param properties Integration runtime properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(IntegrationRuntime properties);
         }
+
         /**
          * The stage of the IntegrationRuntimeResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -99,93 +112,108 @@ public interface IntegrationRuntimeResource {
         interface WithCreate extends DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             IntegrationRuntimeResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             IntegrationRuntimeResource create(Context context);
         }
-        /** The stage of the IntegrationRuntimeResource definition allowing to specify ifMatch. */
+
+        /**
+         * The stage of the IntegrationRuntimeResource definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the integration runtime entity. Should only be specified for
              * update, for which it should match existing entity or can be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the integration runtime entity. Should only be specified for update, for which it
-             *     should match existing entity or can be * for unconditional update.
+             * should match existing entity or can be * for unconditional update.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the IntegrationRuntimeResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     IntegrationRuntimeResource.Update update();
 
-    /** The template for IntegrationRuntimeResource update. */
+    /**
+     * The template for IntegrationRuntimeResource update.
+     */
     interface Update extends UpdateStages.WithAutoUpdate, UpdateStages.WithUpdateDelayOffset {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         IntegrationRuntimeResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         IntegrationRuntimeResource apply(Context context);
     }
-    /** The IntegrationRuntimeResource update stages. */
+
+    /**
+     * The IntegrationRuntimeResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the IntegrationRuntimeResource update allowing to specify autoUpdate. */
+        /**
+         * The stage of the IntegrationRuntimeResource update allowing to specify autoUpdate.
+         */
         interface WithAutoUpdate {
             /**
              * Specifies the autoUpdate property: Enables or disables the auto-update feature of the self-hosted
              * integration runtime. See https://go.microsoft.com/fwlink/?linkid=854189..
-             *
+             * 
              * @param autoUpdate Enables or disables the auto-update feature of the self-hosted integration runtime. See
-             *     https://go.microsoft.com/fwlink/?linkid=854189.
+             * https://go.microsoft.com/fwlink/?linkid=854189.
              * @return the next definition stage.
              */
             Update withAutoUpdate(IntegrationRuntimeAutoUpdate autoUpdate);
         }
-        /** The stage of the IntegrationRuntimeResource update allowing to specify updateDelayOffset. */
+
+        /**
+         * The stage of the IntegrationRuntimeResource update allowing to specify updateDelayOffset.
+         */
         interface WithUpdateDelayOffset {
             /**
              * Specifies the updateDelayOffset property: The time offset (in hours) in the day, e.g., PT03H is 3 hours.
              * The integration runtime auto update will happen on that time..
-             *
+             * 
              * @param updateDelayOffset The time offset (in hours) in the day, e.g., PT03H is 3 hours. The integration
-             *     runtime auto update will happen on that time.
+             * runtime auto update will happen on that time.
              * @return the next definition stage.
              */
             Update withUpdateDelayOffset(String updateDelayOffset);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     IntegrationRuntimeResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -193,7 +221,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Gets detailed status information for an integration runtime.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,7 +232,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Gets detailed status information for an integration runtime.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed status information for an integration runtime.
@@ -214,30 +242,30 @@ public interface IntegrationRuntimeResource {
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials along with {@link Response}.
+     * credentials along with {@link Response}.
      */
     Response<IntegrationRuntimeConnectionInfo> getConnectionInfoWithResponse(Context context);
 
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     * credentials.
      */
     IntegrationRuntimeConnectionInfo getConnectionInfo();
 
     /**
      * Regenerates the authentication key for an integration runtime.
-     *
+     * 
      * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,7 +278,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Regenerates the authentication key for an integration runtime.
-     *
+     * 
      * @param regenerateKeyParameters The parameters for regenerating integration runtime authentication key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -261,7 +289,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Retrieves the authentication keys for an integration runtime.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,7 +300,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Retrieves the authentication keys for an integration runtime.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys.
@@ -281,7 +309,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
@@ -290,7 +318,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -301,7 +329,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -309,7 +337,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -322,7 +350,7 @@ public interface IntegrationRuntimeResource {
      * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
      * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
      * node than using this API directly.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -336,7 +364,7 @@ public interface IntegrationRuntimeResource {
      * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
      * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
      * node than using this API directly.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -345,30 +373,30 @@ public interface IntegrationRuntimeResource {
     /**
      * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
      * integration runtime.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime along with {@link Response}.
+     * integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(Context context);
 
     /**
      * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
      * integration runtime.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     * integration runtime.
      */
     IntegrationRuntimeMonitoringData getMonitoringData();
 
     /**
      * Upgrade self-hosted integration runtime to latest version if availability.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -379,7 +407,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Upgrade self-hosted integration runtime to latest version if availability.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -387,7 +415,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-     *
+     * 
      * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,12 +423,12 @@ public interface IntegrationRuntimeResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> removeLinksWithResponse(
-        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest, Context context);
+    Response<Void> removeLinksWithResponse(LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest,
+        Context context);
 
     /**
      * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-     *
+     * 
      * @param linkedIntegrationRuntimeRequest The data factory name for the linked integration runtime.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -410,7 +438,7 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Create a linked integration runtime entry in a shared integration runtime.
-     *
+     * 
      * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,13 +451,13 @@ public interface IntegrationRuntimeResource {
 
     /**
      * Create a linked integration runtime entry in a shared integration runtime.
-     *
+     * 
      * @param createLinkedIntegrationRuntimeRequest The linked integration runtime properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
+    IntegrationRuntimeStatusResponse
+        createLinkedIntegrationRuntime(CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
 }

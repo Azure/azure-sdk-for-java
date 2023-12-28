@@ -29,6 +29,10 @@ public final class AfdRouteCacheConfiguration {
     @JsonProperty(value = "compressionSettings")
     private CompressionSettings compressionSettings;
 
+    /** Creates an instance of AfdRouteCacheConfiguration class. */
+    public AfdRouteCacheConfiguration() {
+    }
+
     /**
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique

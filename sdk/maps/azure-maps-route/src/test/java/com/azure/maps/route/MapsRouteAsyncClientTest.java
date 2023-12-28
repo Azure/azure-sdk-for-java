@@ -23,9 +23,7 @@ import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteType;
 import com.azure.maps.route.models.TravelMode;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -39,16 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private MapsRouteAsyncClient getRouteAsyncClient(HttpClient httpClient, MapsRouteServiceVersion serviceVersion) {
         return getRouteAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -124,13 +113,15 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirections(routeOptions))
-        .assertNext(actualResults -> {
-            try {
-                validateGetRouteDirections(TestUtils.getExpectedRouteDirections(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get route directions");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetRouteDirections(TestUtils.getExpectedRouteDirections(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route directions");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get route directions with response
@@ -144,14 +135,15 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirectionsWithResponse(routeOptions))
-                .assertNext(response -> {
-                    try {
-                        validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirections(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get route directions");
-                    }
-                })
-                .verifyComplete();
+            .assertNext(response -> {
+                try {
+                    validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirections(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route directions");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -164,10 +156,11 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             new GeoPosition(52.50274, 13.43872));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         StepVerifier.create(client.getRouteDirectionsWithContextWithResponse(routeOptions, null))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get route directions with additional parameters
@@ -207,13 +200,15 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
         StepVerifier.create(client.getRouteDirections(routeOptions, parameters))
-        .assertNext(actualResults -> {
-            try {
-                validateGetRouteDirections(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get route directions with additional parameters");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetRouteDirections(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route directions with additional parameters");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get route directions with additional parameters with response
@@ -254,13 +249,15 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
         StepVerifier.create(client.getRouteDirectionsWithResponse(routeOptions, parameters))
-        .assertNext(actualResults -> {
-            try {
-                validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), 200, actualResults);
-            } catch (IOException e) {
-                Assertions.fail("Unable to get route directions with additional parameters");
-            }
-        }).verifyComplete();
+            .assertNext(actualResults -> {
+                try {
+                    validateGetRouteDirectionsWithResponse(TestUtils.getExpectedRouteDirectionsWithAdditionalParameters(), 200, actualResults);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route directions with additional parameters");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -300,10 +297,11 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
             .setAvoidVignette(Arrays.asList("AUS", "CHE"))
             .setAvoidAreas(avoidAreas);
         StepVerifier.create(client.getRouteDirectionsWithResponse(routeOptions, parameters))
-                .verifyErrorSatisfies(ex -> {
-                    final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
-                });
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get route range
@@ -319,7 +317,9 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get route range");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get route range with response
@@ -330,14 +330,15 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions))
-                .assertNext(response -> {
-                    try {
-                        validateGetRouteRangeWithResponse(TestUtils.getExpectedRouteRange(), 200, response);
-                    } catch (IOException e) {
-                        Assertions.fail("Unable to get route range");
-                    }
-                })
-                .verifyComplete();
+            .assertNext(response -> {
+                try {
+                    validateGetRouteRangeWithResponse(TestUtils.getExpectedRouteRange(), 200, response);
+                } catch (IOException e) {
+                    Assertions.fail("Unable to get route range");
+                }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -347,10 +348,11 @@ public class MapsRouteAsyncClientTest extends MapsRouteTestBase {
         MapsRouteAsyncClient client = getRouteAsyncClient(httpClient, serviceVersion);
         RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(-1000000, 5.86605), Duration.ofSeconds(6000));
         StepVerifier.create(client.getRouteRangeWithResponse(rangeOptions))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async begin request route directions batch

@@ -30,45 +30,29 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"dataLocation\":\"mpaxmodfvuefywsb\",\"username\":\"fvmwy\",\"displayName\":\"fouyf\",\"provisioningState\":\"Updating\"},\"id\":\"cpwi\",\"name\":\"zvqtmnubexkp\",\"type\":\"ksmond\"}";
+        String responseStr
+            = "{\"properties\":{\"dataLocation\":\"pxgy\",\"username\":\"agvrvmnpkuk\",\"displayName\":\"i\",\"provisioningState\":\"Updating\"},\"id\":\"xgwim\",\"name\":\"njhf\",\"type\":\"xw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SenderUsernameResource response =
-            manager
-                .senderUsernames()
-                .define("ld")
-                .withExistingDomain("pkeqdcvdrhvoo", "sotbob", "dopcjwvnh")
-                .withUsername("mutwuoe")
-                .withDisplayName("pkhjwni")
-                .create();
+        SenderUsernameResource response
+            = manager.senderUsernames().define("v").withExistingDomain("lla", "melwuipiccjz", "z")
+                .withUsername("ayrhyrnx").withDisplayName("ueedndrdvs").create();
 
-        Assertions.assertEquals("fvmwy", response.username());
-        Assertions.assertEquals("fouyf", response.displayName());
+        Assertions.assertEquals("agvrvmnpkuk", response.username());
+        Assertions.assertEquals("i", response.displayName());
     }
 }

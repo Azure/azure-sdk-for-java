@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProte
 /** Samples for ReplicationProtectionContainers SwitchProtection. */
 public final class ReplicationProtectionContainersSwitchProtection {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectionContainers_SwitchProtection.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_SwitchProtection.json
      */
     /**
      * Sample code: Switches protection from one container to another or one replication provider to another.
@@ -30,6 +30,7 @@ public final class ReplicationProtectionContainersSwitchProtection {
                 new SwitchProtectionInput()
                     .withProperties(
                         new SwitchProtectionInputProperties()
+                            .withReplicationProtectedItemName("a2aSwapOsVm")
                             .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
                 com.azure.core.util.Context.NONE);
     }

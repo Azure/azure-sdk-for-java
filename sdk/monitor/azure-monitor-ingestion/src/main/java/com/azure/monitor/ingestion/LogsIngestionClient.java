@@ -6,11 +6,13 @@ package com.azure.monitor.ingestion;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -40,7 +42,20 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
- * The synchronous client for uploading logs to Azure Monitor.
+ * This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>To create an instance of the {@link LogsIngestionClient}, use the {@link LogsIngestionClientBuilder} and configure
+ * the various options provided by the builder to customize the client as per your requirements. There are two required
+ * properties that should be set to build a client:
+ * <ol>
+ * <li>{@code endpoint} - The <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview?tabs=portal#create-a-data-collection-endpoint">data collection endpoint</a>.
+ * See {@link LogsIngestionClientBuilder#endpoint(String) endpoint} method for more details.</li>
+ * <li>{@code credential} - The AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * provides a variety of AAD credential types that can be used. See {@link LogsIngestionClientBuilder#credential(TokenCredential) credential } method for more details.</li>
+ * </ol>
  *
  * <p><strong>Instantiating a synchronous Logs ingestion client</strong></p>
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
@@ -51,6 +66,10 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
+ *
+ * @see LogsIngestionClientBuilder
+ * @see LogsIngestionAsyncClient
+ * @see com.azure.monitor.ingestion
  */
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionClient implements AutoCloseable {
@@ -61,6 +80,11 @@ public final class LogsIngestionClient implements AutoCloseable {
     private final ExecutorService threadPool;
     private final Thread shutdownHook;
 
+    /**
+     * Creates a {@link LogsIngestionClient} that sends requests to the data collection endpoint.
+     *
+     * @param client The {@link IngestionUsingDataCollectionRulesClient} that the client routes its request through.
+     */
     LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
         this.client = client;
         this.threadPool = createThreadPool();
@@ -70,7 +94,14 @@ public final class LogsIngestionClient implements AutoCloseable {
     /**
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
-     * the input logs into multiple smaller requests before sending to the service.
+     * the input logs into multiple smaller requests before sending to the service. This method will block until all
+     * the logs are uploaded or an error occurs.
+     *
+     * <p>
+     * Each log in the input collection must be a valid JSON object. The JSON object should match the
+     * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
+     * </p>
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.upload -->
@@ -96,7 +127,15 @@ public final class LogsIngestionClient implements AutoCloseable {
     /**
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
-     * the input logs into multiple smaller requests before sending to the service.
+     * the input logs into multiple smaller requests before sending to the service. This method will block until all
+     * the logs are uploaded or an error occurs. If an {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
+     * then the service errors are surfaced to the error handler and this method won't throw an exception.
+     *
+     * <p>
+     * Each log in the input collection must be a valid JSON object. The JSON object should match the
+     * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
+     * </p>
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
@@ -125,7 +164,15 @@ public final class LogsIngestionClient implements AutoCloseable {
     /**
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
-     * the input logs into multiple smaller requests before sending to the service.
+     * the input logs into multiple smaller requests before sending to the service. This method will block until all
+     * the logs are uploaded or an error occurs. If an {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
+     * then the service errors are surfaced to the error handler and this method won't throw an exception.
+     *
+     * <p>
+     * Each log in the input collection must be a valid JSON object. The JSON object should match the
+     * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
+     * </p>
      *
      * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
@@ -199,7 +246,17 @@ public final class LogsIngestionClient implements AutoCloseable {
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * This method is used to upload logs to Azure Monitor Log Analytics with specified data collection rule id and stream name. This
+     * upload method provides a more granular control of the HTTP request sent to the service. Use {@link RequestOptions}
+     * to configure the HTTP request.
+     *
+     * <p>
+     * The input logs should be a JSON array with each element in the array
+     * matching the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal. This content will be gzipped before sending to the service.
+     * If the content is already gzipped, then set the {@code Content-Encoding} header to {@code gzip} using {@link RequestOptions#setHeader(HttpHeaderName, String) requestOptions}
+     * and pass the content as is.
+     * </p>
      *
      * <p><strong>Header Parameters</strong>
      *

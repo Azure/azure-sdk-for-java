@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure File Storage linked service properties. */
+/**
+ * Azure File Storage linked service properties.
+ */
 @Fluent
 public final class AzureFileStorageLinkedServiceTypeProperties {
     /*
@@ -71,18 +73,20 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AzureFileStorageLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureFileStorageLinkedServiceTypeProperties class.
+     */
     public AzureFileStorageLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -91,7 +95,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userId value.
      */
     public Object userId() {
@@ -111,7 +115,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userId the userId value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password to logon the server.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -131,7 +135,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password to logon the server.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -143,7 +147,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -153,7 +157,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -164,7 +168,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @return the accountKey value.
      */
     public AzureKeyVaultSecretReference accountKey() {
@@ -173,7 +177,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Get the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the sasUri value.
      */
     public Object sasUri() {
@@ -195,7 +199,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Set the sasUri property: SAS URI of the Azure File resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -206,7 +210,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @return the sasToken value.
      */
     public AzureKeyVaultSecretReference sasToken() {
@@ -215,7 +219,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Get the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the fileShare value.
      */
     public Object fileShare() {
@@ -237,7 +241,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Set the fileShare property: The azure file share name. It is required when auth with accountKey/sasToken. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param fileShare the fileShare value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -249,7 +253,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Get the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the snapshot value.
      */
     public Object snapshot() {
@@ -259,7 +263,7 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     /**
      * Set the snapshot property: The azure file share snapshot version. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
@@ -269,30 +273,30 @@ public final class AzureFileStorageLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFileStorageLinkedServiceTypeProperties object itself.
      */
-    public AzureFileStorageLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureFileStorageLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

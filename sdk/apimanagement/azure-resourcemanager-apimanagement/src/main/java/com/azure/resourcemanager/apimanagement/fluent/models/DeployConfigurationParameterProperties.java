@@ -12,18 +12,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeployConfigurationParameterProperties {
     /*
-     * The name of the Git branch from which the configuration is to be
-     * deployed to the configuration database.
+     * The name of the Git branch from which the configuration is to be deployed to the configuration database.
      */
     @JsonProperty(value = "branch", required = true)
     private String branch;
 
     /*
-     * The value enforcing deleting subscriptions to products that are deleted
-     * in this update.
+     * The value enforcing deleting subscriptions to products that are deleted in this update.
      */
     @JsonProperty(value = "force")
     private Boolean force;
+
+    /** Creates an instance of DeployConfigurationParameterProperties class. */
+    public DeployConfigurationParameterProperties() {
+    }
 
     /**
      * Get the branch property: The name of the Git branch from which the configuration is to be deployed to the

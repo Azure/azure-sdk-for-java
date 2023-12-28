@@ -28,6 +28,10 @@ public final class RegionContractInner {
     @JsonProperty(value = "isDeleted")
     private Boolean isDeleted;
 
+    /** Creates an instance of RegionContractInner class. */
+    public RegionContractInner() {
+    }
+
     /**
      * Get the name property: Region name.
      *

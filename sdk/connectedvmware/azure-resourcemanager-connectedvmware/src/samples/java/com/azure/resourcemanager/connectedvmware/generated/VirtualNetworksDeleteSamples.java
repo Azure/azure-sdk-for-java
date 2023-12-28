@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworks Delete. */
 public final class VirtualNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/DeleteVirtualNetwork.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteVirtualNetwork.json
      */
     /**
      * Sample code: DeleteVirtualNetwork.
@@ -17,6 +15,6 @@ public final class VirtualNetworksDeleteSamples {
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.virtualNetworks().delete("testrg", "ProdNetwork", null, Context.NONE);
+        manager.virtualNetworks().delete("testrg", "ProdNetwork", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -20,8 +20,7 @@ public final class BackendCredentialsContract {
     private List<String> certificateIds;
 
     /*
-     * List of Client Certificate Thumbprints. Will be ignored if
-     * certificatesIds are provided.
+     * List of Client Certificate Thumbprints. Will be ignored if certificatesIds are provided.
      */
     @JsonProperty(value = "certificate")
     private List<String> certificate;
@@ -45,6 +44,10 @@ public final class BackendCredentialsContract {
      */
     @JsonProperty(value = "authorization")
     private BackendAuthorizationHeaderCredentials authorization;
+
+    /** Creates an instance of BackendCredentialsContract class. */
+    public BackendCredentialsContract() {
+    }
 
     /**
      * Get the certificateIds property: List of Client Certificate Ids.

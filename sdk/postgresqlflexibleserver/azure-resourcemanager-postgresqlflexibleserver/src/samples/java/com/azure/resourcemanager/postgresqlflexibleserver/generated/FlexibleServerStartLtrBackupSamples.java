@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for FlexibleServer StartLtrBackup. */
 public final class FlexibleServerStartLtrBackupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/LongTermRetentionBackup.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/LongTermRetentionBackup.json
      */
     /**
      * Sample code: Sample_ExecuteBackup.

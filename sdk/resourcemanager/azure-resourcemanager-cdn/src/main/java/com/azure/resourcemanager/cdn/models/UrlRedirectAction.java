@@ -21,6 +21,10 @@ public final class UrlRedirectAction extends DeliveryRuleAction {
     @JsonProperty(value = "parameters", required = true)
     private UrlRedirectActionParameters parameters;
 
+    /** Creates an instance of UrlRedirectAction class. */
+    public UrlRedirectAction() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the action.
      *

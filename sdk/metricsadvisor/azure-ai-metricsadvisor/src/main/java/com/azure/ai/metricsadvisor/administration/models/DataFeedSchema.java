@@ -17,6 +17,7 @@ public final class DataFeedSchema {
     private String timestampColumn;
 
     /**
+     * Creates a new instance of DataFeedSchema.
      * @param dataFeedMetrics the metric columns to set.
      */
     public DataFeedSchema(final List<DataFeedMetric> dataFeedMetrics) {

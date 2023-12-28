@@ -15,33 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"a9ec8ea8-dabf-4ffd-8f53-8f4b34a33124\",\"tenantId\":\"cd548a0f-aa6a-447b-810d-d9577b4ac7d9\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"fvgxbfsmxneh\":{\"principalId\":\"7f530e67-ac35-46df-b34b-20f03defcec3\",\"clientId\":\"b538b6e7-81ed-4a49-aa8b-d0344b9b16fb\"},\"ec\":{\"principalId\":\"66b61fe0-5aed-443a-9b11-52173809c64e\",\"clientId\":\"5ab2e0a4-cc79-4f58-8f34-c01a3e086cd4\"},\"debfqkkrbmpukgri\":{\"principalId\":\"b95bd7fa-c5b1-478a-9b96-9048e35bb92a\",\"clientId\":\"30173cb2-3da4-4a59-b2c0-284baa4914a1\"},\"zlfbxzpuzycispnq\":{\"principalId\":\"59a91bcd-dfae-4ce3-8fab-232352e6544c\",\"clientId\":\"5df37796-6064-441d-b6df-c925c3b4b3f8\"}}}")
-                .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        ManagedServiceIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"b0db07e2-0d55-4a16-9043-862d6d43ce8b\",\"tenantId\":\"546cc382-9f0b-4fe7-b2d9-4dfa7e051a07\",\"type\":\"None\",\"userAssignedIdentities\":{\"moyrxvwfudwpz\":{\"principalId\":\"d68aff32-8de2-4773-a763-52f76c726951\",\"clientId\":\"dd60b7cc-a6c3-4f4d-ba11-d942001d4965\"},\"hdzhlrqj\":{\"principalId\":\"0d3e63e2-482a-425c-abe1-8b6f5e7e27ff\",\"clientId\":\"35fa09f1-945c-48a6-a4ac-96cbe97a0fe2\"},\"kfrlhrxsbky\":{\"principalId\":\"780afe23-a49e-4ec3-a63d-d7475b36aef6\",\"clientId\":\"61d91fa7-c397-4758-89ad-109b0a8c16c8\"},\"ca\":{\"principalId\":\"16f6d962-c37b-40e2-9acd-46244b8407cb\",\"clientId\":\"376332a8-28c1-4b72-96b7-a973c8e61ebd\"}}}")
+            .toObject(ManagedServiceIdentity.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model =
-            new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "fvgxbfsmxneh",
-                        new UserAssignedIdentity(),
-                        "ec",
-                        new UserAssignedIdentity(),
-                        "debfqkkrbmpukgri",
-                        new UserAssignedIdentity(),
-                        "zlfbxzpuzycispnq",
-                        new UserAssignedIdentity()));
+        ManagedServiceIdentity model
+            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE).withUserAssignedIdentities(
+                mapOf("moyrxvwfudwpz", new UserAssignedIdentity(), "hdzhlrqj", new UserAssignedIdentity(),
+                    "kfrlhrxsbky", new UserAssignedIdentity(), "ca", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -53,6 +53,13 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnectionProvisioningState provisioningState();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PrivateEndpointConnectionInner object.
      *
      * @return the inner object.
@@ -63,22 +70,25 @@ public interface PrivateEndpointConnection {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PrivateEndpointConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateEndpointConnection definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the PrivateEndpointConnection definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +109,7 @@ public interface PrivateEndpointConnection {
              */
             PrivateEndpointConnection create(Context context);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -110,6 +121,7 @@ public interface PrivateEndpointConnection {
             WithCreate withProperties(PrivateEndpointConnectionRequestProperties properties);
         }
     }
+
     /**
      * Begins update for the PrivateEndpointConnection resource.
      *
@@ -134,6 +146,7 @@ public interface PrivateEndpointConnection {
          */
         PrivateEndpointConnection apply(Context context);
     }
+
     /** The PrivateEndpointConnection update stages. */
     interface UpdateStages {
         /** The stage of the PrivateEndpointConnection update allowing to specify properties. */
@@ -147,6 +160,7 @@ public interface PrivateEndpointConnection {
             Update withProperties(PrivateEndpointConnectionRequestProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

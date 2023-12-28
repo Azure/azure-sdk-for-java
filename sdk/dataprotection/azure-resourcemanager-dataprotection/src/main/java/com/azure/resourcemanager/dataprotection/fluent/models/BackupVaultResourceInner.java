@@ -14,28 +14,30 @@ import java.util.Map;
 
 /**
  * BackupVault Resource
- *
- * <p>Backup Vault Resource.
+ * 
+ * Backup Vault Resource.
  */
 @Fluent
 public final class BackupVaultResourceInner extends DppTrackedResource {
     /*
      * BackupVault
-     *
+     * 
      * BackupVaultResource properties
      */
     @JsonProperty(value = "properties", required = true)
     private BackupVault properties;
 
-    /** Creates an instance of BackupVaultResourceInner class. */
+    /**
+     * Creates an instance of BackupVaultResourceInner class.
+     */
     public BackupVaultResourceInner() {
     }
 
     /**
      * Get the properties property: BackupVault
-     *
-     * <p>BackupVaultResource properties.
-     *
+     * 
+     * BackupVaultResource properties.
+     * 
      * @return the properties value.
      */
     public BackupVault properties() {
@@ -44,9 +46,9 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
 
     /**
      * Set the properties property: BackupVault
-     *
-     * <p>BackupVaultResource properties.
-     *
+     * 
+     * BackupVaultResource properties.
+     * 
      * @param properties the properties value to set.
      * @return the BackupVaultResourceInner object itself.
      */
@@ -55,28 +57,36 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceInner withIdentity(DppIdentityDetails identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceInner withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,17 +95,15 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model BackupVaultResourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model BackupVaultResourceInner"));
         } else {
             properties().validate();
         }

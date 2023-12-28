@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Arrays;
 
@@ -26,10 +27,10 @@ public final class ClientEncryptionKey extends Resource {
     /**
      * Initialize a ClientEncryptionKey object from json string.
      *
-     * @param jsonString the json string that represents the database clientEncryptionKey.
+     * @param jsonNode the json node that represents the database clientEncryptionKey.
      */
-    public ClientEncryptionKey(String jsonString) {
-        super(jsonString);
+    public ClientEncryptionKey(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     public String getEncryptionAlgorithm() {

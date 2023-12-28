@@ -42,6 +42,10 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         return this.innerModel().provisioningState();
     }
 
+    public String updateStrategyId() {
+        return this.innerModel().updateStrategyId();
+    }
+
     public UpdateRunStrategy strategy() {
         return this.innerModel().strategy();
     }
@@ -209,6 +213,11 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
 
     public UpdateRun stop(String ifMatch, Context context) {
         return serviceManager.updateRuns().stop(resourceGroupName, fleetName, updateRunName, ifMatch, context);
+    }
+
+    public UpdateRunImpl withUpdateStrategyId(String updateStrategyId) {
+        this.innerModel().withUpdateStrategyId(updateStrategyId);
+        return this;
     }
 
     public UpdateRunImpl withStrategy(UpdateRunStrategy strategy) {

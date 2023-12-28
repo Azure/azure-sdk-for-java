@@ -6,27 +6,29 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
 
-/** An immutable client-side representation of ClientDiscoveryValueForSingleApi. */
+/**
+ * An immutable client-side representation of ClientDiscoveryValueForSingleApi.
+ */
 public interface ClientDiscoveryValueForSingleApi {
     /**
      * Gets the display property: ClientDiscoveryDisplay
-     *
-     * <p>Contains the localized display information for this particular operation.
-     *
+     * 
+     * Contains the localized display information for this particular operation.
+     * 
      * @return the display value.
      */
     ClientDiscoveryDisplay display();
 
     /**
      * Gets the name property: Name of the Operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
@@ -34,16 +36,16 @@ public interface ClientDiscoveryValueForSingleApi {
     /**
      * Gets the origin property: The intended executor of the operation;governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the properties property: ClientDiscoveryForProperties
-     *
-     * <p>Properties for the given operation.
-     *
+     * 
+     * Properties for the given operation.
+     * 
      * @return the properties value.
      */
     ClientDiscoveryForProperties properties();
@@ -51,7 +53,7 @@ public interface ClientDiscoveryValueForSingleApi {
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ClientDiscoveryValueForSingleApiInner innerModel();

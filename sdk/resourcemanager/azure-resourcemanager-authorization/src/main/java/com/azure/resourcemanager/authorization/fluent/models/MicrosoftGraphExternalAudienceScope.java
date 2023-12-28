@@ -21,6 +21,15 @@ public final class MicrosoftGraphExternalAudienceScope
     public static final MicrosoftGraphExternalAudienceScope ALL = fromString("all");
 
     /**
+     * Creates a new instance of MicrosoftGraphExternalAudienceScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphExternalAudienceScope() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphExternalAudienceScope from its string representation.
      *
      * @param name a name to look for.

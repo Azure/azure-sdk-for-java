@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificate RefreshSecret. */
 public final class CertificateRefreshSecretSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementRefreshCertificate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementRefreshCertificate.json
      */
     /**
      * Sample code: ApiManagementRefreshCertificate.
@@ -18,6 +16,8 @@ public final class CertificateRefreshSecretSamples {
      */
     public static void apiManagementRefreshCertificate(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.certificates().refreshSecretWithResponse("rg1", "apimService1", "templateCertkv", Context.NONE);
+        manager
+            .certificates()
+            .refreshSecretWithResponse("rg1", "apimService1", "templateCertkv", com.azure.core.util.Context.NONE);
     }
 }

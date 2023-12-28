@@ -78,7 +78,6 @@ public class StoreClient implements IStoreClient {
             this.transportClient,
             serviceConfigurationReader,
             userTokenProvider,
-            false,
             useMultipleWriteLocations,
             sessionRetryOptions);
 

@@ -18,6 +18,10 @@ public final class IssueUpdateContract {
     @JsonProperty(value = "properties")
     private IssueUpdateContractProperties innerProperties;
 
+    /** Creates an instance of IssueUpdateContract class. */
+    public IssueUpdateContract() {
+    }
+
     /**
      * Get the innerProperties property: Issue entity Update contract properties.
      *

@@ -92,6 +92,13 @@ public interface ProductContract {
     ProductState state();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner object.
      *
      * @return the inner object.
@@ -102,22 +109,25 @@ public interface ProductContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ProductContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProductContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ProductContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the ProductContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -146,6 +156,7 @@ public interface ProductContract {
              */
             ProductContract create(Context context);
         }
+
         /** The stage of the ProductContract definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -156,6 +167,7 @@ public interface ProductContract {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the ProductContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -166,6 +178,7 @@ public interface ProductContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ProductContract definition allowing to specify terms. */
         interface WithTerms {
             /**
@@ -178,6 +191,7 @@ public interface ProductContract {
              */
             WithCreate withTerms(String terms);
         }
+
         /** The stage of the ProductContract definition allowing to specify subscriptionRequired. */
         interface WithSubscriptionRequired {
             /**
@@ -197,6 +211,7 @@ public interface ProductContract {
              */
             WithCreate withSubscriptionRequired(Boolean subscriptionRequired);
         }
+
         /** The stage of the ProductContract definition allowing to specify approvalRequired. */
         interface WithApprovalRequired {
             /**
@@ -215,6 +230,7 @@ public interface ProductContract {
              */
             WithCreate withApprovalRequired(Boolean approvalRequired);
         }
+
         /** The stage of the ProductContract definition allowing to specify subscriptionsLimit. */
         interface WithSubscriptionsLimit {
             /**
@@ -229,6 +245,7 @@ public interface ProductContract {
              */
             WithCreate withSubscriptionsLimit(Integer subscriptionsLimit);
         }
+
         /** The stage of the ProductContract definition allowing to specify state. */
         interface WithState {
             /**
@@ -243,6 +260,7 @@ public interface ProductContract {
              */
             WithCreate withState(ProductState state);
         }
+
         /** The stage of the ProductContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -256,6 +274,7 @@ public interface ProductContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ProductContract resource.
      *
@@ -288,6 +307,7 @@ public interface ProductContract {
          */
         ProductContract apply(Context context);
     }
+
     /** The ProductContract update stages. */
     interface UpdateStages {
         /** The stage of the ProductContract update allowing to specify displayName. */
@@ -300,6 +320,7 @@ public interface ProductContract {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the ProductContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -310,6 +331,7 @@ public interface ProductContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ProductContract update allowing to specify terms. */
         interface WithTerms {
             /**
@@ -322,6 +344,7 @@ public interface ProductContract {
              */
             Update withTerms(String terms);
         }
+
         /** The stage of the ProductContract update allowing to specify subscriptionRequired. */
         interface WithSubscriptionRequired {
             /**
@@ -341,6 +364,7 @@ public interface ProductContract {
              */
             Update withSubscriptionRequired(Boolean subscriptionRequired);
         }
+
         /** The stage of the ProductContract update allowing to specify approvalRequired. */
         interface WithApprovalRequired {
             /**
@@ -359,6 +383,7 @@ public interface ProductContract {
              */
             Update withApprovalRequired(Boolean approvalRequired);
         }
+
         /** The stage of the ProductContract update allowing to specify subscriptionsLimit. */
         interface WithSubscriptionsLimit {
             /**
@@ -373,6 +398,7 @@ public interface ProductContract {
              */
             Update withSubscriptionsLimit(Integer subscriptionsLimit);
         }
+
         /** The stage of the ProductContract update allowing to specify state. */
         interface WithState {
             /**
@@ -387,6 +413,7 @@ public interface ProductContract {
              */
             Update withState(ProductState state);
         }
+
         /** The stage of the ProductContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -400,6 +427,7 @@ public interface ProductContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

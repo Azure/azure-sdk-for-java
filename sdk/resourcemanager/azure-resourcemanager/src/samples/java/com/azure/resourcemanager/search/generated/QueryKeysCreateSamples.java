@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QueryKeys Create. */
 public final class QueryKeysCreateSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchCreateQueryKey.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateQueryKey.json
      */
     /**
      * Sample code: SearchCreateQueryKey.
@@ -22,6 +20,11 @@ public final class QueryKeysCreateSamples {
             .manager()
             .serviceClient()
             .getQueryKeys()
-            .createWithResponse("rg1", "mysearchservice", "Query key for browser-based clients", null, Context.NONE);
+            .createWithResponse(
+                "rg1",
+                "mysearchservice",
+                "Query key for browser-based clients",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

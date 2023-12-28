@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner;
 
 /** An immutable client-side representation of ContentTypeContract. */
@@ -65,9 +66,252 @@ public interface ContentTypeContract {
     String version();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner object.
      *
      * @return the inner object.
      */
     ContentTypeContractInner innerModel();
+
+    /** The entirety of the ContentTypeContract definition. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /** The ContentTypeContract definition stages. */
+    interface DefinitionStages {
+        /** The first stage of the ContentTypeContract definition. */
+        interface Blank extends WithParentResource {
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify parent resource. */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, serviceName.
+             *
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param serviceName The name of the API Management service.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingService(String resourceGroupName, String serviceName);
+        }
+
+        /**
+         * The stage of the ContentTypeContract definition which contains all the minimum required properties for the
+         * resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate
+            extends DefinitionStages.WithIdPropertiesId,
+                DefinitionStages.WithNamePropertiesName,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithSchema,
+                DefinitionStages.WithVersion,
+                DefinitionStages.WithIfMatch {
+            /**
+             * Executes the create request.
+             *
+             * @return the created resource.
+             */
+            ContentTypeContract create();
+
+            /**
+             * Executes the create request.
+             *
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            ContentTypeContract create(Context context);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify idPropertiesId. */
+        interface WithIdPropertiesId {
+            /**
+             * Specifies the idPropertiesId property: Content type identifier.
+             *
+             * @param idPropertiesId Content type identifier.
+             * @return the next definition stage.
+             */
+            WithCreate withIdPropertiesId(String idPropertiesId);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify namePropertiesName. */
+        interface WithNamePropertiesName {
+            /**
+             * Specifies the namePropertiesName property: Content type name. Must be 1 to 250 characters long..
+             *
+             * @param namePropertiesName Content type name. Must be 1 to 250 characters long.
+             * @return the next definition stage.
+             */
+            WithCreate withNamePropertiesName(String namePropertiesName);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Content type description..
+             *
+             * @param description Content type description.
+             * @return the next definition stage.
+             */
+            WithCreate withDescription(String description);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify schema. */
+        interface WithSchema {
+            /**
+             * Specifies the schema property: Content type schema..
+             *
+             * @param schema Content type schema.
+             * @return the next definition stage.
+             */
+            WithCreate withSchema(Object schema);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: Content type version..
+             *
+             * @param version Content type version.
+             * @return the next definition stage.
+             */
+            WithCreate withVersion(String version);
+        }
+
+        /** The stage of the ContentTypeContract definition allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
+             * when updating an entity..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
+             *     entity.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+    }
+
+    /**
+     * Begins update for the ContentTypeContract resource.
+     *
+     * @return the stage of resource update.
+     */
+    ContentTypeContract.Update update();
+
+    /** The template for ContentTypeContract update. */
+    interface Update
+        extends UpdateStages.WithIdPropertiesId,
+            UpdateStages.WithNamePropertiesName,
+            UpdateStages.WithDescription,
+            UpdateStages.WithSchema,
+            UpdateStages.WithVersion,
+            UpdateStages.WithIfMatch {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        ContentTypeContract apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        ContentTypeContract apply(Context context);
+    }
+
+    /** The ContentTypeContract update stages. */
+    interface UpdateStages {
+        /** The stage of the ContentTypeContract update allowing to specify idPropertiesId. */
+        interface WithIdPropertiesId {
+            /**
+             * Specifies the idPropertiesId property: Content type identifier.
+             *
+             * @param idPropertiesId Content type identifier.
+             * @return the next definition stage.
+             */
+            Update withIdPropertiesId(String idPropertiesId);
+        }
+
+        /** The stage of the ContentTypeContract update allowing to specify namePropertiesName. */
+        interface WithNamePropertiesName {
+            /**
+             * Specifies the namePropertiesName property: Content type name. Must be 1 to 250 characters long..
+             *
+             * @param namePropertiesName Content type name. Must be 1 to 250 characters long.
+             * @return the next definition stage.
+             */
+            Update withNamePropertiesName(String namePropertiesName);
+        }
+
+        /** The stage of the ContentTypeContract update allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: Content type description..
+             *
+             * @param description Content type description.
+             * @return the next definition stage.
+             */
+            Update withDescription(String description);
+        }
+
+        /** The stage of the ContentTypeContract update allowing to specify schema. */
+        interface WithSchema {
+            /**
+             * Specifies the schema property: Content type schema..
+             *
+             * @param schema Content type schema.
+             * @return the next definition stage.
+             */
+            Update withSchema(Object schema);
+        }
+
+        /** The stage of the ContentTypeContract update allowing to specify version. */
+        interface WithVersion {
+            /**
+             * Specifies the version property: Content type version..
+             *
+             * @param version Content type version.
+             * @return the next definition stage.
+             */
+            Update withVersion(String version);
+        }
+
+        /** The stage of the ContentTypeContract update allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
+             * when updating an entity..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
+             *     entity.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the refreshed resource.
+     */
+    ContentTypeContract refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    ContentTypeContract refresh(Context context);
 }

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the verification operation. */
+/**
+ * Status of the verification operation.
+ */
 public final class VerificationStatus extends ExpandableStringEnum<VerificationStatus> {
-    /** Static value NotStarted for VerificationStatus. */
+    /**
+     * Static value NotStarted for VerificationStatus.
+     */
     public static final VerificationStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value VerificationRequested for VerificationStatus. */
+    /**
+     * Static value VerificationRequested for VerificationStatus.
+     */
     public static final VerificationStatus VERIFICATION_REQUESTED = fromString("VerificationRequested");
 
-    /** Static value VerificationInProgress for VerificationStatus. */
+    /**
+     * Static value VerificationInProgress for VerificationStatus.
+     */
     public static final VerificationStatus VERIFICATION_IN_PROGRESS = fromString("VerificationInProgress");
 
-    /** Static value VerificationFailed for VerificationStatus. */
+    /**
+     * Static value VerificationFailed for VerificationStatus.
+     */
     public static final VerificationStatus VERIFICATION_FAILED = fromString("VerificationFailed");
 
-    /** Static value Verified for VerificationStatus. */
+    /**
+     * Static value Verified for VerificationStatus.
+     */
     public static final VerificationStatus VERIFIED = fromString("Verified");
 
-    /** Static value CancellationRequested for VerificationStatus. */
+    /**
+     * Static value CancellationRequested for VerificationStatus.
+     */
     public static final VerificationStatus CANCELLATION_REQUESTED = fromString("CancellationRequested");
 
     /**
      * Creates a new instance of VerificationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class VerificationStatus extends ExpandableStringEnum<VerificationS
 
     /**
      * Creates or finds a VerificationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VerificationStatus.
      */
@@ -50,7 +64,7 @@ public final class VerificationStatus extends ExpandableStringEnum<VerificationS
 
     /**
      * Gets known VerificationStatus values.
-     *
+     * 
      * @return known VerificationStatus values.
      */
     public static Collection<VerificationStatus> values() {

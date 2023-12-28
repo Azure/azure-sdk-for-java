@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure Function activity. */
+/**
+ * Azure Function activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFunctionActivity")
 @Fluent
@@ -23,55 +25,87 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureFunctionActivityTypeProperties innerTypeProperties = new AzureFunctionActivityTypeProperties();
 
-    /** Creates an instance of AzureFunctionActivity class. */
+    /**
+     * Creates an instance of AzureFunctionActivity class.
+     */
     public AzureFunctionActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Function activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureFunctionActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFunctionActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFunctionActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFunctionActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -80,7 +114,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     *
+     * 
      * @return the method value.
      */
     public AzureFunctionActivityMethod method() {
@@ -89,7 +123,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     *
+     * 
      * @param method the method value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -104,7 +138,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Get the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the functionName value.
      */
     public Object functionName() {
@@ -114,7 +148,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Set the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param functionName the functionName value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -130,7 +164,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -141,7 +175,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param headers the headers value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -156,7 +190,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the body value.
      */
     public Object body() {
@@ -166,7 +200,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @param body the body value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -180,17 +214,15 @@ public final class AzureFunctionActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureFunctionActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureFunctionActivity"));
         } else {
             innerTypeProperties().validate();
         }

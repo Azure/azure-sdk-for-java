@@ -32,7 +32,7 @@ public interface CustomDomain {
     String type();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -81,23 +81,25 @@ public interface CustomDomain {
             DefinitionStages.WithCustomCertificate,
             DefinitionStages.WithCreate {
     }
+
     /** The CustomDomain definition stages. */
     interface DefinitionStages {
         /** The first stage of the CustomDomain definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CustomDomain definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, resourceName.
              *
-             * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this
-             *     value from the Azure Resource Manager API or the portal.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param resourceName The name of the resource.
              * @return the next definition stage.
              */
             WithDomainName withExistingSignalR(String resourceGroupName, String resourceName);
         }
+
         /** The stage of the CustomDomain definition allowing to specify domainName. */
         interface WithDomainName {
             /**
@@ -108,6 +110,7 @@ public interface CustomDomain {
              */
             WithCustomCertificate withDomainName(String domainName);
         }
+
         /** The stage of the CustomDomain definition allowing to specify customCertificate. */
         interface WithCustomCertificate {
             /**
@@ -118,6 +121,7 @@ public interface CustomDomain {
              */
             WithCreate withCustomCertificate(ResourceReference customCertificate);
         }
+
         /**
          * The stage of the CustomDomain definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -139,6 +143,7 @@ public interface CustomDomain {
             CustomDomain create(Context context);
         }
     }
+
     /**
      * Begins update for the CustomDomain resource.
      *
@@ -163,6 +168,7 @@ public interface CustomDomain {
          */
         CustomDomain apply(Context context);
     }
+
     /** The CustomDomain update stages. */
     interface UpdateStages {
         /** The stage of the CustomDomain update allowing to specify domainName. */
@@ -175,6 +181,7 @@ public interface CustomDomain {
              */
             Update withDomainName(String domainName);
         }
+
         /** The stage of the CustomDomain update allowing to specify customCertificate. */
         interface WithCustomCertificate {
             /**
@@ -186,6 +193,7 @@ public interface CustomDomain {
             Update withCustomCertificate(ResourceReference customCertificate);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

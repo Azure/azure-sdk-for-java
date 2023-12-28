@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Certificate GetEntityTag. */
 public final class CertificateGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadCertificate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadCertificate.json
      */
     /**
      * Sample code: ApiManagementHeadCertificate.
@@ -18,6 +16,8 @@ public final class CertificateGetEntityTagSamples {
      */
     public static void apiManagementHeadCertificate(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.certificates().getEntityTagWithResponse("rg1", "apimService1", "templateCert1", Context.NONE);
+        manager
+            .certificates()
+            .getEntityTagWithResponse("rg1", "apimService1", "templateCert1", com.azure.core.util.Context.NONE);
     }
 }

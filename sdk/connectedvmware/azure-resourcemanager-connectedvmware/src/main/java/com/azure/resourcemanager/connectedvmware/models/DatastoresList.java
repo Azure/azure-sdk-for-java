@@ -25,6 +25,10 @@ public final class DatastoresList {
     @JsonProperty(value = "value", required = true)
     private List<DatastoreInner> value;
 
+    /** Creates an instance of DatastoresList class. */
+    public DatastoresList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of Datastores.
      *

@@ -33,6 +33,10 @@ public final class RouteProperties extends RouteUpdatePropertiesParameters {
     @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
+    /** Creates an instance of RouteProperties class. */
+    public RouteProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning status.
      *

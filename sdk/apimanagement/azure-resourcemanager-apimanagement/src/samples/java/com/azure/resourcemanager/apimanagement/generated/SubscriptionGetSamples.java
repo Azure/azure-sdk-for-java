@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subscription Get. */
 public final class SubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetSubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetSubscription.json
      */
     /**
      * Sample code: ApiManagementGetSubscription.
@@ -18,6 +16,8 @@ public final class SubscriptionGetSamples {
      */
     public static void apiManagementGetSubscription(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.subscriptions().getWithResponse("rg1", "apimService1", "5931a769d8d14f0ad8ce13b8", Context.NONE);
+        manager
+            .subscriptions()
+            .getWithResponse("rg1", "apimService1", "5931a769d8d14f0ad8ce13b8", com.azure.core.util.Context.NONE);
     }
 }

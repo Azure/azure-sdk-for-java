@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Datasource model =
-            BinaryData
-                .fromString(
-                    "{\"datasourceType\":\"hdwbavxbniwdjs\",\"objectType\":\"tsdbpgn\",\"resourceID\":\"ytxhp\",\"resourceLocation\":\"bzpfzab\",\"resourceName\":\"cuh\",\"resourceType\":\"tcty\",\"resourceUri\":\"klbb\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
-                .toObject(Datasource.class);
+        Datasource model = BinaryData.fromString(
+            "{\"datasourceType\":\"hdwbavxbniwdjs\",\"objectType\":\"tsdbpgn\",\"resourceID\":\"ytxhp\",\"resourceLocation\":\"bzpfzab\",\"resourceName\":\"cuh\",\"resourceType\":\"tcty\",\"resourceUri\":\"klbb\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
+            .toObject(Datasource.class);
         Assertions.assertEquals("hdwbavxbniwdjs", model.datasourceType());
         Assertions.assertEquals("tsdbpgn", model.objectType());
         Assertions.assertEquals("ytxhp", model.resourceId());
@@ -28,16 +26,9 @@ public final class DatasourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Datasource model =
-            new Datasource()
-                .withDatasourceType("hdwbavxbniwdjs")
-                .withObjectType("tsdbpgn")
-                .withResourceId("ytxhp")
-                .withResourceLocation("bzpfzab")
-                .withResourceName("cuh")
-                .withResourceType("tcty")
-                .withResourceUri("klbb")
-                .withResourceProperties(new BaseResourceProperties());
+        Datasource model = new Datasource().withDatasourceType("hdwbavxbniwdjs").withObjectType("tsdbpgn")
+            .withResourceId("ytxhp").withResourceLocation("bzpfzab").withResourceName("cuh").withResourceType("tcty")
+            .withResourceUri("klbb").withResourceProperties(new BaseResourceProperties());
         model = BinaryData.fromObject(model).toObject(Datasource.class);
         Assertions.assertEquals("hdwbavxbniwdjs", model.datasourceType());
         Assertions.assertEquals("tsdbpgn", model.objectType());

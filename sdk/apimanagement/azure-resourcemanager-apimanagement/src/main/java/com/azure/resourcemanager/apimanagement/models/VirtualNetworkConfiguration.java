@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualNetworkConfiguration {
     /*
-     * The virtual network ID. This is typically a GUID. Expect a null GUID by
-     * default.
+     * The virtual network ID. This is typically a GUID. Expect a null GUID by default.
      */
     @JsonProperty(value = "vnetid", access = JsonProperty.Access.WRITE_ONLY)
     private String vnetid;
@@ -24,11 +23,14 @@ public final class VirtualNetworkConfiguration {
     private String subnetname;
 
     /*
-     * The full resource ID of a subnet in a virtual network to deploy the API
-     * Management service in.
+     * The full resource ID of a subnet in a virtual network to deploy the API Management service in.
      */
     @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
+
+    /** Creates an instance of VirtualNetworkConfiguration class. */
+    public VirtualNetworkConfiguration() {
+    }
 
     /**
      * Get the vnetid property: The virtual network ID. This is typically a GUID. Expect a null GUID by default.

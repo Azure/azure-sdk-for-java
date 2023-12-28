@@ -31,23 +31,28 @@ import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegration
 import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNodeRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationRuntimeNodesClient.
+ */
 public final class IntegrationRuntimeNodesClientImpl implements IntegrationRuntimeNodesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeNodesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeNodesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeNodesClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(IntegrationRuntimeNodesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationRuntimeNodesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,79 +63,52 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface IntegrationRuntimeNodesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @PathParam("nodeName") String nodeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @PathParam("nodeName") String nodeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @PathParam("nodeName") String nodeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @PathParam("nodeName") String nodeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @PathParam("nodeName") String nodeName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @PathParam("nodeName") String nodeName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddress(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddress(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @PathParam("nodeName") String nodeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @PathParam("nodeName") String nodeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -138,23 +116,19 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a self-hosted integration runtime node along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a self-hosted integration runtime node along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,9 +138,8 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
@@ -174,24 +147,14 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            integrationRuntimeName,
-                            nodeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -200,23 +163,19 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a self-hosted integration runtime node along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a self-hosted integration runtime node along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,31 +185,21 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+            integrationRuntimeName, nodeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -261,15 +210,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return a self-hosted integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SelfHostedIntegrationRuntimeNodeInner> getAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<SelfHostedIntegrationRuntimeNodeInner> getAsync(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -281,14 +230,14 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return a self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    public Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName, context).block();
     }
 
     /**
      * Gets a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -299,15 +248,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return a self-hosted integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SelfHostedIntegrationRuntimeNodeInner get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    public SelfHostedIntegrationRuntimeNodeInner get(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName) {
         return getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -318,19 +267,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -340,9 +285,8 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
@@ -350,24 +294,14 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            integrationRuntimeName,
-                            nodeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -379,19 +313,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,31 +331,21 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -436,15 +356,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String integrationRuntimeName,
+        String nodeName) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -456,15 +376,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName, context)
             .block();
     }
 
     /**
      * Deletes a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -480,7 +400,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
 
     /**
      * Updates a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -490,26 +410,19 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
+    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -519,43 +432,29 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         if (updateIntegrationRuntimeNodeRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateIntegrationRuntimeNodeRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter updateIntegrationRuntimeNodeRequest is required and cannot be null."));
         } else {
             updateIntegrationRuntimeNodeRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            integrationRuntimeName,
-                            nodeName,
-                            this.client.getApiVersion(),
-                            updateIntegrationRuntimeNodeRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(),
+                updateIntegrationRuntimeNodeRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -566,27 +465,19 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-        Context context) {
+    private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -596,40 +487,28 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         if (updateIntegrationRuntimeNodeRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter updateIntegrationRuntimeNodeRequest is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter updateIntegrationRuntimeNodeRequest is required and cannot be null."));
         } else {
             updateIntegrationRuntimeNodeRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                this.client.getApiVersion(),
-                updateIntegrationRuntimeNodeRequest,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(),
+            updateIntegrationRuntimeNodeRequest, accept, context);
     }
 
     /**
      * Updates a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -641,20 +520,16 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return properties of Self-hosted integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SelfHostedIntegrationRuntimeNodeInner> updateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
+    private Mono<SelfHostedIntegrationRuntimeNodeInner> updateAsync(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
-        return updateWithResponseAsync(
-                resourceGroupName, factoryName, integrationRuntimeName, nodeName, updateIntegrationRuntimeNodeRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName,
+            updateIntegrationRuntimeNodeRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -667,26 +542,16 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return properties of Self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                updateIntegrationRuntimeNodeRequest,
-                context)
-            .block();
+    public Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest, Context context) {
+        return updateWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName,
+            updateIntegrationRuntimeNodeRequest, context).block();
     }
 
     /**
      * Updates a self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -698,25 +563,16 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return properties of Self-hosted integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SelfHostedIntegrationRuntimeNodeInner update(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String nodeName,
+    public SelfHostedIntegrationRuntimeNodeInner update(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest) {
-        return updateWithResponse(
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                updateIntegrationRuntimeNodeRequest,
-                Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName,
+            updateIntegrationRuntimeNodeRequest, Context.NONE).getValue();
     }
 
     /**
      * Get the IP address of self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -725,22 +581,18 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of self-hosted integration runtime node along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddressWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddressWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -750,34 +602,23 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getIpAddress(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            integrationRuntimeName,
-                            nodeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getIpAddress(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the IP address of self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -787,22 +628,18 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of self-hosted integration runtime node along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddressWithResponseAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    private Mono<Response<IntegrationRuntimeNodeIpAddressInner>> getIpAddressWithResponseAsync(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -812,31 +649,21 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getIpAddress(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                integrationRuntimeName,
-                nodeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getIpAddress(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, integrationRuntimeName, nodeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the IP address of self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -847,15 +674,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the IP address of self-hosted integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeNodeIpAddressInner> getIpAddressAsync(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    private Mono<IntegrationRuntimeNodeIpAddressInner> getIpAddressAsync(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName) {
         return getIpAddressWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the IP address of self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -867,15 +694,15 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the IP address of self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeNodeIpAddressInner> getIpAddressWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName, Context context) {
+    public Response<IntegrationRuntimeNodeIpAddressInner> getIpAddressWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, String nodeName, Context context) {
         return getIpAddressWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, nodeName, context)
             .block();
     }
 
     /**
      * Get the IP address of self-hosted integration runtime node.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -886,8 +713,8 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @return the IP address of self-hosted integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeNodeIpAddressInner getIpAddress(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
+    public IntegrationRuntimeNodeIpAddressInner getIpAddress(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String nodeName) {
         return getIpAddressWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName, Context.NONE)
             .getValue();
     }

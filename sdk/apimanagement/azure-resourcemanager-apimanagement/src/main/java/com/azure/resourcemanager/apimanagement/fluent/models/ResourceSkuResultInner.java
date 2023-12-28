@@ -30,6 +30,10 @@ public final class ResourceSkuResultInner {
     @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuCapacity capacity;
 
+    /** Creates an instance of ResourceSkuResultInner class. */
+    public ResourceSkuResultInner() {
+    }
+
     /**
      * Get the resourceType property: The type of resource the SKU applies to.
      *

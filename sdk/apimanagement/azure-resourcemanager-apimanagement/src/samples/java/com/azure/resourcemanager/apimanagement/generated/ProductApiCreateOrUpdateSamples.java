@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProductApi CreateOrUpdate. */
 public final class ProductApiCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateProductApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateProductApi.json
      */
     /**
      * Sample code: ApiManagementCreateProductApi.
@@ -20,6 +18,7 @@ public final class ProductApiCreateOrUpdateSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .productApis()
-            .createOrUpdateWithResponse("rg1", "apimService1", "testproduct", "echo-api", Context.NONE);
+            .createOrUpdateWithResponse(
+                "rg1", "apimService1", "testproduct", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

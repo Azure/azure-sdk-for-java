@@ -37,8 +37,16 @@ public final class AttestationDataInterpretation extends ExpandableStringEnum<At
         return fromString(name, AttestationDataInterpretation.class);
     }
 
-    /** @return known AttestationType values. */
+    /**
+     * Returns a collection of {@link AttestationDataInterpretation} as values.
+     *
+     * @return known AttestationType values. */
     public static Collection<AttestationDataInterpretation> values() {
         return values(AttestationDataInterpretation.class);
     }
+
+    /**
+     * Creates an instance of {@link AttestationDataInterpretation}
+     */
+    public AttestationDataInterpretation() { }
 }

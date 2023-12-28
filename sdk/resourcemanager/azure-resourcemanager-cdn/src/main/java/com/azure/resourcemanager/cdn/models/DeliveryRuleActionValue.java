@@ -38,6 +38,15 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
     public static final DeliveryRuleActionValue ROUTE_CONFIGURATION_OVERRIDE = fromString("RouteConfigurationOverride");
 
     /**
+     * Creates a new instance of DeliveryRuleActionValue value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeliveryRuleActionValue() {
+    }
+
+    /**
      * Creates or finds a DeliveryRuleActionValue from its string representation.
      *
      * @param name a name to look for.

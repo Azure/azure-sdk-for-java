@@ -6,7 +6,12 @@ package com.azure.resourcemanager.resourcehealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.fluent.models.EmergingIssuesGetResultInner;
+import com.azure.resourcemanager.resourcehealth.models.EmergingIssueImpact;
 import com.azure.resourcemanager.resourcehealth.models.EmergingIssueListResult;
+import com.azure.resourcemanager.resourcehealth.models.SeverityValues;
+import com.azure.resourcemanager.resourcehealth.models.StageValues;
+import com.azure.resourcemanager.resourcehealth.models.StatusActiveEvent;
+import com.azure.resourcemanager.resourcehealth.models.StatusBanner;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,10 +22,32 @@ public final class EmergingIssueListResultTests {
         EmergingIssueListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"refreshTimestamp\":\"2021-05-16T16:57:57Z\",\"statusBanners\":[],\"statusActiveEvents\":[]},\"id\":\"mwsrcrgvxpvgo\",\"name\":\"zlfmisgwbnbbeld\",\"type\":\"wkz\"},{\"properties\":{\"refreshTimestamp\":\"2021-02-02T16:45:23Z\",\"statusBanners\":[],\"statusActiveEvents\":[]},\"id\":\"qhakauhashsf\",\"name\":\"xosow\",\"type\":\"xcug\"},{\"properties\":{\"refreshTimestamp\":\"2020-12-22T21:46:37Z\",\"statusBanners\":[],\"statusActiveEvents\":[]},\"id\":\"j\",\"name\":\"bwpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}],\"nextLink\":\"rw\"}")
+                    "{\"value\":[{\"properties\":{\"refreshTimestamp\":\"2021-07-13T20:34:59Z\",\"statusBanners\":[{\"title\":\"an\",\"message\":\"jos\",\"cloud\":\"youlp\",\"lastModifiedTime\":\"2021-09-04T05:53:47Z\"},{\"title\":\"ag\",\"message\":\"vimjwos\",\"cloud\":\"xitc\",\"lastModifiedTime\":\"2021-01-06T17:55:44Z\"},{\"title\":\"k\",\"message\":\"umiekkezzi\",\"cloud\":\"ly\",\"lastModifiedTime\":\"2021-07-20T01:18:29Z\"}],\"statusActiveEvents\":[{\"title\":\"gge\",\"description\":\"unygaeqid\",\"trackingId\":\"fatpxllrxcyjmoa\",\"startTime\":\"2021-02-02T22:23:44Z\",\"cloud\":\"arm\",\"severity\":\"Warning\",\"stage\":\"Resolve\",\"published\":false,\"lastModifiedTime\":\"2021-02-01T02:42:06Z\",\"impacts\":[{},{}]},{\"title\":\"yxxrwlycoduh\",\"description\":\"xkgymareqnajxqu\",\"trackingId\":\"hky\",\"startTime\":\"2020-12-25T16:19:20Z\",\"cloud\":\"ddg\",\"severity\":\"Error\",\"stage\":\"Archived\",\"published\":false,\"lastModifiedTime\":\"2021-05-03T03:51:25Z\",\"impacts\":[{}]},{\"title\":\"rmnjijpx\",\"description\":\"q\",\"trackingId\":\"dfnbyxbaaabjyv\",\"startTime\":\"2021-10-17T00:26:42Z\",\"cloud\":\"imrzrtuzqog\",\"severity\":\"Error\",\"stage\":\"Archived\",\"published\":false,\"lastModifiedTime\":\"2021-12-03T20:54:07Z\",\"impacts\":[{}]},{\"title\":\"mewzsyyc\",\"description\":\"zsoibjudpfrxtr\",\"trackingId\":\"zvaytdwkqbr\",\"startTime\":\"2021-11-25T23:16:06Z\",\"cloud\":\"axhexiilivp\",\"severity\":\"Information\",\"stage\":\"Resolve\",\"published\":true,\"lastModifiedTime\":\"2021-05-27T12:16:15Z\",\"impacts\":[{},{},{}]}]},\"id\":\"oruzfgsquyfxrxx\",\"name\":\"eptra\",\"type\":\"xje\"},{\"properties\":{\"refreshTimestamp\":\"2021-11-14T21:34:49Z\",\"statusBanners\":[{\"title\":\"uqlcvydy\",\"message\":\"tdooaoj\",\"cloud\":\"iodkooebwnujhem\",\"lastModifiedTime\":\"2021-06-02T00:19:10Z\"},{\"title\":\"dkcrodt\",\"message\":\"nfwjlfltkacjvefk\",\"cloud\":\"foakgg\",\"lastModifiedTime\":\"2021-01-22T11:21:37Z\"},{\"title\":\"gaowpulpqblylsyx\",\"message\":\"jnsjervtiagxsd\",\"cloud\":\"uem\",\"lastModifiedTime\":\"2021-06-09T02:50:50Z\"},{\"title\":\"kfzbeyvpnqicvi\",\"message\":\"kjj\",\"cloud\":\"xrbuukzclew\",\"lastModifiedTime\":\"2021-08-28T04:23:49Z\"}],\"statusActiveEvents\":[{\"title\":\"aztz\",\"description\":\"fn\",\"trackingId\":\"kwyfzqwhxxbuyqax\",\"startTime\":\"2021-07-31T20:27:49Z\",\"cloud\":\"ztppriolxorjalto\",\"severity\":\"Warning\",\"stage\":\"Active\",\"published\":true,\"lastModifiedTime\":\"2021-09-14T22:32:45Z\",\"impacts\":[{},{},{}]}]},\"id\":\"dbnw\",\"name\":\"cf\",\"type\":\"ucqdpfuvglsb\"},{\"properties\":{\"refreshTimestamp\":\"2021-01-27T19:23:30Z\",\"statusBanners\":[{\"title\":\"bvtvudutncormr\",\"message\":\"qtvcofudflvkgj\",\"cloud\":\"gdknnqv\",\"lastModifiedTime\":\"2021-04-22T07:35:58Z\"}],\"statusActiveEvents\":[{\"title\":\"tor\",\"description\":\"sgsahmkycgr\",\"trackingId\":\"wjue\",\"startTime\":\"2020-12-26T00:25:40Z\",\"cloud\":\"uruv\",\"severity\":\"Warning\",\"stage\":\"Resolve\",\"published\":true,\"lastModifiedTime\":\"2020-12-25T04:12:31Z\",\"impacts\":[{}]},{\"title\":\"mqoefkifrvtpuqu\",\"description\":\"qlgkfbtn\",\"trackingId\":\"aongbj\",\"startTime\":\"2021-01-20T14:02:19Z\",\"cloud\":\"jitcjedftwwaez\",\"severity\":\"Information\",\"stage\":\"Archived\",\"published\":false,\"lastModifiedTime\":\"2021-04-24T14:19:49Z\",\"impacts\":[{},{},{},{}]},{\"title\":\"uicybxarzgszuf\",\"description\":\"ciqopidoa\",\"trackingId\":\"iodhkhazxkhnz\",\"startTime\":\"2021-02-10T22:24:58Z\",\"cloud\":\"wntoegokdwbwh\",\"severity\":\"Information\",\"stage\":\"Resolve\",\"published\":false,\"lastModifiedTime\":\"2020-12-29T02:15:33Z\",\"impacts\":[{},{},{}]},{\"title\":\"vbtqgsfraoyzk\",\"description\":\"wtl\",\"trackingId\":\"guxawqaldsyuuxi\",\"startTime\":\"2021-06-17T14:42:30Z\",\"cloud\":\"fobwy\",\"severity\":\"Warning\",\"stage\":\"Active\",\"published\":false,\"lastModifiedTime\":\"2021-02-09T02:12:11Z\",\"impacts\":[{},{},{},{}]}]},\"id\":\"pagmhrskdsnf\",\"name\":\"sd\",\"type\":\"akgtdlmkkzevdlh\"},{\"properties\":{\"refreshTimestamp\":\"2021-08-20T19:20:49Z\",\"statusBanners\":[{\"title\":\"ttwvogvbbe\",\"message\":\"cngqqmoakufgmjz\",\"cloud\":\"rdgrtw\",\"lastModifiedTime\":\"2021-01-23T08:17:26Z\"},{\"title\":\"uzkopbminrfd\",\"message\":\"yuhhziu\",\"cloud\":\"fozbhdmsmlmzqhof\",\"lastModifiedTime\":\"2021-05-05T04:42:21Z\"}],\"statusActiveEvents\":[{\"title\":\"u\",\"description\":\"hxicslfaoqz\",\"trackingId\":\"yylhalnswhccsp\",\"startTime\":\"2021-06-09T09:48:38Z\",\"cloud\":\"vwitqscyw\",\"severity\":\"Warning\",\"stage\":\"Archived\",\"published\":true,\"lastModifiedTime\":\"2021-10-17T17:30:07Z\",\"impacts\":[{},{},{}]}]},\"id\":\"emh\",\"name\":\"i\",\"type\":\"sbrgz\"}],\"nextLink\":\"msweypqwdxggicc\"}")
                 .toObject(EmergingIssueListResult.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T16:57:57Z"), model.value().get(0).refreshTimestamp());
-        Assertions.assertEquals("rw", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T20:34:59Z"), model.value().get(0).refreshTimestamp());
+        Assertions.assertEquals("an", model.value().get(0).statusBanners().get(0).title());
+        Assertions.assertEquals("jos", model.value().get(0).statusBanners().get(0).message());
+        Assertions.assertEquals("youlp", model.value().get(0).statusBanners().get(0).cloud());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-09-04T05:53:47Z"),
+                model.value().get(0).statusBanners().get(0).lastModifiedTime());
+        Assertions.assertEquals("gge", model.value().get(0).statusActiveEvents().get(0).title());
+        Assertions.assertEquals("unygaeqid", model.value().get(0).statusActiveEvents().get(0).description());
+        Assertions.assertEquals("fatpxllrxcyjmoa", model.value().get(0).statusActiveEvents().get(0).trackingId());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-02-02T22:23:44Z"),
+                model.value().get(0).statusActiveEvents().get(0).startTime());
+        Assertions.assertEquals("arm", model.value().get(0).statusActiveEvents().get(0).cloud());
+        Assertions.assertEquals(SeverityValues.WARNING, model.value().get(0).statusActiveEvents().get(0).severity());
+        Assertions.assertEquals(StageValues.RESOLVE, model.value().get(0).statusActiveEvents().get(0).stage());
+        Assertions.assertEquals(false, model.value().get(0).statusActiveEvents().get(0).published());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-02-01T02:42:06Z"),
+                model.value().get(0).statusActiveEvents().get(0).lastModifiedTime());
+        Assertions.assertEquals("msweypqwdxggicc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,20 +58,256 @@ public final class EmergingIssueListResultTests {
                     Arrays
                         .asList(
                             new EmergingIssuesGetResultInner()
-                                .withRefreshTimestamp(OffsetDateTime.parse("2021-05-16T16:57:57Z"))
-                                .withStatusBanners(Arrays.asList())
-                                .withStatusActiveEvents(Arrays.asList()),
+                                .withRefreshTimestamp(OffsetDateTime.parse("2021-07-13T20:34:59Z"))
+                                .withStatusBanners(
+                                    Arrays
+                                        .asList(
+                                            new StatusBanner()
+                                                .withTitle("an")
+                                                .withMessage("jos")
+                                                .withCloud("youlp")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-09-04T05:53:47Z")),
+                                            new StatusBanner()
+                                                .withTitle("ag")
+                                                .withMessage("vimjwos")
+                                                .withCloud("xitc")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-01-06T17:55:44Z")),
+                                            new StatusBanner()
+                                                .withTitle("k")
+                                                .withMessage("umiekkezzi")
+                                                .withCloud("ly")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-07-20T01:18:29Z"))))
+                                .withStatusActiveEvents(
+                                    Arrays
+                                        .asList(
+                                            new StatusActiveEvent()
+                                                .withTitle("gge")
+                                                .withDescription("unygaeqid")
+                                                .withTrackingId("fatpxllrxcyjmoa")
+                                                .withStartTime(OffsetDateTime.parse("2021-02-02T22:23:44Z"))
+                                                .withCloud("arm")
+                                                .withSeverity(SeverityValues.WARNING)
+                                                .withStage(StageValues.RESOLVE)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-02-01T02:42:06Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(new EmergingIssueImpact(), new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("yxxrwlycoduh")
+                                                .withDescription("xkgymareqnajxqu")
+                                                .withTrackingId("hky")
+                                                .withStartTime(OffsetDateTime.parse("2020-12-25T16:19:20Z"))
+                                                .withCloud("ddg")
+                                                .withSeverity(SeverityValues.ERROR)
+                                                .withStage(StageValues.ARCHIVED)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-05-03T03:51:25Z"))
+                                                .withImpacts(Arrays.asList(new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("rmnjijpx")
+                                                .withDescription("q")
+                                                .withTrackingId("dfnbyxbaaabjyv")
+                                                .withStartTime(OffsetDateTime.parse("2021-10-17T00:26:42Z"))
+                                                .withCloud("imrzrtuzqog")
+                                                .withSeverity(SeverityValues.ERROR)
+                                                .withStage(StageValues.ARCHIVED)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-12-03T20:54:07Z"))
+                                                .withImpacts(Arrays.asList(new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("mewzsyyc")
+                                                .withDescription("zsoibjudpfrxtr")
+                                                .withTrackingId("zvaytdwkqbr")
+                                                .withStartTime(OffsetDateTime.parse("2021-11-25T23:16:06Z"))
+                                                .withCloud("axhexiilivp")
+                                                .withSeverity(SeverityValues.INFORMATION)
+                                                .withStage(StageValues.RESOLVE)
+                                                .withPublished(true)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-05-27T12:16:15Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact())))),
                             new EmergingIssuesGetResultInner()
-                                .withRefreshTimestamp(OffsetDateTime.parse("2021-02-02T16:45:23Z"))
-                                .withStatusBanners(Arrays.asList())
-                                .withStatusActiveEvents(Arrays.asList()),
+                                .withRefreshTimestamp(OffsetDateTime.parse("2021-11-14T21:34:49Z"))
+                                .withStatusBanners(
+                                    Arrays
+                                        .asList(
+                                            new StatusBanner()
+                                                .withTitle("uqlcvydy")
+                                                .withMessage("tdooaoj")
+                                                .withCloud("iodkooebwnujhem")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-06-02T00:19:10Z")),
+                                            new StatusBanner()
+                                                .withTitle("dkcrodt")
+                                                .withMessage("nfwjlfltkacjvefk")
+                                                .withCloud("foakgg")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-01-22T11:21:37Z")),
+                                            new StatusBanner()
+                                                .withTitle("gaowpulpqblylsyx")
+                                                .withMessage("jnsjervtiagxsd")
+                                                .withCloud("uem")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-06-09T02:50:50Z")),
+                                            new StatusBanner()
+                                                .withTitle("kfzbeyvpnqicvi")
+                                                .withMessage("kjj")
+                                                .withCloud("xrbuukzclew")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-08-28T04:23:49Z"))))
+                                .withStatusActiveEvents(
+                                    Arrays
+                                        .asList(
+                                            new StatusActiveEvent()
+                                                .withTitle("aztz")
+                                                .withDescription("fn")
+                                                .withTrackingId("kwyfzqwhxxbuyqax")
+                                                .withStartTime(OffsetDateTime.parse("2021-07-31T20:27:49Z"))
+                                                .withCloud("ztppriolxorjalto")
+                                                .withSeverity(SeverityValues.WARNING)
+                                                .withStage(StageValues.ACTIVE)
+                                                .withPublished(true)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-09-14T22:32:45Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact())))),
                             new EmergingIssuesGetResultInner()
-                                .withRefreshTimestamp(OffsetDateTime.parse("2020-12-22T21:46:37Z"))
-                                .withStatusBanners(Arrays.asList())
-                                .withStatusActiveEvents(Arrays.asList())))
-                .withNextLink("rw");
+                                .withRefreshTimestamp(OffsetDateTime.parse("2021-01-27T19:23:30Z"))
+                                .withStatusBanners(
+                                    Arrays
+                                        .asList(
+                                            new StatusBanner()
+                                                .withTitle("bvtvudutncormr")
+                                                .withMessage("qtvcofudflvkgj")
+                                                .withCloud("gdknnqv")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-04-22T07:35:58Z"))))
+                                .withStatusActiveEvents(
+                                    Arrays
+                                        .asList(
+                                            new StatusActiveEvent()
+                                                .withTitle("tor")
+                                                .withDescription("sgsahmkycgr")
+                                                .withTrackingId("wjue")
+                                                .withStartTime(OffsetDateTime.parse("2020-12-26T00:25:40Z"))
+                                                .withCloud("uruv")
+                                                .withSeverity(SeverityValues.WARNING)
+                                                .withStage(StageValues.RESOLVE)
+                                                .withPublished(true)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2020-12-25T04:12:31Z"))
+                                                .withImpacts(Arrays.asList(new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("mqoefkifrvtpuqu")
+                                                .withDescription("qlgkfbtn")
+                                                .withTrackingId("aongbj")
+                                                .withStartTime(OffsetDateTime.parse("2021-01-20T14:02:19Z"))
+                                                .withCloud("jitcjedftwwaez")
+                                                .withSeverity(SeverityValues.INFORMATION)
+                                                .withStage(StageValues.ARCHIVED)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-04-24T14:19:49Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("uicybxarzgszuf")
+                                                .withDescription("ciqopidoa")
+                                                .withTrackingId("iodhkhazxkhnz")
+                                                .withStartTime(OffsetDateTime.parse("2021-02-10T22:24:58Z"))
+                                                .withCloud("wntoegokdwbwh")
+                                                .withSeverity(SeverityValues.INFORMATION)
+                                                .withStage(StageValues.RESOLVE)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2020-12-29T02:15:33Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact())),
+                                            new StatusActiveEvent()
+                                                .withTitle("vbtqgsfraoyzk")
+                                                .withDescription("wtl")
+                                                .withTrackingId("guxawqaldsyuuxi")
+                                                .withStartTime(OffsetDateTime.parse("2021-06-17T14:42:30Z"))
+                                                .withCloud("fobwy")
+                                                .withSeverity(SeverityValues.WARNING)
+                                                .withStage(StageValues.ACTIVE)
+                                                .withPublished(false)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-02-09T02:12:11Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact())))),
+                            new EmergingIssuesGetResultInner()
+                                .withRefreshTimestamp(OffsetDateTime.parse("2021-08-20T19:20:49Z"))
+                                .withStatusBanners(
+                                    Arrays
+                                        .asList(
+                                            new StatusBanner()
+                                                .withTitle("ttwvogvbbe")
+                                                .withMessage("cngqqmoakufgmjz")
+                                                .withCloud("rdgrtw")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-01-23T08:17:26Z")),
+                                            new StatusBanner()
+                                                .withTitle("uzkopbminrfd")
+                                                .withMessage("yuhhziu")
+                                                .withCloud("fozbhdmsmlmzqhof")
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-05-05T04:42:21Z"))))
+                                .withStatusActiveEvents(
+                                    Arrays
+                                        .asList(
+                                            new StatusActiveEvent()
+                                                .withTitle("u")
+                                                .withDescription("hxicslfaoqz")
+                                                .withTrackingId("yylhalnswhccsp")
+                                                .withStartTime(OffsetDateTime.parse("2021-06-09T09:48:38Z"))
+                                                .withCloud("vwitqscyw")
+                                                .withSeverity(SeverityValues.WARNING)
+                                                .withStage(StageValues.ARCHIVED)
+                                                .withPublished(true)
+                                                .withLastModifiedTime(OffsetDateTime.parse("2021-10-17T17:30:07Z"))
+                                                .withImpacts(
+                                                    Arrays
+                                                        .asList(
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact(),
+                                                            new EmergingIssueImpact()))))))
+                .withNextLink("msweypqwdxggicc");
         model = BinaryData.fromObject(model).toObject(EmergingIssueListResult.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T16:57:57Z"), model.value().get(0).refreshTimestamp());
-        Assertions.assertEquals("rw", model.nextLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T20:34:59Z"), model.value().get(0).refreshTimestamp());
+        Assertions.assertEquals("an", model.value().get(0).statusBanners().get(0).title());
+        Assertions.assertEquals("jos", model.value().get(0).statusBanners().get(0).message());
+        Assertions.assertEquals("youlp", model.value().get(0).statusBanners().get(0).cloud());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-09-04T05:53:47Z"),
+                model.value().get(0).statusBanners().get(0).lastModifiedTime());
+        Assertions.assertEquals("gge", model.value().get(0).statusActiveEvents().get(0).title());
+        Assertions.assertEquals("unygaeqid", model.value().get(0).statusActiveEvents().get(0).description());
+        Assertions.assertEquals("fatpxllrxcyjmoa", model.value().get(0).statusActiveEvents().get(0).trackingId());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-02-02T22:23:44Z"),
+                model.value().get(0).statusActiveEvents().get(0).startTime());
+        Assertions.assertEquals("arm", model.value().get(0).statusActiveEvents().get(0).cloud());
+        Assertions.assertEquals(SeverityValues.WARNING, model.value().get(0).statusActiveEvents().get(0).severity());
+        Assertions.assertEquals(StageValues.RESOLVE, model.value().get(0).statusActiveEvents().get(0).stage());
+        Assertions.assertEquals(false, model.value().get(0).statusActiveEvents().get(0).published());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-02-01T02:42:06Z"),
+                model.value().get(0).statusActiveEvents().get(0).lastModifiedTime());
+        Assertions.assertEquals("msweypqwdxggicc", model.nextLink());
     }
 }

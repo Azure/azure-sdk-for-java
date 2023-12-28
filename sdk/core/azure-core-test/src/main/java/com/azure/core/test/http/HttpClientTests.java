@@ -103,6 +103,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -337,10 +338,7 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension.execute(
@@ -349,20 +347,13 @@ public abstract class HttpClientTests {
         );
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
-
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
-
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
-
-        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
-
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
-
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
-
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
-
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
     }
 
     /**
@@ -393,10 +384,7 @@ public abstract class HttpClientTests {
     @SyncAsyncTest
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         Context context = Context.NONE.addData("azure-eagerly-read-response", true);
@@ -410,25 +398,25 @@ public abstract class HttpClientTests {
         assertEquals(requestBody.toString(), response.getBodyAsString().block());
         assertEquals(requestBody.toString(), response.getBodyAsString().block());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsByteArray().block());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
 
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
-        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+        assertArraysEqual(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
 
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
-        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArraysEqual(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
 
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
-        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArraysEqual(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
     }
 
     /**
@@ -459,16 +447,13 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         StepVerifier.create(createHttpClient()
                 .send(request)
                 .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
     }
 
@@ -481,20 +466,13 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, Context.NONE);
-
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
-
-        assertArrayEquals(expectedResponseBody, responseBytes);
+        try (HttpResponse httpResponse = createHttpClient().sendSync(request, Context.NONE)) {
+            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            assertArraysEqual(expectedResponseBody, responseBytes);
+        }
     }
 
     /**
@@ -506,10 +484,7 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         AtomicLong progress = new AtomicLong();
@@ -521,7 +496,7 @@ public abstract class HttpClientTests {
         StepVerifier.create(createHttpClient()
                 .send(request, context)
                 .flatMap(HttpResponse::getBodyAsByteArray))
-            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .assertNext(responseBytes -> assertArraysEqual(expectedResponseBody, responseBytes))
             .verifyComplete();
 
         assertEquals(expectedResponseBody.length, progress.intValue());
@@ -536,10 +511,7 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(
-            HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
-            new HttpHeaders(),
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
             requestBody);
 
         AtomicLong progress = new AtomicLong();
@@ -548,15 +520,11 @@ public abstract class HttpClientTests {
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(request, context);
-
-        byte[] responseBytes = httpResponse
-            .getBodyAsByteArray()
-            .block();
-
-        assertArrayEquals(expectedResponseBody, responseBytes);
-        assertEquals(expectedResponseBody.length, progress.intValue());
+        try (HttpResponse httpResponse = createHttpClient().sendSync(request, context)) {
+            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            assertArraysEqual(expectedResponseBody, responseBytes);
+            assertEquals(expectedResponseBody.length, progress.intValue());
+        }
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
@@ -567,6 +535,7 @@ public abstract class HttpClientTests {
                     ThreadLocalRandom.current().nextBytes(bytes);
 
                     BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+                    BinaryData byteBufferData = BinaryData.fromByteBuffer(ByteBuffer.wrap(bytes));
 
                     String randomString = new String(bytes, StandardCharsets.UTF_8);
                     byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
@@ -617,14 +586,19 @@ public abstract class HttpClientTests {
 
                     return Stream.of(
                         Arguments.of(Named.named("byte[]", byteArrayData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("ByteBuffer", byteBufferData),
+                            Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("String", stringBinaryData),
                             Named.named(String.valueOf(randomStringBytes.length), randomStringBytes)),
                         Arguments.of(Named.named("InputStream",
                             streamData), Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("Flux", fluxBinaryData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("Flux with length", fluxBinaryDataWithLength),
+                            Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("async Flux", asyncFluxBinaryData),
+                            Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("async Flux with length", asyncFluxBinaryDataWithLength),
+                            Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("Object", objectBinaryData), Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("File", fileData), Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("File slice", sliceFileData), Named.named(String.valueOf(size), bytes))
@@ -642,11 +616,10 @@ public abstract class HttpClientTests {
     }
 
     private String sendRequestSync(String requestPath) {
-        HttpResponse httpResponse = createHttpClient()
-            .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE);
-        return httpResponse
-            .getBodyAsString()
-            .block();
+        try (HttpResponse httpResponse = createHttpClient()
+            .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE)) {
+            return httpResponse.getBodyAsString().block();
+        }
     }
 
     /**
@@ -1356,7 +1329,7 @@ public abstract class HttpClientTests {
             () -> createService(Service9.class).putWithUnexpectedResponse(getRequestUri(), "I'm the body!"));
 
         assertNotNull(e.getValue());
-        assertTrue(e.getValue() instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
 
         @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
         assertEquals("I'm the body!", expectedBody.get("data"));
@@ -1367,10 +1340,9 @@ public abstract class HttpClientTests {
         StepVerifier.create(createService(Service9.class).putWithUnexpectedResponseAsync(getRequestUri(),
                 "I'm the body!"))
             .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof HttpResponseException);
-                HttpResponseException exception = (HttpResponseException) throwable;
+                HttpResponseException exception = assertInstanceOf(HttpResponseException.class, throwable);
                 assertNotNull(exception.getValue());
-                assertTrue(exception.getValue() instanceof LinkedHashMap);
+                assertInstanceOf(LinkedHashMap.class, exception.getValue());
 
                 @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) exception.getValue();
                 assertEquals("I'm the body!", expectedBody.get("data"));
@@ -1449,7 +1421,7 @@ public abstract class HttpClientTests {
                 "I'm the body!"));
 
         assertNotNull(e.getValue());
-        assertTrue(e.getValue() instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
 
         @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
         assertEquals("I'm the body!", expectedBody.get("data"));
@@ -1464,7 +1436,7 @@ public abstract class HttpClientTests {
                     "Expected HttpResponseException would be thrown. Instead got "
                         + throwable.getClass().getSimpleName());
                 assertNotNull(responseException.getValue());
-                assertTrue(responseException.getValue() instanceof LinkedHashMap);
+                assertInstanceOf(LinkedHashMap.class, responseException.getValue());
 
                 @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) responseException.getValue();
                 assertEquals("I'm the body!", expectedBody.get("data"));
@@ -1687,11 +1659,11 @@ public abstract class HttpClientTests {
         final HttpBinJSON httpBinJSON = service16.putByteArray(getRequestUri(), expectedBytes);
 
         // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
-        assertTrue(httpBinJSON.data() instanceof String);
+        assertInstanceOf(String.class, httpBinJSON.data());
 
         final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
-        assertArrayEquals(expectedBytes, actualBytes);
+        assertArraysEqual(expectedBytes, actualBytes);
     }
 
     @Test
@@ -1699,8 +1671,8 @@ public abstract class HttpClientTests {
         final byte[] expectedBytes = new byte[]{1, 2, 3, 4};
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(getRequestUri(), expectedBytes))
             .assertNext(json -> {
-                assertTrue(json.data() instanceof String);
-                assertArrayEquals(expectedBytes, ((String) json.data()).getBytes());
+                assertInstanceOf(String.class, json.data());
+                assertArraysEqual(expectedBytes, ((String) json.data()).getBytes());
             }).verifyComplete();
     }
 
@@ -2366,16 +2338,14 @@ public abstract class HttpClientTests {
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTestAsync(Context context) {
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> response.getValue().map(ByteBuffer::remaining)
-                    .reduce(0, Integer::sum)
-                    .doFinally(ignore -> response.close())))
+                .flatMap(response -> Mono.using(() -> response, r -> r.getValue().map(ByteBuffer::remaining)
+                    .reduce(0, Integer::sum), StreamResponse::close)))
             .assertNext(count -> assertEquals(30720, count))
             .verifyComplete();
 
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(getRequestUri(), context)
-                .flatMap(response -> Mono.zip(MessageDigestUtils.md5(response.getValue()),
-                        Mono.just(response.getHeaders().getValue(HttpHeaderName.ETAG)))
-                    .doFinally(ignore -> response.close())))
+                .flatMap(response -> Mono.using(() -> response, r -> Mono.zip(MessageDigestUtils.md5(r.getValue()),
+                    Mono.just(r.getHeaders().getValue(HttpHeaderName.ETAG))), StreamResponse::close)))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
             .verifyComplete();
     }
@@ -2433,12 +2403,13 @@ public abstract class HttpClientTests {
                         () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
                         streamResponse::writeValueToAsync,
                         channel -> {
+                            streamResponse.close();
                             try {
                                 channel.close();
                             } catch (IOException e) {
                                 throw Exceptions.propagate(e);
                             }
-                        }).doFinally(ignored -> streamResponse.close())
+                        })
                     .then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {
@@ -2657,7 +2628,7 @@ public abstract class HttpClientTests {
             new RequestOptions().setBody(BinaryData.fromString("24")));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
+        assertInstanceOf(String.class, response.data());
         assertEquals("24", response.data());
     }
 
@@ -2669,7 +2640,7 @@ public abstract class HttpClientTests {
             new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
+        assertInstanceOf(String.class, response.data());
         assertEquals("4242", response.data());
         assertEquals("4", response.getHeaderValue("Content-Length"));
     }
@@ -2684,7 +2655,7 @@ public abstract class HttpClientTests {
             new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
+        assertInstanceOf(String.class, response.data());
         assertEquals("42", response.data());
         assertEquals("randomValue", response.getHeaderValue("randomHeader"));
     }
@@ -2697,7 +2668,7 @@ public abstract class HttpClientTests {
             new RequestOptions().addHeader(RANDOM_HEADER, "randomValue").setHeader(RANDOM_HEADER, "randomValue2"));
         assertNotNull(response);
         assertNotNull(response.data());
-        assertTrue(response.data() instanceof String);
+        assertInstanceOf(String.class, response.data());
         assertEquals("42", response.data());
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
     }

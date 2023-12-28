@@ -29,10 +29,11 @@ public final class AppliancesImpl implements Appliances {
 
     private final AppliancesClient innerClient;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
     public AppliancesImpl(
-        AppliancesClient innerClient, com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+        AppliancesClient innerClient,
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -275,7 +276,7 @@ public final class AppliancesImpl implements Appliances {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 

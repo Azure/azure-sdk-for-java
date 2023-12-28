@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Utilities to convert between scopes and resources for connecting to Azure Active Directory.
+ * Utilities to convert between scopes and resources for connecting to Microsoft Entra ID.
  */
 public final class ScopeUtil {
 
@@ -16,9 +16,9 @@ public final class ScopeUtil {
     private static final Pattern SCOPE_PATTERN = Pattern.compile("^[0-9a-zA-Z-.:/]+$");
 
     /**
-     * Convert a list of scopes to a resource for Azure Active Directory.
+     * Convert a list of scopes to a resource for Microsoft Entra ID.
      * @param scopes the list of scopes to authenticate to
-     * @return the resource to authenticate with Azure Active Directory.
+     * @return the resource to authenticate with Microsoft Entra ID.
      * @throws IllegalArgumentException if scopes is empty or has more than 1 items
      */
     public static String scopesToResource(List<String> scopes) {
@@ -37,7 +37,7 @@ public final class ScopeUtil {
 
     /**
      * Convert a resource to a list of scopes.
-     * @param resource the resource for Azure Active Directory
+     * @param resource the resource for Microsoft Entra ID
      * @return the list of scopes
      */
     public static String[] resourceToScopes(String resource) {

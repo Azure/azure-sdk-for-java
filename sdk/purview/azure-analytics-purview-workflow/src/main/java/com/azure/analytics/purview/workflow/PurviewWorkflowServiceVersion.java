@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of PurviewWorkflowClient. */
 public enum PurviewWorkflowServiceVersion implements ServiceVersion {
-    /** Enum value 2022-05-01-preview. */
-    V2022_05_01_PREVIEW("2022-05-01-preview");
+    /** Enum value 2023-10-01-preview. */
+    V2023_10_01_PREVIEW("2023-10-01-preview");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum PurviewWorkflowServiceVersion implements ServiceVersion {
      * @return The latest {@link PurviewWorkflowServiceVersion}.
      */
     public static PurviewWorkflowServiceVersion getLatest() {
-        return V2022_05_01_PREVIEW;
+        return V2023_10_01_PREVIEW;
     }
 }

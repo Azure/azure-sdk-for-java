@@ -30,6 +30,10 @@ public final class ApiReleaseCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ApiReleaseCollection class. */
+    public ApiReleaseCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

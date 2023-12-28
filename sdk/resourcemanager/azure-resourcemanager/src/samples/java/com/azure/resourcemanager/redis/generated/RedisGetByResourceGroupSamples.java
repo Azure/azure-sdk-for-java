@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for Redis GetByResourceGroup. */
 public final class RedisGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheGet.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheGet.json
      */
     /**
      * Sample code: RedisCacheGet.

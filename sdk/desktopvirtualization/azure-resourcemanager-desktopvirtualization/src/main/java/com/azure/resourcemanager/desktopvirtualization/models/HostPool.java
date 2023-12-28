@@ -249,12 +249,28 @@ public interface HostPool {
     Boolean cloudPcResource();
 
     /**
+     * Gets the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
+     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    HostpoolPublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
      *
      * @return the agentUpdate value.
      */
     AgentUpdateProperties agentUpdate();
+
+    /**
+     * Gets the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
@@ -294,11 +310,13 @@ public interface HostPool {
             DefinitionStages.WithPreferredAppGroupType,
             DefinitionStages.WithCreate {
     }
+
     /** The HostPool definition stages. */
     interface DefinitionStages {
         /** The first stage of the HostPool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the HostPool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -317,6 +335,7 @@ public interface HostPool {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the HostPool definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -327,6 +346,7 @@ public interface HostPool {
              */
             WithHostPoolType withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the HostPool definition allowing to specify hostPoolType. */
         interface WithHostPoolType {
             /**
@@ -337,6 +357,7 @@ public interface HostPool {
              */
             WithLoadBalancerType withHostPoolType(HostPoolType hostPoolType);
         }
+
         /** The stage of the HostPool definition allowing to specify loadBalancerType. */
         interface WithLoadBalancerType {
             /**
@@ -347,6 +368,7 @@ public interface HostPool {
              */
             WithPreferredAppGroupType withLoadBalancerType(LoadBalancerType loadBalancerType);
         }
+
         /** The stage of the HostPool definition allowing to specify preferredAppGroupType. */
         interface WithPreferredAppGroupType {
             /**
@@ -359,6 +381,7 @@ public interface HostPool {
              */
             WithCreate withPreferredAppGroupType(PreferredAppGroupType preferredAppGroupType);
         }
+
         /**
          * The stage of the HostPool definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -384,6 +407,7 @@ public interface HostPool {
                 DefinitionStages.WithSsoClientSecretKeyVaultPath,
                 DefinitionStages.WithSsoSecretType,
                 DefinitionStages.WithStartVMOnConnect,
+                DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithAgentUpdate {
             /**
              * Executes the create request.
@@ -400,6 +424,7 @@ public interface HostPool {
              */
             HostPool create(Context context);
         }
+
         /** The stage of the HostPool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -410,6 +435,7 @@ public interface HostPool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the HostPool definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -425,6 +451,7 @@ public interface HostPool {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the HostPool definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -439,6 +466,7 @@ public interface HostPool {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the HostPool definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -449,6 +477,7 @@ public interface HostPool {
              */
             WithCreate withIdentity(ResourceModelWithAllowedPropertySetIdentity identity);
         }
+
         /** The stage of the HostPool definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -459,6 +488,7 @@ public interface HostPool {
              */
             WithCreate withSku(ResourceModelWithAllowedPropertySetSku sku);
         }
+
         /** The stage of the HostPool definition allowing to specify plan. */
         interface WithPlan {
             /**
@@ -469,6 +499,7 @@ public interface HostPool {
              */
             WithCreate withPlan(ResourceModelWithAllowedPropertySetPlan plan);
         }
+
         /** The stage of the HostPool definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -479,6 +510,7 @@ public interface HostPool {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
+
         /** The stage of the HostPool definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -489,6 +521,7 @@ public interface HostPool {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the HostPool definition allowing to specify personalDesktopAssignmentType. */
         interface WithPersonalDesktopAssignmentType {
             /**
@@ -499,6 +532,7 @@ public interface HostPool {
              */
             WithCreate withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType personalDesktopAssignmentType);
         }
+
         /** The stage of the HostPool definition allowing to specify customRdpProperty. */
         interface WithCustomRdpProperty {
             /**
@@ -509,6 +543,7 @@ public interface HostPool {
              */
             WithCreate withCustomRdpProperty(String customRdpProperty);
         }
+
         /** The stage of the HostPool definition allowing to specify maxSessionLimit. */
         interface WithMaxSessionLimit {
             /**
@@ -519,6 +554,7 @@ public interface HostPool {
              */
             WithCreate withMaxSessionLimit(Integer maxSessionLimit);
         }
+
         /** The stage of the HostPool definition allowing to specify ring. */
         interface WithRing {
             /**
@@ -529,6 +565,7 @@ public interface HostPool {
              */
             WithCreate withRing(Integer ring);
         }
+
         /** The stage of the HostPool definition allowing to specify validationEnvironment. */
         interface WithValidationEnvironment {
             /**
@@ -539,6 +576,7 @@ public interface HostPool {
              */
             WithCreate withValidationEnvironment(Boolean validationEnvironment);
         }
+
         /** The stage of the HostPool definition allowing to specify registrationInfo. */
         interface WithRegistrationInfo {
             /**
@@ -549,6 +587,7 @@ public interface HostPool {
              */
             WithCreate withRegistrationInfo(RegistrationInfoInner registrationInfo);
         }
+
         /** The stage of the HostPool definition allowing to specify vmTemplate. */
         interface WithVmTemplate {
             /**
@@ -559,6 +598,7 @@ public interface HostPool {
              */
             WithCreate withVmTemplate(String vmTemplate);
         }
+
         /** The stage of the HostPool definition allowing to specify ssoadfsAuthority. */
         interface WithSsoadfsAuthority {
             /**
@@ -569,6 +609,7 @@ public interface HostPool {
              */
             WithCreate withSsoadfsAuthority(String ssoadfsAuthority);
         }
+
         /** The stage of the HostPool definition allowing to specify ssoClientId. */
         interface WithSsoClientId {
             /**
@@ -580,6 +621,7 @@ public interface HostPool {
              */
             WithCreate withSsoClientId(String ssoClientId);
         }
+
         /** The stage of the HostPool definition allowing to specify ssoClientSecretKeyVaultPath. */
         interface WithSsoClientSecretKeyVaultPath {
             /**
@@ -592,6 +634,7 @@ public interface HostPool {
              */
             WithCreate withSsoClientSecretKeyVaultPath(String ssoClientSecretKeyVaultPath);
         }
+
         /** The stage of the HostPool definition allowing to specify ssoSecretType. */
         interface WithSsoSecretType {
             /**
@@ -602,6 +645,7 @@ public interface HostPool {
              */
             WithCreate withSsoSecretType(SsoSecretType ssoSecretType);
         }
+
         /** The stage of the HostPool definition allowing to specify startVMOnConnect. */
         interface WithStartVMOnConnect {
             /**
@@ -612,6 +656,20 @@ public interface HostPool {
              */
             WithCreate withStartVMOnConnect(Boolean startVMOnConnect);
         }
+
+        /** The stage of the HostPool definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enabled allows this resource to be accessed from both public
+             * and private networks, Disabled allows this resource to only be accessed via private endpoints.
+             *
+             * @param publicNetworkAccess Enabled allows this resource to be accessed from both public and private
+             *     networks, Disabled allows this resource to only be accessed via private endpoints.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess);
+        }
+
         /** The stage of the HostPool definition allowing to specify agentUpdate. */
         interface WithAgentUpdate {
             /**
@@ -625,6 +683,7 @@ public interface HostPool {
             WithCreate withAgentUpdate(AgentUpdateProperties agentUpdate);
         }
     }
+
     /**
      * Begins update for the HostPool resource.
      *
@@ -651,6 +710,7 @@ public interface HostPool {
             UpdateStages.WithSsoSecretType,
             UpdateStages.WithPreferredAppGroupType,
             UpdateStages.WithStartVMOnConnect,
+            UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithAgentUpdate {
         /**
          * Executes the update request.
@@ -667,6 +727,7 @@ public interface HostPool {
          */
         HostPool apply(Context context);
     }
+
     /** The HostPool update stages. */
     interface UpdateStages {
         /** The stage of the HostPool update allowing to specify tags. */
@@ -679,6 +740,7 @@ public interface HostPool {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the HostPool update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -689,6 +751,7 @@ public interface HostPool {
              */
             Update withFriendlyName(String friendlyName);
         }
+
         /** The stage of the HostPool update allowing to specify description. */
         interface WithDescription {
             /**
@@ -699,6 +762,7 @@ public interface HostPool {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the HostPool update allowing to specify customRdpProperty. */
         interface WithCustomRdpProperty {
             /**
@@ -709,6 +773,7 @@ public interface HostPool {
              */
             Update withCustomRdpProperty(String customRdpProperty);
         }
+
         /** The stage of the HostPool update allowing to specify maxSessionLimit. */
         interface WithMaxSessionLimit {
             /**
@@ -719,6 +784,7 @@ public interface HostPool {
              */
             Update withMaxSessionLimit(Integer maxSessionLimit);
         }
+
         /** The stage of the HostPool update allowing to specify personalDesktopAssignmentType. */
         interface WithPersonalDesktopAssignmentType {
             /**
@@ -729,6 +795,7 @@ public interface HostPool {
              */
             Update withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType personalDesktopAssignmentType);
         }
+
         /** The stage of the HostPool update allowing to specify loadBalancerType. */
         interface WithLoadBalancerType {
             /**
@@ -739,6 +806,7 @@ public interface HostPool {
              */
             Update withLoadBalancerType(LoadBalancerType loadBalancerType);
         }
+
         /** The stage of the HostPool update allowing to specify ring. */
         interface WithRing {
             /**
@@ -749,6 +817,7 @@ public interface HostPool {
              */
             Update withRing(Integer ring);
         }
+
         /** The stage of the HostPool update allowing to specify validationEnvironment. */
         interface WithValidationEnvironment {
             /**
@@ -759,6 +828,7 @@ public interface HostPool {
              */
             Update withValidationEnvironment(Boolean validationEnvironment);
         }
+
         /** The stage of the HostPool update allowing to specify registrationInfo. */
         interface WithRegistrationInfo {
             /**
@@ -769,6 +839,7 @@ public interface HostPool {
              */
             Update withRegistrationInfo(RegistrationInfoPatch registrationInfo);
         }
+
         /** The stage of the HostPool update allowing to specify vmTemplate. */
         interface WithVmTemplate {
             /**
@@ -779,6 +850,7 @@ public interface HostPool {
              */
             Update withVmTemplate(String vmTemplate);
         }
+
         /** The stage of the HostPool update allowing to specify ssoadfsAuthority. */
         interface WithSsoadfsAuthority {
             /**
@@ -789,6 +861,7 @@ public interface HostPool {
              */
             Update withSsoadfsAuthority(String ssoadfsAuthority);
         }
+
         /** The stage of the HostPool update allowing to specify ssoClientId. */
         interface WithSsoClientId {
             /**
@@ -800,6 +873,7 @@ public interface HostPool {
              */
             Update withSsoClientId(String ssoClientId);
         }
+
         /** The stage of the HostPool update allowing to specify ssoClientSecretKeyVaultPath. */
         interface WithSsoClientSecretKeyVaultPath {
             /**
@@ -812,6 +886,7 @@ public interface HostPool {
              */
             Update withSsoClientSecretKeyVaultPath(String ssoClientSecretKeyVaultPath);
         }
+
         /** The stage of the HostPool update allowing to specify ssoSecretType. */
         interface WithSsoSecretType {
             /**
@@ -822,6 +897,7 @@ public interface HostPool {
              */
             Update withSsoSecretType(SsoSecretType ssoSecretType);
         }
+
         /** The stage of the HostPool update allowing to specify preferredAppGroupType. */
         interface WithPreferredAppGroupType {
             /**
@@ -834,6 +910,7 @@ public interface HostPool {
              */
             Update withPreferredAppGroupType(PreferredAppGroupType preferredAppGroupType);
         }
+
         /** The stage of the HostPool update allowing to specify startVMOnConnect. */
         interface WithStartVMOnConnect {
             /**
@@ -844,6 +921,19 @@ public interface HostPool {
              */
             Update withStartVMOnConnect(Boolean startVMOnConnect);
         }
+
+        /** The stage of the HostPool update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Enabled to allow this resource to be access from the public
+             * network.
+             *
+             * @param publicNetworkAccess Enabled to allow this resource to be access from the public network.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess);
+        }
+
         /** The stage of the HostPool update allowing to specify agentUpdate. */
         interface WithAgentUpdate {
             /**
@@ -857,6 +947,7 @@ public interface HostPool {
             Update withAgentUpdate(AgentUpdatePatchProperties agentUpdate);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

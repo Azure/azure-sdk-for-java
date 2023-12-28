@@ -11,6 +11,13 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class DocumentKeyValuePair {
+
+    /**
+     * Constructs a DocumentKeyValuePair object.
+     */
+    public DocumentKeyValuePair() {
+    }
+
     /*
      * Field label of the key-value pair.
      */

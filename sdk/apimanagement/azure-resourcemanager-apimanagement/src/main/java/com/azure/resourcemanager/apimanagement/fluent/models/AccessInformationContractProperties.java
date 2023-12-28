@@ -28,6 +28,10 @@ public final class AccessInformationContractProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of AccessInformationContractProperties class. */
+    public AccessInformationContractProperties() {
+    }
+
     /**
      * Get the id property: Access Information type ('access' or 'gitAccess').
      *

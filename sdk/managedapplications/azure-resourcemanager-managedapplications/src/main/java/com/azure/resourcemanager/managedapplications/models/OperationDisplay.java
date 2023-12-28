@@ -4,36 +4,46 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The object that represents the operation. */
-@Fluent
+/** Localized display information for this particular operation. */
+@Immutable
 public final class OperationDisplay {
     /*
-     * Service provider: Microsoft.Solutions
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+     * Compute".
      */
-    @JsonProperty(value = "provider")
+    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * Resource on which the operation is performed: Application, JitRequest, etc.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+     * Schedule Collections".
      */
-    @JsonProperty(value = "resource")
+    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Operation type: Read, write, delete, etc.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+     * Machine", "Restart Virtual Machine".
      */
-    @JsonProperty(value = "operation")
+    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
+
+    /*
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
 
     /** Creates an instance of OperationDisplay class. */
     public OperationDisplay() {
     }
 
     /**
-     * Get the provider property: Service provider: Microsoft.Solutions.
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
      *
      * @return the provider value.
      */
@@ -42,18 +52,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Solutions.
-     *
-     * @param provider the provider value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withProvider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
-     * Get the resource property: Resource on which the operation is performed: Application, JitRequest, etc.
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
      *
      * @return the resource value.
      */
@@ -62,18 +62,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the resource property: Resource on which the operation is performed: Application, JitRequest, etc.
-     *
-     * @param resource the resource value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withResource(String resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the operation property: Operation type: Read, write, delete, etc.
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      *
      * @return the operation value.
      */
@@ -82,14 +72,13 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: Operation type: Read, write, delete, etc.
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
      *
-     * @param operation the operation value to set.
-     * @return the OperationDisplay object itself.
+     * @return the description value.
      */
-    public OperationDisplay withOperation(String operation) {
-        this.operation = operation;
-        return this;
+    public String description() {
+        return this.description;
     }
 
     /**

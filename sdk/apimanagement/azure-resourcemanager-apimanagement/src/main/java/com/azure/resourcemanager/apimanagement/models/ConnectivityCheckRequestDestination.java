@@ -23,6 +23,10 @@ public final class ConnectivityCheckRequestDestination {
     @JsonProperty(value = "port", required = true)
     private long port;
 
+    /** Creates an instance of ConnectivityCheckRequestDestination class. */
+    public ConnectivityCheckRequestDestination() {
+    }
+
     /**
      * Get the address property: Destination address. Can either be an IP address or a FQDN.
      *

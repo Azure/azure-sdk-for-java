@@ -14,42 +14,36 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IotConnectors CreateOrUpdate. */
+/**
+ * Samples for IotConnectors CreateOrUpdate.
+ */
 public final class IotConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/iotconnectors/iotconnector_Create.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
+     * iotconnector_Create.json
      */
     /**
      * Sample code: Create an IoT Connector.
-     *
+     * 
      * @param manager Entry point to HealthcareApisManager.
      */
     public static void createAnIoTConnector(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager)
         throws IOException {
-        manager
-            .iotConnectors()
-            .define("blue")
-            .withExistingWorkspace("testRG", "workspace1")
-            .withRegion("westus")
+        manager.iotConnectors().define("blue").withExistingWorkspace("testRG", "workspace1").withRegion("westus")
             .withTags(mapOf("additionalProp1", "string", "additionalProp2", "string", "additionalProp3", "string"))
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED))
-            .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration()
-                    .withEventHubName("MyEventHubName")
-                    .withConsumerGroup("ConsumerGroupA")
-                    .withFullyQualifiedEventHubNamespace("myeventhub.servicesbus.windows.net"))
-            .withDeviceMapping(
-                new IotMappingProperties()
-                    .withContent(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"template\":[{\"template\":{\"deviceIdExpression\":\"$.deviceid\",\"timestampExpression\":\"$.measurementdatetime\",\"typeMatchExpression\":\"$..[?(@heartrate)]\",\"typeName\":\"heartrate\",\"values\":[{\"required\":\"true\",\"valueExpression\":\"$.heartrate\",\"valueName\":\"hr\"}]},\"templateType\":\"JsonPathContent\"}],\"templateType\":\"CollectionContent\"}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+            .withIngestionEndpointConfiguration(new IotEventHubIngestionEndpointConfiguration()
+                .withEventHubName("MyEventHubName").withConsumerGroup("ConsumerGroupA")
+                .withFullyQualifiedEventHubNamespace("myeventhub.servicesbus.windows.net"))
+            .withDeviceMapping(new IotMappingProperties()
+                .withContent(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+                    "{\"template\":[{\"template\":{\"deviceIdExpression\":\"$.deviceid\",\"timestampExpression\":\"$.measurementdatetime\",\"typeMatchExpression\":\"$..[?(@heartrate)]\",\"typeName\":\"heartrate\",\"values\":[{\"required\":\"true\",\"valueExpression\":\"$.heartrate\",\"valueName\":\"hr\"}]},\"templateType\":\"JsonPathContent\"}],\"templateType\":\"CollectionContent\"}",
+                    Object.class, SerializerEncoding.JSON)))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

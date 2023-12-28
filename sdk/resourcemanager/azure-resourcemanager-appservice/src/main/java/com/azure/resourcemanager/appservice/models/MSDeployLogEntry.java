@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** MSDeploy log entry. */
+/**
+ * MSDeploy log entry.
+ */
 @Immutable
 public final class MSDeployLogEntry {
     /*
@@ -29,13 +31,15 @@ public final class MSDeployLogEntry {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MSDeployLogEntry class. */
+    /**
+     * Creates an instance of MSDeployLogEntry class.
+     */
     public MSDeployLogEntry() {
     }
 
     /**
      * Get the time property: Timestamp of log entry.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -44,7 +48,7 @@ public final class MSDeployLogEntry {
 
     /**
      * Get the type property: Log entry type.
-     *
+     * 
      * @return the type value.
      */
     public MSDeployLogEntryType type() {
@@ -53,7 +57,7 @@ public final class MSDeployLogEntry {
 
     /**
      * Get the message property: Log entry message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -62,7 +66,7 @@ public final class MSDeployLogEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

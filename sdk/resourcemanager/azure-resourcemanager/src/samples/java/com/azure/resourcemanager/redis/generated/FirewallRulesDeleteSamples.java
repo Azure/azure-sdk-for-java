@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for FirewallRules Delete. */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheFirewallRuleDelete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheFirewallRuleDelete.json
      */
     /**
      * Sample code: RedisCacheFirewallRuleDelete.

@@ -5,51 +5,42 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The DataSourceCredential model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "dataSourceCredentialType",
-        defaultImpl = DataSourceCredential.class)
-@JsonTypeName("DataSourceCredential")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureSQLConnectionString", value = AzureSQLConnectionStringCredential.class),
-    @JsonSubTypes.Type(name = "DataLakeGen2SharedKey", value = DataLakeGen2SharedKeyCredential.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class),
-    @JsonSubTypes.Type(name = "ServicePrincipalInKV", value = ServicePrincipalInKVCredential.class)
-})
+/**
+ * The DataSourceCredential model.
+ */
 @Fluent
-public class DataSourceCredential {
+public class DataSourceCredential implements JsonSerializable<DataSourceCredential> {
     /*
      * Unique id of data source credential
      */
-    @JsonProperty(value = "dataSourceCredentialId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID dataSourceCredentialId;
 
     /*
      * Name of data source credential
      */
-    @JsonProperty(value = "dataSourceCredentialName", required = true)
     private String dataSourceCredentialName;
 
     /*
      * Description of data source credential
      */
-    @JsonProperty(value = "dataSourceCredentialDescription")
     private String dataSourceCredentialDescription;
 
-    /** Creates an instance of DataSourceCredential class. */
-    public DataSourceCredential() {}
+    /**
+     * Creates an instance of DataSourceCredential class.
+     */
+    public DataSourceCredential() {
+    }
 
     /**
      * Get the dataSourceCredentialId property: Unique id of data source credential.
-     *
+     * 
      * @return the dataSourceCredentialId value.
      */
     public UUID getDataSourceCredentialId() {
@@ -57,8 +48,19 @@ public class DataSourceCredential {
     }
 
     /**
+     * Set the dataSourceCredentialId property: Unique id of data source credential.
+     * 
+     * @param dataSourceCredentialId the dataSourceCredentialId value to set.
+     * @return the DataSourceCredential object itself.
+     */
+    DataSourceCredential setDataSourceCredentialId(UUID dataSourceCredentialId) {
+        this.dataSourceCredentialId = dataSourceCredentialId;
+        return this;
+    }
+
+    /**
      * Get the dataSourceCredentialName property: Name of data source credential.
-     *
+     * 
      * @return the dataSourceCredentialName value.
      */
     public String getDataSourceCredentialName() {
@@ -67,7 +69,7 @@ public class DataSourceCredential {
 
     /**
      * Set the dataSourceCredentialName property: Name of data source credential.
-     *
+     * 
      * @param dataSourceCredentialName the dataSourceCredentialName value to set.
      * @return the DataSourceCredential object itself.
      */
@@ -78,7 +80,7 @@ public class DataSourceCredential {
 
     /**
      * Get the dataSourceCredentialDescription property: Description of data source credential.
-     *
+     * 
      * @return the dataSourceCredentialDescription value.
      */
     public String getDataSourceCredentialDescription() {
@@ -87,12 +89,67 @@ public class DataSourceCredential {
 
     /**
      * Set the dataSourceCredentialDescription property: Description of data source credential.
-     *
+     * 
      * @param dataSourceCredentialDescription the dataSourceCredentialDescription value to set.
      * @return the DataSourceCredential object itself.
      */
     public DataSourceCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         this.dataSourceCredentialDescription = dataSourceCredentialDescription;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialName", this.dataSourceCredentialName);
+        jsonWriter.writeStringField("dataSourceCredentialDescription", this.dataSourceCredentialDescription);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataSourceCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataSourceCredential if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
+     * @throws IOException If an error occurs while reading the DataSourceCredential.
+     */
+    public static DataSourceCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            JsonReader readerToUse = reader.bufferObject();
+
+            readerToUse.nextToken(); // Prepare for reading
+            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = readerToUse.getFieldName();
+                readerToUse.nextToken();
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    discriminatorValue = readerToUse.getString();
+                    break;
+                } else {
+                    readerToUse.skipChildren();
+                }
+            }
+
+            if (discriminatorValue != null) {
+                readerToUse = readerToUse.reset();
+            }
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("AzureSQLConnectionString".equals(discriminatorValue)) {
+                return AzureSQLConnectionStringCredential.fromJson(readerToUse);
+            } else if ("DataLakeGen2SharedKey".equals(discriminatorValue)) {
+                return DataLakeGen2SharedKeyCredential.fromJson(readerToUse);
+            } else if ("ServicePrincipal".equals(discriminatorValue)) {
+                return ServicePrincipalCredential.fromJson(readerToUse);
+            } else if ("ServicePrincipalInKV".equals(discriminatorValue)) {
+                return ServicePrincipalInKVCredential.fromJson(readerToUse);
+            } else {
+                throw new IllegalStateException(
+                    "Discriminator field 'dataSourceCredentialType' didn't match one of the expected values 'AzureSQLConnectionString', 'DataLakeGen2SharedKey', 'ServicePrincipal', or 'ServicePrincipalInKV'. It was: '"
+                        + discriminatorValue + "'.");
+            }
+        });
     }
 }

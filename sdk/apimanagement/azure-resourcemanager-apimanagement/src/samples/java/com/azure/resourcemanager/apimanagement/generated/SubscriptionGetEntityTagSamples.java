@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subscription GetEntityTag. */
 public final class SubscriptionGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadSubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadSubscription.json
      */
     /**
      * Sample code: ApiManagementHeadSubscription.
@@ -20,6 +18,7 @@ public final class SubscriptionGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .subscriptions()
-            .getEntityTagWithResponse("rg1", "apimService1", "5931a769d8d14f0ad8ce13b8", Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", "5931a769d8d14f0ad8ce13b8", com.azure.core.util.Context.NONE);
     }
 }

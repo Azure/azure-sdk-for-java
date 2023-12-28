@@ -155,6 +155,30 @@ public final class SignalRsImpl implements SignalRs {
         }
     }
 
+    public Response<SkuList> listReplicaSkusWithResponse(
+        String resourceGroupName, String resourceName, String replicaName, Context context) {
+        Response<SkuListInner> inner =
+            this.serviceClient().listReplicaSkusWithResponse(resourceGroupName, resourceName, replicaName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SkuListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SkuList listReplicaSkus(String resourceGroupName, String resourceName, String replicaName) {
+        SkuListInner inner = this.serviceClient().listReplicaSkus(resourceGroupName, resourceName, replicaName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void restart(String resourceGroupName, String resourceName) {
         this.serviceClient().restart(resourceGroupName, resourceName);
     }

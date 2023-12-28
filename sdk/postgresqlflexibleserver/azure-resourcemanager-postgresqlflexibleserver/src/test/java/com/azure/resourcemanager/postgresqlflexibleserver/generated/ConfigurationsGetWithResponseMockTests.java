@@ -31,7 +31,7 @@ public final class ConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"kby\",\"description\":\"t\",\"defaultValue\":\"fhpagmhrskdsnf\",\"dataType\":\"Enumeration\",\"allowedValues\":\"akgtdlmkkzevdlh\",\"source\":\"pusdstt\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"jdcngqqm\",\"documentationLink\":\"kufgmj\"},\"id\":\"wr\",\"name\":\"grtwae\",\"type\":\"u\"}";
+            "{\"properties\":{\"value\":\"jeaahhvjhh\",\"description\":\"kzyb\",\"defaultValue\":\"jid\",\"dataType\":\"Enumeration\",\"allowedValues\":\"xkyxvxevblbj\",\"source\":\"nljlageuaulx\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"ppxynenls\",\"documentationLink\":\"eizzgwk\"},\"id\":\"srmffeycxcktpiym\",\"name\":\"rteeamm\",\"type\":\"qiekkkzddrt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class ConfigurationsGetWithResponseMockTests {
         Configuration response =
             manager
                 .configurations()
-                .getWithResponse("wtl", "nguxawqaldsy", "uximerqfobw", com.azure.core.util.Context.NONE)
+                .getWithResponse("uxakjsqzhzbezk", "imsidxasicddyvvj", "kgfmocwahpq", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kby", response.value());
-        Assertions.assertEquals("pusdstt", response.source());
+        Assertions.assertEquals("jeaahhvjhh", response.value());
+        Assertions.assertEquals("nljlageuaulx", response.source());
     }
 }

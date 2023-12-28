@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume Backup Properties. */
+/**
+ * Volume Backup Properties.
+ */
 @Fluent
 public final class VolumeBackupProperties {
     /*
@@ -28,13 +30,21 @@ public final class VolumeBackupProperties {
     @JsonProperty(value = "backupEnabled")
     private Boolean backupEnabled;
 
-    /** Creates an instance of VolumeBackupProperties class. */
+    /*
+     * Backup Vault Resource ID
+     */
+    @JsonProperty(value = "backupVaultId")
+    private String backupVaultId;
+
+    /**
+     * Creates an instance of VolumeBackupProperties class.
+     */
     public VolumeBackupProperties() {
     }
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -43,7 +53,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Set the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @param backupPolicyId the backupPolicyId value to set.
      * @return the VolumeBackupProperties object itself.
      */
@@ -54,7 +64,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Get the policyEnforced property: Policy Enforced.
-     *
+     * 
      * @return the policyEnforced value.
      */
     public Boolean policyEnforced() {
@@ -63,7 +73,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Set the policyEnforced property: Policy Enforced.
-     *
+     * 
      * @param policyEnforced the policyEnforced value to set.
      * @return the VolumeBackupProperties object itself.
      */
@@ -74,7 +84,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Get the backupEnabled property: Backup Enabled.
-     *
+     * 
      * @return the backupEnabled value.
      */
     public Boolean backupEnabled() {
@@ -83,7 +93,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Set the backupEnabled property: Backup Enabled.
-     *
+     * 
      * @param backupEnabled the backupEnabled value to set.
      * @return the VolumeBackupProperties object itself.
      */
@@ -93,8 +103,28 @@ public final class VolumeBackupProperties {
     }
 
     /**
+     * Get the backupVaultId property: Backup Vault Resource ID.
+     * 
+     * @return the backupVaultId value.
+     */
+    public String backupVaultId() {
+        return this.backupVaultId;
+    }
+
+    /**
+     * Set the backupVaultId property: Backup Vault Resource ID.
+     * 
+     * @param backupVaultId the backupVaultId value to set.
+     * @return the VolumeBackupProperties object itself.
+     */
+    public VolumeBackupProperties withBackupVaultId(String backupVaultId) {
+        this.backupVaultId = backupVaultId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

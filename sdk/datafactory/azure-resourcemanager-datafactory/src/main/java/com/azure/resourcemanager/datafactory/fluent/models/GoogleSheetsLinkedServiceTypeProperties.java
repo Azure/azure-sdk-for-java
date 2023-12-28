@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** GoogleSheets linked service type properties. */
+/**
+ * GoogleSheets linked service type properties.
+ */
 @Fluent
 public final class GoogleSheetsLinkedServiceTypeProperties {
     /*
@@ -20,18 +22,20 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of GoogleSheetsLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of GoogleSheetsLinkedServiceTypeProperties class.
+     */
     public GoogleSheetsLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the apiToken property: The api token for the GoogleSheets source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase apiToken() {
@@ -40,7 +44,7 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
 
     /**
      * Set the apiToken property: The api token for the GoogleSheets source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the GoogleSheetsLinkedServiceTypeProperties object itself.
      */
@@ -50,38 +54,36 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleSheetsLinkedServiceTypeProperties object itself.
      */
-    public GoogleSheetsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public GoogleSheetsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (apiToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property apiToken in model GoogleSheetsLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property apiToken in model GoogleSheetsLinkedServiceTypeProperties"));
         } else {
             apiToken().validate();
         }

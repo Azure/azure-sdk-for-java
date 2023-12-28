@@ -34,15 +34,6 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         this.serviceManager = serviceManager;
     }
 
-    public PolicyCollection listByProduct(String resourceGroupName, String serviceName, String productId) {
-        PolicyCollectionInner inner = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
-        if (inner != null) {
-            return new PolicyCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PolicyCollection> listByProductWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
         Response<PolicyCollectionInner> inner =
@@ -58,8 +49,13 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId, policyId);
+    public PolicyCollection listByProduct(String resourceGroupName, String serviceName, String productId) {
+        PolicyCollectionInner inner = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
+        if (inner != null) {
+            return new PolicyCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
@@ -69,13 +65,8 @@ public final class ProductPoliciesImpl implements ProductPolicies {
             .getEntityTagWithResponse(resourceGroupName, serviceName, productId, policyId, context);
     }
 
-    public PolicyContract get(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
-        PolicyContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, productId, policyId);
-        if (inner != null) {
-            return new PolicyContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId, policyId);
     }
 
     public Response<PolicyContract> getWithResponse(
@@ -98,14 +89,8 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
-        PolicyContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, policyId, parameters);
+    public PolicyContract get(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
+        PolicyContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, productId, policyId);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -137,9 +122,19 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, productId, policyId, ifMatch);
+    public PolicyContract createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String productId,
+        PolicyIdName policyId,
+        PolicyContractInner parameters) {
+        PolicyContractInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, policyId, parameters);
+        if (inner != null) {
+            return new PolicyContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -152,6 +147,11 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, productId, policyId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, productId, policyId, ifMatch);
     }
 
     private ProductPoliciesClient serviceClient() {

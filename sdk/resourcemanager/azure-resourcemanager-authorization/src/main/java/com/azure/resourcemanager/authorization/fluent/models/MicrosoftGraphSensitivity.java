@@ -23,6 +23,15 @@ public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<Micros
     public static final MicrosoftGraphSensitivity CONFIDENTIAL = fromString("confidential");
 
     /**
+     * Creates a new instance of MicrosoftGraphSensitivity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphSensitivity() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphSensitivity from its string representation.
      *
      * @param name a name to look for.

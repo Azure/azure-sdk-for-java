@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.PhoenixAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Phoenix server linked service properties. */
+/**
+ * Phoenix server linked service properties.
+ */
 @Fluent
 public final class PhoenixLinkedServiceTypeProperties {
     /*
@@ -86,18 +88,20 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of PhoenixLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of PhoenixLinkedServiceTypeProperties class.
+     */
     public PhoenixLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -106,7 +110,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Set the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
-     *
+     * 
      * @param host the host value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the port property: The TCP port that the Phoenix server uses to listen for client connections. The default
      * value is 8765.
-     *
+     * 
      * @return the port value.
      */
     public Object port() {
@@ -128,7 +132,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the port property: The TCP port that the Phoenix server uses to listen for client connections. The default
      * value is 8765.
-     *
+     * 
      * @param port the port value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -140,7 +144,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the httpPath property: The partial URL corresponding to the Phoenix server. (i.e.
      * /gateway/sandbox/phoenix/version). The default value is hbasephoenix if using WindowsAzureHDInsightService.
-     *
+     * 
      * @return the httpPath value.
      */
     public Object httpPath() {
@@ -150,7 +154,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the httpPath property: The partial URL corresponding to the Phoenix server. (i.e.
      * /gateway/sandbox/phoenix/version). The default value is hbasephoenix if using WindowsAzureHDInsightService.
-     *
+     * 
      * @param httpPath the httpPath value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Get the authenticationType property: The authentication mechanism used to connect to the Phoenix server.
-     *
+     * 
      * @return the authenticationType value.
      */
     public PhoenixAuthenticationType authenticationType() {
@@ -170,7 +174,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Set the authenticationType property: The authentication mechanism used to connect to the Phoenix server.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Get the username property: The user name used to connect to the Phoenix server.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -190,7 +194,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Set the username property: The user name used to connect to the Phoenix server.
-     *
+     * 
      * @param username the username value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -201,7 +205,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -210,7 +214,7 @@ public final class PhoenixLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name.
-     *
+     * 
      * @param password the password value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -222,7 +226,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     *
+     * 
      * @return the enableSsl value.
      */
     public Object enableSsl() {
@@ -232,7 +236,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     *
+     * 
      * @param enableSsl the enableSsl value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -242,10 +246,10 @@ public final class PhoenixLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
+     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
+     * The default value is the cacerts.pem file installed with the IR.
+     * 
      * @return the trustedCertPath value.
      */
     public Object trustedCertPath() {
@@ -253,10 +257,10 @@ public final class PhoenixLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
+     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
+     * The default value is the cacerts.pem file installed with the IR.
+     * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -268,7 +272,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     *
+     * 
      * @return the useSystemTrustStore value.
      */
     public Object useSystemTrustStore() {
@@ -278,7 +282,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     *
+     * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -290,7 +294,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     *
+     * 
      * @return the allowHostnameCNMismatch value.
      */
     public Object allowHostnameCNMismatch() {
@@ -300,7 +304,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     *
+     * 
      * @param allowHostnameCNMismatch the allowHostnameCNMismatch value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -312,7 +316,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     *
+     * 
      * @return the allowSelfSignedServerCert value.
      */
     public Object allowSelfSignedServerCert() {
@@ -322,7 +326,7 @@ public final class PhoenixLinkedServiceTypeProperties {
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     *
+     * 
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
@@ -332,44 +336,40 @@ public final class PhoenixLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PhoenixLinkedServiceTypeProperties object itself.
      */
-    public PhoenixLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public PhoenixLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property host in model PhoenixLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property host in model PhoenixLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model PhoenixLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authenticationType in model PhoenixLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

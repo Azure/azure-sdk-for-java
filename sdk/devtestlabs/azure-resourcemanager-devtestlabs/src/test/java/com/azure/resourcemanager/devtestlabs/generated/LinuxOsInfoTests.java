@@ -13,14 +13,14 @@ public final class LinuxOsInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxOsInfo model =
-            BinaryData.fromString("{\"linuxOsState\":\"NonDeprovisioned\"}").toObject(LinuxOsInfo.class);
-        Assertions.assertEquals(LinuxOsState.NON_DEPROVISIONED, model.linuxOsState());
+            BinaryData.fromString("{\"linuxOsState\":\"DeprovisionRequested\"}").toObject(LinuxOsInfo.class);
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.linuxOsState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinuxOsInfo model = new LinuxOsInfo().withLinuxOsState(LinuxOsState.NON_DEPROVISIONED);
+        LinuxOsInfo model = new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_REQUESTED);
         model = BinaryData.fromObject(model).toObject(LinuxOsInfo.class);
-        Assertions.assertEquals(LinuxOsState.NON_DEPROVISIONED, model.linuxOsState());
+        Assertions.assertEquals(LinuxOsState.DEPROVISION_REQUESTED, model.linuxOsState());
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Panorama connectivity information. */
+/**
+ * Panorama connectivity information.
+ */
 @Immutable
 public final class PanoramaStatus {
     /*
@@ -22,13 +24,15 @@ public final class PanoramaStatus {
     @JsonProperty(value = "panoramaServer2Status", access = JsonProperty.Access.WRITE_ONLY)
     private ServerStatus panoramaServer2Status;
 
-    /** Creates an instance of PanoramaStatus class. */
+    /**
+     * Creates an instance of PanoramaStatus class.
+     */
     public PanoramaStatus() {
     }
 
     /**
      * Get the panoramaServerStatus property: Primary Panorama connection status.
-     *
+     * 
      * @return the panoramaServerStatus value.
      */
     public ServerStatus panoramaServerStatus() {
@@ -37,7 +41,7 @@ public final class PanoramaStatus {
 
     /**
      * Get the panoramaServer2Status property: Secondary Panorama connection status.
-     *
+     * 
      * @return the panoramaServer2Status value.
      */
     public ServerStatus panoramaServer2Status() {
@@ -46,7 +50,7 @@ public final class PanoramaStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

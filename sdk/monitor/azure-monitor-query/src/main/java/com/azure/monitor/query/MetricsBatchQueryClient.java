@@ -15,9 +15,12 @@ import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBat
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
-import com.azure.monitor.query.models.MetricsBatchResult;
+import com.azure.monitor.query.models.AggregationType;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsBatchQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -48,8 +51,9 @@ public final class MetricsBatchQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsBatchResult queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, Context.NONE).getValue();
+    public MetricsBatchQueryResult queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions(),
+            Context.NONE).getValue();
     }
 
     /**
@@ -58,14 +62,15 @@ public final class MetricsBatchQueryClient {
      * @param resourceUris The resource URIs for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
+     * @param options The {@link MetricsBatchQueryOptions} to include for the request.
      * @param context The context to associate with this operation.
      * @return A time-series metrics result for the requested metric names.
      * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
      * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsBatchResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                               String metricsNamespace, Context context) {
+    public Response<MetricsBatchQueryResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
+                                                                    String metricsNamespace, MetricsBatchQueryOptions options, Context context) {
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceUris cannot be empty"));
         }
@@ -78,21 +83,54 @@ public final class MetricsBatchQueryClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
+        String filter = null;
+        Duration granularity = null;
+        String aggregations = null;
+        String startTime = null;
+        Integer top = null;
+        String orderBy = null;
+        String endTime = null;
+        if (options != null) {
+            filter = options.getFilter();
+            granularity = options.getGranularity();
+
+            if (options.getAggregations() != null) {
+                aggregations = options.getAggregations()
+                    .stream()
+                    .map(AggregationType::toString)
+                    .collect(Collectors.joining(","));
+            }
+
+            if (options.getTimeInterval() != null) {
+                if (options.getTimeInterval().getDuration() != null) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
+                }
+                if (options.getTimeInterval().getStartTime() != null) {
+                    startTime = options.getTimeInterval().getStartTime().toString();
+                }
+                if (options.getTimeInterval().getEndTime() != null) {
+                    endTime = options.getTimeInterval().getEndTime().toString();
+                }
+            }
+
+            top = options.getTop();
+            orderBy = options.getOrderBy();
+        }
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Response<MetricResultsResponse> response = this.serviceClient.getMetrics()
-            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, null,
-                null, null, null, null, null, null, context);
+        Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
+            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
+                endTime, granularity, aggregations, top, orderBy, filter, context);
         MetricResultsResponse value = response.getValue();
         List<MetricResultsResponseValuesItem> values = value.getValues();
         List<MetricsQueryResult> metricsQueryResults = values.stream()
             .map(result -> mapToMetricsQueryResult(result))
             .collect(Collectors.toList());
-        MetricsBatchResult metricsBatchResult = new MetricsBatchResult(metricsQueryResults);
+        MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), metricsBatchResult);
+            response.getHeaders(), metricsBatchQueryResult);
 
     }
 

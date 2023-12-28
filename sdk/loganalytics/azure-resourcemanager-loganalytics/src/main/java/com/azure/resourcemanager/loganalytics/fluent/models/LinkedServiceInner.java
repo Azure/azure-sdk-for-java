@@ -28,6 +28,10 @@ public final class LinkedServiceInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of LinkedServiceInner class. */
+    public LinkedServiceInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the linked service.
      *

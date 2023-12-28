@@ -4,16 +4,17 @@
 package com.azure.security.keyvault.secrets.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
+import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,8 +26,55 @@ import java.util.Objects;
  *  @see SecretAsyncClient
  */
 @Fluent
-public class SecretProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(SecretProperties.class);
+public class SecretProperties implements JsonSerializable<SecretProperties> {
+    static {
+        SecretPropertiesHelper.setAccessor(new SecretPropertiesHelper.SecretPropertiesAccessor() {
+            @Override
+            public void setId(SecretProperties properties, String id) {
+                properties.id = id;
+            }
+
+            @Override
+            public void setVersion(SecretProperties properties, String version) {
+                properties.version = version;
+            }
+
+            @Override
+            public void setCreatedOn(SecretProperties properties, OffsetDateTime createdOn) {
+                properties.createdOn = createdOn;
+            }
+
+            @Override
+            public void setUpdatedOn(SecretProperties properties, OffsetDateTime updatedOn) {
+                properties.updatedOn = updatedOn;
+            }
+
+            @Override
+            public void setName(SecretProperties properties, String name) {
+                properties.name = name;
+            }
+
+            @Override
+            public void setRecoveryLevel(SecretProperties properties, String recoveryLevel) {
+                properties.recoveryLevel = recoveryLevel;
+            }
+
+            @Override
+            public void setKeyId(SecretProperties properties, String keyId) {
+                properties.keyId = keyId;
+            }
+
+            @Override
+            public void setManaged(SecretProperties properties, Boolean managed) {
+                properties.managed = managed;
+            }
+
+            @Override
+            public void setRecoverableDays(SecretProperties properties, Integer recoverableDays) {
+                properties.recoverableDays = recoverableDays;
+            }
+        });
+    }
 
     /**
      * The secret id.
@@ -81,33 +129,28 @@ public class SecretProperties {
     /**
      * The content type of the secret.
      */
-    @JsonProperty(value = "contentType")
     String contentType;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     Map<String, String> tags;
 
     /**
      * If this is a secret backing a KV certificate, then this field specifies
      * the corresponding key backing the KV certificate.
      */
-    @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
     String keyId;
 
     /**
      * True if the secret's lifetime is managed by key vault. If this is a
      * secret backing a certificate, then managed will be true.
      */
-    @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     Boolean managed;
 
     /**
      * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
 
     SecretProperties(String secretName) {
@@ -304,58 +347,93 @@ public class SecretProperties {
         return recoverableDays;
     }
 
-    /**
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
-     */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    void unpackAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("enabled");
-        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
-        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
-        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
-        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
-        this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.contentType = (String) lazyValueSelection(attributes.get("contentType"), this.contentType);
-        this.keyId = (String) lazyValueSelection(attributes.get("keyId"), this.keyId);
-        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
-        this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
-        this.recoverableDays = (Integer) attributes.get("recoverableDays");
-        unpackId((String) attributes.get("id"));
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("contentType", contentType)
+            .writeMapField("tags", tags, JsonWriter::writeString)
+            .writeEndObject();
     }
 
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
-        if (id != null && id.length() > 0) {
-            this.id = id;
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                // Should never come here.
-                LOGGER.error("Received Malformed Secret Id URL from KV Service");
+    /**
+     * Reads a JSON stream into a {@link SecretProperties}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link SecretProperties} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link SecretProperties} fails to be read from the {@code jsonReader}.
+     */
+    public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretProperties secretProperties = new SecretProperties();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentType".equals(fieldName)) {
+                    secretProperties.contentType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    secretProperties.tags = reader.readMap(JsonReader::getString);
+                } else if ("kid".equals(fieldName)) {
+                    secretProperties.keyId = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    secretProperties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoverableDays".equals(fieldName)) {
+                    secretProperties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    deserializeAttributes(reader, secretProperties);
+                } else if ("id".equals(fieldName)) {
+                    secretProperties.id = reader.getString();
+                    SecretsModelsUtils.unpackId(secretProperties.id, name -> secretProperties.name = name,
+                        version -> secretProperties.version = version);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return secretProperties;
+        });
+    }
+
+    static void deserializeAttributes(JsonReader reader, SecretProperties secretProperties) throws IOException {
+        while (reader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = reader.getFieldName();
+            reader.nextToken();
+
+            if ("enabled".equals(fieldName)) {
+                secretProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+            } else if ("nbf".equals(fieldName)) {
+                secretProperties.notBefore = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("exp".equals(fieldName)) {
+                secretProperties.expiresOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("created".equals(fieldName)) {
+                secretProperties.createdOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("updated".equals(fieldName)) {
+                secretProperties.updatedOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("recoveryLevel".equals(fieldName)) {
+                secretProperties.recoveryLevel = reader.getString();
+            } else if ("contentType".equals(fieldName)) {
+                String contentType = reader.getString();
+                secretProperties.contentType = contentType == null
+                    ? secretProperties.contentType : contentType;
+            } else if ("keyId".equals(fieldName)) {
+                String keyId = reader.getString();
+                secretProperties.keyId = keyId == null ? secretProperties.keyId : keyId;
+            } else if ("tags".equals(fieldName)) {
+                Map<String, String> tags = reader.readMap(JsonReader::getString);
+                secretProperties.tags = tags == null ? secretProperties.tags : tags;
+            } else if ("managed".equals(fieldName)) {
+                Boolean managed = reader.getNullable(JsonReader::getBoolean);
+                secretProperties.managed = managed == null ? secretProperties.managed : managed;
+            } else if ("recoverableDays".equals(fieldName)) {
+                secretProperties.recoverableDays = reader.getNullable(JsonReader::getInt);
+            } else if ("id".equals(fieldName)) {
+                secretProperties.id = reader.getString();
+                SecretsModelsUtils.unpackId(secretProperties.id, name -> secretProperties.name = name,
+                    version -> secretProperties.version = version);
+            } else {
+                reader.skipChildren();
             }
         }
     }
-
-    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
-        if (epochValue != null) {
-            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
-            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
-        }
-        return null;
-    }
-
-    private Object lazyValueSelection(Object input1, Object input2) {
-        if (input1 == null) {
-            return input2;
-        }
-        return input1;
-    }
-
 }

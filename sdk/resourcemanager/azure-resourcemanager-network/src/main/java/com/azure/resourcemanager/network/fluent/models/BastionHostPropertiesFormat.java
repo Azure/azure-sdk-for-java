@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the Bastion Host. */
+/**
+ * Properties of the Bastion Host.
+ */
 @Fluent
 public final class BastionHostPropertiesFormat {
     /*
@@ -24,6 +28,18 @@ public final class BastionHostPropertiesFormat {
      */
     @JsonProperty(value = "dnsName")
     private String dnsName;
+
+    /*
+     * Reference to an existing virtual network required for Developer Bastion Host only.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private SubResource virtualNetwork;
+
+    /*
+     * The networkAcls property.
+     */
+    @JsonProperty(value = "networkAcls")
+    private BastionHostPropertiesFormatNetworkAcls networkAcls;
 
     /*
      * The provisioning state of the bastion host resource.
@@ -73,13 +89,15 @@ public final class BastionHostPropertiesFormat {
     @JsonProperty(value = "enableKerberos")
     private Boolean enableKerberos;
 
-    /** Creates an instance of BastionHostPropertiesFormat class. */
+    /**
+     * Creates an instance of BastionHostPropertiesFormat class.
+     */
     public BastionHostPropertiesFormat() {
     }
 
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<BastionHostIpConfiguration> ipConfigurations() {
@@ -88,7 +106,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -99,7 +117,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @return the dnsName value.
      */
     public String dnsName() {
@@ -108,7 +126,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @param dnsName the dnsName value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -118,8 +136,50 @@ public final class BastionHostPropertiesFormat {
     }
 
     /**
+     * Get the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     * 
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     * 
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withVirtualNetwork(SubResource virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: The networkAcls property.
+     * 
+     * @return the networkAcls value.
+     */
+    public BastionHostPropertiesFormatNetworkAcls networkAcls() {
+        return this.networkAcls;
+    }
+
+    /**
+     * Set the networkAcls property: The networkAcls property.
+     * 
+     * @param networkAcls the networkAcls value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withNetworkAcls(BastionHostPropertiesFormatNetworkAcls networkAcls) {
+        this.networkAcls = networkAcls;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the bastion host resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -128,7 +188,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @return the scaleUnits value.
      */
     public Integer scaleUnits() {
@@ -137,7 +197,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @param scaleUnits the scaleUnits value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -148,7 +208,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @return the disableCopyPaste value.
      */
     public Boolean disableCopyPaste() {
@@ -157,7 +217,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @param disableCopyPaste the disableCopyPaste value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -168,7 +228,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableFileCopy value.
      */
     public Boolean enableFileCopy() {
@@ -177,7 +237,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @param enableFileCopy the enableFileCopy value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -188,7 +248,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableIpConnect value.
      */
     public Boolean enableIpConnect() {
@@ -197,7 +257,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @param enableIpConnect the enableIpConnect value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -208,7 +268,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @return the enableShareableLink value.
      */
     public Boolean enableShareableLink() {
@@ -217,7 +277,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @param enableShareableLink the enableShareableLink value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -228,7 +288,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableTunneling value.
      */
     public Boolean enableTunneling() {
@@ -237,7 +297,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @param enableTunneling the enableTunneling value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -248,7 +308,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableKerberos value.
      */
     public Boolean enableKerberos() {
@@ -257,7 +317,7 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
-     *
+     * 
      * @param enableKerberos the enableKerberos value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
@@ -268,12 +328,15 @@ public final class BastionHostPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
+        }
+        if (networkAcls() != null) {
+            networkAcls().validate();
         }
     }
 }

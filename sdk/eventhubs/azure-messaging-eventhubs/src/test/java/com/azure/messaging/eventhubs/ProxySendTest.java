@@ -21,7 +21,6 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -49,8 +48,6 @@ class ProxySendTest extends IntegrationTestBase {
 
     @BeforeAll
     static void initialize() throws Exception {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(t -> LOGGER.error("Starting proxy server failed.", t));
 
@@ -77,7 +74,6 @@ class ProxySendTest extends IntegrationTestBase {
             }
         } finally {
             ProxySelector.setDefault(defaultProxySelector);
-            StepVerifier.resetDefaultTimeout();
         }
     }
 

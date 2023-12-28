@@ -15,13 +15,13 @@ public final class IdentityProperties {
     /*
      * The principal ID of resource identity.
      */
-    @JsonProperty(value = "principalId")
+    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant ID of resource.
      */
-    @JsonProperty(value = "tenantId")
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
@@ -54,34 +54,12 @@ public final class IdentityProperties {
     }
 
     /**
-     * Set the principalId property: The principal ID of resource identity.
-     *
-     * @param principalId the principalId value to set.
-     * @return the IdentityProperties object itself.
-     */
-    public IdentityProperties withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
-    }
-
-    /**
      * Get the tenantId property: The tenant ID of resource.
      *
      * @return the tenantId value.
      */
     public String tenantId() {
         return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId property: The tenant ID of resource.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the IdentityProperties object itself.
-     */
-    public IdentityProperties withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
     }
 
     /**

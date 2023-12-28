@@ -82,8 +82,7 @@ class ChangeFeedQueryImpl<T> {
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
         ChangeFeedState state;
-        if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null)
-        {
+        if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null) {
             state = new ChangeFeedStateV1(
                 collectionRid,
                 feedRange,

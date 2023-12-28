@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection ListByService. */
 public final class PrivateEndpointConnectionListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPrivateEndpointConnections.json
      */
     /**
      * Sample code: ApiManagementListPrivateEndpointConnections.
@@ -18,6 +16,6 @@ public final class PrivateEndpointConnectionListByServiceSamples {
      */
     public static void apiManagementListPrivateEndpointConnections(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.privateEndpointConnections().listByService("rg1", "apimService1", Context.NONE);
+        manager.privateEndpointConnections().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

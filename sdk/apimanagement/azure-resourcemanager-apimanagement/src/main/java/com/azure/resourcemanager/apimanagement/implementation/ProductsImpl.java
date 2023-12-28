@@ -52,22 +52,13 @@ public final class ProductsImpl implements Products {
         return Utils.mapPage(inner, inner1 -> new ProductContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String productId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId);
-    }
-
     public ProductsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String productId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, productId, context);
     }
 
-    public ProductContract get(String resourceGroupName, String serviceName, String productId) {
-        ProductContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, productId);
-        if (inner != null) {
-            return new ProductContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String productId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId);
     }
 
     public Response<ProductContract> getWithResponse(
@@ -85,8 +76,13 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String productId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, productId, ifMatch);
+    public ProductContract get(String resourceGroupName, String serviceName, String productId) {
+        ProductContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, productId);
+        if (inner != null) {
+            return new ProductContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -99,6 +95,10 @@ public final class ProductsImpl implements Products {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, productId, ifMatch, deleteSubscriptions, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String productId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, productId, ifMatch);
     }
 
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName) {

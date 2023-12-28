@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.BackendReconnectContract;
 import java.time.Duration;
 
 /** Samples for Backend Reconnect. */
 public final class BackendReconnectSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackendReconnect.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackendReconnect.json
      */
     /**
      * Sample code: ApiManagementBackendReconnect.
@@ -27,6 +26,6 @@ public final class BackendReconnectSamples {
                 "apimService1",
                 "proxybackend",
                 new BackendReconnectContract().withAfter(Duration.parse("PT3S")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

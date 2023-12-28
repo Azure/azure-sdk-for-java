@@ -18,6 +18,10 @@ public final class TenantConfigurationSyncStateContractInner extends ProxyResour
     @JsonProperty(value = "properties")
     private TenantConfigurationSyncStateContractProperties innerProperties;
 
+    /** Creates an instance of TenantConfigurationSyncStateContractInner class. */
+    public TenantConfigurationSyncStateContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties returned Tenant Configuration Sync State check.
      *

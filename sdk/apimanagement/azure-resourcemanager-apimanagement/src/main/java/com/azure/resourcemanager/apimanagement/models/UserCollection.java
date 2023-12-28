@@ -30,6 +30,10 @@ public final class UserCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of UserCollection class. */
+    public UserCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

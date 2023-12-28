@@ -22,6 +22,10 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelector {
     @JsonProperty(value = "wsdlEndpointName")
     private String wsdlEndpointName;
 
+    /** Creates an instance of ApiCreateOrUpdatePropertiesWsdlSelector class. */
+    public ApiCreateOrUpdatePropertiesWsdlSelector() {
+    }
+
     /**
      * Get the wsdlServiceName property: Name of service to import from WSDL.
      *

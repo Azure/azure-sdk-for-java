@@ -14,10 +14,13 @@ import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBat
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
-import com.azure.monitor.query.models.MetricsBatchResult;
+import com.azure.monitor.query.models.AggregationType;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsBatchQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -49,8 +52,8 @@ public final class MetricsBatchQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsBatchResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace)
+    public Mono<MetricsBatchQueryResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions())
             .map(Response::getValue);
     }
 
@@ -60,13 +63,14 @@ public final class MetricsBatchQueryAsyncClient {
      * @param resourceUris The resource URIs for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
+     * @param options The {@link MetricsBatchQueryOptions} to include for the request.
      * @return A time-series metrics result for the requested metric names.
      * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
      * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsBatchResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                                     String metricsNamespace) {
+    public Mono<Response<MetricsBatchQueryResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
+                                                                          String metricsNamespace, MetricsBatchQueryOptions options) {
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
             return monoError(LOGGER, new IllegalArgumentException("resourceUris cannot be empty"));
@@ -80,12 +84,45 @@ public final class MetricsBatchQueryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
+        String filter = null;
+        Duration granularity = null;
+        String aggregations = null;
+        String startTime = null;
+        Integer top = null;
+        String orderBy = null;
+        String endTime = null;
+        if (options != null) {
+            filter = options.getFilter();
+            granularity = options.getGranularity();
+
+            if (options.getAggregations() != null) {
+                aggregations = options.getAggregations()
+                    .stream()
+                    .map(AggregationType::toString)
+                    .collect(Collectors.joining(","));
+            }
+            if (options.getTimeInterval() != null) {
+                if (options.getTimeInterval().getDuration() != null) {
+                    return monoError(LOGGER, new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
+                }
+                if (options.getTimeInterval().getStartTime() != null) {
+                    startTime = options.getTimeInterval().getStartTime().toString();
+                }
+                if (options.getTimeInterval().getEndTime() != null) {
+                    endTime = options.getTimeInterval().getEndTime().toString();
+                }
+            }
+
+
+            top = options.getTop();
+            orderBy = options.getOrderBy();
+        }
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetrics()
-            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, null,
-                null, null, null, null, null, null);
+        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
+            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
+                endTime, granularity, aggregations, top, orderBy, filter, null);
 
 
         return responseMono.map(response -> {
@@ -94,9 +131,9 @@ public final class MetricsBatchQueryAsyncClient {
             List<MetricsQueryResult> metricsQueryResults = values.stream()
                 .map(result -> mapToMetricsQueryResult(result))
                 .collect(Collectors.toList());
-            MetricsBatchResult metricsBatchResult = new MetricsBatchResult(metricsQueryResults);
+            MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), metricsBatchResult);
+                response.getHeaders(), metricsBatchQueryResult);
         });
     }
 }

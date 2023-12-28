@@ -33,8 +33,8 @@ public final class UserContractProperties extends UserEntityBaseParameters {
     private String email;
 
     /*
-     * Date of user registration. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Date of user registration. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the
+     * ISO 8601 standard.
      *
      */
     @JsonProperty(value = "registrationDate")
@@ -45,6 +45,10 @@ public final class UserContractProperties extends UserEntityBaseParameters {
      */
     @JsonProperty(value = "groups", access = JsonProperty.Access.WRITE_ONLY)
     private List<GroupContractProperties> groups;
+
+    /** Creates an instance of UserContractProperties class. */
+    public UserContractProperties() {
+    }
 
     /**
      * Get the firstName property: First name.

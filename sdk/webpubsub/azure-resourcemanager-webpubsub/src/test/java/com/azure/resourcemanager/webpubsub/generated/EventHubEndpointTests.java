@@ -13,17 +13,17 @@ public final class EventHubEndpointTests {
     public void testDeserialize() throws Exception {
         EventHubEndpoint model =
             BinaryData
-                .fromString("{\"type\":\"EventHub\",\"fullyQualifiedNamespace\":\"x\",\"eventHubName\":\"bf\"}")
+                .fromString("{\"type\":\"EventHub\",\"fullyQualifiedNamespace\":\"uxrkjp\",\"eventHubName\":\"dwxf\"}")
                 .toObject(EventHubEndpoint.class);
-        Assertions.assertEquals("x", model.fullyQualifiedNamespace());
-        Assertions.assertEquals("bf", model.eventHubName());
+        Assertions.assertEquals("uxrkjp", model.fullyQualifiedNamespace());
+        Assertions.assertEquals("dwxf", model.eventHubName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubEndpoint model = new EventHubEndpoint().withFullyQualifiedNamespace("x").withEventHubName("bf");
+        EventHubEndpoint model = new EventHubEndpoint().withFullyQualifiedNamespace("uxrkjp").withEventHubName("dwxf");
         model = BinaryData.fromObject(model).toObject(EventHubEndpoint.class);
-        Assertions.assertEquals("x", model.fullyQualifiedNamespace());
-        Assertions.assertEquals("bf", model.eventHubName());
+        Assertions.assertEquals("uxrkjp", model.fullyQualifiedNamespace());
+        Assertions.assertEquals("dwxf", model.eventHubName());
     }
 }

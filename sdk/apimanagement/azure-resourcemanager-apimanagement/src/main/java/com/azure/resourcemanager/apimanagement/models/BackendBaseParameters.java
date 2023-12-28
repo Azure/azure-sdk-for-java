@@ -23,8 +23,8 @@ public class BackendBaseParameters {
     private String description;
 
     /*
-     * Management Uri of the Resource in External System. This url can be the
-     * Arm Resource Id of Logic Apps, Function Apps or API Apps.
+     * Management Uri of the Resource in External System. This URL can be the Arm Resource Id of Logic Apps, Function
+     * Apps or API Apps.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
@@ -42,7 +42,7 @@ public class BackendBaseParameters {
     private BackendCredentialsContract credentials;
 
     /*
-     * Backend Proxy Contract Properties
+     * Backend gateway Contract Properties
      */
     @JsonProperty(value = "proxy")
     private BackendProxyContract proxy;
@@ -52,6 +52,10 @@ public class BackendBaseParameters {
      */
     @JsonProperty(value = "tls")
     private BackendTlsProperties tls;
+
+    /** Creates an instance of BackendBaseParameters class. */
+    public BackendBaseParameters() {
+    }
 
     /**
      * Get the title property: Backend Title.
@@ -94,7 +98,7 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
@@ -104,7 +108,7 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @param resourceId the resourceId value to set.
@@ -156,7 +160,7 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
+     * Get the proxy property: Backend gateway Contract Properties.
      *
      * @return the proxy value.
      */
@@ -165,7 +169,7 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
+     * Set the proxy property: Backend gateway Contract Properties.
      *
      * @param proxy the proxy value to set.
      * @return the BackendBaseParameters object itself.

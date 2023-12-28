@@ -25,6 +25,10 @@ public final class ApiContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApiContractProperties innerProperties;
 
+    /** Creates an instance of ApiContractInner class. */
+    public ApiContractInner() {
+    }
+
     /**
      * Get the innerProperties property: API entity contract properties.
      *

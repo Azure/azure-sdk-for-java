@@ -56,7 +56,7 @@ public final class ResourceUsagesClientImpl implements ResourceUsagesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientR")
-    private interface ResourceUsagesService {
+    public interface ResourceUsagesService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage")
         @ExpectedResponses({200})

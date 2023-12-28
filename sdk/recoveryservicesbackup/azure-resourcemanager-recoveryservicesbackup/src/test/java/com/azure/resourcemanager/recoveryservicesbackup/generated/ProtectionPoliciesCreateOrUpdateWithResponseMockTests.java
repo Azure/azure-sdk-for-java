@@ -35,7 +35,7 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1660132426,\"resourceGuardOperationRequests\":[\"h\",\"zagjf\",\"yyrlhgenu\"]},\"eTag\":\"jgvkvebaqszllr\",\"location\":\"lsmmdqgmi\",\"tags\":{\"xtminklogxsvtzar\":\"imcqrh\",\"lpky\":\"zvqnsqktcmbjwzzo\"},\"id\":\"tglwkzpgajsqjc\",\"name\":\"mqbmfuvqarwz\",\"type\":\"uqrebluimmbwx\"}";
+            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1909827281,\"resourceGuardOperationRequests\":[\"jgvrquvpyggl\",\"mcrdcue\"]},\"eTag\":\"tiahxmfq\",\"location\":\"yarvsxzqbglcjk\",\"tags\":{\"odubtlmjt\":\"pth\",\"jxyxgb\":\"blioskkfmkmf\",\"lskkzpxvj\":\"kqvjcteoedlr\",\"cojhpcnabx\":\"zdpv\"},\"id\":\"fsnggytexvzilm\",\"name\":\"iv\",\"type\":\"kwwwnckn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,33 +66,25 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
         ProtectionPolicyResource response =
             manager
                 .protectionPolicies()
-                .define("zqbglcjkays")
-                .withRegion("rslskkzp")
-                .withExistingVault("pmcrdcuelj", "iahxmfqryarvs")
-                .withTags(
-                    mapOf(
-                        "hpcnabxzfsn",
-                        "nzdpvoco",
-                        "vzilmhiv",
-                        "gyte",
-                        "zdajlskzptjxu",
-                        "kwwwnckn",
-                        "qlehmcgcjeinu",
-                        "weucyrth"))
+                .define("trdexyionofnin")
+                .withRegion("tbfcm")
+                .withExistingVault("eexpgeumi", "hwu")
+                .withTags(mapOf("mb", "tsjcwjjxs", "xkecifhocj", "wvif"))
                 .withProperties(
                     new ProtectionPolicy()
-                        .withProtectedItemsCount(1994794374)
-                        .withResourceGuardOperationRequests(Arrays.asList("ubtlmjtg", "lioskkfmkmfdjx")))
-                .withEtag("gbkkqvjcteoed")
+                        .withProtectedItemsCount(1366131106)
+                        .withResourceGuardOperationRequests(Arrays.asList("cw", "qrs", "pcbbprtugav")))
+                .withEtag("bcyksivmfogd")
                 .create();
 
-        Assertions.assertEquals("lsmmdqgmi", response.location());
-        Assertions.assertEquals("imcqrh", response.tags().get("xtminklogxsvtzar"));
-        Assertions.assertEquals(1660132426, response.properties().protectedItemsCount());
-        Assertions.assertEquals("h", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("jgvkvebaqszllr", response.etag());
+        Assertions.assertEquals("yarvsxzqbglcjk", response.location());
+        Assertions.assertEquals("pth", response.tags().get("odubtlmjt"));
+        Assertions.assertEquals(1909827281, response.properties().protectedItemsCount());
+        Assertions.assertEquals("jgvrquvpyggl", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("tiahxmfq", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

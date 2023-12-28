@@ -12,22 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupSchedule model =
-            BinaryData
-                .fromString("{\"repeatingTimeIntervals\":[\"ioknssxmoj\",\"sv\",\"kjprvk\"],\"timeZone\":\"fz\"}")
-                .toObject(BackupSchedule.class);
-        Assertions.assertEquals("ioknssxmoj", model.repeatingTimeIntervals().get(0));
-        Assertions.assertEquals("fz", model.timeZone());
+        BackupSchedule model = BinaryData.fromString("{\"repeatingTimeIntervals\":[\"w\"],\"timeZone\":\"nfqn\"}")
+            .toObject(BackupSchedule.class);
+        Assertions.assertEquals("w", model.repeatingTimeIntervals().get(0));
+        Assertions.assertEquals("nfqn", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupSchedule model =
-            new BackupSchedule()
-                .withRepeatingTimeIntervals(Arrays.asList("ioknssxmoj", "sv", "kjprvk"))
-                .withTimeZone("fz");
+        BackupSchedule model = new BackupSchedule().withRepeatingTimeIntervals(Arrays.asList("w")).withTimeZone("nfqn");
         model = BinaryData.fromObject(model).toObject(BackupSchedule.class);
-        Assertions.assertEquals("ioknssxmoj", model.repeatingTimeIntervals().get(0));
-        Assertions.assertEquals("fz", model.timeZone());
+        Assertions.assertEquals("w", model.repeatingTimeIntervals().get(0));
+        Assertions.assertEquals("nfqn", model.timeZone());
     }
 }

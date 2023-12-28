@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DelegationSettings GetEntityTag. */
 public final class DelegationSettingsGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadDelegationSettings.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadDelegationSettings.json
      */
     /**
      * Sample code: ApiManagementHeadDelegationSettings.
@@ -18,6 +16,6 @@ public final class DelegationSettingsGetEntityTagSamples {
      */
     public static void apiManagementHeadDelegationSettings(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.delegationSettings().getEntityTagWithResponse("rg1", "apimService1", Context.NONE);
+        manager.delegationSettings().getEntityTagWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

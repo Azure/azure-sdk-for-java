@@ -19,6 +19,10 @@ public final class PortalDelegationSettingsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PortalDelegationSettingsProperties innerProperties;
 
+    /** Creates an instance of PortalDelegationSettingsInner class. */
+    public PortalDelegationSettingsInner() {
+    }
+
     /**
      * Get the innerProperties property: Delegation settings contract properties.
      *

@@ -30,6 +30,10 @@ public final class CertificateCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of CertificateCollection class. */
+    public CertificateCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

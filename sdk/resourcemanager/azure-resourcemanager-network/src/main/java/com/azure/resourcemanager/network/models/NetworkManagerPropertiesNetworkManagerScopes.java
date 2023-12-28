@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Scope of Network Manager. */
+/**
+ * Scope of Network Manager.
+ */
 @Fluent
 public final class NetworkManagerPropertiesNetworkManagerScopes {
     /*
@@ -29,13 +31,15 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
     @JsonProperty(value = "crossTenantScopes", access = JsonProperty.Access.WRITE_ONLY)
     private List<CrossTenantScopes> crossTenantScopes;
 
-    /** Creates an instance of NetworkManagerPropertiesNetworkManagerScopes class. */
+    /**
+     * Creates an instance of NetworkManagerPropertiesNetworkManagerScopes class.
+     */
     public NetworkManagerPropertiesNetworkManagerScopes() {
     }
 
     /**
      * Get the managementGroups property: List of management groups.
-     *
+     * 
      * @return the managementGroups value.
      */
     public List<String> managementGroups() {
@@ -44,7 +48,7 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
 
     /**
      * Set the managementGroups property: List of management groups.
-     *
+     * 
      * @param managementGroups the managementGroups value to set.
      * @return the NetworkManagerPropertiesNetworkManagerScopes object itself.
      */
@@ -55,7 +59,7 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
 
     /**
      * Get the subscriptions property: List of subscriptions.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<String> subscriptions() {
@@ -64,7 +68,7 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
 
     /**
      * Set the subscriptions property: List of subscriptions.
-     *
+     * 
      * @param subscriptions the subscriptions value to set.
      * @return the NetworkManagerPropertiesNetworkManagerScopes object itself.
      */
@@ -75,7 +79,7 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
 
     /**
      * Get the crossTenantScopes property: List of cross tenant scopes.
-     *
+     * 
      * @return the crossTenantScopes value.
      */
     public List<CrossTenantScopes> crossTenantScopes() {
@@ -84,7 +88,7 @@ public final class NetworkManagerPropertiesNetworkManagerScopes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

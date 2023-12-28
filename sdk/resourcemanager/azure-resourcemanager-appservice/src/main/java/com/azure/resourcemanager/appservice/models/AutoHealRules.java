@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rules that can be defined for auto-heal. */
+/**
+ * Rules that can be defined for auto-heal.
+ */
 @Fluent
 public final class AutoHealRules {
     /*
@@ -22,13 +24,15 @@ public final class AutoHealRules {
     @JsonProperty(value = "actions")
     private AutoHealActions actions;
 
-    /** Creates an instance of AutoHealRules class. */
+    /**
+     * Creates an instance of AutoHealRules class.
+     */
     public AutoHealRules() {
     }
 
     /**
      * Get the triggers property: Conditions that describe when to execute the auto-heal actions.
-     *
+     * 
      * @return the triggers value.
      */
     public AutoHealTriggers triggers() {
@@ -37,7 +41,7 @@ public final class AutoHealRules {
 
     /**
      * Set the triggers property: Conditions that describe when to execute the auto-heal actions.
-     *
+     * 
      * @param triggers the triggers value to set.
      * @return the AutoHealRules object itself.
      */
@@ -48,7 +52,7 @@ public final class AutoHealRules {
 
     /**
      * Get the actions property: Actions to be executed when a rule is triggered.
-     *
+     * 
      * @return the actions value.
      */
     public AutoHealActions actions() {
@@ -57,7 +61,7 @@ public final class AutoHealRules {
 
     /**
      * Set the actions property: Actions to be executed when a rule is triggered.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AutoHealRules object itself.
      */
@@ -68,7 +72,7 @@ public final class AutoHealRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

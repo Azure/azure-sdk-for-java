@@ -18,6 +18,10 @@ public final class SupportedOptimizationTypesListResultInner {
     @JsonProperty(value = "supportedOptimizationTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<OptimizationType> supportedOptimizationTypes;
 
+    /** Creates an instance of SupportedOptimizationTypesListResultInner class. */
+    public SupportedOptimizationTypesListResultInner() {
+    }
+
     /**
      * Get the supportedOptimizationTypes property: Supported optimization types for a profile.
      *

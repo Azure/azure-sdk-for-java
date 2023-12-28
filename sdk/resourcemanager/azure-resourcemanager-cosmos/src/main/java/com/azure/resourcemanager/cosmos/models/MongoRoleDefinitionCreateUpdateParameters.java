@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoRoleDefinitionResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters to create and update an Azure Cosmos DB Mongo Role Definition. */
+/**
+ * Parameters to create and update an Azure Cosmos DB Mongo Role Definition.
+ */
 @Fluent
 public final class MongoRoleDefinitionCreateUpdateParameters {
     /*
@@ -18,13 +20,15 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private MongoRoleDefinitionResource innerProperties;
 
-    /** Creates an instance of MongoRoleDefinitionCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoRoleDefinitionCreateUpdateParameters class.
+     */
     public MongoRoleDefinitionCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB Mongo Role Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoRoleDefinitionResource innerProperties() {
@@ -32,8 +36,9 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
+     * 
      * @return the roleName value.
      */
     public String roleName() {
@@ -41,8 +46,9 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
-     *
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
+     * 
      * @param roleName the roleName value to set.
      * @return the MongoRoleDefinitionCreateUpdateParameters object itself.
      */
@@ -56,7 +62,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Get the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @return the type value.
      */
     public MongoRoleDefinitionType type() {
@@ -65,7 +71,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Set the type property: Indicates whether the Role Definition was built-in or user created.
-     *
+     * 
      * @param type the type value to set.
      * @return the MongoRoleDefinitionCreateUpdateParameters object itself.
      */
@@ -79,7 +85,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Get the databaseName property: The database name for which access is being granted for this Role Definition.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -88,7 +94,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Set the databaseName property: The database name for which access is being granted for this Role Definition.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MongoRoleDefinitionCreateUpdateParameters object itself.
      */
@@ -101,10 +107,10 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Get the privileges property: A set of privileges contained by the Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
-     * Database are not enforceable as privilege.
-     *
+     * Get the privileges property: A set of privileges contained by the Role Definition. This will allow application
+     * of this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher
+     * than Database are not enforceable as privilege.
+     * 
      * @return the privileges value.
      */
     public List<Privilege> privileges() {
@@ -112,10 +118,10 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Set the privileges property: A set of privileges contained by the Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
-     * Database are not enforceable as privilege.
-     *
+     * Set the privileges property: A set of privileges contained by the Role Definition. This will allow application
+     * of this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher
+     * than Database are not enforceable as privilege.
+     * 
      * @param privileges the privileges value to set.
      * @return the MongoRoleDefinitionCreateUpdateParameters object itself.
      */
@@ -129,7 +135,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Get the roles property: The set of roles inherited by this Role Definition.
-     *
+     * 
      * @return the roles value.
      */
     public List<Role> roles() {
@@ -138,7 +144,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Set the roles property: The set of roles inherited by this Role Definition.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MongoRoleDefinitionCreateUpdateParameters object itself.
      */
@@ -152,7 +158,7 @@ public final class MongoRoleDefinitionCreateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

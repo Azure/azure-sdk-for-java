@@ -44,6 +44,10 @@ public class MyWorkbookResource extends Resource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> etag;
 
+    /** Creates an instance of MyWorkbookResource class. */
+    public MyWorkbookResource() {
+    }
+
     /**
      * Get the identity property: Identity used for BYOS.
      *

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trusted Root certificates properties of an application gateway. */
+/**
+ * Trusted Root certificates properties of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
     /*
@@ -29,13 +31,15 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayTrustedRootCertificatePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayTrustedRootCertificatePropertiesFormat class.
+     */
     public ApplicationGatewayTrustedRootCertificatePropertiesFormat() {
     }
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -44,7 +48,7 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewayTrustedRootCertificatePropertiesFormat object itself.
      */
@@ -56,7 +60,7 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
     /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -66,7 +70,7 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
     /**
      * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the ApplicationGatewayTrustedRootCertificatePropertiesFormat object itself.
      */
@@ -77,7 +81,7 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the trusted root certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -86,7 +90,7 @@ public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

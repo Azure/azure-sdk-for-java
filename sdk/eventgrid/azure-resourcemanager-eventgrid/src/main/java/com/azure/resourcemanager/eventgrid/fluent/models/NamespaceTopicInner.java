@@ -12,7 +12,9 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceTopicProvisioningStat
 import com.azure.resourcemanager.eventgrid.models.PublisherType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Namespace topic details. */
+/**
+ * Namespace topic details.
+ */
 @Fluent
 public final class NamespaceTopicInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class NamespaceTopicInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NamespaceTopicInner class. */
+    /**
+     * Creates an instance of NamespaceTopicInner class.
+     */
     public NamespaceTopicInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the namespace topic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamespaceTopicProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to namespace topic resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the namespace topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NamespaceTopicProvisioningState provisioningState() {
@@ -60,7 +64,7 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Get the publisherType property: Publisher type of the namespace topic.
-     *
+     * 
      * @return the publisherType value.
      */
     public PublisherType publisherType() {
@@ -69,7 +73,7 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Set the publisherType property: Publisher type of the namespace topic.
-     *
+     * 
      * @param publisherType the publisherType value to set.
      * @return the NamespaceTopicInner object itself.
      */
@@ -84,7 +88,7 @@ public final class NamespaceTopicInner extends ProxyResource {
     /**
      * Get the inputSchema property: This determines the format that is expected for incoming events published to the
      * topic.
-     *
+     * 
      * @return the inputSchema value.
      */
     public EventInputSchema inputSchema() {
@@ -94,7 +98,7 @@ public final class NamespaceTopicInner extends ProxyResource {
     /**
      * Set the inputSchema property: This determines the format that is expected for incoming events published to the
      * topic.
-     *
+     * 
      * @param inputSchema the inputSchema value to set.
      * @return the NamespaceTopicInner object itself.
      */
@@ -108,9 +112,9 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Get the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @return the eventRetentionInDays value.
      */
     public Integer eventRetentionInDays() {
@@ -119,9 +123,9 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Set the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @param eventRetentionInDays the eventRetentionInDays value to set.
      * @return the NamespaceTopicInner object itself.
      */
@@ -135,7 +139,7 @@ public final class NamespaceTopicInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,6 +30,10 @@ public final class AccessInformationCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AccessInformationCollection class. */
+    public AccessInformationCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

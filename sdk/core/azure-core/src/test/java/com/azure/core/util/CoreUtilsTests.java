@@ -6,8 +6,12 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,7 +29,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -36,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CoreUtilsTests {
     private static final byte[] BYTES = "Hello world!".getBytes(StandardCharsets.UTF_8);
@@ -48,6 +60,18 @@ public class CoreUtilsTests {
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
+
+    private static ExecutorService executorService;
+
+    @BeforeAll
+    public static void setupClass() {
+        executorService = Executors.newCachedThreadPool();
+    }
+
+    @AfterAll
+    public static void teardownClass() {
+        executorService.shutdownNow();
+    }
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -484,7 +508,7 @@ public class CoreUtilsTests {
         bytes[6] &= 0x0f;  /* clear version        */
         bytes[6] |= 0x40;  /* set to version 4     */
         bytes[8] &= 0x3f;  /* clear variant        */
-        bytes[8] |= 0x80;  /* set to IETF variant  */
+        bytes[8] |= (byte) 0x80;  /* set to IETF variant  */
         long msbForJava = 0;
         long lsbForJava = 0;
         for (int i = 0; i < 8; i++) {
@@ -495,5 +519,152 @@ public class CoreUtilsTests {
         }
 
         assertEquals(new UUID(msbForJava, lsbForJava), CoreUtils.randomUuid(msb, lsb));
+    }
+
+    @Test
+    public void futureCompletesBeforeTimeout() {
+        try {
+            AtomicBoolean completed = new AtomicBoolean(false);
+            Future<?> future = executorService.submit(() -> {
+                Thread.sleep(10);
+                completed.set(true);
+                return null;
+            });
+
+            future.get(1000, TimeUnit.MILLISECONDS);
+
+            assertTrue(completed.get());
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void futureTimesOutAndIsCancelled() {
+        try {
+            AtomicBoolean completed = new AtomicBoolean(false);
+            Future<?> future = executorService.submit(() -> {
+                Thread.sleep(1000);
+                completed.set(true);
+                return null;
+            });
+
+            try {
+                CoreUtils.getResultWithTimeout(future, Duration.ofMillis(10));
+                fail("Expected future to timout and be cancelled.");
+            } catch (TimeoutException e) {
+                // Expected.
+            }
+
+            // Give time for the future to complete if cancellation didn't work.
+            Thread.sleep(1000);
+
+            assertFalse(completed.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void durationToStringWithDaysWithNull() {
+        assertNull(CoreUtils.durationToStringWithDays(null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("durationToStringWithDaysTestSupplier")
+    public void durationToStringWithDaysTest(Duration duration, String expected) {
+        assertEquals(expected, CoreUtils.durationToStringWithDays(duration));
+    }
+
+    private static Stream<Arguments> durationToStringWithDaysTestSupplier() {
+        return Stream.of(
+            Arguments.of(Duration.ofMillis(0), "PT0S"),
+            Arguments.of(Duration.ofMillis(1), "PT0.001S"),
+            Arguments.of(Duration.ofMillis(9), "PT0.009S"),
+            Arguments.of(Duration.ofMillis(10), "PT0.01S"),
+            Arguments.of(Duration.ofMillis(11), "PT0.011S"),
+            Arguments.of(Duration.ofMillis(99), "PT0.099S"),
+            Arguments.of(Duration.ofMillis(100), "PT0.1S"),
+            Arguments.of(Duration.ofMillis(101), "PT0.101S"),
+            Arguments.of(Duration.ofMillis(999), "PT0.999S"),
+            Arguments.of(Duration.ofMillis(1000), "PT1S"),
+            Arguments.of(Duration.ofSeconds(1), "PT1S"),
+            Arguments.of(Duration.ofSeconds(9), "PT9S"),
+            Arguments.of(Duration.ofSeconds(10), "PT10S"),
+            Arguments.of(Duration.ofSeconds(11), "PT11S"),
+            Arguments.of(Duration.ofSeconds(59), "PT59S"),
+            Arguments.of(Duration.ofSeconds(60), "PT1M"),
+            Arguments.of(Duration.ofSeconds(61), "PT1M1S"),
+            Arguments.of(Duration.ofMinutes(1), "PT1M"),
+            Arguments.of(Duration.ofMinutes(9), "PT9M"),
+            Arguments.of(Duration.ofMinutes(10), "PT10M"),
+            Arguments.of(Duration.ofMinutes(11), "PT11M"),
+            Arguments.of(Duration.ofMinutes(59), "PT59M"),
+            Arguments.of(Duration.ofMinutes(60), "PT1H"),
+            Arguments.of(Duration.ofMinutes(61), "PT1H1M"),
+            Arguments.of(Duration.ofHours(1), "PT1H"),
+            Arguments.of(Duration.ofHours(9), "PT9H"),
+            Arguments.of(Duration.ofHours(10), "PT10H"),
+            Arguments.of(Duration.ofHours(11), "PT11H"),
+            Arguments.of(Duration.ofHours(23), "PT23H"),
+            Arguments.of(Duration.ofHours(24), "P1D"),
+            Arguments.of(Duration.ofHours(25), "P1DT1H"),
+            Arguments.of(Duration.ofDays(1), "P1D"),
+            Arguments.of(Duration.ofDays(9), "P9D"),
+            Arguments.of(Duration.ofDays(10), "P10D"),
+            Arguments.of(Duration.ofDays(11), "P11D"),
+            Arguments.of(Duration.ofDays(99), "P99D"),
+            Arguments.of(Duration.ofDays(100), "P100D"),
+            Arguments.of(Duration.ofDays(101), "P101D")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("negativeDurationToStringWithDaysTestSupplier")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void negativeDurationToStringWithDaysTest(Duration duration, String expected) {
+        assertEquals(expected, CoreUtils.durationToStringWithDays(duration));
+    }
+
+    private static Stream<Arguments> negativeDurationToStringWithDaysTestSupplier() {
+        return Stream.of(
+            Arguments.of(Duration.ofMillis(-1), "-PT0.001S"),
+            Arguments.of(Duration.ofMillis(-9), "-PT0.009S"),
+            Arguments.of(Duration.ofMillis(-10), "-PT0.01S"),
+            Arguments.of(Duration.ofMillis(-11), "-PT0.011S"),
+            Arguments.of(Duration.ofMillis(-99), "-PT0.099S"),
+            Arguments.of(Duration.ofMillis(-100), "-PT0.1S"),
+            Arguments.of(Duration.ofMillis(-101), "-PT0.101S"),
+            Arguments.of(Duration.ofMillis(-999), "-PT0.999S"),
+            Arguments.of(Duration.ofMillis(-1000), "-PT1S"),
+            Arguments.of(Duration.ofSeconds(-1), "-PT1S"),
+            Arguments.of(Duration.ofSeconds(-9), "-PT9S"),
+            Arguments.of(Duration.ofSeconds(-10), "-PT10S"),
+            Arguments.of(Duration.ofSeconds(-11), "-PT11S"),
+            Arguments.of(Duration.ofSeconds(-59), "-PT59S"),
+            Arguments.of(Duration.ofSeconds(-60), "-PT1M"),
+            Arguments.of(Duration.ofSeconds(-61), "-PT1M1S"),
+            Arguments.of(Duration.ofMinutes(-1), "-PT1M"),
+            Arguments.of(Duration.ofMinutes(-9), "-PT9M"),
+            Arguments.of(Duration.ofMinutes(-10), "-PT10M"),
+            Arguments.of(Duration.ofMinutes(-11), "-PT11M"),
+            Arguments.of(Duration.ofMinutes(-59), "-PT59M"),
+            Arguments.of(Duration.ofMinutes(-60), "-PT1H"),
+            Arguments.of(Duration.ofMinutes(-61), "-PT1H1M"),
+            Arguments.of(Duration.ofHours(-1), "-PT1H"),
+            Arguments.of(Duration.ofHours(-9), "-PT9H"),
+            Arguments.of(Duration.ofHours(-10), "-PT10H"),
+            Arguments.of(Duration.ofHours(-11), "-PT11H"),
+            Arguments.of(Duration.ofHours(-23), "-PT23H"),
+            Arguments.of(Duration.ofHours(-24), "-P1D"),
+            Arguments.of(Duration.ofHours(-25), "-P1DT1H"),
+            Arguments.of(Duration.ofDays(-1), "-P1D"),
+            Arguments.of(Duration.ofDays(-9), "-P9D"),
+            Arguments.of(Duration.ofDays(-10), "-P10D"),
+            Arguments.of(Duration.ofDays(-11), "-P11D"),
+            Arguments.of(Duration.ofDays(-99), "-P99D"),
+            Arguments.of(Duration.ofDays(-100), "-P100D"),
+            Arguments.of(Duration.ofDays(-101), "-P101D")
+        );
     }
 }

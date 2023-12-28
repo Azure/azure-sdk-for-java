@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Topology of the specified resource group. */
+/**
+ * Topology of the specified resource group.
+ */
 @Fluent
 public final class TopologyInner {
     /*
@@ -37,13 +39,15 @@ public final class TopologyInner {
     @JsonProperty(value = "resources")
     private List<TopologyResource> resources;
 
-    /** Creates an instance of TopologyInner class. */
+    /**
+     * Creates an instance of TopologyInner class.
+     */
     public TopologyInner() {
     }
 
     /**
      * Get the id property: GUID representing the operation id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +56,7 @@ public final class TopologyInner {
 
     /**
      * Get the createdDateTime property: The datetime when the topology was initially created for the resource group.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -61,7 +65,7 @@ public final class TopologyInner {
 
     /**
      * Get the lastModified property: The datetime when the topology was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -70,7 +74,7 @@ public final class TopologyInner {
 
     /**
      * Get the resources property: A list of topology resources.
-     *
+     * 
      * @return the resources value.
      */
     public List<TopologyResource> resources() {
@@ -79,7 +83,7 @@ public final class TopologyInner {
 
     /**
      * Set the resources property: A list of topology resources.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the TopologyInner object itself.
      */
@@ -90,7 +94,7 @@ public final class TopologyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

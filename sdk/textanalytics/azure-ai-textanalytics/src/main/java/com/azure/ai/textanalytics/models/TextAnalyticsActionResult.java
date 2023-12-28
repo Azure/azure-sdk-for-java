@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.Locale;
 
 /**
- * The {@link TextAnalyticsActionResult} model.
+ * The {@code TextAnalyticsActionResult} model.
  */
 @Immutable
 public class TextAnalyticsActionResult {
@@ -45,6 +45,12 @@ public class TextAnalyticsActionResult {
                     actionResult.setIsError(isError);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code TextAnalyticsActionResult} model.
+     */
+    public TextAnalyticsActionResult() {
     }
 
     /**

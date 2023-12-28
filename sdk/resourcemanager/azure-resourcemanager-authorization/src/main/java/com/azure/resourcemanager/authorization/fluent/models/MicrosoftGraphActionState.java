@@ -32,6 +32,15 @@ public final class MicrosoftGraphActionState extends ExpandableStringEnum<Micros
     public static final MicrosoftGraphActionState NOT_SUPPORTED = fromString("notSupported");
 
     /**
+     * Creates a new instance of MicrosoftGraphActionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphActionState() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphActionState from its string representation.
      *
      * @param name a name to look for.

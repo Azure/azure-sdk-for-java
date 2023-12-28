@@ -17,6 +17,15 @@ public final class PolicyExportFormat extends ExpandableStringEnum<PolicyExportF
     public static final PolicyExportFormat RAWXML = fromString("rawxml");
 
     /**
+     * Creates a new instance of PolicyExportFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyExportFormat() {
+    }
+
+    /**
      * Creates or finds a PolicyExportFormat from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class PolicyExportFormat extends ExpandableStringEnum<PolicyExportF
         return fromString(name, PolicyExportFormat.class);
     }
 
-    /** @return known PolicyExportFormat values. */
+    /**
+     * Gets known PolicyExportFormat values.
+     *
+     * @return known PolicyExportFormat values.
+     */
     public static Collection<PolicyExportFormat> values() {
         return values(PolicyExportFormat.class);
     }

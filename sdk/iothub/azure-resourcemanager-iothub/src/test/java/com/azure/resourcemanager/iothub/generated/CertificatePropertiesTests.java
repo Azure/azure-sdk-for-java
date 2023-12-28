@@ -14,21 +14,19 @@ public final class CertificatePropertiesTests {
         CertificateProperties model =
             BinaryData
                 .fromString(
-                    "{\"subject\":\"dckcbc\",\"expiry\":\"Thu, 29 Jul 2021 04:12:00"
-                        + " GMT\",\"thumbprint\":\"jxgciqibrh\",\"isVerified\":true,\"created\":\"Tue, 01 Jun 2021"
-                        + " 12:21:20 GMT\",\"updated\":\"Thu, 04 Feb 2021 15:03:28"
-                        + " GMT\",\"certificate\":\"zoymibmrqyibahw\"}")
+                    "{\"subject\":\"otllxdyhgsyo\",\"expiry\":\"Fri, 30 Apr 2021 11:16:28"
+                        + " GMT\",\"thumbprint\":\"ltdtbnnhad\",\"isVerified\":true,\"created\":\"Sun, 16 May 2021"
+                        + " 20:34:23 GMT\",\"updated\":\"Wed, 23 Dec 2020 13:08:39 GMT\",\"certificate\":\"khnvpam\"}")
                 .toObject(CertificateProperties.class);
         Assertions.assertEquals(true, model.isVerified());
-        Assertions.assertEquals("zoymibmrqyibahw", model.certificate());
+        Assertions.assertEquals("khnvpam", model.certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateProperties model =
-            new CertificateProperties().withIsVerified(true).withCertificate("zoymibmrqyibahw");
+        CertificateProperties model = new CertificateProperties().withIsVerified(true).withCertificate("khnvpam");
         model = BinaryData.fromObject(model).toObject(CertificateProperties.class);
         Assertions.assertEquals(true, model.isVerified());
-        Assertions.assertEquals("zoymibmrqyibahw", model.certificate());
+        Assertions.assertEquals("khnvpam", model.certificate());
     }
 }

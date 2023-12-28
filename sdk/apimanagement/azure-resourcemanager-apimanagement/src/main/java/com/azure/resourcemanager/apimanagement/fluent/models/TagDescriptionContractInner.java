@@ -17,6 +17,10 @@ public final class TagDescriptionContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TagDescriptionContractProperties innerProperties;
 
+    /** Creates an instance of TagDescriptionContractInner class. */
+    public TagDescriptionContractInner() {
+    }
+
     /**
      * Get the innerProperties property: TagDescription entity contract properties.
      *

@@ -18,22 +18,23 @@ import java.util.List;
 @Fluent
 public final class IdentityProviderContractProperties extends IdentityProviderBaseParameters {
     /*
-     * Client Id of the Application in the external Identity Provider. It is
-     * App ID for Facebook login, Client ID for Google login, App ID for
-     * Microsoft.
+     * Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
+     * Google login, App ID for Microsoft.
      */
     @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
-     * Client secret of the Application in external Identity Provider, used to
-     * authenticate login request. For example, it is App Secret for Facebook
-     * login, API Key for Google login, Public Key for Microsoft. This property
-     * will not be filled on 'GET' operations! Use '/listSecrets' POST request
-     * to get the value.
+     * Client secret of the Application in external Identity Provider, used to authenticate login request. For example,
+     * it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft. This property will not
+     * be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
      */
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
+
+    /** Creates an instance of IdentityProviderContractProperties class. */
+    public IdentityProviderContractProperties() {
+    }
 
     /**
      * Get the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
@@ -136,6 +137,13 @@ public final class IdentityProviderContractProperties extends IdentityProviderBa
     @Override
     public IdentityProviderContractProperties withPasswordResetPolicyName(String passwordResetPolicyName) {
         super.withPasswordResetPolicyName(passwordResetPolicyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IdentityProviderContractProperties withClientLibrary(String clientLibrary) {
+        super.withClientLibrary(clientLibrary);
         return this;
     }
 

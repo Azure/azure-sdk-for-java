@@ -20,9 +20,9 @@ public final class ProjectEnvironmentTypeUpdatePropertiesTests {
         ProjectEnvironmentTypeUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"deploymentTargetId\":\"smtxpsieb\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"tkncwsc\":{\"roleName\":\"apskrdqm\",\"description\":\"jdhtldwkyzxu\"}}},\"userRoleAssignments\":{\"otogtwrupqs\":{\"roles\":{}},\"micykvceoveilo\":{\"roles\":{}},\"tyfjfcnjbkcnxdhb\":{\"roles\":{}},\"phywpnvj\":{\"roles\":{}}}}")
+                    "{\"deploymentTargetId\":\"ts\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"yriwwroyqb\":{\"roleName\":\"xqpsrknftguv\",\"description\":\"uhprwmdyvxqt\"},\"jyzhpvgq\":{\"roleName\":\"rmcqiby\",\"description\":\"ojvknmefqsgzvaha\"}}},\"userRoleAssignments\":{\"wyjsflhhcaalnjix\":{\"roles\":{\"hzovawjvzunlut\":{\"roleName\":\"djzlmwlx\",\"description\":\"ug\"},\"jzuaejxdultskzbb\":{\"roleName\":\"n\",\"description\":\"nxipeil\"},\"yofd\":{\"roleName\":\"zumveekgpwo\",\"description\":\"hkfpbs\"},\"mvb\":{\"roleName\":\"uusdttouwa\",\"description\":\"ekqvkeln\"}}}}}")
                 .toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("smtxpsieb", model.deploymentTargetId());
+        Assertions.assertEquals("ts", model.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.DISABLED, model.status());
     }
 
@@ -30,26 +30,31 @@ public final class ProjectEnvironmentTypeUpdatePropertiesTests {
     public void testSerialize() throws Exception {
         ProjectEnvironmentTypeUpdateProperties model =
             new ProjectEnvironmentTypeUpdateProperties()
-                .withDeploymentTargetId("smtxpsieb")
+                .withDeploymentTargetId("ts")
                 .withStatus(EnvironmentTypeEnableStatus.DISABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                        .withRoles(mapOf("tkncwsc", new EnvironmentRole())))
+                        .withRoles(mapOf("yriwwroyqb", new EnvironmentRole(), "jyzhpvgq", new EnvironmentRole())))
                 .withUserRoleAssignments(
                     mapOf(
-                        "otogtwrupqs",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "micykvceoveilo",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "tyfjfcnjbkcnxdhb",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "phywpnvj",
-                        new UserRoleAssignmentValue().withRoles(mapOf())));
+                        "wyjsflhhcaalnjix",
+                        new UserRoleAssignmentValue()
+                            .withRoles(
+                                mapOf(
+                                    "hzovawjvzunlut",
+                                    new EnvironmentRole(),
+                                    "jzuaejxdultskzbb",
+                                    new EnvironmentRole(),
+                                    "yofd",
+                                    new EnvironmentRole(),
+                                    "mvb",
+                                    new EnvironmentRole()))));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("smtxpsieb", model.deploymentTargetId());
+        Assertions.assertEquals("ts", model.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.DISABLED, model.status());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

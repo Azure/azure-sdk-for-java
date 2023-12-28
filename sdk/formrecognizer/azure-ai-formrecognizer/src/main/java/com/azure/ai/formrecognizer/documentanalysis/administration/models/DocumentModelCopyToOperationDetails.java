@@ -9,6 +9,14 @@ import com.azure.core.annotation.Immutable;
 /** Copy document model operation details. */
 @Immutable
 public final class DocumentModelCopyToOperationDetails extends OperationDetails {
+
+    /**
+     * Creates a DocumentModelCopyToOperationDetails object.
+     */
+    public DocumentModelCopyToOperationDetails() {
+        super();
+    }
+
     /*
      * Operation result upon success.
      */

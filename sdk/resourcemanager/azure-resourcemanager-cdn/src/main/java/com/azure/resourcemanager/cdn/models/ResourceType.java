@@ -18,6 +18,15 @@ public final class ResourceType extends ExpandableStringEnum<ResourceType> {
         fromString("Microsoft.Cdn/Profiles/AfdEndpoints");
 
     /**
+     * Creates a new instance of ResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceType() {
+    }
+
+    /**
      * Creates or finds a ResourceType from its string representation.
      *
      * @param name a name to look for.

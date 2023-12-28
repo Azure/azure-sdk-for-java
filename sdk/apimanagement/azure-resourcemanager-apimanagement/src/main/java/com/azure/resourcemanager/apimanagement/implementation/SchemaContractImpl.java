@@ -41,6 +41,10 @@ public final class SchemaContractImpl implements SchemaContract, SchemaContract.
         return this.innerModel().components();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SchemaContractInner innerModel() {
         return this.innerObject;
     }

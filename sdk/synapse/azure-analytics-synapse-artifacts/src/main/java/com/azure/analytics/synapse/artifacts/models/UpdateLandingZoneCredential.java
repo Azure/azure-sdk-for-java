@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpdateLandingZoneCredential model. */
+/**
+ * The UpdateLandingZoneCredential model.
+ */
 @Fluent
 public final class UpdateLandingZoneCredential {
     /*
@@ -16,12 +18,15 @@ public final class UpdateLandingZoneCredential {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
-    /** Creates an instance of UpdateLandingZoneCredential class. */
-    public UpdateLandingZoneCredential() {}
+    /**
+     * Creates an instance of UpdateLandingZoneCredential class.
+     */
+    public UpdateLandingZoneCredential() {
+    }
 
     /**
      * Get the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecureString getSasToken() {
@@ -30,7 +35,7 @@ public final class UpdateLandingZoneCredential {
 
     /**
      * Set the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the UpdateLandingZoneCredential object itself.
      */

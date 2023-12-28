@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Database for MariaDB linked service properties. */
+/**
+ * Azure Database for MariaDB linked service properties.
+ */
 @Fluent
 public final class AzureMariaDBLinkedServiceTypeProperties {
     /*
@@ -25,19 +27,21 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AzureMariaDBLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureMariaDBLinkedServiceTypeProperties class.
+     */
     public AzureMariaDBLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -47,7 +51,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the pwd value.
      */
     public AzureKeyVaultSecretReference pwd() {
@@ -67,7 +71,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /**
      * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param pwd the pwd value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
@@ -77,30 +81,30 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
-    public AzureMariaDBLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureMariaDBLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

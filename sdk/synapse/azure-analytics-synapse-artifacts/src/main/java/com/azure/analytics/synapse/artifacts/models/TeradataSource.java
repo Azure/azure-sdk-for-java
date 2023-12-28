@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Teradata source. */
+/**
+ * A copy activity Teradata source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TeradataSource")
 @Fluent
@@ -32,12 +34,15 @@ public final class TeradataSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private TeradataPartitionSettings partitionSettings;
 
-    /** Creates an instance of TeradataSource class. */
-    public TeradataSource() {}
+    /**
+     * Creates an instance of TeradataSource class.
+     */
+    public TeradataSource() {
+    }
 
     /**
      * Get the query property: Teradata query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -46,7 +51,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the query property: Teradata query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the TeradataSource object itself.
      */
@@ -57,7 +62,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Get the partitionOption property: The partition mechanism that will be used for teradata read in parallel.
-     *
+     * 
      * @return the partitionOption value.
      */
     public TeradataPartitionOption getPartitionOption() {
@@ -66,7 +71,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the partitionOption property: The partition mechanism that will be used for teradata read in parallel.
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the TeradataSource object itself.
      */
@@ -77,7 +82,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for teradata source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public TeradataPartitionSettings getPartitionSettings() {
@@ -86,7 +91,7 @@ public final class TeradataSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for teradata source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the TeradataSource object itself.
      */
@@ -95,35 +100,45 @@ public final class TeradataSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TeradataSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

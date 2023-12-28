@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 
 /** Samples for TenantAccess RegeneratePrimaryKey. */
 public final class TenantAccessRegeneratePrimaryKeySamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementTenantAccessRegenerateKey.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementTenantAccessRegenerateKey.json
      */
     /**
      * Sample code: ApiManagementTenantAccessRegenerateKey.
@@ -21,6 +20,7 @@ public final class TenantAccessRegeneratePrimaryKeySamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .tenantAccess()
-            .regeneratePrimaryKeyWithResponse("rg1", "apimService1", AccessIdName.ACCESS, Context.NONE);
+            .regeneratePrimaryKeyWithResponse(
+                "rg1", "apimService1", AccessIdName.ACCESS, com.azure.core.util.Context.NONE);
     }
 }

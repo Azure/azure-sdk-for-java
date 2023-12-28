@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayCertificateAuthority GetEntityTag. */
 public final class GatewayCertificateAuthorityGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadGatewayCertificateAuthority.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGatewayCertificateAuthority.json
      */
     /**
      * Sample code: ApiManagementHeadGatewayCertificateAuthority.
@@ -20,6 +18,6 @@ public final class GatewayCertificateAuthorityGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .gatewayCertificateAuthorities()
-            .getEntityTagWithResponse("rg1", "apimService1", "gw1", "cert1", Context.NONE);
+            .getEntityTagWithResponse("rg1", "apimService1", "gw1", "cert1", com.azure.core.util.Context.NONE);
     }
 }

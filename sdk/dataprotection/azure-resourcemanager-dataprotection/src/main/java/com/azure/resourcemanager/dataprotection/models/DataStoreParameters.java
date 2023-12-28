@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Parameters for DataStore. */
+/**
+ * Parameters for DataStore.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = DataStoreParameters.class)
 @JsonTypeName("DataStoreParameters")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureOperationalStoreParameters", value = AzureOperationalStoreParameters.class)
-})
+    @JsonSubTypes.Type(name = "AzureOperationalStoreParameters", value = AzureOperationalStoreParameters.class) })
 @Fluent
 public class DataStoreParameters {
     /*
@@ -29,13 +30,15 @@ public class DataStoreParameters {
     @JsonProperty(value = "dataStoreType", required = true)
     private DataStoreTypes dataStoreType;
 
-    /** Creates an instance of DataStoreParameters class. */
+    /**
+     * Creates an instance of DataStoreParameters class.
+     */
     public DataStoreParameters() {
     }
 
     /**
      * Get the dataStoreType property: type of datastore; Operational/Vault/Archive.
-     *
+     * 
      * @return the dataStoreType value.
      */
     public DataStoreTypes dataStoreType() {
@@ -44,7 +47,7 @@ public class DataStoreParameters {
 
     /**
      * Set the dataStoreType property: type of datastore; Operational/Vault/Archive.
-     *
+     * 
      * @param dataStoreType the dataStoreType value to set.
      * @return the DataStoreParameters object itself.
      */
@@ -55,15 +58,13 @@ public class DataStoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataStoreType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataStoreType in model DataStoreParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataStoreType in model DataStoreParameters"));
         }
     }
 

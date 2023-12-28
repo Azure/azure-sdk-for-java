@@ -8,27 +8,23 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApplicationSecurityGroups UpdateTags. */
+/**
+ * Samples for ApplicationSecurityGroups UpdateTags.
+ */
 public final class ApplicationSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ApplicationSecurityGroupUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * ApplicationSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update application security group tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateApplicationSecurityGroupTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
-            .manager()
-            .serviceClient()
-            .getApplicationSecurityGroups()
-            .updateTagsWithResponse(
-                "rg1",
-                "test-asg",
-                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                com.azure.core.util.Context.NONE);
+        azure.networks().manager().serviceClient().getApplicationSecurityGroups().updateTagsWithResponse("rg1",
+            "test-asg", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+            com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

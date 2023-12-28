@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.37.0</version>
+    <version>3.41.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -622,6 +622,41 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
     return content;
 }
 ```
+### Using Azure Cosmos DB Java SDK through Spring Data Cosmos
+- Azure-spring-data-cosmos supports using Azure Cosmos DB Java SDK through Spring Data Cosmos.
+- Users can get `CosmosClient` or `CosmosAsyncClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos DB Java SDK.
+- Refer to [Azure Cosmos DB Java SDK samples][azure_cosmos_db_java_sdk_samples] for more information on how to execute operations.
+- Example:
+```java readme-sample-CosmosClientBeanCodeSnippet
+@SpringBootApplication
+public class CosmosClientBeanCodeSnippet {
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    public void cosmosClientBean() {
+        CosmosClient cosmosClient = applicationContext.getBean(CosmosClient.class);
+        CosmosContainer myContainer = cosmosClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions());
+        //  Reading a stored procedure
+        myContainer.getScripts().getStoredProcedure("storedProcedureId").read();
+    }
+
+    public void cosmosAsyncClientBean() {
+        CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
+        CosmosAsyncContainer myAsyncContainer = cosmosAsyncClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myAsyncContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions()).subscribe();
+        //  Reading a stored procedure
+        myAsyncContainer.getScripts().getStoredProcedure("storedProcedureId").read().subscribe();
+    }
+}
+```
 
 ### Spring Boot Starter Data Rest
 - Azure-spring-data-cosmos supports [spring-boot-starter-data-rest](https://spring.io/projects/spring-data-rest).
@@ -1095,5 +1130,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 [spring_version_mapping]: https://aka.ms/spring/versions
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
+[azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

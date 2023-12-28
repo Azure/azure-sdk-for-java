@@ -10,7 +10,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrate
 /** Samples for ReplicationMigrationItems TestMigrateCleanup. */
 public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_TestMigrateCleanup.json
      */
     /**
      * Sample code: Test migrate cleanup.

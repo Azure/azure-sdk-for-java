@@ -22,6 +22,10 @@ public final class EndpointDetail {
     @JsonProperty(value = "region")
     private String region;
 
+    /** Creates an instance of EndpointDetail class. */
+    public EndpointDetail() {
+    }
+
     /**
      * Get the port property: The port an endpoint is connected to.
      *

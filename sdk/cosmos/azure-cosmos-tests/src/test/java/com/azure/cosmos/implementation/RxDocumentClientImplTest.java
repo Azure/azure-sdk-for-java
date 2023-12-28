@@ -33,6 +33,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -54,6 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -202,7 +205,7 @@ public class RxDocumentClientImplTest {
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
-        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy()).thenReturn(dummyDocumentClientRetryPolicy());
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
 
 
         // initialize object to be tested
@@ -226,61 +229,68 @@ public class RxDocumentClientImplTest {
             this.sessionRetryOptionsMock,
             this.containerProactiveInitConfigMock);
 
-        ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
-        ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
-        ReflectionUtils.setResetSessionTokenRetryPolicy(rxDocumentClient, this.resetSessionTokenRetryPolicyMock);
+        try {
+            ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
+            ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
+            ReflectionUtils.setResetSessionTokenRetryPolicy(rxDocumentClient, this.resetSessionTokenRetryPolicyMock);
 
-        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+            ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
 
-        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("1"), "1"));
-        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("2"), "2"));
-        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("3"), "3"));
+            cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("1"), "1"));
+            cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("2"), "2"));
+            cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("3"), "3"));
 
-        String collectionLink = "";
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        Class<InternalObjectNode> klass = InternalObjectNode.class;
+            String collectionLink = "";
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            Class<InternalObjectNode> klass = InternalObjectNode.class;
+
+        QueryFeedOperationState stateMock = Mockito.mock(QueryFeedOperationState.class);
+        httpClientMock
+            .when(() -> stateMock.getQueryOptions())
+            .thenReturn(new CosmosQueryRequestOptions());
 
         StepVerifier.create(
                 rxDocumentClient.readMany(
                     cosmosItemIdentities,
                     collectionLink,
-                    options,
+                    stateMock,
                     klass
                 )
             )
             .consumeNextWith(feedResponse -> {
 
-                int expectedResultSize = 3;
-                int expectedClientSideRequestStatisticsSize = 1;
-                double expectedRequestCharge = 3.7;
+                            int expectedResultSize = 3;
+                            int expectedClientSideRequestStatisticsSize = 1;
+                            double expectedRequestCharge = 3.7;
 
-                assertThat(feedResponse.getResults()).isNotNull();
-                assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
-                assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
+                            assertThat(feedResponse.getResults()).isNotNull();
+                            assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
+                            assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
 
-                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
-                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
-                assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
+                            assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+                            assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
+                            assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
 
-                List<InternalObjectNode> readManyResults = feedResponse.getResults();
-                Set<String> idSet = new HashSet<>(Arrays.asList("1", "2", "3"));
+                            List<InternalObjectNode> readManyResults = feedResponse.getResults();
+                            Set<String> idSet = new HashSet<>(Arrays.asList("1", "2", "3"));
 
-                for (InternalObjectNode result : readManyResults) {
-                    assertThat(idSet.contains(result.getId())).isTrue();
-                }
+                            for (InternalObjectNode result : readManyResults) {
+                                assertThat(idSet.contains(result.getId())).isTrue();
+                            }
 
-            })
-            .expectComplete()
-            .verify();
+                        })
+                        .expectComplete()
+                        .verify();
+        } finally {
+            // release static mocks
+            httpClientMock.close();
+            partitionKeyInternalHelperMock.close();
+            observableHelperMock.close();
+            documentQueryExecutionFactoryMock.close();
 
-        // release static mocks
-        httpClientMock.close();
-        partitionKeyInternalHelperMock.close();
-        observableHelperMock.close();
-        documentQueryExecutionFactoryMock.close();
-
-        // de-register client
-        rxDocumentClient.close();
+            // de-register client
+            rxDocumentClient.close();
+        }
     }
 
     private static HttpClient dummyHttpClient() {
@@ -392,12 +402,16 @@ public class RxDocumentClientImplTest {
 
     private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
 
+        byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
             headers,
-            content.getBytes(StandardCharsets.UTF_8));
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
+
+            private final AtomicReference<CosmosDiagnostics> mostRecentlyCreatedDiagnostics = new AtomicReference<>(null);
 
             @Override
             public DiagnosticsClientConfig getConfig() {
@@ -406,13 +420,21 @@ public class RxDocumentClientImplTest {
 
             @Override
             public CosmosDiagnostics createDiagnostics() {
-                return diagnosticsAccessor.create(this, 1d) ;
+                CosmosDiagnostics diagnostics = diagnosticsAccessor.create(this, 1d) ;
+                mostRecentlyCreatedDiagnostics.set(diagnostics);
+                return diagnostics;
             }
 
             @Override
             public String getUserAgent() {
                 return Utils.getUserAgent();
             }
+
+            @Override
+            public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+                return mostRecentlyCreatedDiagnostics.get();
+            }
+
         }, storeResponse);
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
@@ -422,6 +444,7 @@ public class RxDocumentClientImplTest {
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {
         return diagnosticsAccessor.create(new DiagnosticsClientContext() {
+
             @Override
             public DiagnosticsClientConfig getConfig() {
                 return new DiagnosticsClientConfig();
@@ -435,6 +458,11 @@ public class RxDocumentClientImplTest {
             @Override
             public String getUserAgent() {
                 return Utils.getUserAgent();
+            }
+
+            @Override
+            public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
+                return null;
             }
         }, 1d);
     }

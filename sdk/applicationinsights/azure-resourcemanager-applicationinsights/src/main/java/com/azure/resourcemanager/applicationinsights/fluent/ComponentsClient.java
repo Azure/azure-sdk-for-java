@@ -73,18 +73,6 @@ public interface ComponentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName);
-
-    /**
-     * Deletes an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,17 +83,16 @@ public interface ComponentsClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Returns an Application Insights component.
+     * Deletes an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentInner getByResourceGroup(String resourceGroupName, String resourceName);
+    void delete(String resourceGroupName, String resourceName);
 
     /**
      * Returns an Application Insights component.
@@ -123,20 +110,17 @@ public interface ComponentsClient {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
+     * Returns an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentInner createOrUpdate(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentInner insightProperties);
+    ApplicationInsightsComponentInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
@@ -159,19 +143,20 @@ public interface ComponentsClient {
         Context context);
 
     /**
-     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
+     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
+     * InstrumentationKey nor AppId in the Put operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param componentTags Updated tag information to set into the component instance.
+     * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentInner updateTags(
-        String resourceGroupName, String resourceName, TagsResource componentTags);
+    ApplicationInsightsComponentInner createOrUpdate(
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentInner insightProperties);
 
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
@@ -190,23 +175,19 @@ public interface ComponentsClient {
         String resourceGroupName, String resourceName, TagsResource componentTags, Context context);
 
     /**
-     * Purges data in an Application Insights component by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
+     * @param componentTags Updated tag information to set into the component instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComponentPurgeResponseInner purge(String resourceGroupName, String resourceName, ComponentPurgeBody body);
+    ApplicationInsightsComponentInner updateTags(
+        String resourceGroupName, String resourceName, TagsResource componentTags);
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
@@ -214,7 +195,10 @@ public interface ComponentsClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -230,18 +214,26 @@ public interface ComponentsClient {
         String resourceGroupName, String resourceName, ComponentPurgeBody body, Context context);
 
     /**
-     * Get status for an ongoing purge operation.
+     * Purges data in an Application Insights component by a set of user-defined filters.
+     *
+     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
+     * the execution of purge requests by sending a single command whose predicate includes all user identities that
+     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
+     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status for an ongoing purge operation.
+     * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComponentPurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String resourceName, String purgeId);
+    ComponentPurgeResponseInner purge(String resourceGroupName, String resourceName, ComponentPurgeBody body);
 
     /**
      * Get status for an ongoing purge operation.
@@ -258,4 +250,18 @@ public interface ComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ComponentPurgeStatusResponseInner> getPurgeStatusWithResponse(
         String resourceGroupName, String resourceName, String purgeId, Context context);
+
+    /**
+     * Get status for an ongoing purge operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status for an ongoing purge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ComponentPurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String resourceName, String purgeId);
 }

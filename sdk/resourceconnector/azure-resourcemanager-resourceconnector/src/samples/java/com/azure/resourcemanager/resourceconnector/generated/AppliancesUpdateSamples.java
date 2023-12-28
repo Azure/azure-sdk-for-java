@@ -16,9 +16,9 @@ public final class AppliancesUpdateSamples {
     /**
      * Sample code: Update Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void updateAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         Appliance resource =
             manager
                 .appliances()

@@ -24,7 +24,7 @@ import java.util.Map;
 /** Samples for WebPubSub Update. */
 public final class WebPubSubUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSub_Update.json
      */
     /**
      * Sample code: WebPubSub_Update.
@@ -66,6 +66,7 @@ public final class WebPubSubUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

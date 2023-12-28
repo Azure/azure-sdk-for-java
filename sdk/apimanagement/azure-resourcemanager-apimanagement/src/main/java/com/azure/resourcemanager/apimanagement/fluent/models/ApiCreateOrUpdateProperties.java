@@ -15,6 +15,7 @@ import com.azure.resourcemanager.apimanagement.models.ContentFormat;
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SoapApiType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
+import com.azure.resourcemanager.apimanagement.models.TranslateRequiredQueryParametersConduct;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -48,6 +49,17 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      */
     @JsonProperty(value = "apiType")
     private SoapApiType soapApiType;
+
+    /*
+     * Strategy of translating required query parameters to template ones. By default has value 'template'. Possible
+     * values: 'template', 'query'
+     */
+    @JsonProperty(value = "translateRequiredQueryParameters")
+    private TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct;
+
+    /** Creates an instance of ApiCreateOrUpdateProperties class. */
+    public ApiCreateOrUpdateProperties() {
+    }
 
     /**
      * Get the value property: Content value when Importing an API.
@@ -128,6 +140,29 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
      */
     public ApiCreateOrUpdateProperties withSoapApiType(SoapApiType soapApiType) {
         this.soapApiType = soapApiType;
+        return this;
+    }
+
+    /**
+     * Get the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
+     * template ones. By default has value 'template'. Possible values: 'template', 'query'.
+     *
+     * @return the translateRequiredQueryParametersConduct value.
+     */
+    public TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct() {
+        return this.translateRequiredQueryParametersConduct;
+    }
+
+    /**
+     * Set the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
+     * template ones. By default has value 'template'. Possible values: 'template', 'query'.
+     *
+     * @param translateRequiredQueryParametersConduct the translateRequiredQueryParametersConduct value to set.
+     * @return the ApiCreateOrUpdateProperties object itself.
+     */
+    public ApiCreateOrUpdateProperties withTranslateRequiredQueryParametersConduct(
+        TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct) {
+        this.translateRequiredQueryParametersConduct = translateRequiredQueryParametersConduct;
         return this;
     }
 

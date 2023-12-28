@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Logger CreateOrUpdate. */
 public final class LoggerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateAILogger.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAILogger.json
      */
     /**
      * Sample code: ApiManagementCreateAILogger.
@@ -26,12 +26,12 @@ public final class LoggerCreateOrUpdateSamples {
             .withExistingService("rg1", "apimService1")
             .withLoggerType(LoggerType.APPLICATION_INSIGHTS)
             .withDescription("adding a new logger")
-            .withCredentials(mapOf("instrumentationKey", "11................a1"))
+            .withCredentials(mapOf("instrumentationKey", "fakeTokenPlaceholder"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateEHLogger.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateEHLogger.json
      */
     /**
      * Sample code: ApiManagementCreateEHLogger.
@@ -55,6 +55,7 @@ public final class LoggerCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

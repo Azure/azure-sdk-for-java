@@ -8,47 +8,73 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operator to be matched. */
+/**
+ * The operator to be matched.
+ */
 public final class WebApplicationFirewallOperator extends ExpandableStringEnum<WebApplicationFirewallOperator> {
-    /** Static value IPMatch for WebApplicationFirewallOperator. */
+    /**
+     * Static value IPMatch for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator IPMATCH = fromString("IPMatch");
 
-    /** Static value Equal for WebApplicationFirewallOperator. */
+    /**
+     * Static value Equal for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for WebApplicationFirewallOperator. */
+    /**
+     * Static value Contains for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator CONTAINS = fromString("Contains");
 
-    /** Static value LessThan for WebApplicationFirewallOperator. */
+    /**
+     * Static value LessThan for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value GreaterThan for WebApplicationFirewallOperator. */
+    /**
+     * Static value GreaterThan for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value LessThanOrEqual for WebApplicationFirewallOperator. */
+    /**
+     * Static value LessThanOrEqual for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThanOrEqual for WebApplicationFirewallOperator. */
+    /**
+     * Static value GreaterThanOrEqual for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value BeginsWith for WebApplicationFirewallOperator. */
+    /**
+     * Static value BeginsWith for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for WebApplicationFirewallOperator. */
+    /**
+     * Static value EndsWith for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value Regex for WebApplicationFirewallOperator. */
+    /**
+     * Static value Regex for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator REGEX = fromString("Regex");
 
-    /** Static value GeoMatch for WebApplicationFirewallOperator. */
+    /**
+     * Static value GeoMatch for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator GEO_MATCH = fromString("GeoMatch");
 
-    /** Static value Any for WebApplicationFirewallOperator. */
+    /**
+     * Static value Any for WebApplicationFirewallOperator.
+     */
     public static final WebApplicationFirewallOperator ANY = fromString("Any");
 
     /**
      * Creates a new instance of WebApplicationFirewallOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -57,7 +83,7 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
 
     /**
      * Creates or finds a WebApplicationFirewallOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallOperator.
      */
@@ -68,7 +94,7 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
 
     /**
      * Gets known WebApplicationFirewallOperator values.
-     *
+     * 
      * @return known WebApplicationFirewallOperator values.
      */
     public static Collection<WebApplicationFirewallOperator> values() {

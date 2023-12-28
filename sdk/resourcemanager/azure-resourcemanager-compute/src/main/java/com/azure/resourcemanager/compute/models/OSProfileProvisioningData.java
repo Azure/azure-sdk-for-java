@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Additional parameters for Reimaging Non-Ephemeral Virtual Machine. */
+/**
+ * Additional parameters for Reimaging Non-Ephemeral Virtual Machine.
+ */
 @Fluent
 public final class OSProfileProvisioningData {
     /*
@@ -37,7 +39,9 @@ public final class OSProfileProvisioningData {
     @JsonProperty(value = "customData")
     private String customData;
 
-    /** Creates an instance of OSProfileProvisioningData class. */
+    /**
+     * Creates an instance of OSProfileProvisioningData class.
+     */
     public OSProfileProvisioningData() {
     }
 
@@ -48,12 +52,13 @@ public final class OSProfileProvisioningData {
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
+     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -67,12 +72,13 @@ public final class OSProfileProvisioningData {
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
      * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its login
+     * password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfileProvisioningData object itself.
      */
@@ -87,10 +93,10 @@ public final class OSProfileProvisioningData {
      * is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be
      * updated after the VM is created. The property customData is passed to the VM to be saved as a file, for more
      * information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). If using cloud-init for your
-     * Linux VM, see [Using cloud-init to customize a Linux VM during
+     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). If using cloud-init for
+     * your Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -103,10 +109,10 @@ public final class OSProfileProvisioningData {
      * is 65535 bytes. **Note: Do not pass any secrets or passwords in customData property.** This property cannot be
      * updated after the VM is created. The property customData is passed to the VM to be saved as a file, for more
      * information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). If using cloud-init for your
-     * Linux VM, see [Using cloud-init to customize a Linux VM during
+     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/). If using cloud-init for
+     * your Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * 
      * @param customData the customData value to set.
      * @return the OSProfileProvisioningData object itself.
      */
@@ -117,7 +123,7 @@ public final class OSProfileProvisioningData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

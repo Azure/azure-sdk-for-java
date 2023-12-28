@@ -137,7 +137,37 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRecursively() {
-        deleteWithResponse(true, null, null, Context.NONE).getValue();
+        deleteRecursivelyWithResponse(null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Recursively deletes a directory and all contents within the directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursivelyWithResponse#DataLakeRequestConditions-Duration-Context -->
+     * <pre>
+     * DataLakeRequestConditions deleteRequestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * client.deleteRecursivelyWithResponse&#40;deleteRequestConditions, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursivelyWithResponse#DataLakeRequestConditions-Duration-Context -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param requestConditions {@link DataLakeRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteRecursivelyWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+        Context context) {
+        return deleteWithResponse(true, requestConditions, timeout, context);
     }
 
     /**
@@ -259,8 +289,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeFileClient getFileClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
         return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(fileName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + fileName).buildBlockBlobClient());
     }
 
     /**
@@ -612,8 +644,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeDirectoryClient getSubdirectoryClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
         return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient(subdirectoryName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subdirectoryName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + subdirectoryName).buildBlockBlobClient());
     }
 
     /**

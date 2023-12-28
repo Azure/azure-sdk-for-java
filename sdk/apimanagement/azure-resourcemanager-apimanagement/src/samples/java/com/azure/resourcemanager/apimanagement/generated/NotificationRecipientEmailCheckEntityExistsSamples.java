@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
 /** Samples for NotificationRecipientEmail CheckEntityExists. */
 public final class NotificationRecipientEmailCheckEntityExistsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadNotificationRecipientEmail.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadNotificationRecipientEmail.json
      */
     /**
      * Sample code: ApiManagementHeadNotificationRecipientEmail.
@@ -26,6 +25,6 @@ public final class NotificationRecipientEmailCheckEntityExistsSamples {
                 "apimService1",
                 NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
                 "contoso@live.com",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

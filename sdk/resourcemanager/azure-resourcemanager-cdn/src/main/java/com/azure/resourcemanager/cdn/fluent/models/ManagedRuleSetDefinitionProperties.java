@@ -36,6 +36,10 @@ public final class ManagedRuleSetDefinitionProperties {
     @JsonProperty(value = "ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleGroupDefinition> ruleGroups;
 
+    /** Creates an instance of ManagedRuleSetDefinitionProperties class. */
+    public ManagedRuleSetDefinitionProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the managed rule set.
      *

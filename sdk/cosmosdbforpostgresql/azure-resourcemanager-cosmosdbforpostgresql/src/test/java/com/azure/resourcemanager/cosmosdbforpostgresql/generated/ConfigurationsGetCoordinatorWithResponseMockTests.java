@@ -31,7 +31,7 @@ public final class ConfigurationsGetCoordinatorWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"value\":\"rqhakauha\",\"source\":\"sfwxosowzxc\",\"description\":\"i\",\"defaultValue\":\"ooxdjebwpuc\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ovbvmeueciv\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"ojgjrwjueiotwmc\",\"name\":\"ytdxwit\",\"type\":\"nrjawgqwg\"}";
+            "{\"properties\":{\"value\":\"vpgylgqgitxmed\",\"source\":\"c\",\"description\":\"ynqwwncwzzhxgk\",\"defaultValue\":\"mgucna\",\"dataType\":\"Boolean\",\"allowedValues\":\"oellwp\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"fqbuaceopzf\",\"name\":\"rhhuaopppcqeqx\",\"type\":\"lzdahzxctobgbkdm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,10 @@ public final class ConfigurationsGetCoordinatorWithResponseMockTests {
         ServerConfiguration response =
             manager
                 .configurations()
-                .getCoordinatorWithResponse("b", "e", "dawkzbali", com.azure.core.util.Context.NONE)
+                .getCoordinatorWithResponse(
+                    "tfolhbnx", "nalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rqhakauha", response.value());
+        Assertions.assertEquals("vpgylgqgitxmed", response.value());
     }
 }

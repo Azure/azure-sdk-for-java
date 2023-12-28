@@ -275,6 +275,31 @@ class KeyVaultEnvironmentPostProcessorTests {
         assertEquals(specificMaxRetries, properties.getRetry().getFixed().getMaxRetries());
     }
 
+    @Test
+    void challengeResourceVerificationEnabledCanBeSetAsFalseTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].challenge-resource-verification-enabled", "false");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        AzureKeyVaultSecretProperties secretProperties = processor.loadProperties(environment);
+        AzureKeyVaultPropertySourceProperties properties = secretProperties.getPropertySources().get(0);
+        assertTrue(secretProperties.isChallengeResourceVerificationEnabled());
+        assertFalse(properties.isChallengeResourceVerificationEnabled());
+    }
+
+    @Test
+    void challengeResourceVerificationEnabledIsSetByDefaultTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", NAME_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        AzureKeyVaultSecretProperties secretProperties = processor.loadProperties(environment);
+        AzureKeyVaultPropertySourceProperties properties = secretProperties.getPropertySources().get(0);
+        assertTrue(secretProperties.isChallengeResourceVerificationEnabled());
+        assertTrue(properties.isChallengeResourceVerificationEnabled());
+    }
+
     @Disabled("Disable it to unblock Azure Dev Ops pipeline: https://dev.azure.com/azure-sdk/public/_build/results?buildId=1434354&view=logs&j=c1fb1ddd-7688-52ac-4c5f-1467e51181f3")
     @Test
     void buildKeyVaultPropertySourceWithExceptionTest() {

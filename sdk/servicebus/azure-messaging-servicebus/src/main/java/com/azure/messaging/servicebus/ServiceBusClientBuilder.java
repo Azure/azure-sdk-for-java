@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
@@ -12,8 +13,10 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -30,6 +33,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
@@ -39,6 +44,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -58,12 +64,15 @@ import reactor.core.scheduler.Schedulers;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
@@ -71,119 +80,373 @@ import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessio
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
- * The builder to create Service Bus clients:
+ * <p>This class provides a fluent builder API to aid the instantiation of clients to send and receive messages to/from
+ * Service Bus entities.</p>
  *
- * <p><strong>Instantiate a synchronous sender</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <p>
+ * <strong>Credentials are required</strong> to perform operations against Azure Service Bus. They can be set by using
+ * one of the following methods:
+ *
+ * <ul>
+ *     <li>{@link #connectionString(String)} with a connection string to the Service Bus <i>namespace</i>.</li>
+ *     <li>{@link #credential(String, TokenCredential)}, {@link #credential(String, AzureSasCredential)}, and
+ *     {@link #credential(String, AzureNamedKeyCredential)} overloads can be used with the respective credentials
+ *     that has access to the fully-qualified Service Bus namespace.</li>
+ *     <li>{@link #credential(TokenCredential)}, {@link #credential(AzureSasCredential)}, and
+ *     {@link #credential(AzureNamedKeyCredential)} overloads can be used with its respective credentials.
+ *     {@link #fullyQualifiedNamespace(String)} <b>must be</b> set.</li>
+ * </ul>
+ *
+ * <p>The credential used in the following samples is {@code DefaultAzureCredential} for authentication. It is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+ * using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.  You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <h2>Clients and sub-builders</h2>
+ *
+ * <p>{@link ServiceBusClientBuilder} can instantiate several clients.  The client to instantiate depends on whether
+ * users are publishing or receiving messages and if the entity has
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a> enabled.
+ * </p>
+ *
+ * <ul>
+ *     <li><strong>Sending messages</strong>: Use the {@link #sender() sender()} sub-builder to create
+ *     {@link ServiceBusSenderAsyncClient} and {@link ServiceBusSenderClient}.</li>
+ *
+ *     <li><strong>Receiving messages</strong>: Use the {@link #receiver() receiver()} sub-builder to create
+ *     {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusReceiverAsyncClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity</strong>: Use the
+ *     {@link #sessionReceiver() sessionReceiver()} sub-builder to create {@link ServiceBusSessionReceiverAsyncClient}
+ *     and {@link ServiceBusSessionReceiverClient}.</li>
+ *
+ *     <li><strong>Receiving messages using a callback-based processor</strong>: Use the
+ *     {@link #processor() processor()} sub-builder to create {@link ServiceBusProcessorClient}.</li>
+ *
+ *     <li><strong>Receiving messages from a session-enabled Service Bus entity using a callback-based processor
+ *     </strong>: Use the {@link #sessionProcessor() sessionProcessor()} sub-builder to create
+ *     {@link ServiceBusProcessorClient}.</li>
+ * </ul>
+ *
+ * <h2>Sending messages</h2>
+ *
+ * <p><strong>Sample: Instantiate a synchronous sender and send a message</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link ServiceBusSenderClient}
+ * and sending a message.  The  {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed
+ * under the "Essentials" panel after navigating to the Service Bus namespace via Azure Portal. The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.  When performance is important, consider using
+ * {@link com.azure.messaging.servicebus.ServiceBusMessageBatch} to publish multiple messages at once.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusSenderClient sender = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
  *
- * <p><strong>Instantiate an asynchronous receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;Foo bar&quot;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.instantiation -->
+ *
+ * <h2>Consuming messages</h2>
+ *
+ * <p>There are multiple clients for consuming messages from a Service Bus entity (that is not have
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled).</p>
+ *
+ * <p><strong>Sample: Instantiate an asynchronous receiver</strong></p>
+ *
+ * <p>The code example below demonstrates creating an async receiver.  The credential used is
+ * {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios, including local development
+ * and production environments.  {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusReceiverClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusReceiverAsyncClient receiver = builder
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusReceiverAsyncClient asyncReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
  *     .receiver&#40;&#41;
- *     .disableAutoComplete&#40;&#41; &#47;&#47; Allows user to take control of settling a message.
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.messaging.servicebus.receiver.async.client.instantiation -->
- *
- * <p><strong>Instantiate an asynchronous session receiver</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
- * <pre>
- * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
- * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .sessionReceiver&#40;&#41;
- *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
- *     .topicName&#40;topicName&#41;
- *     .subscriptionName&#40;subscriptionName&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout&#40;&#41;.
- * &#47;&#47; If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
- * &#47;&#47; is returned when a lock on the session is acquired.
- * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
- *
- * Flux.usingWhen&#40;receiverMono,
- *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *     receiver -&gt; Mono.fromRunnable&#40;receiver::close&#41;&#41;
- *     .subscribe&#40;message -&gt; System.out.println&#40;message.getBody&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
+ * asyncReceiver.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Instantiate the processor</strong></p>
- * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <p><strong>Sample: Instantiate {@link ServiceBusProcessorClient}</strong></p>
+ *
+ * <p>The code example below demonstrates creating a processor client.  The processor client is recommended for most
+ * production scenarios because it offers connection recovery. The credential used is {@code DefaultAzureCredential}
+ * for authentication. It is appropriate for most scenarios, including local development and production environments.
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusProcessorClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
- * ServiceBusProcessorClient processor = builder
+ * &#47;&#47; Function that gets called whenever a message is received.
+ * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
+ *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+ *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
+ *     &#47;&#47; handling message reaches desired state such that it doesn't require Service Bus to redeliver
+ *     &#47;&#47; the same message, then context.complete&#40;&#41; should be called otherwise context.abandon&#40;&#41;.
+ *     final boolean success = Math.random&#40;&#41; &lt; 0.5;
+ *     if &#40;success&#41; &#123;
+ *         try &#123;
+ *             context.complete&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
+ *         &#125;
+ *     &#125; else &#123;
+ *         try &#123;
+ *             context.abandon&#40;&#41;;
+ *         &#125; catch &#40;RuntimeException error&#41; &#123;
+ *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+ *                 message.getMessageId&#40;&#41;, error&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;;
+ *
+ * &#47;&#47; Sample code that gets called if there's an error
+ * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
+ *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
  *     .processor&#40;&#41;
  *     .queueName&#40;queueName&#41;
- *     .processMessage&#40;System.out::println&#41;
- *     .processError&#40;context -&gt; System.err.println&#40;context.getErrorSource&#40;&#41;&#41;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
+ *     .processMessage&#40;processMessage&#41;
+ *     .processError&#40;processError&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
+ * processorClient.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * processorClient.stop&#40;&#41;;
+ * processorClient.close&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
+ *
+ * <h2>Consuming messages from a session-enabled Service Bus entity</h2>
+ *
+ * <p>Service Bus supports joint and ordered handling of unbounded sequences of messages through
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>.
+ * Sessions can be used as a first in, first out (FIFO) processing of messages.  Queues and topics/subscriptions
+ * support Service Bus sessions, however, it must be
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * entity creation</a>.</p>
+ *
+ * <p><strong>Sample: Sending a message to a session-enabled queue</strong></p>
+ *
+ * <p>The snippet below demonstrates sending a message to a
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-sessions">Service Bus sessions</a>
+ * enabled queue.  Setting {@link ServiceBusMessage#setMessageId(String)} property to "greetings" will send the message
+ * to a Service Bus session with an id of "greetings".</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
+ * <pre>
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusSenderClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Setting sessionId publishes that message to a specific session, in this case, &quot;greeting&quot;.
+ * ServiceBusMessage message = new ServiceBusMessage&#40;&quot;Hello world&quot;&#41;
+ *     .setSessionId&#40;&quot;greetings&quot;&#41;;
+ *
+ * sender.sendMessage&#40;message&#41;;
+ *
+ * &#47;&#47; Dispose of the sender.
+ * sender.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebussenderclient.sendMessage-session -->
+ *
+ * <p><strong>Sample: Receive messages from first available session</strong></p>
+ *
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
+ * and build the session receiver client. Use
+ * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
+ * session to process messages from.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; 'disableAutoComplete' indicates that users will explicitly settle their message.
+ * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Creates a client to receive messages from the first available session. It waits until
+ * &#47;&#47; AmqpRetryOptions.getTryTimeout&#40;&#41; elapses. If no session is available within that operation timeout, it
+ * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
+ * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
+ *
+ * Flux&lt;Void&gt; receiveMessagesFlux = Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return receiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return receiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
+ *
+ * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+ * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+ * &#47;&#47; receiving messages.
+ * Disposable subscription = receiveMessagesFlux.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
 
+ * <p><strong>Sample: Process messages from all sessions</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation the {@link ServiceBusProcessorClient} that processes all
+ * available sessions in the queue.  {@link ServiceBusSessionProcessorClientBuilder#maxConcurrentSessions(int)}
+ * indicates how many sessions the processor will process at the same time.  The credential used is
+ * {@code DefaultAzureCredential} for authentication. It is appropriate for most scenarios, including local development
+ * and production environments.  {@link ServiceBusReceiveMode#PEEK_LOCK} and
+ * {@link ServiceBusProcessorClientBuilder#disableAutoComplete() disableAutoComplete()} are <strong>strongly</strong>
+ * recommended so users have control over message settlement.</p>
+ *
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+ * <pre>
+ * &#47;&#47; Function that gets called whenever a message is received.
+ * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
+ *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+ *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
+ *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+ * &#125;;
+ *
+ * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
+ *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
+ *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
+ *
+ *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+ *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
+ *             exception.getReason&#40;&#41;&#41;;
+ *     &#125; else &#123;
+ *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; Create the processor client via the builder and its sub-builder
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
+ *     .sessionProcessor&#40;&#41;
+ *     .queueName&#40;sessionEnabledQueueName&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .disableAutoComplete&#40;&#41;
+ *     .maxConcurrentSessions&#40;2&#41;
+ *     .processMessage&#40;onMessage&#41;
+ *     .processError&#40;onError&#41;
+ *     .buildProcessorClient&#40;&#41;;
+ *
+ * &#47;&#47; Starts the processor in the background. Control returns immediately.
+ * sessionProcessor.start&#40;&#41;;
+ *
+ * &#47;&#47; Stop processor and dispose when done processing messages.
+ * sessionProcessor.stop&#40;&#41;;
+ * sessionProcessor.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+ *
+ * <h2>Connection sharing</h2>
+ *
+ * <p>The creation of a connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.</p>
+ *
  * <p><strong>Sharing a connection between clients</strong></p>
- * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
- * should share connection between clients which can be achieved by sharing the top level builder as shown below.
  *
  * <!-- src_embed com.azure.messaging.servicebus.connection.sharing -->
  * <pre>
- * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
- * &#47;&#47; Create shared builder.
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; Any clients created from this builder will share the underlying connection.
  * ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder&#40;&#41;
- *     .connectionString&#40;connectionString&#41;;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;;
+ *
  * &#47;&#47; Create receiver and sender which will share the connection.
  * ServiceBusReceiverClient receiver = sharedConnectionBuilder
  *     .receiver&#40;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
  * ServiceBusSenderClient sender = sharedConnectionBuilder
  *     .sender&#40;&#41;
  *     .queueName&#40;queueName&#41;
  *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the clients and finally close them.
+ * try &#123;
+ *     sender.sendMessage&#40;new ServiceBusMessage&#40;&quot;payload&quot;&#41;&#41;;
+ *     receiver.receiveMessages&#40;1&#41;;
+ * &#125; finally &#123;
+ *     &#47;&#47; Clients should be long-lived objects as they require resources
+ *     &#47;&#47; and time to establish a connection to the service.
+ *     sender.close&#40;&#41;;
+ *     receiver.close&#40;&#41;;
+ * &#125;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.connection.sharing -->
  *
- * <p><strong>Clients for sending messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusSenderAsyncClient}</li>
- * <li>{@link ServiceBusSenderClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages</strong></p>
- * <ul>
- * <li>{@link ServiceBusReceiverAsyncClient}</li>
- * <li>{@link ServiceBusReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Clients for receiving messages from a session-enabled Service Bus entity</strong></p>
- * <ul>
- * <li>{@link ServiceBusSessionReceiverAsyncClient}</li>
- * <li>{@link ServiceBusSessionReceiverClient}</li>
- * </ul>
- *
- * <p><strong>Client for receiving messages using a callback-based processor</strong></p>
- * <ul>
- * <li>{@link ServiceBusProcessorClient}</li>
- * </ul>
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
@@ -228,6 +491,7 @@ public final class ServiceBusClientBuilder implements
     private SslDomain.VerifyMode verifyMode;
     private boolean crossEntityTransactions;
     private URL customEndpointAddress;
+    private final V2StackSupport v2StackSupport = new V2StackSupport();
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -689,15 +953,8 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
+    // Connection-caching for the V1-Stack.
     private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.boundedElastic();
-        }
-
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -709,10 +966,13 @@ public final class ServiceBusClientBuilder implements
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                         connectionOptions.getAuthorizationScope());
+                    final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
+                    // For the V1-Stack, tell the connection to continue creating receivers on v1 stack.
+                    final boolean isV2 = false;
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
-                        crossEntityTransactions);
+                        connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions, isV2);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -728,6 +988,12 @@ public final class ServiceBusClientBuilder implements
 
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+        if (scheduler == null) {
+            scheduler = Schedulers.boundedElastic();
+        }
         if (credentials == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                 + "They can be set using: connectionString(String), connectionString(String, String), "
@@ -768,6 +1034,11 @@ public final class ServiceBusClientBuilder implements
                 options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
         }
+    }
+
+    // Connection-caching for the V2-Stack.
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
+        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions);
     }
 
     private static boolean isNullOrEmpty(String item) {
@@ -856,6 +1127,249 @@ public final class ServiceBusClientBuilder implements
         return entityPath;
     }
 
+    // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
+    private static final class V2StackSupport {
+        private static final String NON_SESSION_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> NON_SESSION_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(NON_SESSION_ASYNC_RECEIVE_KEY)
+            .defaultValue(true) // 'Non-Session' Async[Reactor|Processor]Receiver Client is on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> nonSessionAsyncReceiveFlag = new AtomicReference<>();
+
+        private static final String NON_SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
+        private static final ConfigurationProperty<Boolean> NON_SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_SYNC_RECEIVE_KEY)
+            .environmentVariableName(NON_SESSION_SYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Non-Session' Sync Receiver Client is not on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> nonSessionSyncReceiveFlag = new AtomicReference<>();
+
+        private static final String SEND_MANAGE_RULES_KEY = "com.azure.messaging.servicebus.sendAndManageRules.v2";
+        private static final ConfigurationProperty<Boolean> SEND_MANAGE_RULES_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SEND_MANAGE_RULES_KEY)
+            .environmentVariableName(SEND_MANAGE_RULES_KEY)
+            .defaultValue(true) // Sender and RuleManager Client is on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sendManageFlag = new AtomicReference<>();
+
+        private static final String SESSION_PROCESSOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.processor.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Session' Async[Processor]Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
+
+        private static final String SESSION_REACTOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.reactor.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Session' Async[Reactor]Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionReactorAsyncReceiveFlag = new AtomicReference<>();
+
+        private static final String SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.syncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_SYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_SYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Session' Sync Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionSyncReceiveFlag = new AtomicReference<>();
+
+        private final Object connectionLock = new Object();
+        private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
+        private final AtomicInteger openClients = new AtomicInteger();
+
+        /**
+         * Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, but the application
+         * may opt out.
+         *
+         * @param configuration the client configuration.
+         * @return true if the Non-Session Async[Reactor|Processor] receive should use the v2 stack.
+         */
+        boolean isNonSessionAsyncReceiveEnabled(Configuration configuration) {
+            return !isOptedOut(configuration, NON_SESSION_ASYNC_RECEIVE_PROPERTY, nonSessionAsyncReceiveFlag);
+        }
+
+        /**
+         * Non-Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if Sync receive should use the v2 stack.
+         */
+        boolean isNonSessionSyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
+        }
+
+        /**
+         * Sender and RuleManager Client is on the new v2 stack by default, but the application may opt out.
+         *
+         * @param configuration the client configuration.
+         * @return true if the Sender and RuleManager Client should use the v2 stack.
+         */
+        boolean isSenderAndManageRulesEnabled(Configuration configuration) {
+            return !isOptedOut(configuration, SEND_MANAGE_RULES_PROPERTY, sendManageFlag);
+        }
+
+        /**
+         * Session Async ProcessorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if session processor receive should use the v2 stack.
+         */
+        boolean isSessionProcessorAsyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
+        }
+
+        /**
+         * Session Async ReactorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if session reactor receive should use the v2 stack.
+         */
+        boolean isSessionReactorAsyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
+        }
+
+        /**
+         * Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if session Sync receive should use the v2 stack.
+         */
+        boolean isSessionSyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
+        }
+
+        // Obtain the shared connection-cache based on the V2-Stack.
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
+            MessageSerializer serializer, boolean crossEntityTransactions) {
+            synchronized (connectionLock) {
+                if (sharedConnectionCache == null) {
+                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions);
+                }
+            }
+
+            final int numberOfOpenClients = openClients.incrementAndGet();
+            ServiceBusClientBuilder.LOGGER.info("# of open clients using shared connection cache: {}", numberOfOpenClients);
+            return sharedConnectionCache;
+        }
+
+        // Decide when to dispose of the shared connection cache.
+        void onClientClose() {
+            synchronized (connectionLock) {
+                final int numberOfOpenClients = openClients.decrementAndGet();
+                ServiceBusClientBuilder.LOGGER.atInfo()
+                    .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                    .log("Closing a client using shared connection cache.");
+
+                if (numberOfOpenClients > 0) {
+                    return;
+                }
+
+                if (numberOfOpenClients < 0) {
+                    ServiceBusClientBuilder.LOGGER.atWarning()
+                        .addKeyValue("numberOfOpenClients", numberOfOpenClients)
+                        .log("There should not be less than 0 clients.");
+                }
+
+                ServiceBusClientBuilder.LOGGER.info("No more open clients, closing shared connection cache.");
+
+                if (sharedConnectionCache != null) {
+                    sharedConnectionCache.dispose();
+                    sharedConnectionCache = null;
+                } else {
+                    ServiceBusClientBuilder.LOGGER.warning("Shared ReactorConnectionCache was already disposed.");
+                }
+            }
+        }
+
+        private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
+            AtomicReference<Boolean> choiceFlag) {
+            final Boolean flag = choiceFlag.get();
+            if (flag != null) {
+                return flag;
+            }
+
+            final boolean isOptedOut;
+            final String propName = configProperty.getName();
+            if (configuration != null) {
+                // If application override the default 'true' with 'false' then app is opting-out the feature configProperty representing.
+                isOptedOut = !configuration.get(configProperty);
+            } else {
+                assert !CoreUtils.isNullOrEmpty(propName);
+                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
+                    isOptedOut = "false".equalsIgnoreCase(System.getenv(propName));
+                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
+                    isOptedOut = "false".equalsIgnoreCase(System.getProperty(propName));
+                } else {
+                    isOptedOut = false;
+                }
+            }
+            if (choiceFlag.compareAndSet(null, isOptedOut)) {
+                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedOut);
+                if (isOptedOut) {
+                    final String logMessage = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
+                    ServiceBusClientBuilder.LOGGER.info(logMessage, propName);
+                }
+            }
+            return choiceFlag.get();
+        }
+
+        private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
+            AtomicReference<Boolean> choiceFlag) {
+            final Boolean flag = choiceFlag.get();
+            if (flag != null) {
+                return flag;
+            }
+
+            final String propName = configProperty.getName();
+            final boolean isOptedIn;
+            if (configuration != null) {
+                isOptedIn = configuration.get(configProperty);
+            } else {
+                assert !CoreUtils.isNullOrEmpty(propName);
+                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
+                    isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
+                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
+                    isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
+                } else {
+                    isOptedIn = false;
+                }
+            }
+            if (choiceFlag.compareAndSet(null, isOptedIn)) {
+                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedIn);
+            }
+            return choiceFlag.get();
+        }
+
+        private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
+            MessageSerializer serializer, boolean crossEntityTransactions) {
+            final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
+                final String connectionId = StringUtil.getRandomString("MF");
+                final ReactorProvider provider = new ReactorProvider();
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    connectionOptions.getAuthorizationScope());
+                final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
+
+                //For the v2 stack, tell the connection to create receivers using the v2 stack.
+                final boolean isV2 = true;
+                return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
+                    linkProvider, tokenManagerProvider, serializer, crossEntityTransactions, isV2);
+            };
+
+            final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+            final String entityPath = "N/A";
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+            final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
+
+            return new ReactorConnectionCache<>(connectionSupplier, fullyQualifiedNamespace, entityPath, retryPolicy, loggingContext);
+        }
+    }
+
     /**
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
@@ -906,8 +1420,19 @@ public final class ServiceBusClientBuilder implements
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
+        // Build Sender-Client.
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ConnectionCacheWrapper connectionCacheWrapper;
+            final Runnable onClientClose;
+            final boolean isSenderOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
+            if (isSenderOnV2) {
+                // Sender Client (async|sync) on the V2-Stack.
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            }
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
@@ -936,10 +1461,10 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(
-                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityName);
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
-                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
+            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionCacheWrapper, retryOptions,
+                instrumentation, messageSerializer, onClientClose, null, clientIdentifier);
         }
 
         /**
@@ -976,6 +1501,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Instantiate a session-enabled processor client</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
      *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -988,6 +1514,7 @@ public final class ServiceBusClientBuilder implements
      *
      *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
      *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+     *
      *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
      *             exception.getReason&#40;&#41;&#41;;
      *     &#125; else &#123;
@@ -995,19 +1522,27 @@ public final class ServiceBusClientBuilder implements
      *     &#125;
      * &#125;;
      *
-     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
      *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;connectionString&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .sessionProcessor&#40;&#41;
-     *     .queueName&#40;queueName&#41;
+     *     .queueName&#40;sessionEnabledQueueName&#41;
+     *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .maxConcurrentSessions&#40;2&#41;
      *     .processMessage&#40;onMessage&#41;
      *     .processError&#40;onError&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Start the processor in the background
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * sessionProcessor.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * sessionProcessor.stop&#40;&#41;;
+     * sessionProcessor.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      *
@@ -1046,8 +1581,13 @@ public final class ServiceBusClientBuilder implements
         /**
          * Sets the maximum amount of time to wait for a message to be received for the currently active session.
          * After this time has elapsed, the processor will close the session and attempt to process another session.
-         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
+         * <p>After the processor delivers a message to the {@link #processMessage(Consumer)} handler, if the processor
+         * is unable to receive the next message from the session because there is no next message in the session or
+         * processing the current message takes longer than the {@code sessionIdleTimeout} then the session will time
+         * out.  To avoid inadvertently losing sessions, choose a {@code sessionIdleTimeout} greater than the
+         * processing time of a message.</p>
          *
+         * <p>If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.</p>
          * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
@@ -1227,11 +1767,30 @@ public final class ServiceBusClientBuilder implements
          *     callbacks are not set.
          */
         public ServiceBusProcessorClient buildProcessorClient() {
+            final boolean isSessionProcessorOnV2 = v2StackSupport.isSessionProcessorAsyncReceiveEnabled(configuration);
+            if (isSessionProcessorOnV2) {
+                processorClientOptions.setV2(true);
+                validateInputs();
+            }
             return new ServiceBusProcessorClient(sessionReceiverClientBuilder,
                 sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
                 sessionReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        /**
+         * In V1, the client {@link ServiceBusSessionReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
+         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
+         * when {@link #buildProcessorClient()} is called. In V2, the client {@link SessionsMessagePump} backing
+         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
+         * This is a helper method in v2 for input validations at build time.
+         */
+        private void validateInputs() {
+            final ServiceBusSessionReceiverClientBuilder builder = sessionReceiverClientBuilder;
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 
@@ -1408,7 +1967,7 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
+         * Creates V1 <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
          * ServiceBusMessage messages} from a specific queue or subscription.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or subscription.
@@ -1435,7 +1994,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
 
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
@@ -1449,15 +2008,54 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier, instrumentation.getTracer());
+                connectionCacheWrapper, messageSerializer, receiverOptions, clientIdentifier, instrumentation.getTracer());
 
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+            return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
+        }
+
+        SessionsMessagePump buildPumpForProcessor(ClientLogger logger,
+            Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
+            int concurrencyPerSession) {
+            if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
+                LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
+                enableAutoComplete = false;
+            }
+
+            if (receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
+                maxAutoLockRenewDuration = Duration.ZERO;
+            }
+
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName, queueName);
+            final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName, subQueue);
+            final String clientIdentifier;
+            if (clientOptions instanceof AmqpClientOptions) {
+                String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+                clientIdentifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            } else {
+                clientIdentifier = UUID.randomUUID().toString();
+            }
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+
+            final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
+                entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
+
+            final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
+                entityPath, subscriptionName, ReceiverKind.PROCESSOR);
+
+            final Runnable onTerminate = v2StackSupport::onClientClose;
+
+            return new SessionsMessagePump(clientIdentifier, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
+                receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout, maxConcurrentSessions,
+                concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
+                retryPolicy, processMessage, processError, onTerminate);
         }
 
         /**
@@ -1475,7 +2073,8 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true, false);
+            final boolean isSessionReactorReceiveOnV2 = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
+            return buildAsyncClient(true, false, isSessionReactorReceiveOnV2);
         }
 
         /**
@@ -1492,13 +2091,15 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
+            final boolean isSessionSyncReceiveOnV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true),
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true, isSessionSyncReceiveOnV2),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
+        // Common function to build Session-Enabled Receiver-Client - For Async[Reactor]Client Or to back SyncClient.
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer, boolean isV2) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
@@ -1517,7 +2118,15 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ConnectionCacheWrapper connectionCacheWrapper;
+            final Runnable onClientClose;
+            if (isV2) {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            }
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
@@ -1530,11 +2139,11 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName,
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName,
                 ReceiverKind.ASYNC_RECEIVER);
-            return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, instrumentation, messageSerializer,
-                ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
+            return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
+                entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
+                onClientClose, clientIdentifier);
         }
     }
 
@@ -1549,6 +2158,7 @@ public final class ServiceBusClientBuilder implements
      * <p><strong>Sample code to instantiate a processor client and receive in PeekLock mode</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
      *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     &#47;&#47; Randomly complete or abandon each message. Ideally, in real-world scenarios, if the business logic
@@ -1558,30 +2168,40 @@ public final class ServiceBusClientBuilder implements
      *     if &#40;success&#41; &#123;
      *         try &#123;
      *             context.complete&#40;&#41;;
-     *         &#125; catch &#40;Exception completionError&#41; &#123;
-     *             System.out.printf&#40;&quot;Completion of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
-     *             completionError.printStackTrace&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Completion of the message %s failed.%n Error: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
      *         &#125;
      *     &#125; else &#123;
      *         try &#123;
      *             context.abandon&#40;&#41;;
-     *         &#125; catch &#40;Exception abandonError&#41; &#123;
-     *             System.out.printf&#40;&quot;Abandoning of the message %s failed&#92;n&quot;, message.getMessageId&#40;&#41;&#41;;
-     *             abandonError.printStackTrace&#40;&#41;;
+     *         &#125; catch &#40;RuntimeException error&#41; &#123;
+     *             System.out.printf&#40;&quot;Abandoning of the message %s failed.%nError: %s%n&quot;,
+     *                 message.getMessageId&#40;&#41;, error&#41;;
      *         &#125;
      *     &#125;
      * &#125;;
      *
      * &#47;&#47; Sample code that gets called if there's an error
      * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
-     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
      * &#125;;
      *
-     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
      * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
-     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .queueName&#40;queueName&#41;
      *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
      *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
      *     .processMessage&#40;processMessage&#41;
@@ -1589,13 +2209,18 @@ public final class ServiceBusClientBuilder implements
      *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Starts the processor in the background and returns immediately
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-peek-lock-instantiation -->
      * <p><strong>Sample code to instantiate a processor client and receive in ReceiveAndDelete mode</strong></p>
      * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      * <pre>
+     * &#47;&#47; Function that gets called whenever a message is received.
      * Consumer&lt;ServiceBusReceivedMessageContext&gt; processMessage = context -&gt; &#123;
      *     final ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
      *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
@@ -1604,22 +2229,37 @@ public final class ServiceBusClientBuilder implements
      *
      * &#47;&#47; Sample code that gets called if there's an error
      * Consumer&lt;ServiceBusErrorContext&gt; processError = errorContext -&gt; &#123;
-     *     System.err.println&#40;&quot;Error occurred while receiving message: &quot; + errorContext.getException&#40;&#41;&#41;;
+     *     if &#40;errorContext.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; errorContext.getException&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, errorContext.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, errorContext.getException&#40;&#41;&#41;;
+     *     &#125;
      * &#125;;
      *
-     * &#47;&#47; create the processor client via the builder and its sub-builder
+     * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; Create the processor client via the builder and its sub-builder
+     * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
      * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
-     *     .connectionString&#40;&quot;&lt;&lt; CONNECTION STRING FOR THE SERVICE BUS NAMESPACE &gt;&gt;&quot;&#41;
+     *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
-     *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+     *     .queueName&#40;queueName&#41;
      *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
      *     .processMessage&#40;processMessage&#41;
      *     .processError&#40;processError&#41;
      *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
-     * &#47;&#47; Starts the processor in the background and returns immediately
+     * &#47;&#47; Starts the processor in the background. Control returns immediately.
      * processorClient.start&#40;&#41;;
+     *
+     * &#47;&#47; Stop processor and dispose when done processing messages.
+     * processorClient.stop&#40;&#41;;
+     * processorClient.close&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#receive-mode-receive-and-delete-instantiation -->
      *
@@ -1802,11 +2442,31 @@ public final class ServiceBusClientBuilder implements
          *     callbacks are not set.
          */
         public ServiceBusProcessorClient buildProcessorClient() {
+            final boolean isNonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
+            if (isNonSessionProcessorV2) {
+                processorClientOptions.setV2(true);
+                validateInputs();
+            }
+            // Build the Processor Client for Non-session receiving.
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
                     serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
                     serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        /**
+         * In V1, the client {@link ServiceBusReceiverAsyncClient} backing the {@link ServiceBusProcessorClient}
+         * is constructed eagerly (triggering input validation in the Constructor) at build time i.e,
+         * when {@link #buildProcessorClient()} is called. In V2, the client {@link MessagePump} backing
+         * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
+         * This is a helper method in v2 for input validations at build time.
+         */
+        private void validateInputs() {
+            final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 
@@ -1985,6 +2645,7 @@ public final class ServiceBusClientBuilder implements
             return buildAsyncClient(true, ReceiverKind.PROCESSOR);
         }
 
+        // Common function to build "Non-Session" Receiver-Client - For Async[Reactor|Processor]Client Or to back SyncClient.
         ServiceBusReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, ReceiverKind receiverKind) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
@@ -2004,7 +2665,29 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ConnectionCacheWrapper connectionCacheWrapper;
+            final Runnable onClientClose;
+            if (receiverKind == ReceiverKind.SYNC_RECEIVER) {
+                final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
+                if (syncReceiveOnV2) {
+                    // "Non-Session" Sync Receiver-Client on the V2-Stack.
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+                } else {
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this::onClientClose;
+                }
+            } else {
+                final boolean asyncReceiveOnV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
+                if (asyncReceiveOnV2) {
+                    // "Non-Session" Async[Reactor|Processor] Receiver-Client on the V2-Stack.
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+                } else {
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this::onClientClose;
+                }
+            }
             final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
@@ -2017,10 +2700,10 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
-                instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath, subscriptionName, receiverKind);
+            return new ServiceBusReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
+                instrumentation, messageSerializer, onClientClose, clientIdentifier);
         }
     }
 
@@ -2071,15 +2754,26 @@ public final class ServiceBusClientBuilder implements
          * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
          * that does not match one set in {@link #topicName(String) topicName}.
          */
+        // Function to build RuleManager-Client.
         public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
                 null);
-            final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final ConnectionCacheWrapper connectionCacheWrapper;
+            final Runnable onClientClose;
+            final boolean isManageRulesOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
+            if (isManageRulesOnV2) {
+                // RuleManager Client (async|sync) on the V2-Stack.
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            }
 
-            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
-                ServiceBusClientBuilder.this::onClientClose);
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionCacheWrapper,
+                onClientClose);
         }
 
         /**

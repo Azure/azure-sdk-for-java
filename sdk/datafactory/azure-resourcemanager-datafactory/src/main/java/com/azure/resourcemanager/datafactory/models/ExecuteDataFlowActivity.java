@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Execute data flow activity. */
+/**
+ * Execute data flow activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ExecuteDataFlow")
 @Fluent
@@ -23,55 +25,87 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
 
-    /** Creates an instance of ExecuteDataFlowActivity class. */
+    /**
+     * Creates an instance of ExecuteDataFlowActivity class.
+     */
     public ExecuteDataFlowActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Execute data flow activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecuteDataFlowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecuteDataFlowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -80,7 +114,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the dataFlow property: Data flow reference.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowReference dataFlow() {
@@ -89,7 +123,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the dataFlow property: Data flow reference.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -103,7 +137,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @return the staging value.
      */
     public DataFlowStagingInfo staging() {
@@ -112,7 +146,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -126,7 +160,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @return the integrationRuntime value.
      */
     public IntegrationRuntimeReference integrationRuntime() {
@@ -135,7 +169,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -149,7 +183,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @return the compute value.
      */
     public ExecuteDataFlowActivityTypePropertiesCompute compute() {
@@ -158,7 +192,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @param compute the compute value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -173,7 +207,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the traceLevel value.
      */
     public Object traceLevel() {
@@ -183,7 +217,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param traceLevel the traceLevel value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -198,7 +232,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the continueOnError value.
      */
     public Object continueOnError() {
@@ -208,7 +242,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param continueOnError the continueOnError value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -221,9 +255,9 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
-     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
+     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the runConcurrently value.
      */
     public Object runConcurrently() {
@@ -231,9 +265,9 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
-     * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the
+     * same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -246,9 +280,9 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
-     * Type: integer (or Expression with resultType integer).
-     *
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
+     * sink. Type: integer (or Expression with resultType integer).
+     * 
      * @return the sourceStagingConcurrency value.
      */
     public Object sourceStagingConcurrency() {
@@ -256,9 +290,9 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
-     * Type: integer (or Expression with resultType integer).
-     *
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the
+     * sink. Type: integer (or Expression with resultType integer).
+     * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -272,17 +306,15 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
         } else {
             innerTypeProperties().validate();
         }

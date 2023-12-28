@@ -25,7 +25,6 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -1079,12 +1078,11 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
         DataLakePathCreateOptions options) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
-            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         options = options == null ? new DataLakePathCreateOptions() : options;
+        options.setRequestConditions(new DataLakeRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            return createFileWithResponse(fileName, options.getPermissions(), options.getUmask(),
-                options.getPathHttpHeaders(), options.getMetadata(), requestConditions)
+            return createFileWithResponse(fileName, options)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,
                     t -> {
@@ -1444,11 +1442,11 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
         DataLakePathCreateOptions options) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
+        options.setRequestConditions(new DataLakeRequestConditions()
+            .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
-            options = options == null ? new DataLakePathCreateOptions() : options;
-            return createDirectoryWithResponse(directoryName, options.getPermissions(), options.getUmask(),
-                options.getPathHttpHeaders(), options.getMetadata(),
-                new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
+            return createDirectoryWithResponse(directoryName, options)
                 .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t)
                     .getStatusCode() == 409,
                     t -> {
@@ -1660,7 +1658,7 @@ public class DataLakeFileSystemAsyncClient {
             .pipeline(blobDataLakeStorageFs.getHttpPipeline())
             .url(blobUrl)
             .fileSystem(blobDataLakeStorageFs.getFileSystem())
-            .path(Utility.urlDecode(deletedPath))
+            .path(deletedPath)
             .version(serviceVersion.getVersion())
             .buildClient();
 

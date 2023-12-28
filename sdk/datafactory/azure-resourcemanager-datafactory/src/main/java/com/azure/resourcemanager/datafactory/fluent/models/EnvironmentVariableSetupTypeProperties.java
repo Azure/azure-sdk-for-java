@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Environment variable custom setup type properties. */
+/**
+ * Environment variable custom setup type properties.
+ */
 @Fluent
 public final class EnvironmentVariableSetupTypeProperties {
     /*
@@ -23,13 +25,15 @@ public final class EnvironmentVariableSetupTypeProperties {
     @JsonProperty(value = "variableValue", required = true)
     private String variableValue;
 
-    /** Creates an instance of EnvironmentVariableSetupTypeProperties class. */
+    /**
+     * Creates an instance of EnvironmentVariableSetupTypeProperties class.
+     */
     public EnvironmentVariableSetupTypeProperties() {
     }
 
     /**
      * Get the variableName property: The name of the environment variable.
-     *
+     * 
      * @return the variableName value.
      */
     public String variableName() {
@@ -38,7 +42,7 @@ public final class EnvironmentVariableSetupTypeProperties {
 
     /**
      * Set the variableName property: The name of the environment variable.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the EnvironmentVariableSetupTypeProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class EnvironmentVariableSetupTypeProperties {
 
     /**
      * Get the variableValue property: The value of the environment variable.
-     *
+     * 
      * @return the variableValue value.
      */
     public String variableValue() {
@@ -58,7 +62,7 @@ public final class EnvironmentVariableSetupTypeProperties {
 
     /**
      * Set the variableValue property: The value of the environment variable.
-     *
+     * 
      * @param variableValue the variableValue value to set.
      * @return the EnvironmentVariableSetupTypeProperties object itself.
      */
@@ -69,21 +73,17 @@ public final class EnvironmentVariableSetupTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (variableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property variableName in model EnvironmentVariableSetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property variableName in model EnvironmentVariableSetupTypeProperties"));
         }
         if (variableValue() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property variableValue in model EnvironmentVariableSetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property variableValue in model EnvironmentVariableSetupTypeProperties"));
         }
     }
 

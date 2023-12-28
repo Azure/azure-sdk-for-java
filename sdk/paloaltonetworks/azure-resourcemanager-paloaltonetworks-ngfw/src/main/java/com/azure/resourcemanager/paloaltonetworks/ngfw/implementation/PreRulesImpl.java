@@ -25,8 +25,7 @@ public final class PreRulesImpl implements PreRules {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public PreRulesImpl(
-        PreRulesClient innerClient,
+    public PreRulesImpl(PreRulesClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -43,13 +42,10 @@ public final class PreRulesImpl implements PreRules {
     }
 
     public Response<PreRulesResource> getWithResponse(String globalRulestackName, String priority, Context context) {
-        Response<PreRulesResourceInner> inner =
-            this.serviceClient().getWithResponse(globalRulestackName, priority, context);
+        Response<PreRulesResourceInner> inner
+            = this.serviceClient().getWithResponse(globalRulestackName, priority, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PreRulesResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class PreRulesImpl implements PreRules {
         }
     }
 
-    public PreRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource) {
+    public PreRulesResource createOrUpdate(String globalRulestackName, String priority,
+        PreRulesResourceInner resource) {
         PreRulesResourceInner inner = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource);
         if (inner != null) {
             return new PreRulesResourceImpl(inner, this.manager());
@@ -75,10 +71,10 @@ public final class PreRulesImpl implements PreRules {
         }
     }
 
-    public PreRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource, Context context) {
-        PreRulesResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, priority, resource, context);
+    public PreRulesResource createOrUpdate(String globalRulestackName, String priority, PreRulesResourceInner resource,
+        Context context) {
+        PreRulesResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource, context);
         if (inner != null) {
             return new PreRulesResourceImpl(inner, this.manager());
         } else {
@@ -94,15 +90,12 @@ public final class PreRulesImpl implements PreRules {
         this.serviceClient().delete(globalRulestackName, priority, context);
     }
 
-    public Response<RuleCounter> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterInner> inner =
-            this.serviceClient().getCountersWithResponse(globalRulestackName, priority, firewallName, context);
+    public Response<RuleCounter> getCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
+        Response<RuleCounterInner> inner
+            = this.serviceClient().getCountersWithResponse(globalRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -118,8 +111,8 @@ public final class PreRulesImpl implements PreRules {
         }
     }
 
-    public Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    public Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context) {
         return this.serviceClient().refreshCountersWithResponse(globalRulestackName, priority, firewallName, context);
     }
 
@@ -127,15 +120,12 @@ public final class PreRulesImpl implements PreRules {
         this.serviceClient().refreshCounters(globalRulestackName, priority);
     }
 
-    public Response<RuleCounterReset> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterResetInner> inner =
-            this.serviceClient().resetCountersWithResponse(globalRulestackName, priority, firewallName, context);
+    public Response<RuleCounterReset> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
+        Response<RuleCounterResetInner> inner
+            = this.serviceClient().resetCountersWithResponse(globalRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterResetImpl(inner.getValue(), this.manager()));
         } else {
             return null;

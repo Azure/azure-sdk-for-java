@@ -46,22 +46,13 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         return Utils.mapPage(inner, inner1 -> new OpenidConnectProviderContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String opid) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, opid);
-    }
-
     public OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, opid, context);
     }
 
-    public OpenidConnectProviderContract get(String resourceGroupName, String serviceName, String opid) {
-        OpenidConnectProviderContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, opid);
-        if (inner != null) {
-            return new OpenidConnectProviderContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String opid) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, opid);
     }
 
     public Response<OpenidConnectProviderContract> getWithResponse(
@@ -79,8 +70,13 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String opid, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, opid, ifMatch);
+    public OpenidConnectProviderContract get(String resourceGroupName, String serviceName, String opid) {
+        OpenidConnectProviderContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, opid);
+        if (inner != null) {
+            return new OpenidConnectProviderContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -88,13 +84,8 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, opid, ifMatch, context);
     }
 
-    public ClientSecretContract listSecrets(String resourceGroupName, String serviceName, String opid) {
-        ClientSecretContractInner inner = this.serviceClient().listSecrets(resourceGroupName, serviceName, opid);
-        if (inner != null) {
-            return new ClientSecretContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String opid, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, opid, ifMatch);
     }
 
     public Response<ClientSecretContract> listSecretsWithResponse(
@@ -107,6 +98,15 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClientSecretContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClientSecretContract listSecrets(String resourceGroupName, String serviceName, String opid) {
+        ClientSecretContractInner inner = this.serviceClient().listSecrets(resourceGroupName, serviceName, opid);
+        if (inner != null) {
+            return new ClientSecretContractImpl(inner, this.manager());
         } else {
             return null;
         }

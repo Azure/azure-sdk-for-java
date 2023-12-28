@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,8 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"hubProfile\":{\"dnsPrefix\":\"fnba\",\"fqdn\":\"ionle\",\"kubernetesVersion\":\"etqgtzxdpnq\"}},\"eTag\":\"qwxrjfeallnw\",\"location\":\"bisnja\",\"tags\":{\"onq\":\"ngnzscxaqwoochc\",\"ea\":\"pkvlrxn\",\"enjbdlwtgrhp\":\"eipheoflokeyy\"},\"id\":\"jp\",\"name\":\"umasxazjpq\",\"type\":\"e\"}";
+            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"eTag\":\"rbpbewtghfgblcg\",\"identity\":{\"principalId\":\"f0f61d0f-c014-4564-89a6-7cff2137dcc6\",\"tenantId\":\"708ef820-279d-43de-b69b-94e9098ab075\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"kbegibt\":{\"principalId\":\"c9b19de9-9f16-4d40-be41-39ace52fb22e\",\"clientId\":\"8a366ebc-46dd-4883-9702-535eafc36190\"}}},\"location\":\"xiebwwaloayqcg\",\"tags\":{\"htxongmtsavjc\":\"zjuzgwyz\",\"rknftguvriuhprwm\":\"pwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\",\"e\":\"bycnojvkn\"},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +64,11 @@ public final class FleetsGetByResourceGroupWithResponseMockTests {
         Fleet response =
             manager
                 .fleets()
-                .getByResourceGroupWithResponse("c", "pmivkwlzu", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("lupj", "khfxobbcswsrt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bisnja", response.location());
-        Assertions.assertEquals("ngnzscxaqwoochc", response.tags().get("onq"));
-        Assertions.assertEquals("fnba", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals("xiebwwaloayqcg", response.location());
+        Assertions.assertEquals("zjuzgwyz", response.tags().get("htxongmtsavjc"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

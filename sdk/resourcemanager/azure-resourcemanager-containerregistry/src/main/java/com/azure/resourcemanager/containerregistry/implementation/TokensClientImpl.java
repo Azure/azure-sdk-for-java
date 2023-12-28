@@ -184,7 +184,7 @@ public final class TokensClientImpl implements TokensClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -244,7 +244,7 @@ public final class TokensClientImpl implements TokensClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -373,7 +373,7 @@ public final class TokensClientImpl implements TokensClient {
         if (tokenName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tokenName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -429,7 +429,7 @@ public final class TokensClientImpl implements TokensClient {
         if (tokenName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tokenName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -539,7 +539,7 @@ public final class TokensClientImpl implements TokensClient {
         } else {
             tokenCreateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -607,7 +607,7 @@ public final class TokensClientImpl implements TokensClient {
         } else {
             tokenCreateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -840,7 +840,7 @@ public final class TokensClientImpl implements TokensClient {
         if (tokenName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tokenName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -895,7 +895,7 @@ public final class TokensClientImpl implements TokensClient {
         if (tokenName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tokenName is required and cannot be null."));
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1101,7 +1101,7 @@ public final class TokensClientImpl implements TokensClient {
         } else {
             tokenUpdateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1169,7 +1169,7 @@ public final class TokensClientImpl implements TokensClient {
         } else {
             tokenUpdateParameters.validate();
         }
-        final String apiVersion = "2022-12-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

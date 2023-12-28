@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdminKeys Get. */
 public final class AdminKeysGetSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/SearchGetAdminKeys.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchGetAdminKeys.json
      */
     /**
      * Sample code: SearchGetAdminKeys.
@@ -22,6 +20,6 @@ public final class AdminKeysGetSamples {
             .manager()
             .serviceClient()
             .getAdminKeys()
-            .getWithResponse("rg1", "mysearchservice", null, Context.NONE);
+            .getWithResponse("rg1", "mysearchservice", null, com.azure.core.util.Context.NONE);
     }
 }

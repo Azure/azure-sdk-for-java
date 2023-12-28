@@ -11,6 +11,14 @@ import com.azure.core.util.ExpandableStringEnum;
 public final class FormReadingOrder extends ExpandableStringEnum<FormReadingOrder> {
 
     /**
+     * Creates a FormReadingOrder object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FormReadingOrder() {
+    }
+
+    /**
      * Static value BASIC for FormReadingOrder.
      * Set it to basic for the lines to be sorted top to bottom, left to right, although in certain cases
      * proximity is treated with higher priority.

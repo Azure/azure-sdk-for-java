@@ -17,11 +17,12 @@ private case class ItemsScanPartitionReaderFactory
   cosmosQuery: CosmosParameterizedQuery,
   diagnosticsOperationContext: DiagnosticsContext,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 ) extends PartitionReaderFactory {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
     val feedRange = partition.asInstanceOf[CosmosInputPartition].feedRange
@@ -33,7 +34,8 @@ private case class ItemsScanPartitionReaderFactory
       cosmosQuery,
       diagnosticsOperationContext,
       cosmosClientStateHandles,
-      diagnosticsConfig
+      diagnosticsConfig,
+      sparkEnvironmentInfo
     )
   }
 }

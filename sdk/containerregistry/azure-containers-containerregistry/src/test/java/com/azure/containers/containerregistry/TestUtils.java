@@ -11,13 +11,11 @@ import com.azure.containers.containerregistry.models.OciImageManifest;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
@@ -73,7 +70,7 @@ public class TestUtils {
     public static final String REGISTRY_NAME_PLAYBACK = "REDACTED";
     public static final int HTTP_STATUS_CODE_202 = 202;
     public static final String CONTAINERREGISTRY_CLIENT_SECRET = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_SECRET");
-    public static final BiFunction<HttpRequest, Context, Boolean> SKIP_AUTH_TOKEN_REQUEST_FUNCTION = (request, context) -> request.getUrl().toString().contains("oauth2");
+
     public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
     static class FakeCredentials implements TokenCredential {

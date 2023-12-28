@@ -6,44 +6,20 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class BackupPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"infwjlfltkacjve\":\"ujhemmsbvdkcrodt\"},\"properties\":{\"backupId\":\"lfoakg\",\"creationDate\":\"2021-02-17T13:48:46Z\",\"provisioningState\":\"agaowpulpqblylsy\",\"size\":2544016623268930785,\"label\":\"sjervti\",\"backupType\":\"Scheduled\",\"failureReason\":\"dszue\",\"volumeName\":\"sbzkf\",\"useExistingSnapshot\":true}}")
-                .toObject(BackupPatch.class);
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.tags().get("infwjlfltkacjve"));
-        Assertions.assertEquals("sjervti", model.label());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
+        BackupPatch model
+            = BinaryData.fromString("{\"properties\":{\"label\":\"lffhmouwqlg\"}}").toObject(BackupPatch.class);
+        Assertions.assertEquals("lffhmouwqlg", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPatch model =
-            new BackupPatch()
-                .withTags(mapOf("infwjlfltkacjve", "ujhemmsbvdkcrodt"))
-                .withLabel("sjervti")
-                .withUseExistingSnapshot(true);
+        BackupPatch model = new BackupPatch().withLabel("lffhmouwqlg");
         model = BinaryData.fromObject(model).toObject(BackupPatch.class);
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.tags().get("infwjlfltkacjve"));
-        Assertions.assertEquals("sjervti", model.label());
-        Assertions.assertEquals(true, model.useExistingSnapshot());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("lffhmouwqlg", model.label());
     }
 }

@@ -11,9 +11,13 @@ import java.time.OffsetDateTime;
 
 
 public class LeaseAsyncClientJavaDocCodeSnippets {
-    private DataLakeLeaseAsyncClient client = new DataLakeLeaseClientBuilder()
+    private final DataLakeLeaseAsyncClient client = new DataLakeLeaseClientBuilder()
         .fileAsyncClient(JavaDocCodeSnippetsHelpers.getFileAsyncClient("fileName"))
         .buildAsyncClient();
+
+    private final RequestConditions yourOptionalRequestConditions = new RequestConditions()
+        .setIfModifiedSince(OffsetDateTime.now().minusDays(3))
+        .setIfUnmodifiedSince(OffsetDateTime.now().minusHours(3));
 
     /**
      * Code snippets for {@link DataLakeLeaseAsyncClient#acquireLease(int)}
@@ -66,8 +70,11 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
      */
     public void acquireLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions
-        RequestConditions modifiedRequestConditions = new RequestConditions()
-            .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
+        // Optional HTTP request conditions that can be used to narrow the scope of the request.
+        // The request conditions can be used to have the leasing request only succeed if the resource has been
+        // modified and/or unmodified within a certain time frame and/or matches and/or doesn't match a specific ETag,
+        // or any ETag.
+        RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
 
         client.acquireLeaseWithResponse(60, modifiedRequestConditions).subscribe(response ->
             System.out.printf("Lease ID is %s%n", response.getValue()));
@@ -79,8 +86,11 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
      */
     public void renewLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.renewLeaseWithResponse#RequestConditions
-        RequestConditions modifiedRequestConditions = new RequestConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        // Optional HTTP request conditions that can be used to narrow the scope of the request.
+        // The request conditions can be used to have the leasing request only succeed if the resource has been
+        // modified and/or unmodified within a certain time frame and/or matches and/or doesn't match a specific ETag,
+        // or any ETag.
+        RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
 
         client.renewLeaseWithResponse(modifiedRequestConditions).subscribe(response ->
             System.out.printf("Renewed lease ID is %s%n", response.getValue()));
@@ -92,8 +102,11 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
      */
     public void releaseLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.releaseLeaseWithResponse#RequestConditions
-        RequestConditions modifiedRequestConditions = new RequestConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        // Optional HTTP request conditions that can be used to narrow the scope of the request.
+        // The request conditions can be used to have the leasing request only succeed if the resource has been
+        // modified and/or unmodified within a certain time frame and/or matches and/or doesn't match a specific ETag,
+        // or any ETag.
+        RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
 
         client.releaseLeaseWithResponse(modifiedRequestConditions).subscribe(response ->
             System.out.printf("Release lease completed with status %d%n", response.getStatusCode()));
@@ -106,8 +119,11 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
     public void breakLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.breakLeaseWithResponse#Integer-RequestConditions
         Integer retainLeaseInSeconds = 5;
-        RequestConditions modifiedRequestConditions = new RequestConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        // Optional HTTP request conditions that can be used to narrow the scope of the request.
+        // The request conditions can be used to have the leasing request only succeed if the resource has been
+        // modified and/or unmodified within a certain time frame and/or matches and/or doesn't match a specific ETag,
+        // or any ETag.
+        RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
 
         client.breakLeaseWithResponse(retainLeaseInSeconds, modifiedRequestConditions).subscribe(response ->
             System.out.printf("The broken lease has %d seconds remaining on the lease", response.getValue()));
@@ -119,8 +135,11 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
      */
     public void changeLeaseWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions
-        RequestConditions modifiedRequestConditions = new RequestConditions()
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        // Optional HTTP request conditions that can be used to narrow the scope of the request.
+        // The request conditions can be used to have the leasing request only succeed if the resource has been
+        // modified and/or unmodified within a certain time frame and/or matches and/or doesn't match a specific ETag,
+        // or any ETag.
+        RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
 
         client.changeLeaseWithResponse("proposedId", modifiedRequestConditions).subscribe(response ->
             System.out.printf("Changed lease ID is %s%n", response.getValue()));

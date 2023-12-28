@@ -56,6 +56,18 @@ public final class KustomizationPatchDefinition {
     @JsonProperty(value = "force")
     private Boolean force;
 
+    /*
+     * Enable/disable health check for all Kubernetes objects created by this Kustomization.
+     */
+    @JsonProperty(value = "wait")
+    private Boolean enableWait;
+
+    /*
+     * Used for variable substitution for this Kustomization after kustomize build.
+     */
+    @JsonProperty(value = "postBuild")
+    private PostBuildDefinition postBuild;
+
     /** Creates an instance of KustomizationPatchDefinition class. */
     public KustomizationPatchDefinition() {
     }
@@ -207,10 +219,55 @@ public final class KustomizationPatchDefinition {
     }
 
     /**
+     * Get the enableWait property: Enable/disable health check for all Kubernetes objects created by this
+     * Kustomization.
+     *
+     * @return the enableWait value.
+     */
+    public Boolean enableWait() {
+        return this.enableWait;
+    }
+
+    /**
+     * Set the enableWait property: Enable/disable health check for all Kubernetes objects created by this
+     * Kustomization.
+     *
+     * @param enableWait the enableWait value to set.
+     * @return the KustomizationPatchDefinition object itself.
+     */
+    public KustomizationPatchDefinition withEnableWait(Boolean enableWait) {
+        this.enableWait = enableWait;
+        return this;
+    }
+
+    /**
+     * Get the postBuild property: Used for variable substitution for this Kustomization after kustomize build.
+     *
+     * @return the postBuild value.
+     */
+    public PostBuildDefinition postBuild() {
+        return this.postBuild;
+    }
+
+    /**
+     * Set the postBuild property: Used for variable substitution for this Kustomization after kustomize build.
+     *
+     * @param postBuild the postBuild value to set.
+     * @return the KustomizationPatchDefinition object itself.
+     */
+    public KustomizationPatchDefinition withPostBuild(PostBuildDefinition postBuild) {
+        this.postBuild = postBuild;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (postBuild() != null) {
+            postBuild().validate();
+        }
     }
 }

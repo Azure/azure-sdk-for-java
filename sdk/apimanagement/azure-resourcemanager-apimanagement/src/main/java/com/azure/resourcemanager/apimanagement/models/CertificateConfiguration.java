@@ -24,8 +24,8 @@ public final class CertificateConfiguration {
     private String certificatePassword;
 
     /*
-     * The System.Security.Cryptography.x509certificates.StoreName certificate
-     * store location. Only Root and CertificateAuthority are valid locations.
+     * The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and
+     * CertificateAuthority are valid locations.
      */
     @JsonProperty(value = "storeName", required = true)
     private CertificateConfigurationStoreName storeName;
@@ -35,6 +35,10 @@ public final class CertificateConfiguration {
      */
     @JsonProperty(value = "certificate")
     private CertificateInformation certificate;
+
+    /** Creates an instance of CertificateConfiguration class. */
+    public CertificateConfiguration() {
+    }
 
     /**
      * Get the encodedCertificate property: Base64 Encoded certificate.

@@ -31,7 +31,7 @@ public final class PrivateLinkResourcesListByElasticSanWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"fdlwg\",\"requiredMembers\":[\"sb\",\"tov\",\"tgseinqfiufxqkn\"],\"requiredZoneNames\":[\"gnepttwqmsni\",\"fcdmqnrojlpijn\",\"rxfrddhc\",\"atiz\"]},\"id\":\"onasxifto\",\"name\":\"qyzhf\",\"type\":\"wesgogczh\"}],\"nextLink\":\"nxkrlgnyhmossxkk\"}";
+            "{\"value\":[{\"properties\":{\"groupId\":\"ngamvpphosz\",\"requiredMembers\":[\"dphqamv\",\"kfwynw\",\"vtbvkayh\",\"tnvyqiatkzwp\"],\"requiredZoneNames\":[\"wzcjaesgvvsccy\"]},\"id\":\"g\",\"name\":\"qfhwyg\",\"type\":\"lvdnkfx\"},{\"properties\":{\"groupId\":\"mdwzrmuhapfcqdps\",\"requiredMembers\":[\"vpsvuoymgcce\",\"vezrypqlmfeo\",\"erqwkyhkobopg\"],\"requiredZoneNames\":[\"k\"]},\"id\":\"epbqpcrfkbw\",\"name\":\"csnjvcdwxlpqekft\",\"type\":\"khtj\"},{\"properties\":{\"groupId\":\"ngwfqatm\",\"requiredMembers\":[\"tmdvypgikdgs\",\"ywkbirryuzhlhkjo\"],\"requiredZoneNames\":[\"qqaatjinrvgou\",\"mfiibfggj\",\"ool\",\"rwxkvtkkgl\"]},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"}],\"nextLink\":\"zfbn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class PrivateLinkResourcesListByElasticSanWithResponseMockTests {
         PrivateLinkResourceListResult response =
             manager
                 .privateLinkResources()
-                .listByElasticSanWithResponse("fdntwjchrdgoih", "umwctondz", com.azure.core.util.Context.NONE)
+                .listByElasticSanWithResponse("fzdm", "yqtfihwh", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gnepttwqmsni", response.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("wzcjaesgvvsccy", response.value().get(0).requiredZoneNames().get(0));
     }
 }

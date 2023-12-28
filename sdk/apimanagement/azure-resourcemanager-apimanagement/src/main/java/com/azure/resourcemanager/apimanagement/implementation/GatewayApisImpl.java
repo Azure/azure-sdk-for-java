@@ -48,22 +48,13 @@ public final class GatewayApisImpl implements GatewayApis {
         return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, apiId);
-    }
-
     public GatewayApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, apiId, context);
     }
 
-    public ApiContract createOrUpdate(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
-        ApiContractInner inner = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, gatewayId, apiId);
-        if (inner != null) {
-            return new ApiContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, apiId);
     }
 
     public Response<ApiContract> createOrUpdateWithResponse(
@@ -88,13 +79,22 @@ public final class GatewayApisImpl implements GatewayApis {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
-        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, apiId);
+    public ApiContract createOrUpdate(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
+        ApiContractInner inner = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, gatewayId, apiId);
+        if (inner != null) {
+            return new ApiContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String apiId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, gatewayId, apiId, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String gatewayId, String apiId) {
+        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, apiId);
     }
 
     private GatewayApisClient serviceClient() {

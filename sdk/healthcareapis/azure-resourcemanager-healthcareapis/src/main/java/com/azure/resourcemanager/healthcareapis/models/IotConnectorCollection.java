@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.IotConnectorInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of IoT Connectors. */
+/**
+ * A collection of IoT Connectors.
+ */
 @Fluent
 public final class IotConnectorCollection {
     /*
@@ -25,8 +27,14 @@ public final class IotConnectorCollection {
     private List<IotConnectorInner> value;
 
     /**
+     * Creates an instance of IotConnectorCollection class.
+     */
+    public IotConnectorCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of IoT Connectors.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class IotConnectorCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of IoT Connectors.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IotConnectorCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class IotConnectorCollection {
 
     /**
      * Get the value property: The list of IoT Connectors.
-     *
+     * 
      * @return the value value.
      */
     public List<IotConnectorInner> value() {
@@ -55,7 +63,7 @@ public final class IotConnectorCollection {
 
     /**
      * Set the value property: The list of IoT Connectors.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotConnectorCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class IotConnectorCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -103,7 +103,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <pre>
  * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
  * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
- * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * System.out.println&#40;binaryData&#41;;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
  *
@@ -111,29 +111,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
  * <pre>
- * class Person &#123;
- *     &#64;JsonProperty
- *     private String name;
- *
- *     &#64;JsonSetter
- *     public Person setName&#40;String name&#41; &#123;
- *         this.name = name;
- *         return this;
- *     &#125;
- *
- *     &#64;JsonGetter
- *     public String getName&#40;&#41; &#123;
- *         return name;
- *     &#125;
- * &#125;
  * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
  *
  * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
- * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
- * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
  * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
  *
- * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * System.out.println&#40;binaryData&#41;;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
  *
@@ -211,7 +196,7 @@ public final class BinaryData {
      * <pre>
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
-     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * System.out.println&#40;binaryData&#41;;
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
      *
@@ -240,7 +225,7 @@ public final class BinaryData {
      * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;inputStream, &#40;long&#41; bytes.length&#41;;
-     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * System.out.println&#40;binaryData&#41;;
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
      *
@@ -593,29 +578,14 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
-     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * System.out.println&#40;binaryData&#41;;
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
      *
@@ -640,26 +610,11 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      * Disposable subscriber = BinaryData.fromObjectAsync&#40;data&#41;
      *     .subscribe&#40;binaryData -&gt; System.out.println&#40;binaryData.toString&#40;&#41;&#41;&#41;;
      *
@@ -695,28 +650,12 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
@@ -755,28 +694,12 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * Disposable subscriber = BinaryData.fromObjectAsync&#40;data, serializer&#41;
      *     .subscribe&#40;binaryData -&gt; System.out.println&#40;binaryData.toString&#40;&#41;&#41;&#41;;
      *
@@ -963,28 +886,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1020,28 +928,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1064,8 +957,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
@@ -1107,29 +1000,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
@@ -1173,34 +1050,17 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
@@ -1215,8 +1075,7 @@ public final class BinaryData {
      * personList.add&#40;person1&#41;;
      * personList.add&#40;person2&#41;;
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
      *
      * &#47;&#47; Retains the type of the list when deserializing
@@ -1257,28 +1116,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1318,28 +1162,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1406,29 +1235,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * Disposable subscriber = binaryData.toObjectAsync&#40;Person.class, serializer&#41;
@@ -1476,29 +1289,13 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      * <pre>
-     * class Person &#123;
-     *     &#64;JsonProperty
-     *     private String name;
-     *
-     *     &#64;JsonSetter
-     *     public Person setName&#40;String name&#41; &#123;
-     *         this.name = name;
-     *         return this;
-     *     &#125;
-     *
-     *     &#64;JsonGetter
-     *     public String getName&#40;&#41; &#123;
-     *         return name;
-     *     &#125;
-     * &#125;
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
      *
      * Disposable subscriber = binaryData
@@ -1522,8 +1319,11 @@ public final class BinaryData {
      * personList.add&#40;person1&#41;;
      * personList.add&#40;person2&#41;;
      *
-     * final ObjectSerializer serializer =
-     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
      *
      * Disposable subscriber = binaryData
@@ -1559,8 +1359,10 @@ public final class BinaryData {
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
      * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;;
      * final byte[] bytes = new byte[data.length];
-     * binaryData.toStream&#40;&#41;.read&#40;bytes, 0, data.length&#41;;
-     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * try &#40;InputStream inputStream = binaryData.toStream&#40;&#41;&#41; &#123;
+     *     inputStream.read&#40;bytes, 0, data.length&#41;;
+     *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.core.util.BinaryData.toStream -->
      *
@@ -1637,7 +1439,7 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
      * <pre>
-     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     * Mono.fromCallable&#40;this::binaryDataProducer&#41;
      *     .flatMap&#40;binaryData -&gt; &#123;
      *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
      *             return Mono.just&#40;binaryData&#41;;
@@ -1711,7 +1513,7 @@ public final class BinaryData {
      *
      * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
      * <pre>
-     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     * Mono.fromCallable&#40;this::binaryDataProducer&#41;
      *     .flatMap&#40;binaryData -&gt; &#123;
      *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
      *             return Mono.just&#40;binaryData&#41;;

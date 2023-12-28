@@ -13,7 +13,7 @@ public interface OpenIdConnectProviders {
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface OpenIdConnectProviders {
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -45,19 +45,7 @@ public interface OpenIdConnectProviders {
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String opid);
-
-    /**
-     * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -70,22 +58,21 @@ public interface OpenIdConnectProviders {
         String resourceGroupName, String serviceName, String opid, Context context);
 
     /**
-     * Gets specific OpenID Connect Provider without secrets.
+     * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific OpenID Connect Provider without secrets.
      */
-    OpenidConnectProviderContract get(String resourceGroupName, String serviceName, String opid);
+    void getEntityTag(String resourceGroupName, String serviceName, String opid);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -98,23 +85,22 @@ public interface OpenIdConnectProviders {
         String resourceGroupName, String serviceName, String opid, Context context);
 
     /**
-     * Deletes specific OpenID Connect Provider of the API Management service instance.
+     * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific OpenID Connect Provider without secrets.
      */
-    void delete(String resourceGroupName, String serviceName, String opid, String ifMatch);
+    OpenidConnectProviderContract get(String resourceGroupName, String serviceName, String opid);
 
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -129,22 +115,23 @@ public interface OpenIdConnectProviders {
         String resourceGroupName, String serviceName, String opid, String ifMatch, Context context);
 
     /**
-     * Gets the client secret details of the OpenID Connect Provider.
+     * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the OpenID Connect Provider.
      */
-    ClientSecretContract listSecrets(String resourceGroupName, String serviceName, String opid);
+    void delete(String resourceGroupName, String serviceName, String opid, String ifMatch);
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -155,6 +142,19 @@ public interface OpenIdConnectProviders {
      */
     Response<ClientSecretContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, String opid, Context context);
+
+    /**
+     * Gets the client secret details of the OpenID Connect Provider.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the client secret details of the OpenID Connect Provider.
+     */
+    ClientSecretContract listSecrets(String resourceGroupName, String serviceName, String opid);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.

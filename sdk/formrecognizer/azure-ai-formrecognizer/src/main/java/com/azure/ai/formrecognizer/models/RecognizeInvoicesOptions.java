@@ -18,6 +18,12 @@ public final class RecognizeInvoicesOptions {
     private List<String> pages;
 
     /**
+     * Create a {@code RecognizeInvoicesOptions} object.
+     */
+    public RecognizeInvoicesOptions() {
+    }
+
+    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return the {@code contentType} value.

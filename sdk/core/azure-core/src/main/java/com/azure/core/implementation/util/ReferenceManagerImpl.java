@@ -3,12 +3,12 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.ReferenceManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
@@ -27,18 +27,18 @@ public final class ReferenceManagerImpl implements ReferenceManager {
     private static final String BASE_THREAD_NAME = "azure-sdk-referencemanager";
 
     private static final Object CLEANER;
-    private static final MethodHandle CLEANER_REGISTER;
+    private static final ReflectiveInvoker CLEANER_REGISTER;
 
     static {
         Object cleaner = null;
-        MethodHandle cleanerRegister = null;
+        ReflectiveInvoker cleanerRegister = null;
         try {
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
             Class<?> cleanerClass = Class.forName("java.lang.ref.Cleaner");
             cleaner = cleanerClass.getDeclaredMethod("create", ThreadFactory.class)
                 .invoke(null, (ThreadFactory) r -> new Thread(r, BASE_THREAD_NAME));
-            cleanerRegister = lookup.unreflect(cleanerClass.getMethod("register", Object.class, Runnable.class));
-        } catch (ReflectiveOperationException ex) {
+            cleanerRegister = ReflectionUtils.getMethodInvoker(cleanerClass,
+                cleanerClass.getDeclaredMethod("register", Object.class, Runnable.class), false);
+        } catch (Exception ex) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Unable to use java.lang.ref.Cleaner to manage references.", ex);
         }
 
@@ -93,14 +93,12 @@ public final class ReferenceManagerImpl implements ReferenceManager {
             new CleanableReference<>(object, cleanupAction, this);
         } else {
             try {
-                CLEANER_REGISTER.invoke(CLEANER, object, cleanupAction);
-            } catch (Throwable throwable) {
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                } else if (throwable instanceof RuntimeException) {
-                    throw LOGGER.logExceptionAsError((RuntimeException) throwable);
+                CLEANER_REGISTER.invokeWithArguments(CLEANER, object, cleanupAction);
+            } catch (Exception exception) {
+                if (exception instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) exception);
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(throwable));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
                 }
             }
         }

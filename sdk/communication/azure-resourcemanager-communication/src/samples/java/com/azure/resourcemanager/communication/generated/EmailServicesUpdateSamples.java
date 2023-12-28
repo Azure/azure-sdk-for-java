@@ -8,27 +8,28 @@ import com.azure.resourcemanager.communication.models.EmailServiceResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for EmailServices Update. */
+/**
+ * Samples for EmailServices Update.
+ */
 public final class EmailServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/emailServices/update.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * emailServices/update.json
      */
     /**
      * Sample code: Update EmailService resource.
-     *
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void updateEmailServiceResource(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        EmailServiceResource resource =
-            manager
-                .emailServices()
-                .getByResourceGroupWithResponse(
-                    "MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        updateEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        EmailServiceResource resource = manager.emailServices().getByResourceGroupWithResponse("MyResourceGroup",
+            "MyEmailServiceResource", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

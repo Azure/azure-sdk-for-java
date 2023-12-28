@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SoapApiType. */
+/**
+ * Type of API to create. * `http` creates a REST API * `soap` creates a SOAP pass-through API * `websocket` creates
+ * websocket API * `graphql` creates GraphQL API.
+ */
 public final class SoapApiType extends ExpandableStringEnum<SoapApiType> {
     /** Static value http for SoapApiType. */
     public static final SoapApiType HTTP = fromString("http");
@@ -23,6 +26,15 @@ public final class SoapApiType extends ExpandableStringEnum<SoapApiType> {
     public static final SoapApiType GRAPHQL = fromString("graphql");
 
     /**
+     * Creates a new instance of SoapApiType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SoapApiType() {
+    }
+
+    /**
      * Creates or finds a SoapApiType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class SoapApiType extends ExpandableStringEnum<SoapApiType> {
         return fromString(name, SoapApiType.class);
     }
 
-    /** @return known SoapApiType values. */
+    /**
+     * Gets known SoapApiType values.
+     *
+     * @return known SoapApiType values.
+     */
     public static Collection<SoapApiType> values() {
         return values(SoapApiType.class);
     }

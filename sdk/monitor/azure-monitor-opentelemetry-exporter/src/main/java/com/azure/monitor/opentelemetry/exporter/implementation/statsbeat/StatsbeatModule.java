@@ -11,13 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.FAIL_TO_SEND_STATSBEAT_ERROR;
@@ -37,19 +35,24 @@ public class StatsbeatModule {
     private final FeatureStatsbeat instrumentationStatsbeat;
     private final NonessentialStatsbeat nonessentialStatsbeat;
     private final AzureMetadataService azureMetadataService;
-
     private final AtomicBoolean started = new AtomicBoolean();
 
     private final AtomicBoolean shutdown = new AtomicBoolean();
 
     public StatsbeatModule(Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
         customDimensions = new CustomDimensions();
-        networkStatsbeat = new NetworkStatsbeat(customDimensions);
         attachStatsbeat = new AttachStatsbeat(customDimensions);
         featureStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.FEATURE);
         instrumentationStatsbeat = new FeatureStatsbeat(customDimensions, FeatureType.INSTRUMENTATION);
-        nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
         azureMetadataService = new AzureMetadataService(attachStatsbeat, customDimensions, vmMetadataServiceCallback);
+        // TODO (heya) will update this when we have a consensus from other languages on what other telemetry to be collected
+        if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
+            networkStatsbeat = new NetworkStatsbeat(customDimensions);
+            nonessentialStatsbeat = new NonessentialStatsbeat(customDimensions);
+        } else {
+            networkStatsbeat = null;
+            nonessentialStatsbeat = null;
+        }
     }
 
     public void start(
@@ -80,11 +83,13 @@ public class StatsbeatModule {
         updateConnectionString(connectionString.get());
         updateInstrumentationKey(instrumentationKey.get());
 
-        scheduledExecutor.scheduleWithFixedDelay(
-            new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
-            shortIntervalSeconds,
-            shortIntervalSeconds,
-            TimeUnit.SECONDS);
+        if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
+            scheduledExecutor.scheduleWithFixedDelay(
+                new StatsbeatSender(networkStatsbeat, telemetryItemExporter),
+                shortIntervalSeconds,
+                shortIntervalSeconds,
+                TimeUnit.SECONDS);
+        }
         scheduledExecutor.scheduleWithFixedDelay(
             new StatsbeatSender(attachStatsbeat, telemetryItemExporter),
             Math.min(60, longIntervalSeconds),
@@ -110,7 +115,7 @@ public class StatsbeatModule {
 
         featureStatsbeat.trackConfigurationOptions(featureSet);
 
-        if (!disabled) {
+        if (!disabled && RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
             nonessentialStatsbeat.setConnectionString(connectionString.get());
             nonessentialStatsbeat.setInstrumentationKey(instrumentationKey.get());
             scheduledExecutor.scheduleWithFixedDelay(
@@ -151,7 +156,9 @@ public class StatsbeatModule {
 
     private void updateConnectionString(StatsbeatConnectionString connectionString) {
         if (connectionString != null) {
-            networkStatsbeat.setConnectionString(connectionString);
+            if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
+                networkStatsbeat.setConnectionString(connectionString);
+            }
             attachStatsbeat.setConnectionString(connectionString);
             featureStatsbeat.setConnectionString(connectionString);
             instrumentationStatsbeat.setConnectionString(connectionString);
@@ -160,7 +167,9 @@ public class StatsbeatModule {
 
     private void updateInstrumentationKey(String instrumentationKey) {
         if (instrumentationKey != null && !instrumentationKey.isEmpty()) {
-            networkStatsbeat.setInstrumentationKey(instrumentationKey);
+            if (RpAttachType.getRpAttachType() != RpAttachType.MANUAL) {
+                networkStatsbeat.setInstrumentationKey(instrumentationKey);
+            }
             attachStatsbeat.setInstrumentationKey(instrumentationKey);
             featureStatsbeat.setInstrumentationKey(instrumentationKey);
             instrumentationStatsbeat.setInstrumentationKey(instrumentationKey);

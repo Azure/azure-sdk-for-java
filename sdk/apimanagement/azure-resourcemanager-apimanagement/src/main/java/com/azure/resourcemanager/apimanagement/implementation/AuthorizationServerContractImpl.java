@@ -40,6 +40,14 @@ public final class AuthorizationServerContractImpl
         return this.innerModel().displayName();
     }
 
+    public Boolean useInTestConsole() {
+        return this.innerModel().useInTestConsole();
+    }
+
+    public Boolean useInApiDocumentation() {
+        return this.innerModel().useInApiDocumentation();
+    }
+
     public String clientRegistrationEndpoint() {
         return this.innerModel().clientRegistrationEndpoint();
     }
@@ -123,6 +131,10 @@ public final class AuthorizationServerContractImpl
 
     public String resourceOwnerPassword() {
         return this.innerModel().resourceOwnerPassword();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AuthorizationServerContractInner innerModel() {
@@ -238,14 +250,14 @@ public final class AuthorizationServerContractImpl
         return this;
     }
 
-    public AuthorizationServerSecretsContract listSecrets() {
-        return serviceManager.authorizationServers().listSecrets(resourceGroupName, serviceName, authsid);
-    }
-
     public Response<AuthorizationServerSecretsContract> listSecretsWithResponse(Context context) {
         return serviceManager
             .authorizationServers()
             .listSecretsWithResponse(resourceGroupName, serviceName, authsid, context);
+    }
+
+    public AuthorizationServerSecretsContract listSecrets() {
+        return serviceManager.authorizationServers().listSecrets(resourceGroupName, serviceName, authsid);
     }
 
     public AuthorizationServerContractImpl withDisplayName(String displayName) {
@@ -254,6 +266,26 @@ public final class AuthorizationServerContractImpl
             return this;
         } else {
             this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withUseInTestConsole(Boolean useInTestConsole) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInTestConsole(useInTestConsole);
+            return this;
+        } else {
+            this.updateParameters.withUseInTestConsole(useInTestConsole);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInApiDocumentation(useInApiDocumentation);
+            return this;
+        } else {
+            this.updateParameters.withUseInApiDocumentation(useInApiDocumentation);
             return this;
         }
     }

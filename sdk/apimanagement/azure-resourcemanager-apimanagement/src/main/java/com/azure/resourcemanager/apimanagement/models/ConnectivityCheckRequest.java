@@ -30,9 +30,8 @@ public final class ConnectivityCheckRequest {
     private PreferredIpVersion preferredIpVersion;
 
     /*
-     * The request's protocol. Specific protocol configuration can be available
-     * based on this selection. The specified destination address must be
-     * coherent with this value.
+     * The request's protocol. Specific protocol configuration can be available based on this selection. The specified
+     * destination address must be coherent with this value.
      */
     @JsonProperty(value = "protocol")
     private ConnectivityCheckProtocol protocol;
@@ -42,6 +41,10 @@ public final class ConnectivityCheckRequest {
      */
     @JsonProperty(value = "protocolConfiguration")
     private ConnectivityCheckRequestProtocolConfiguration protocolConfiguration;
+
+    /** Creates an instance of ConnectivityCheckRequest class. */
+    public ConnectivityCheckRequest() {
+    }
 
     /**
      * Get the source property: Definitions about the connectivity check origin.

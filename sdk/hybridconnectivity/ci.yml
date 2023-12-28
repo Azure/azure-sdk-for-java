@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridconnectivity/ci.yml
+      - sdk/hybridconnectivity/azure-resourcemanager-hybridconnectivity/
+    exclude:
+      - sdk/hybridconnectivity/pom.xml
+      - sdk/hybridconnectivity/azure-resourcemanager-hybridconnectivity/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridconnectivity/ci.yml
+      - sdk/hybridconnectivity/azure-resourcemanager-hybridconnectivity/
+    exclude:
+      - sdk/hybridconnectivity/pom.xml
+      - sdk/hybridconnectivity/azure-resourcemanager-hybridconnectivity/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerhybridconnectivity
+    displayName: azure-resourcemanager-hybridconnectivity
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hybridconnectivity
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-hybridconnectivity
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhybridconnectivity
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerhybridconnectivity }}

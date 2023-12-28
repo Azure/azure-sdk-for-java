@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NameDescriptionObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameDescriptionObject model =
-            BinaryData
-                .fromString("{\"name\":\"ounqecano\",\"description\":\"upfh\"}")
-                .toObject(NameDescriptionObject.class);
-        Assertions.assertEquals("ounqecano", model.name());
-        Assertions.assertEquals("upfh", model.description());
+        NameDescriptionObject model = BinaryData.fromString("{\"name\":\"cwif\",\"description\":\"ttgzfbis\"}")
+            .toObject(NameDescriptionObject.class);
+        Assertions.assertEquals("cwif", model.name());
+        Assertions.assertEquals("ttgzfbis", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameDescriptionObject model = new NameDescriptionObject().withName("ounqecano").withDescription("upfh");
+        NameDescriptionObject model = new NameDescriptionObject().withName("cwif").withDescription("ttgzfbis");
         model = BinaryData.fromObject(model).toObject(NameDescriptionObject.class);
-        Assertions.assertEquals("ounqecano", model.name());
-        Assertions.assertEquals("upfh", model.description());
+        Assertions.assertEquals("cwif", model.name());
+        Assertions.assertEquals("ttgzfbis", model.description());
     }
 }

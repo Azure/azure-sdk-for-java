@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.NotificationRecipientUsersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.RecipientUserCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.RecipientUserContractInner;
@@ -58,11 +57,10 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientN")
-    private interface NotificationRecipientUsersService {
+    public interface NotificationRecipientUsersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}/recipientUsers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecipientUserCollectionInner>> listByNotification(
@@ -77,8 +75,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Boolean>> checkEntityExists(
@@ -94,8 +91,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecipientUserContractInner>> createOrUpdate(
@@ -111,8 +107,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -130,7 +125,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +180,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param context The context to associate with this operation.
@@ -238,7 +233,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,37 +246,13 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     private Mono<RecipientUserCollectionInner> listByNotificationAsync(
         String resourceGroupName, String serviceName, NotificationName notificationName) {
         return listByNotificationWithResponseAsync(resourceGroupName, serviceName, notificationName)
-            .flatMap(
-                (Response<RecipientUserCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient User subscribed to the notification.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecipientUserCollectionInner listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName) {
-        return listByNotificationAsync(resourceGroupName, serviceName, notificationName).block();
-    }
-
-    /**
-     * Gets the list of the Notification Recipient User subscribed to the notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param context The context to associate with this operation.
@@ -297,9 +268,27 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     }
 
     /**
+     * Gets the list of the Notification Recipient User subscribed to the notification.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of the Notification Recipient User subscribed to the notification.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecipientUserCollectionInner listByNotification(
+        String resourceGroupName, String serviceName, NotificationName notificationName) {
+        return listByNotificationWithResponse(resourceGroupName, serviceName, notificationName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Determine if the Notification Recipient User is subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -358,7 +347,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -419,7 +408,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -432,43 +421,13 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     private Mono<Boolean> checkEntityExistsAsync(
         String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
         return checkEntityExistsWithResponseAsync(resourceGroupName, serviceName, notificationName, userId)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @param userId User identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
-        Boolean value = checkEntityExistsAsync(resourceGroupName, serviceName, notificationName, userId).block();
-        if (value != null) {
-            return value;
-        } else {
-            throw LOGGER.logExceptionAsError(new NullPointerException());
-        }
-    }
-
-    /**
-     * Determine if the Notification Recipient User is subscribed to the notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -490,9 +449,28 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     }
 
     /**
+     * Determine if the Notification Recipient User is subscribed to the notification.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkEntityExists(
+        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
+        return checkEntityExistsWithResponse(resourceGroupName, serviceName, notificationName, userId, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Adds the API Management User to the list of Recipients for the Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -551,7 +529,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -612,7 +590,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -625,38 +603,13 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     private Mono<RecipientUserContractInner> createOrUpdateAsync(
         String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, notificationName, userId)
-            .flatMap(
-                (Response<RecipientUserContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @param userId User identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient User details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecipientUserContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, notificationName, userId).block();
-    }
-
-    /**
-     * Adds the API Management User to the list of Recipients for the Notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -678,9 +631,28 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     }
 
     /**
+     * Adds the API Management User to the list of Recipients for the Notification.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recipient User details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecipientUserContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, userId, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Removes the API Management user from the list of Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -739,7 +711,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Removes the API Management user from the list of Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -800,7 +772,7 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     /**
      * Removes the API Management user from the list of Notification.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -813,29 +785,13 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
     private Mono<Void> deleteAsync(
         String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, notificationName, userId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Removes the API Management user from the list of Notification.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @param userId User identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
-        deleteAsync(resourceGroupName, serviceName, notificationName, userId).block();
-    }
-
-    /**
-     * Removes the API Management user from the list of Notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -855,5 +811,19 @@ public final class NotificationRecipientUsersClientImpl implements NotificationR
         return deleteWithResponseAsync(resourceGroupName, serviceName, notificationName, userId, context).block();
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(NotificationRecipientUsersClientImpl.class);
+    /**
+     * Removes the API Management user from the list of Notification.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, NotificationName notificationName, String userId) {
+        deleteWithResponse(resourceGroupName, serviceName, notificationName, userId, Context.NONE);
+    }
 }

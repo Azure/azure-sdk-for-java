@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataSources ListByWorkspace. */
 public final class DataSourcesListByWorkspaceSamples {
     /*
@@ -19,6 +17,7 @@ public final class DataSourcesListByWorkspaceSamples {
     public static void dataSourcesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .dataSources()
-            .listByWorkspace("OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null, Context.NONE);
+            .listByWorkspace(
+                "OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,12 @@ public final class ManagedClusterUpdate {
     @JsonProperty(value = "upgrade", required = true)
     private ManagedClusterUpgradeSpec upgrade;
 
+    /*
+     * The node image upgrade to be applied to the target nodes in update run.
+     */
+    @JsonProperty(value = "nodeImageSelection")
+    private NodeImageSelection nodeImageSelection;
+
     /** Creates an instance of ManagedClusterUpdate class. */
     public ManagedClusterUpdate() {
     }
@@ -42,6 +48,26 @@ public final class ManagedClusterUpdate {
     }
 
     /**
+     * Get the nodeImageSelection property: The node image upgrade to be applied to the target nodes in update run.
+     *
+     * @return the nodeImageSelection value.
+     */
+    public NodeImageSelection nodeImageSelection() {
+        return this.nodeImageSelection;
+    }
+
+    /**
+     * Set the nodeImageSelection property: The node image upgrade to be applied to the target nodes in update run.
+     *
+     * @param nodeImageSelection the nodeImageSelection value to set.
+     * @return the ManagedClusterUpdate object itself.
+     */
+    public ManagedClusterUpdate withNodeImageSelection(NodeImageSelection nodeImageSelection) {
+        this.nodeImageSelection = nodeImageSelection;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -53,6 +79,9 @@ public final class ManagedClusterUpdate {
                     new IllegalArgumentException("Missing required property upgrade in model ManagedClusterUpdate"));
         } else {
             upgrade().validate();
+        }
+        if (nodeImageSelection() != null) {
+            nodeImageSelection().validate();
         }
     }
 

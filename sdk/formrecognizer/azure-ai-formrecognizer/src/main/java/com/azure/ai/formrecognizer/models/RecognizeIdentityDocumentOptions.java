@@ -17,6 +17,12 @@ public final class RecognizeIdentityDocumentOptions {
     private List<String> pages;
 
     /**
+     * Create a {@code RecognizeIdentityDocumentOptions} object.
+     */
+    public RecognizeIdentityDocumentOptions() {
+    }
+
+    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png, .bmp or .tiff type file stream.
      *
      * @return the {@code contentType} value.

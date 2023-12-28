@@ -23,6 +23,10 @@ public final class TokenBodyParameterContract {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of TokenBodyParameterContract class. */
+    public TokenBodyParameterContract() {
+    }
+
     /**
      * Get the name property: body parameter name.
      *

@@ -16,7 +16,39 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A token cache that supports caching a token and refreshing it.
+ * <p>The Simple Token Cache offers a basic in-memory token caching mechanism. It is designed to help improve
+ * performance and reduce the number of token requests made to Azure services during application runtime.</p>
+ *
+ * <p>When using Azure services that require authentication, such as Azure Storage or Azure Key Vault, the library
+ * handles the acquisition and management of access tokens. By default, each request made to an Azure service triggers
+ * a token request, which involves authentication and token retrieval from the authentication provider
+ * (e.g., Azure Active Directory).</p>
+ *
+ * <p>The Simple Token Cache feature caches the access tokens retrieved from the authentication provider in memory
+ * for a certain period. This caching mechanism helps reduce the overhead of repeated token requests, especially when
+ * multiple requests are made within a short time frame.</p>
+ *
+ * <p>The Simple Token Cache is designed for simplicity and ease of use. It automatically handles token expiration
+ * and refreshing. When a cached token is about to expire, the SDK automatically attempts to refresh it by requesting
+ * a new token from the authentication provider. The cached tokens are associated with a specific Azure resource or
+ * scope and are used for subsequent requests to that resource.</p>
+ *
+ * <p><strong>Sample: Azure SAS Authentication</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.core.credential.SimpleTokenCache}.</p>
+ *
+ * <!-- src_embed com.azure.core.credential.simpleTokenCache -->
+ * <pre>
+ * SimpleTokenCache simpleTokenCache =
+ *     new SimpleTokenCache&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Your logic to retrieve access token goes here.
+ *         return Mono.just&#40;new AccessToken&#40;&quot;dummy-token&quot;, OffsetDateTime.now&#40;&#41;.plusHours&#40;2&#41;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.simpleTokenCache -->
+ *
+ * @see com.azure.core.credential
+ * @see com.azure.core.credential.TokenCredential
  */
 public class SimpleTokenCache {
     // The delay after a refresh to attempt another token refresh
@@ -85,8 +117,8 @@ public class SimpleTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(cache);
                     }
-                    return tokenRefresh
-                        .materialize()
+
+                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
                         .flatMap(signal -> {
                             AccessToken accessToken = signal.get();
                             Throwable error = signal.getThrowable();
@@ -107,8 +139,7 @@ public class SimpleTokenCache {
                                 return fallback;
                             }
                         })
-                        .doOnError(sinksOne::tryEmitError)
-                        .doFinally(ignored -> wip.set(null));
+                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);

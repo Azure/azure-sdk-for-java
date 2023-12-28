@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of NetApp account resources. */
+/**
+ * List of NetApp account resources.
+ */
 @Fluent
 public final class NetAppAccountList {
     /*
@@ -24,13 +26,15 @@ public final class NetAppAccountList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetAppAccountList class. */
+    /**
+     * Creates an instance of NetAppAccountList class.
+     */
     public NetAppAccountList() {
     }
 
     /**
      * Get the value property: Multiple NetApp accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<NetAppAccountInner> value() {
@@ -39,7 +43,7 @@ public final class NetAppAccountList {
 
     /**
      * Set the value property: Multiple NetApp accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetAppAccountList object itself.
      */
@@ -50,7 +54,7 @@ public final class NetAppAccountList {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetAppAccountList {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetAppAccountList object itself.
      */
@@ -70,7 +74,7 @@ public final class NetAppAccountList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

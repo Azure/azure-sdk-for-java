@@ -51,6 +51,9 @@ fist:
   service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
+hdinsight/Microsoft.HDInsight/HDInsightOnAks:
+  service: hdinsight
+  suffix: containers
 help:
   service: selfhelp
 hybridaks:
@@ -93,6 +96,8 @@ service-map:
   service: servicemap
 servicebus:
   suffix: generated
+solutions:
+  service: managedapplications
 sql:
   suffix: generated
 storage:

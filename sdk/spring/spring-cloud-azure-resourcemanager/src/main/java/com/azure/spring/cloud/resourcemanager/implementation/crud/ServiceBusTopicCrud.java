@@ -8,13 +8,15 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Service Bus topic.
  */
-public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>> {
+public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>, ServiceBusTopicProperties> {
 
     public ServiceBusTopicCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
@@ -56,5 +58,22 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
             .topics()
             .define(namespaceAndName.getT2())
             .create();
+    }
+
+    @Override
+    public Topic internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusTopicProperties topicProperties) {
+        Topic.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+            .getOrCreate(namespaceAndName.getT1())
+            .topics()
+            .define(namespaceAndName.getT2());
+        if (topicProperties != null) {
+            if (topicProperties.getMaxSizeInMegabytes() != null) {
+                blank.withSizeInMB(topicProperties.getMaxSizeInMegabytes());
+            }
+            if (topicProperties.getDefaultMessageTimeToLive() != null) {
+                blank.withDefaultMessageTTL(topicProperties.getDefaultMessageTimeToLive());
+            }
+        }
+        return blank.create();
     }
 }

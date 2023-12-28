@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the error code if the background copy of a resource created via the CopyStart operation fails. */
+/**
+ * Indicates the error code if the background copy of a resource created via the CopyStart operation fails.
+ */
 public final class CopyCompletionErrorReason extends ExpandableStringEnum<CopyCompletionErrorReason> {
-    /** Static value CopySourceNotFound for CopyCompletionErrorReason. */
+    /**
+     * Static value CopySourceNotFound for CopyCompletionErrorReason.
+     */
     public static final CopyCompletionErrorReason COPY_SOURCE_NOT_FOUND = fromString("CopySourceNotFound");
 
     /**
      * Creates a new instance of CopyCompletionErrorReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class CopyCompletionErrorReason extends ExpandableStringEnum<CopyCo
 
     /**
      * Creates or finds a CopyCompletionErrorReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CopyCompletionErrorReason.
      */
@@ -35,7 +39,7 @@ public final class CopyCompletionErrorReason extends ExpandableStringEnum<CopyCo
 
     /**
      * Gets known CopyCompletionErrorReason values.
-     *
+     * 
      * @return known CopyCompletionErrorReason values.
      */
     public static Collection<CopyCompletionErrorReason> values() {

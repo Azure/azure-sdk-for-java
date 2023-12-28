@@ -16,6 +16,10 @@ public final class BodyDiagnosticSettings {
     @JsonProperty(value = "bytes")
     private Integer bytes;
 
+    /** Creates an instance of BodyDiagnosticSettings class. */
+    public BodyDiagnosticSettings() {
+    }
+
     /**
      * Get the bytes property: Number of request body bytes to log.
      *

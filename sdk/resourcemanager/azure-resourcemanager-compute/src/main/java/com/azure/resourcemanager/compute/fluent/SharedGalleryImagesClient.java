@@ -14,11 +14,13 @@ import com.azure.resourcemanager.compute.fluent.models.SharedGalleryImageInner;
 import com.azure.resourcemanager.compute.models.SharedToValues;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SharedGalleryImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SharedGalleryImagesClient.
+ */
 public interface SharedGalleryImagesClient {
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -32,7 +34,7 @@ public interface SharedGalleryImagesClient {
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface SharedGalleryImagesClient {
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +60,7 @@ public interface SharedGalleryImagesClient {
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -69,33 +71,33 @@ public interface SharedGalleryImagesClient {
      * @return the List Shared Gallery Images operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedGalleryImageInner> list(
-        String location, String galleryUniqueName, SharedToValues sharedTo, Context context);
+    PagedIterable<SharedGalleryImageInner> list(String location, String galleryUniqueName, SharedToValues sharedTo,
+        Context context);
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a shared gallery image by subscription id or tenant id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(
-        String location, String galleryUniqueName, String galleryImageName);
+    Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(String location, String galleryUniqueName,
+        String galleryImageName);
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -106,11 +108,11 @@ public interface SharedGalleryImagesClient {
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -118,16 +120,16 @@ public interface SharedGalleryImagesClient {
      * @return a shared gallery image by subscription id or tenant id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedGalleryImageInner> getWithResponse(
-        String location, String galleryUniqueName, String galleryImageName, Context context);
+    Response<SharedGalleryImageInner> getWithResponse(String location, String galleryUniqueName,
+        String galleryImageName, Context context);
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -21,6 +21,10 @@ public final class OperationContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private OperationContractProperties innerProperties;
 
+    /** Creates an instance of OperationContractInner class. */
+    public OperationContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Operation Contract.
      *

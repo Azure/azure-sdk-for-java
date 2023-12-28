@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The operation result definition. */
+/**
+ * The operation result definition.
+ */
 @Fluent
 public class OperationResult extends OperationResultProperties {
     /*
@@ -60,13 +62,15 @@ public class OperationResult extends OperationResultProperties {
     @JsonProperty(value = "iterationCount")
     private Integer iterationCount;
 
-    /** Creates an instance of OperationResult class. */
+    /**
+     * Creates an instance of OperationResult class.
+     */
     public OperationResult() {
     }
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -75,7 +79,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -84,7 +88,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -93,7 +97,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -102,7 +106,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -111,7 +115,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -120,7 +124,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -129,7 +133,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the OperationResult object itself.
      */
@@ -140,7 +144,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the iterationCount property: The iterationCount property.
-     *
+     * 
      * @return the iterationCount value.
      */
     public Integer iterationCount() {
@@ -149,7 +153,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Set the iterationCount property: The iterationCount property.
-     *
+     * 
      * @param iterationCount the iterationCount value to set.
      * @return the OperationResult object itself.
      */
@@ -158,42 +162,54 @@ public class OperationResult extends OperationResultProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withCorrelation(RunActionCorrelation correlation) {
         super.withCorrelation(correlation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withStatus(WorkflowStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withCode(String code) {
         super.withCode(code);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withError(Object error) {
         super.withError(error);
@@ -202,7 +218,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

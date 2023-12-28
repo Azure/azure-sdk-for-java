@@ -15,15 +15,14 @@ import com.azure.resourcemanager.communication.models.CommunicationServiceResour
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
 import com.azure.resourcemanager.communication.models.LinkNotificationHubParameters;
 import com.azure.resourcemanager.communication.models.LinkedNotificationHub;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class CommunicationServiceResourceImpl
-    implements CommunicationServiceResource,
-        CommunicationServiceResource.Definition,
-        CommunicationServiceResource.Update {
+public final class CommunicationServiceResourceImpl implements CommunicationServiceResource,
+    CommunicationServiceResource.Definition, CommunicationServiceResource.Update {
     private CommunicationServiceResourceInner innerObject;
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
@@ -51,6 +50,10 @@ public final class CommunicationServiceResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -122,25 +125,19 @@ public final class CommunicationServiceResourceImpl
     }
 
     public CommunicationServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .createOrUpdate(resourceGroupName, communicationServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices().createOrUpdate(resourceGroupName,
+            communicationServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommunicationServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .createOrUpdate(resourceGroupName, communicationServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices().createOrUpdate(resourceGroupName,
+            communicationServiceName, this.innerModel(), context);
         return this;
     }
 
-    CommunicationServiceResourceImpl(
-        String name, com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
+    CommunicationServiceResourceImpl(String name,
+        com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = new CommunicationServiceResourceInner();
         this.serviceManager = serviceManager;
         this.communicationServiceName = name;
@@ -152,27 +149,18 @@ public final class CommunicationServiceResourceImpl
     }
 
     public CommunicationServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
+            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, Context.NONE).getValue();
         return this;
     }
 
     public CommunicationServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
+            .updateWithResponse(resourceGroupName, communicationServiceName, updateParameters, context).getValue();
         return this;
     }
 
-    CommunicationServiceResourceImpl(
-        CommunicationServiceResourceInner innerObject,
+    CommunicationServiceResourceImpl(CommunicationServiceResourceInner innerObject,
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -181,31 +169,21 @@ public final class CommunicationServiceResourceImpl
     }
 
     public CommunicationServiceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
+            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE).getValue();
         return this;
     }
 
     public CommunicationServiceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunicationServices()
-                .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCommunicationServices()
+            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context).getValue();
         return this;
     }
 
-    public Response<LinkedNotificationHub> linkNotificationHubWithResponse(
-        LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
-        return serviceManager
-            .communicationServices()
-            .linkNotificationHubWithResponse(
-                resourceGroupName, communicationServiceName, linkNotificationHubParameters, context);
+    public Response<LinkedNotificationHub>
+        linkNotificationHubWithResponse(LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
+        return serviceManager.communicationServices().linkNotificationHubWithResponse(resourceGroupName,
+            communicationServiceName, linkNotificationHubParameters, context);
     }
 
     public LinkedNotificationHub linkNotificationHub() {
@@ -213,26 +191,23 @@ public final class CommunicationServiceResourceImpl
     }
 
     public Response<CommunicationServiceKeys> listKeysWithResponse(Context context) {
-        return serviceManager
-            .communicationServices()
-            .listKeysWithResponse(resourceGroupName, communicationServiceName, context);
+        return serviceManager.communicationServices().listKeysWithResponse(resourceGroupName, communicationServiceName,
+            context);
     }
 
     public CommunicationServiceKeys listKeys() {
         return serviceManager.communicationServices().listKeys(resourceGroupName, communicationServiceName);
     }
 
-    public Response<CommunicationServiceKeys> regenerateKeyWithResponse(
-        RegenerateKeyParameters parameters, Context context) {
-        return serviceManager
-            .communicationServices()
-            .regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, context);
+    public Response<CommunicationServiceKeys> regenerateKeyWithResponse(RegenerateKeyParameters parameters,
+        Context context) {
+        return serviceManager.communicationServices().regenerateKeyWithResponse(resourceGroupName,
+            communicationServiceName, parameters, context);
     }
 
     public CommunicationServiceKeys regenerateKey(RegenerateKeyParameters parameters) {
-        return serviceManager
-            .communicationServices()
-            .regenerateKey(resourceGroupName, communicationServiceName, parameters);
+        return serviceManager.communicationServices().regenerateKey(resourceGroupName, communicationServiceName,
+            parameters);
     }
 
     public CommunicationServiceResourceImpl withRegion(Region location) {
@@ -251,6 +226,16 @@ public final class CommunicationServiceResourceImpl
             return this;
         } else {
             this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public CommunicationServiceResourceImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
             return this;
         }
     }

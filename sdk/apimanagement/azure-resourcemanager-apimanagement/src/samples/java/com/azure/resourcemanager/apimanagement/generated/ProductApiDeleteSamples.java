@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProductApi Delete. */
 public final class ProductApiDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteProductApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteProductApi.json
      */
     /**
      * Sample code: ApiManagementDeleteProductApi.
@@ -18,6 +16,8 @@ public final class ProductApiDeleteSamples {
      */
     public static void apiManagementDeleteProductApi(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.productApis().deleteWithResponse("rg1", "apimService1", "testproduct", "echo-api", Context.NONE);
+        manager
+            .productApis()
+            .deleteWithResponse("rg1", "apimService1", "testproduct", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

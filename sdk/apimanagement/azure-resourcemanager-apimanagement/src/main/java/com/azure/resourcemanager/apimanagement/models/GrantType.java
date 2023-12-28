@@ -23,6 +23,15 @@ public final class GrantType extends ExpandableStringEnum<GrantType> {
     public static final GrantType CLIENT_CREDENTIALS = fromString("clientCredentials");
 
     /**
+     * Creates a new instance of GrantType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GrantType() {
+    }
+
+    /**
      * Creates or finds a GrantType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class GrantType extends ExpandableStringEnum<GrantType> {
         return fromString(name, GrantType.class);
     }
 
-    /** @return known GrantType values. */
+    /**
+     * Gets known GrantType values.
+     *
+     * @return known GrantType values.
+     */
     public static Collection<GrantType> values() {
         return values(GrantType.class);
     }

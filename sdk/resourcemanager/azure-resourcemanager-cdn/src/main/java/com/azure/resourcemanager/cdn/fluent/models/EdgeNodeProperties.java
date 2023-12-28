@@ -19,6 +19,10 @@ public final class EdgeNodeProperties {
     @JsonProperty(value = "ipAddressGroups", required = true)
     private List<IpAddressGroup> ipAddressGroups;
 
+    /** Creates an instance of EdgeNodeProperties class. */
+    public EdgeNodeProperties() {
+    }
+
     /**
      * Get the ipAddressGroups property: List of ip address groups.
      *

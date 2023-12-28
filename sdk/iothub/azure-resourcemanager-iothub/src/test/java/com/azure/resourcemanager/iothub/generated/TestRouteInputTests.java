@@ -22,15 +22,15 @@ public final class TestRouteInputTests {
         TestRouteInput model =
             BinaryData
                 .fromString(
-                    "{\"message\":{\"body\":\"swiydmcwyhzdx\",\"appProperties\":{\"vdfznudaodvxzb\":\"dbzm\",\"dzu\":\"cblylpstdbhhxsr\",\"fiwjmygtdssls\":\"erscdntne\",\"emwabnet\":\"tmweriofzpyq\"},\"systemProperties\":{\"wubmwmbesldn\":\"szhedplvw\",\"lcxog\":\"wwtppj\",\"qqkdltfzxmhhvhgu\":\"okonzmnsikvmkqz\",\"xtibqdxbxwakbog\":\"eodkwobda\"}},\"route\":{\"name\":\"xndlkzgxhu\",\"source\":\"MqttBrokerMessages\",\"condition\":\"lbpodxunk\",\"endpointNames\":[\"bxmubyynt\",\"lrb\",\"tkoievseotgq\"],\"isEnabled\":false},\"twin\":{\"tags\":\"datamuwlauwzizxbm\",\"properties\":{\"desired\":\"datajefuzmuvpbttdumo\",\"reported\":\"datapxebmnzbt\"}}}")
+                    "{\"message\":{\"body\":\"xe\",\"appProperties\":{\"glkfg\":\"zbtbhj\",\"dyhtozfikdowwquu\":\"hdneuelfph\"},\"systemProperties\":{\"hqzonosggbhcoh\":\"xclvit\"}},\"route\":{\"name\":\"wdsjnkalju\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"swacffgdkzz\",\"endpointNames\":[\"kfvhqcrailvpn\",\"pfuflrw\",\"mh\",\"lxyjr\"],\"isEnabled\":false},\"twin\":{\"tags\":\"dataafcnih\",\"properties\":{\"desired\":\"dataapnedgfbcvkc\",\"reported\":\"datavpk\"}}}")
                 .toObject(TestRouteInput.class);
-        Assertions.assertEquals("swiydmcwyhzdx", model.message().body());
-        Assertions.assertEquals("dbzm", model.message().appProperties().get("vdfznudaodvxzb"));
-        Assertions.assertEquals("szhedplvw", model.message().systemProperties().get("wubmwmbesldn"));
-        Assertions.assertEquals("xndlkzgxhu", model.route().name());
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.route().source());
-        Assertions.assertEquals("lbpodxunk", model.route().condition());
-        Assertions.assertEquals("bxmubyynt", model.route().endpointNames().get(0));
+        Assertions.assertEquals("xe", model.message().body());
+        Assertions.assertEquals("zbtbhj", model.message().appProperties().get("glkfg"));
+        Assertions.assertEquals("xclvit", model.message().systemProperties().get("hqzonosggbhcoh"));
+        Assertions.assertEquals("wdsjnkalju", model.route().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
+        Assertions.assertEquals("swacffgdkzz", model.route().condition());
+        Assertions.assertEquals("kfvhqcrailvpn", model.route().endpointNames().get(0));
         Assertions.assertEquals(false, model.route().isEnabled());
     }
 
@@ -40,52 +40,33 @@ public final class TestRouteInputTests {
             new TestRouteInput()
                 .withMessage(
                     new RoutingMessage()
-                        .withBody("swiydmcwyhzdx")
-                        .withAppProperties(
-                            mapOf(
-                                "vdfznudaodvxzb",
-                                "dbzm",
-                                "dzu",
-                                "cblylpstdbhhxsr",
-                                "fiwjmygtdssls",
-                                "erscdntne",
-                                "emwabnet",
-                                "tmweriofzpyq"))
-                        .withSystemProperties(
-                            mapOf(
-                                "wubmwmbesldn",
-                                "szhedplvw",
-                                "lcxog",
-                                "wwtppj",
-                                "qqkdltfzxmhhvhgu",
-                                "okonzmnsikvmkqz",
-                                "xtibqdxbxwakbog",
-                                "eodkwobda")))
+                        .withBody("xe")
+                        .withAppProperties(mapOf("glkfg", "zbtbhj", "dyhtozfikdowwquu", "hdneuelfph"))
+                        .withSystemProperties(mapOf("hqzonosggbhcoh", "xclvit")))
                 .withRoute(
                     new RouteProperties()
-                        .withName("xndlkzgxhu")
-                        .withSource(RoutingSource.MQTT_BROKER_MESSAGES)
-                        .withCondition("lbpodxunk")
-                        .withEndpointNames(Arrays.asList("bxmubyynt", "lrb", "tkoievseotgq"))
+                        .withName("wdsjnkalju")
+                        .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
+                        .withCondition("swacffgdkzz")
+                        .withEndpointNames(Arrays.asList("kfvhqcrailvpn", "pfuflrw", "mh", "lxyjr"))
                         .withIsEnabled(false))
                 .withTwin(
                     new RoutingTwin()
-                        .withTags("datamuwlauwzizxbm")
+                        .withTags("dataafcnih")
                         .withProperties(
-                            new RoutingTwinProperties()
-                                .withDesired("datajefuzmuvpbttdumo")
-                                .withReported("datapxebmnzbt")));
+                            new RoutingTwinProperties().withDesired("dataapnedgfbcvkc").withReported("datavpk")));
         model = BinaryData.fromObject(model).toObject(TestRouteInput.class);
-        Assertions.assertEquals("swiydmcwyhzdx", model.message().body());
-        Assertions.assertEquals("dbzm", model.message().appProperties().get("vdfznudaodvxzb"));
-        Assertions.assertEquals("szhedplvw", model.message().systemProperties().get("wubmwmbesldn"));
-        Assertions.assertEquals("xndlkzgxhu", model.route().name());
-        Assertions.assertEquals(RoutingSource.MQTT_BROKER_MESSAGES, model.route().source());
-        Assertions.assertEquals("lbpodxunk", model.route().condition());
-        Assertions.assertEquals("bxmubyynt", model.route().endpointNames().get(0));
+        Assertions.assertEquals("xe", model.message().body());
+        Assertions.assertEquals("zbtbhj", model.message().appProperties().get("glkfg"));
+        Assertions.assertEquals("xclvit", model.message().systemProperties().get("hqzonosggbhcoh"));
+        Assertions.assertEquals("wdsjnkalju", model.route().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.route().source());
+        Assertions.assertEquals("swacffgdkzz", model.route().condition());
+        Assertions.assertEquals("kfvhqcrailvpn", model.route().endpointNames().get(0));
         Assertions.assertEquals(false, model.route().isEnabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

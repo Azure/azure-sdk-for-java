@@ -18,6 +18,10 @@ public final class ApiVersionSetContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApiVersionSetContractProperties innerProperties;
 
+    /** Creates an instance of ApiVersionSetContractInner class. */
+    public ApiVersionSetContractInner() {
+    }
+
     /**
      * Get the innerProperties property: API VersionSet contract properties.
      *

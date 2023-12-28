@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.ComputeOperationValueInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Compute Operation operation response. */
+/**
+ * The List Compute Operation operation response.
+ */
 @Immutable
 public final class ComputeOperationListResult {
     /*
@@ -18,13 +20,15 @@ public final class ComputeOperationListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComputeOperationValueInner> value;
 
-    /** Creates an instance of ComputeOperationListResult class. */
+    /**
+     * Creates an instance of ComputeOperationListResult class.
+     */
     public ComputeOperationListResult() {
     }
 
     /**
      * Get the value property: The list of compute operations.
-     *
+     * 
      * @return the value value.
      */
     public List<ComputeOperationValueInner> value() {
@@ -33,7 +37,7 @@ public final class ComputeOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

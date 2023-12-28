@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag AssignToProduct. */
 public final class TagAssignToProductSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateProductTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateProductTag.json
      */
     /**
      * Sample code: ApiManagementCreateProductTag.
@@ -20,6 +18,7 @@ public final class TagAssignToProductSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .tags()
-            .assignToProductWithResponse("rg1", "apimService1", "5931a75ae4bbd512a88c680b", "tagId1", Context.NONE);
+            .assignToProductWithResponse(
+                "rg1", "apimService1", "5931a75ae4bbd512a88c680b", "tagId1", com.azure.core.util.Context.NONE);
     }
 }

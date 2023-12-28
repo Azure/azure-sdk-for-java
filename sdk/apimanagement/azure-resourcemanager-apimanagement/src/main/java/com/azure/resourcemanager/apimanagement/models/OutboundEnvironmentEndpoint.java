@@ -12,8 +12,8 @@ import java.util.List;
 @Fluent
 public final class OutboundEnvironmentEndpoint {
     /*
-     * The type of service accessed by the Api Management Service, e.g., Azure
-     * Storage, Azure SQL Database, and Azure Active Directory.
+     * The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure SQL Database, and Azure
+     * Active Directory.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -23,6 +23,10 @@ public final class OutboundEnvironmentEndpoint {
      */
     @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
+
+    /** Creates an instance of OutboundEnvironmentEndpoint class. */
+    public OutboundEnvironmentEndpoint() {
+    }
 
     /**
      * Get the category property: The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure

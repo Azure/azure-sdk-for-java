@@ -30,6 +30,10 @@ public final class NotificationContractProperties {
     @JsonProperty(value = "recipients")
     private RecipientsContractProperties recipients;
 
+    /** Creates an instance of NotificationContractProperties class. */
+    public NotificationContractProperties() {
+    }
+
     /**
      * Get the title property: Title of the Notification.
      *

@@ -11,6 +11,12 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class CurrencyValue {
+    /**
+     * Constructs a CurrencyValue object.
+     */
+    public CurrencyValue() {
+    }
+
     /*
      * Currency amount.
      */

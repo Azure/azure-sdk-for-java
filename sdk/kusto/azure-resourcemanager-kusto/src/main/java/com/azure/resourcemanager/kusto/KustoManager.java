@@ -38,6 +38,7 @@ import com.azure.resourcemanager.kusto.implementation.OperationsResultsImpl;
 import com.azure.resourcemanager.kusto.implementation.OperationsResultsLocationsImpl;
 import com.azure.resourcemanager.kusto.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.kusto.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.kusto.implementation.SandboxCustomImagesImpl;
 import com.azure.resourcemanager.kusto.implementation.ScriptsImpl;
 import com.azure.resourcemanager.kusto.implementation.SkusImpl;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
@@ -53,6 +54,7 @@ import com.azure.resourcemanager.kusto.models.OperationsResults;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocations;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.kusto.models.PrivateLinkResources;
+import com.azure.resourcemanager.kusto.models.SandboxCustomImages;
 import com.azure.resourcemanager.kusto.models.Scripts;
 import com.azure.resourcemanager.kusto.models.Skus;
 import java.time.Duration;
@@ -85,6 +87,8 @@ public final class KustoManager {
     private DatabasePrincipalAssignments databasePrincipalAssignments;
 
     private Scripts scripts;
+
+    private SandboxCustomImages sandboxCustomImages;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -263,7 +267,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0-beta.7");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -433,6 +437,18 @@ public final class KustoManager {
     }
 
     /**
+     * Gets the resource collection API of SandboxCustomImages. It manages SandboxCustomImage.
+     *
+     * @return Resource collection API of SandboxCustomImages.
+     */
+    public SandboxCustomImages sandboxCustomImages() {
+        if (this.sandboxCustomImages == null) {
+            this.sandboxCustomImages = new SandboxCustomImagesImpl(clientObject.getSandboxCustomImages(), this);
+        }
+        return sandboxCustomImages;
+    }
+
+    /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
      *
      * @return Resource collection API of PrivateEndpointConnections.
@@ -507,8 +523,10 @@ public final class KustoManager {
     }
 
     /**
-     * @return Wrapped service client KustoManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client KustoManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client KustoManagementClient.
      */
     public KustoManagementClient serviceClient() {
         return this.clientObject;

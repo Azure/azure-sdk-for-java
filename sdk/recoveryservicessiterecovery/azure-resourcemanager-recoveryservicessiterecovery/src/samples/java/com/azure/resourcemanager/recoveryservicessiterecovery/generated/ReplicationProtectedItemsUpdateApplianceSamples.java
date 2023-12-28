@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateAppli
 /** Samples for ReplicationProtectedItems UpdateAppliance. */
 public final class ReplicationProtectedItemsUpdateApplianceSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationProtectedItems_UpdateAppliance.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_UpdateAppliance.json
      */
     /**
      * Sample code: Updates appliance for replication protected Item.

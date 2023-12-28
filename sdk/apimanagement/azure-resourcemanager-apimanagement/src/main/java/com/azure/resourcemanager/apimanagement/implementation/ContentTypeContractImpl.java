@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.apimanagement.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner;
 import com.azure.resourcemanager.apimanagement.models.ContentTypeContract;
 
-public final class ContentTypeContractImpl implements ContentTypeContract {
+public final class ContentTypeContractImpl
+    implements ContentTypeContract, ContentTypeContract.Definition, ContentTypeContract.Update {
     private ContentTypeContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
-
-    ContentTypeContractImpl(
-        ContentTypeContractInner innerObject,
-        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -51,11 +46,156 @@ public final class ContentTypeContractImpl implements ContentTypeContract {
         return this.innerModel().version();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ContentTypeContractInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.apimanagement.ApiManagementManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String serviceName;
+
+    private String contentTypeId;
+
+    private String createIfMatch;
+
+    private String updateIfMatch;
+
+    public ContentTypeContractImpl withExistingService(String resourceGroupName, String serviceName) {
+        this.resourceGroupName = resourceGroupName;
+        this.serviceName = serviceName;
+        return this;
+    }
+
+    public ContentTypeContract create() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .createOrUpdateWithResponse(
+                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ContentTypeContract create(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .createOrUpdateWithResponse(
+                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), createIfMatch, context)
+                .getValue();
+        return this;
+    }
+
+    ContentTypeContractImpl(String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+        this.innerObject = new ContentTypeContractInner();
+        this.serviceManager = serviceManager;
+        this.contentTypeId = name;
+        this.createIfMatch = null;
+    }
+
+    public ContentTypeContractImpl update() {
+        this.updateIfMatch = null;
+        return this;
+    }
+
+    public ContentTypeContract apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .createOrUpdateWithResponse(
+                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ContentTypeContract apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .createOrUpdateWithResponse(
+                    resourceGroupName, serviceName, contentTypeId, this.innerModel(), updateIfMatch, context)
+                .getValue();
+        return this;
+    }
+
+    ContentTypeContractImpl(
+        ContentTypeContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
+        this.contentTypeId = Utils.getValueFromIdByName(innerObject.id(), "contentTypes");
+    }
+
+    public ContentTypeContract refresh() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .getWithResponse(resourceGroupName, serviceName, contentTypeId, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public ContentTypeContract refresh(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getContentTypes()
+                .getWithResponse(resourceGroupName, serviceName, contentTypeId, context)
+                .getValue();
+        return this;
+    }
+
+    public ContentTypeContractImpl withIdPropertiesId(String idPropertiesId) {
+        this.innerModel().withIdPropertiesId(idPropertiesId);
+        return this;
+    }
+
+    public ContentTypeContractImpl withNamePropertiesName(String namePropertiesName) {
+        this.innerModel().withNamePropertiesName(namePropertiesName);
+        return this;
+    }
+
+    public ContentTypeContractImpl withDescription(String description) {
+        this.innerModel().withDescription(description);
+        return this;
+    }
+
+    public ContentTypeContractImpl withSchema(Object schema) {
+        this.innerModel().withSchema(schema);
+        return this;
+    }
+
+    public ContentTypeContractImpl withVersion(String version) {
+        this.innerModel().withVersion(version);
+        return this;
+    }
+
+    public ContentTypeContractImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

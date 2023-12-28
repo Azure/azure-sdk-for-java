@@ -18,14 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {RedisManagementClientImpl.class})
 public final class RedisManagementClientBuilder {
     /*
-     * Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the RedisManagementClientBuilder.

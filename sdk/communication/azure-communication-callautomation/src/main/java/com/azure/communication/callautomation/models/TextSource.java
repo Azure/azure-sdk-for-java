@@ -22,10 +22,10 @@ public final class TextSource extends PlaySource {
     private String sourceLocale;
 
     /*
-     * Voice gender type
+     * Voice kind type
      */
-    @JsonProperty(value = "voiceGender")
-    private GenderType voiceGender;
+    @JsonProperty(value = "voiceKind")
+    private VoiceKind voiceKind;
 
     /*
      * Voice name to be played
@@ -34,7 +34,7 @@ public final class TextSource extends PlaySource {
     private String voiceName;
 
     /*
-     * Endpoint where the Custom Voice was deployed.
+     * Endpoint where the custom voice was deployed.
      */
     @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
@@ -80,22 +80,22 @@ public final class TextSource extends PlaySource {
     }
 
     /**
-     * Get the voiceGender property: Voice gender type.
+     * Get the voiceKind property: Voice kind type.
      *
-     * @return the voiceGender value.
+     * @return the voiceKind value.
      */
-    public GenderType getVoiceGender() {
-        return this.voiceGender;
+    public VoiceKind getVoiceKind() {
+        return this.voiceKind;
     }
 
     /**
-     * Set the voiceGender property: Voice gender type.
+     * Set the voiceKind property: Voice kind type.
      *
-     * @param voiceGender the voiceGender value to set.
+     * @param voiceKind the voiceKind value to set.
      * @return the TextSource object itself.
      */
-    public TextSource setVoiceGender(GenderType voiceGender) {
-        this.voiceGender = voiceGender;
+    public TextSource setVoiceKind(VoiceKind voiceKind) {
+        this.voiceKind = voiceKind;
         return this;
     }
 

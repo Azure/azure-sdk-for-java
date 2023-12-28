@@ -12,9 +12,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,9 +27,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,7 +35,6 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.io.Closeable;
 import java.lang.reflect.Method;
@@ -92,20 +91,9 @@ public abstract class IntegrationTestBase extends TestBase {
 
         assumeTrue(getTestMode() == TestMode.RECORD);
 
-        StepVerifier.setDefaultTimeout(TIMEOUT);
         toClose = new ArrayList<>();
         optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
         beforeTest();
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     // These are overridden because we don't use the Interceptor Manager.
@@ -113,7 +101,6 @@ public abstract class IntegrationTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         logger.info("========= TEARDOWN [{}] =========", testName);
-        StepVerifier.resetDefaultTimeout();
         afterTest();
 
         logger.info("Disposing of subscriptions, consumers and clients.");
@@ -234,7 +221,8 @@ public abstract class IntegrationTestBase extends TestBase {
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
+            .scheduler(scheduler)
+            .configuration(v1OrV2(false)); // // Disabling v2 to begin with.
 
         logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {
@@ -475,5 +463,20 @@ public abstract class IntegrationTestBase extends TestBase {
             builder = getBuilder(useCredentials);
         }
         return builder;
+    }
+
+    protected final Configuration v1OrV2(boolean isV2) {
+        final TestConfigurationSource configSource = new TestConfigurationSource();
+        if (isV2) {
+            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "true");
+        } else {
+            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "false");
+        }
+        return new ConfigurationBuilder(configSource)
+            .build();
     }
 }

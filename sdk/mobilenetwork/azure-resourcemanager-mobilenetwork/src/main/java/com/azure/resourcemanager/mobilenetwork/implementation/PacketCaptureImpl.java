@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCaptureInner;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
@@ -29,6 +30,10 @@ public final class PacketCaptureImpl implements PacketCapture, PacketCapture.Def
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {
@@ -66,6 +71,15 @@ public final class PacketCaptureImpl implements PacketCapture, PacketCapture.Def
 
     public Integer timeLimitInSeconds() {
         return this.innerModel().timeLimitInSeconds();
+    }
+
+    public List<String> outputFiles() {
+        List<String> inner = this.innerModel().outputFiles();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {

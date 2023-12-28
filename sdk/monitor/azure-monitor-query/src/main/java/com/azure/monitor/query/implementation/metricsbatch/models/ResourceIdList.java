@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The comma separated list of resource IDs to query metrics for. */
+/**
+ * The comma separated list of resource IDs to query metrics for.
+ */
 @Fluent
 public final class ResourceIdList {
     /*
@@ -17,12 +19,15 @@ public final class ResourceIdList {
     @JsonProperty(value = "resourceids")
     private List<String> resourceids;
 
-    /** Creates an instance of ResourceIdList class. */
-    public ResourceIdList() {}
+    /**
+     * Creates an instance of ResourceIdList class.
+     */
+    public ResourceIdList() {
+    }
 
     /**
      * Get the resourceids property: The list of resource IDs to query metrics for.
-     *
+     * 
      * @return the resourceids value.
      */
     public List<String> getResourceids() {
@@ -31,7 +36,7 @@ public final class ResourceIdList {
 
     /**
      * Set the resourceids property: The list of resource IDs to query metrics for.
-     *
+     * 
      * @param resourceids the resourceids value to set.
      * @return the ResourceIdList object itself.
      */

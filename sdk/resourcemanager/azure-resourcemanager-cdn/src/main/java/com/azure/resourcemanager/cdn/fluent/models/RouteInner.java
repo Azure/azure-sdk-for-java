@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
@@ -29,11 +28,9 @@ public final class RouteInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RouteProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of RouteInner class. */
+    public RouteInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Routes to create.
@@ -42,15 +39,6 @@ public final class RouteInner extends ProxyResource {
      */
     private RouteProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

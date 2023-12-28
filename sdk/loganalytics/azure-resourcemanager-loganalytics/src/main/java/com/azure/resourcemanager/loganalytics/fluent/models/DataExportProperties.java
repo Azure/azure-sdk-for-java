@@ -49,6 +49,10 @@ public final class DataExportProperties {
     @JsonProperty(value = "lastModifiedDate")
     private String lastModifiedDate;
 
+    /** Creates an instance of DataExportProperties class. */
+    public DataExportProperties() {
+    }
+
     /**
      * Get the dataExportId property: The data export rule ID.
      *

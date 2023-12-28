@@ -56,11 +56,10 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientS")
-    private interface SignUpSettingsService {
+    public interface SignUpSettingsService {
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/portalsettings/signup")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signup")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SignUpSettingsGetEntityTagResponse> getEntityTag(
@@ -74,8 +73,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/portalsettings/signup")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signup")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SignUpSettingsGetResponse> get(
@@ -89,8 +87,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/portalsettings/signup")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signup")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(
@@ -106,8 +103,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/portalsettings/signup")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalsettings/signup")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PortalSignupSettingsInner>> createOrUpdate(
@@ -125,7 +121,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -173,7 +169,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +215,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,28 +224,13 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName) {
-        return getEntityTagWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap((SignUpSettingsGetEntityTagResponse res) -> Mono.empty());
+        return getEntityTagWithResponseAsync(resourceGroupName, serviceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName) {
-        getEntityTagAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the SignUpSettings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,9 +245,23 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the SignUpSettings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, Context.NONE);
+    }
+
+    /**
      * Get Sign Up Settings for the Portal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +308,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Get Sign Up Settings for the Portal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +354,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Get Sign Up Settings for the Portal.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -368,36 +363,13 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PortalSignupSettingsInner> getAsync(String resourceGroupName, String serviceName) {
-        return getWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(
-                (SignUpSettingsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, serviceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Sign Up Settings for the Portal.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sign Up Settings for the Portal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalSignupSettingsInner get(String resourceGroupName, String serviceName) {
-        return getAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Get Sign Up Settings for the Portal.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,9 +383,24 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     }
 
     /**
+     * Get Sign Up Settings for the Portal.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sign Up Settings for the Portal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PortalSignupSettingsInner get(String resourceGroupName, String serviceName) {
+        return getWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+    }
+
+    /**
      * Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
@@ -474,7 +461,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
@@ -537,7 +524,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
@@ -551,31 +538,13 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     private Mono<Void> updateAsync(
         String resourceGroupName, String serviceName, String ifMatch, PortalSignupSettingsInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, ifMatch, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update Sign-Up settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String resourceGroupName, String serviceName, String ifMatch, PortalSignupSettingsInner parameters) {
-        updateAsync(resourceGroupName, serviceName, ifMatch, parameters).block();
-    }
-
-    /**
-     * Update Sign-Up settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
@@ -597,9 +566,27 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     }
 
     /**
+     * Update Sign-Up settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Update Sign-Up settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+        String resourceGroupName, String serviceName, String ifMatch, PortalSignupSettingsInner parameters) {
+        updateWithResponse(resourceGroupName, serviceName, ifMatch, parameters, Context.NONE);
+    }
+
+    /**
      * Create or Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -657,7 +644,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Create or Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -717,33 +704,7 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
     /**
      * Create or Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param parameters Create or update parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sign-Up settings for a developer portal on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalSignupSettingsInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters, String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, ifMatch)
-            .flatMap(
-                (Response<PortalSignupSettingsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create or Update Sign-Up settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,38 +717,13 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
         String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, ifMatch)
-            .flatMap(
-                (Response<PortalSignupSettingsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or Update Sign-Up settings.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param parameters Create or update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sign-Up settings for a developer portal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalSignupSettingsInner createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, parameters, ifMatch).block();
-    }
-
-    /**
-     * Create or Update Sign-Up settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -805,5 +741,23 @@ public final class SignUpSettingsClientImpl implements SignUpSettingsClient {
         String ifMatch,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, ifMatch, context).block();
+    }
+
+    /**
+     * Create or Update Sign-Up settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param parameters Create or update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sign-Up settings for a developer portal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PortalSignupSettingsInner createOrUpdate(
+        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, parameters, ifMatch, Context.NONE).getValue();
     }
 }

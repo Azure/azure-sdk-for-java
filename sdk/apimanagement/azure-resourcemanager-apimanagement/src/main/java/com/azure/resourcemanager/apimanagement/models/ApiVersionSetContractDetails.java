@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiVersionSetContractDetails {
     /*
-     * Identifier for existing API Version Set. Omit this value to create a new
-     * Version Set.
+     * Identifier for existing API Version Set. Omit this value to create a new Version Set.
      */
     @JsonProperty(value = "id")
     private String id;
@@ -30,25 +29,26 @@ public final class ApiVersionSetContractDetails {
     private String description;
 
     /*
-     * An value that determines where the API Version identifier will be
-     * located in a HTTP request.
+     * An value that determines where the API Version identifier will be located in a HTTP request.
      */
     @JsonProperty(value = "versioningScheme")
-    private ApiVersionSetContractDetailsVersioningScheme versioningScheme;
+    private VersioningScheme versioningScheme;
 
     /*
-     * Name of query parameter that indicates the API Version if
-     * versioningScheme is set to `query`.
+     * Name of query parameter that indicates the API Version if versioningScheme is set to `query`.
      */
     @JsonProperty(value = "versionQueryName")
     private String versionQueryName;
 
     /*
-     * Name of HTTP header parameter that indicates the API Version if
-     * versioningScheme is set to `header`.
+     * Name of HTTP header parameter that indicates the API Version if versioningScheme is set to `header`.
      */
     @JsonProperty(value = "versionHeaderName")
     private String versionHeaderName;
+
+    /** Creates an instance of ApiVersionSetContractDetails class. */
+    public ApiVersionSetContractDetails() {
+    }
 
     /**
      * Get the id property: Identifier for existing API Version Set. Omit this value to create a new Version Set.
@@ -116,7 +116,7 @@ public final class ApiVersionSetContractDetails {
      *
      * @return the versioningScheme value.
      */
-    public ApiVersionSetContractDetailsVersioningScheme versioningScheme() {
+    public VersioningScheme versioningScheme() {
         return this.versioningScheme;
     }
 
@@ -127,8 +127,7 @@ public final class ApiVersionSetContractDetails {
      * @param versioningScheme the versioningScheme value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
-    public ApiVersionSetContractDetails withVersioningScheme(
-        ApiVersionSetContractDetailsVersioningScheme versioningScheme) {
+    public ApiVersionSetContractDetails withVersioningScheme(VersioningScheme versioningScheme) {
         this.versioningScheme = versioningScheme;
         return this;
     }

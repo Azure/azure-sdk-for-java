@@ -6,9 +6,11 @@ package com.azure.resourcemanager.datadog.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datadog.fluent.models.MonitoringTagRulesInner;
+import com.azure.resourcemanager.datadog.models.FilteringTag;
 import com.azure.resourcemanager.datadog.models.LogRules;
 import com.azure.resourcemanager.datadog.models.MetricRules;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
+import com.azure.resourcemanager.datadog.models.TagAction;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,11 +20,18 @@ public final class MonitoringTagRulesInnerTests {
         MonitoringTagRulesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[]},\"metricRules\":{\"filteringTags\":[]}},\"id\":\"vfaxkffeiith\",\"name\":\"vmezy\",\"type\":\"shxmzsbbzoggigrx\"}")
+                    "{\"properties\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"snzwd\",\"value\":\"bavo\",\"action\":\"Exclude\"},{\"name\":\"mohctb\",\"value\":\"udwxdndnvowguj\",\"action\":\"Exclude\"},{\"name\":\"dkcglhsl\",\"value\":\"jdyggdtji\",\"action\":\"Include\"},{\"name\":\"uofqwe\",\"value\":\"hmenevfyexfwhybc\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"sit\",\"value\":\"naamde\",\"action\":\"Include\"}]},\"automuting\":false},\"id\":\"qsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"}")
                 .toObject(MonitoringTagRulesInner.class);
         Assertions.assertEquals(false, model.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(false, model.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
         Assertions.assertEquals(false, model.properties().logRules().sendResourceLogs());
+        Assertions.assertEquals("snzwd", model.properties().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bavo", model.properties().logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.properties().logRules().filteringTags().get(0).action());
+        Assertions.assertEquals("sit", model.properties().metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("naamde", model.properties().metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.properties().metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals(false, model.properties().automuting());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,13 +43,47 @@ public final class MonitoringTagRulesInnerTests {
                         .withLogRules(
                             new LogRules()
                                 .withSendAadLogs(false)
-                                .withSendSubscriptionLogs(false)
+                                .withSendSubscriptionLogs(true)
                                 .withSendResourceLogs(false)
-                                .withFilteringTags(Arrays.asList()))
-                        .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList())));
+                                .withFilteringTags(
+                                    Arrays
+                                        .asList(
+                                            new FilteringTag()
+                                                .withName("snzwd")
+                                                .withValue("bavo")
+                                                .withAction(TagAction.EXCLUDE),
+                                            new FilteringTag()
+                                                .withName("mohctb")
+                                                .withValue("udwxdndnvowguj")
+                                                .withAction(TagAction.EXCLUDE),
+                                            new FilteringTag()
+                                                .withName("dkcglhsl")
+                                                .withValue("jdyggdtji")
+                                                .withAction(TagAction.INCLUDE),
+                                            new FilteringTag()
+                                                .withName("uofqwe")
+                                                .withValue("hmenevfyexfwhybc")
+                                                .withAction(TagAction.INCLUDE))))
+                        .withMetricRules(
+                            new MetricRules()
+                                .withFilteringTags(
+                                    Arrays
+                                        .asList(
+                                            new FilteringTag()
+                                                .withName("sit")
+                                                .withValue("naamde")
+                                                .withAction(TagAction.INCLUDE))))
+                        .withAutomuting(false));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesInner.class);
         Assertions.assertEquals(false, model.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(false, model.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
         Assertions.assertEquals(false, model.properties().logRules().sendResourceLogs());
+        Assertions.assertEquals("snzwd", model.properties().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("bavo", model.properties().logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.properties().logRules().filteringTags().get(0).action());
+        Assertions.assertEquals("sit", model.properties().metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("naamde", model.properties().metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.properties().metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals(false, model.properties().automuting());
     }
 }

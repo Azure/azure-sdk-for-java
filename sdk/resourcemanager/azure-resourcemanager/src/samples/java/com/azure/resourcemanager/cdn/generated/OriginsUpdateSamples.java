@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 
 /** Samples for Origins Update. */
 public final class OriginsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Origins_Update.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Origins_Update.json
      */
     /**
      * Sample code: Origins_Update.
@@ -37,6 +36,6 @@ public final class OriginsUpdateSamples {
                     .withEnabled(true)
                     .withPrivateLinkAlias(
                         "APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -31,6 +31,10 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
     @JsonProperty(value = "userId")
     private String userId;
 
+    /** Creates an instance of IssueUpdateContractProperties class. */
+    public IssueUpdateContractProperties() {
+    }
+
     /**
      * Get the title property: The issue title.
      *

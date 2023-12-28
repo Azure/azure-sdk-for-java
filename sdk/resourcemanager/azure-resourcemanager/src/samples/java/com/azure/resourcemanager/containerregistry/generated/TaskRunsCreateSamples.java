@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for TaskRuns Create. */
 public final class TaskRunsCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
      */
     /**
      * Sample code: TaskRuns_Create.

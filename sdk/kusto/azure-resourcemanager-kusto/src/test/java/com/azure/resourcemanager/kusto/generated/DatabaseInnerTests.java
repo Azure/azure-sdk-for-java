@@ -14,15 +14,15 @@ public final class DatabaseInnerTests {
         DatabaseInner model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"Database\",\"location\":\"iplrbpbewtghfgb\",\"id\":\"c\",\"name\":\"wxzvlvqhjkb\",\"type\":\"gibtnm\"}")
+                    "{\"kind\":\"Database\",\"location\":\"nkww\",\"id\":\"pp\",\"name\":\"flcxoga\",\"type\":\"konzmnsik\"}")
                 .toObject(DatabaseInner.class);
-        Assertions.assertEquals("iplrbpbewtghfgb", model.location());
+        Assertions.assertEquals("nkww", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInner model = new DatabaseInner().withLocation("iplrbpbewtghfgb");
+        DatabaseInner model = new DatabaseInner().withLocation("nkww");
         model = BinaryData.fromObject(model).toObject(DatabaseInner.class);
-        Assertions.assertEquals("iplrbpbewtghfgb", model.location());
+        Assertions.assertEquals("nkww", model.location());
     }
 }

@@ -1659,13 +1659,12 @@ public class VirtualMachineScaleSetImpl
                     this.bootDiagnosticsHandler.handleDiagnosticsSettings();
                     this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
                     this.virtualMachineScaleSetMsiHandler.handleExternalIdentities();
-                    this.createNewProximityPlacementGroup();
                     this.adjustProfileForFlexibleMode();
-                    return this
-                        .manager()
-                        .serviceClient()
-                        .getVirtualMachineScaleSets()
-                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
+                    return this.createNewProximityPlacementGroupAsync()
+                        .then(this.manager()
+                            .serviceClient()
+                            .getVirtualMachineScaleSets()
+                            .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
                 });
     }
 
@@ -2962,22 +2961,24 @@ public class VirtualMachineScaleSetImpl
         return this;
     }
 
-    private void createNewProximityPlacementGroup() {
+    private Mono<VirtualMachineScaleSetImpl> createNewProximityPlacementGroupAsync() {
         if (isInCreateMode()) {
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
                 plgInner.withLocation(this.innerModel().location());
-                plgInner =
-                    this
-                        .manager()
-                        .serviceClient()
-                        .getProximityPlacementGroups()
-                        .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
-
-                this.innerModel().withProximityPlacementGroup((new SubResource().withId(plgInner.id())));
+                return this
+                    .manager()
+                    .serviceClient()
+                    .getProximityPlacementGroups()
+                    .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
+                    .map(ppgInner -> {
+                        this.innerModel().withProximityPlacementGroup((new SubResource().withId(ppgInner.id())));
+                        return this;
+                    });
             }
         }
+        return Mono.just(this);
     }
 
     @Override

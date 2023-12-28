@@ -1,9 +1,12 @@
 {
   "displayNames": {
+    "@{ enableAttestation = $true }": "",
+    "@{ enableAttestation = $false }": "NoAttestation",
     "@{ enableHsm = $true }": "HSM"
   },
   "matrix": {
-    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json",
+    "ArmTemplateParameters": "@{ enableAttestation = $true }"
   },
   "exclude": [
     {

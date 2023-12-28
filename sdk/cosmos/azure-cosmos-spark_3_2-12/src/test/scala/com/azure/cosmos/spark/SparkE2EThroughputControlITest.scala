@@ -19,35 +19,39 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
     val throughputControlDatabase = cosmosClient.getDatabase(throughputControlDatabaseId)
     throughputControlDatabase.createContainerIfNotExists(throughputControlContainerId, "/groupId").block()
 
-    val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.throughputControl.enabled" -> "true",
-      "spark.cosmos.throughputControl.name" -> "sparkTest",
-      "spark.cosmos.throughputControl.targetThroughput" -> "6",
-      "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
-      "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
-      "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
-      "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
-    )
+    for (useGatewayMode <- Array(true, false)) {
+        val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+          "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+          "spark.cosmos.database" -> cosmosDatabase,
+          "spark.cosmos.container" -> cosmosContainer,
+          "spark.cosmos.read.inferSchema.enabled" -> "true",
+          "spark.cosmos.throughputControl.enabled" -> "true",
+          "spark.cosmos.throughputControl.name" -> getThroughputControlGroupName(useGatewayMode),
+          "spark.cosmos.throughputControl.targetThroughput" -> "6",
+          "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
+          "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
+          "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
+          "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000",
+          "spark.cosmos.useGatewayMode" -> useGatewayMode.toString,
+          "spark.cosmos.applicationName" -> "limitThroughputUsage"
+      )
 
-    val newSpark = getSpark
+      val newSpark = getSpark
 
-    // scalastyle:off underscore.import
-    // scalastyle:off import.grouping
-    import spark.implicits._
-    val spark = newSpark
-    // scalastyle:on underscore.import
-    // scalastyle:on import.grouping
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
 
-    val df = Seq(
-      ("Quark", "Quark", "Red", 1.0 / 2)
-    ).toDF("particle name", "id", "color", "spin")
+      val df = Seq(
+          ("Quark", "Quark", "Red", 1.0 / 2)
+      ).toDF("particle name", "id", "color", "spin")
 
-    df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
-    spark.read.format("cosmos.oltp").options(cfg).load()
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+      spark.read.format("cosmos.oltp").options(cfg).load()
+    }
   }
 
   "spark throughput control" should "limit throughput usage after updating targetThroughput" in {
@@ -59,38 +63,42 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
     val throughputControlDatabase = cosmosClient.getDatabase(throughputControlDatabaseId)
     throughputControlDatabase.createContainerIfNotExists(throughputControlContainerId, "/groupId").block()
 
-    val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.throughputControl.enabled" -> "true",
-      "spark.cosmos.throughputControl.name" -> "sparkTest",
-      "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.9",
-      "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
-      "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
-    )
+    for (useGatewayMode <- Array(true, false)) {
+      val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+          "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+          "spark.cosmos.database" -> cosmosDatabase,
+          "spark.cosmos.container" -> cosmosContainer,
+          "spark.cosmos.read.inferSchema.enabled" -> "true",
+          "spark.cosmos.throughputControl.enabled" -> "true",
+          "spark.cosmos.throughputControl.name" -> getThroughputControlGroupName(useGatewayMode),
+          "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.9",
+          "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
+          "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
+          "spark.cosmos.useGatewayMode" -> useGatewayMode.toString,
+          "spark.cosmos.applicationName" -> "updatingTargetThroughput"
+      )
 
-    val newSpark = getSpark
+      val newSpark = getSpark
 
-    // scalastyle:off underscore.import
-    // scalastyle:off import.grouping
-    import spark.implicits._
-    val spark = newSpark
-    // scalastyle:on underscore.import
-    // scalastyle:on import.grouping
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
 
-    val df = Seq(
-      ("Quark", "Quark", "Red", 1.0 / 2)
-    ).toDF("particle name", "id", "color", "spin")
+      val df = Seq(
+          ("Quark", "Quark", "Red", 1.0 / 2)
+      ).toDF("particle name", "id", "color", "spin")
 
-    df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
 
-    spark
-      .read
-      .format("cosmos.oltp")
-      .options(cfg + ("spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.8"))
-      .load()
+      spark
+          .read
+          .format("cosmos.oltp")
+          .options(cfg + ("spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.8"))
+          .load()
+    }
   }
 
   "spark throughput control" should "be able to use a different account config" in {
@@ -122,35 +130,39 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
         container.createItem(objectNode).block()
       }
 
-      val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-        "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-        "spark.cosmos.database" -> cosmosDatabase,
-        "spark.cosmos.container" -> cosmosContainer,
-        "spark.cosmos.read.inferSchema.enabled" -> "true",
-        "spark.cosmos.read.maxItemCount" -> "1",
-        "spark.cosmos.throughputControl.enabled" -> "true",
-        "spark.cosmos.throughputControl.accountEndpoint" -> TestConfigurations.THROUGHPUT_CONTROL_ACCOUNT_HOST,
-        "spark.cosmos.throughputControl.accountKey" -> TestConfigurations.THROUGHPUT_CONTROL_MASTER_KEY,
-        "spark.cosmos.throughputControl.name" -> "sparkTest",
-        "spark.cosmos.throughputControl.targetThroughput" -> "6",
-        "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
-        "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
-        "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
-        "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
-      )
+      for (useGatewayMode <- Array(true, false)) {
+        val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+            "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> cosmosContainer,
+            "spark.cosmos.read.inferSchema.enabled" -> "true",
+            "spark.cosmos.read.maxItemCount" -> "1",
+            "spark.cosmos.throughputControl.enabled" -> "true",
+            "spark.cosmos.throughputControl.accountEndpoint" -> TestConfigurations.THROUGHPUT_CONTROL_ACCOUNT_HOST,
+            "spark.cosmos.throughputControl.accountKey" -> TestConfigurations.THROUGHPUT_CONTROL_MASTER_KEY,
+            "spark.cosmos.throughputControl.name" -> getThroughputControlGroupName(useGatewayMode),
+            "spark.cosmos.throughputControl.targetThroughput" -> "6",
+            "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
+            "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
+            "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
+            "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000",
+            "spark.cosmos.useGatewayMode" -> useGatewayMode.toString,
+            "spark.cosmos.applicationName" -> "usingDifferentThroughputControlAccount"
+        )
 
-      val newSpark = getSpark
+        val newSpark = getSpark
 
-      // scalastyle:off underscore.import
-      // scalastyle:off import.grouping
-      import spark.implicits._
-      val spark = newSpark
-      // scalastyle:on underscore.import
-      // scalastyle:on import.grouping
+        // scalastyle:off underscore.import
+        // scalastyle:off import.grouping
+        import spark.implicits._
+        val spark = newSpark
+        // scalastyle:on underscore.import
+        // scalastyle:on import.grouping
 
-      val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
-      val rowsArray = df.collect()
-      rowsArray should have size 10
+        val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+        val rowsArray = df.collect()
+        rowsArray should have size 10
+      }
     } finally {
       if (throughputControlClient != null) {
         throughputControlDatabase.delete().block()
@@ -168,17 +180,68 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
         .block()
 
     try {
+        for (useGatewayMode <- Array(true, false)) {
+          val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+              "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+              "spark.cosmos.database" -> cosmosDatabase,
+              "spark.cosmos.container" -> testContainer.getId,
+              "spark.cosmos.read.inferSchema.enabled" -> "true",
+              "spark.cosmos.throughputControl.enabled" -> "true",
+              "spark.cosmos.throughputControl.globalControl.useDedicatedContainer" -> "false",
+              "spark.cosmos.throughputControl.name" -> getThroughputControlGroupName(useGatewayMode),
+              "spark.cosmos.throughputControl.targetThroughput" -> "6",
+              "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
+              "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000",
+              "spark.cosmos.useGatewayMode" -> useGatewayMode.toString,
+              "spark.cosmos.applicationName" -> "withoutDedicatedThroughputContainer"
+          )
+
+          val newSpark = getSpark
+
+          // scalastyle:off underscore.import
+          // scalastyle:off import.grouping
+          import spark.implicits._
+          val spark = newSpark
+          // scalastyle:on underscore.import
+          // scalastyle:on import.grouping
+
+          val df = Seq(
+              ("Quark", "Quark", "Red", 1.0 / 2)
+          ).toDF("particle name", "id", "color", "spin")
+
+          df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+          spark.read.format("cosmos.oltp").options(cfg).load()
+        }
+    }  finally {
+        testContainer.delete().block()
+    }
+  }
+
+  "spark throughput control" should "limit low priority requests" in {
+
+    val throughputControlDatabaseId = "testThroughputControlDB"
+    val throughputControlContainerId = "testThroughputControlContainer"
+
+    cosmosClient.createDatabaseIfNotExists(throughputControlDatabaseId).block()
+    val throughputControlDatabase = cosmosClient.getDatabase(throughputControlDatabaseId)
+    throughputControlDatabase.createContainerIfNotExists(throughputControlContainerId, "/groupId").block()
+
+      for (useGatewayMode <- Array(true, false)) {
         val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
             "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
             "spark.cosmos.database" -> cosmosDatabase,
-            "spark.cosmos.container" -> testContainer.getId,
+            "spark.cosmos.container" -> cosmosContainer,
             "spark.cosmos.read.inferSchema.enabled" -> "true",
             "spark.cosmos.throughputControl.enabled" -> "true",
-            "spark.cosmos.throughputControl.globalControl.useDedicatedContainer" -> "false",
-            "spark.cosmos.throughputControl.name" -> "sparkTest",
+            "spark.cosmos.throughputControl.name" -> getThroughputControlGroupName(useGatewayMode),
             "spark.cosmos.throughputControl.targetThroughput" -> "6",
+            "spark.cosmos.throughputControl.priorityLevel" -> "Low",
+            "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
+            "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
             "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
-            "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
+            "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000",
+            "spark.cosmos.useGatewayMode" -> useGatewayMode.toString,
+            "spark.cosmos.applicationName" -> "withLowPriorityLevel"
         )
 
         val newSpark = getSpark
@@ -196,49 +259,10 @@ class SparkE2EThroughputControlITest extends IntegrationSpec with Spark with Cos
 
         df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
         spark.read.format("cosmos.oltp").options(cfg).load()
-    }  finally {
-        testContainer.delete().block()
-    }
+      }
   }
 
-  "spark throughput control" should "limit low priority requests" in {
-
-    val throughputControlDatabaseId = "testThroughputControlDB"
-    val throughputControlContainerId = "testThroughputControlContainer"
-
-    cosmosClient.createDatabaseIfNotExists(throughputControlDatabaseId).block()
-    val throughputControlDatabase = cosmosClient.getDatabase(throughputControlDatabaseId)
-    throughputControlDatabase.createContainerIfNotExists(throughputControlContainerId, "/groupId").block()
-
-    val cfg = Map("spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
-      "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.throughputControl.enabled" -> "true",
-      "spark.cosmos.throughputControl.name" -> "sparkTest",
-      "spark.cosmos.throughputControl.targetThroughput" -> "6",
-      "spark.cosmos.throughputControl.priorityLevel" -> "Low",
-      "spark.cosmos.throughputControl.globalControl.database" -> throughputControlDatabaseId,
-      "spark.cosmos.throughputControl.globalControl.container" -> throughputControlContainerId,
-      "spark.cosmos.throughputControl.globalControl.renewIntervalInMS" -> "5000",
-      "spark.cosmos.throughputControl.globalControl.expireIntervalInMS" -> "20000"
-    )
-
-    val newSpark = getSpark
-
-    // scalastyle:off underscore.import
-    // scalastyle:off import.grouping
-    import spark.implicits._
-    val spark = newSpark
-    // scalastyle:on underscore.import
-    // scalastyle:on import.grouping
-
-    val df = Seq(
-      ("Quark", "Quark", "Red", 1.0 / 2)
-    ).toDF("particle name", "id", "color", "spin")
-
-    df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
-    spark.read.format("cosmos.oltp").options(cfg).load()
+  private[this] def getThroughputControlGroupName(useGatewayMode: Boolean): String = {
+      s"sparkTest-${useGatewayMode.toString}-${UUID.randomUUID().toString}"
   }
 }

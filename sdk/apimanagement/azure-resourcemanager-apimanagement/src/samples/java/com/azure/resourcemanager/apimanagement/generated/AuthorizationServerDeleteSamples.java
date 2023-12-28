@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AuthorizationServer Delete. */
 public final class AuthorizationServerDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteAuthorizationServer.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteAuthorizationServer.json
      */
     /**
      * Sample code: ApiManagementDeleteAuthorizationServer.
@@ -18,6 +16,8 @@ public final class AuthorizationServerDeleteSamples {
      */
     public static void apiManagementDeleteAuthorizationServer(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.authorizationServers().deleteWithResponse("rg1", "apimService1", "newauthServer2", "*", Context.NONE);
+        manager
+            .authorizationServers()
+            .deleteWithResponse("rg1", "apimService1", "newauthServer2", "*", com.azure.core.util.Context.NONE);
     }
 }

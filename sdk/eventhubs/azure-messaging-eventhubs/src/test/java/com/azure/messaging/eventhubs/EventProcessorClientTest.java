@@ -87,6 +87,8 @@ public class EventProcessorClientTest {
     @Mock
     private EventData eventData1, eventData2, eventData3, eventData4;
 
+    private final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
+
     @BeforeEach
     public void setup() {
         mocksDisposable = MockitoAnnotations.openMocks(this);
@@ -121,16 +123,22 @@ public class EventProcessorClientTest {
     public void testWithSimplePartitionProcessor() throws Exception {
         Tracer tracer = mock(Tracer.class);
         // Arrange
+        final String consumerGroup = "test-consumer";
+        final String eventHubName = "test-event-hub";
+        final String fullyQualifiedNamespace = "test-namespace";
+
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
-        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
-        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(fullyQualifiedNamespace);
+        when(eventHubAsyncClient.getEventHubName()).thenReturn(eventHubName);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt(), anyBoolean()))
             .thenReturn(consumer1);
-        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class))).thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
+
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -149,24 +157,35 @@ public class EventProcessorClientTest {
             }
         );
 
+        processorOptions.setConsumerGroup(consumerGroup)
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         // Act
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, tracer,
+            processorOptions);
+
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
 
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
 
-        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup))
             .expectNextCount(1).verifyComplete();
 
-        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup))
             .assertNext(partitionOwnership -> {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
-                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
-                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals(consumerGroup, partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals(eventHubName, partitionOwnership.getEventHubName(), "EventHub name");
                 assertEquals(eventProcessorClient.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
@@ -179,12 +198,14 @@ public class EventProcessorClientTest {
         verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
             any(ReceiveOptions.class));
         verify(consumer1, atLeastOnce()).close();
+
         eventProcessorClient.stop();
-        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+
+        StepVerifier.create(checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup))
             .assertNext(partitionOwnership -> {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
-                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
-                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals(consumerGroup, partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals(eventHubName, partitionOwnership.getEventHubName(), "EventHub name");
                 assertEquals("", partitionOwnership.getOwnerId(), "Owner Id");
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
@@ -248,10 +269,20 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         //Act
-        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer1);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, tracer1,
+            processorOptions);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -331,10 +362,20 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(2)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(true)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         //Act
-        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, null, true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer1);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, tracer1,
+            processorOptions);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -398,10 +439,21 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
         TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         testPartitionProcessor.countDownLatch = countDownLatch;
+
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         //Act
-        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false,  ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, tracer);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, tracer,
+            processorOptions);
 
         eventProcessorClient.start();
         boolean success = countDownLatch.await(10, TimeUnit.SECONDS);
@@ -464,11 +516,21 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
-            "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, null,
+            processorOptions);
+
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
@@ -496,12 +558,14 @@ public class EventProcessorClientTest {
     public void testPrefetchCountSet() throws Exception {
         // Arrange
         final String consumerGroup = "my-consumer-group";
+        final String eventHubName = "test-event-hub";
+        final String fullyQualifiedNamespace = "test-namespace";
         final int prefetch = 15;
 
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(prefetch);
-        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
-        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(fullyQualifiedNamespace);
+        when(eventHubAsyncClient.getEventHubName()).thenReturn(eventHubName);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
@@ -521,9 +585,19 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, consumerGroup,
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+        processorOptions.setConsumerGroup(consumerGroup)
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(2)
+            .setMaxWaitTime(Duration.ofSeconds(1))
+            .setBatchReceiveMode(true)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -565,9 +639,19 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, consumerGroup,
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+        processorOptions.setConsumerGroup(consumerGroup)
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(2)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(true)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -607,9 +691,19 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(2)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(true)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -647,9 +741,19 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            2, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(2)
+            .setMaxWaitTime(Duration.ofSeconds(1))
+            .setBatchReceiveMode(true)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -708,15 +812,29 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, ec -> { }, new HashMap<>(),
-            1, Duration.ofSeconds(1), false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED, null);
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialEventPositionProvider(null)
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(Duration.ofSeconds(1))
+            .setBatchReceiveMode(false)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer,  null,
+            processorOptions);
+
         eventProcessorClient.start();
         boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
         eventProcessorClient.stop();
         assertTrue(completed);
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
+    }
+
+    static void noopConsumer(ErrorContext unused) {
     }
 
     private PartitionEvent getEvent(EventData event) {

@@ -19,6 +19,10 @@ public final class TenantSettingsContractProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> settings;
 
+    /** Creates an instance of TenantSettingsContractProperties class. */
+    public TenantSettingsContractProperties() {
+    }
+
     /**
      * Get the settings property: Tenant settings.
      *

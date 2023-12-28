@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of Google Cloud Storage dataset. */
+/**
+ * The location of Google Cloud Storage dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleCloudStorageLocation")
 @Fluent
@@ -26,13 +28,16 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
-    /** Creates an instance of GoogleCloudStorageLocation class. */
-    public GoogleCloudStorageLocation() {}
+    /**
+     * Creates an instance of GoogleCloudStorageLocation class.
+     */
+    public GoogleCloudStorageLocation() {
+    }
 
     /**
      * Get the bucketName property: Specify the bucketName of Google Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the bucketName value.
      */
     public Object getBucketName() {
@@ -42,7 +47,7 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     /**
      * Set the bucketName property: Specify the bucketName of Google Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the GoogleCloudStorageLocation object itself.
      */
@@ -54,7 +59,7 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     /**
      * Get the version property: Specify the version of Google Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the version value.
      */
     public Object getVersion() {
@@ -64,7 +69,7 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     /**
      * Set the version property: Specify the version of Google Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param version the version value to set.
      * @return the GoogleCloudStorageLocation object itself.
      */
@@ -73,14 +78,18 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleCloudStorageLocation setFileName(Object fileName) {
         super.setFileName(fileName);

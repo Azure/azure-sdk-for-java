@@ -30,13 +30,23 @@ public interface Volumes {
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context);
+        String resourceGroupName,
+        String elasticSanName,
+        String volumeGroupName,
+        String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots,
+        XMsForceDelete xMsForceDelete,
+        Context context);
 
     /**
      * Get an Volume.
@@ -133,12 +143,17 @@ public interface Volumes {
      * Delete an Volume.
      *
      * @param id the resource ID.
+     * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
+     *     Default value is false.
+     * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
+     *     false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(
+        String id, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context);
 
     /**
      * Begins definition for a new Volume resource.

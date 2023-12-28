@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for VpnSite. */
+/**
+ * Parameters for VpnSite.
+ */
 @Fluent
 public final class VpnSiteLinkProperties {
     /*
@@ -43,13 +45,15 @@ public final class VpnSiteLinkProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VpnSiteLinkProperties class. */
+    /**
+     * Creates an instance of VpnSiteLinkProperties class.
+     */
     public VpnSiteLinkProperties() {
     }
 
     /**
      * Get the linkProperties property: The link provider properties.
-     *
+     * 
      * @return the linkProperties value.
      */
     public VpnLinkProviderProperties linkProperties() {
@@ -58,7 +62,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the linkProperties property: The link provider properties.
-     *
+     * 
      * @param linkProperties the linkProperties value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -78,7 +82,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -98,7 +102,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @return the bgpProperties value.
      */
     public VpnLinkBgpSettings bgpProperties() {
@@ -118,7 +122,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @param bgpProperties the bgpProperties value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +142,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
