@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
@@ -528,9 +529,13 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions,
         RequestOptions requestOptions) {
+        // Note: Update return type to Response<RouterJob> in version 2.
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob),
-            requestOptions);
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
+            BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BinaryData
+                .fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
     }
 
     /**

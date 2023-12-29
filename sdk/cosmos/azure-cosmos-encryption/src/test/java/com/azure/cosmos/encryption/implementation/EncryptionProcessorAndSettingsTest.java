@@ -267,7 +267,7 @@ public class EncryptionProcessorAndSettingsTest {
         encryptionProcessor.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
 
         JsonNode document = OBJECT_MAPPER.readValue(json, ObjectNode.class);
-        String output = new String(encryptionProcessor.decrypt(encryptionProcessor.encryptObjectNode(document).block()).block());
+        String output = new String(encryptionProcessor.decrypt(encryptionProcessor.encryptObjectNode(document).block()).block().getLeft());
         assertThat(output).isEqualTo(json);
     }
 }

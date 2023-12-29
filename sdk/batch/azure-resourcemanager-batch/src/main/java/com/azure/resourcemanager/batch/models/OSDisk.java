@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for the operating system disk of the virtual machine. */
+/**
+ * Settings for the operating system disk of the virtual machine.
+ */
 @Fluent
 public final class OSDisk {
     /*
@@ -16,14 +18,40 @@ public final class OSDisk {
     @JsonProperty(value = "ephemeralOSDiskSettings")
     private DiffDiskSettings ephemeralOSDiskSettings;
 
-    /** Creates an instance of OSDisk class. */
+    /*
+     * The type of caching to enable for the disk.
+     */
+    @JsonProperty(value = "caching")
+    private CachingType caching;
+
+    /*
+     * The managedDisk property.
+     */
+    @JsonProperty(value = "managedDisk")
+    private ManagedDisk managedDisk;
+
+    /*
+     * The initial disk size in GB when creating new OS disk.
+     */
+    @JsonProperty(value = "diskSizeGB")
+    private Integer diskSizeGB;
+
+    /*
+     * Specifies whether writeAccelerator should be enabled or disabled on the disk.
+     */
+    @JsonProperty(value = "writeAcceleratorEnabled")
+    private Boolean writeAcceleratorEnabled;
+
+    /**
+     * Creates an instance of OSDisk class.
+     */
     public OSDisk() {
     }
 
     /**
      * Get the ephemeralOSDiskSettings property: Specifies the ephemeral Disk Settings for the operating system disk
      * used by the virtual machine.
-     *
+     * 
      * @return the ephemeralOSDiskSettings value.
      */
     public DiffDiskSettings ephemeralOSDiskSettings() {
@@ -33,7 +61,7 @@ public final class OSDisk {
     /**
      * Set the ephemeralOSDiskSettings property: Specifies the ephemeral Disk Settings for the operating system disk
      * used by the virtual machine.
-     *
+     * 
      * @param ephemeralOSDiskSettings the ephemeralOSDiskSettings value to set.
      * @return the OSDisk object itself.
      */
@@ -43,13 +71,98 @@ public final class OSDisk {
     }
 
     /**
+     * Get the caching property: The type of caching to enable for the disk.
+     * 
+     * @return the caching value.
+     */
+    public CachingType caching() {
+        return this.caching;
+    }
+
+    /**
+     * Set the caching property: The type of caching to enable for the disk.
+     * 
+     * @param caching the caching value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withCaching(CachingType caching) {
+        this.caching = caching;
+        return this;
+    }
+
+    /**
+     * Get the managedDisk property: The managedDisk property.
+     * 
+     * @return the managedDisk value.
+     */
+    public ManagedDisk managedDisk() {
+        return this.managedDisk;
+    }
+
+    /**
+     * Set the managedDisk property: The managedDisk property.
+     * 
+     * @param managedDisk the managedDisk value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withManagedDisk(ManagedDisk managedDisk) {
+        this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
+     * Get the diskSizeGB property: The initial disk size in GB when creating new OS disk.
+     * 
+     * @return the diskSizeGB value.
+     */
+    public Integer diskSizeGB() {
+        return this.diskSizeGB;
+    }
+
+    /**
+     * Set the diskSizeGB property: The initial disk size in GB when creating new OS disk.
+     * 
+     * @param diskSizeGB the diskSizeGB value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withDiskSizeGB(Integer diskSizeGB) {
+        this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
+     * @return the writeAcceleratorEnabled value.
+     */
+    public Boolean writeAcceleratorEnabled() {
+        return this.writeAcceleratorEnabled;
+    }
+
+    /**
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
+     * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
+     * @return the OSDisk object itself.
+     */
+    public OSDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
+        this.writeAcceleratorEnabled = writeAcceleratorEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ephemeralOSDiskSettings() != null) {
             ephemeralOSDiskSettings().validate();
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
         }
     }
 }

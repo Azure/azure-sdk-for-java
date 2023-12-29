@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"kbasyypn\",\"allowUpdates\":true,\"defaultVersion\":\"gcbacphejkot\"},\"etag\":\"qgoulznd\",\"id\":\"i\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}")
-                .toObject(ApplicationInner.class);
+        ApplicationInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"kbasyypn\",\"allowUpdates\":true,\"defaultVersion\":\"gcbacphejkot\"},\"etag\":\"qgoulznd\",\"id\":\"i\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}")
+            .toObject(ApplicationInner.class);
         Assertions.assertEquals("kbasyypn", model.displayName());
         Assertions.assertEquals(true, model.allowUpdates());
         Assertions.assertEquals("gcbacphejkot", model.defaultVersion());
@@ -23,11 +21,8 @@ public final class ApplicationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInner model =
-            new ApplicationInner()
-                .withDisplayName("kbasyypn")
-                .withAllowUpdates(true)
-                .withDefaultVersion("gcbacphejkot");
+        ApplicationInner model = new ApplicationInner().withDisplayName("kbasyypn").withAllowUpdates(true)
+            .withDefaultVersion("gcbacphejkot");
         model = BinaryData.fromObject(model).toObject(ApplicationInner.class);
         Assertions.assertEquals("kbasyypn", model.displayName());
         Assertions.assertEquals(true, model.allowUpdates());

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-/** Samples for BatchAccount Delete. */
+/**
+ * Samples for BatchAccount Delete.
+ */
 public final class BatchAccountDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountDelete.json
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/BatchAccountDelete.json
      */
     /**
      * Sample code: BatchAccountDelete.
-     *
+     * 
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountDelete(com.azure.resourcemanager.batch.BatchManager manager) {

@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -91,7 +92,9 @@ class QueryPlanRetriever {
                 return BackoffRetryUtility.executeRetry(() ->
                     queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
                         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                            new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray(), rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
+                            new PartitionedQueryExecutionInfo(
+                                (ObjectNode)rxDocumentServiceResponse.getResponseBody(),
+                                rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                         return Mono.just(partitionedQueryExecutionInfo);
 
                     }), retryPolicyInstance);

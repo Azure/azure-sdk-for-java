@@ -130,8 +130,7 @@ public class CosmosAsyncTrigger {
         String spanName = "replaceTrigger." + container.getId();
         Mono<CosmosTriggerResponse> responseMono = container.getDatabase()
             .getDocClientWrapper()
-            .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
-                ModelBridgeInternal.getResource(triggerSettings))), null)
+            .replaceTrigger(new Trigger(ModelBridgeInternal.getResource(triggerSettings).getPropertyBag()), null)
             .map(ModelBridgeInternal::createCosmosTriggerResponse)
             .single();
         CosmosAsyncClient client = container.getDatabase().getClient();

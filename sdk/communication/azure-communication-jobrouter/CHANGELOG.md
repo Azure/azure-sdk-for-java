@@ -1,12 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* NullPointerException in routerQueue.getLabels()
+* createJob() deserialization error.
 
 ### Other Changes
 
