@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -207,10 +208,6 @@ public class StoreResponseDiagnostics {
     }
 
     private static boolean isPossiblyMalformedSessionToken(Exception e) {
-        if (e instanceof InvalidPartitionException) {
-            return true;
-        }
-
-        return false;
+        return e instanceof InvalidPartitionException || e instanceof PartitionKeyRangeIsSplittingException;
     }
 }
