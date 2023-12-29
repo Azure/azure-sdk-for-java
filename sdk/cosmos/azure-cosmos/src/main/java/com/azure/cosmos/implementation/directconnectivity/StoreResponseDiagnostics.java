@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -25,6 +26,7 @@ public class StoreResponseDiagnostics {
     final static Logger logger = LoggerFactory.getLogger(StoreResponseDiagnostics.class);
     private final String partitionKeyRangeId;
     private final String sessionTokenAsString;
+    private final boolean isPossiblyMalformedSessionToken;
     private final double requestCharge;
     private final String activityId;
     private final String correlatedActivityId;
@@ -81,6 +83,7 @@ public class StoreResponseDiagnostics {
         this.replicaStatusList = storeResponse.getReplicaStatusList();
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
+        this.isPossiblyMalformedSessionToken = false;
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -118,6 +121,7 @@ public class StoreResponseDiagnostics {
                 .CosmosExceptionHelper
                 .getCosmosExceptionAccessor()
                 .getFaultInjectionEvaluationResults(e);
+        this.isPossiblyMalformedSessionToken = isPossiblyMalformedSessionToken(e);
     }
 
     public int getStatusCode() {
@@ -197,4 +201,16 @@ public class StoreResponseDiagnostics {
     }
 
     public List<String> getReplicaStatusList() { return this.replicaStatusList; }
+
+    public boolean isPossiblyMalformedSessionToken() {
+        return this.isPossiblyMalformedSessionToken;
+    }
+
+    private static boolean isPossiblyMalformedSessionToken(Exception e) {
+        if (e instanceof InvalidPartitionException) {
+            return true;
+        }
+
+        return false;
+    }
 }

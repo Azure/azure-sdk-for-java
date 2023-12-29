@@ -187,7 +187,7 @@ public class ClientSideRequestStatistics {
 
                     String sessionTokenAsStringInner = storeResponseDiagnosticsInner.getSessionTokenAsString();
 
-                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
+                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner) && !storeResponseDiagnosticsInner.isPossiblyMalformedSessionToken()) {
                         String regionLowerCased = storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).replace(" ", "");
                         this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionLowerCased);
                     }

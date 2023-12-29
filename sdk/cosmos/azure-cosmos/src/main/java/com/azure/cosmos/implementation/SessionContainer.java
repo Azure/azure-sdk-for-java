@@ -398,8 +398,7 @@ public final class SessionContainer implements ISessionContainer {
         // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
         if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
 
-            if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal,
-                partitionKeyDefinition)) {
+            if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal, partitionKeyDefinition)) {
                 this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
                 this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping,
                     partitionKeyInternal.v, partitionKeyDefinition.v);
@@ -413,8 +412,7 @@ public final class SessionContainer implements ISessionContainer {
         } else {
             // populate pkRangeBasedRegionScopedSessionTokenRegistry
             this.collectionResourceIdToRegionScopedSessionTokens.compute(
-                resourceId.getUniqueDocumentCollectionId(), (k,
-                                                             pkRangeBasedRegionScopedSessionTokenRegistryAsVal) -> {
+                resourceId.getUniqueDocumentCollectionId(), (k, pkRangeBasedRegionScopedSessionTokenRegistryAsVal) -> {
 
                     if (pkRangeBasedRegionScopedSessionTokenRegistryAsVal == null) {
                         logger.info("Registering a new collection resourceId [{}] in "

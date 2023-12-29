@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,6 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class PkRangeBasedRegionScopedSessionTokenRegistry {
+
+    private static final Logger logger = LoggerFactory.getLogger(PkRangeBasedRegionScopedSessionTokenRegistry.class);
 
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> pkRangeIdToRegionScopedSessionTokens;
 
