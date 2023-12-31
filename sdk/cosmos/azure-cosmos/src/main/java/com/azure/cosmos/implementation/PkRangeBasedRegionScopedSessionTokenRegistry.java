@@ -63,9 +63,10 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
                 assert sessionTokenSegments.length > 1;
 
+                String partitionKeyRangeIdInner = sessionTokenSegments[0];
                 ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenSegments[1]);
 
-                this.pkRangeIdToRegionScopedSessionTokens.compute(pkRangeId, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
+                this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeIdInner, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
 
                     if (regionToSessionTokensAsVal == null) {
                         regionToSessionTokensAsVal = new ConcurrentHashMap<>();
