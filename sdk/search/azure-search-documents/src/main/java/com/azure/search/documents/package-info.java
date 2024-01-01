@@ -96,7 +96,14 @@
  *
  * The following sample creates a SearchIndexClient using the endpoint and Azure Key Credential (API Key).
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexClient.instantiation -->
+ * <pre>
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchIndexClient.instantiation -->
  *
  * <h3>Create a SearchIndexerClient</h3>
  *
@@ -105,7 +112,15 @@
  *
  * <p>The following sample creates SearchIndexerClient using an endpoint and Azure Key Credential (API Key).</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexerClient.instantiation -->
+ * <pre>
+ * SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchIndexerClient.instantiation -->
+ *
  *
  * <h3>Create a SearchClient</h3>
  *
@@ -114,7 +129,15 @@
  *
  * <p>The following sample creates a SearchClient</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.instantiation -->
+ * <pre>
+ * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.instantiation -->
  *
  * <h2>Key Concepts</h2>
  *
@@ -191,17 +214,48 @@
  * <p>SearchDocument is the default type returned from queries when you don't provide your own. The following sample performs the
  * search, enumerates over the results, and extracts data using SearchDocument's dictionary indexer.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String -->
+ * <pre>
+ * for &#40;SearchResult result : searchClient.search&#40;&quot;luxury&quot;&#41;&#41; &#123;
+ *     SearchDocument document = result.getDocument&#40;SearchDocument.class&#41;;
+ *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, result.getDocument&#40;SearchDocument.class&#41;.get&#40;&quot;hotelId&quot;&#41;&#41;;
+ *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, result.getDocument&#40;SearchDocument.class&#41;.get&#40;&quot;hotelName&quot;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String -->
  *
  * <h5>Use Java model class for search results</h5>
  *
  * <p>Define a `Hotel` class.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class -->
+ * <pre>
+ * class Hotel &#123;
+ *     private String hotelId;
+ *     private String hotelName;
+ *
+ *     public String hotelId&#40;&#41; &#123;
+ *         return this.hotelId;
+ *     &#125;
+ *
+ *     public String hotelName&#40;&#41; &#123;
+ *         return this.hotelName;
+ *     &#125;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class -->
  *
  * <p>Use it in place of SearchDocument when querying.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method -->
+ * <pre>
+ * for &#40;SearchResult result : searchClient.search&#40;&quot;luxury&quot;&#41;&#41; &#123;
+ *     Hotel hotel = result.getDocument&#40;Hotel.class&#41;;
+ *     System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, hotel.hotelId&#40;&#41;&#41;;
+ *     System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, hotel.hotelName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Method -->
  *
  * <h5>Search Options</h5>
  *
@@ -209,7 +263,16 @@
  *
  * <p>The following sample uses SearchOptions to search for the top 5 luxury hotel with a good rating (4 or above).</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions -->
+ * <pre>
+ * SearchOptions options = new SearchOptions&#40;&#41;
+ *     .setFilter&#40;&quot;rating gt 4&quot;&#41;
+ *     .setOrderBy&#40;&quot;rating desc&quot;&#41;
+ *     .setTop&#40;5&#41;;
+ * SearchPagedIterable searchResultsIterable = searchClient.search&#40;&quot;luxury&quot;, options, Context.NONE&#41;;
+ * &#47;&#47;...
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#SearchOptions -->
  *
  * <h4>Creating an index</h4>
  *
@@ -221,12 +284,69 @@
  * List<SearchField>. There are three annotations SimpleFieldProperty, SearchFieldProperty and FieldBuilderIgnore to
  * configure the field of model class.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex -->
+ * <pre>
+ * &#47;&#47; Create a new search index structure that matches the properties of the Hotel class.
+ * List&lt;SearchField&gt; searchFields = SearchIndexClient.buildSearchFields&#40;Hotel.class, null&#41;;
+ * searchIndexClient.createIndex&#40;new SearchIndex&#40;&quot;hotels&quot;, searchFields&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#SearchIndex -->
  *
  * <p>For advanced scenarios, you can build search fields using SearchField directly. The following sample shows how to
  * build search fields with SearchField.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#String-List-boolean -->
+ * <pre>
+ * &#47;&#47; Create a new search index structure that matches the properties of the Hotel class.
+ * List&lt;SearchField&gt; searchFieldList = new ArrayList&lt;&gt;&#40;&#41;;
+ * searchFieldList.add&#40;new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;
+ *         .setKey&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;&#41;;
+ *
+ * searchFieldList.add&#40;new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;&#41;;
+ * searchFieldList.add&#40;new SearchField&#40;&quot;description&quot;, SearchFieldDataType.STRING&#41;
+ *     .setSearchable&#40;true&#41;
+ *     .setAnalyzerName&#40;LexicalAnalyzerName.EU_LUCENE&#41;&#41;;
+ * searchFieldList.add&#40;new SearchField&#40;&quot;tags&quot;, SearchFieldDataType.collection&#40;SearchFieldDataType.STRING&#41;&#41;
+ *     .setSearchable&#40;true&#41;
+ *     .setFilterable&#40;true&#41;
+ *     .setFacetable&#40;true&#41;&#41;;
+ * searchFieldList.add&#40;new SearchField&#40;&quot;address&quot;, SearchFieldDataType.COMPLEX&#41;
+ *     .setFields&#40;new SearchField&#40;&quot;streetAddress&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;,
+ *         new SearchField&#40;&quot;city&quot;, SearchFieldDataType.STRING&#41;
+ *             .setSearchable&#40;true&#41;
+ *             .setFilterable&#40;true&#41;
+ *             .setFacetable&#40;true&#41;
+ *             .setSortable&#40;true&#41;,
+ *         new SearchField&#40;&quot;stateProvince&quot;, SearchFieldDataType.STRING&#41;
+ *             .setSearchable&#40;true&#41;
+ *             .setFilterable&#40;true&#41;
+ *             .setFacetable&#40;true&#41;
+ *             .setSortable&#40;true&#41;,
+ *         new SearchField&#40;&quot;country&quot;, SearchFieldDataType.STRING&#41;
+ *             .setSearchable&#40;true&#41;
+ *             .setFilterable&#40;true&#41;
+ *             .setFacetable&#40;true&#41;
+ *             .setSortable&#40;true&#41;,
+ *         new SearchField&#40;&quot;postalCode&quot;, SearchFieldDataType.STRING&#41;
+ *             .setSearchable&#40;true&#41;
+ *             .setFilterable&#40;true&#41;
+ *             .setFacetable&#40;true&#41;
+ *             .setSortable&#40;true&#41;
+ *     &#41;&#41;;
+ *
+ * &#47;&#47; Prepare suggester.
+ * SearchSuggester suggester = new SearchSuggester&#40;&quot;sg&quot;, Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;;
+ * &#47;&#47; Prepare SearchIndex with index name and search fields.
+ * SearchIndex index = new SearchIndex&#40;&quot;hotels&quot;&#41;.setFields&#40;searchFieldList&#41;.setSuggesters&#40;suggester&#41;;
+ * &#47;&#47; Create an index
+ * searchIndexClient.createIndex&#40;index&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchIndexClient.createIndex#String-List-boolean -->
  *
  * <h4>Retrieving a specific document from your index</h4>
  *
@@ -234,7 +354,13 @@
  *
  * <p>The following example retrieves a document using the document's key.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String -->
+ * <pre>
+ * Hotel hotel = searchClient.getDocument&#40;&quot;1&quot;, Hotel.class&#41;;
+ * System.out.printf&#40;&quot;Hotel ID: %s%n&quot;, hotel.hotelId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Hotel Name: %s%n&quot;, hotel.hotelName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.getDocument#String-String -->
  *
  * <h4>Adding documents to your index</h4>
  *
@@ -243,7 +369,14 @@
  *
  * <p>The following sample shows using a single batch request to perform a document upload and merge in a single request.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean -->
+ * <pre>
+ * IndexDocumentsBatch&lt;Hotel&gt; batch = new IndexDocumentsBatch&lt;Hotel&gt;&#40;&#41;;
+ * batch.addUploadActions&#40;Collections.singletonList&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;783&quot;&#41;.setHotelName&#40;&quot;Upload Inn&quot;&#41;&#41;&#41;;
+ * batch.addMergeActions&#40;Collections.singletonList&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;12&quot;&#41;.setHotelName&#40;&quot;Renovated Ranch&quot;&#41;&#41;&#41;;
+ * searchClient.indexDocuments&#40;batch&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.uploadDocuments#Iterable-boolean-boolean -->
  *
  * <h4>Async APIs</h4>
  *
@@ -264,7 +397,17 @@
  *     <li>Set the `audience` in SearchClientBuilder, SearchIndexClientBuilder, SearchIndexerClientBuilder</li>
  * </ul>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.instantiation.nationalCloud -->
+ * <pre>
+ * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;
+ *         .authorityHost&#40;&quot;&#123;national cloud endpoint&#125;&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .audience&#40;SearchAudience.AZURE_PUBLIC_CLOUD&#41; &#47;&#47;set the audience of your cloud
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.instantiation.nationalCloud -->
  *
  * <h3>Troubleshooting</h3>
  *
@@ -280,15 +423,20 @@
  *
  * <p>Any Search API operation that fails will throw an HttpResponseException with helpful <a href="https://learn.microsoft.com/rest/api/searchservice/http-status-codes">Status codes</a>. Many of these errors are recoverable.</p>
  *
- * TODO: add sample
+ * <!-- src_embed com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Error -->
+ * <pre>
+ * try &#123;
+ *     Iterable&lt;SearchResult&gt; results = searchClient.search&#40;&quot;hotel&quot;&#41;;
+ * &#125; catch &#40;HttpResponseException ex&#41; &#123;
+ *     &#47;&#47; The exception contains the HTTP status code and the detailed message
+ *     &#47;&#47; returned from the search service
+ *     HttpResponse response = ex.getResponse&#40;&#41;;
+ *     System.out.println&#40;&quot;Status Code: &quot; + response.getStatusCode&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Message: &quot; + ex.getMessage&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.packageInfo-SearchClient.search#String-Object-Class-Error -->
  *
- * <p>You can also easily enable console logging if you want to dig deeper into the requests you're making against the service.</p>
- *
- * <h4>Enabling Logging</h4>
- *
- * <p>Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and
- * expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal
- * state to help locate the root issue.</p>
  *
  * @see com.azure.search.documents.SearchClient
  * @see com.azure.search.documents.SearchAsyncClient

@@ -74,8 +74,14 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     sample shows you how to create an instance of the client:
  * </p>
  *
- * TODO: add authentication sample
- *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.instantiation -->
+ * <pre>
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.instantiation -->
  * <p>
  *     For more information on authentication and building, see the documentation for {@link SearchIndexClientBuilder}.
  * </p>
@@ -101,8 +107,56 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample creates an index.
  * </p>
  *
- * TODO: add create index sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = new SearchIndex&#40;&quot;indexName&quot;, Arrays.asList&#40;
+ *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;
+ *         .setKey&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;description&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.EN_LUCENE&#41;,
+ *     new SearchField&#40;&quot;descriptionFr&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.FR_LUCENE&#41;,
+ *     new SearchField&#40;&quot;tags&quot;, SearchFieldDataType.collection&#40;SearchFieldDataType.STRING&#41;&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setFacetable&#40;true&#41;,
+ *     new SearchField&#40;&quot;address&quot;, SearchFieldDataType.COMPLEX&#41;
+ *         .setFields&#40;
+ *             new SearchField&#40;&quot;streetAddress&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;,
+ *             new SearchField&#40;&quot;city&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;stateProvince&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;country&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setSynonymMapNames&#40;&quot;synonymMapName&quot;&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;postalCode&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;&#41;
+ * &#41;&#41;;
  *
+ * SEARCH_INDEX_CLIENT.createIndex&#40;searchIndex&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
@@ -115,8 +169,11 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample lists all indexes.
  * </p>
  *
- * TODO: add list indexes sample
- *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
+ * <pre>
+ * SEARCH_INDEX_CLIENT.listIndexes&#40;&#41;.forEach&#40;index -&gt; System.out.println&#40;index.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
@@ -129,11 +186,18 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample retrieves an index.
  * </p>
  *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
+ * <pre>
+ * SearchIndex searchIndex = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;;
+ * System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
+ *
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add get index sample
+ *
  *
  * <h3>
  *     Update an Index
@@ -143,11 +207,19 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample updates an index.
  * </p>
  *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;indexName&quot;&#41;;
+ * searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
+ * SEARCH_INDEX_CLIENT.createOrUpdateIndex&#40;searchIndex&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ *
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add update index sample
+ *
  *
  * <h3>
  *     Delete an Index
@@ -156,12 +228,17 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <p>
  *     The following sample deletes an index.
  * </p>
- *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
+ * <pre>
+ * String indexName = &quot;indexName&quot;;
+ * SEARCH_INDEX_CLIENT.deleteIndex&#40;indexName&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add delete index sample
+ *
  *
  * <h3>
  *     Create a Synonym Map
@@ -171,11 +248,18 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample creates a synonym map.
  * </p>
  *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
+ * SEARCH_INDEX_CLIENT.createSynonymMap&#40;synonymMap&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ *
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add create synonym map sample
+ *
  *
  * <h3>
  *     List Synonym Maps
@@ -185,11 +269,17 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample lists all synonym maps.
  * </p>
  *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
+ * <pre>
+ * SEARCH_INDEX_CLIENT.listSynonymMaps&#40;&#41;.forEach&#40;synonymMap -&gt; System.out.println&#40;synonymMap.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
+ *
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add list synonym maps sample
+ *
  *
  * <h3>
  *     Retrieve a Synonym Map
@@ -198,12 +288,17 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <p>
  *     The following sample retrieves a synonym map.
  * </p>
- *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
+ * <pre>
+ * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add get synonym map sample
+ *
  *
  * <h3>
  *     Update a Synonym Map
@@ -212,12 +307,18 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  * <p>
  *     The following sample updates a synonym map.
  * </p>
- *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * synonymMap.setSynonyms&#40;&quot;inn&quot;&#41;;
+ * SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add update synonym map sample
+ *
  *
  * <h3>
  *     Delete a Synonym Map
@@ -227,11 +328,18 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
  *     The following sample deletes a synonym map.
  * </p>
  *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ * <pre>
+ * String synonymMapName = &quot;synonymMapName&quot;;
+ * SEARCH_INDEX_CLIENT.deleteSynonymMap&#40;synonymMapName&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ *
  * <em>
  *     For an asynchronous sample see {@link SearchIndexAsyncClient}.
  * </em>
  *
- * TODO: add delete synonym map sample
+ *
  *
  * @see SearchIndexClientBuilder
  */

@@ -136,13 +136,27 @@ import java.util.Objects;
  *     Make sure you use the right namespace for DefaultAzureCredential at the top of your source file:
  * </p>
  *
- * TODO: add import sample
+ * <!-- src_embed DefaultAzureCredentialImports -->
+ * <pre>
+ * import com.azure.identity.DefaultAzureCredential;
+ * import com.azure.identity.DefaultAzureCredentialBuilder;
+ * </pre>
+ * <!-- end DefaultAzureCredentialImports -->
  *
  * <p>
  *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
  * </p>
  *
- * TODO: add auth with AAD sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexClientBuilder.credential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;credential&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexClientBuilder.credential -->
  *
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient

@@ -85,25 +85,25 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerClient -->
  * <pre>
  * SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerClient -->
  *
  * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerAsyncClient -->
  * <pre>
- * SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder&#40;&#41;
+ * SearchIndexerAsyncClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClientBuilder.instantiation.SearchIndexerAsyncClient -->
  *
  * <h4>
  *     Building and Authenticating a {@link SearchIndexerClient} or {@link SearchIndexerAsyncClient} using Azure Active Directory
@@ -131,13 +131,27 @@ import java.util.Objects;
  *     Make sure you use the right namespace for DefaultAzureCredential at the top of your source file:
  * </p>
  *
- * TODO: add import sample
+ * <!-- src_embed DefaultAzureCredentialImports -->
+ * <pre>
+ * import com.azure.identity.DefaultAzureCredential;
+ * import com.azure.identity.DefaultAzureCredentialBuilder;
+ * </pre>
+ * <!-- end DefaultAzureCredentialImports -->
  *
  * <p>
  *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
  * </p>
  *
- * TODO: add auth with AAD sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClientBuilder-classLevelJavaDoc.DefaultAzureCredential -->
  *
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient

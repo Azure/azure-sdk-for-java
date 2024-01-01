@@ -94,7 +94,15 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     you how to authenticate and create an instance of the client:
  * </p>
  *
- * TODO: add authentication sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.instantiationWithSearchClientBuilder -->
+ * <pre>
+ * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.instantiationWithSearchClientBuilder -->
  *
  * <p>
  *     For more information on authentication and building, see the {@link SearchClientBuilder} documentation.
@@ -121,7 +129,15 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample uploads a new document to an index.
  * </p>
  *
- * TODO: add upload sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
+ * <pre>
+ * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;300&quot;&#41;&#41;;
+ * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;hotels&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.uploadDocument#Map-boolean -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -135,7 +151,14 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample merges documents in an index.
  * </p>
  *
- * TODO: add merge sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map -->
+ * <pre>
+ * List&lt;Hotel&gt; hotels = new ArrayList&lt;&gt;&#40;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;100&quot;&#41;&#41;;
+ * hotels.add&#40;new Hotel&#40;&#41;.setHotelId&#40;&quot;200&quot;&#41;&#41;;
+ * SEARCH_ASYNC_CLIENT.mergeDocuments&#40;hotels&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.mergeDocument#Map -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -149,7 +172,13 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample deletes a document from an index.
  * </p>
  *
- * TODO: add delete sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String -->
+ * <pre>
+ * SearchDocument documentId = new SearchDocument&#40;&#41;;
+ * documentId.put&#40;&quot;hotelId&quot;, &quot;100&quot;&#41;;
+ * SEARCH_ASYNC_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;documentId&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.deleteDocument#String -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -163,7 +192,12 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample gets a document from an index.
  * </p>
  *
- * TODO: add get sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class -->
+ * <pre>
+ * Hotel hotel = SEARCH_ASYNC_CLIENT.getDocument&#40;&quot;100&quot;, Hotel.class&#41;.block&#40;&#41;;
+ * System.out.printf&#40;&quot;Retrieved Hotel %s%n&quot;, hotel.getHotelId&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.getDocument#String-Class -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -177,7 +211,26 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample searches for documents within an index.
  * </p>
  *
- * TODO: add search sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String -->
+ * <pre>
+ * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+ * searchDocument.put&#40;&quot;hotelId&quot;, &quot;8&quot;&#41;;
+ * searchDocument.put&#40;&quot;description&quot;, &quot;budget&quot;&#41;;
+ * searchDocument.put&#40;&quot;descriptionFr&quot;, &quot;motel&quot;&#41;;
+ *
+ * SearchDocument searchDocument1 = new SearchDocument&#40;&#41;;
+ * searchDocument1.put&#40;&quot;hotelId&quot;, &quot;9&quot;&#41;;
+ * searchDocument1.put&#40;&quot;description&quot;, &quot;budget&quot;&#41;;
+ * searchDocument1.put&#40;&quot;descriptionFr&quot;, &quot;motel&quot;&#41;;
+ *
+ * List&lt;SearchDocument&gt; searchDocuments = new ArrayList&lt;&gt;&#40;&#41;;
+ * searchDocuments.add&#40;searchDocument&#41;;
+ * searchDocuments.add&#40;searchDocument1&#41;;
+ * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;searchDocuments&#41;;
+ *
+ * SearchPagedFlux results = SEARCH_ASYNC_CLIENT.search&#40;&quot;SearchText&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.searchDocuments#String -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -191,7 +244,14 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample suggests the most likely matching text in documents.
  * </p>
  *
- * TODO: add suggest sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String -->
+ * <pre>
+ * SuggestPagedFlux results = SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * results.subscribe&#40;item -&gt; &#123;
+ *     System.out.printf&#40;&quot;The text '%s' was found.&#92;n&quot;, item.getText&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.suggestDocuments#String-String -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.
@@ -205,7 +265,14 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  *     The following sample provides autocompletion for a partially typed query.
  * </p>
  *
- * TODO: add autocomplete sample
+ * <!-- src_embed com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String -->
+ * <pre>
+ * AutocompletePagedFlux results = SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+ * results.subscribe&#40;item -&gt; &#123;
+ *     System.out.printf&#40;&quot;The text '%s' was found.&#92;n&quot;, item.getText&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchAsyncClient-classLevelJavaDoc.autocomplete#String-String -->
  *
  * <em>
  *     For a synchronous sample see {@link SearchClient}.

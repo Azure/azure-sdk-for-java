@@ -76,7 +76,14 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     sample shows you how to authenticate and build this client:
  * </p>
  *
- * TODO: add authentication sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation -->
+ * <pre>
+ * SearchIndexerAsyncClient SearchIndexerAsyncClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;admin-key&#125;&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.instantiation -->
  *
  * <p>
  *     For more information on authentication and building, see the {@link SearchIndexerClientBuilder} documentation.
@@ -101,7 +108,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample creates an indexer.
  * </p>
  *
- * TODO: add create indexer sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
+ * <pre>
+ * SearchIndexer indexer = new SearchIndexer&#40;&quot;example-indexer&quot;, &quot;example-datasource&quot;, &quot;example-index&quot;&#41;;
+ * SearchIndexer createdIndexer = searchIndexerAsyncClient.createIndexer&#40;indexer&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createIndexer#SearchIndexer -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -115,8 +127,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample lists all indexers.
  * </p>
  *
- * TODO: add list indexers sample
- *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers -->
+ * <pre>
+ * searchIndexerAsyncClient.listIndexers&#40;&#41;.subscribe&#40;indexer -&gt;
+ *     System.out.printf&#40;&quot;Retrieved indexer name: %s&#92;n&quot;, indexer.getName&#40;&#41;&#41;
+ * &#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listIndexers -->
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
  * </em>
@@ -129,8 +146,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample gets an indexer.
  * </p>
  *
- * TODO: add get indexer sample
- *
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String -->
+ * <pre>
+ * SearchIndexer indexer = searchIndexerAsyncClient.getIndexer&#40;&quot;example-indexer&quot;&#41;.block&#40;&#41;;
+ * System.out.printf&#40;&quot;Retrieved indexer name: %s&#92;n&quot;, indexer.getName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.getIndexer#String -->
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
  * </em>
@@ -143,7 +164,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample updates an indexer.
  * </p>
  *
- * TODO: add update indexer sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
+ * <pre>
+ * SearchIndexer indexer = searchIndexerAsyncClient.getIndexer&#40;&quot;example-indexer&quot;&#41;.block&#40;&#41;;
+ * indexer.setDescription&#40;&quot;This is a new description for this indexer&quot;&#41;;
+ * SearchIndexer updatedIndexer = searchIndexerAsyncClient.createOrUpdateIndexer&#40;indexer&#41;.block&#40;&#41;;
+ * System.out.printf&#40;&quot;Updated indexer name: %s, description: %s&#92;n&quot;, updatedIndexer.getName&#40;&#41;,
+ *     updatedIndexer.getDescription&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateIndexer#SearchIndexer -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -157,7 +186,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample deletes an indexer.
  * </p>
  *
- * TODO: add delete indexer sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.deleteIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteIndexer#String -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -171,7 +204,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample runs an indexer.
  * </p>
  *
- * TODO: add run indexer sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.runIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.runIndexer#String -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -185,7 +222,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample resets an indexer.
  * </p>
  *
- * TODO: add reset indexer sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String -->
+ * <pre>
+ * searchIndexerAsyncClient.resetIndexer&#40;&quot;example-indexer&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.resetIndexer#String -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -199,7 +240,43 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample creates a skillset.
  * </p>
  *
- * TODO: add create skillset sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
+ * <pre>
+ *
+ * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+ *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+ *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+ * &#41;;
+ *
+ * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+ *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+ *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+ *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+ *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+ * &#41;;
+ *
+ * List&lt;SearchIndexerSkill&gt; skills = Collections.singletonList&#40;
+ *     new OcrSkill&#40;inputs, outputs&#41;
+ *         .setShouldDetectOrientation&#40;true&#41;
+ *         .setDefaultLanguageCode&#40;null&#41;
+ *         .setName&#40;&quot;myocr&quot;&#41;
+ *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+ *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+ * &#41;;
+ *
+ * SearchIndexerSkillset skillset = new SearchIndexerSkillset&#40;&quot;skillsetName&quot;, skills&#41;
+ *     .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;;
+ *
+ * System.out.println&#40;String.format&#40;&quot;Creating OCR skillset '%s'&quot;, skillset.getName&#40;&#41;&#41;&#41;;
+ *
+ * SearchIndexerSkillset createdSkillset = searchIndexerAsyncClient.createSkillset&#40;skillset&#41;.block&#40;&#41;;
+ *
+ * System.out.println&#40;&quot;Created OCR skillset&quot;&#41;;
+ * System.out.println&#40;String.format&#40;&quot;Name: %s&quot;, createdSkillset.getName&#40;&#41;&#41;&#41;;
+ * System.out.println&#40;String.format&#40;&quot;ETag: %s&quot;, createdSkillset.getETag&#40;&#41;&#41;&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.createSkillset#SearchIndexerSkillset -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -213,7 +290,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample lists all skillsets.
  * </p>
  *
- * TODO: add list skillsets sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets -->
+ * <pre>
+ * searchIndexerAsyncClient.listSkillsets&#40;&#41;.subscribe&#40;skillset -&gt;
+ *     System.out.printf&#40;&quot;Retrieved skillset name: %s&#92;n&quot;, skillset.getName&#40;&#41;&#41;
+ * &#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.listSkillsets -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -227,7 +310,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample gets a skillset.
  * </p>
  *
- * TODO: add get skillset sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String -->
+ * <pre>
+ * SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset&#40;&quot;example-skillset&quot;&#41;.block&#40;&#41;;
+ * System.out.printf&#40;&quot;Retrieved skillset name: %s&#92;n&quot;, skillset.getName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.getSkillset#String -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -241,7 +329,15 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample updates a skillset.
  * </p>
  *
- * TODO: add update skillset sample
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
+ * <pre>
+ * SearchIndexerSkillset skillset = searchIndexerAsyncClient.getSkillset&#40;&quot;example-skillset&quot;&#41;.block&#40;&#41;;
+ * skillset.setDescription&#40;&quot;This is a new description for this skillset&quot;&#41;;
+ * SearchIndexerSkillset updatedSkillset = searchIndexerAsyncClient.createOrUpdateSkillset&#40;skillset&#41;.block&#40;&#41;;
+ * System.out.printf&#40;&quot;Updated skillset name: %s, description: %s&#92;n&quot;, updatedSkillset.getName&#40;&#41;,
+ *     updatedSkillset.getDescription&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient-classLevelJavaDoc.updateSkillset#SearchIndexerSkillset -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
@@ -255,7 +351,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     The following sample deletes a skillset.
  * </p>
  *
- * TODO: add delete skillset sample
+ * <!-- src_embed com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String -->
+ * <pre>
+ * searchIndexerAsyncClient.deleteSkillset&#40;&quot;example-skillset&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchIndexerAsyncClient-classLevelJavaDoc.deleteSkillset#String -->
  *
  * <em>
  *     For a synchronous sample, see {@link SearchIndexerClient}.
