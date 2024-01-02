@@ -18,6 +18,10 @@
 
 - Updated core dependency from resources.
 
+## 2.34.0-beta.1 (2023-12-25)
+
+- Preview release for `api-version` `2023-05-01-preview`.
+
 ## 2.33.0 (2023-11-24)
 
 ### Other Changes
