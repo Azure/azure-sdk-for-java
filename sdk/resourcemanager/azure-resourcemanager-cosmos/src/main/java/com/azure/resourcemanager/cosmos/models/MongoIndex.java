@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB MongoDB collection index key. */
+/**
+ * Cosmos DB MongoDB collection index key.
+ */
 @Fluent
 public final class MongoIndex {
     /*
@@ -22,13 +24,15 @@ public final class MongoIndex {
     @JsonProperty(value = "options")
     private MongoIndexOptions options;
 
-    /** Creates an instance of MongoIndex class. */
+    /**
+     * Creates an instance of MongoIndex class.
+     */
     public MongoIndex() {
     }
 
     /**
      * Get the key property: Cosmos DB MongoDB collection index keys.
-     *
+     * 
      * @return the key value.
      */
     public MongoIndexKeys key() {
@@ -37,7 +41,7 @@ public final class MongoIndex {
 
     /**
      * Set the key property: Cosmos DB MongoDB collection index keys.
-     *
+     * 
      * @param key the key value to set.
      * @return the MongoIndex object itself.
      */
@@ -48,7 +52,7 @@ public final class MongoIndex {
 
     /**
      * Get the options property: Cosmos DB MongoDB collection index key options.
-     *
+     * 
      * @return the options value.
      */
     public MongoIndexOptions options() {
@@ -57,7 +61,7 @@ public final class MongoIndex {
 
     /**
      * Set the options property: Cosmos DB MongoDB collection index key options.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoIndex object itself.
      */
@@ -68,7 +72,7 @@ public final class MongoIndex {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

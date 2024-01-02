@@ -33,6 +33,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -400,10 +402,12 @@ public class RxDocumentClientImplTest {
 
     private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
 
+        byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
             headers,
-            content.getBytes(StandardCharsets.UTF_8));
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
 
         RxDocumentServiceResponse documentServiceResponse = new RxDocumentServiceResponse(new DiagnosticsClientContext() {
 

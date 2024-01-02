@@ -29,7 +29,7 @@ public final class ChatCompletionsOptions {
      */
     @Generated
     @JsonProperty(value = "messages")
-    private List<ChatMessage> messages;
+    private List<ChatRequestMessage> messages;
 
     /*
      * The maximum number of tokens to generate.
@@ -140,7 +140,7 @@ public final class ChatCompletionsOptions {
      */
     @Generated
     @JsonCreator
-    public ChatCompletionsOptions(@JsonProperty(value = "messages") List<ChatMessage> messages) {
+    public ChatCompletionsOptions(@JsonProperty(value = "messages") List<ChatRequestMessage> messages) {
         this.messages = messages;
     }
 
@@ -153,7 +153,7 @@ public final class ChatCompletionsOptions {
      * @return the messages value.
      */
     @Generated
-    public List<ChatMessage> getMessages() {
+    public List<ChatRequestMessage> getMessages() {
         return this.messages;
     }
 
@@ -591,6 +591,171 @@ public final class ChatCompletionsOptions {
     @Generated
     public ChatCompletionsOptions setDataSources(List<AzureChatExtensionConfiguration> dataSources) {
         this.dataSources = dataSources;
+        return this;
+    }
+
+    /*
+     * If provided, the configuration options for available Azure OpenAI chat enhancements.
+     */
+    @Generated
+    @JsonProperty(value = "enhancements")
+    private AzureChatEnhancementConfiguration enhancements;
+
+    /*
+     * If specified, the system will make a best effort to sample deterministically such that repeated requests with
+     * the
+     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
+     * the
+     * system_fingerprint response parameter to monitor changes in the backend."
+     */
+    @Generated
+    @JsonProperty(value = "seed")
+    private Long seed;
+
+    /*
+     * An object specifying the format that the model must output. Used to enable JSON mode.
+     */
+    @Generated
+    @JsonProperty(value = "response_format")
+    private ChatCompletionsResponseFormat responseFormat;
+
+    /*
+     * The available tool definitions that the chat completions request can use, including caller-defined functions.
+     */
+    @Generated
+    @JsonProperty(value = "tools")
+    private List<ChatCompletionsToolDefinition> tools;
+
+    /*
+     * If specified, the model will configure which of the provided tools it can use for the chat completions response.
+     */
+    @Generated
+    @JsonProperty(value = "tool_choice")
+    private BinaryData toolChoice;
+
+    /**
+     * Get the enhancements property: If provided, the configuration options for available Azure OpenAI chat
+     * enhancements.
+     *
+     * @return the enhancements value.
+     */
+    @Generated
+    public AzureChatEnhancementConfiguration getEnhancements() {
+        return this.enhancements;
+    }
+
+    /**
+     * Set the enhancements property: If provided, the configuration options for available Azure OpenAI chat
+     * enhancements.
+     *
+     * @param enhancements the enhancements value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setEnhancements(AzureChatEnhancementConfiguration enhancements) {
+        this.enhancements = enhancements;
+        return this;
+    }
+
+    /**
+     * Get the seed property: If specified, the system will make a best effort to sample deterministically such that
+     * repeated requests with the
+     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
+     * the
+     * system_fingerprint response parameter to monitor changes in the backend.".
+     *
+     * @return the seed value.
+     */
+    @Generated
+    public Long getSeed() {
+        return this.seed;
+    }
+
+    /**
+     * Set the seed property: If specified, the system will make a best effort to sample deterministically such that
+     * repeated requests with the
+     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
+     * the
+     * system_fingerprint response parameter to monitor changes in the backend.".
+     *
+     * @param seed the seed value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setSeed(Long seed) {
+        this.seed = seed;
+        return this;
+    }
+
+    /**
+     * Get the responseFormat property: An object specifying the format that the model must output. Used to enable JSON
+     * mode.
+     *
+     * @return the responseFormat value.
+     */
+    @Generated
+    public ChatCompletionsResponseFormat getResponseFormat() {
+        return this.responseFormat;
+    }
+
+    /**
+     * Set the responseFormat property: An object specifying the format that the model must output. Used to enable JSON
+     * mode.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setResponseFormat(ChatCompletionsResponseFormat responseFormat) {
+        this.responseFormat = responseFormat;
+        return this;
+    }
+
+    /**
+     * Get the tools property: The available tool definitions that the chat completions request can use, including
+     * caller-defined functions.
+     *
+     * @return the tools value.
+     */
+    @Generated
+    public List<ChatCompletionsToolDefinition> getTools() {
+        return this.tools;
+    }
+
+    /**
+     * Set the tools property: The available tool definitions that the chat completions request can use, including
+     * caller-defined functions.
+     *
+     * @param tools the tools value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setTools(List<ChatCompletionsToolDefinition> tools) {
+        this.tools = tools;
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property: If specified, the model will configure which of the provided tools it can use for
+     * the chat completions response.
+     *
+     * @return the toolChoice value.
+     */
+    @Generated
+    public BinaryData getToolChoice() {
+        return this.toolChoice;
+    }
+
+    /**
+     * Set the toolChoice property: If specified, the model will configure which of the provided tools it can use for
+     * the chat completions response.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setToolChoice(BinaryData toolChoice) {
+        this.toolChoice = toolChoice;
         return this;
     }
 }

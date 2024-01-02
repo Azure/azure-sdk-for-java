@@ -6,11 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfigurationNfv;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the NetworkVirtualApplianceConnection subresource. */
+/**
+ * Properties of the NetworkVirtualApplianceConnection subresource.
+ */
 @Fluent
 public final class NetworkVirtualApplianceConnectionProperties {
     /*
@@ -53,15 +55,17 @@ public final class NetworkVirtualApplianceConnectionProperties {
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
     @JsonProperty(value = "routingConfiguration")
-    private RoutingConfigurationNfv routingConfiguration;
+    private RoutingConfiguration routingConfiguration;
 
-    /** Creates an instance of NetworkVirtualApplianceConnectionProperties class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceConnectionProperties class.
+     */
     public NetworkVirtualApplianceConnectionProperties() {
     }
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the NetworkVirtualApplianceConnection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -90,7 +94,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Get the asn property: Network Virtual Appliance ASN.
-     *
+     * 
      * @return the asn value.
      */
     public Long asn() {
@@ -99,7 +103,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Set the asn property: Network Virtual Appliance ASN.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Get the tunnelIdentifier property: Unique identifier for the connection.
-     *
+     * 
      * @return the tunnelIdentifier value.
      */
     public Long tunnelIdentifier() {
@@ -119,7 +123,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Set the tunnelIdentifier property: Unique identifier for the connection.
-     *
+     * 
      * @param tunnelIdentifier the tunnelIdentifier value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Get the bgpPeerAddress property: List of bgpPeerAddresses for the NVA instances.
-     *
+     * 
      * @return the bgpPeerAddress value.
      */
     public List<String> bgpPeerAddress() {
@@ -139,7 +143,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Set the bgpPeerAddress property: List of bgpPeerAddresses for the NVA instances.
-     *
+     * 
      * @param bgpPeerAddress the bgpPeerAddress value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Get the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -159,7 +163,7 @@ public final class NetworkVirtualApplianceConnectionProperties {
 
     /**
      * Set the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
@@ -171,29 +175,29 @@ public final class NetworkVirtualApplianceConnectionProperties {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
-    public RoutingConfigurationNfv routingConfiguration() {
+    public RoutingConfiguration routingConfiguration() {
         return this.routingConfiguration;
     }
 
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the NetworkVirtualApplianceConnectionProperties object itself.
      */
-    public NetworkVirtualApplianceConnectionProperties withRoutingConfiguration(
-        RoutingConfigurationNfv routingConfiguration) {
+    public NetworkVirtualApplianceConnectionProperties
+        withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
         this.routingConfiguration = routingConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource for a regional service location. */
+/**
+ * Resource for a regional service location.
+ */
 @Immutable
 public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalServiceResource {
     /*
@@ -16,13 +18,15 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     @JsonProperty(value = "sqlDedicatedGatewayEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String sqlDedicatedGatewayEndpoint;
 
-    /** Creates an instance of SqlDedicatedGatewayRegionalServiceResource class. */
+    /**
+     * Creates an instance of SqlDedicatedGatewayRegionalServiceResource class.
+     */
     public SqlDedicatedGatewayRegionalServiceResource() {
     }
 
     /**
      * Get the sqlDedicatedGatewayEndpoint property: The regional endpoint for SqlDedicatedGateway.
-     *
+     * 
      * @return the sqlDedicatedGatewayEndpoint value.
      */
     public String sqlDedicatedGatewayEndpoint() {
@@ -31,7 +35,7 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

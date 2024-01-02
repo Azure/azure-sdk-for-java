@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Allows you to generate a vector embedding for a given text input using the Azure OpenAI resource. */
+/**
+ * Allows you to generate a vector embedding for a given text input using the Azure OpenAI resource.
+ */
 @Fluent
 public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /*
@@ -39,7 +41,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Creates an instance of AzureOpenAIEmbeddingSkill class.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -49,7 +51,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Get the resourceUri property: The resource URI for your Azure OpenAI resource.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -58,7 +60,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Set the resourceUri property: The resource URI for your Azure OpenAI resource.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
@@ -69,7 +71,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Get the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
-     *
+     * 
      * @return the deploymentId value.
      */
     public String getDeploymentId() {
@@ -78,7 +80,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Set the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
-     *
+     * 
      * @param deploymentId the deploymentId value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
@@ -89,7 +91,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Get the apiKey property: API key for the designated Azure OpenAI resource.
-     *
+     * 
      * @return the apiKey value.
      */
     public String getApiKey() {
@@ -98,7 +100,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Set the apiKey property: API key for the designated Azure OpenAI resource.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
@@ -109,7 +111,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Get the authIdentity property: The user-assigned managed identity used for outbound connections.
-     *
+     * 
      * @return the authIdentity value.
      */
     public SearchIndexerDataIdentity getAuthIdentity() {
@@ -118,7 +120,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Set the authIdentity property: The user-assigned managed identity used for outbound connections.
-     *
+     * 
      * @param authIdentity the authIdentity value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
@@ -127,21 +129,27 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureOpenAIEmbeddingSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureOpenAIEmbeddingSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureOpenAIEmbeddingSkill setContext(String context) {
         super.setContext(context);
@@ -166,87 +174,85 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
     /**
      * Reads an instance of AzureOpenAIEmbeddingSkill from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureOpenAIEmbeddingSkill if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureOpenAIEmbeddingSkill.
      */
     public static AzureOpenAIEmbeddingSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean inputsFound = false;
-                    List<InputFieldMappingEntry> inputs = null;
-                    boolean outputsFound = false;
-                    List<OutputFieldMappingEntry> outputs = null;
-                    String name = null;
-                    String description = null;
-                    String context = null;
-                    String resourceUri = null;
-                    String deploymentId = null;
-                    String apiKey = null;
-                    SearchIndexerDataIdentity authIdentity = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean inputsFound = false;
+            List<InputFieldMappingEntry> inputs = null;
+            boolean outputsFound = false;
+            List<OutputFieldMappingEntry> outputs = null;
+            String name = null;
+            String description = null;
+            String context = null;
+            String resourceUri = null;
+            String deploymentId = null;
+            String apiKey = null;
+            SearchIndexerDataIdentity authIdentity = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!"#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                            inputsFound = true;
-                        } else if ("outputs".equals(fieldName)) {
-                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                            outputsFound = true;
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                        } else if ("description".equals(fieldName)) {
-                            description = reader.getString();
-                        } else if ("context".equals(fieldName)) {
-                            context = reader.getString();
-                        } else if ("resourceUri".equals(fieldName)) {
-                            resourceUri = reader.getString();
-                        } else if ("deploymentId".equals(fieldName)) {
-                            deploymentId = reader.getString();
-                        } else if ("apiKey".equals(fieldName)) {
-                            apiKey = reader.getString();
-                        } else if ("authIdentity".equals(fieldName)) {
-                            authIdentity = SearchIndexerDataIdentity.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (inputsFound && outputsFound) {
-                        AzureOpenAIEmbeddingSkill deserializedAzureOpenAIEmbeddingSkill =
-                                new AzureOpenAIEmbeddingSkill(inputs, outputs);
-                        deserializedAzureOpenAIEmbeddingSkill.setName(name);
-                        deserializedAzureOpenAIEmbeddingSkill.setDescription(description);
-                        deserializedAzureOpenAIEmbeddingSkill.setContext(context);
-                        deserializedAzureOpenAIEmbeddingSkill.resourceUri = resourceUri;
-                        deserializedAzureOpenAIEmbeddingSkill.deploymentId = deploymentId;
-                        deserializedAzureOpenAIEmbeddingSkill.apiKey = apiKey;
-                        deserializedAzureOpenAIEmbeddingSkill.authIdentity = authIdentity;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("outputs".equals(fieldName)) {
+                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                    outputsFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("context".equals(fieldName)) {
+                    context = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    resourceUri = reader.getString();
+                } else if ("deploymentId".equals(fieldName)) {
+                    deploymentId = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    apiKey = reader.getString();
+                } else if ("authIdentity".equals(fieldName)) {
+                    authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (inputsFound && outputsFound) {
+                AzureOpenAIEmbeddingSkill deserializedAzureOpenAIEmbeddingSkill
+                    = new AzureOpenAIEmbeddingSkill(inputs, outputs);
+                deserializedAzureOpenAIEmbeddingSkill.setName(name);
+                deserializedAzureOpenAIEmbeddingSkill.setDescription(description);
+                deserializedAzureOpenAIEmbeddingSkill.setContext(context);
+                deserializedAzureOpenAIEmbeddingSkill.resourceUri = resourceUri;
+                deserializedAzureOpenAIEmbeddingSkill.deploymentId = deploymentId;
+                deserializedAzureOpenAIEmbeddingSkill.apiKey = apiKey;
+                deserializedAzureOpenAIEmbeddingSkill.authIdentity = authIdentity;
 
-                        return deserializedAzureOpenAIEmbeddingSkill;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!inputsFound) {
-                        missingProperties.add("inputs");
-                    }
-                    if (!outputsFound) {
-                        missingProperties.add("outputs");
-                    }
+                return deserializedAzureOpenAIEmbeddingSkill;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+            if (!outputsFound) {
+                missingProperties.add("outputs");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

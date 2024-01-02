@@ -4,63 +4,132 @@
 
 package com.azure.resourcemanager.selfhelp.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceInner;
+import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of SolutionResource. */
+/**
+ * An immutable client-side representation of SolutionResource.
+ */
 public interface SolutionResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the properties property: Solution result.
-     *
-     * @return the properties value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    SolutionResourceProperties properties();
+    SystemData systemData();
+
+    /**
+     * Gets the triggerCriteria property: Solution request trigger criteria.
+     * 
+     * @return the triggerCriteria value.
+     */
+    List<TriggerCriterion> triggerCriteria();
+
+    /**
+     * Gets the parameters property: Client input parameters to run Solution.
+     * 
+     * @return the parameters value.
+     */
+    Map<String, String> parameters();
+
+    /**
+     * Gets the solutionId property: Solution Id to identify single solution.
+     * 
+     * @return the solutionId value.
+     */
+    String solutionId();
+
+    /**
+     * Gets the provisioningState property: Status of solution provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    SolutionProvisioningState provisioningState();
+
+    /**
+     * Gets the title property: The title.
+     * 
+     * @return the title value.
+     */
+    String title();
+
+    /**
+     * Gets the content property: The HTML content that needs to be rendered and shown to customer.
+     * 
+     * @return the content value.
+     */
+    String content();
+
+    /**
+     * Gets the replacementMaps property: Solution replacement maps.
+     * 
+     * @return the replacementMaps value.
+     */
+    ReplacementMaps replacementMaps();
+
+    /**
+     * Gets the sections property: List of section object.
+     * 
+     * @return the sections value.
+     */
+    List<Section> sections();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SolutionResourceInner innerModel();
 
-    /** The entirety of the SolutionResource definition. */
+    /**
+     * The entirety of the SolutionResource definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
 
-    /** The SolutionResource definition stages. */
+    /**
+     * The SolutionResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the SolutionResource definition. */
+        /**
+         * The first stage of the SolutionResource definition.
+         */
         interface Blank extends WithScope {
         }
 
-        /** The stage of the SolutionResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the SolutionResource definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies scope.
-             *
-             * @param scope This is an extension resource provider and only resource level extension is supported at the
-             *     moment.
+             * 
+             * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+             * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
              * @return the next definition stage.
              */
             WithCreate withExistingScope(String scope);
@@ -70,84 +139,118 @@ public interface SolutionResource {
          * The stage of the SolutionResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTriggerCriteria, DefinitionStages.WithParameters {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SolutionResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SolutionResource create(Context context);
         }
 
-        /** The stage of the SolutionResource definition allowing to specify properties. */
-        interface WithProperties {
+        /**
+         * The stage of the SolutionResource definition allowing to specify triggerCriteria.
+         */
+        interface WithTriggerCriteria {
             /**
-             * Specifies the properties property: Solution result.
-             *
-             * @param properties Solution result.
+             * Specifies the triggerCriteria property: Solution request trigger criteria.
+             * 
+             * @param triggerCriteria Solution request trigger criteria.
              * @return the next definition stage.
              */
-            WithCreate withProperties(SolutionResourceProperties properties);
+            WithCreate withTriggerCriteria(List<TriggerCriterion> triggerCriteria);
+        }
+
+        /**
+         * The stage of the SolutionResource definition allowing to specify parameters.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameters property: Client input parameters to run Solution.
+             * 
+             * @param parameters Client input parameters to run Solution.
+             * @return the next definition stage.
+             */
+            WithCreate withParameters(Map<String, String> parameters);
         }
     }
 
     /**
      * Begins update for the SolutionResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SolutionResource.Update update();
 
-    /** The template for SolutionResource update. */
-    interface Update extends UpdateStages.WithProperties {
+    /**
+     * The template for SolutionResource update.
+     */
+    interface Update extends UpdateStages.WithTriggerCriteria, UpdateStages.WithParameters {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SolutionResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SolutionResource apply(Context context);
     }
 
-    /** The SolutionResource update stages. */
+    /**
+     * The SolutionResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the SolutionResource update allowing to specify properties. */
-        interface WithProperties {
+        /**
+         * The stage of the SolutionResource update allowing to specify triggerCriteria.
+         */
+        interface WithTriggerCriteria {
             /**
-             * Specifies the properties property: Solution result.
-             *
-             * @param properties Solution result.
+             * Specifies the triggerCriteria property: Solution request trigger criteria.
+             * 
+             * @param triggerCriteria Solution request trigger criteria.
              * @return the next definition stage.
              */
-            Update withProperties(SolutionResourceProperties properties);
+            Update withTriggerCriteria(List<TriggerCriterion> triggerCriteria);
+        }
+
+        /**
+         * The stage of the SolutionResource update allowing to specify parameters.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameters property: Client input parameters to run Solution.
+             * 
+             * @param parameters Client input parameters to run Solution.
+             * @return the next definition stage.
+             */
+            Update withParameters(Map<String, String> parameters);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SolutionResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

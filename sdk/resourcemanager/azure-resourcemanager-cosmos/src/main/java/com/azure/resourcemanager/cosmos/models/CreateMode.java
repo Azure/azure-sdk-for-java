@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to indicate the mode of account creation. */
+/**
+ * Enum to indicate the mode of account creation.
+ */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
-    /** Static value Default for CreateMode. */
+    /**
+     * Static value Default for CreateMode.
+     */
     public static final CreateMode DEFAULT = fromString("Default");
 
-    /** Static value Restore for CreateMode. */
+    /**
+     * Static value Restore for CreateMode.
+     */
     public static final CreateMode RESTORE = fromString("Restore");
 
     /**
      * Creates a new instance of CreateMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
 
     /**
      * Creates or finds a CreateMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
@@ -38,7 +44,7 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
 
     /**
      * Gets known CreateMode values.
-     *
+     * 
      * @return known CreateMode values.
      */
     public static Collection<CreateMode> values() {

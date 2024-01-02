@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -3108,16 +3109,38 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void getDirectoryNameAndBuildClient(String originalDirectoryName, String finalDirectoryName) {
+    public void getDirectoryNameAndBuildClient(String originalDirectoryName) {
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(originalDirectoryName);
 
         // Note : Here I use Path because there is a test that tests the use of a /
-        assertEquals(finalDirectoryName, client.getDirectoryPath());
+        assertEquals(originalDirectoryName, client.getDirectoryPath());
+    }
+
+    @Test
+    public void subdirectoryAndFilePaths() {
+        // testing to see if the subdirectory and file paths are created correctly
+        DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("topdir");
+        directoryClient.createIfNotExists();
+        DataLakeDirectoryClient subDir = directoryClient.createSubdirectory("subdir");
+        DataLakeDirectoryClient subSubDir = subDir.createSubdirectory("subsubdir");
+        assertEquals(subDir.getDirectoryPath(), "topdir/subdir");
+
+        // ensuring the blob and dfs endpoints are the same while creating the subdirectory
+        assertEquals(subSubDir.getBlockBlobClient().getBlobUrl(),
+            DataLakeImplUtils.endpointToDesiredEndpoint(subSubDir.getPathUrl(), "blob", "dfs"));
+        assertEquals(subSubDir.getBlockBlobClient().getBlobName(), subSubDir.getDirectoryPath());
+        assertEquals("topdir/subdir/subsubdir", subSubDir.getDirectoryPath());
+        DataLakeFileClient fileClient = subSubDir.createFile("file");
+        assertEquals("topdir/subdir/subsubdir/file", fileClient.getFilePath());
+
+        // ensuring the blob and dfs endpoints are the same while creating the file
+        assertEquals(fileClient.getBlockBlobClient().getBlobUrl(),
+            DataLakeImplUtils.endpointToDesiredEndpoint(fileClient.getPathUrl(), "blob", "dfs"));
     }
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName, String finalDirectoryName) {
+    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName) {
         String dirName = generatePathName();
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(dirName);
 
@@ -3125,14 +3148,14 @@ public class DirectoryApiTests extends DataLakeTestBase {
             null, null, null, null, null, null);
 
         assertEquals(201, resp.getStatusCode());
-        assertEquals(dirName + "/" + finalDirectoryName, resp.getValue().getDirectoryPath());
+        assertEquals(dirName + "/" + originalDirectoryName, resp.getValue().getDirectoryPath());
 
         assertEquals(200, client.deleteSubdirectoryWithResponse(originalDirectoryName, false, null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteFileUrlEncoding(String originalFileName, String finalFileName) {
+    public void createDeleteFileUrlEncoding(String originalFileName) {
         String fileName = generatePathName();
         DataLakeDirectoryClient client = dataLakeFileSystemClient.getDirectoryClient(fileName);
 
@@ -3140,24 +3163,28 @@ public class DirectoryApiTests extends DataLakeTestBase {
             null, null, null);
 
         assertEquals(201, resp.getStatusCode());
-        assertEquals(fileName + "/" + finalFileName, resp.getValue().getFilePath());
+        assertEquals(fileName + "/" + originalFileName, resp.getValue().getFilePath());
 
         assertEquals(200, client.deleteFileWithResponse(originalFileName, null, null, null).getStatusCode());
     }
 
     private static Stream<Arguments> fileEncodingSupplier() {
         return Stream.of(
-            // originalName | finalName
-            Arguments.of("file", "file"),
-            Arguments.of("path/to]a file", "path/to]a file"),
-            Arguments.of("path%2Fto%5Da%20file", "path/to]a file"),
-            Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點")
+            Arguments.of("file"),
+            Arguments.of("test%test"),
+            Arguments.of("test%25test"),
+            Arguments.of("path%2Fto%5Da%20file"),
+            Arguments.of("path/to]a file"),
+            Arguments.of("斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E")
         );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"dir/file", "dir%2Ffile"})
+    @ValueSource(strings = {
+        "dir/file"
+//        "dir%2Ffile" // no longer supported
+    })
     public void createFileWithPathStructure(String pathName) {
         DataLakeFileClient fileClient = dataLakeFileSystemClient.createFile(pathName);
         // Check that service created underlying directory
@@ -3321,11 +3348,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemClient.getDirectoryClient(resourcePrefix + dirName);
 
         DataLakeFileClient fileClient = dc.getFileClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
-            fileClient.getFilePath());
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath, fileClient.getFilePath());
 
         DataLakeDirectoryClient subDirectoryClient = dc.getSubdirectoryClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath,
             subDirectoryClient.getDirectoryPath());
     }
 
@@ -3333,9 +3359,8 @@ public class DirectoryApiTests extends DataLakeTestBase {
         return Stream.of(
             // resourcePrefix | subResourcePrefix
             Arguments.of("", ""),
-            Arguments.of("", Utility.urlEncode("%")), // Resource has special character
-            Arguments.of(Utility.urlEncode("%"), ""), // Sub resource has special character
-            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%"))
+            Arguments.of("%", "%"), // Resource has special character
+            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%")) // Sub resource has special character
         );
     }
 

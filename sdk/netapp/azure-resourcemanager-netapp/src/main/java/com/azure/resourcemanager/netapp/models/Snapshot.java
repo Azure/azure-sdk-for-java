@@ -10,108 +10,115 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of Snapshot. */
+/**
+ * An immutable client-side representation of Snapshot.
+ */
 public interface Snapshot {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the snapshotId property: snapshotId
-     *
-     * <p>UUID v4 used to identify the Snapshot.
-     *
+     * 
+     * UUID v4 used to identify the Snapshot.
+     * 
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
      * Gets the created property: name
-     *
-     * <p>The creation date of the snapshot.
-     *
+     * 
+     * The creation date of the snapshot.
+     * 
      * @return the created value.
      */
     OffsetDateTime created();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SnapshotInner object.
-     *
+     * 
      * @return the inner object.
      */
     SnapshotInner innerModel();
 
-    /** The entirety of the Snapshot definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the Snapshot definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Snapshot definition stages. */
+    /**
+     * The Snapshot definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Snapshot definition. */
+        /**
+         * The first stage of the Snapshot definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the Snapshot definition allowing to specify location. */
+        /**
+         * The stage of the Snapshot definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
@@ -119,26 +126,28 @@ public interface Snapshot {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location Resource location.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the Snapshot definition allowing to specify parent resource. */
+        /**
+         * The stage of the Snapshot definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
              * @return the next definition stage.
              */
-            WithCreate withExistingVolume(
-                String resourceGroupName, String accountName, String poolName, String volumeName);
+            WithCreate withExistingVolume(String resourceGroupName, String accountName, String poolName,
+                String volumeName);
         }
 
         /**
@@ -148,14 +157,14 @@ public interface Snapshot {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Snapshot create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
@@ -165,14 +174,14 @@ public interface Snapshot {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Snapshot refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -180,9 +189,9 @@ public interface Snapshot {
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param body Restore payload supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,9 +201,9 @@ public interface Snapshot {
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param body Restore payload supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

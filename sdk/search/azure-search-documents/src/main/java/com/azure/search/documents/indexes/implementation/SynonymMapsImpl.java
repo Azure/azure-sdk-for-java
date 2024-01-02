@@ -32,22 +32,28 @@ import com.azure.search.documents.indexes.models.SynonymMap;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SynonymMaps. */
+/**
+ * An instance of this class provides access to all the operations defined in SynonymMaps.
+ */
 public final class SynonymMapsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SynonymMapsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchServiceClientImpl client;
 
     /**
      * Initializes an instance of SynonymMapsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SynonymMapsImpl(SearchServiceClientImpl client) {
-        this.service =
-                RestProxy.create(SynonymMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SynonymMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,137 +65,99 @@ public final class SynonymMapsImpl {
     @ServiceInterface(name = "SearchServiceClientS")
     public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SynonymMap>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Prefer") String prefer,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SynonymMap synonymMap,
-                Context context);
+        Mono<Response<SynonymMap>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SynonymMap synonymMap, Context context);
 
         @Put("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SynonymMap> createOrUpdateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Prefer") String prefer,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SynonymMap synonymMap,
-                Context context);
+        Response<SynonymMap> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SynonymMap synonymMap, Context context);
 
         @Delete("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({204, 404})
+        @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({204, 404})
+        @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<Void> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SynonymMap>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SynonymMap>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SynonymMap> getSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("synonymMapName") String synonymMapName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SynonymMap> getSync(@HostParam("endpoint") String endpoint,
+            @PathParam("synonymMapName") String synonymMapName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/synonymmaps")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<ListSynonymMapsResult>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("$select") String select,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ListSynonymMapsResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/synonymmaps")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<ListSynonymMapsResult> listSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("$select") String select,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<ListSynonymMapsResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/synonymmaps")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SynonymMap>> create(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SynonymMap synonymMap,
-                Context context);
+        Mono<Response<SynonymMap>> create(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SynonymMap synonymMap, Context context);
 
         @Post("/synonymmaps")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SynonymMap> createSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SynonymMap synonymMap,
-                Context context);
+        Response<SynonymMap> createSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SynonymMap synonymMap, Context context);
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -197,12 +165,8 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions) {
+    public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(String synonymMapName, SynonymMap synonymMap,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -211,29 +175,19 @@ public final class SynonymMapsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                synonymMapName,
-                                xMsClientRequestId,
-                                ifMatch,
-                                ifNoneMatch,
-                                prefer,
-                                this.client.getApiVersion(),
-                                accept,
-                                synonymMap,
-                                context));
+            context -> service.createOrUpdate(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch,
+                ifNoneMatch, prefer, this.client.getApiVersion(), accept, synonymMap, context));
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,13 +196,8 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
+    public Mono<Response<SynonymMap>> createOrUpdateWithResponseAsync(String synonymMapName, SynonymMap synonymMap,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -256,28 +205,19 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdate(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                prefer,
-                this.client.getApiVersion(),
-                accept,
-                synonymMap,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch,
+            ifNoneMatch, prefer, this.client.getApiVersion(), accept, synonymMap, context);
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -285,25 +225,21 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SynonymMap> createOrUpdateAsync(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions) {
+    public Mono<SynonymMap> createOrUpdateAsync(String synonymMapName, SynonymMap synonymMap, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions) {
         return createOrUpdateWithResponseAsync(synonymMapName, synonymMap, ifMatch, ifNoneMatch, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,27 +248,21 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SynonymMap> createOrUpdateAsync(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
-        return createOrUpdateWithResponseAsync(
-                        synonymMapName, synonymMap, ifMatch, ifNoneMatch, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SynonymMap> createOrUpdateAsync(String synonymMapName, SynonymMap synonymMap, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        return createOrUpdateWithResponseAsync(synonymMapName, synonymMap, ifMatch, ifNoneMatch, requestOptions,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,13 +271,8 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> createOrUpdateWithResponse(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
+    public Response<SynonymMap> createOrUpdateWithResponse(String synonymMapName, SynonymMap synonymMap, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -355,28 +280,19 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdateSync(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                prefer,
-                this.client.getApiVersion(),
-                accept,
-                synonymMap,
-                context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch,
+            ifNoneMatch, prefer, this.client.getApiVersion(), accept, synonymMap, context);
     }
 
     /**
      * Creates a new synonym map or updates a synonym map if it already exists.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to create or update.
      * @param synonymMap The definition of the synonym map to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -384,25 +300,20 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynonymMap createOrUpdate(
-            String synonymMapName,
-            SynonymMap synonymMap,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions) {
-        return createOrUpdateWithResponse(
-                        synonymMapName, synonymMap, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
-                .getValue();
+    public SynonymMap createOrUpdate(String synonymMapName, SynonymMap synonymMap, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
+        return createOrUpdateWithResponse(synonymMapName, synonymMap, ifMatch, ifNoneMatch, requestOptions,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -410,35 +321,26 @@ public final class SynonymMapsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String synonymMapName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                synonymMapName,
-                                xMsClientRequestId,
-                                ifMatch,
-                                ifNoneMatch,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), synonymMapName,
+            xMsClientRequestId, ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -447,33 +349,26 @@ public final class SynonymMapsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String synonymMapName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.delete(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -481,20 +376,20 @@ public final class SynonymMapsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-            String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Mono<Void> deleteAsync(String synonymMapName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         return deleteWithResponseAsync(synonymMapName, ifMatch, ifNoneMatch, requestOptions)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,20 +398,20 @@ public final class SynonymMapsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-            String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<Void> deleteAsync(String synonymMapName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions, Context context) {
         return deleteWithResponseAsync(synonymMapName, ifMatch, ifNoneMatch, requestOptions, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,33 +420,26 @@ public final class SynonymMapsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Response<Void> deleteWithResponse(String synonymMapName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.deleteSync(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deleteSync(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a synonym map.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -564,7 +452,7 @@ public final class SynonymMapsImpl {
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,20 +468,13 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                synonymMapName,
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), synonymMapName,
+            xMsClientRequestId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -603,26 +484,21 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SynonymMap>> getWithResponseAsync(
-            String synonymMapName, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SynonymMap>> getWithResponseAsync(String synonymMapName, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.get(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), synonymMapName, xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -637,7 +513,7 @@ public final class SynonymMapsImpl {
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -649,12 +525,12 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getAsync(String synonymMapName, RequestOptions requestOptions, Context context) {
         return getWithResponseAsync(synonymMapName, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -671,18 +547,13 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.getSync(
-                this.client.getEndpoint(),
-                synonymMapName,
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getSync(this.client.getEndpoint(), synonymMapName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves a synonym map definition.
-     *
+     * 
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -697,15 +568,15 @@ public final class SynonymMapsImpl {
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(String select, RequestOptions requestOptions) {
@@ -715,48 +586,41 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.list(
-                                this.client.getEndpoint(),
-                                select,
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), select, xMsClientRequestId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(
-            String select, RequestOptions requestOptions, Context context) {
+    public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(String select, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.list(
-                this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -770,9 +634,9 @@ public final class SynonymMapsImpl {
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,9 +651,9 @@ public final class SynonymMapsImpl {
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -798,23 +662,23 @@ public final class SynonymMapsImpl {
      * @return response from a List SynonymMaps request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListSynonymMapsResult> listWithResponse(
-            String select, RequestOptions requestOptions, Context context) {
+    public Response<ListSynonymMapsResult> listWithResponse(String select, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.listSync(
-                this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
+        return service.listSync(this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Lists all synonym maps available for a search service.
-     *
+     * 
      * @param select Selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -828,7 +692,7 @@ public final class SynonymMapsImpl {
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,20 +708,13 @@ public final class SynonymMapsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getEndpoint(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                synonymMap,
-                                context));
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, synonymMap, context));
     }
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -867,26 +724,21 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SynonymMap>> createWithResponseAsync(
-            SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SynonymMap>> createWithResponseAsync(SynonymMap synonymMap, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.create(
-                this.client.getEndpoint(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                synonymMap,
-                context);
+        return service.create(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
+            synonymMap, context);
     }
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -901,7 +753,7 @@ public final class SynonymMapsImpl {
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -913,12 +765,12 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createAsync(SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
         return createWithResponseAsync(synonymMap, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -928,26 +780,21 @@ public final class SynonymMapsImpl {
      * @return represents a synonym map definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> createWithResponse(
-            SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
+    public Response<SynonymMap> createWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createSync(
-                this.client.getEndpoint(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                accept,
-                synonymMap,
-                context);
+        return service.createSync(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
+            synonymMap, context);
     }
 
     /**
      * Creates a new synonym map.
-     *
+     * 
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

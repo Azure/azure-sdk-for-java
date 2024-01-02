@@ -11,7 +11,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineNetworkInte
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine network profile's IP configuration. */
+/**
+ * Describes a virtual machine network profile's IP configuration.
+ */
 @Fluent
 public final class VirtualMachineNetworkInterfaceIpConfiguration {
     /*
@@ -26,13 +28,15 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineNetworkInterfaceIpConfiguration class. */
+    /**
+     * Creates an instance of VirtualMachineNetworkInterfaceIpConfiguration class.
+     */
     public VirtualMachineNetworkInterfaceIpConfiguration() {
     }
 
     /**
      * Get the name property: The IP configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Set the name property: The IP configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
@@ -52,7 +56,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Get the innerProperties property: Describes a virtual machine network interface IP configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Get the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -70,7 +74,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Set the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
@@ -85,7 +89,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -95,7 +99,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     /**
      * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
@@ -109,7 +113,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Get the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration() {
@@ -118,12 +122,12 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Set the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
-    public VirtualMachineNetworkInterfaceIpConfiguration withPublicIpAddressConfiguration(
-        VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration) {
+    public VirtualMachineNetworkInterfaceIpConfiguration
+        withPublicIpAddressConfiguration(VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
         }
@@ -134,7 +138,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     /**
      * Get the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersions privateIpAddressVersion() {
@@ -144,12 +148,12 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     /**
      * Set the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
-    public VirtualMachineNetworkInterfaceIpConfiguration withPrivateIpAddressVersion(
-        IpVersions privateIpAddressVersion) {
+    public VirtualMachineNetworkInterfaceIpConfiguration
+        withPrivateIpAddressVersion(IpVersions privateIpAddressVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
         }
@@ -159,7 +163,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
@@ -168,12 +172,12 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Set the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
-    public VirtualMachineNetworkInterfaceIpConfiguration withApplicationSecurityGroups(
-        List<SubResource> applicationSecurityGroups) {
+    public VirtualMachineNetworkInterfaceIpConfiguration
+        withApplicationSecurityGroups(List<SubResource> applicationSecurityGroups) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
         }
@@ -182,10 +186,10 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
-     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
-     * Multiple virtual machines cannot use the same application gateway.
-     *
+     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
+     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
+     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * 
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
@@ -193,15 +197,15 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
-     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
-     * Multiple virtual machines cannot use the same application gateway.
-     *
+     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
+     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
+     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
-    public VirtualMachineNetworkInterfaceIpConfiguration withApplicationGatewayBackendAddressPools(
-        List<SubResource> applicationGatewayBackendAddressPools) {
+    public VirtualMachineNetworkInterfaceIpConfiguration
+        withApplicationGatewayBackendAddressPools(List<SubResource> applicationGatewayBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
         }
@@ -213,7 +217,7 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
      * Get the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A virtual machine can reference backend address pools of one public and one internal load
      * balancer. [Multiple virtual machines cannot use the same basic sku load balancer].
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
@@ -224,12 +228,12 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
      * Set the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A virtual machine can reference backend address pools of one public and one internal load
      * balancer. [Multiple virtual machines cannot use the same basic sku load balancer].
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
-    public VirtualMachineNetworkInterfaceIpConfiguration withLoadBalancerBackendAddressPools(
-        List<SubResource> loadBalancerBackendAddressPools) {
+    public VirtualMachineNetworkInterfaceIpConfiguration
+        withLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
         }
@@ -239,15 +243,13 @@ public final class VirtualMachineNetworkInterfaceIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model VirtualMachineNetworkInterfaceIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model VirtualMachineNetworkInterfaceIpConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

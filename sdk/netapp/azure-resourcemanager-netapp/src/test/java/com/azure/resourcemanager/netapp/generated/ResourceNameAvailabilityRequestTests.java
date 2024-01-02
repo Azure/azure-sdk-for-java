@@ -12,32 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceNameAvailabilityRequest model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"d\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"atkpnp\"}")
-                .toObject(ResourceNameAvailabilityRequest.class);
+        ResourceNameAvailabilityRequest model = BinaryData.fromString(
+            "{\"name\":\"d\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"atkpnp\"}")
+            .toObject(ResourceNameAvailabilityRequest.class);
         Assertions.assertEquals("d", model.name());
-        Assertions
-            .assertEquals(
-                CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
-                model.type());
+        Assertions.assertEquals(
+            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
         Assertions.assertEquals("atkpnp", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model =
-            new ResourceNameAvailabilityRequest()
-                .withName("d")
-                .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
-                .withResourceGroup("atkpnp");
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("d")
+            .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
+            .withResourceGroup("atkpnp");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
         Assertions.assertEquals("d", model.name());
-        Assertions
-            .assertEquals(
-                CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
-                model.type());
+        Assertions.assertEquals(
+            CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS, model.type());
         Assertions.assertEquals("atkpnp", model.resourceGroup());
     }
 }

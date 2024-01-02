@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesOpt
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Cassandra keyspace. */
+/**
+ * The properties of an Azure Cosmos DB Cassandra keyspace.
+ */
 @Fluent
 public final class CassandraKeyspaceGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class CassandraKeyspaceGetProperties {
     @JsonProperty(value = "options")
     private CassandraKeyspaceGetPropertiesOptions options;
 
-    /** Creates an instance of CassandraKeyspaceGetProperties class. */
+    /**
+     * Creates an instance of CassandraKeyspaceGetProperties class.
+     */
     public CassandraKeyspaceGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public CassandraKeyspaceGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class CassandraKeyspaceGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CassandraKeyspaceGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class CassandraKeyspaceGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public CassandraKeyspaceGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class CassandraKeyspaceGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the CassandraKeyspaceGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class CassandraKeyspaceGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

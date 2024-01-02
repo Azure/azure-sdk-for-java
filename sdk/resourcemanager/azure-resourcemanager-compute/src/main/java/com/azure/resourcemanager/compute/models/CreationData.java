@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data used when creating a disk. */
+/**
+ * Data used when creating a disk.
+ */
 @Fluent
 public final class CreationData {
     /*
@@ -88,13 +90,15 @@ public final class CreationData {
     @JsonProperty(value = "elasticSanResourceId")
     private String elasticSanResourceId;
 
-    /** Creates an instance of CreationData class. */
+    /**
+     * Creates an instance of CreationData class.
+     */
     public CreationData() {
     }
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
-     *
+     * 
      * @return the createOption value.
      */
     public DiskCreateOption createOption() {
@@ -103,7 +107,7 @@ public final class CreationData {
 
     /**
      * Set the createOption property: This enumerates the possible sources of a disk's creation.
-     *
+     * 
      * @param createOption the createOption value to set.
      * @return the CreationData object itself.
      */
@@ -115,7 +119,7 @@ public final class CreationData {
     /**
      * Get the storageAccountId property: Required if createOption is Import. The Azure Resource Manager identifier of
      * the storage account containing the blob to import as a disk.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -125,7 +129,7 @@ public final class CreationData {
     /**
      * Set the storageAccountId property: Required if createOption is Import. The Azure Resource Manager identifier of
      * the storage account containing the blob to import as a disk.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the CreationData object itself.
      */
@@ -136,7 +140,7 @@ public final class CreationData {
 
     /**
      * Get the imageReference property: Disk source information for PIR or user images.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageDiskReference imageReference() {
@@ -145,7 +149,7 @@ public final class CreationData {
 
     /**
      * Set the imageReference property: Disk source information for PIR or user images.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the CreationData object itself.
      */
@@ -156,9 +160,9 @@ public final class CreationData {
 
     /**
      * Get the galleryImageReference property: Required if creating from a Gallery Image. The
-     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
-     * image version from which to create a disk.
-     *
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared
+     * galley image version from which to create a disk.
+     * 
      * @return the galleryImageReference value.
      */
     public ImageDiskReference galleryImageReference() {
@@ -167,9 +171,9 @@ public final class CreationData {
 
     /**
      * Set the galleryImageReference property: Required if creating from a Gallery Image. The
-     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
-     * image version from which to create a disk.
-     *
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared
+     * galley image version from which to create a disk.
+     * 
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the CreationData object itself.
      */
@@ -181,7 +185,7 @@ public final class CreationData {
     /**
      * Get the sourceUri property: If createOption is Import, this is the URI of a blob to be imported into a managed
      * disk.
-     *
+     * 
      * @return the sourceUri value.
      */
     public String sourceUri() {
@@ -191,7 +195,7 @@ public final class CreationData {
     /**
      * Set the sourceUri property: If createOption is Import, this is the URI of a blob to be imported into a managed
      * disk.
-     *
+     * 
      * @param sourceUri the sourceUri value to set.
      * @return the CreationData object itself.
      */
@@ -202,7 +206,7 @@ public final class CreationData {
 
     /**
      * Get the sourceResourceId property: If createOption is Copy, this is the ARM id of the source snapshot or disk.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -211,7 +215,7 @@ public final class CreationData {
 
     /**
      * Set the sourceResourceId property: If createOption is Copy, this is the ARM id of the source snapshot or disk.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the CreationData object itself.
      */
@@ -223,7 +227,7 @@ public final class CreationData {
     /**
      * Get the sourceUniqueId property: If this field is set, this is the unique id identifying the source of this
      * resource.
-     *
+     * 
      * @return the sourceUniqueId value.
      */
     public String sourceUniqueId() {
@@ -234,7 +238,7 @@ public final class CreationData {
      * Get the uploadSizeBytes property: If createOption is Upload, this is the size of the contents of the upload
      * including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
      * 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
-     *
+     * 
      * @return the uploadSizeBytes value.
      */
     public Long uploadSizeBytes() {
@@ -245,7 +249,7 @@ public final class CreationData {
      * Set the uploadSizeBytes property: If createOption is Upload, this is the size of the contents of the upload
      * including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
      * 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
-     *
+     * 
      * @param uploadSizeBytes the uploadSizeBytes value to set.
      * @return the CreationData object itself.
      */
@@ -257,7 +261,7 @@ public final class CreationData {
     /**
      * Get the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
      * 4096. 4096 is the default.
-     *
+     * 
      * @return the logicalSectorSize value.
      */
     public Integer logicalSectorSize() {
@@ -267,7 +271,7 @@ public final class CreationData {
     /**
      * Set the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
      * 4096. 4096 is the default.
-     *
+     * 
      * @param logicalSectorSize the logicalSectorSize value to set.
      * @return the CreationData object itself.
      */
@@ -279,7 +283,7 @@ public final class CreationData {
     /**
      * Get the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
      * VM guest state.
-     *
+     * 
      * @return the securityDataUri value.
      */
     public String securityDataUri() {
@@ -289,7 +293,7 @@ public final class CreationData {
     /**
      * Set the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
      * VM guest state.
-     *
+     * 
      * @param securityDataUri the securityDataUri value to set.
      * @return the CreationData object itself.
      */
@@ -302,7 +306,7 @@ public final class CreationData {
      * Get the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
      * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
      * cannot be disabled after enabled.
-     *
+     * 
      * @return the performancePlus value.
      */
     public Boolean performancePlus() {
@@ -313,7 +317,7 @@ public final class CreationData {
      * Set the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
      * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
      * cannot be disabled after enabled.
-     *
+     * 
      * @param performancePlus the performancePlus value to set.
      * @return the CreationData object itself.
      */
@@ -323,9 +327,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
-     * source elastic san volume snapshot.
-     *
+     * Get the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of
+     * the source elastic san volume snapshot.
+     * 
      * @return the elasticSanResourceId value.
      */
     public String elasticSanResourceId() {
@@ -333,9 +337,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
-     * source elastic san volume snapshot.
-     *
+     * Set the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of
+     * the source elastic san volume snapshot.
+     * 
      * @param elasticSanResourceId the elasticSanResourceId value to set.
      * @return the CreationData object itself.
      */
@@ -346,14 +350,13 @@ public final class CreationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property createOption in model CreationData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
         if (imageReference() != null) {
             imageReference().validate();

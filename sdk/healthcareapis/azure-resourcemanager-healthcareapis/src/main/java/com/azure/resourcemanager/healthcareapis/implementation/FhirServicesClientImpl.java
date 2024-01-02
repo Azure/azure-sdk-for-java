@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FhirServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FhirServicesClient.
+ */
 public final class FhirServicesClientImpl implements FhirServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FhirServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of FhirServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FhirServicesClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FhirServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FhirServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,102 +71,70 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface FhirServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/fhirservices")
-        @ExpectedResponses({200})
+    public interface FhirServicesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FhirServiceCollection>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<FhirServiceCollection>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FhirServiceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("fhirServiceName") String fhirServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FhirServiceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
             @PathParam("fhirServiceName") String fhirServiceName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FhirServiceInner fhirservice, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("fhirServiceName") String fhirServiceName,
-            @BodyParam("application/json") FhirServiceInner fhirservice,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fhirServiceName") String fhirServiceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fhirServiceName") String fhirServiceName,
             @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") FhirServicePatchResource fhirservicePatchResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/fhirservices/{fhirServiceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fhirServiceName") String fhirServiceName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("fhirServiceName") String fhirServiceName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FhirServiceCollection>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,55 +143,35 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return a collection of Fhir services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FhirServiceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<FhirServiceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<FhirServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, accept, context))
+            .<PagedResponse<FhirServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -227,23 +181,19 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return a collection of Fhir services along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FhirServiceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<FhirServiceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -251,28 +201,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,14 +219,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FhirServiceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -299,16 +235,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return a collection of Fhir services as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FhirServiceInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<FhirServiceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +258,7 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
 
     /**
      * Lists all FHIR Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -333,14 +268,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return a collection of Fhir services as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FhirServiceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<FhirServiceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Gets the properties of the specified FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -348,26 +283,22 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified FHIR Service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FhirServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fhirServiceName) {
+    private Mono<Response<FhirServiceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fhirServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -379,23 +310,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            fhirServiceName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), workspaceName, fhirServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -404,26 +326,22 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified FHIR Service along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FhirServiceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fhirServiceName, Context context) {
+    private Mono<Response<FhirServiceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String fhirServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -434,21 +352,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                fhirServiceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, fhirServiceName, accept, context);
     }
 
     /**
      * Gets the properties of the specified FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -460,35 +370,12 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FhirServiceInner> getAsync(String resourceGroupName, String workspaceName, String fhirServiceName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName)
-            .flatMap(
-                (Response<FhirServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified FHIR Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param fhirServiceName The name of FHIR Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified FHIR Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FhirServiceInner get(String resourceGroupName, String workspaceName, String fhirServiceName) {
-        return getAsync(resourceGroupName, workspaceName, fhirServiceName).block();
-    }
-
-    /**
-     * Gets the properties of the specified FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -499,14 +386,30 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the properties of the specified FHIR Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FhirServiceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String fhirServiceName, Context context) {
+    public Response<FhirServiceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String fhirServiceName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName, context).block();
     }
 
     /**
+     * Gets the properties of the specified FHIR Service.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param fhirServiceName The name of FHIR Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified FHIR Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FhirServiceInner get(String resourceGroupName, String workspaceName, String fhirServiceName) {
+        return getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -517,23 +420,19 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -549,25 +448,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            fhirServiceName,
-                            fhirservice,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, fhirServiceName,
+                fhirservice, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -579,27 +468,19 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fhirServiceName,
-        FhirServiceInner fhirservice,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String fhirServiceName, FhirServiceInner fhirservice, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -615,22 +496,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                fhirServiceName,
-                fhirservice,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, fhirServiceName, fhirservice, accept, context);
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -643,21 +515,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice);
-        return this
-            .client
-            .<FhirServiceInner, FhirServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FhirServiceInner.class,
-                FhirServiceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice);
+        return this.client.<FhirServiceInner, FhirServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FhirServiceInner.class, FhirServiceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -670,23 +536,18 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fhirServiceName,
-        FhirServiceInner fhirservice,
+        String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context);
-        return this
-            .client
-            .<FhirServiceInner, FhirServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FhirServiceInner.class, FhirServiceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context);
+        return this.client.<FhirServiceInner, FhirServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FhirServiceInner.class, FhirServiceInner.class, context);
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -697,38 +558,35 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a FHIR Service resource with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param fhirServiceName The name of FHIR Service resource.
-     * @param fhirservice The parameters for creating or updating a Fhir Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String fhirServiceName,
-        FhirServiceInner fhirservice,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context)
+    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param fhirServiceName The name of FHIR Service resource.
+     * @param fhirservice The parameters for creating or updating a Fhir Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String fhirServiceName, FhirServiceInner fhirservice, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a FHIR Service resource with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -739,16 +597,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FhirServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice)
-            .last()
+    private Mono<FhirServiceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String fhirServiceName, FhirServiceInner fhirservice) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -760,20 +617,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FhirServiceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String fhirServiceName,
-        FhirServiceInner fhirservice,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context)
-            .last()
+    private Mono<FhirServiceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String fhirServiceName, FhirServiceInner fhirservice, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -784,14 +636,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FhirServiceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String fhirServiceName, FhirServiceInner fhirservice) {
+    public FhirServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String fhirServiceName,
+        FhirServiceInner fhirservice) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice).block();
     }
 
     /**
      * Creates or updates a FHIR Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param fhirServiceName The name of FHIR Service resource.
@@ -803,18 +655,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FhirServiceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String fhirServiceName,
-        FhirServiceInner fhirservice,
-        Context context) {
+    public FhirServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String fhirServiceName,
+        FhirServiceInner fhirservice, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, fhirServiceName, fhirservice, context).block();
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -825,26 +673,19 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName, FhirServicePatchResource fhirservicePatchResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fhirServiceName == null) {
             return Mono
@@ -854,33 +695,22 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (fhirservicePatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fhirservicePatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fhirservicePatchResource is required and cannot be null."));
         } else {
             fhirservicePatchResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            fhirServiceName,
-                            workspaceName,
-                            fhirservicePatchResource,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), fhirServiceName, workspaceName,
+                fhirservicePatchResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -892,27 +722,19 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName, FhirServicePatchResource fhirservicePatchResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fhirServiceName == null) {
             return Mono
@@ -922,30 +744,20 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (fhirservicePatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter fhirservicePatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter fhirservicePatchResource is required and cannot be null."));
         } else {
             fhirservicePatchResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                fhirServiceName,
-                workspaceName,
-                fhirservicePatchResource,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), fhirServiceName, workspaceName, fhirservicePatchResource, accept, context);
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -956,26 +768,17 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link PollerFlux} for polling of the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource);
-        return this
-            .client
-            .<FhirServiceInner, FhirServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FhirServiceInner.class,
-                FhirServiceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdateAsync(String resourceGroupName,
+        String fhirServiceName, String workspaceName, FhirServicePatchResource fhirservicePatchResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource);
+        return this.client.<FhirServiceInner, FhirServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FhirServiceInner.class, FhirServiceInner.class, this.client.getContext());
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -987,71 +790,60 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link PollerFlux} for polling of the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource,
+    private PollerFlux<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdateAsync(String resourceGroupName,
+        String fhirServiceName, String workspaceName, FhirServicePatchResource fhirservicePatchResource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, fhirServiceName,
+            workspaceName, fhirservicePatchResource, context);
+        return this.client.<FhirServiceInner, FhirServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FhirServiceInner.class, FhirServiceInner.class, context);
+    }
+
+    /**
+     * Patch FHIR Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param fhirServiceName The name of FHIR Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param fhirservicePatchResource The parameters for updating a Fhir Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdate(String resourceGroupName,
+        String fhirServiceName, String workspaceName, FhirServicePatchResource fhirservicePatchResource) {
+        return this.beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource)
+            .getSyncPoller();
+    }
+
+    /**
+     * Patch FHIR Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param fhirServiceName The name of FHIR Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param fhirservicePatchResource The parameters for updating a Fhir Service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdate(String resourceGroupName,
+        String fhirServiceName, String workspaceName, FhirServicePatchResource fhirservicePatchResource,
+        Context context) {
         return this
-            .client
-            .<FhirServiceInner, FhirServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FhirServiceInner.class, FhirServiceInner.class, context);
-    }
-
-    /**
-     * Patch FHIR Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param fhirServiceName The name of FHIR Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param fhirservicePatchResource The parameters for updating a Fhir Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdate(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource) {
-        return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource)
+            .beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context)
             .getSyncPoller();
     }
 
     /**
      * Patch FHIR Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param fhirServiceName The name of FHIR Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param fhirservicePatchResource The parameters for updating a Fhir Service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Fhir Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FhirServiceInner>, FhirServiceInner> beginUpdate(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1062,19 +854,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FhirServiceInner> updateAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
+    private Mono<FhirServiceInner> updateAsync(String resourceGroupName, String fhirServiceName, String workspaceName,
         FhirServicePatchResource fhirservicePatchResource) {
-        return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource)
-            .last()
+        return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1086,20 +874,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FhirServiceInner> updateAsync(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource,
-        Context context) {
+    private Mono<FhirServiceInner> updateAsync(String resourceGroupName, String fhirServiceName, String workspaceName,
+        FhirServicePatchResource fhirservicePatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1110,17 +893,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FhirServiceInner update(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
+    public FhirServiceInner update(String resourceGroupName, String fhirServiceName, String workspaceName,
         FhirServicePatchResource fhirservicePatchResource) {
         return updateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource).block();
     }
 
     /**
      * Patch FHIR Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1132,19 +912,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the description of Fhir Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FhirServiceInner update(
-        String resourceGroupName,
-        String fhirServiceName,
-        String workspaceName,
-        FhirServicePatchResource fhirservicePatchResource,
-        Context context) {
+    public FhirServiceInner update(String resourceGroupName, String fhirServiceName, String workspaceName,
+        FhirServicePatchResource fhirservicePatchResource, Context context) {
         return updateAsync(resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, context)
             .block();
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1154,19 +930,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fhirServiceName, String workspaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1181,24 +953,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fhirServiceName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, fhirServiceName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1209,19 +971,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fhirServiceName, String workspaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1236,21 +994,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fhirServiceName,
-                workspaceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, fhirServiceName, workspaceName, accept, context);
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1260,19 +1010,17 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fhirServiceName, String workspaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1283,19 +1031,18 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fhirServiceName, String workspaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fhirServiceName,
+        String workspaceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fhirServiceName, workspaceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1305,14 +1052,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fhirServiceName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fhirServiceName,
+        String workspaceName) {
+        return this.beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName).getSyncPoller();
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1323,14 +1070,14 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fhirServiceName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fhirServiceName,
+        String workspaceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName, context).getSyncPoller();
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1341,14 +1088,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String fhirServiceName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1359,16 +1105,15 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String fhirServiceName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String fhirServiceName, String workspaceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, fhirServiceName, workspaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1383,7 +1128,7 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
 
     /**
      * Deletes a FHIR Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param fhirServiceName The name of FHIR Service resource.
      * @param workspaceName The name of workspace resource.
@@ -1399,8 +1144,10 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1412,30 +1159,23 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FhirServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FhirServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1448,23 +1188,13 @@ public final class FhirServicesClientImpl implements FhirServicesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

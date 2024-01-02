@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a public IP address. */
+/**
+ * Reference to a public IP address.
+ */
 @Fluent
 public final class ReferencedPublicIpAddress {
     /*
@@ -16,13 +18,15 @@ public final class ReferencedPublicIpAddress {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ReferencedPublicIpAddress class. */
+    /**
+     * Creates an instance of ReferencedPublicIpAddress class.
+     */
     public ReferencedPublicIpAddress() {
     }
 
     /**
      * Get the id property: The PublicIPAddress Reference.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ReferencedPublicIpAddress {
 
     /**
      * Set the id property: The PublicIPAddress Reference.
-     *
+     * 
      * @param id the id value to set.
      * @return the ReferencedPublicIpAddress object itself.
      */
@@ -42,7 +46,7 @@ public final class ReferencedPublicIpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

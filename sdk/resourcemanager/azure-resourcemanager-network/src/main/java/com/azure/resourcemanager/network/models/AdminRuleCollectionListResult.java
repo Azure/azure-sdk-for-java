@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.AdminRuleCollectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security admin configuration rule collection list result. */
+/**
+ * Security admin configuration rule collection list result.
+ */
 @Fluent
 public final class AdminRuleCollectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class AdminRuleCollectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdminRuleCollectionListResult class. */
+    /**
+     * Creates an instance of AdminRuleCollectionListResult class.
+     */
     public AdminRuleCollectionListResult() {
     }
 
     /**
      * Get the value property: A list of network manager security admin configuration rule collections.
-     *
+     * 
      * @return the value value.
      */
     public List<AdminRuleCollectionInner> value() {
@@ -39,7 +43,7 @@ public final class AdminRuleCollectionListResult {
 
     /**
      * Set the value property: A list of network manager security admin configuration rule collections.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdminRuleCollectionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AdminRuleCollectionListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdminRuleCollectionListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdminRuleCollectionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AdminRuleCollectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

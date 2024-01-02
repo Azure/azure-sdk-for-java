@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGrou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VpnServerConfigurationPolicyGroup Resource. */
+/**
+ * VpnServerConfigurationPolicyGroup Resource.
+ */
 @Fluent
 public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VpnServerConfigurationPolicyGroupInner class. */
+    /**
+     * Creates an instance of VpnServerConfigurationPolicyGroupInner class.
+     */
     public VpnServerConfigurationPolicyGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnServerConfigurationPolicyGroupProperties innerProperties() {
@@ -53,7 +57,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -63,7 +67,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,7 +77,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigurationPolicyGroupInner object itself.
      */
@@ -84,14 +88,16 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnServerConfigurationPolicyGroupInner withId(String id) {
         super.withId(id);
@@ -100,7 +106,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the isDefault property: Shows if this is a Default VpnServerConfigurationPolicyGroup or not.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -109,7 +115,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Set the isDefault property: Shows if this is a Default VpnServerConfigurationPolicyGroup or not.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the VpnServerConfigurationPolicyGroupInner object itself.
      */
@@ -123,7 +129,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the priority property: Priority for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -132,7 +138,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Set the priority property: Priority for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the VpnServerConfigurationPolicyGroupInner object itself.
      */
@@ -146,7 +152,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the policyMembers property: Multiple PolicyMembers for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @return the policyMembers value.
      */
     public List<VpnServerConfigurationPolicyGroupMember> policyMembers() {
@@ -155,12 +161,12 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Set the policyMembers property: Multiple PolicyMembers for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @param policyMembers the policyMembers value to set.
      * @return the VpnServerConfigurationPolicyGroupInner object itself.
      */
-    public VpnServerConfigurationPolicyGroupInner withPolicyMembers(
-        List<VpnServerConfigurationPolicyGroupMember> policyMembers) {
+    public VpnServerConfigurationPolicyGroupInner
+        withPolicyMembers(List<VpnServerConfigurationPolicyGroupMember> policyMembers) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnServerConfigurationPolicyGroupProperties();
         }
@@ -170,7 +176,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the p2SConnectionConfigurations property: List of references to P2SConnectionConfigurations.
-     *
+     * 
      * @return the p2SConnectionConfigurations value.
      */
     public List<SubResource> p2SConnectionConfigurations() {
@@ -179,7 +185,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VpnServerConfigurationPolicyGroup resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -188,7 +194,7 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

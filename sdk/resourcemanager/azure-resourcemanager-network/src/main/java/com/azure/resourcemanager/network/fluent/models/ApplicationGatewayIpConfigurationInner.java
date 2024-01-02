@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed. */
+/**
+ * IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed.
+ */
 @Fluent
 public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayIpConfigurationInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayIpConfigurationInner class.
+     */
     public ApplicationGatewayIpConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway IP configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the name property: Name of the IP configuration that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Set the name property: Name of the IP configuration that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayIpConfigurationInner object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayIpConfigurationInner withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -107,7 +113,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /**
      * Set the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayIpConfigurationInner object itself.
      */
@@ -121,7 +127,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the application gateway IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,7 +136,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

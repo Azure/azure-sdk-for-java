@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Gateway global configuration. */
+/**
+ * Application Gateway global configuration.
+ */
 @Fluent
 public final class ApplicationGatewayGlobalConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayGlobalConfiguration {
     @JsonProperty(value = "enableResponseBuffering")
     private Boolean enableResponseBuffering;
 
-    /** Creates an instance of ApplicationGatewayGlobalConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayGlobalConfiguration class.
+     */
     public ApplicationGatewayGlobalConfiguration() {
     }
 
     /**
      * Get the enableRequestBuffering property: Enable request buffering.
-     *
+     * 
      * @return the enableRequestBuffering value.
      */
     public Boolean enableRequestBuffering() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayGlobalConfiguration {
 
     /**
      * Set the enableRequestBuffering property: Enable request buffering.
-     *
+     * 
      * @param enableRequestBuffering the enableRequestBuffering value to set.
      * @return the ApplicationGatewayGlobalConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayGlobalConfiguration {
 
     /**
      * Get the enableResponseBuffering property: Enable response buffering.
-     *
+     * 
      * @return the enableResponseBuffering value.
      */
     public Boolean enableResponseBuffering() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayGlobalConfiguration {
 
     /**
      * Set the enableResponseBuffering property: Enable response buffering.
-     *
+     * 
      * @param enableResponseBuffering the enableResponseBuffering value to set.
      * @return the ApplicationGatewayGlobalConfiguration object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayGlobalConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

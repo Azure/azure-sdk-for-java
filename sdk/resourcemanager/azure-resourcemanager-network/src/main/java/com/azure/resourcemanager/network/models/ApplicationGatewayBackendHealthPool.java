@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application gateway BackendHealth pool. */
+/**
+ * Application gateway BackendHealth pool.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthPool {
     /*
@@ -23,13 +25,15 @@ public final class ApplicationGatewayBackendHealthPool {
     @JsonProperty(value = "backendHttpSettingsCollection")
     private List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection;
 
-    /** Creates an instance of ApplicationGatewayBackendHealthPool class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHealthPool class.
+     */
     public ApplicationGatewayBackendHealthPool() {
     }
 
     /**
      * Get the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public ApplicationGatewayBackendAddressPool backendAddressPool() {
@@ -38,19 +42,19 @@ public final class ApplicationGatewayBackendHealthPool {
 
     /**
      * Set the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayBackendHealthPool object itself.
      */
-    public ApplicationGatewayBackendHealthPool withBackendAddressPool(
-        ApplicationGatewayBackendAddressPool backendAddressPool) {
+    public ApplicationGatewayBackendHealthPool
+        withBackendAddressPool(ApplicationGatewayBackendAddressPool backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
         return this;
     }
 
     /**
      * Get the backendHttpSettingsCollection property: List of ApplicationGatewayBackendHealthHttpSettings resources.
-     *
+     * 
      * @return the backendHttpSettingsCollection value.
      */
     public List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection() {
@@ -59,7 +63,7 @@ public final class ApplicationGatewayBackendHealthPool {
 
     /**
      * Set the backendHttpSettingsCollection property: List of ApplicationGatewayBackendHealthHttpSettings resources.
-     *
+     * 
      * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set.
      * @return the ApplicationGatewayBackendHealthPool object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayBackendHealthPool {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

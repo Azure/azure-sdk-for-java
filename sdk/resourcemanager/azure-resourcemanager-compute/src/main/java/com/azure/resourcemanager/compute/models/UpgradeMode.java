@@ -14,16 +14,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * the scale set are automatically updated at the same time.
  */
 public enum UpgradeMode {
-    /** Enum value Automatic. */
+    /**
+     * Enum value Automatic.
+     */
     AUTOMATIC("Automatic"),
 
-    /** Enum value Manual. */
+    /**
+     * Enum value Manual.
+     */
     MANUAL("Manual"),
 
-    /** Enum value Rolling. */
+    /**
+     * Enum value Rolling.
+     */
     ROLLING("Rolling");
 
-    /** The actual serialized value for a UpgradeMode instance. */
+    /**
+     * The actual serialized value for a UpgradeMode instance.
+     */
     private final String value;
 
     UpgradeMode(String value) {
@@ -32,7 +40,7 @@ public enum UpgradeMode {
 
     /**
      * Parses a serialized value to a UpgradeMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UpgradeMode object, or null if unable to parse.
      */
@@ -50,7 +58,9 @@ public enum UpgradeMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

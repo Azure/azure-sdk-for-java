@@ -289,8 +289,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeFileClient getFileClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
         return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(fileName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + fileName).buildBlockBlobClient());
     }
 
     /**
@@ -642,8 +644,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeDirectoryClient getSubdirectoryClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
         return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient(subdirectoryName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subdirectoryName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + subdirectoryName).buildBlockBlobClient());
     }
 
     /**

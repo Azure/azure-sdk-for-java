@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an IP Configuration of the private endpoint. */
+/**
+ * Properties of an IP Configuration of the private endpoint.
+ */
 @Fluent
 public final class PrivateEndpointIpConfigurationProperties {
     /*
@@ -28,14 +30,16 @@ public final class PrivateEndpointIpConfigurationProperties {
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of PrivateEndpointIpConfigurationProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointIpConfigurationProperties class.
+     */
     public PrivateEndpointIpConfigurationProperties() {
     }
 
     /**
      * Get the groupId property: The ID of a group obtained from the remote resource that this private endpoint should
      * connect to.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -45,7 +49,7 @@ public final class PrivateEndpointIpConfigurationProperties {
     /**
      * Set the groupId property: The ID of a group obtained from the remote resource that this private endpoint should
      * connect to.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class PrivateEndpointIpConfigurationProperties {
     /**
      * Get the memberName property: The member name of a group obtained from the remote resource that this private
      * endpoint should connect to.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -67,7 +71,7 @@ public final class PrivateEndpointIpConfigurationProperties {
     /**
      * Set the memberName property: The member name of a group obtained from the remote resource that this private
      * endpoint should connect to.
-     *
+     * 
      * @param memberName the memberName value to set.
      * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class PrivateEndpointIpConfigurationProperties {
 
     /**
      * Get the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -87,7 +91,7 @@ public final class PrivateEndpointIpConfigurationProperties {
 
     /**
      * Set the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class PrivateEndpointIpConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

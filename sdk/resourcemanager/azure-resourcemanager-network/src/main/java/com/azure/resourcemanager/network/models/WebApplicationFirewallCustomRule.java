@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines contents of a web application rule. */
+/**
+ * Defines contents of a web application rule.
+ */
 @Fluent
 public final class WebApplicationFirewallCustomRule {
     /*
@@ -72,14 +74,16 @@ public final class WebApplicationFirewallCustomRule {
     @JsonProperty(value = "action", required = true)
     private WebApplicationFirewallAction action;
 
-    /** Creates an instance of WebApplicationFirewallCustomRule class. */
+    /**
+     * Creates an instance of WebApplicationFirewallCustomRule class.
+     */
     public WebApplicationFirewallCustomRule() {
     }
 
     /**
      * Get the name property: The name of the resource that is unique within a policy. This name can be used to access
      * the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Set the name property: The name of the resource that is unique within a policy. This name can be used to access
      * the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -100,7 +104,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -110,7 +114,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Get the priority property: Priority of the rule. Rules with a lower value will be evaluated before rules with a
      * higher value.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -120,7 +124,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Set the priority property: Priority of the rule. Rules with a lower value will be evaluated before rules with a
      * higher value.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -132,7 +136,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Get the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
      * specified.
-     *
+     * 
      * @return the state value.
      */
     public WebApplicationFirewallState state() {
@@ -142,7 +146,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Set the state property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not
      * specified.
-     *
+     * 
      * @param state the state value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -154,7 +158,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Get the rateLimitDuration property: Duration over which Rate Limit policy will be applied. Applies only when
      * ruleType is RateLimitRule.
-     *
+     * 
      * @return the rateLimitDuration value.
      */
     public ApplicationGatewayFirewallRateLimitDuration rateLimitDuration() {
@@ -164,12 +168,12 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Set the rateLimitDuration property: Duration over which Rate Limit policy will be applied. Applies only when
      * ruleType is RateLimitRule.
-     *
+     * 
      * @param rateLimitDuration the rateLimitDuration value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
-    public WebApplicationFirewallCustomRule withRateLimitDuration(
-        ApplicationGatewayFirewallRateLimitDuration rateLimitDuration) {
+    public WebApplicationFirewallCustomRule
+        withRateLimitDuration(ApplicationGatewayFirewallRateLimitDuration rateLimitDuration) {
         this.rateLimitDuration = rateLimitDuration;
         return this;
     }
@@ -177,7 +181,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Get the rateLimitThreshold property: Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be
      * greater than or equal to 1.
-     *
+     * 
      * @return the rateLimitThreshold value.
      */
     public Integer rateLimitThreshold() {
@@ -187,7 +191,7 @@ public final class WebApplicationFirewallCustomRule {
     /**
      * Set the rateLimitThreshold property: Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be
      * greater than or equal to 1.
-     *
+     * 
      * @param rateLimitThreshold the rateLimitThreshold value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -198,7 +202,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Get the ruleType property: The rule type.
-     *
+     * 
      * @return the ruleType value.
      */
     public WebApplicationFirewallRuleType ruleType() {
@@ -207,7 +211,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Set the ruleType property: The rule type.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -218,7 +222,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Get the matchConditions property: List of match conditions.
-     *
+     * 
      * @return the matchConditions value.
      */
     public List<MatchCondition> matchConditions() {
@@ -227,7 +231,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Set the matchConditions property: List of match conditions.
-     *
+     * 
      * @param matchConditions the matchConditions value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -238,7 +242,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Get the groupByUserSession property: List of user session identifier group by clauses.
-     *
+     * 
      * @return the groupByUserSession value.
      */
     public List<GroupByUserSession> groupByUserSession() {
@@ -247,7 +251,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Set the groupByUserSession property: List of user session identifier group by clauses.
-     *
+     * 
      * @param groupByUserSession the groupByUserSession value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -258,7 +262,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Get the action property: Type of Actions.
-     *
+     * 
      * @return the action value.
      */
     public WebApplicationFirewallAction action() {
@@ -267,7 +271,7 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Set the action property: Type of Actions.
-     *
+     * 
      * @param action the action value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
      */
@@ -278,21 +282,17 @@ public final class WebApplicationFirewallCustomRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleType in model WebApplicationFirewallCustomRule"));
         }
         if (matchConditions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property matchConditions in model WebApplicationFirewallCustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
         }
@@ -300,10 +300,8 @@ public final class WebApplicationFirewallCustomRule {
             groupByUserSession().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model WebApplicationFirewallCustomRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property action in model WebApplicationFirewallCustomRule"));
         }
     }
 

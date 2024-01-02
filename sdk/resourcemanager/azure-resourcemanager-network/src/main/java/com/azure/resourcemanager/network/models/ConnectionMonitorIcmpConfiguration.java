@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the ICMP configuration. */
+/**
+ * Describes the ICMP configuration.
+ */
 @Fluent
 public final class ConnectionMonitorIcmpConfiguration {
     /*
@@ -16,13 +18,16 @@ public final class ConnectionMonitorIcmpConfiguration {
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
 
-    /** Creates an instance of ConnectionMonitorIcmpConfiguration class. */
+    /**
+     * Creates an instance of ConnectionMonitorIcmpConfiguration class.
+     */
     public ConnectionMonitorIcmpConfiguration() {
     }
 
     /**
-     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
-     *
+     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
+     * disabled.
+     * 
      * @return the disableTraceRoute value.
      */
     public Boolean disableTraceRoute() {
@@ -30,8 +35,9 @@ public final class ConnectionMonitorIcmpConfiguration {
     }
 
     /**
-     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
-     *
+     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
+     * disabled.
+     * 
      * @param disableTraceRoute the disableTraceRoute value to set.
      * @return the ConnectionMonitorIcmpConfiguration object itself.
      */
@@ -42,7 +48,7 @@ public final class ConnectionMonitorIcmpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Inner error details. */
+/**
+ * Inner error details.
+ */
 @Fluent
 public final class InnerError {
     /*
@@ -22,13 +24,15 @@ public final class InnerError {
     @JsonProperty(value = "errordetail")
     private String errordetail;
 
-    /** Creates an instance of InnerError class. */
+    /**
+     * Creates an instance of InnerError class.
+     */
     public InnerError() {
     }
 
     /**
      * Get the exceptiontype property: The exception type.
-     *
+     * 
      * @return the exceptiontype value.
      */
     public String exceptiontype() {
@@ -37,7 +41,7 @@ public final class InnerError {
 
     /**
      * Set the exceptiontype property: The exception type.
-     *
+     * 
      * @param exceptiontype the exceptiontype value to set.
      * @return the InnerError object itself.
      */
@@ -48,7 +52,7 @@ public final class InnerError {
 
     /**
      * Get the errordetail property: The internal error message or exception dump.
-     *
+     * 
      * @return the errordetail value.
      */
     public String errordetail() {
@@ -57,7 +61,7 @@ public final class InnerError {
 
     /**
      * Set the errordetail property: The internal error message or exception dump.
-     *
+     * 
      * @param errordetail the errordetail value to set.
      * @return the InnerError object itself.
      */
@@ -68,7 +72,7 @@ public final class InnerError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

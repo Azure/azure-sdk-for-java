@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ListApplicationsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListApplicationsResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"qfou\",\"allowUpdates\":true,\"defaultVersion\":\"nkzsmodmglou\"},\"etag\":\"b\",\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"displayName\":\"bmdg\",\"allowUpdates\":true,\"defaultVersion\":\"ddgmb\"},\"etag\":\"ex\",\"id\":\"pbhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"displayName\":\"erkujys\",\"allowUpdates\":false,\"defaultVersion\":\"uvfqawrlyxwj\"},\"etag\":\"prbnwbxgjvtbv\",\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}],\"nextLink\":\"a\"}")
-                .toObject(ListApplicationsResult.class);
+        ListApplicationsResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"qfou\",\"allowUpdates\":true,\"defaultVersion\":\"nkzsmodmglou\"},\"etag\":\"b\",\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"displayName\":\"bmdg\",\"allowUpdates\":true,\"defaultVersion\":\"ddgmb\"},\"etag\":\"ex\",\"id\":\"pbhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"displayName\":\"erkujys\",\"allowUpdates\":false,\"defaultVersion\":\"uvfqawrlyxwj\"},\"etag\":\"prbnwbxgjvtbv\",\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}],\"nextLink\":\"a\"}")
+            .toObject(ListApplicationsResult.class);
         Assertions.assertEquals("qfou", model.value().get(0).displayName());
         Assertions.assertEquals(true, model.value().get(0).allowUpdates());
         Assertions.assertEquals("nkzsmodmglou", model.value().get(0).defaultVersion());
@@ -26,24 +24,12 @@ public final class ListApplicationsResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListApplicationsResult model =
-            new ListApplicationsResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ApplicationInner()
-                                .withDisplayName("qfou")
-                                .withAllowUpdates(true)
-                                .withDefaultVersion("nkzsmodmglou"),
-                            new ApplicationInner()
-                                .withDisplayName("bmdg")
-                                .withAllowUpdates(true)
-                                .withDefaultVersion("ddgmb"),
-                            new ApplicationInner()
-                                .withDisplayName("erkujys")
-                                .withAllowUpdates(false)
-                                .withDefaultVersion("uvfqawrlyxwj")))
-                .withNextLink("a");
+        ListApplicationsResult model = new ListApplicationsResult().withValue(Arrays.asList(
+            new ApplicationInner().withDisplayName("qfou").withAllowUpdates(true).withDefaultVersion("nkzsmodmglou"),
+            new ApplicationInner().withDisplayName("bmdg").withAllowUpdates(true).withDefaultVersion("ddgmb"),
+            new ApplicationInner().withDisplayName("erkujys").withAllowUpdates(false)
+                .withDefaultVersion("uvfqawrlyxwj")))
+            .withNextLink("a");
         model = BinaryData.fromObject(model).toObject(ListApplicationsResult.class);
         Assertions.assertEquals("qfou", model.value().get(0).displayName());
         Assertions.assertEquals(true, model.value().get(0).allowUpdates());

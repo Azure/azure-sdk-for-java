@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the hardware settings for the virtual machine. */
+/**
+ * Specifies the hardware settings for the virtual machine.
+ */
 @Fluent
 public final class HardwareProfile {
     /*
@@ -33,7 +35,9 @@ public final class HardwareProfile {
     @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
-    /** Creates an instance of HardwareProfile class. */
+    /**
+     * Creates an instance of HardwareProfile class.
+     */
     public HardwareProfile() {
     }
 
@@ -48,7 +52,7 @@ public final class HardwareProfile {
      * about virtual machine sizes, see [Sizes for virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/sizes). The available VM sizes depend on region and
      * availability set.
-     *
+     * 
      * @return the vmSize value.
      */
     public VirtualMachineSizeTypes vmSize() {
@@ -66,7 +70,7 @@ public final class HardwareProfile {
      * about virtual machine sizes, see [Sizes for virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/sizes). The available VM sizes depend on region and
      * availability set.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the HardwareProfile object itself.
      */
@@ -80,7 +84,7 @@ public final class HardwareProfile {
      * Minimum api-version: 2021-07-01. This feature is still in preview mode and is not supported for
      * VirtualMachineScaleSet. Please follow the instructions in [VM Customization](https://aka.ms/vmcustomization) for
      * more details.
-     *
+     * 
      * @return the vmSizeProperties value.
      */
     public VMSizeProperties vmSizeProperties() {
@@ -92,7 +96,7 @@ public final class HardwareProfile {
      * Minimum api-version: 2021-07-01. This feature is still in preview mode and is not supported for
      * VirtualMachineScaleSet. Please follow the instructions in [VM Customization](https://aka.ms/vmcustomization) for
      * more details.
-     *
+     * 
      * @param vmSizeProperties the vmSizeProperties value to set.
      * @return the HardwareProfile object itself.
      */
@@ -103,7 +107,7 @@ public final class HardwareProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

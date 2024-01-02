@@ -3,6 +3,7 @@
 
 package com.azure.core.http.vertx;
 
+import io.vertx.core.http.impl.HttpClientBase;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
 
@@ -12,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * Utility class to reflectively retrieve configuration settings from the Vert.x HTTP Client that are
  * not exposed by default.
- *
+ * <p>
  * Avoids having to implement workarounds in the client code to make them available just for testing purposes.
  */
 final class VertxAsyncClientTestHelper {
@@ -21,13 +22,16 @@ final class VertxAsyncClientTestHelper {
         // Utility class
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "removal" })
     static Predicate<SocketAddress> getVertxInternalProxyFilter(HttpClientImpl client) {
         try {
-            Field field = HttpClientImpl.class.getDeclaredField("proxyFilter");
-            field.setAccessible(true);
-            return (Predicate<SocketAddress>) field.get(client);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return (Predicate<SocketAddress>) java.security.AccessController.doPrivileged(
+                (java.security.PrivilegedExceptionAction<Object>) () -> {
+                    Field field = HttpClientBase.class.getDeclaredField("proxyFilter");
+                    field.setAccessible(true);
+                    return field.get(client);
+                });
+        } catch (java.security.PrivilegedActionException e) {
             throw new RuntimeException(e);
         }
     }

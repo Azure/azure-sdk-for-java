@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP addresses associated with azure firewall. */
+/**
+ * IP addresses associated with azure firewall.
+ */
 @Fluent
 public final class HubIpAddresses {
     /*
@@ -22,13 +24,15 @@ public final class HubIpAddresses {
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of HubIpAddresses class. */
+    /**
+     * Creates an instance of HubIpAddresses class.
+     */
     public HubIpAddresses() {
     }
 
     /**
      * Get the publicIPs property: Public IP addresses associated with azure firewall.
-     *
+     * 
      * @return the publicIPs value.
      */
     public HubPublicIpAddresses publicIPs() {
@@ -37,7 +41,7 @@ public final class HubIpAddresses {
 
     /**
      * Set the publicIPs property: Public IP addresses associated with azure firewall.
-     *
+     * 
      * @param publicIPs the publicIPs value to set.
      * @return the HubIpAddresses object itself.
      */
@@ -48,7 +52,7 @@ public final class HubIpAddresses {
 
     /**
      * Get the privateIpAddress property: Private IP Address associated with azure firewall.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -57,7 +61,7 @@ public final class HubIpAddresses {
 
     /**
      * Set the privateIpAddress property: Private IP Address associated with azure firewall.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the HubIpAddresses object itself.
      */
@@ -68,7 +72,7 @@ public final class HubIpAddresses {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

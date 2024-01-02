@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes how the service is partitioned. */
+/**
+ * Describes how the service is partitioned.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Named", value = NamedPartitionSchemeDescription.class),
     @JsonSubTypes.Type(name = "Singleton", value = SingletonPartitionSchemeDescription.class),
-    @JsonSubTypes.Type(name = "UniformInt64Range", value = UniformInt64RangePartitionSchemeDescription.class)
-})
+    @JsonSubTypes.Type(name = "UniformInt64Range", value = UniformInt64RangePartitionSchemeDescription.class) })
 @Immutable
 public class PartitionSchemeDescription {
-    /** Creates an instance of PartitionSchemeDescription class. */
+    /**
+     * Creates an instance of PartitionSchemeDescription class.
+     */
     public PartitionSchemeDescription() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

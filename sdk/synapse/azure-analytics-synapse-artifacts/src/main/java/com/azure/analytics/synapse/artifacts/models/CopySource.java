@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** A copy activity source. */
+/**
+ * A copy activity source.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = CopySource.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = CopySource.class)
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
@@ -59,8 +61,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class),
     @JsonSubTypes.Type(name = "SnowflakeSource", value = SnowflakeSource.class),
     @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSource", value = AzureDatabricksDeltaLakeSource.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineListSource", value = SharePointOnlineListSource.class)
-})
+    @JsonSubTypes.Type(name = "SharePointOnlineListSource", value = SharePointOnlineListSource.class) })
 @Fluent
 public class CopySource {
     /*
@@ -86,14 +87,18 @@ public class CopySource {
     /*
      * A copy activity source.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CopySource class. */
-    public CopySource() {}
+    /**
+     * Creates an instance of CopySource class.
+     */
+    public CopySource() {
+    }
 
     /**
      * Get the sourceRetryCount property: Source retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the sourceRetryCount value.
      */
     public Object getSourceRetryCount() {
@@ -102,7 +107,7 @@ public class CopySource {
 
     /**
      * Set the sourceRetryCount property: Source retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param sourceRetryCount the sourceRetryCount value to set.
      * @return the CopySource object itself.
      */
@@ -114,7 +119,7 @@ public class CopySource {
     /**
      * Get the sourceRetryWait property: Source retry wait. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the sourceRetryWait value.
      */
     public Object getSourceRetryWait() {
@@ -124,7 +129,7 @@ public class CopySource {
     /**
      * Set the sourceRetryWait property: Source retry wait. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param sourceRetryWait the sourceRetryWait value to set.
      * @return the CopySource object itself.
      */
@@ -136,7 +141,7 @@ public class CopySource {
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -146,7 +151,7 @@ public class CopySource {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySource object itself.
      */
@@ -157,7 +162,7 @@ public class CopySource {
 
     /**
      * Get the additionalProperties property: A copy activity source.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -167,7 +172,7 @@ public class CopySource {
 
     /**
      * Set the additionalProperties property: A copy activity source.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopySource object itself.
      */

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,158 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-12-19)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-preview-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.VolumeGroupMetadata` was modified
+
+* `deploymentSpecId()` was removed
+* `withDeploymentSpecId(java.lang.String)` was removed
+
+### Features Added
+
+* `models.EncryptionMigrationRequest` was added
+
+* `models.BackupStatus` was added
+
+* `models.BackupType` was added
+
+* `models.BackupVault$DefinitionStages` was added
+
+* `models.BackupVaultPatch` was added
+
+* `models.NetAppResourceRegionInfos` was added
+
+* `models.BackupVault$Update` was added
+
+* `models.BackupsMigrationRequest` was added
+
+* `models.BackupVaults` was added
+
+* `models.Backup` was added
+
+* `models.BackupVault$UpdateStages` was added
+
+* `models.RemotePath` was added
+
+* `models.BackupsUnderVolumes` was added
+
+* `models.BackupsList` was added
+
+* `models.BackupVaultsList` was added
+
+* `models.BackupRestoreFiles` was added
+
+* `models.BackupVault$Definition` was added
+
+* `models.BackupsUnderBackupVaults` was added
+
+* `models.BackupVault` was added
+
+* `models.BackupsUnderAccounts` was added
+
+* `models.BackupPatch` was added
+
+* `models.Backup$DefinitionStages` was added
+
+* `models.Backup$Update` was added
+
+* `models.AccountBackups` was added
+
+* `models.RegionInfosList` was added
+
+* `models.Backup$Definition` was added
+
+* `models.Backup$UpdateStages` was added
+
+* `models.RegionInfoResource` was added
+
+* `models.VolumeBackupProperties` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `splitCloneFromParent()` was added
+* `splitCloneFromParent(com.azure.core.util.Context)` was added
+* `inheritedSizeInBytes()` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `backup()` was added
+* `withBackup(models.VolumeBackupProperties)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `accountBackups()` was added
+* `backupVaults()` was added
+* `backupsUnderBackupVaults()` was added
+* `netAppResourceRegionInfos()` was added
+* `backupsUnderAccounts()` was added
+* `backupsUnderVolumes()` was added
+
+#### `models.Backups` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getLatestStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getLatestStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `withBackup(models.VolumeBackupProperties)` was added
+* `backup()` was added
+
+#### `models.ReplicationObject` was modified
+
+* `withRemotePath(models.RemotePath)` was added
+* `remotePath()` was added
+
+#### `models.Volumes` was modified
+
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `splitCloneFromParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+* `nfsV4IdDomain()` was added
+* `isMultiAdEnabled()` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `inheritedSizeInBytes()` was added
+
+#### `models.Accounts` was modified
+
+* `migrateEncryptionKey(java.lang.String,java.lang.String)` was added
+* `migrateEncryptionKey(java.lang.String,java.lang.String,models.EncryptionMigrationRequest,com.azure.core.util.Context)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `isMultiAdEnabled()` was added
+* `migrateEncryptionKey(models.EncryptionMigrationRequest,com.azure.core.util.Context)` was added
+* `migrateEncryptionKey()` was added
+* `nfsV4IdDomain()` was added
 
 ## 1.0.0 (2023-10-20)
 

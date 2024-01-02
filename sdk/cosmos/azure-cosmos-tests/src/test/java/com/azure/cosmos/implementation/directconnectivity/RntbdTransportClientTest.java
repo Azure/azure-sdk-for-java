@@ -1010,11 +1010,9 @@ public final class RntbdTransportClientTest {
 
             RntbdRequestManager requestManager = new RntbdRequestManager(
                     new RntbdClientChannelHealthChecker(config),
-                    30,
+                    config,
                     null,
-                    Duration.ofMillis(100).toNanos(),
-                    null,
-                    config.tcpNetworkRequestTimeoutInNanos());
+                    null);
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,

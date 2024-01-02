@@ -22,16 +22,27 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public Response<PrivateLinkResourceListResultDescription> listByServiceWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<PrivateLinkResourceListResultDescriptionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceListResultDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public PrivateLinkResourceListResultDescription listByService(String resourceGroupName, String resourceName) {
-        PrivateLinkResourceListResultDescriptionInner inner =
-            this.serviceClient().listByService(resourceGroupName, resourceName);
+        PrivateLinkResourceListResultDescriptionInner inner
+            = this.serviceClient().listByService(resourceGroupName, resourceName);
         if (inner != null) {
             return new PrivateLinkResourceListResultDescriptionImpl(inner, this.manager());
         } else {
@@ -39,41 +50,23 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public Response<PrivateLinkResourceListResultDescription> listByServiceWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<PrivateLinkResourceListResultDescriptionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, resourceName, context);
+    public Response<PrivateLinkResourceDescription> getWithResponse(String resourceGroupName, String resourceName,
+        String groupName, Context context) {
+        Response<PrivateLinkResourceDescriptionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkResourceListResultDescriptionImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public PrivateLinkResourceDescription get(String resourceGroupName, String resourceName, String groupName) {
-        PrivateLinkResourceDescriptionInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, groupName);
+        PrivateLinkResourceDescriptionInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, groupName);
         if (inner != null) {
             return new PrivateLinkResourceDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PrivateLinkResourceDescription> getWithResponse(
-        String resourceGroupName, String resourceName, String groupName, Context context) {
-        Response<PrivateLinkResourceDescriptionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkResourceDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

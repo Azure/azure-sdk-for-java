@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesOption
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Cassandra table. */
+/**
+ * The properties of an Azure Cosmos DB Cassandra table.
+ */
 @Fluent
 public final class CassandraTableGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class CassandraTableGetProperties {
     @JsonProperty(value = "options")
     private CassandraTableGetPropertiesOptions options;
 
-    /** Creates an instance of CassandraTableGetProperties class. */
+    /**
+     * Creates an instance of CassandraTableGetProperties class.
+     */
     public CassandraTableGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public CassandraTableGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CassandraTableGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public CassandraTableGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the CassandraTableGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

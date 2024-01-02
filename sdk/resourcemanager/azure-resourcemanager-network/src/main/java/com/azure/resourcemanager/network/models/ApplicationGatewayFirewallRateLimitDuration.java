@@ -8,18 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Duration over which Rate Limit policy will be applied. Applies only when ruleType is RateLimitRule. */
+/**
+ * Duration over which Rate Limit policy will be applied. Applies only when ruleType is RateLimitRule.
+ */
 public final class ApplicationGatewayFirewallRateLimitDuration
     extends ExpandableStringEnum<ApplicationGatewayFirewallRateLimitDuration> {
-    /** Static value OneMin for ApplicationGatewayFirewallRateLimitDuration. */
+    /**
+     * Static value OneMin for ApplicationGatewayFirewallRateLimitDuration.
+     */
     public static final ApplicationGatewayFirewallRateLimitDuration ONE_MIN = fromString("OneMin");
 
-    /** Static value FiveMins for ApplicationGatewayFirewallRateLimitDuration. */
+    /**
+     * Static value FiveMins for ApplicationGatewayFirewallRateLimitDuration.
+     */
     public static final ApplicationGatewayFirewallRateLimitDuration FIVE_MINS = fromString("FiveMins");
 
     /**
      * Creates a new instance of ApplicationGatewayFirewallRateLimitDuration value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +34,7 @@ public final class ApplicationGatewayFirewallRateLimitDuration
 
     /**
      * Creates or finds a ApplicationGatewayFirewallRateLimitDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayFirewallRateLimitDuration.
      */
@@ -39,7 +45,7 @@ public final class ApplicationGatewayFirewallRateLimitDuration
 
     /**
      * Gets known ApplicationGatewayFirewallRateLimitDuration values.
-     *
+     * 
      * @return known ApplicationGatewayFirewallRateLimitDuration values.
      */
     public static Collection<ApplicationGatewayFirewallRateLimitDuration> values() {

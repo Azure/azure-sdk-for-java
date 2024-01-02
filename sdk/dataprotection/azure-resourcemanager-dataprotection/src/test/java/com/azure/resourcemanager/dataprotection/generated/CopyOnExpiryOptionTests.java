@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.CopyOnExpiryOption;
 public final class CopyOnExpiryOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyOnExpiryOption model =
-            BinaryData.fromString("{\"objectType\":\"CopyOnExpiryOption\"}").toObject(CopyOnExpiryOption.class);
+        CopyOnExpiryOption model
+            = BinaryData.fromString("{\"objectType\":\"CopyOnExpiryOption\"}").toObject(CopyOnExpiryOption.class);
     }
 
     @org.junit.jupiter.api.Test

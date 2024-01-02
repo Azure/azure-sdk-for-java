@@ -13,29 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"bejdznxcv\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"srhnjivo\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"v\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"novqfzge\"}],\"datasourceTypes\":[\"dftuljltduce\",\"mtmczuome\",\"wcw\"]}")
-                .toObject(BackupPolicy.class);
-        Assertions.assertEquals("dftuljltduce", model.datasourceTypes().get(0));
-        Assertions.assertEquals("bejdznxcv", model.policyRules().get(0).name());
+        BackupPolicy model = BinaryData.fromString(
+            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"xmrhu\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"lw\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"cesutrgjupauut\"}],\"datasourceTypes\":[\"oqh\",\"hej\"]}")
+            .toObject(BackupPolicy.class);
+        Assertions.assertEquals("oqh", model.datasourceTypes().get(0));
+        Assertions.assertEquals("xmrhu", model.policyRules().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicy model =
-            new BackupPolicy()
-                .withDatasourceTypes(Arrays.asList("dftuljltduce", "mtmczuome", "wcw"))
-                .withPolicyRules(
-                    Arrays
-                        .asList(
-                            new BasePolicyRule().withName("bejdznxcv"),
-                            new BasePolicyRule().withName("srhnjivo"),
-                            new BasePolicyRule().withName("v"),
-                            new BasePolicyRule().withName("novqfzge")));
+        BackupPolicy model = new BackupPolicy().withDatasourceTypes(Arrays.asList("oqh", "hej"))
+            .withPolicyRules(Arrays.asList(new BasePolicyRule().withName("xmrhu"), new BasePolicyRule().withName("lw"),
+                new BasePolicyRule().withName("cesutrgjupauut")));
         model = BinaryData.fromObject(model).toObject(BackupPolicy.class);
-        Assertions.assertEquals("dftuljltduce", model.datasourceTypes().get(0));
-        Assertions.assertEquals("bejdznxcv", model.policyRules().get(0).name());
+        Assertions.assertEquals("oqh", model.datasourceTypes().get(0));
+        Assertions.assertEquals("xmrhu", model.policyRules().get(0).name());
     }
 }

@@ -10,34 +10,29 @@ import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for MongoDBResources CreateUpdateMongoDBDatabase. */
+/**
+ * Samples for MongoDBResources CreateUpdateMongoDBDatabase.
+ */
 public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBMongoDBDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getMongoDBResources()
-            .createUpdateMongoDBDatabase(
-                "rg1",
-                "ddb1",
-                "databaseName",
-                new MongoDBDatabaseCreateUpdateParameters()
-                    .withLocation("West US")
-                    .withTags(mapOf())
-                    .withResource(new MongoDBDatabaseResource().withId("databaseName"))
-                    .withOptions(new CreateUpdateOptions()),
-                com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().createUpdateMongoDBDatabase("rg1",
+            "ddb1", "databaseName",
+            new MongoDBDatabaseCreateUpdateParameters().withLocation("West US").withTags(mapOf())
+                .withResource(new MongoDBDatabaseResource().withId("databaseName"))
+                .withOptions(new CreateUpdateOptions()),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

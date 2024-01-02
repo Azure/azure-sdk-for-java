@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update ClientEncryptionKey. */
+/**
+ * Properties to create and update ClientEncryptionKey.
+ */
 @Fluent
 public final class ClientEncryptionKeyCreateUpdateProperties {
     /*
@@ -18,13 +20,15 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
     @JsonProperty(value = "resource", required = true)
     private ClientEncryptionKeyResource resource;
 
-    /** Creates an instance of ClientEncryptionKeyCreateUpdateProperties class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyCreateUpdateProperties class.
+     */
     public ClientEncryptionKeyCreateUpdateProperties() {
     }
 
     /**
      * Get the resource property: The standard JSON format of a ClientEncryptionKey.
-     *
+     * 
      * @return the resource value.
      */
     public ClientEncryptionKeyResource resource() {
@@ -33,7 +37,7 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a ClientEncryptionKey.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientEncryptionKeyCreateUpdateProperties object itself.
      */
@@ -44,15 +48,13 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
         } else {
             resource().validate();
         }
