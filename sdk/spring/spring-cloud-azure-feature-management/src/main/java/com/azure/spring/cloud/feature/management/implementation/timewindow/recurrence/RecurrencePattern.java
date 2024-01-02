@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class RecurrencePattern {
     /**
      * The first day of the week
      * */
-    private String firstDayOfWeek = RecurrenceConstants.SUNDAY;
+    private String firstDayOfWeek = DayOfWeek.SUNDAY.name();
 
     /**
      * Specifies on which instance of the allowed days specified in DaysOfWeek the time window occurs,

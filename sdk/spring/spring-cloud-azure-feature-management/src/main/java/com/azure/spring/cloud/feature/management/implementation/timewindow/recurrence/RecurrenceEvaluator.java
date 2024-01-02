@@ -6,6 +6,7 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -742,14 +743,15 @@ public class RecurrenceEvaluator {
             return false;
         }
 
-        final String[] legalValues = {RecurrenceConstants.MONDAY, RecurrenceConstants.TUESDAY, RecurrenceConstants.WEDNESDAY,
-            RecurrenceConstants.THURSDAY, RecurrenceConstants.FRIDAY, RecurrenceConstants.SATURDAY, RecurrenceConstants.SUNDAY};
         for (String dayOfWeek : daysOfWeek) {
-            if (Arrays.stream(legalValues).noneMatch(dayOfWeek::equalsIgnoreCase)) {
+            try {
+                DayOfWeek.valueOf(dayOfWeek.toUpperCase());
+            } catch (IllegalArgumentException e) {
                 reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
                 return false;
             }
         }
+
         return true;
     }
 
@@ -761,9 +763,10 @@ public class RecurrenceEvaluator {
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
-        final String[] legalValues = {RecurrenceConstants.MONDAY, RecurrenceConstants.TUESDAY, RecurrenceConstants.WEDNESDAY,
-            RecurrenceConstants.THURSDAY, RecurrenceConstants.FRIDAY, RecurrenceConstants.SATURDAY, RecurrenceConstants.SUNDAY};
-        if (Arrays.stream(legalValues).noneMatch(firstDayOfWeek::equalsIgnoreCase)) {
+
+        try {
+            DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
+        } catch (IllegalArgumentException e) {
             reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
             return false;
         }
@@ -807,25 +810,8 @@ public class RecurrenceEvaluator {
     }
 
     private int convertToWeekDayNumber(String str) {
-        final String strLowerCase = str.toLowerCase();
-        switch (strLowerCase) {
-            case RecurrenceConstants.SUNDAY:
-                return 0;
-            case RecurrenceConstants.MONDAY:
-                return 1;
-            case RecurrenceConstants.TUESDAY:
-                return 2;
-            case RecurrenceConstants.WEDNESDAY:
-                return 3;
-            case RecurrenceConstants.THURSDAY:
-                return 4;
-            case RecurrenceConstants.FRIDAY:
-                return 5;
-            case RecurrenceConstants.SATURDAY:
-                return 6;
-            default:
-                throw new IllegalArgumentException("Parameter DaysOfWeek not support " + str);
-        }
+        final String strUpperCase = str.toUpperCase();
+        return DayOfWeek.valueOf(strUpperCase).getValue() % 7;
     }
 
     private int convertIndexToNumber(String str) {
