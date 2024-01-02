@@ -188,7 +188,7 @@ public class SessionTokenHelper {
         if (SessionTokenHelper.tryParse(sessionToken, partitionKeyRangeSessionToken)) {
             return partitionKeyRangeSessionToken.v;
         } else {
-            throw new  RuntimeException(new BadRequestException(String.format(RMResources.InvalidSessionToken, sessionToken)));
+            throw new RuntimeException(new BadRequestException(String.format(RMResources.InvalidSessionToken, sessionToken)));
         }
     }
 

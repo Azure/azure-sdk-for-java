@@ -5,12 +5,13 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
@@ -122,7 +123,7 @@ public class StoreResponseDiagnostics {
                 .CosmosExceptionHelper
                 .getCosmosExceptionAccessor()
                 .getFaultInjectionEvaluationResults(e);
-        this.isPossiblyMalformedSessionToken = isPossiblyMalformedSessionToken(e);
+        this.isPossiblyMalformedSessionToken = isPossiblyMalformedSessionToken(sessionTokenAsString);
     }
 
     public int getStatusCode() {
@@ -207,7 +208,22 @@ public class StoreResponseDiagnostics {
         return this.isPossiblyMalformedSessionToken;
     }
 
-    private static boolean isPossiblyMalformedSessionToken(Exception e) {
-        return e instanceof InvalidPartitionException || e instanceof PartitionKeyRangeIsSplittingException;
+    // todo (abhmohanty) - evaluate whether all string session tokens can be parsed here
+    // todo (abhmohanty) to avoid re-parsing in case of valid session tokens in exception scenarios
+    private static boolean isPossiblyMalformedSessionToken(String sessionTokenAsString) {
+        try {
+            ISessionToken parsedSessionToken = SessionTokenHelper.parse(sessionTokenAsString);
+
+            if (parsedSessionToken != null) {
+                return false;
+            }
+        } catch (RuntimeException ex) {
+            if (ex.getCause() != null && ex.getCause() instanceof BadRequestException) {
+                logger.debug("The session token : {} is possibly malformed - will not be captured in the session container.", sessionTokenAsString);
+                return true;
+            }
+        }
+
+        return true;
     }
 }
