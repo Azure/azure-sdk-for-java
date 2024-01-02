@@ -59,22 +59,24 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
                 String[] sessionTokenSegments = StringUtils.split(sessionTokenUnparsedInner, ":");
 
-                assert sessionTokenSegments.length > 1;
+                if (sessionTokenSegments.length > 1) {
 
-                String partitionKeyRangeIdInner = sessionTokenSegments[0];
-                ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenUnparsedInner);
+                    String partitionKeyRangeIdInner = sessionTokenSegments[0];
+                    ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenUnparsedInner);
 
-                this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeIdInner, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
+                    this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeIdInner, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
 
-                    if (regionToSessionTokensAsVal == null) {
-                        regionToSessionTokensAsVal = new ConcurrentHashMap<>();
-                    }
+                        if (regionToSessionTokensAsVal == null) {
+                            regionToSessionTokensAsVal = new ConcurrentHashMap<>();
+                        }
 
-                    regionToSessionTokensAsVal.merge(regionInner, parsedRegionSpecificSessionToken, ISessionToken::merge);
+                        regionToSessionTokensAsVal.merge(regionInner, parsedRegionSpecificSessionToken, ISessionToken::merge);
 
-                    return regionToSessionTokensAsVal;
-                });
+                        return regionToSessionTokensAsVal;
+                    });
+                }
             }
+
         }
     }
 
