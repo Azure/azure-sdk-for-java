@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
 /**
@@ -13,7 +14,7 @@ public class Recurrence {
     /**
      * The recurrence range specifying how long the recurrence pattern repeats
      * */
-    private RecurrenceRange range;
+    private RecurrenceRange range = new RecurrenceRange();
 
     /**
      * @return the recurrence pattern specifying how often the time window repeats
@@ -40,6 +41,8 @@ public class Recurrence {
      * @param range the recurrence range to be set
      * */
     public void setRange(RecurrenceRange range) {
-        this.range = range;
+        if (range != null) {
+            this.range = range;
+        }
     }
 }

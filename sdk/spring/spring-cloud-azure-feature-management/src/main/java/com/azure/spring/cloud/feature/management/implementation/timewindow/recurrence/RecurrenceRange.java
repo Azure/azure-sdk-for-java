@@ -42,7 +42,9 @@ public class RecurrenceRange {
      * @param type the range type to be set
      * */
     public void setType(String type) {
-        this.type = type;
+        if (type != null) {
+            this.type = type;
+        }
     }
 
     /**

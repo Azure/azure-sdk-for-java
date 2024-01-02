@@ -28,7 +28,6 @@ public class RequiredParameterTest {
     private final String firstDayOfWeek = "Recurrence.Pattern.FirstDayOfWeek";
     private final String month = "Recurrence.Pattern.Month";
     private final String dayOfMonth = "Recurrence.Pattern.DayOfMonth";
-    private final String range = "Recurrence.Range";
     private final String rangeType = "Recurrence.Range.Type";
     private final String numberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
     private final String recurrenceTimeZone = "Recurrence.Range.RecurrenceTimeZone";
@@ -62,15 +61,6 @@ public class RequiredParameterTest {
         settings3.setRecurrence(recurrence3);
         consumeValidationTestData(settings3, pattern, RecurrenceConstants.REQUIRED_PARAMETER);
 
-        // no range in recurrence parameter
-        final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
-        settings4.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings4.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence4 = new Recurrence();
-        recurrence4.setPattern(new RecurrencePattern());
-        settings4.setRecurrence(recurrence4);
-        consumeValidationTestData(settings4, range, RecurrenceConstants.REQUIRED_PARAMETER);
-
         // no type in recurrence pattern parameter
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         settings5.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
@@ -80,18 +70,6 @@ public class RequiredParameterTest {
         recurrence5.setRange(new RecurrenceRange());
         settings5.setRecurrence(recurrence5);
         consumeValidationTestData(settings5, patternType, RecurrenceConstants.REQUIRED_PARAMETER);
-
-        // no type in recurrence range parameter
-        final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
-        settings6.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings6.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence6 = new Recurrence();
-        final RecurrencePattern pattern6 = new RecurrencePattern();
-        pattern6.setType(RecurrenceConstants.DAILY);
-        recurrence6.setPattern(pattern6);
-        recurrence6.setRange(new RecurrenceRange());
-        settings6.setRecurrence(recurrence6);
-        consumeValidationTestData(settings6, rangeType, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test

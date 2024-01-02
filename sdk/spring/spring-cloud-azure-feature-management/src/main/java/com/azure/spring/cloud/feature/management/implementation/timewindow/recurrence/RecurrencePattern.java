@@ -17,7 +17,7 @@ public class RecurrencePattern {
      * The number of units between occurrences, where units can be in days, weeks, months, or years,
      * depending on the pattern type. Default value is 1
      */
-    private int interval = 1;
+    private Integer interval = 1;
 
     /**
      * The days of the week on which the time window occurs
@@ -62,15 +62,17 @@ public class RecurrencePattern {
     /**
      * @return the number of units between occurrences
      * */
-    public int getInterval() {
+    public Integer getInterval() {
         return interval;
     }
 
     /**
      * @param interval the time units to be set
      * */
-    public void setInterval(int interval) {
-        this.interval = interval;
+    public void setInterval(Integer interval) {
+        if (interval != null) {
+            this.interval = interval;
+        }
     }
 
     /**
@@ -98,7 +100,9 @@ public class RecurrencePattern {
      * @param firstDayOfWeek the first day of the week
      * */
     public void setFirstDayOfWeek(String firstDayOfWeek) {
-        this.firstDayOfWeek = firstDayOfWeek;
+        if (firstDayOfWeek != null) {
+            this.firstDayOfWeek = firstDayOfWeek;
+        }
     }
 
     /**
@@ -112,7 +116,9 @@ public class RecurrencePattern {
      * @param index the index to be set
      * */
     public void setIndex(String index) {
-        this.index = index;
+        if (index != null) {
+            this.index = index;
+        }
     }
 
     /**

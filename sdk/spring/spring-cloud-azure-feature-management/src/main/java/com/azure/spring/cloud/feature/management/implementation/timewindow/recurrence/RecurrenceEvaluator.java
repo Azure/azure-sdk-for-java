@@ -336,20 +336,9 @@ public class RecurrenceEvaluator {
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
-        if (recurrence.getRange() == null) {
-            paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE);
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
-        }
         if (recurrence.getPattern().getType() == null) {
             paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
                 RecurrenceConstants.RECURRENCE_PATTERN_TYPE);
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
-        }
-        if (recurrence.getRange().getType() == null) {
-            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
-                RecurrenceConstants.RECURRENCE_RANGE_TYPE);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
@@ -507,6 +496,7 @@ public class RecurrenceEvaluator {
      * Check whether the duration is shorter than the minimum gap between recurrence of days of week.
      *
      * @param duration       The duration of time window.
+     * @param interval       The number of weeks between each occurrence.
      * @param daysOfWeek     The days of the week when the recurrence will occur.
      * @param firstDayOfWeek The first day of the week.
      * @return True if the duration is compliant with days of week, false otherwise.
@@ -522,7 +512,6 @@ public class RecurrenceEvaluator {
         final ZonedDateTime firstDateOfWeek = today.plusDays(offset);
 
         // Loop the whole week to get the min gap between the two consecutive recurrences
-        // todo why need to initialize as first day of week?
         ZonedDateTime date = firstDateOfWeek;
         ZonedDateTime prevOccurrence = firstDateOfWeek;
         Duration minGap = Duration.ofDays(7);
