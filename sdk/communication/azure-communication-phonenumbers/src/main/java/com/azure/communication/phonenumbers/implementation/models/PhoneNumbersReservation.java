@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
 
 /** The PhoneNumbersReservation model. */
 @Fluent
@@ -17,7 +17,7 @@ public final class PhoneNumbersReservation {
     /*
      * The id of the reservation.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
@@ -25,19 +25,19 @@ public final class PhoneNumbersReservation {
      * purchased before this time, all of the reserved phone numbers will be
      * released and made available for others to purchase.
      */
-    @JsonProperty(value = "expiresAt")
+    @JsonProperty(value = "expiresAt", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiresAt;
 
     /*
-     * The phoneNumbers property.
+     * Dictionary of <AvailablePhoneNumber>
      */
-    @JsonProperty(value = "phoneNumbers")
-    private List<AvailablePhoneNumber> phoneNumbers;
+    @JsonProperty(value = "phoneNumbers", required = true)
+    private Map<String, AvailablePhoneNumber> phoneNumbers;
 
     /*
      * The status property.
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private ReservationStatus status;
 
     /**
@@ -47,17 +47,6 @@ public final class PhoneNumbersReservation {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: The id of the reservation.
-     *
-     * @param id the id value to set.
-     * @return the PhoneNumbersReservation object itself.
-     */
-    public PhoneNumbersReservation setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -71,33 +60,21 @@ public final class PhoneNumbersReservation {
     }
 
     /**
-     * Set the expiresAt property: The time at which the reservation will expire. If a reservation is not purchased
-     * before this time, all of the reserved phone numbers will be released and made available for others to purchase.
-     *
-     * @param expiresAt the expiresAt value to set.
-     * @return the PhoneNumbersReservation object itself.
-     */
-    public PhoneNumbersReservation setExpiresAt(OffsetDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-        return this;
-    }
-
-    /**
-     * Get the phoneNumbers property: The phoneNumbers property.
+     * Get the phoneNumbers property: Dictionary of &lt;AvailablePhoneNumber&gt;.
      *
      * @return the phoneNumbers value.
      */
-    public List<AvailablePhoneNumber> getPhoneNumbers() {
+    public Map<String, AvailablePhoneNumber> getPhoneNumbers() {
         return this.phoneNumbers;
     }
 
     /**
-     * Set the phoneNumbers property: The phoneNumbers property.
+     * Set the phoneNumbers property: Dictionary of &lt;AvailablePhoneNumber&gt;.
      *
      * @param phoneNumbers the phoneNumbers value to set.
      * @return the PhoneNumbersReservation object itself.
      */
-    public PhoneNumbersReservation setPhoneNumbers(List<AvailablePhoneNumber> phoneNumbers) {
+    public PhoneNumbersReservation setPhoneNumbers(Map<String, AvailablePhoneNumber> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
     }
@@ -109,16 +86,5 @@ public final class PhoneNumbersReservation {
      */
     public ReservationStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status property.
-     *
-     * @param status the status value to set.
-     * @return the PhoneNumbersReservation object itself.
-     */
-    public PhoneNumbersReservation setStatus(ReservationStatus status) {
-        this.status = status;
-        return this;
     }
 }

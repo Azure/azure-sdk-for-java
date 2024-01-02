@@ -4,13 +4,11 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ReservationStatus. */
-@Generated
 public final class ReservationStatus extends ExpandableStringEnum<ReservationStatus> {
     /** Static value active for ReservationStatus. */
     public static final ReservationStatus ACTIVE = fromString("active");
@@ -20,12 +18,6 @@ public final class ReservationStatus extends ExpandableStringEnum<ReservationSta
 
     /** Static value completed for ReservationStatus. */
     public static final ReservationStatus COMPLETED = fromString("completed");
-
-    /** Static value partiallyCompleted for ReservationStatus. */
-    public static final ReservationStatus PARTIALLY_COMPLETED = fromString("partiallyCompleted");
-
-    /** Static value cancelled for ReservationStatus. */
-    public static final ReservationStatus CANCELLED = fromString("cancelled");
 
     /** Static value expired for ReservationStatus. */
     public static final ReservationStatus EXPIRED = fromString("expired");

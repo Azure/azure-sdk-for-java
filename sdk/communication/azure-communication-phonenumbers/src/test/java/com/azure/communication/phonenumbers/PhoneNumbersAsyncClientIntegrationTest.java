@@ -515,7 +515,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
-        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
 
         if (withOptions) {
@@ -539,13 +539,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
-        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
         PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
 
         if (withOptions) {
             return setPollInterval(client
                     .beginSearchAvailablePhoneNumbers(
-                            "IT",
+                            "US",
                             PhoneNumberType.TOLL_FREE,
                             PhoneNumberAssignmentType.APPLICATION,
                             capabilities,
@@ -553,7 +553,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         }
         return setPollInterval(client
                 .beginSearchAvailablePhoneNumbers(
-                        "IT",
+                        "US",
                         PhoneNumberType.TOLL_FREE,
                         PhoneNumberAssignmentType.APPLICATION,
                         capabilities));

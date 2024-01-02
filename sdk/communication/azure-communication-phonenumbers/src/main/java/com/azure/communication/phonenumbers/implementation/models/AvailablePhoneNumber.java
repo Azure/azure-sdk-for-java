@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCost;
@@ -14,12 +13,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AvailablePhoneNumber model. */
 @Fluent
-@Generated
 public final class AvailablePhoneNumber {
     /*
      * The id of the phone number.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
@@ -31,7 +29,7 @@ public final class AvailablePhoneNumber {
     /*
      * The phone number in E.164 format, e.g. +11234567890.
      */
-    @JsonProperty(value = "phoneNumber", required = true)
+    @JsonProperty(value = "phoneNumber", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String phoneNumber;
 
     /*
@@ -56,7 +54,7 @@ public final class AvailablePhoneNumber {
     /*
      * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost", required = true)
+    @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
 
     /**
@@ -66,17 +64,6 @@ public final class AvailablePhoneNumber {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: The id of the phone number.
-     *
-     * @param id the id value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -106,17 +93,6 @@ public final class AvailablePhoneNumber {
      */
     public String getPhoneNumber() {
         return this.phoneNumber;
-    }
-
-    /**
-     * Set the phoneNumber property: The phone number in E.164 format, e.g. +11234567890.
-     *
-     * @param phoneNumber the phoneNumber value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
     }
 
     /**
@@ -186,16 +162,5 @@ public final class AvailablePhoneNumber {
      */
     public PhoneNumberCost getCost() {
         return this.cost;
-    }
-
-    /**
-     * Set the cost property: The incurred cost for a single phone number.
-     *
-     * @param cost the cost value to set.
-     * @return the AvailablePhoneNumber object itself.
-     */
-    public AvailablePhoneNumber setCost(PhoneNumberCost cost) {
-        this.cost = cost;
-        return this;
     }
 }

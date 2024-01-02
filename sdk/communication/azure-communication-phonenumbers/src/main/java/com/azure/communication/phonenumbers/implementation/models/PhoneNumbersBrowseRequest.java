@@ -18,7 +18,7 @@ public final class PhoneNumbersBrowseRequest {
     /*
      * Represents the number type of the offering.
      */
-    @JsonProperty(value = "phoneNumberType")
+    @JsonProperty(value = "phoneNumberType", required = true)
     private PhoneNumberType phoneNumberType;
 
     /*
