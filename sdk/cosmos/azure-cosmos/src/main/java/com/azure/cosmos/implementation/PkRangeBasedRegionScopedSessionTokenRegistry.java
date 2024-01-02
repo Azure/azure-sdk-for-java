@@ -3,17 +3,15 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
@@ -59,12 +57,12 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
             if (!Strings.isNullOrEmpty(sessionTokenUnparsedInner) && !Strings.isNullOrEmpty(regionInner)) {
 
-                String[] sessionTokenSegments = sessionTokenUnparsedInner.split(":");
+                String[] sessionTokenSegments = StringUtils.split(sessionTokenUnparsedInner, ":");
 
                 assert sessionTokenSegments.length > 1;
 
                 String partitionKeyRangeIdInner = sessionTokenSegments[0];
-                ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenSegments[1]);
+                ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenUnparsedInner);
 
                 this.pkRangeIdToRegionScopedSessionTokens.compute(partitionKeyRangeIdInner, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
 

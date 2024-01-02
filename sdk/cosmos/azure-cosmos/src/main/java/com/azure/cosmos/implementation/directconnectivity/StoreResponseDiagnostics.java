@@ -28,7 +28,6 @@ public class StoreResponseDiagnostics {
     final static Logger logger = LoggerFactory.getLogger(StoreResponseDiagnostics.class);
     private final String partitionKeyRangeId;
     private final String sessionTokenAsString;
-    private final boolean isPossiblyMalformedSessionToken;
     private final double requestCharge;
     private final String activityId;
     private final String correlatedActivityId;
@@ -85,7 +84,6 @@ public class StoreResponseDiagnostics {
         this.replicaStatusList = storeResponse.getReplicaStatusList();
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
-        this.isPossiblyMalformedSessionToken = false;
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -123,7 +121,6 @@ public class StoreResponseDiagnostics {
                 .CosmosExceptionHelper
                 .getCosmosExceptionAccessor()
                 .getFaultInjectionEvaluationResults(e);
-        this.isPossiblyMalformedSessionToken = isPossiblyMalformedSessionToken(sessionTokenAsString);
     }
 
     public int getStatusCode() {
@@ -203,27 +200,4 @@ public class StoreResponseDiagnostics {
     }
 
     public List<String> getReplicaStatusList() { return this.replicaStatusList; }
-
-    public boolean isPossiblyMalformedSessionToken() {
-        return this.isPossiblyMalformedSessionToken;
-    }
-
-    // todo (abhmohanty) - evaluate whether all string session tokens can be parsed here
-    // todo (abhmohanty) to avoid re-parsing in case of valid session tokens in exception scenarios
-    private static boolean isPossiblyMalformedSessionToken(String sessionTokenAsString) {
-        try {
-            ISessionToken parsedSessionToken = SessionTokenHelper.parse(sessionTokenAsString);
-
-            if (parsedSessionToken != null) {
-                return false;
-            }
-        } catch (RuntimeException ex) {
-            if (ex.getCause() != null && ex.getCause() instanceof BadRequestException) {
-                logger.debug("The session token : {} is possibly malformed - will not be captured in the session container.", sessionTokenAsString);
-                return true;
-            }
-        }
-
-        return true;
-    }
 }

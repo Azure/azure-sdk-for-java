@@ -187,7 +187,7 @@ public class ClientSideRequestStatistics {
 
                     String sessionTokenAsStringInner = storeResponseDiagnosticsInner.getSessionTokenAsString();
 
-                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner) && !storeResponseDiagnosticsInner.isPossiblyMalformedSessionToken()) {
+                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
                         String regionLowerCased = storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).replace(" ", "");
                         this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionLowerCased);
                     }
@@ -232,7 +232,7 @@ public class ClientSideRequestStatistics {
 
                     String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString();
 
-                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner) && !storeResponseDiagnostics.isPossiblyMalformedSessionToken()) {
+                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
                         String regionContactedInnerLowerCased = regionContactedInner.toLowerCase(Locale.ROOT).replace(" ", "");
                         this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInnerLowerCased);
                     }
