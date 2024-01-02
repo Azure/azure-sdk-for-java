@@ -90,7 +90,8 @@ public final class EventDataBatch {
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
-     *     the batch.
+     *     the batch, to accommodate the event, the application should obtain a new {@link EventDataBatch} object and
+     *     add event to it.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
@@ -102,14 +103,6 @@ public final class EventDataBatch {
         tracer.reportMessageSpan(eventData, eventData.getContext());
 
         final int size = getSize(eventData, events.isEmpty());
-
-        if (size > maxMessageSize) {
-            throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
-                contextProvider.getErrorContext()));
-        }
-
         if (this.sizeInBytes + size > this.maxMessageSize) {
             return false;
         }
@@ -135,7 +128,7 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        int eventSize = amqpMessage.encode(new DroppingWritableBuffer()); // actual encoded bytes size
+        int eventSize = encodedSize(amqpMessage); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
@@ -144,7 +137,7 @@ public final class EventDataBatch {
             amqpMessage.setProperties(null);
             amqpMessage.setDeliveryAnnotations(null);
 
-            eventSize += amqpMessage.encode(new DroppingWritableBuffer());
+            eventSize += encodedSize(amqpMessage);
         }
 
         return eventSize;
@@ -169,5 +162,19 @@ public final class EventDataBatch {
         messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
 
         return protonJ;
+    }
+
+    private int encodedSize(Message amqpMessage) {
+        final int size = amqpMessage.encode(new DroppingWritableBuffer());
+        if (size > maxMessageSize) {
+            // The maxMessageSize is the Event Hubs service enforced upper limit for the message size or the application
+            // configured limit (lower than the service limit) when obtaining the batch object.
+            // https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#what-is-the-message-event-size-for-event-hubs-
+            throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024),
+                contextProvider.getErrorContext()));
+        }
+        return size;
     }
 }

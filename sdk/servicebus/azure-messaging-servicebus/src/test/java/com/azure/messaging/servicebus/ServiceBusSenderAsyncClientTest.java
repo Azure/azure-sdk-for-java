@@ -298,7 +298,6 @@ class ServiceBusSenderAsyncClientTest {
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
                 Assertions.assertTrue(batch.tryAddMessage(event));
-                Assertions.assertFalse(batch.tryAddMessage(event));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -306,7 +305,7 @@ class ServiceBusSenderAsyncClientTest {
         StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
-                Assertions.assertThrows(ServiceBusException.class, () -> batch.tryAddMessage(tooLargeEvent));
+                Assertions.assertFalse(batch.tryAddMessage(tooLargeEvent));
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

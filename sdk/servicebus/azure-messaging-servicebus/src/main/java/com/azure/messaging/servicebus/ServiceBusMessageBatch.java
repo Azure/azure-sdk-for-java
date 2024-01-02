@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusT
 import org.apache.qpid.proton.codec.DroppingWritableBuffer;
 import org.apache.qpid.proton.message.Message;
 
+import java.nio.BufferOverflowException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ public final class ServiceBusMessageBatch {
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
+    private final byte[] eventBytes;
     private int sizeInBytes;
     private final ServiceBusTracer tracer;
     private final boolean isV2;
@@ -83,7 +85,7 @@ public final class ServiceBusMessageBatch {
      *     in the batch.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
-     * @throws ServiceBusException if {@code message} is larger than the maximum size of the {@link
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
     public boolean tryAddMessage(final ServiceBusMessage serviceBusMessage) {
@@ -92,9 +94,10 @@ public final class ServiceBusMessageBatch {
         }
         tracer.reportMessageSpan(serviceBusMessage);
 
-        final int size = getSize(serviceBusMessage, serviceBusMessageList.isEmpty());
-
-        if (size > maxMessageSize) {
+        final int size;
+        try {
+            size = getSize(serviceBusMessage, serviceBusMessageList.isEmpty());
+        } catch (BufferOverflowException exception) {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                         String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",

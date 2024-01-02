@@ -372,9 +372,8 @@ public class EventHubProducerClientTest {
 
         // Assert
         Assertions.assertNull(batch.getPartitionKey());
-        Assertions.assertThrows(AmqpException.class, () -> batch.tryAdd(tooLargeEvent));
+        Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
         Assertions.assertTrue(batch.tryAdd(event));
-        Assertions.assertFalse(batch.tryAdd(event));
 
         verify(link, times(1)).getLinkSize();
     }
