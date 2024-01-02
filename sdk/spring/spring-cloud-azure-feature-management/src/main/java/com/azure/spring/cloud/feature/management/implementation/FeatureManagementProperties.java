@@ -50,13 +50,44 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
 
-        final boolean isBackendSchema = isBackendSchema(m);
-        for (String key : m.keySet()) {
-            if (isBackendSchema) {
-                addServerSideFeature(m, key, "");
-            } else {
-                addFeature(m, key, "");
+        // try to parse the properties by server side schema as default
+        tryServerSideSchema(m);
+
+        if (featureManagement.isEmpty() && onOff.isEmpty()) {
+            tryClientSideSchema(m);
+        }
+    }
+
+    private void tryServerSideSchema(Map<? extends String, ? extends Object> features) {
+        if (features.keySet().isEmpty()) {
+            return;
+        }
+
+        // check if FeatureFlags section exist
+        String featureFlagsSectionKey = "";
+        for (String key : features.keySet()) {
+            if ("FeatureFlags".equalsIgnoreCase(key)) {
+                featureFlagsSectionKey = key;
+                break;
             }
+        }
+        if (featureFlagsSectionKey.isEmpty()) {
+            return;
+        }
+
+        // get FeatureFlags section and parse
+        final Object featureFlagsObject = features.get(featureFlagsSectionKey);
+        if (Map.class.isAssignableFrom(featureFlagsObject.getClass())) {
+            final Map<String, Object> featureFlagsSection = (Map<String, Object>) featureFlagsObject;
+            for (String key : featureFlagsSection.keySet()) {
+                addServerSideFeature(featureFlagsSection, key);
+            }
+        }
+    }
+
+    private void tryClientSideSchema(Map<? extends String, ? extends Object> features) {
+        for (String key : features.keySet()) {
+            addFeature(features, key, "");
         }
     }
 
@@ -92,27 +123,17 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
-    private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key, String combined) {
+    private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key) {
         final Object featureValue = features.get(key);
-        if (!combined.isEmpty() && !combined.endsWith(".")) {
-            combined += ".";
-        }
 
         ServerSideFeature serverSideFeature = null;
         try {
             serverSideFeature = MAPPER.convertValue(featureValue, ServerSideFeature.class);
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureValue.toString());
+            LOGGER.error("Found invalid feature {} with value {}.", key, featureValue.toString());
         }
 
-        if (serverSideFeature != null && serverSideFeature.getId() == null) {
-            if (Map.class.isAssignableFrom(featureValue.getClass())) {
-                features = (Map<String, Object>) featureValue;
-                for (String fKey : features.keySet()) {
-                    addServerSideFeature(features, fKey, combined + key);
-                }
-            }
-        } else if (serverSideFeature != null) {
+        if (serverSideFeature != null && serverSideFeature.getId() != null) {
             if (serverSideFeature.getConditions() != null && serverSideFeature.getConditions().getClientFilters() != null
                 && serverSideFeature.getConditions().getClientFilters().size() > 0) {
                 final Feature feature = new Feature();
@@ -125,16 +146,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 onOff.put(serverSideFeature.getId(), serverSideFeature.isEnabled());
             }
         }
-    }
-
-    // todo what is the best way to decide whether is backend schema?
-    private boolean isBackendSchema(Map<? extends String, ? extends Object> features) {
-        if (features.keySet().isEmpty()) {
-            return false;
-        }
-
-        final String firstKey = features.keySet().stream().findFirst().get();
-        return "featureFlags".equalsIgnoreCase(firstKey);
     }
 
     /**
