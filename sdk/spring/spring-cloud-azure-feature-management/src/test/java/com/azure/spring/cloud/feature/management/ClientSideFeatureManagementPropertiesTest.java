@@ -26,7 +26,7 @@ public class ClientSideFeatureManagementPropertiesTest {
 
     @Test
     void onOffMapTest() {
-        assertTrue(clientSideProperties.getOnOff().get("feature-flags.gamma"));
+        assertTrue(clientSideProperties.getOnOff().get("gamma"));
     }
 
     @Test

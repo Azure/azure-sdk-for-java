@@ -26,7 +26,7 @@ public class ServerSideFeatureManagementPropertiesTest {
 
     @Test
     void onOffMapTest() {
-        assertTrue(serverSideProperties.getOnOff().get("Gamma"));   // todo this should be "FeatureFlags.Gamma"? or "Gamma"?
+        assertTrue(serverSideProperties.getOnOff().get("Gamma"));
     }
 
     @Test
