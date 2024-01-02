@@ -15,7 +15,6 @@ import io.netty.channel.DefaultEventLoop;
 import io.netty.channel.SingleThreadEventLoop;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
-import io.netty.util.Version;
 import io.netty.util.concurrent.Future;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
