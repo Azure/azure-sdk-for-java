@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Parameters that define the operation to create a connection monitor. */
+/**
+ * Parameters that define the operation to create a connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorInner {
     /*
@@ -39,13 +41,15 @@ public final class ConnectionMonitorInner {
     @JsonProperty(value = "properties", required = true)
     private ConnectionMonitorParameters innerProperties = new ConnectionMonitorParameters();
 
-    /** Creates an instance of ConnectionMonitorInner class. */
+    /**
+     * Creates an instance of ConnectionMonitorInner class.
+     */
     public ConnectionMonitorInner() {
     }
 
     /**
      * Get the location property: Connection monitor location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +58,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the location property: Connection monitor location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -65,7 +69,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the tags property: Connection monitor tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -74,7 +78,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the tags property: Connection monitor tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -85,7 +89,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the innerProperties property: Properties of the connection monitor.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectionMonitorParameters innerProperties() {
@@ -94,7 +98,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     *
+     * 
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -103,7 +107,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -117,7 +121,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the destination property: Describes the destination of connection monitor.
-     *
+     * 
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -126,7 +130,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the destination property: Describes the destination of connection monitor.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -140,7 +144,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * 
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -149,7 +153,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * 
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -163,7 +167,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
+     * 
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -172,7 +176,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
+     * 
      * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -186,7 +190,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the endpoints property: List of connection monitor endpoints.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<ConnectionMonitorEndpoint> endpoints() {
@@ -195,7 +199,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the endpoints property: List of connection monitor endpoints.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -209,7 +213,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the testConfigurations property: List of connection monitor test configurations.
-     *
+     * 
      * @return the testConfigurations value.
      */
     public List<ConnectionMonitorTestConfiguration> testConfigurations() {
@@ -218,7 +222,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the testConfigurations property: List of connection monitor test configurations.
-     *
+     * 
      * @param testConfigurations the testConfigurations value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -232,7 +236,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the testGroups property: List of connection monitor test groups.
-     *
+     * 
      * @return the testGroups value.
      */
     public List<ConnectionMonitorTestGroup> testGroups() {
@@ -241,7 +245,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the testGroups property: List of connection monitor test groups.
-     *
+     * 
      * @param testGroups the testGroups value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -255,7 +259,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the outputs property: List of connection monitor outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public List<ConnectionMonitorOutput> outputs() {
@@ -264,7 +268,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the outputs property: List of connection monitor outputs.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -278,7 +282,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the notes property: Optional notes to be associated with the connection monitor.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -287,7 +291,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the notes property: Optional notes to be associated with the connection monitor.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -301,15 +305,13 @@ public final class ConnectionMonitorInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ConnectionMonitorInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ConnectionMonitorInner"));
         } else {
             innerProperties().validate();
         }

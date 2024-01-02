@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Dimension of a resource metric. For e.g. instance specific HTTP requests for a web app, where instance name is
- * dimension of the metric HTTP request.
+ * Dimension of a resource metric. For e.g. instance specific HTTP requests for a web app,
+ * where instance name is dimension of the metric HTTP request.
  */
 @Fluent
 public final class Dimension {
@@ -37,13 +37,15 @@ public final class Dimension {
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
 
-    /** Creates an instance of Dimension class. */
+    /**
+     * Creates an instance of Dimension class.
+     */
     public Dimension() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +54,7 @@ public final class Dimension {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -63,7 +65,7 @@ public final class Dimension {
 
     /**
      * Get the displayName property: The displayName property.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +74,7 @@ public final class Dimension {
 
     /**
      * Set the displayName property: The displayName property.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */
@@ -83,7 +85,7 @@ public final class Dimension {
 
     /**
      * Get the internalName property: The internalName property.
-     *
+     * 
      * @return the internalName value.
      */
     public String internalName() {
@@ -92,7 +94,7 @@ public final class Dimension {
 
     /**
      * Set the internalName property: The internalName property.
-     *
+     * 
      * @param internalName the internalName value to set.
      * @return the Dimension object itself.
      */
@@ -103,7 +105,7 @@ public final class Dimension {
 
     /**
      * Get the toBeExportedForShoebox property: The toBeExportedForShoebox property.
-     *
+     * 
      * @return the toBeExportedForShoebox value.
      */
     public Boolean toBeExportedForShoebox() {
@@ -112,7 +114,7 @@ public final class Dimension {
 
     /**
      * Set the toBeExportedForShoebox property: The toBeExportedForShoebox property.
-     *
+     * 
      * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
      * @return the Dimension object itself.
      */
@@ -123,7 +125,7 @@ public final class Dimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

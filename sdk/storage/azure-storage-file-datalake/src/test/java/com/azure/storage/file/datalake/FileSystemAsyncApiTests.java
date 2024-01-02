@@ -7,8 +7,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -2025,6 +2025,18 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsCreationTimeParse() {
+        // this test is ensuring that we're handling the date format that the service returns for the creation time
+        // it can be returned in two formats: RFC 1123 date string or Windows file time
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+
+        // assert that NumberFormatException is not thrown
+        assertDoesNotThrow(() -> dataLakeFileSystemAsyncClient.listPaths(options).blockLast());
+    }
+
+    @Test
     public void listPathsReturnUpn() {
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
         dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
@@ -2122,10 +2134,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(dc2.getPropertiesWithResponse(null), 200);
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths())
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir2", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file2", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir1", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir2", r.getName()))
+            .assertNext(r -> assertEquals(name + "file1", r.getName()))
+            .assertNext(r -> assertEquals(name + "file2", r.getName()))
             .verifyComplete();
     }
 
@@ -2346,6 +2358,62 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.getAccessPolicyWithResponse(null))
             .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeFileSystemAsyncClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+                .audience(null) // should default to "https://storage.azure.com/"
+                .buildAsyncClient();
+
+        StepVerifier.create(aadFsClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeFileSystemAsyncClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+                .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
+                .buildAsyncClient();
+
+        StepVerifier.create(aadFsClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeFileSystemAsyncClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+                .buildAsyncClient();
+
+        StepVerifier.create(aadFsClient.exists())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeFileSystemAsyncClient aadFsClient =
+            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+                .audience(audience)
+                .buildAsyncClient();
+
+        StepVerifier.create(aadFsClient.exists())
+            .expectNext(true)
             .verifyComplete();
     }
 }

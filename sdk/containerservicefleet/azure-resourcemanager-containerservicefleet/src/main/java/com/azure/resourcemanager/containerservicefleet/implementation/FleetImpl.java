@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
 import com.azure.resourcemanager.containerservicefleet.models.FleetCredentialResults;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetPatch;
 import com.azure.resourcemanager.containerservicefleet.models.FleetProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
@@ -62,10 +61,6 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
 
     public FleetProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public FleetHubProfile hubProfile() {
-        return this.innerModel().hubProfile();
     }
 
     public Region region() {
@@ -223,11 +218,6 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             this.updateProperties.withIdentity(identity);
             return this;
         }
-    }
-
-    public FleetImpl withHubProfile(FleetHubProfile hubProfile) {
-        this.innerModel().withHubProfile(hubProfile);
-        return this;
     }
 
     public FleetImpl withIfMatch(String ifMatch) {

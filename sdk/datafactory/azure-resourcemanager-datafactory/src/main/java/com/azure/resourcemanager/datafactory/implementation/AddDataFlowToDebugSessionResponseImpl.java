@@ -12,8 +12,7 @@ public final class AddDataFlowToDebugSessionResponseImpl implements AddDataFlowT
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    AddDataFlowToDebugSessionResponseImpl(
-        AddDataFlowToDebugSessionResponseInner innerObject,
+    AddDataFlowToDebugSessionResponseImpl(AddDataFlowToDebugSessionResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -155,7 +155,10 @@ public class FaultInjectionRuleProcessor {
         return Mono.just(rule)
             .flatMap(originalRule -> {
                 // get effective condition
-                FaultInjectionConditionInternal effectiveCondition = new FaultInjectionConditionInternal(documentCollection.getResourceId());
+                FaultInjectionConditionInternal effectiveCondition =
+                    new FaultInjectionConditionInternal(
+                        documentCollection.getResourceId(),
+                        documentCollection.getId());
 
                 if ((rule.getCondition().getOperationType() != null && canErrorLimitToOperation(errorType))) {
                     effectiveCondition.setOperationType(this.getEffectiveOperationType(rule.getCondition().getOperationType()));
@@ -323,7 +326,6 @@ public class FaultInjectionRuleProcessor {
             case READ_ITEM:
             case METADATA_REQUEST_CONTAINER:
             case METADATA_REQUEST_DATABASE_ACCOUNT:
-            case METADATA_REQUEST_ADDRESS_REFRESH:
                 return OperationType.Read;
             case CREATE_ITEM:
                 return OperationType.Create;
@@ -345,6 +347,8 @@ public class FaultInjectionRuleProcessor {
                 return OperationType.QueryPlan;
             case METADATA_REQUEST_PARTITION_KEY_RANGES:
                 return OperationType.ReadFeed;
+            case METADATA_REQUEST_ADDRESS_REFRESH: // address refresh can happen for any operations: read, write, query etc
+                return null;
             default:
                 throw new IllegalStateException("FaultInjectionOperationType " + faultInjectionOperationType + " is not supported");
         }
@@ -484,8 +488,12 @@ public class FaultInjectionRuleProcessor {
     }
 
     private boolean isWriteOnly(FaultInjectionCondition condition) {
-        return condition.getOperationType() != null
-            && this.getEffectiveOperationType(condition.getOperationType()).isWriteOperation();
+        if (condition.getOperationType() != null) {
+            OperationType effectiveOperationType = this.getEffectiveOperationType(condition.getOperationType());
+            return effectiveOperationType != null && effectiveOperationType.isWriteOperation();
+        }
+
+        return false;
     }
 
     static class FaultInjectionRuleProcessorRetryPolicy implements IRetryPolicy {

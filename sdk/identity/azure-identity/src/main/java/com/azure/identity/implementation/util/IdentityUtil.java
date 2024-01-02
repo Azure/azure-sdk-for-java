@@ -11,7 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -91,5 +95,20 @@ public final class IdentityUtil {
     public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
         return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
             || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
+    }
+
+    public static byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        try {
+            int read = inputStream.read(buffer, 0, buffer.length);
+            while (read != -1) {
+                outputStream.write(buffer, 0, read);
+                read = inputStream.read(buffer, 0, buffer.length);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+        return outputStream.toByteArray();
     }
 }

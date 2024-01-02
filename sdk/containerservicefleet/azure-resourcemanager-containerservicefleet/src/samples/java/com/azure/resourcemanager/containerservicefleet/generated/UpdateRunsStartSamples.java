@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 /** Samples for UpdateRuns Start. */
 public final class UpdateRunsStartSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/UpdateRuns_Start.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateRuns_Start.json
      */
     /**
      * Sample code: Starts an UpdateRun.

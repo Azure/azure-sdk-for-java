@@ -22,6 +22,8 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzureDeveloperCliCredential authentication issues](#troubleshoot-azuredeveloperclicredential-authentication-issues)
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
+- [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
+- [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Get additional help](#get-additional-help)
 
 ## Handle Azure Identity exceptions
@@ -275,12 +277,56 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|---|---|  
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."|The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Microsoft Entra ID.| <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
 
+## Troubleshoot `IntelliJCredential` authentication issues
+
+| Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---|---|---|
+|`CredentialUnavailableException` raised with message. "IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE."| The Credential was not able to locate the cached token to use for authentication. | Ensure that you login on the  Azure Tools for IntelliJ plugin, that will populate the cache for the credential to pick up.
+
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`
 
 | Error Message |Description| Mitigation |
 |---|---|---|
 |The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
+
+## Troubleshoot authentication timeout issues
+
+### Using Thread pool
+The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
+arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
+a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
+common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
+strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
+this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
+allocation of threads from the common fork-join pool.
+
+To effectively address this deadlock situation, follow these steps:
+
+* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
+
+* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
+
+Here's a code sample below:
+
+```java
+ExecutorService executorService = Executors.newCachedThreadPool();
+
+try {
+    ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+      .clientId("<Client-Id>")
+      .tenantId("<Tenant-Id>")
+      .clientSecret("<Client-Secret>")
+      .executorService(executorService)
+      .build();
+
+} finally {
+   //Shutdown the thread pool once no longer needed.
+   executorService.shutdown();
+}
+```
+
+You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
 
 ## Get additional help
 

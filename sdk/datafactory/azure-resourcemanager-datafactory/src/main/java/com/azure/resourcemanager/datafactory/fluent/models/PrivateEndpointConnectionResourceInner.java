@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.datafactory.models.RemotePrivateEndpointConnection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private Endpoint Connection ARM resource. */
+/**
+ * Private Endpoint Connection ARM resource.
+ */
 @Fluent
 public final class PrivateEndpointConnectionResourceInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of PrivateEndpointConnectionResourceInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionResourceInner class.
+     */
     public PrivateEndpointConnectionResourceInner() {
     }
 
     /**
      * Get the properties property: Core resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public RemotePrivateEndpointConnection properties() {
@@ -51,7 +55,7 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
 
     /**
      * Set the properties property: Core resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionResourceInner object itself.
      */
@@ -62,7 +66,7 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +75,7 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,14 +84,16 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateEndpointConnectionResourceInner withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class PrivateEndpointConnectionResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

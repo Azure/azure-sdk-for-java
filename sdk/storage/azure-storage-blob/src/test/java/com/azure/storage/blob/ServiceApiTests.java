@@ -1244,10 +1244,10 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        BlobServiceClient aadService = new BlobServiceClientBuilder()
+        BlobServiceClient aadService = instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadService.getProperties());

@@ -15,39 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureBackupRestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBackupRestoreRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"bpbewtghfgb\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"wxzvlvqhjkb\",\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"nmxiebwwaloayqc\"}}")
-                .toObject(AzureBackupRestoreRequest.class);
+        AzureBackupRestoreRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"bwwaloa\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"gwrtzju\",\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"mhtxongmtsavjcb\"}}")
+            .toObject(AzureBackupRestoreRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("bpbewtghfgb", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals("bwwaloa", model.restoreTargetInfo().restoreLocation());
         Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("wxzvlvqhjkb", model.sourceResourceId());
+        Assertions.assertEquals("gwrtzju", model.sourceResourceId());
         Assertions.assertEquals(false, model.identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("nmxiebwwaloayqc", model.identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("mhtxongmtsavjcb", model.identityDetails().userAssignedIdentityArmUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupRestoreRequest model =
-            new AzureBackupRestoreRequest()
-                .withRestoreTargetInfo(
-                    new RestoreTargetInfoBase()
-                        .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                        .withRestoreLocation("bpbewtghfgb"))
-                .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
-                .withSourceResourceId("wxzvlvqhjkb")
-                .withIdentityDetails(
-                    new IdentityDetails()
-                        .withUseSystemAssignedIdentity(false)
-                        .withUserAssignedIdentityArmUrl("nmxiebwwaloayqc"));
+        AzureBackupRestoreRequest model = new AzureBackupRestoreRequest()
+            .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
+                .withRestoreLocation("bwwaloa"))
+            .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE).withSourceResourceId("gwrtzju")
+            .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
+                .withUserAssignedIdentityArmUrl("mhtxongmtsavjcb"));
         model = BinaryData.fromObject(model).toObject(AzureBackupRestoreRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("bpbewtghfgb", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals("bwwaloa", model.restoreTargetInfo().restoreLocation());
         Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("wxzvlvqhjkb", model.sourceResourceId());
+        Assertions.assertEquals("gwrtzju", model.sourceResourceId());
         Assertions.assertEquals(false, model.identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("nmxiebwwaloayqc", model.identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("mhtxongmtsavjcb", model.identityDetails().userAssignedIdentityArmUrl());
     }
 }

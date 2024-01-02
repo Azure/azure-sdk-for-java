@@ -15,8 +15,7 @@ public final class CertificateObjectGlobalRulestackResourceImpl implements Certi
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    CertificateObjectGlobalRulestackResourceImpl(
-        CertificateObjectGlobalRulestackResourceInner innerObject,
+    CertificateObjectGlobalRulestackResourceImpl(CertificateObjectGlobalRulestackResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -30,6 +30,9 @@ public enum AdminKeyKind {
      */
     @JsonCreator
     public static AdminKeyKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AdminKeyKind[] items = AdminKeyKind.values();
         for (AdminKeyKind item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum AdminKeyKind {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

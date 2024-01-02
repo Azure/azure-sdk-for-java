@@ -13,25 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Solutions model =
-            BinaryData
-                .fromString(
-                    "{\"solutions\":[{\"solutionId\":\"ixuigdtopbobj\",\"solutionType\":\"Diagnostics\",\"description\":\"e\",\"requiredInputs\":[\"m\"]},{\"solutionId\":\"hrzayvvtpgvdf\",\"solutionType\":\"Solutions\",\"description\":\"kftutqxlngxlefg\",\"requiredInputs\":[\"xkrxdqmi\",\"tthzrvqd\"]},{\"solutionId\":\"bhj\",\"solutionType\":\"Diagnostics\",\"description\":\"ehoqfbowskan\",\"requiredInputs\":[\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"]},{\"solutionId\":\"y\",\"solutionType\":\"Solutions\",\"description\":\"kwlzuvccfwnfn\",\"requiredInputs\":[\"fionl\",\"bxetqgtzxdpn\"]}]}")
-                .toObject(Solutions.class);
+        Solutions model = BinaryData.fromString(
+            "{\"solutions\":[{\"solutionId\":\"ixuigdtopbobj\",\"solutionType\":\"Diagnostics\",\"description\":\"e\",\"requiredInputs\":[\"m\"]},{\"solutionId\":\"hrzayvvtpgvdf\",\"solutionType\":\"Solutions\",\"description\":\"kftutqxlngxlefg\",\"requiredInputs\":[\"xkrxdqmi\",\"tthzrvqd\"]},{\"solutionId\":\"bhj\",\"solutionType\":\"Diagnostics\",\"description\":\"ehoqfbowskan\",\"requiredInputs\":[\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"]},{\"solutionId\":\"y\",\"solutionType\":\"Solutions\",\"description\":\"kwlzuvccfwnfn\",\"requiredInputs\":[\"fionl\",\"bxetqgtzxdpn\"]}]}")
+            .toObject(Solutions.class);
         Assertions.assertEquals("ixuigdtopbobj", model.solutions().get(0).solutionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Solutions model =
-            new Solutions()
-                .withSolutions(
-                    Arrays
-                        .asList(
-                            new SolutionMetadataProperties().withSolutionId("ixuigdtopbobj"),
-                            new SolutionMetadataProperties().withSolutionId("hrzayvvtpgvdf"),
-                            new SolutionMetadataProperties().withSolutionId("bhj"),
-                            new SolutionMetadataProperties().withSolutionId("y")));
+        Solutions model = new Solutions()
+            .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("ixuigdtopbobj"),
+                new SolutionMetadataProperties().withSolutionId("hrzayvvtpgvdf"),
+                new SolutionMetadataProperties().withSolutionId("bhj"),
+                new SolutionMetadataProperties().withSolutionId("y")));
         model = BinaryData.fromObject(model).toObject(Solutions.class);
         Assertions.assertEquals("ixuigdtopbobj", model.solutions().get(0).solutionId());
     }

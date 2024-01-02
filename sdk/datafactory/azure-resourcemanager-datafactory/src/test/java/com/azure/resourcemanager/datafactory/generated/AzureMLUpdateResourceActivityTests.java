@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureMLUpdateResourceActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMLUpdateResourceActivity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureMLUpdateResource\",\"typeProperties\":{\"trainedModelName\":\"datasqovmtidmyc\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"yajlnotmirgip\",\"parameters\":{\"hnj\":\"datanbfxmefymdmfrfz\",\"twmmvbahftkcey\":\"dataqzdzkyqqbqbwbw\"}},\"trainedModelFilePath\":\"datatdeyoxtlq\"},\"linkedServiceName\":{\"referenceName\":\"xftepzrcqnsjqrgt\",\"parameters\":{\"b\":\"datawpzphkm\",\"ondbvlqtpeba\":\"datarqk\",\"vqdwzyvxd\":\"datawzsxpyrbjt\"}},\"policy\":{\"timeout\":\"datanieqlikyc\",\"retry\":\"datanfukehxvktlrc\",\"retryIntervalInSeconds\":1149102333,\"secureInput\":true,\"secureOutput\":false,\"\":{\"zqamxxpfy\":\"datauwnrqf\",\"rtgww\":\"datampftwtepu\"}},\"name\":\"aolfdgjrgp\",\"description\":\"vohvcaqarppkzz\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"qou\",\"dependencyConditions\":[\"Completed\",\"Failed\",\"Skipped\",\"Completed\"],\"\":{\"znnpazbfrqotigxn\":\"datahtncadrmthhfx\"}}],\"userProperties\":[{\"name\":\"xnvwq\",\"value\":\"datahklhoss\"},{\"name\":\"pjtiu\",\"value\":\"datagjbfm\"},{\"name\":\"sjgmes\",\"value\":\"datamhxkjj\"}],\"\":{\"yafazwie\":\"datargxskghdadgqpbg\",\"rijcwnthtq\":\"datazzxjjdboxuinrs\",\"zbvdzjlkocjuajcl\":\"databcwtcqjsvlzdus\",\"iprjahgqzb\":\"datatssbkzdgwpyljn\"}}")
-                .toObject(AzureMLUpdateResourceActivity.class);
+        AzureMLUpdateResourceActivity model = BinaryData.fromString(
+            "{\"type\":\"AzureMLUpdateResource\",\"typeProperties\":{\"trainedModelName\":\"datasqovmtidmyc\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"yajlnotmirgip\",\"parameters\":{\"hnj\":\"datanbfxmefymdmfrfz\",\"twmmvbahftkcey\":\"dataqzdzkyqqbqbwbw\"}},\"trainedModelFilePath\":\"datatdeyoxtlq\"},\"linkedServiceName\":{\"referenceName\":\"xftepzrcqnsjqrgt\",\"parameters\":{\"b\":\"datawpzphkm\",\"ondbvlqtpeba\":\"datarqk\",\"vqdwzyvxd\":\"datawzsxpyrbjt\"}},\"policy\":{\"timeout\":\"datanieqlikyc\",\"retry\":\"datanfukehxvktlrc\",\"retryIntervalInSeconds\":1149102333,\"secureInput\":true,\"secureOutput\":false,\"\":{\"zqamxxpfy\":\"datauwnrqf\",\"rtgww\":\"datampftwtepu\"}},\"name\":\"aolfdgjrgp\",\"description\":\"vohvcaqarppkzz\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"qou\",\"dependencyConditions\":[\"Completed\",\"Failed\",\"Skipped\",\"Completed\"],\"\":{\"znnpazbfrqotigxn\":\"datahtncadrmthhfx\"}}],\"userProperties\":[{\"name\":\"xnvwq\",\"value\":\"datahklhoss\"},{\"name\":\"pjtiu\",\"value\":\"datagjbfm\"},{\"name\":\"sjgmes\",\"value\":\"datamhxkjj\"}],\"\":{\"yafazwie\":\"datargxskghdadgqpbg\",\"rijcwnthtq\":\"datazzxjjdboxuinrs\",\"zbvdzjlkocjuajcl\":\"databcwtcqjsvlzdus\",\"iprjahgqzb\":\"datatssbkzdgwpyljn\"}}")
+            .toObject(AzureMLUpdateResourceActivity.class);
         Assertions.assertEquals("aolfdgjrgp", model.name());
         Assertions.assertEquals("vohvcaqarppkzz", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
@@ -42,49 +40,25 @@ public final class AzureMLUpdateResourceActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLUpdateResourceActivity model =
-            new AzureMLUpdateResourceActivity()
-                .withName("aolfdgjrgp")
-                .withDescription("vohvcaqarppkzz")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new ActivityDependency()
-                                .withActivity("qou")
-                                .withDependencyConditions(
-                                    Arrays
-                                        .asList(
-                                            DependencyCondition.COMPLETED,
-                                            DependencyCondition.FAILED,
-                                            DependencyCondition.SKIPPED,
-                                            DependencyCondition.COMPLETED))
-                                .withAdditionalProperties(mapOf())))
-                .withUserProperties(
-                    Arrays
-                        .asList(
-                            new UserProperty().withName("xnvwq").withValue("datahklhoss"),
-                            new UserProperty().withName("pjtiu").withValue("datagjbfm"),
-                            new UserProperty().withName("sjgmes").withValue("datamhxkjj")))
+        AzureMLUpdateResourceActivity model
+            = new AzureMLUpdateResourceActivity().withName("aolfdgjrgp").withDescription("vohvcaqarppkzz")
+                .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+                .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("qou")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED,
+                        DependencyCondition.SKIPPED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf())))
+                .withUserProperties(Arrays.asList(new UserProperty().withName("xnvwq").withValue("datahklhoss"),
+                    new UserProperty().withName("pjtiu").withValue("datagjbfm"),
+                    new UserProperty().withName("sjgmes").withValue("datamhxkjj")))
                 .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("xftepzrcqnsjqrgt")
-                        .withParameters(
-                            mapOf("b", "datawpzphkm", "ondbvlqtpeba", "datarqk", "vqdwzyvxd", "datawzsxpyrbjt")))
-                .withPolicy(
-                    new ActivityPolicy()
-                        .withTimeout("datanieqlikyc")
-                        .withRetry("datanfukehxvktlrc")
-                        .withRetryIntervalInSeconds(1149102333)
-                        .withSecureInput(true)
-                        .withSecureOutput(false)
-                        .withAdditionalProperties(mapOf()))
+                    new LinkedServiceReference().withReferenceName("xftepzrcqnsjqrgt").withParameters(
+                        mapOf("b", "datawpzphkm", "ondbvlqtpeba", "datarqk", "vqdwzyvxd", "datawzsxpyrbjt")))
+                .withPolicy(new ActivityPolicy()
+                    .withTimeout("datanieqlikyc").withRetry("datanfukehxvktlrc").withRetryIntervalInSeconds(1149102333)
+                    .withSecureInput(true).withSecureOutput(false).withAdditionalProperties(mapOf()))
                 .withTrainedModelName("datasqovmtidmyc")
-                .withTrainedModelLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("yajlnotmirgip")
-                        .withParameters(mapOf("hnj", "datanbfxmefymdmfrfz", "twmmvbahftkcey", "dataqzdzkyqqbqbwbw")))
+                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("yajlnotmirgip")
+                    .withParameters(mapOf("hnj", "datanbfxmefymdmfrfz", "twmmvbahftkcey", "dataqzdzkyqqbqbwbw")))
                 .withTrainedModelFilePath("datatdeyoxtlq");
         model = BinaryData.fromObject(model).toObject(AzureMLUpdateResourceActivity.class);
         Assertions.assertEquals("aolfdgjrgp", model.name());

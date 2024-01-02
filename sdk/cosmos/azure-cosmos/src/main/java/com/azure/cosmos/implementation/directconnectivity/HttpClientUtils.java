@@ -19,12 +19,11 @@ public class HttpClientUtils {
 
     static Mono<RxDocumentServiceResponse> parseResponseAsync(RxDocumentServiceRequest request,
                                                               DiagnosticsClientContext diagnosticsClientContext,
-                                                              Mono<HttpResponse> httpResponse,
-                                                              HttpRequest httpRequest) {
+                                                              Mono<HttpResponse> httpResponse) {
         return httpResponse.flatMap(response -> {
             if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
 
-                return ResponseUtils.toStoreResponse(response, httpRequest).map(rsp -> new RxDocumentServiceResponse(diagnosticsClientContext, rsp));
+                return ResponseUtils.toStoreResponse(response).map(rsp -> new RxDocumentServiceResponse(diagnosticsClientContext, rsp));
 
                 // TODO: to break the dependency between RxDocumentServiceResponse and StoreResponse
                 // we should factor out the  RxDocumentServiceResponse(StoreResponse) constructor to a helper class

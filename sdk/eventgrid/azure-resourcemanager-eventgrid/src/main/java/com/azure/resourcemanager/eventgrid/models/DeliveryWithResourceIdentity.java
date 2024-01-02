@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the delivery for an event subscription with resource identity. */
+/**
+ * Information about the delivery for an event subscription with resource identity.
+ */
 @Fluent
 public final class DeliveryWithResourceIdentity {
     /*
@@ -24,13 +26,15 @@ public final class DeliveryWithResourceIdentity {
     @JsonProperty(value = "destination")
     private EventSubscriptionDestination destination;
 
-    /** Creates an instance of DeliveryWithResourceIdentity class. */
+    /**
+     * Creates an instance of DeliveryWithResourceIdentity class.
+     */
     public DeliveryWithResourceIdentity() {
     }
 
     /**
      * Get the identity property: The identity to use when delivering events.
-     *
+     * 
      * @return the identity value.
      */
     public EventSubscriptionIdentity identity() {
@@ -39,7 +43,7 @@ public final class DeliveryWithResourceIdentity {
 
     /**
      * Set the identity property: The identity to use when delivering events.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DeliveryWithResourceIdentity object itself.
      */
@@ -50,9 +54,10 @@ public final class DeliveryWithResourceIdentity {
 
     /**
      * Get the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
+     * subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
      * dead-lettering.
-     *
+     * 
      * @return the destination value.
      */
     public EventSubscriptionDestination destination() {
@@ -61,9 +66,10 @@ public final class DeliveryWithResourceIdentity {
 
     /**
      * Set the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
+     * subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
      * dead-lettering.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the DeliveryWithResourceIdentity object itself.
      */
@@ -74,7 +80,7 @@ public final class DeliveryWithResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

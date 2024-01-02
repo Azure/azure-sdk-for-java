@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Secure Score of Backup Vault. */
+/**
+ * Secure Score of Backup Vault.
+ */
 public final class SecureScoreLevel extends ExpandableStringEnum<SecureScoreLevel> {
-    /** Static value None for SecureScoreLevel. */
+    /**
+     * Static value None for SecureScoreLevel.
+     */
     public static final SecureScoreLevel NONE = fromString("None");
 
-    /** Static value Minimum for SecureScoreLevel. */
+    /**
+     * Static value Minimum for SecureScoreLevel.
+     */
     public static final SecureScoreLevel MINIMUM = fromString("Minimum");
 
-    /** Static value Adequate for SecureScoreLevel. */
+    /**
+     * Static value Adequate for SecureScoreLevel.
+     */
     public static final SecureScoreLevel ADEQUATE = fromString("Adequate");
 
-    /** Static value Maximum for SecureScoreLevel. */
+    /**
+     * Static value Maximum for SecureScoreLevel.
+     */
     public static final SecureScoreLevel MAXIMUM = fromString("Maximum");
 
-    /** Static value NotSupported for SecureScoreLevel. */
+    /**
+     * Static value NotSupported for SecureScoreLevel.
+     */
     public static final SecureScoreLevel NOT_SUPPORTED = fromString("NotSupported");
 
     /**
      * Creates a new instance of SecureScoreLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class SecureScoreLevel extends ExpandableStringEnum<SecureScoreLeve
 
     /**
      * Creates or finds a SecureScoreLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecureScoreLevel.
      */
@@ -47,7 +59,7 @@ public final class SecureScoreLevel extends ExpandableStringEnum<SecureScoreLeve
 
     /**
      * Gets known SecureScoreLevel values.
-     *
+     * 
      * @return known SecureScoreLevel values.
      */
     public static Collection<SecureScoreLevel> values() {

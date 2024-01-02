@@ -31,22 +31,28 @@ import com.azure.resourcemanager.compute.models.SharedGalleryImageList;
 import com.azure.resourcemanager.compute.models.SharedToValues;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SharedGalleryImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SharedGalleryImagesClient.
+ */
 public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SharedGalleryImagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of SharedGalleryImagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SharedGalleryImagesClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SharedGalleryImagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SharedGalleryImagesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,50 +63,36 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface SharedGalleryImagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<SharedGalleryImageList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("galleryUniqueName") String galleryUniqueName,
-            @QueryParam("sharedTo") SharedToValues sharedTo,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<SharedGalleryImageList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("galleryUniqueName") String galleryUniqueName,
+            @QueryParam("sharedTo") SharedToValues sharedTo, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<SharedGalleryImageInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @PathParam("galleryUniqueName") String galleryUniqueName,
+            @PathParam("galleryImageName") String galleryImageName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<SharedGalleryImageInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("galleryUniqueName") String galleryUniqueName,
-            @PathParam("galleryImageName") String galleryImageName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<SharedGalleryImageList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SharedGalleryImageList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -108,22 +100,18 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Shared Gallery Images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedGalleryImageInner>> listSinglePageAsync(
-        String location, String galleryUniqueName, SharedToValues sharedTo) {
+    private Mono<PagedResponse<SharedGalleryImageInner>> listSinglePageAsync(String location, String galleryUniqueName,
+        SharedToValues sharedTo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -132,36 +120,19 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            apiVersion,
-                            galleryUniqueName,
-                            sharedTo,
-                            accept,
-                            context))
-            .<PagedResponse<SharedGalleryImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+                apiVersion, galleryUniqueName, sharedTo, accept, context))
+            .<PagedResponse<SharedGalleryImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -170,22 +141,18 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Shared Gallery Images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedGalleryImageInner>> listSinglePageAsync(
-        String location, String galleryUniqueName, SharedToValues sharedTo, Context context) {
+    private Mono<PagedResponse<SharedGalleryImageInner>> listSinglePageAsync(String location, String galleryUniqueName,
+        SharedToValues sharedTo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -194,33 +161,19 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                apiVersion,
-                galleryUniqueName,
-                sharedTo,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion, galleryUniqueName,
+                sharedTo, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -230,16 +183,15 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @return the List Shared Gallery Images operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SharedGalleryImageInner> listAsync(
-        String location, String galleryUniqueName, SharedToValues sharedTo) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, galleryUniqueName, sharedTo),
+    public PagedFlux<SharedGalleryImageInner> listAsync(String location, String galleryUniqueName,
+        SharedToValues sharedTo) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, galleryUniqueName, sharedTo),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,14 +202,13 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryImageInner> listAsync(String location, String galleryUniqueName) {
         final SharedToValues sharedTo = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, galleryUniqueName, sharedTo),
+        return new PagedFlux<>(() -> listSinglePageAsync(location, galleryUniqueName, sharedTo),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -268,16 +219,15 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @return the List Shared Gallery Images operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SharedGalleryImageInner> listAsync(
-        String location, String galleryUniqueName, SharedToValues sharedTo, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(location, galleryUniqueName, sharedTo, context),
+    private PagedFlux<SharedGalleryImageInner> listAsync(String location, String galleryUniqueName,
+        SharedToValues sharedTo, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, galleryUniqueName, sharedTo, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +243,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
 
     /**
      * List shared gallery images by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
@@ -304,38 +254,34 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @return the List Shared Gallery Images operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedGalleryImageInner> list(
-        String location, String galleryUniqueName, SharedToValues sharedTo, Context context) {
+    public PagedIterable<SharedGalleryImageInner> list(String location, String galleryUniqueName,
+        SharedToValues sharedTo, Context context) {
         return new PagedIterable<>(listAsync(location, galleryUniqueName, sharedTo, context));
     }
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a shared gallery image by subscription id or tenant id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(
-        String location, String galleryUniqueName, String galleryImageName) {
+    public Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(String location, String galleryUniqueName,
+        String galleryImageName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -348,52 +294,38 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            apiVersion,
-                            galleryUniqueName,
-                            galleryImageName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+                apiVersion, galleryUniqueName, galleryImageName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a shared gallery image by subscription id or tenant id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(
-        String location, String galleryUniqueName, String galleryImageName, Context context) {
+    private Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(String location, String galleryUniqueName,
+        String galleryImageName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -406,28 +338,20 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                apiVersion,
-                galleryUniqueName,
-                galleryImageName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), location, apiVersion,
+            galleryUniqueName, galleryImageName, accept, context);
     }
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,11 +365,11 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -453,18 +377,18 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
      * @return a shared gallery image by subscription id or tenant id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedGalleryImageInner> getWithResponse(
-        String location, String galleryUniqueName, String galleryImageName, Context context) {
+    public Response<SharedGalleryImageInner> getWithResponse(String location, String galleryUniqueName,
+        String galleryImageName, Context context) {
         return getWithResponseAsync(location, galleryUniqueName, galleryImageName, context).block();
     }
 
     /**
      * Get a shared gallery image by subscription id or tenant id.
-     *
+     * 
      * @param location Resource location.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
-     *     listed.
+     * listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,14 +401,15 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Shared Gallery Images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryImageInner>> listNextSinglePageAsync(String nextLink) {
@@ -492,37 +417,28 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SharedGalleryImageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SharedGalleryImageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Shared Gallery Images operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryImageInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -530,23 +446,13 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

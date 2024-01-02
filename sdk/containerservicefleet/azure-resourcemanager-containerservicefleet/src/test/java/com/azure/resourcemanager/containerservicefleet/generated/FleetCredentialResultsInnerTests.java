@@ -12,7 +12,8 @@ public final class FleetCredentialResultsInnerTests {
     public void testDeserialize() throws Exception {
         FleetCredentialResultsInner model =
             BinaryData
-                .fromString("{\"kubeconfigs\":[{\"name\":\"ppbhtqqrolfp\"}]}")
+                .fromString(
+                    "{\"kubeconfigs\":[{\"name\":\"zrnf\"},{\"name\":\"gispemvtzfkufubl\"},{\"name\":\"xqeofjaeqjhqjba\"},{\"name\":\"smjqulngsntnbyb\"}]}")
                 .toObject(FleetCredentialResultsInner.class);
     }
 

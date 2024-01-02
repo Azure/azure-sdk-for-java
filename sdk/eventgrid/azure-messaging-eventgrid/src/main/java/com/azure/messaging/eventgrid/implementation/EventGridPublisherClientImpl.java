@@ -28,9 +28,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the EventGridPublisherClient type. */
 public final class EventGridPublisherClientImpl {

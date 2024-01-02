@@ -11,7 +11,9 @@ import com.azure.resourcemanager.datafactory.models.SsisChildPackage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SSIS package location properties. */
+/**
+ * SSIS package location properties.
+ */
 @Fluent
 public final class SsisPackageLocationTypeProperties {
     /*
@@ -62,13 +64,15 @@ public final class SsisPackageLocationTypeProperties {
     @JsonProperty(value = "childPackages")
     private List<SsisChildPackage> childPackages;
 
-    /** Creates an instance of SsisPackageLocationTypeProperties class. */
+    /**
+     * Creates an instance of SsisPackageLocationTypeProperties class.
+     */
     public SsisPackageLocationTypeProperties() {
     }
 
     /**
      * Get the packagePassword property: Password of the package.
-     *
+     * 
      * @return the packagePassword value.
      */
     public SecretBase packagePassword() {
@@ -77,7 +81,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packagePassword property: Password of the package.
-     *
+     * 
      * @param packagePassword the packagePassword value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the accessCredential property: The package access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
@@ -97,7 +101,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the accessCredential property: The package access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Get the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the configurationPath value.
      */
     public Object configurationPath() {
@@ -119,7 +123,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Set the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param configurationPath the configurationPath value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the configurationAccessCredential property: The configuration file access credential.
-     *
+     * 
      * @return the configurationAccessCredential value.
      */
     public SsisAccessCredential configurationAccessCredential() {
@@ -139,19 +143,19 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the configurationAccessCredential property: The configuration file access credential.
-     *
+     * 
      * @param configurationAccessCredential the configurationAccessCredential value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
-    public SsisPackageLocationTypeProperties withConfigurationAccessCredential(
-        SsisAccessCredential configurationAccessCredential) {
+    public SsisPackageLocationTypeProperties
+        withConfigurationAccessCredential(SsisAccessCredential configurationAccessCredential) {
         this.configurationAccessCredential = configurationAccessCredential;
         return this;
     }
 
     /**
      * Get the packageName property: The package name.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -160,7 +164,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packageName property: The package name.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -172,7 +176,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Get the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the packageContent value.
      */
     public Object packageContent() {
@@ -182,7 +186,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Set the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param packageContent the packageContent value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -193,7 +197,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the packageLastModifiedDate property: The embedded package last modified date.
-     *
+     * 
      * @return the packageLastModifiedDate value.
      */
     public String packageLastModifiedDate() {
@@ -202,7 +206,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packageLastModifiedDate property: The embedded package last modified date.
-     *
+     * 
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -213,7 +217,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the childPackages property: The embedded child package list.
-     *
+     * 
      * @return the childPackages value.
      */
     public List<SsisChildPackage> childPackages() {
@@ -222,7 +226,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the childPackages property: The embedded child package list.
-     *
+     * 
      * @param childPackages the childPackages value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -233,7 +237,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

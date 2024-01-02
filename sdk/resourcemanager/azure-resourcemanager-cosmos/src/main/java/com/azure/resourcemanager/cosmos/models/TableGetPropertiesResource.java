@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableGetPropertiesResource model. */
+/**
+ * The TableGetPropertiesResource model.
+ */
 @Fluent
 public final class TableGetPropertiesResource extends TableResource {
     /*
@@ -28,13 +30,15 @@ public final class TableGetPropertiesResource extends TableResource {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of TableGetPropertiesResource class. */
+    /**
+     * Creates an instance of TableGetPropertiesResource class.
+     */
     public TableGetPropertiesResource() {
     }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -43,7 +47,7 @@ public final class TableGetPropertiesResource extends TableResource {
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -53,14 +57,16 @@ public final class TableGetPropertiesResource extends TableResource {
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TableGetPropertiesResource withId(String id) {
         super.withId(id);
@@ -68,8 +74,26 @@ public final class TableGetPropertiesResource extends TableResource {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TableGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TableGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

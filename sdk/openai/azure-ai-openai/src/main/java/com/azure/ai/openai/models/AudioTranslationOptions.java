@@ -9,7 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration information for an audio translation request. */
+/**
+ * The configuration information for an audio translation request.
+ */
 @Fluent
 public final class AudioTranslationOptions {
 
@@ -17,7 +19,6 @@ public final class AudioTranslationOptions {
      * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @Generated
     @JsonProperty(value = "file")
     private byte[] file;
 
@@ -56,23 +57,12 @@ public final class AudioTranslationOptions {
     private String model;
 
     /**
-     * Creates an instance of AudioTranslationOptions class.
-     *
-     * @param file the file value to set.
-     */
-    @Generated
-    @JsonCreator
-    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
-        this.file = file;
-    }
-
-    /**
      * Get the file property: The audio data to translate. This must be the binary content of a file in one of the
-     * supported media formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
+     * supported media formats:
+     * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      *
      * @return the file value.
      */
-    @Generated
     public byte[] getFile() {
         return CoreUtils.clone(this.file);
     }
@@ -90,7 +80,8 @@ public final class AudioTranslationOptions {
 
     /**
      * Get the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the prompt should match the primary spoken language of the audio data.
+     * written language of the
+     * prompt should match the primary spoken language of the audio data.
      *
      * @return the prompt value.
      */
@@ -101,7 +92,8 @@ public final class AudioTranslationOptions {
 
     /**
      * Set the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the prompt should match the primary spoken language of the audio data.
+     * written language of the
+     * prompt should match the primary spoken language of the audio data.
      *
      * @param prompt the prompt value to set.
      * @return the AudioTranslationOptions object itself.
@@ -113,9 +105,11 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Get the temperature property: The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-     * output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the
-     * model will use log probability to automatically increase the temperature until certain thresholds are hit.
+     * Get the temperature property: The sampling temperature, between 0 and 1.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
+     * and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain
+     * thresholds are hit.
      *
      * @return the temperature value.
      */
@@ -125,9 +119,11 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Set the temperature property: The sampling temperature, between 0 and 1. Higher values like 0.8 will make the
-     * output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the
-     * model will use log probability to automatically increase the temperature until certain thresholds are hit.
+     * Set the temperature property: The sampling temperature, between 0 and 1.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
+     * and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain
+     * thresholds are hit.
      *
      * @param temperature the temperature value to set.
      * @return the AudioTranslationOptions object itself.
@@ -170,6 +166,74 @@ public final class AudioTranslationOptions {
     @Generated
     public AudioTranslationOptions setResponseFormat(AudioTranslationFormat responseFormat) {
         this.responseFormat = responseFormat;
+        return this;
+    }
+
+    /*
+     * The optional filename or descriptive identifier to associate with with the audio data.
+     */
+    @Generated
+    @JsonProperty(value = "filename")
+    private String filename;
+
+    /**
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
+    }
+
+    /**
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @param filename the filename value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    @Generated
+    public AudioTranslationOptions setFilename(String filename) {
+        this.filename = filename;
+        return this;
+    }
+
+    /*
+     * The filename for file
+     */
+    @Generated
+    @JsonProperty(value = "file")
+    private String fileFilename = "file";
+
+    /**
+     * Creates an instance of AudioTranslationOptions class.
+     *
+     * @param file the file value to set.
+     */
+    @JsonCreator
+    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
+        this.file = file;
+    }
+
+    /**
+     * Get the fileFilename property: The filename for file.
+     *
+     * @return the fileFilename value.
+     */
+    String getFileFilename() {
+        return this.fileFilename;
+    }
+
+    /**
+     * Set the fileFilename property: The filename for file.
+     *
+     * @param fileFilename the fileFilename value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    AudioTranslationOptions setFileFilename(String fileFilename) {
+        this.fileFilename = fileFilename;
         return this;
     }
 }

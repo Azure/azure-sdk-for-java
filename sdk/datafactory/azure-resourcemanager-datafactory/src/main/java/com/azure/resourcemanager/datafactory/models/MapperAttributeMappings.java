@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Attribute mapping details. */
+/**
+ * Attribute mapping details.
+ */
 @Fluent
 public final class MapperAttributeMappings {
     /*
@@ -17,13 +19,15 @@ public final class MapperAttributeMappings {
     @JsonProperty(value = "attributeMappings")
     private List<MapperAttributeMapping> attributeMappings;
 
-    /** Creates an instance of MapperAttributeMappings class. */
+    /**
+     * Creates an instance of MapperAttributeMappings class.
+     */
     public MapperAttributeMappings() {
     }
 
     /**
      * Get the attributeMappings property: List of attribute mappings.
-     *
+     * 
      * @return the attributeMappings value.
      */
     public List<MapperAttributeMapping> attributeMappings() {
@@ -32,7 +36,7 @@ public final class MapperAttributeMappings {
 
     /**
      * Set the attributeMappings property: List of attribute mappings.
-     *
+     * 
      * @param attributeMappings the attributeMappings value to set.
      * @return the MapperAttributeMappings object itself.
      */
@@ -43,7 +47,7 @@ public final class MapperAttributeMappings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

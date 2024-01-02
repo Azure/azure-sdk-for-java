@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * AzureBackupRecoveryPointResourceList
- *
- * <p>Azure backup recoveryPoint resource list.
+ * 
+ * Azure backup recoveryPoint resource list.
  */
 @Fluent
 public final class AzureBackupRecoveryPointResourceList extends DppResourceList {
@@ -22,13 +22,15 @@ public final class AzureBackupRecoveryPointResourceList extends DppResourceList 
     @JsonProperty(value = "value")
     private List<AzureBackupRecoveryPointResourceInner> value;
 
-    /** Creates an instance of AzureBackupRecoveryPointResourceList class. */
+    /**
+     * Creates an instance of AzureBackupRecoveryPointResourceList class.
+     */
     public AzureBackupRecoveryPointResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureBackupRecoveryPointResourceInner> value() {
@@ -37,7 +39,7 @@ public final class AzureBackupRecoveryPointResourceList extends DppResourceList 
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureBackupRecoveryPointResourceList object itself.
      */
@@ -46,7 +48,9 @@ public final class AzureBackupRecoveryPointResourceList extends DppResourceList 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryPointResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -55,7 +59,7 @@ public final class AzureBackupRecoveryPointResourceList extends DppResourceList 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

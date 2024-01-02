@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a user defined function in the Azure Cosmos DB database service.
@@ -23,10 +24,10 @@ public class UserDefinedFunction extends Resource {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the user defined function.
+     * @param jsonNode the json node that represents the user defined function.
      */
-    public UserDefinedFunction(String jsonString) {
-        super(jsonString);
+    public UserDefinedFunction(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**

@@ -31,7 +31,7 @@ public final class FleetMembersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"clusterResourceId\":\"lcxog\",\"group\":\"konzmnsik\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"ze\",\"id\":\"kdltfzxmhhvhg\",\"name\":\"r\",\"type\":\"odkwobd\"}";
+            "{\"properties\":{\"clusterResourceId\":\"exilzznfqqnvwpmq\",\"group\":\"ruoujmk\",\"provisioningState\":\"Updating\"},\"eTag\":\"qytjrybnwjewgd\",\"id\":\"ervnaenqpehi\",\"name\":\"doy\",\"type\":\"mifthnzdnd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class FleetMembersGetWithResponseMockTests {
         FleetMember response =
             manager
                 .fleetMembers()
-                .getWithResponse("lvwiwubmwmbesl", "nkww", "pp", com.azure.core.util.Context.NONE)
+                .getWithResponse("birx", "pybsrfbjfdtw", "sotftpvj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("lcxog", response.clusterResourceId());
-        Assertions.assertEquals("konzmnsik", response.group());
+        Assertions.assertEquals("exilzznfqqnvwpmq", response.clusterResourceId());
+        Assertions.assertEquals("ruoujmk", response.group());
     }
 }

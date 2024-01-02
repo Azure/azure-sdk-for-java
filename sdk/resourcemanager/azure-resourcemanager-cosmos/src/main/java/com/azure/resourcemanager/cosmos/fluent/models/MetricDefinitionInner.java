@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cosmos.models.UnitType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The definition of a metric. */
+/**
+ * The definition of a metric.
+ */
 @Immutable
 public final class MetricDefinitionInner {
     /*
@@ -45,13 +47,15 @@ public final class MetricDefinitionInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private MetricName name;
 
-    /** Creates an instance of MetricDefinitionInner class. */
+    /**
+     * Creates an instance of MetricDefinitionInner class.
+     */
     public MetricDefinitionInner() {
     }
 
     /**
      * Get the metricAvailabilities property: The list of metric availabilities for the account.
-     *
+     * 
      * @return the metricAvailabilities value.
      */
     public List<MetricAvailability> metricAvailabilities() {
@@ -60,7 +64,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the primaryAggregationType property: The primary aggregation type of the metric.
-     *
+     * 
      * @return the primaryAggregationType value.
      */
     public PrimaryAggregationType primaryAggregationType() {
@@ -69,7 +73,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public UnitType unit() {
@@ -78,7 +82,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the resourceUri property: The resource uri of the database.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -87,7 +91,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the name property: The name information for the metric.
-     *
+     * 
      * @return the name value.
      */
     public MetricName name() {
@@ -96,7 +100,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

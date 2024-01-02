@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Definition of ExpressRouteLink Mac Security configuration.
- *
- * <p>ExpressRouteLink Mac Security Configuration.
+ * 
+ * ExpressRouteLink Mac Security Configuration.
  */
 @Fluent
 public final class ExpressRouteLinkMacSecConfig {
@@ -38,13 +38,15 @@ public final class ExpressRouteLinkMacSecConfig {
     @JsonProperty(value = "sciState")
     private ExpressRouteLinkMacSecSciState sciState;
 
-    /** Creates an instance of ExpressRouteLinkMacSecConfig class. */
+    /**
+     * Creates an instance of ExpressRouteLinkMacSecConfig class.
+     */
     public ExpressRouteLinkMacSecConfig() {
     }
 
     /**
      * Get the cknSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CKN key.
-     *
+     * 
      * @return the cknSecretIdentifier value.
      */
     public String cknSecretIdentifier() {
@@ -53,7 +55,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Set the cknSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CKN key.
-     *
+     * 
      * @param cknSecretIdentifier the cknSecretIdentifier value to set.
      * @return the ExpressRouteLinkMacSecConfig object itself.
      */
@@ -64,7 +66,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Get the cakSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CAK key.
-     *
+     * 
      * @return the cakSecretIdentifier value.
      */
     public String cakSecretIdentifier() {
@@ -73,7 +75,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Set the cakSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CAK key.
-     *
+     * 
      * @param cakSecretIdentifier the cakSecretIdentifier value to set.
      * @return the ExpressRouteLinkMacSecConfig object itself.
      */
@@ -84,7 +86,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Get the cipher property: Mac security cipher.
-     *
+     * 
      * @return the cipher value.
      */
     public ExpressRouteLinkMacSecCipher cipher() {
@@ -93,7 +95,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Set the cipher property: Mac security cipher.
-     *
+     * 
      * @param cipher the cipher value to set.
      * @return the ExpressRouteLinkMacSecConfig object itself.
      */
@@ -104,7 +106,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Get the sciState property: Sci mode enabled/disabled.
-     *
+     * 
      * @return the sciState value.
      */
     public ExpressRouteLinkMacSecSciState sciState() {
@@ -113,7 +115,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Set the sciState property: Sci mode enabled/disabled.
-     *
+     * 
      * @param sciState the sciState value to set.
      * @return the ExpressRouteLinkMacSecConfig object itself.
      */
@@ -124,7 +126,7 @@ public final class ExpressRouteLinkMacSecConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

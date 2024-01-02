@@ -7,131 +7,175 @@ package com.azure.resourcemanager.netapp.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for NetAppManagementClient class. */
+/**
+ * The interface for NetAppManagementClient class.
+ */
 public interface NetAppManagementClient {
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the NetAppResourcesClient object to access its operations.
-     *
+     * 
      * @return the NetAppResourcesClient object.
      */
     NetAppResourcesClient getNetAppResources();
 
     /**
      * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
-     *
+     * 
      * @return the NetAppResourceQuotaLimitsClient object.
      */
     NetAppResourceQuotaLimitsClient getNetAppResourceQuotaLimits();
 
     /**
+     * Gets the NetAppResourceRegionInfosClient object to access its operations.
+     * 
+     * @return the NetAppResourceRegionInfosClient object.
+     */
+    NetAppResourceRegionInfosClient getNetAppResourceRegionInfos();
+
+    /**
      * Gets the AccountsClient object to access its operations.
-     *
+     * 
      * @return the AccountsClient object.
      */
     AccountsClient getAccounts();
 
     /**
      * Gets the PoolsClient object to access its operations.
-     *
+     * 
      * @return the PoolsClient object.
      */
     PoolsClient getPools();
 
     /**
      * Gets the VolumesClient object to access its operations.
-     *
+     * 
      * @return the VolumesClient object.
      */
     VolumesClient getVolumes();
 
     /**
      * Gets the SnapshotsClient object to access its operations.
-     *
+     * 
      * @return the SnapshotsClient object.
      */
     SnapshotsClient getSnapshots();
 
     /**
      * Gets the SnapshotPoliciesClient object to access its operations.
-     *
+     * 
      * @return the SnapshotPoliciesClient object.
      */
     SnapshotPoliciesClient getSnapshotPolicies();
 
     /**
      * Gets the BackupsClient object to access its operations.
-     *
+     * 
      * @return the BackupsClient object.
      */
     BackupsClient getBackups();
 
     /**
+     * Gets the AccountBackupsClient object to access its operations.
+     * 
+     * @return the AccountBackupsClient object.
+     */
+    AccountBackupsClient getAccountBackups();
+
+    /**
      * Gets the BackupPoliciesClient object to access its operations.
-     *
+     * 
      * @return the BackupPoliciesClient object.
      */
     BackupPoliciesClient getBackupPolicies();
 
     /**
      * Gets the VolumeQuotaRulesClient object to access its operations.
-     *
+     * 
      * @return the VolumeQuotaRulesClient object.
      */
     VolumeQuotaRulesClient getVolumeQuotaRules();
 
     /**
      * Gets the VolumeGroupsClient object to access its operations.
-     *
+     * 
      * @return the VolumeGroupsClient object.
      */
     VolumeGroupsClient getVolumeGroups();
 
     /**
      * Gets the SubvolumesClient object to access its operations.
-     *
+     * 
      * @return the SubvolumesClient object.
      */
     SubvolumesClient getSubvolumes();
+
+    /**
+     * Gets the BackupVaultsClient object to access its operations.
+     * 
+     * @return the BackupVaultsClient object.
+     */
+    BackupVaultsClient getBackupVaults();
+
+    /**
+     * Gets the BackupsUnderBackupVaultsClient object to access its operations.
+     * 
+     * @return the BackupsUnderBackupVaultsClient object.
+     */
+    BackupsUnderBackupVaultsClient getBackupsUnderBackupVaults();
+
+    /**
+     * Gets the BackupsUnderVolumesClient object to access its operations.
+     * 
+     * @return the BackupsUnderVolumesClient object.
+     */
+    BackupsUnderVolumesClient getBackupsUnderVolumes();
+
+    /**
+     * Gets the BackupsUnderAccountsClient object to access its operations.
+     * 
+     * @return the BackupsUnderAccountsClient object.
+     */
+    BackupsUnderAccountsClient getBackupsUnderAccounts();
 }

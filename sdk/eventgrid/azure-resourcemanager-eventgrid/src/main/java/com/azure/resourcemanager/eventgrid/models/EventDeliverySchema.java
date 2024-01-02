@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The event delivery schema for the event subscription. */
+/**
+ * The event delivery schema for the event subscription.
+ */
 public final class EventDeliverySchema extends ExpandableStringEnum<EventDeliverySchema> {
-    /** Static value EventGridSchema for EventDeliverySchema. */
+    /**
+     * Static value EventGridSchema for EventDeliverySchema.
+     */
     public static final EventDeliverySchema EVENT_GRID_SCHEMA = fromString("EventGridSchema");
 
-    /** Static value CustomInputSchema for EventDeliverySchema. */
+    /**
+     * Static value CustomInputSchema for EventDeliverySchema.
+     */
     public static final EventDeliverySchema CUSTOM_INPUT_SCHEMA = fromString("CustomInputSchema");
 
-    /** Static value CloudEventSchemaV1_0 for EventDeliverySchema. */
+    /**
+     * Static value CloudEventSchemaV1_0 for EventDeliverySchema.
+     */
     public static final EventDeliverySchema CLOUD_EVENT_SCHEMA_V1_0 = fromString("CloudEventSchemaV1_0");
 
     /**
      * Creates a new instance of EventDeliverySchema value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class EventDeliverySchema extends ExpandableStringEnum<EventDeliver
 
     /**
      * Creates or finds a EventDeliverySchema from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventDeliverySchema.
      */
@@ -41,7 +49,7 @@ public final class EventDeliverySchema extends ExpandableStringEnum<EventDeliver
 
     /**
      * Gets known EventDeliverySchema values.
-     *
+     * 
      * @return known EventDeliverySchema values.
      */
     public static Collection<EventDeliverySchema> values() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Dynamics CRM sink. */
+/**
+ * A copy activity Dynamics CRM sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrmSink")
 @Fluent
@@ -35,13 +37,15 @@ public final class DynamicsCrmSink extends CopySink {
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
-    /** Creates an instance of DynamicsCrmSink class. */
+    /**
+     * Creates an instance of DynamicsCrmSink class.
+     */
     public DynamicsCrmSink() {
     }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public DynamicsSinkWriteBehavior writeBehavior() {
@@ -50,7 +54,7 @@ public final class DynamicsCrmSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -62,7 +66,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Get the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object ignoreNullValues() {
@@ -72,7 +76,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Set the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -84,7 +88,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Get the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the alternateKeyName value.
      */
     public Object alternateKeyName() {
@@ -94,7 +98,7 @@ public final class DynamicsCrmSink extends CopySink {
     /**
      * Set the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param alternateKeyName the alternateKeyName value to set.
      * @return the DynamicsCrmSink object itself.
      */
@@ -103,42 +107,54 @@ public final class DynamicsCrmSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsCrmSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -147,16 +163,15 @@ public final class DynamicsCrmSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property writeBehavior in model DynamicsCrmSink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property writeBehavior in model DynamicsCrmSink"));
         }
     }
 

@@ -7,13 +7,15 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ClusterVersions. */
+/**
+ * Resource collection API of ClusterVersions.
+ */
 public interface ClusterVersions {
     /**
      * Gets information about a Service Fabric cluster code version available in the specified location.
-     *
-     * <p>Gets information about an available Service Fabric cluster code version.
-     *
+     * 
+     * Gets information about an available Service Fabric cluster code version.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
      * @param context The context to associate with this operation.
@@ -26,9 +28,9 @@ public interface ClusterVersions {
 
     /**
      * Gets information about a Service Fabric cluster code version available in the specified location.
-     *
-     * <p>Gets information about an available Service Fabric cluster code version.
-     *
+     * 
+     * Gets information about an available Service Fabric cluster code version.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param clusterVersion The cluster code version.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,9 +42,9 @@ public interface ClusterVersions {
 
     /**
      * Gets information about a Service Fabric cluster code version available for the specified environment.
-     *
-     * <p>Gets information about an available Service Fabric cluster code version by environment.
-     *
+     * 
+     * Gets information about an available Service Fabric cluster code version by environment.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @param clusterVersion The cluster code version.
@@ -50,17 +52,17 @@ public interface ClusterVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an available Service Fabric cluster code version by environment along with {@link
-     *     Response}.
+     * @return information about an available Service Fabric cluster code version by environment along with
+     * {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> getByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion, Context context);
+    Response<ClusterCodeVersionsListResult> getByEnvironmentWithResponse(String location,
+        ClusterVersionsEnvironment environment, String clusterVersion, Context context);
 
     /**
      * Gets information about a Service Fabric cluster code version available for the specified environment.
-     *
-     * <p>Gets information about an available Service Fabric cluster code version by environment.
-     *
+     * 
+     * Gets information about an available Service Fabric cluster code version by environment.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @param clusterVersion The cluster code version.
@@ -69,14 +71,14 @@ public interface ClusterVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about an available Service Fabric cluster code version by environment.
      */
-    ClusterCodeVersionsListResult getByEnvironment(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion);
+    ClusterCodeVersionsListResult getByEnvironment(String location, ClusterVersionsEnvironment environment,
+        String clusterVersion);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified location.
-     *
-     * <p>Gets all available code versions for Service Fabric cluster resources by location.
-     *
+     * 
+     * Gets all available code versions for Service Fabric cluster resources by location.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,9 +90,9 @@ public interface ClusterVersions {
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified location.
-     *
-     * <p>Gets all available code versions for Service Fabric cluster resources by location.
-     *
+     * 
+     * Gets all available code versions for Service Fabric cluster resources by location.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,26 +103,26 @@ public interface ClusterVersions {
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified environment.
-     *
-     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
-     *
+     * 
+     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available code versions for Service Fabric cluster resources by environment along with {@link
-     *     Response}.
+     * @return all available code versions for Service Fabric cluster resources by environment along with
+     * {@link Response}.
      */
-    Response<ClusterCodeVersionsListResult> listByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, Context context);
+    Response<ClusterCodeVersionsListResult> listByEnvironmentWithResponse(String location,
+        ClusterVersionsEnvironment environment, Context context);
 
     /**
      * Gets the list of Service Fabric cluster code versions available for the specified environment.
-     *
-     * <p>Gets all available code versions for Service Fabric cluster resources by environment.
-     *
+     * 
+     * Gets all available code versions for Service Fabric cluster resources by environment.
+     * 
      * @param location The location for the cluster code versions. This is different from cluster location.
      * @param environment The operating system of the cluster. The default means all.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

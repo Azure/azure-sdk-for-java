@@ -8,22 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Synapse notebook reference type. */
+/**
+ * Synapse notebook reference type.
+ */
 public final class NotebookReferenceType extends ExpandableStringEnum<NotebookReferenceType> {
-    /** Static value NotebookReference for NotebookReferenceType. */
+    /**
+     * Static value NotebookReference for NotebookReferenceType.
+     */
     public static final NotebookReferenceType NOTEBOOK_REFERENCE = fromString("NotebookReference");
 
     /**
      * Creates a new instance of NotebookReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public NotebookReferenceType() {}
+    public NotebookReferenceType() {
+    }
 
     /**
      * Creates or finds a NotebookReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NotebookReferenceType.
      */
@@ -34,7 +39,7 @@ public final class NotebookReferenceType extends ExpandableStringEnum<NotebookRe
 
     /**
      * Gets known NotebookReferenceType values.
-     *
+     * 
      * @return known NotebookReferenceType values.
      */
     public static Collection<NotebookReferenceType> values() {

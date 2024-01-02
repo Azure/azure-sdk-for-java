@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationsClient.
+ */
 public final class ConfigurationsClientImpl implements ConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NginxManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationsClientImpl(NginxManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,106 +69,80 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NginxManagementClien")
-    private interface ConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/configurations")
-        @ExpectedResponses({200})
+    public interface ConfigurationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NginxConfigurationListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NginxConfigurationListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NginxConfigurationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/configurations/{configurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NginxConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") NginxConfigurationInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/configurations/{configurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NginxConfigurationInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus"
-                + "/nginxDeployments/{deploymentName}/configurations/{configurationName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NginxConfigurationListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String deploymentName) {
+    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+        String deploymentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,34 +153,18 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NginxConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NginxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -208,19 +172,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, String deploymentName, Context context) {
+    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+        String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,30 +192,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, deploymentName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,16 +210,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NginxConfigurationInner> listAsync(String resourceGroupName, String deploymentName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, deploymentName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,18 +226,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NginxConfigurationInner> listAsync(
-        String resourceGroupName, String deploymentName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, deploymentName, context),
+    private PagedFlux<NginxConfigurationInner> listAsync(String resourceGroupName, String deploymentName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -303,10 +248,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     }
 
     /**
-     * List the Nginx configuration of given Nginx deployment.
-     *
+     * List the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -314,38 +259,34 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NginxConfigurationInner> list(
-        String resourceGroupName, String deploymentName, Context context) {
+    public PagedIterable<NginxConfigurationInner> list(String resourceGroupName, String deploymentName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, deploymentName, context));
     }
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,49 +301,35 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
+    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -417,67 +344,59 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment on successful completion of {@link Mono}.
+     * @return the NGINX configuration of given NGINX deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> getAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    private Mono<NginxConfigurationInner> getAsync(String resourceGroupName, String deploymentName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, deploymentName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment along with {@link Response}.
+     * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NginxConfigurationInner> getWithResponse(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
+    public Response<NginxConfigurationInner> getWithResponse(String resourceGroupName, String deploymentName,
+        String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, configurationName, context).block();
     }
 
     /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
+     * Get the NGINX configuration of given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment.
+     * @return the NGINX configuration of given NGINX deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxConfigurationInner get(String resourceGroupName, String deploymentName, String configurationName) {
@@ -485,32 +404,28 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName, NginxConfigurationInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -528,30 +443,20 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, configurationName, this.client.getApiVersion(), body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -559,23 +464,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String configurationName,
-        NginxConfigurationInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String deploymentName, String configurationName, NginxConfigurationInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -593,27 +490,18 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                configurationName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, configurationName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -622,54 +510,44 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
-        return this
-            .client
-            .<NginxConfigurationInner, NginxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NginxConfigurationInner.class,
-                NginxConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
+        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, String configurationName) {
         final NginxConfigurationInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
-        return this
-            .client
-            .<NginxConfigurationInner, NginxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NginxConfigurationInner.class,
-                NginxConfigurationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
+        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -678,118 +556,105 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String configurationName,
-        NginxConfigurationInner body,
+        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body, context);
-        return this
-            .client
-            .<NginxConfigurationInner, NginxConfigurationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NginxConfigurationInner.class,
-                NginxConfigurationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body, context);
+        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class, context);
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner>
+        beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName) {
         final NginxConfigurationInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).getSyncPoller();
-    }
-
-    /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String configurationName,
-        NginxConfigurationInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body)
             .getSyncPoller();
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body,
+        Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body)
-            .last()
+    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String configurationName) {
         final NginxConfigurationInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,44 +662,39 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String deploymentName,
-        String configurationName,
-        NginxConfigurationInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context)
-            .last()
+    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner createOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    public NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String configurationName) {
         final NginxConfigurationInner body = null;
         return createOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).block();
     }
 
     /**
-     * Create or update the Nginx configuration for given Nginx deployment.
-     *
+     * Create or update the NGINX configuration for given NGINX deployment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
-     * @param body The Nginx configuration.
+     * NGINX conf.
+     * @param body The NGINX configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -842,41 +702,33 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String deploymentName,
-        String configurationName,
-        NginxConfigurationInner body,
-        Context context) {
+    public NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context).block();
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName,
+        String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -891,28 +743,18 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            deploymentName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, deploymentName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -920,19 +762,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName,
+        String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -947,48 +785,38 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                deploymentName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            deploymentName, configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String deploymentName, String configurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, deploymentName, configurationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName,
+        String configurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, deploymentName, configurationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -996,41 +824,40 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName,
+        String configurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, deploymentName, configurationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, deploymentName, configurationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String configurationName) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String configurationName) {
+        return this.beginDeleteAsync(resourceGroupName, deploymentName, configurationName).getSyncPoller();
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,18 +865,18 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
+        String configurationName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, deploymentName, configurationName, context).getSyncPoller();
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1057,18 +884,17 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentName, String configurationName) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1076,20 +902,19 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String deploymentName, String configurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String deploymentName, String configurationName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, deploymentName, configurationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1100,12 +925,12 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     }
 
     /**
-     * Reset the Nginx configuration of given Nginx deployment to default.
-     *
+     * Reset the NGINX configuration of given NGINX deployment to default.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
+     * @param deploymentName The name of targeted NGINX deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
+     * NGINX conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1118,9 +943,10 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1132,31 +958,22 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NginxConfigurationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NginxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1169,23 +986,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

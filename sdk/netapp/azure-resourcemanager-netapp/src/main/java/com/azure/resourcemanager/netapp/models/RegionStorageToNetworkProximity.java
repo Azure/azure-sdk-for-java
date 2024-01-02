@@ -10,37 +10,53 @@ import java.util.Collection;
 
 /**
  * Storage to Network Proximity
- *
- * <p>Provides storage to network proximity information in the region.
+ * 
+ * Provides storage to network proximity information in the region.
  */
 public final class RegionStorageToNetworkProximity extends ExpandableStringEnum<RegionStorageToNetworkProximity> {
-    /** Static value Default for RegionStorageToNetworkProximity. */
+    /**
+     * Static value Default for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity DEFAULT = fromString("Default");
 
-    /** Static value T1 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T1 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T1 = fromString("T1");
 
-    /** Static value T2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T2 = fromString("T2");
 
-    /** Static value AcrossT2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value AcrossT2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity ACROSS_T2 = fromString("AcrossT2");
 
-    /** Static value T1AndT2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T1AndT2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T1AND_T2 = fromString("T1AndT2");
 
-    /** Static value T1AndAcrossT2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T1AndAcrossT2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T1AND_ACROSS_T2 = fromString("T1AndAcrossT2");
 
-    /** Static value T2AndAcrossT2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T2AndAcrossT2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T2AND_ACROSS_T2 = fromString("T2AndAcrossT2");
 
-    /** Static value T1AndT2AndAcrossT2 for RegionStorageToNetworkProximity. */
+    /**
+     * Static value T1AndT2AndAcrossT2 for RegionStorageToNetworkProximity.
+     */
     public static final RegionStorageToNetworkProximity T1AND_T2AND_ACROSS_T2 = fromString("T1AndT2AndAcrossT2");
 
     /**
      * Creates a new instance of RegionStorageToNetworkProximity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +65,7 @@ public final class RegionStorageToNetworkProximity extends ExpandableStringEnum<
 
     /**
      * Creates or finds a RegionStorageToNetworkProximity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegionStorageToNetworkProximity.
      */
@@ -60,7 +76,7 @@ public final class RegionStorageToNetworkProximity extends ExpandableStringEnum<
 
     /**
      * Gets known RegionStorageToNetworkProximity values.
-     *
+     * 
      * @return known RegionStorageToNetworkProximity values.
      */
     public static Collection<RegionStorageToNetworkProximity> values() {

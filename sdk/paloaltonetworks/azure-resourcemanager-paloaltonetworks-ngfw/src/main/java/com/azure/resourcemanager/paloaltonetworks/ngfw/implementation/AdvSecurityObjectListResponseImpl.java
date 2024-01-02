@@ -13,8 +13,7 @@ public final class AdvSecurityObjectListResponseImpl implements AdvSecurityObjec
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    AdvSecurityObjectListResponseImpl(
-        AdvSecurityObjectListResponseInner innerObject,
+    AdvSecurityObjectListResponseImpl(AdvSecurityObjectListResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

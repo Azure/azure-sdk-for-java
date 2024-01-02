@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The compute resource properties for managed integration runtime. */
+/**
+ * The compute resource properties for managed integration runtime.
+ */
 @Fluent
 public final class IntegrationRuntimeComputeProperties {
     /*
@@ -55,15 +57,19 @@ public final class IntegrationRuntimeComputeProperties {
     /*
      * The compute resource properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeComputeProperties class. */
-    public IntegrationRuntimeComputeProperties() {}
+    /**
+     * Creates an instance of IntegrationRuntimeComputeProperties class.
+     */
+    public IntegrationRuntimeComputeProperties() {
+    }
 
     /**
      * Get the location property: The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -73,7 +79,7 @@ public final class IntegrationRuntimeComputeProperties {
     /**
      * Set the location property: The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities.
-     *
+     * 
      * @param location the location value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -84,7 +90,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the nodeSize property: The node size requirement to managed integration runtime.
-     *
+     * 
      * @return the nodeSize value.
      */
     public String getNodeSize() {
@@ -93,7 +99,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the nodeSize property: The node size requirement to managed integration runtime.
-     *
+     * 
      * @param nodeSize the nodeSize value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -104,7 +110,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the numberOfNodes property: The required number of nodes for managed integration runtime.
-     *
+     * 
      * @return the numberOfNodes value.
      */
     public Integer getNumberOfNodes() {
@@ -113,7 +119,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the numberOfNodes property: The required number of nodes for managed integration runtime.
-     *
+     * 
      * @param numberOfNodes the numberOfNodes value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -123,9 +129,9 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
-     * Get the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
-     * runtime.
-     *
+     * Get the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed
+     * integration runtime.
+     * 
      * @return the maxParallelExecutionsPerNode value.
      */
     public Integer getMaxParallelExecutionsPerNode() {
@@ -133,9 +139,9 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
-     * Set the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
-     * runtime.
-     *
+     * Set the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed
+     * integration runtime.
+     * 
      * @param maxParallelExecutionsPerNode the maxParallelExecutionsPerNode value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -146,7 +152,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the dataFlowProperties property: Data flow properties for managed integration runtime.
-     *
+     * 
      * @return the dataFlowProperties value.
      */
     public IntegrationRuntimeDataFlowProperties getDataFlowProperties() {
@@ -155,19 +161,19 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the dataFlowProperties property: Data flow properties for managed integration runtime.
-     *
+     * 
      * @param dataFlowProperties the dataFlowProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
-    public IntegrationRuntimeComputeProperties setDataFlowProperties(
-            IntegrationRuntimeDataFlowProperties dataFlowProperties) {
+    public IntegrationRuntimeComputeProperties
+        setDataFlowProperties(IntegrationRuntimeDataFlowProperties dataFlowProperties) {
         this.dataFlowProperties = dataFlowProperties;
         return this;
     }
 
     /**
      * Get the vNetProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @return the vNetProperties value.
      */
     public IntegrationRuntimeVNetProperties getVNetProperties() {
@@ -176,7 +182,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the vNetProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @param vNetProperties the vNetProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -187,7 +193,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the additionalProperties property: The compute resource properties for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -197,7 +203,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the additionalProperties property: The compute resource properties for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */

@@ -8,15 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Managed Virtual Network reference type. */
+/**
+ * Managed Virtual Network reference type.
+ */
 public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEnum<ManagedVirtualNetworkReferenceType> {
-    /** Static value ManagedVirtualNetworkReference for ManagedVirtualNetworkReferenceType. */
-    public static final ManagedVirtualNetworkReferenceType MANAGED_VIRTUAL_NETWORK_REFERENCE =
-        fromString("ManagedVirtualNetworkReference");
+    /**
+     * Static value ManagedVirtualNetworkReference for ManagedVirtualNetworkReferenceType.
+     */
+    public static final ManagedVirtualNetworkReferenceType MANAGED_VIRTUAL_NETWORK_REFERENCE
+        = fromString("ManagedVirtualNetworkReference");
 
     /**
      * Creates a new instance of ManagedVirtualNetworkReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -25,7 +29,7 @@ public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEn
 
     /**
      * Creates or finds a ManagedVirtualNetworkReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedVirtualNetworkReferenceType.
      */
@@ -36,7 +40,7 @@ public final class ManagedVirtualNetworkReferenceType extends ExpandableStringEn
 
     /**
      * Gets known ManagedVirtualNetworkReferenceType values.
-     *
+     * 
      * @return known ManagedVirtualNetworkReferenceType values.
      */
     public static Collection<ManagedVirtualNetworkReferenceType> values() {

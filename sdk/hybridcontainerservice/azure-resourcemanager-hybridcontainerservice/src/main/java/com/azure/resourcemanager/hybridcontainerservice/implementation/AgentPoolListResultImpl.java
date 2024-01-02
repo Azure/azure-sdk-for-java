@@ -17,8 +17,7 @@ public final class AgentPoolListResultImpl implements AgentPoolListResult {
 
     private final com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager;
 
-    AgentPoolListResultImpl(
-        AgentPoolListResultInner innerObject,
+    AgentPoolListResultImpl(AgentPoolListResultInner innerObject,
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class AgentPoolListResultImpl implements AgentPoolListResult {
     public List<AgentPool> value() {
         List<AgentPoolInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AgentPoolImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new AgentPoolImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

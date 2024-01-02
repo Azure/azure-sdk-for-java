@@ -18,7 +18,7 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"c42d8bf5-4483-4325-95b6-5cea77e032b9\",\"tenantId\":\"a4c1cf36-b350-4422-8ca4-64270437a46c\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fgibmadgakeq\":{\"principalId\":\"9df94168-a791-404c-9033-846f1c6ff8b5\",\"clientId\":\"dd52ce99-b25d-44ec-a94c-5f3616f04ce1\"},\"yb\":{\"principalId\":\"876febef-fd18-4dc6-a884-672a79043091\",\"clientId\":\"9682f597-976a-48ee-ab73-1a8f7c3a48f3\"},\"e\":{\"principalId\":\"e808e1b9-2385-4206-ae29-ef18f74873de\",\"clientId\":\"c6b2c7c2-caf3-4aad-881c-7342c91ea24f\"}}}")
+                    "{\"principalId\":\"46b00aa9-c8c5-48ff-a912-c81a7c245ceb\",\"tenantId\":\"2e179f43-481b-40b6-a595-882ec7a78df2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lxaolthqtrgqjbp\":{\"principalId\":\"bab157b0-9d48-42ad-9546-94abf766df88\",\"clientId\":\"22ca2105-bc76-4f29-983b-1478cf7ee621\"},\"s\":{\"principalId\":\"39d569fd-83de-4f32-87ec-d1416e0b2b72\",\"clientId\":\"c1511ef2-1afc-456e-81bb-694f9f64e307\"},\"gvfcj\":{\"principalId\":\"c9a4fdd8-bb2a-4737-8def-7f0f2c89777f\",\"clientId\":\"435c6337-37a2-486a-aae0-bdb58d06a86c\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -30,11 +30,11 @@ public final class ManagedServiceIdentityTests {
                 .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "fgibmadgakeq",
+                        "lxaolthqtrgqjbp",
                         new UserAssignedIdentity(),
-                        "yb",
+                        "s",
                         new UserAssignedIdentity(),
-                        "e",
+                        "gvfcj",
                         new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());

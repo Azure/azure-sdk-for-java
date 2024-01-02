@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMGuestPatchClassificationLinux. */
+/**
+ * Defines values for VMGuestPatchClassificationLinux.
+ */
 public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<VMGuestPatchClassificationLinux> {
-    /** Static value Critical for VMGuestPatchClassificationLinux. */
+    /**
+     * Static value Critical for VMGuestPatchClassificationLinux.
+     */
     public static final VMGuestPatchClassificationLinux CRITICAL = fromString("Critical");
 
-    /** Static value Security for VMGuestPatchClassificationLinux. */
+    /**
+     * Static value Security for VMGuestPatchClassificationLinux.
+     */
     public static final VMGuestPatchClassificationLinux SECURITY = fromString("Security");
 
-    /** Static value Other for VMGuestPatchClassificationLinux. */
+    /**
+     * Static value Other for VMGuestPatchClassificationLinux.
+     */
     public static final VMGuestPatchClassificationLinux OTHER = fromString("Other");
 
     /**
      * Creates a new instance of VMGuestPatchClassificationLinux value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<
 
     /**
      * Creates or finds a VMGuestPatchClassificationLinux from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMGuestPatchClassificationLinux.
      */
@@ -41,7 +49,7 @@ public final class VMGuestPatchClassificationLinux extends ExpandableStringEnum<
 
     /**
      * Gets known VMGuestPatchClassificationLinux values.
-     *
+     * 
      * @return known VMGuestPatchClassificationLinux values.
      */
     public static Collection<VMGuestPatchClassificationLinux> values() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.HubRouteTableInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of RouteTables and a URL nextLink to get the next set of results. */
+/**
+ * List of RouteTables and a URL nextLink to get the next set of results.
+ */
 @Fluent
 public final class ListHubRouteTablesResult {
     /*
@@ -24,13 +26,15 @@ public final class ListHubRouteTablesResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListHubRouteTablesResult class. */
+    /**
+     * Creates an instance of ListHubRouteTablesResult class.
+     */
     public ListHubRouteTablesResult() {
     }
 
     /**
      * Get the value property: List of RouteTables.
-     *
+     * 
      * @return the value value.
      */
     public List<HubRouteTableInner> value() {
@@ -39,7 +43,7 @@ public final class ListHubRouteTablesResult {
 
     /**
      * Set the value property: List of RouteTables.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListHubRouteTablesResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ListHubRouteTablesResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListHubRouteTablesResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListHubRouteTablesResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ListHubRouteTablesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

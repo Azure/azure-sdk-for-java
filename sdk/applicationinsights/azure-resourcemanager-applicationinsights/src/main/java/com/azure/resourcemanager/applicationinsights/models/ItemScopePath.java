@@ -17,6 +17,15 @@ public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
     public static final ItemScopePath MYANALYTICS_ITEMS = fromString("myanalyticsItems");
 
     /**
+     * Creates a new instance of ItemScopePath value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ItemScopePath() {
+    }
+
+    /**
      * Creates or finds a ItemScopePath from its string representation.
      *
      * @param name a name to look for.

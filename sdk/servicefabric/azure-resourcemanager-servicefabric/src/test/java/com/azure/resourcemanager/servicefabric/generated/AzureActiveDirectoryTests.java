@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureActiveDirectoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureActiveDirectory model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"cmsxaobhdxbm\",\"clusterApplication\":\"ioq\",\"clientApplication\":\"ehtbm\"}")
-                .toObject(AzureActiveDirectory.class);
+        AzureActiveDirectory model = BinaryData
+            .fromString(
+                "{\"tenantId\":\"cmsxaobhdxbm\",\"clusterApplication\":\"ioq\",\"clientApplication\":\"ehtbm\"}")
+            .toObject(AzureActiveDirectory.class);
         Assertions.assertEquals("cmsxaobhdxbm", model.tenantId());
         Assertions.assertEquals("ioq", model.clusterApplication());
         Assertions.assertEquals("ehtbm", model.clientApplication());
@@ -23,11 +22,8 @@ public final class AzureActiveDirectoryTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureActiveDirectory model =
-            new AzureActiveDirectory()
-                .withTenantId("cmsxaobhdxbm")
-                .withClusterApplication("ioq")
-                .withClientApplication("ehtbm");
+        AzureActiveDirectory model = new AzureActiveDirectory().withTenantId("cmsxaobhdxbm")
+            .withClusterApplication("ioq").withClientApplication("ehtbm");
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectory.class);
         Assertions.assertEquals("cmsxaobhdxbm", model.tenantId());
         Assertions.assertEquals("ioq", model.clusterApplication());

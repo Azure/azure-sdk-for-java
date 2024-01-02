@@ -8,7 +8,9 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
+import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
@@ -36,6 +38,10 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this.innerModel().type();
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -50,6 +56,10 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
 
     public EncryptionType encryption() {
         return this.innerModel().encryption();
+    }
+
+    public EncryptionProperties encryptionProperties() {
+        return this.innerModel().encryptionProperties();
     }
 
     public NetworkRuleSet networkAcls() {
@@ -172,6 +182,16 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this;
     }
 
+    public VolumeGroupImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public VolumeGroupImpl withProtocolType(StorageTargetType protocolType) {
         if (isInCreateMode()) {
             this.innerModel().withProtocolType(protocolType);
@@ -192,9 +212,24 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         }
     }
 
+    public VolumeGroupImpl withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryptionProperties(encryptionProperties);
+            return this;
+        } else {
+            this.updateParameters.withEncryptionProperties(encryptionProperties);
+            return this;
+        }
+    }
+
     public VolumeGroupImpl withNetworkAcls(NetworkRuleSet networkAcls) {
-        this.innerModel().withNetworkAcls(networkAcls);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkAcls(networkAcls);
+            return this;
+        } else {
+            this.updateParameters.withNetworkAcls(networkAcls);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

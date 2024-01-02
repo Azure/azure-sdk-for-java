@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The gallery artifact version source. */
+/**
+ * The gallery artifact version source.
+ */
 @Fluent
 public class GalleryArtifactVersionSource {
     /*
@@ -17,14 +19,16 @@ public class GalleryArtifactVersionSource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of GalleryArtifactVersionSource class. */
+    /**
+     * Creates an instance of GalleryArtifactVersionSource class.
+     */
     public GalleryArtifactVersionSource() {
     }
 
     /**
      * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
      * image or storage account resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +38,7 @@ public class GalleryArtifactVersionSource {
     /**
      * Set the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
      * image or storage account resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the GalleryArtifactVersionSource object itself.
      */
@@ -45,7 +49,7 @@ public class GalleryArtifactVersionSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

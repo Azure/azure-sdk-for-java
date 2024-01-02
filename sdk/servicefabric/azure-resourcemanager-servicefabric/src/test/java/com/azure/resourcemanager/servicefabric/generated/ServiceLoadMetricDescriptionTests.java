@@ -12,32 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceLoadMetricDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceLoadMetricDescription model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"yzvqt\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1500004458,\"secondaryDefaultLoad\":908407782,\"defaultLoad\":1989438546}")
-                .toObject(ServiceLoadMetricDescription.class);
-        Assertions.assertEquals("yzvqt", model.name());
+        ServiceLoadMetricDescription model = BinaryData.fromString(
+            "{\"name\":\"yfzqwhxxbu\",\"weight\":\"Zero\",\"primaryDefaultLoad\":437954475,\"secondaryDefaultLoad\":776883338,\"defaultLoad\":1924816201}")
+            .toObject(ServiceLoadMetricDescription.class);
+        Assertions.assertEquals("yfzqwhxxbu", model.name());
         Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.weight());
-        Assertions.assertEquals(1500004458, model.primaryDefaultLoad());
-        Assertions.assertEquals(908407782, model.secondaryDefaultLoad());
-        Assertions.assertEquals(1989438546, model.defaultLoad());
+        Assertions.assertEquals(437954475, model.primaryDefaultLoad());
+        Assertions.assertEquals(776883338, model.secondaryDefaultLoad());
+        Assertions.assertEquals(1924816201, model.defaultLoad());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceLoadMetricDescription model =
-            new ServiceLoadMetricDescription()
-                .withName("yzvqt")
-                .withWeight(ServiceLoadMetricWeight.ZERO)
-                .withPrimaryDefaultLoad(1500004458)
-                .withSecondaryDefaultLoad(908407782)
-                .withDefaultLoad(1989438546);
+        ServiceLoadMetricDescription model
+            = new ServiceLoadMetricDescription().withName("yfzqwhxxbu").withWeight(ServiceLoadMetricWeight.ZERO)
+                .withPrimaryDefaultLoad(437954475).withSecondaryDefaultLoad(776883338).withDefaultLoad(1924816201);
         model = BinaryData.fromObject(model).toObject(ServiceLoadMetricDescription.class);
-        Assertions.assertEquals("yzvqt", model.name());
+        Assertions.assertEquals("yfzqwhxxbu", model.name());
         Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.weight());
-        Assertions.assertEquals(1500004458, model.primaryDefaultLoad());
-        Assertions.assertEquals(908407782, model.secondaryDefaultLoad());
-        Assertions.assertEquals(1989438546, model.defaultLoad());
+        Assertions.assertEquals(437954475, model.primaryDefaultLoad());
+        Assertions.assertEquals(776883338, model.secondaryDefaultLoad());
+        Assertions.assertEquals(1924816201, model.defaultLoad());
     }
 }

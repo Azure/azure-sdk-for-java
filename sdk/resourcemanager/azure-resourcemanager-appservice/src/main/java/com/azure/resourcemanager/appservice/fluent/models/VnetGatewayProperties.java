@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VnetGateway resource specific properties. */
+/**
+ * VnetGateway resource specific properties.
+ */
 @Fluent
 public final class VnetGatewayProperties {
     /*
@@ -23,13 +25,15 @@ public final class VnetGatewayProperties {
     @JsonProperty(value = "vpnPackageUri", required = true)
     private String vpnPackageUri;
 
-    /** Creates an instance of VnetGatewayProperties class. */
+    /**
+     * Creates an instance of VnetGatewayProperties class.
+     */
     public VnetGatewayProperties() {
     }
 
     /**
      * Get the vnetName property: The Virtual Network name.
-     *
+     * 
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -38,7 +42,7 @@ public final class VnetGatewayProperties {
 
     /**
      * Set the vnetName property: The Virtual Network name.
-     *
+     * 
      * @param vnetName the vnetName value to set.
      * @return the VnetGatewayProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class VnetGatewayProperties {
 
     /**
      * Get the vpnPackageUri property: The URI where the VPN package can be downloaded.
-     *
+     * 
      * @return the vpnPackageUri value.
      */
     public String vpnPackageUri() {
@@ -58,7 +62,7 @@ public final class VnetGatewayProperties {
 
     /**
      * Set the vpnPackageUri property: The URI where the VPN package can be downloaded.
-     *
+     * 
      * @param vpnPackageUri the vpnPackageUri value to set.
      * @return the VnetGatewayProperties object itself.
      */
@@ -69,15 +73,13 @@ public final class VnetGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vpnPackageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vpnPackageUri in model VnetGatewayProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vpnPackageUri in model VnetGatewayProperties"));
         }
     }
 

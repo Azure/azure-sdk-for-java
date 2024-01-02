@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentia
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Publishing Credentials Policies entity collection ARM resource. */
+/**
+ * Publishing Credentials Policies entity collection ARM resource.
+ */
 @Fluent
 public final class PublishingCredentialsPoliciesCollection {
     /*
@@ -25,13 +27,15 @@ public final class PublishingCredentialsPoliciesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PublishingCredentialsPoliciesCollection class. */
+    /**
+     * Creates an instance of PublishingCredentialsPoliciesCollection class.
+     */
     public PublishingCredentialsPoliciesCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CsmPublishingCredentialsPoliciesEntityInner> value() {
@@ -40,7 +44,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PublishingCredentialsPoliciesCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PublishingCredentialsPoliciesCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PublishingCredentialsPoliciesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

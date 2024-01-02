@@ -57,7 +57,6 @@ public enum Feature {
     PREVIEW_CAPTURE_LOGBACK_CODE_ATTRIBUTES(43), // track captureLogbackCodeAttributes
     PREVIEW_CAPTURE_LOGBACK_MARKER(44), // track captureLogbackMarker
     PREVIEW_CAPTURE_LOG4J_MARKER(45), // track captureLog4jMarker
-    PREVIEW_ADDITIONAL_PROPAGATORS(45), // track additionalPropagators
     PREVIEW_INHERITED_ATTRIBUTES(46), // track inheritedAttributes
     PREVIEW_GC_EVENTS(47), // track gcEvents
     PREVIEW_CONNECTION_STRING_OVERRIDES(48), // track connectionStringOverrides
@@ -66,8 +65,9 @@ public enum Feature {
     PREVIEW_GENERAL_EXPORT_QUEUE_CAPACITY(51), // track generalExportQueueCapacity
     PREVIEW_METRICS_EXPORT_QUEUE_CAPACITY(52), // track metricsExportQueueCapacity
     PREVIEW_DISK_PERSISTENCE_MAX_SIZE_MB(53), // track diskPersistenceMaxSizeMb
-    PREVIEW_USE_NORMALIZED_VALUE_FOR_NON_NORMALIZED_CPU_PERCENTAGE(54), // track useNormalizedValueForNonNormalizedCpuPercentage
-    PREVIEW_CUSTOM_INSTRUMENTATION(55); // track customInstrumentation
+    PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
+    PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
+    PREVIEW_ADDITIONAL_PROPAGATORS(56); // track additionalPropagators
 
     private static final Map<String, Feature> javaVendorFeatureMap;
 

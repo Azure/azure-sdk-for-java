@@ -4,23 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for MongoDBResources DeleteMongoRoleDefinition. */
+/**
+ * Samples for MongoDBResources DeleteMongoRoleDefinition.
+ */
 public final class MongoDBResourcesDeleteMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBRoleDefinitionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBMongoDBRoleDefinitionDelete.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBRoleDefinitionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getMongoDBResources()
-            .deleteMongoRoleDefinition(
-                "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().deleteMongoRoleDefinition(
+            "myMongoRoleDefinitionId", "myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

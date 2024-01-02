@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the service tag information. */
+/**
+ * Properties of the service tag information.
+ */
 @Immutable
 public final class ServiceTagInformationPropertiesFormat {
     /*
@@ -41,13 +43,15 @@ public final class ServiceTagInformationPropertiesFormat {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
-    /** Creates an instance of ServiceTagInformationPropertiesFormat class. */
+    /**
+     * Creates an instance of ServiceTagInformationPropertiesFormat class.
+     */
     public ServiceTagInformationPropertiesFormat() {
     }
 
     /**
      * Get the changeNumber property: The iteration number of service tag.
-     *
+     * 
      * @return the changeNumber value.
      */
     public String changeNumber() {
@@ -56,7 +60,7 @@ public final class ServiceTagInformationPropertiesFormat {
 
     /**
      * Get the region property: The region of service tag.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -65,7 +69,7 @@ public final class ServiceTagInformationPropertiesFormat {
 
     /**
      * Get the systemService property: The name of system service.
-     *
+     * 
      * @return the systemService value.
      */
     public String systemService() {
@@ -74,7 +78,7 @@ public final class ServiceTagInformationPropertiesFormat {
 
     /**
      * Get the addressPrefixes property: The list of IP address prefixes.
-     *
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -83,7 +87,7 @@ public final class ServiceTagInformationPropertiesFormat {
 
     /**
      * Get the state property: The state of the service tag.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -92,7 +96,7 @@ public final class ServiceTagInformationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

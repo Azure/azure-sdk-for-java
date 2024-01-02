@@ -22,6 +22,7 @@ import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -3319,23 +3320,23 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void getDirectoryNameAndBuildClient(String originalDirectoryName, String finalDirectoryName) {
+    public void getDirectoryNameAndBuildClient(String originalDirectoryName) {
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(originalDirectoryName);
 
         // Note : Here I use Path because there is a test that tests the use of a /
-        assertEquals(finalDirectoryName, client.getDirectoryPath());
+        assertEquals(originalDirectoryName, client.getDirectoryPath());
     }
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName, String finalDirectoryName) {
+    public void createDeleteSubDirectoryUrlEncoding(String originalDirectoryName) {
         String dirName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
 
         StepVerifier.create(client.createSubdirectoryWithResponse(originalDirectoryName, null))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
-                assertEquals(dirName + "/" + finalDirectoryName, r.getValue().getDirectoryPath());
+                assertEquals(dirName + "/" + originalDirectoryName, r.getValue().getDirectoryPath());
             })
             .verifyComplete();
 
@@ -3345,14 +3346,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("fileEncodingSupplier")
-    public void createDeleteFileUrlEncoding(String originalFileName, String finalFileName) {
+    public void createDeleteFileUrlEncoding(String originalFileName) {
         String fileName = generatePathName();
         DataLakeDirectoryAsyncClient client = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(fileName);
 
         StepVerifier.create(client.createFileWithResponse(originalFileName, null))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
-                assertEquals(fileName + "/" + finalFileName, r.getValue().getFilePath());
+                assertEquals(fileName + "/" + originalFileName, r.getValue().getFilePath());
             })
             .verifyComplete();
 
@@ -3362,17 +3363,21 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     private static Stream<Arguments> fileEncodingSupplier() {
         return Stream.of(
-            // originalName | finalName
-            Arguments.of("file", "file"),
-            Arguments.of("path/to]a file", "path/to]a file"),
-            Arguments.of("path%2Fto%5Da%20file", "path/to]a file"),
-            Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點")
+            Arguments.of("file"),
+            Arguments.of("test%test"),
+            Arguments.of("test%25test"),
+            Arguments.of("path%2Fto%5Da%20file"),
+            Arguments.of("path/to]a file"),
+            Arguments.of("斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E")
         );
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"dir/file", "dir%2Ffile"})
+    @ValueSource(strings = {
+        "dir/file"
+//        "dir%2Ffile" // no longer supported
+    })
     public void createFileWithPathStructure(String pathName) {
         DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.createFile(pathName).block();
         // Check that service created underlying directory
@@ -3542,11 +3547,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(resourcePrefix + dirName);
 
         DataLakeFileAsyncClient fileClient = dc.getFileAsyncClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
-            fileClient.getFilePath());
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath, fileClient.getFilePath());
 
         DataLakeDirectoryAsyncClient subDirectoryClient = dc.getSubdirectoryAsyncClient(subResourcePrefix + subPath);
-        assertEquals(Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath,
+        assertEquals(resourcePrefix + dirName + "/" + subResourcePrefix + subPath,
             subDirectoryClient.getDirectoryPath());
     }
 
@@ -3554,9 +3558,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return Stream.of(
             // resourcePrefix | subResourcePrefix
             Arguments.of("", ""),
-            Arguments.of("", Utility.urlEncode("%")), // Resource has special character
-            Arguments.of(Utility.urlEncode("%"), ""), // Sub resource has special character
-            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%"))
+            Arguments.of("%", "%"), // Resource has special character
+            Arguments.of(Utility.urlEncode("%"), Utility.urlEncode("%")) // Sub resource has special character
         );
     }
 
@@ -3614,5 +3617,62 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         }
 
         fail("Expected a request to time out.");
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemAsyncClient.getFileSystemUrl(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .verifyErrorSatisfies(r -> {
+                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
+            .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
+            .audience(audience)
+            .buildDirectoryAsyncClient();
+
+        StepVerifier.create(aadDirClient.exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 }

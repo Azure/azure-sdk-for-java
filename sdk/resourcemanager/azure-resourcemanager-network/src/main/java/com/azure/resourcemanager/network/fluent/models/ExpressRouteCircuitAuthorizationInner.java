@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authorization in an ExpressRouteCircuit resource. */
+/**
+ * Authorization in an ExpressRouteCircuit resource.
+ */
 @Fluent
 public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ExpressRouteCircuitAuthorizationInner class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitAuthorizationInner class.
+     */
     public ExpressRouteCircuitAuthorizationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route circuit authorization.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AuthorizationPropertiesFormat innerProperties() {
@@ -53,7 +57,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteCircuitAuthorizationInner object itself.
      */
@@ -74,7 +78,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,14 +87,16 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteCircuitAuthorizationInner withId(String id) {
         super.withId(id);
@@ -99,7 +105,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -108,7 +114,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitAuthorizationInner object itself.
      */
@@ -122,7 +128,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @return the authorizationUseStatus value.
      */
     public AuthorizationUseStatus authorizationUseStatus() {
@@ -131,12 +137,12 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Set the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @param authorizationUseStatus the authorizationUseStatus value to set.
      * @return the ExpressRouteCircuitAuthorizationInner object itself.
      */
-    public ExpressRouteCircuitAuthorizationInner withAuthorizationUseStatus(
-        AuthorizationUseStatus authorizationUseStatus) {
+    public ExpressRouteCircuitAuthorizationInner
+        withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationPropertiesFormat();
         }
@@ -146,7 +152,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -155,7 +161,7 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

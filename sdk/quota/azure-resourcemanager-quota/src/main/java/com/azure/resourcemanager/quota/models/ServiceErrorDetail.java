@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quota.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error details. */
+/**
+ * Error details.
+ */
 @Immutable
 public final class ServiceErrorDetail {
     /*
@@ -22,13 +24,15 @@ public final class ServiceErrorDetail {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of ServiceErrorDetail class. */
+    /**
+     * Creates an instance of ServiceErrorDetail class.
+     */
     public ServiceErrorDetail() {
     }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ServiceErrorDetail {
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,7 +50,7 @@ public final class ServiceErrorDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

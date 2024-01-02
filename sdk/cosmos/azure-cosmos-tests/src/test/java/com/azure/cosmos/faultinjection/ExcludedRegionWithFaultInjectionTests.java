@@ -35,7 +35,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -70,7 +69,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
+public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBase {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;

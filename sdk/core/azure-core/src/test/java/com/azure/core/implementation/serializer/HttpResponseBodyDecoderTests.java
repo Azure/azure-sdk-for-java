@@ -29,7 +29,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -45,6 +44,7 @@ import java.util.stream.Stream;
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -117,11 +117,10 @@ public class HttpResponseBodyDecoderTests {
     }
 
     @Test
-    public void ioExceptionInErrorDeserializationReturnsEmpty() {
+    public void ioExceptionInErrorDeserializationReturnsException() {
         JacksonAdapter ioExceptionThrower = new JacksonAdapter() {
             @Override
-            public <T> T deserialize(InputStream inputStream, Type type, SerializerEncoding encoding)
-                throws IOException {
+            public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
                 throw new IOException();
             }
         };
@@ -131,7 +130,8 @@ public class HttpResponseBodyDecoderTests {
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
 
-        assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
+        assertInstanceOf(IOException.class,
+            HttpResponseBodyDecoder.decodeByteArray(null, response, ioExceptionThrower, noExpectedStatusCodes));
     }
 
     @Test

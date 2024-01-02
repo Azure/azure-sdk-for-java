@@ -32,9 +32,9 @@ public final class AddParticipantOptions {
     private Duration invitationTimeout;
 
     /**
-     * The call back URI override.
+     * The overridden call back URL override for operation.
      */
-    private String callbackUrl;
+    private String operationCallbackUrl;
 
     /**
      * Constructor
@@ -63,12 +63,12 @@ public final class AddParticipantOptions {
     }
 
     /**
-     * Get the call back URI override.
+     * Get the overridden call back URL override for operation.
      *
-     * @return the callbackUriOverride
+     * @return the operationCallbackUrl
      */
-    public String getCallbackUrl() {
-        return callbackUrl;
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
     }
 
     /**
@@ -92,13 +92,14 @@ public final class AddParticipantOptions {
     }
 
     /**
-     * Set the call back URI override.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      *
-     * @param callbackUrl The call back URI override to set
+     * @param operationCallbackUrl the operationCallbackUrl to set
      * @return the AddParticipantOptions object itself.
      */
-    public AddParticipantOptions setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public AddParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 

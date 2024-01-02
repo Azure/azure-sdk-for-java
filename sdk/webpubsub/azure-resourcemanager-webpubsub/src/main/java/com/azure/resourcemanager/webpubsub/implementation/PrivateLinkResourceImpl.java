@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceType;
@@ -31,6 +32,10 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String groupId() {

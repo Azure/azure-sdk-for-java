@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Preview for the Static Site Workflow to be generated. */
+/**
+ * Preview for the Static Site Workflow to be generated.
+ */
 @Fluent
 public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StaticSitesWorkflowPreviewProperties innerProperties;
 
-    /** Creates an instance of StaticSitesWorkflowPreviewInner class. */
+    /**
+     * Creates an instance of StaticSitesWorkflowPreviewInner class.
+     */
     public StaticSitesWorkflowPreviewInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSitesWorkflowPreview resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSitesWorkflowPreviewProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSitesWorkflowPreviewInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
 
     /**
      * Get the path property: The path for the workflow file to be generated.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -48,7 +54,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
 
     /**
      * Get the contents property: The contents for the workflow file to be generated.
-     *
+     * 
      * @return the contents value.
      */
     public String contents() {
@@ -57,7 +63,7 @@ public final class StaticSitesWorkflowPreviewInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

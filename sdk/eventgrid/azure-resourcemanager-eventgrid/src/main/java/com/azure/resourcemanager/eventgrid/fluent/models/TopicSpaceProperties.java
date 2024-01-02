@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.TopicSpaceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of topic space. */
+/**
+ * The properties of topic space.
+ */
 @Fluent
 public final class TopicSpaceProperties {
     /*
@@ -34,13 +36,15 @@ public final class TopicSpaceProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private TopicSpaceProvisioningState provisioningState;
 
-    /** Creates an instance of TopicSpaceProperties class. */
+    /**
+     * Creates an instance of TopicSpaceProperties class.
+     */
     public TopicSpaceProperties() {
     }
 
     /**
      * Get the description property: Description for the Topic Space resource.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -49,7 +53,7 @@ public final class TopicSpaceProperties {
 
     /**
      * Set the description property: Description for the Topic Space resource.
-     *
+     * 
      * @param description the description value to set.
      * @return the TopicSpaceProperties object itself.
      */
@@ -59,9 +63,12 @@ public final class TopicSpaceProperties {
     }
 
     /**
-     * Get the topicTemplates property: The topic filters in the topic space. Example: "topicTemplates": [
-     * "devices/foo/bar", "devices/topic1/+", "devices/${principal.name}/${principal.attributes.keyName}" ].
-     *
+     * Get the topicTemplates property: The topic filters in the topic space.
+     * Example: "topicTemplates": [
+     * "devices/foo/bar",
+     * "devices/topic1/+",
+     * "devices/${principal.name}/${principal.attributes.keyName}" ].
+     * 
      * @return the topicTemplates value.
      */
     public List<String> topicTemplates() {
@@ -69,9 +76,12 @@ public final class TopicSpaceProperties {
     }
 
     /**
-     * Set the topicTemplates property: The topic filters in the topic space. Example: "topicTemplates": [
-     * "devices/foo/bar", "devices/topic1/+", "devices/${principal.name}/${principal.attributes.keyName}" ].
-     *
+     * Set the topicTemplates property: The topic filters in the topic space.
+     * Example: "topicTemplates": [
+     * "devices/foo/bar",
+     * "devices/topic1/+",
+     * "devices/${principal.name}/${principal.attributes.keyName}" ].
+     * 
      * @param topicTemplates the topicTemplates value to set.
      * @return the TopicSpaceProperties object itself.
      */
@@ -82,7 +92,7 @@ public final class TopicSpaceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the TopicSpace resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TopicSpaceProvisioningState provisioningState() {
@@ -91,7 +101,7 @@ public final class TopicSpaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

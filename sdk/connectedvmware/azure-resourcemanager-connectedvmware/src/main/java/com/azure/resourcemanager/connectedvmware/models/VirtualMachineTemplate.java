@@ -201,11 +201,11 @@ public interface VirtualMachineTemplate {
     List<ResourceStatus> statuses();
 
     /**
-     * Gets the provisioningState property: Gets or sets the provisioning state.
+     * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the region of the resource.
@@ -242,11 +242,13 @@ public interface VirtualMachineTemplate {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The VirtualMachineTemplate definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualMachineTemplate definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -265,6 +267,7 @@ public interface VirtualMachineTemplate {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -275,6 +278,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the VirtualMachineTemplate definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -301,6 +305,7 @@ public interface VirtualMachineTemplate {
              */
             VirtualMachineTemplate create(Context context);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -311,6 +316,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -321,6 +327,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -335,6 +342,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify vCenterId. */
         interface WithVCenterId {
             /**
@@ -346,6 +354,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withVCenterId(String vCenterId);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify moRefId. */
         interface WithMoRefId {
             /**
@@ -358,6 +367,7 @@ public interface VirtualMachineTemplate {
              */
             WithCreate withMoRefId(String moRefId);
         }
+
         /** The stage of the VirtualMachineTemplate definition allowing to specify inventoryItemId. */
         interface WithInventoryItemId {
             /**
@@ -370,6 +380,7 @@ public interface VirtualMachineTemplate {
             WithCreate withInventoryItemId(String inventoryItemId);
         }
     }
+
     /**
      * Begins update for the VirtualMachineTemplate resource.
      *
@@ -394,6 +405,7 @@ public interface VirtualMachineTemplate {
          */
         VirtualMachineTemplate apply(Context context);
     }
+
     /** The VirtualMachineTemplate update stages. */
     interface UpdateStages {
         /** The stage of the VirtualMachineTemplate update allowing to specify tags. */
@@ -407,6 +419,7 @@ public interface VirtualMachineTemplate {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

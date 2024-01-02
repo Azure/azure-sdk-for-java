@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The workflow run action repetition index. */
+/**
+ * The workflow run action repetition index.
+ */
 @Fluent
 public final class RepetitionIndex {
     /*
@@ -22,13 +24,15 @@ public final class RepetitionIndex {
     @JsonProperty(value = "itemIndex", required = true)
     private int itemIndex;
 
-    /** Creates an instance of RepetitionIndex class. */
+    /**
+     * Creates an instance of RepetitionIndex class.
+     */
     public RepetitionIndex() {
     }
 
     /**
      * Get the scopeName property: The scope.
-     *
+     * 
      * @return the scopeName value.
      */
     public String scopeName() {
@@ -37,7 +41,7 @@ public final class RepetitionIndex {
 
     /**
      * Set the scopeName property: The scope.
-     *
+     * 
      * @param scopeName the scopeName value to set.
      * @return the RepetitionIndex object itself.
      */
@@ -48,7 +52,7 @@ public final class RepetitionIndex {
 
     /**
      * Get the itemIndex property: The index.
-     *
+     * 
      * @return the itemIndex value.
      */
     public int itemIndex() {
@@ -57,7 +61,7 @@ public final class RepetitionIndex {
 
     /**
      * Set the itemIndex property: The index.
-     *
+     * 
      * @param itemIndex the itemIndex value to set.
      * @return the RepetitionIndex object itself.
      */
@@ -68,7 +72,7 @@ public final class RepetitionIndex {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

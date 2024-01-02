@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The folder that this notebook is in. If not specified, this notebook will appear at the root level. */
+/**
+ * The folder that this notebook is in. If not specified, this notebook will appear at the root level.
+ */
 @Fluent
 public final class NotebookFolder {
     /*
@@ -16,12 +18,15 @@ public final class NotebookFolder {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of NotebookFolder class. */
-    public NotebookFolder() {}
+    /**
+     * Creates an instance of NotebookFolder class.
+     */
+    public NotebookFolder() {
+    }
 
     /**
      * Get the name property: The name of the folder that this notebook is in.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -30,7 +35,7 @@ public final class NotebookFolder {
 
     /**
      * Set the name property: The name of the folder that this notebook is in.
-     *
+     * 
      * @param name the name value to set.
      * @return the NotebookFolder object itself.
      */

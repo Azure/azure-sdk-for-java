@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Sftp read settings. */
+/**
+ * Http read settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpReadSettings")
 @Fluent
@@ -42,10 +44,10 @@ public final class HttpReadSettings extends StoreReadSettings {
     private Object requestTimeout;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
@@ -54,13 +56,23 @@ public final class HttpReadSettings extends StoreReadSettings {
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
-    /** Creates an instance of HttpReadSettings class. */
-    public HttpReadSettings() {}
+    /*
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
+    /**
+     * Creates an instance of HttpReadSettings class.
+     */
+    public HttpReadSettings() {
+    }
 
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the requestMethod value.
      */
     public Object getRequestMethod() {
@@ -70,7 +82,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Set the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -80,9 +92,9 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the requestBody value.
      */
     public Object getRequestBody() {
@@ -90,9 +102,9 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -104,7 +116,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the additionalHeaders value.
      */
     public Object getAdditionalHeaders() {
@@ -114,7 +126,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -125,7 +137,7 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Get the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
-     *
+     * 
      * @return the requestTimeout value.
      */
     public Object getRequestTimeout() {
@@ -134,7 +146,7 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Set the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
-     *
+     * 
      * @param requestTimeout the requestTimeout value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -144,29 +156,31 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
-     *
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
+     * 
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean isEnablePartitionDiscovery() {
+    public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
-     *
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
+     * 
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the HttpReadSettings object itself.
      */
-    public HttpReadSettings setEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public HttpReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }
 
     /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the partitionRootPath value.
      */
     public Object getPartitionRootPath() {
@@ -174,9 +188,9 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -185,7 +199,31 @@ public final class HttpReadSettings extends StoreReadSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * 
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * 
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the HttpReadSettings object itself.
+     */
+    public HttpReadSettings setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

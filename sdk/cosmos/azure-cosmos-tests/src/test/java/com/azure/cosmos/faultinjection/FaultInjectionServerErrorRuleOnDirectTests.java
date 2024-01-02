@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -21,14 +20,10 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
@@ -59,7 +54,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
+public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTestBase {
     private static final int TIMEOUT = 60000;
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
     private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_OPERATION_TYPE = "OperationType mismatch";
@@ -120,6 +115,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     @DataProvider(name = "faultInjectionServerErrorResponseProvider")
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
+            // Test retry situation within local region  - there is no preferred regions being configured on the client
             // operationType, faultInjectionOperationType, faultInjectionServerError, will SDK retry within local region, errorStatusCode, errorSubStatusCode
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
@@ -130,6 +126,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
@@ -139,6 +136,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
@@ -147,6 +145,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
             { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.NAME_CACHE_IS_STALE, true, 410, 1000 }
         };
     }
 
@@ -910,82 +909,6 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(clientWithoutPreferredRegions);
-    }
-
-    private CosmosDiagnostics performDocumentOperation(
-        CosmosAsyncContainer cosmosAsyncContainer,
-        OperationType operationType,
-        TestItem createdItem) {
-        try {
-            if (operationType == OperationType.Query) {
-                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-                String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
-                FeedResponse<TestItem> itemFeedResponse =
-                    cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
-
-                return itemFeedResponse.getCosmosDiagnostics();
-            }
-
-            if (operationType == OperationType.Read
-                || operationType == OperationType.Delete
-                || operationType == OperationType.Replace
-                || operationType == OperationType.Create
-                || operationType == OperationType.Patch
-                || operationType == OperationType.Upsert) {
-
-                if (operationType == OperationType.Read) {
-                    return cosmosAsyncContainer.readItem(
-                        createdItem.getId(),
-                        new PartitionKey(createdItem.getId()),
-                        TestItem.class).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Replace) {
-                    return cosmosAsyncContainer.replaceItem(
-                        createdItem,
-                        createdItem.getId(),
-                        new PartitionKey(createdItem.getId())).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Delete) {
-                    return cosmosAsyncContainer.deleteItem(createdItem, null).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestItem.createNewItem()).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestItem.createNewItem()).block().getDiagnostics();
-                }
-
-                if (operationType == OperationType.Patch) {
-                    CosmosPatchOperations patchOperations =
-                        CosmosPatchOperations
-                            .create()
-                            .add("newPath", "newPath");
-                    return cosmosAsyncContainer
-                        .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
-                        .block().getDiagnostics();
-                }
-            }
-
-            if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
-                CosmosChangeFeedRequestOptions changeFeedRequestOptions =
-                    CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
-
-                FeedResponse<TestItem> firstPage =  cosmosAsyncContainer
-                    .queryChangeFeed(changeFeedRequestOptions, TestItem.class)
-                    .byPage()
-                    .blockFirst();
-                return firstPage.getCosmosDiagnostics();
-            }
-
-            throw new IllegalArgumentException("The operation type is not supported");
-        } catch (CosmosException cosmosException) {
-            return cosmosException.getDiagnostics();
-        }
     }
 
     @Test(groups = {"long"}, timeOut = TIMEOUT)

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Specifies the storage settings for the virtual machine disks. */
 @Fluent
 public final class StorageProfile {
     /*
@@ -22,6 +22,10 @@ public final class StorageProfile {
      */
     @JsonProperty(value = "scsiControllers", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualScsiController> scsiControllers;
+
+    /** Creates an instance of StorageProfile class. */
+    public StorageProfile() {
+    }
 
     /**
      * Get the disks property: Gets or sets the list of virtual disks associated with the virtual machine.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
+## 1.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0 (2023-11-03)
+
+### Features Added
+
+- Added request retry to Test Proxy. ([#36656](https://github.com/Azure/azure-sdk-for-java/pull/36656))
+
+### Breaking Changes
+
+- Made `TextProxyManager` `final`, removed constructor, made `startProxy` static, and hid `stopProxy`. ([#36656](https://github.com/Azure/azure-sdk-for-java/pull/36656))
+
+### Bugs Fixed
+
+- Fixed a bug where Test Proxy could deadlock during test runs as the error stream wasn't consumed. ([#37140](https://github.com/Azure/azure-sdk-for-java/pull/37140))
+- Fixed a bug where `aarch64` didn't match to `arm64`. ([#37137](https://github.com/Azure/azure-sdk-for-java/pull/37137))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
 
 ## 1.21.1 (2023-10-17)
 

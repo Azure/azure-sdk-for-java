@@ -6,14 +6,20 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** This is the OS disk image. */
+/**
+ * This is the OS disk image.
+ */
 @Fluent
 public final class SharedGalleryOSDiskImage extends SharedGalleryDiskImage {
-    /** Creates an instance of SharedGalleryOSDiskImage class. */
+    /**
+     * Creates an instance of SharedGalleryOSDiskImage class.
+     */
     public SharedGalleryOSDiskImage() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedGalleryOSDiskImage withHostCaching(SharedGalleryHostCaching hostCaching) {
         super.withHostCaching(hostCaching);
@@ -22,7 +28,7 @@ public final class SharedGalleryOSDiskImage extends SharedGalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

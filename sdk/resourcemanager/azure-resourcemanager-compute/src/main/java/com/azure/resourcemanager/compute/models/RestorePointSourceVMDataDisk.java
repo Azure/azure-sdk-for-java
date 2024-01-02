@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a data disk. */
+/**
+ * Describes a data disk.
+ */
 @Fluent
 public final class RestorePointSourceVMDataDisk {
     /*
@@ -52,13 +54,15 @@ public final class RestorePointSourceVMDataDisk {
     @JsonProperty(value = "writeAcceleratorEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean writeAcceleratorEnabled;
 
-    /** Creates an instance of RestorePointSourceVMDataDisk class. */
+    /**
+     * Creates an instance of RestorePointSourceVMDataDisk class.
+     */
     public RestorePointSourceVMDataDisk() {
     }
 
     /**
      * Get the lun property: Gets the logical unit number.
-     *
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -67,7 +71,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Get the name property: Gets the disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +80,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Get the caching property: Gets the caching type.
-     *
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -86,7 +90,7 @@ public final class RestorePointSourceVMDataDisk {
     /**
      * Get the diskSizeGB property: Gets the initial disk size in GB for blank data disks, and the new desired size for
      * existing OS and Data disks.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -95,7 +99,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Get the managedDisk property: Contains the managed disk details.
-     *
+     * 
      * @return the managedDisk value.
      */
     public ManagedDiskParameters managedDisk() {
@@ -104,7 +108,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Set the managedDisk property: Contains the managed disk details.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the RestorePointSourceVMDataDisk object itself.
      */
@@ -115,7 +119,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Get the diskRestorePoint property: Contains Disk Restore Point properties.
-     *
+     * 
      * @return the diskRestorePoint value.
      */
     public DiskRestorePointAttributes diskRestorePoint() {
@@ -124,7 +128,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Set the diskRestorePoint property: Contains Disk Restore Point properties.
-     *
+     * 
      * @param diskRestorePoint the diskRestorePoint value to set.
      * @return the RestorePointSourceVMDataDisk object itself.
      */
@@ -135,7 +139,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Get the writeAcceleratorEnabled property: Shows true if the disk is write-accelerator enabled.
-     *
+     * 
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -144,7 +148,7 @@ public final class RestorePointSourceVMDataDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

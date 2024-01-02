@@ -25,13 +25,15 @@ public final class RecommendedMachineConfiguration {
     @JsonProperty(value = "memory")
     private ResourceRange memory;
 
-    /** Creates an instance of RecommendedMachineConfiguration class. */
+    /**
+     * Creates an instance of RecommendedMachineConfiguration class.
+     */
     public RecommendedMachineConfiguration() {
     }
 
     /**
      * Get the vCPUs property: Describes the resource range.
-     *
+     * 
      * @return the vCPUs value.
      */
     public ResourceRange vCPUs() {
@@ -40,7 +42,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Set the vCPUs property: Describes the resource range.
-     *
+     * 
      * @param vCPUs the vCPUs value to set.
      * @return the RecommendedMachineConfiguration object itself.
      */
@@ -51,7 +53,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Get the memory property: Describes the resource range.
-     *
+     * 
      * @return the memory value.
      */
     public ResourceRange memory() {
@@ -60,7 +62,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Set the memory property: Describes the resource range.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the RecommendedMachineConfiguration object itself.
      */
@@ -71,7 +73,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

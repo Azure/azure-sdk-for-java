@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cmdkey command custom setup type properties. */
+/**
+ * Cmdkey command custom setup type properties.
+ */
 @Fluent
 public final class CmdkeySetupTypeProperties {
     /*
@@ -30,13 +32,15 @@ public final class CmdkeySetupTypeProperties {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of CmdkeySetupTypeProperties class. */
+    /**
+     * Creates an instance of CmdkeySetupTypeProperties class.
+     */
     public CmdkeySetupTypeProperties() {
     }
 
     /**
      * Get the targetName property: The server name of data source access.
-     *
+     * 
      * @return the targetName value.
      */
     public Object targetName() {
@@ -45,7 +49,7 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Set the targetName property: The server name of data source access.
-     *
+     * 
      * @param targetName the targetName value to set.
      * @return the CmdkeySetupTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Get the username property: The user name of data source access.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -65,7 +69,7 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Set the username property: The user name of data source access.
-     *
+     * 
      * @param username the username value to set.
      * @return the CmdkeySetupTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Get the password property: The password of data source access.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -85,7 +89,7 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Set the password property: The password of data source access.
-     *
+     * 
      * @param password the password value to set.
      * @return the CmdkeySetupTypeProperties object itself.
      */
@@ -96,27 +100,21 @@ public final class CmdkeySetupTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetName in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetName in model CmdkeySetupTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model CmdkeySetupTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model CmdkeySetupTypeProperties"));
         } else {
             password().validate();
         }

@@ -26,4 +26,10 @@ import com.azure.ai.metricsadvisor.models.InfluxDbDataFeedSource;
  */
 public abstract class DataFeedSource {
     // No common properties, used only as discriminator type.
+
+    /**
+     * Creates an instance of DataFeedSource.
+     */
+    public DataFeedSource() {
+    }
 }

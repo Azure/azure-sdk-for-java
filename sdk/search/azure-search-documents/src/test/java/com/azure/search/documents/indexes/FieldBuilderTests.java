@@ -19,6 +19,8 @@ import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynony
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
 import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class FieldBuilderTests {
     @Test
     public void hotelSearchableThrowException() {
@@ -345,6 +348,51 @@ public class FieldBuilderTests {
     public static final class IndexAndSearchAnalyzerNames {
         @SearchableField(indexAnalyzerName = "indexAnalyzer", searchAnalyzerName = "searchAnalyzer")
         public String indexAndSearchAnalyzer;
+    }
+
+    @Test
+    public void vectorSearchField() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(VectorSearchField.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertEquals(1536, field.getVectorSearchDimensions());
+        assertEquals("myprofile", field.getVectorSearchProfileName());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorSearchField {
+        @SearchableField(vectorSearchDimensions = 1536, vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingDimensions() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingDimensions.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingDimensions {
+        @SearchableField(vectorSearchProfileName = "myprofile")
+        public List<Float> vectorSearchField;
+    }
+
+    @Test
+    public void vectorFieldMissingProfile() {
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchFields(VectorFieldMissingProfile.class, null));
+
+        assertTrue(ex.getMessage().contains("Please specify both vectorSearchDimensions and vectorSearchProfile"));
+    }
+
+    @SuppressWarnings("unused")
+    public static final class VectorFieldMissingProfile {
+        @SearchableField(vectorSearchDimensions = 1536)
+        public List<Float> vectorSearchField;
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

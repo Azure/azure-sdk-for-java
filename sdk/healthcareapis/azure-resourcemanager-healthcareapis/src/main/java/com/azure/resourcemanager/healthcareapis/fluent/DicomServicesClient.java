@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.healthcareapis.fluent.models.DicomServiceInner;
 import com.azure.resourcemanager.healthcareapis.models.DicomServicePatchResource;
 
-/** An instance of this class provides access to all the operations defined in DicomServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DicomServicesClient.
+ */
 public interface DicomServicesClient {
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface DicomServicesClient {
 
     /**
      * Lists all DICOM Services for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -45,7 +47,23 @@ public interface DicomServicesClient {
 
     /**
      * Gets the properties of the specified DICOM Service.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified DICOM Service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DicomServiceInner> getWithResponse(String resourceGroupName, String workspaceName, String dicomServiceName,
+        Context context);
+
+    /**
+     * Gets the properties of the specified DICOM Service.
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -58,24 +76,8 @@ public interface DicomServicesClient {
     DicomServiceInner get(String resourceGroupName, String workspaceName, String dicomServiceName);
 
     /**
-     * Gets the properties of the specified DICOM Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified DICOM Service along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DicomServiceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dicomServiceName, Context context);
-
-    /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -86,12 +88,12 @@ public interface DicomServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice);
+    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice);
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -103,16 +105,12 @@ public interface DicomServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context);
+    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String dicomServiceName, DicomServiceInner dicomservice, Context context);
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -123,12 +121,12 @@ public interface DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DicomServiceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dicomServiceName, DicomServiceInner dicomservice);
+    DicomServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String dicomServiceName,
+        DicomServiceInner dicomservice);
 
     /**
      * Creates or updates a DICOM Service resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param dicomServiceName The name of DICOM Service resource.
@@ -140,16 +138,12 @@ public interface DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DicomServiceInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String dicomServiceName,
-        DicomServiceInner dicomservice,
-        Context context);
+    DicomServiceInner createOrUpdate(String resourceGroupName, String workspaceName, String dicomServiceName,
+        DicomServiceInner dicomservice, Context context);
 
     /**
      * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -160,55 +154,46 @@ public interface DicomServicesClient {
      * @return the {@link SyncPoller} for polling of the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
+    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource);
+
+    /**
+     * Patch DICOM Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(String resourceGroupName,
+        String dicomServiceName, String workspaceName, DicomServicePatchResource dicomservicePatchResource,
+        Context context);
+
+    /**
+     * Patch DICOM Service details.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param dicomServiceName The name of DICOM Service resource.
+     * @param workspaceName The name of workspace resource.
+     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the description of Dicom Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DicomServiceInner update(String resourceGroupName, String dicomServiceName, String workspaceName,
         DicomServicePatchResource dicomservicePatchResource);
 
     /**
      * Patch DICOM Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the description of Dicom Service.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DicomServiceInner>, DicomServiceInner> beginUpdate(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context);
-
-    /**
-     * Patch DICOM Service details.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param dicomServiceName The name of DICOM Service resource.
-     * @param workspaceName The name of workspace resource.
-     * @param dicomservicePatchResource The parameters for updating a Dicom Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of Dicom Service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DicomServiceInner update(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource);
-
-    /**
-     * Patch DICOM Service details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -220,16 +205,12 @@ public interface DicomServicesClient {
      * @return the description of Dicom Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DicomServiceInner update(
-        String resourceGroupName,
-        String dicomServiceName,
-        String workspaceName,
-        DicomServicePatchResource dicomservicePatchResource,
-        Context context);
+    DicomServiceInner update(String resourceGroupName, String dicomServiceName, String workspaceName,
+        DicomServicePatchResource dicomservicePatchResource, Context context);
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -239,12 +220,12 @@ public interface DicomServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dicomServiceName, String workspaceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dicomServiceName,
+        String workspaceName);
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -255,12 +236,12 @@ public interface DicomServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dicomServiceName, String workspaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dicomServiceName,
+        String workspaceName, Context context);
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.
@@ -273,7 +254,7 @@ public interface DicomServicesClient {
 
     /**
      * Deletes a DICOM Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param dicomServiceName The name of DICOM Service resource.
      * @param workspaceName The name of workspace resource.

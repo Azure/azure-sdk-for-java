@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Parameters to be used during configuration of backup of blobs. */
+/**
+ * Parameters to be used during configuration of backup of blobs.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("BlobBackupDatasourceParameters")
 @Fluent
@@ -22,13 +24,15 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
     @JsonProperty(value = "containersList", required = true)
     private List<String> containersList;
 
-    /** Creates an instance of BlobBackupDatasourceParameters class. */
+    /**
+     * Creates an instance of BlobBackupDatasourceParameters class.
+     */
     public BlobBackupDatasourceParameters() {
     }
 
     /**
      * Get the containersList property: List of containers to be backed up during configuration of backup of blobs.
-     *
+     * 
      * @return the containersList value.
      */
     public List<String> containersList() {
@@ -37,7 +41,7 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
 
     /**
      * Set the containersList property: List of containers to be backed up during configuration of backup of blobs.
-     *
+     * 
      * @param containersList the containersList value to set.
      * @return the BlobBackupDatasourceParameters object itself.
      */
@@ -48,17 +52,15 @@ public final class BlobBackupDatasourceParameters extends BackupDatasourceParame
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (containersList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containersList in model BlobBackupDatasourceParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containersList in model BlobBackupDatasourceParameters"));
         }
     }
 

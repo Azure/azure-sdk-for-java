@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.models.ApiKeyRequest;
 import java.util.Arrays;
 
@@ -35,6 +34,6 @@ public final class ApiKeysCreateSamples {
                         Arrays
                             .asList(
                                 "/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component/annotations")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

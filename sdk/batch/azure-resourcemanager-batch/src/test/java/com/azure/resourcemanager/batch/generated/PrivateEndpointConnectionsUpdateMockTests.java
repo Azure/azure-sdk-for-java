@@ -33,53 +33,33 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"raufactkahzova\"},\"groupIds\":[\"iuxxpshneekulfg\",\"lqubkwdlen\",\"d\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jbazpjuohminy\",\"actionsRequired\":\"norwmduvwpklvx\"}},\"etag\":\"ygdxpgpqchis\",\"id\":\"epn\",\"name\":\"bjcrxgibbdaxco\",\"type\":\"fozauorsuk\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"uvscxkdmligov\"},\"groupIds\":[\"xk\",\"mloazuru\",\"cbgoor\",\"te\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"hjxa\",\"actionsRequired\":\"vjgsl\"}},\"etag\":\"dilmyww\",\"id\":\"kgkxn\",\"name\":\"edabgyvudtjue\",\"type\":\"bcihxuuwhc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .update(
-                    "ookk",
-                    "fqjbvleo",
-                    "fmluiqtqzfavyvn",
-                    new PrivateEndpointConnectionInner()
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkServiceConnectionState()
-                                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                                .withDescription("ntiew")),
-                    "znmwcp",
-                    com.azure.core.util.Context.NONE);
+        PrivateEndpointConnection response
+            = manager.privateEndpointConnections().update("cgxxlxs", "fgcviz", "zdwlvwlyoupfgfb",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                        .withDescription("tg")),
+                "atnwxyiopi", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.REJECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jbazpjuohminy", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hjxa", response.privateLinkServiceConnectionState().description());
     }
 }

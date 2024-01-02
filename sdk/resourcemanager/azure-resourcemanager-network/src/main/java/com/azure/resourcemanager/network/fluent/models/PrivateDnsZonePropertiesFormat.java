@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.RecordSet;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the private dns zone configuration resource. */
+/**
+ * Properties of the private dns zone configuration resource.
+ */
 @Fluent
 public final class PrivateDnsZonePropertiesFormat {
     /*
@@ -24,13 +26,15 @@ public final class PrivateDnsZonePropertiesFormat {
     @JsonProperty(value = "recordSets", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecordSet> recordSets;
 
-    /** Creates an instance of PrivateDnsZonePropertiesFormat class. */
+    /**
+     * Creates an instance of PrivateDnsZonePropertiesFormat class.
+     */
     public PrivateDnsZonePropertiesFormat() {
     }
 
     /**
      * Get the privateDnsZoneId property: The resource id of the private dns zone.
-     *
+     * 
      * @return the privateDnsZoneId value.
      */
     public String privateDnsZoneId() {
@@ -39,7 +43,7 @@ public final class PrivateDnsZonePropertiesFormat {
 
     /**
      * Set the privateDnsZoneId property: The resource id of the private dns zone.
-     *
+     * 
      * @param privateDnsZoneId the privateDnsZoneId value to set.
      * @return the PrivateDnsZonePropertiesFormat object itself.
      */
@@ -51,7 +55,7 @@ public final class PrivateDnsZonePropertiesFormat {
     /**
      * Get the recordSets property: A collection of information regarding a recordSet, holding information to identify
      * private resources.
-     *
+     * 
      * @return the recordSets value.
      */
     public List<RecordSet> recordSets() {
@@ -60,7 +64,7 @@ public final class PrivateDnsZonePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes an object containing an array with a single item. */
+/**
+ * Describes an object containing an array with a single item.
+ */
 @Fluent
 public final class SignaturesOverridesListInner {
     /*
@@ -17,14 +19,16 @@ public final class SignaturesOverridesListInner {
     @JsonProperty(value = "value")
     private List<SignaturesOverridesInner> value;
 
-    /** Creates an instance of SignaturesOverridesListInner class. */
+    /**
+     * Creates an instance of SignaturesOverridesListInner class.
+     */
     public SignaturesOverridesListInner() {
     }
 
     /**
      * Get the value property: Describes a list consisting exactly one item describing the policy's signature override
      * status.
-     *
+     * 
      * @return the value value.
      */
     public List<SignaturesOverridesInner> value() {
@@ -34,7 +38,7 @@ public final class SignaturesOverridesListInner {
     /**
      * Set the value property: Describes a list consisting exactly one item describing the policy's signature override
      * status.
-     *
+     * 
      * @param value the value value to set.
      * @return the SignaturesOverridesListInner object itself.
      */
@@ -45,7 +49,7 @@ public final class SignaturesOverridesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

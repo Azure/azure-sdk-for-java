@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The common properties of a service. */
+/**
+ * The common properties of a service.
+ */
 @Fluent
 public class ServicesResource extends Resource {
     /*
@@ -20,22 +22,26 @@ public class ServicesResource extends Resource {
     private Kind kind;
 
     /*
-     * An etag associated with the resource, used for optimistic concurrency
-     * when editing it.
+     * An etag associated with the resource, used for optimistic concurrency when editing it.
      */
     @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
     @JsonProperty(value = "identity")
     private ServicesResourceIdentity identity;
 
     /**
+     * Creates an instance of ServicesResource class.
+     */
+    public ServicesResource() {
+    }
+
+    /**
      * Get the kind property: The kind of the service.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -44,7 +50,7 @@ public class ServicesResource extends Resource {
 
     /**
      * Set the kind property: The kind of the service.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ServicesResource object itself.
      */
@@ -55,7 +61,7 @@ public class ServicesResource extends Resource {
 
     /**
      * Get the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +70,7 @@ public class ServicesResource extends Resource {
 
     /**
      * Set the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ServicesResource object itself.
      */
@@ -75,7 +81,7 @@ public class ServicesResource extends Resource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServicesResourceIdentity identity() {
@@ -84,7 +90,7 @@ public class ServicesResource extends Resource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ServicesResource object itself.
      */
@@ -93,14 +99,18 @@ public class ServicesResource extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -109,14 +119,13 @@ public class ServicesResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model ServicesResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kind in model ServicesResource"));
         }
         if (identity() != null) {
             identity().validate();

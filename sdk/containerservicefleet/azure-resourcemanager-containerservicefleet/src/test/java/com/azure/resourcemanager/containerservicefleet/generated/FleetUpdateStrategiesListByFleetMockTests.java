@@ -32,7 +32,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"ifrvtpu\",\"groups\":[{\"name\":\"mqlgk\"},{\"name\":\"btndo\"}],\"afterStageWaitInSeconds\":146248988}]}},\"eTag\":\"bjcntujitc\",\"id\":\"df\",\"name\":\"wwa\",\"type\":\"zkoj\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"xoruzfgsquyfxrx\",\"groups\":[{\"name\":\"ptramxj\"},{\"name\":\"zwl\"}],\"afterStageWaitInSeconds\":2125136939},{\"name\":\"xuqlcvydypat\",\"groups\":[{\"name\":\"aojkniodk\"}],\"afterStageWaitInSeconds\":2101936696},{\"name\":\"bw\",\"groups\":[{\"name\":\"hemms\"},{\"name\":\"vdkcrodtj\"}],\"afterStageWaitInSeconds\":321367930}]}},\"eTag\":\"jlfltkacjvefkdlf\",\"id\":\"kggkfpa\",\"name\":\"ao\",\"type\":\"pulpqblylsyxk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,12 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FleetUpdateStrategy> response =
-            manager.fleetUpdateStrategies().listByFleet("l", "wabm", com.azure.core.util.Context.NONE);
+            manager.fleetUpdateStrategies().listByFleet("pdtii", "q", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ifrvtpu", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("mqlgk", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("xoruzfgsquyfxrx", response.iterator().next().strategy().stages().get(0).name());
         Assertions
-            .assertEquals(146248988, response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
+            .assertEquals("ptramxj", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions
+            .assertEquals(2125136939, response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

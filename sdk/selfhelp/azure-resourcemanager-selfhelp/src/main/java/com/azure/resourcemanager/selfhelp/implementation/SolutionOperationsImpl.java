@@ -20,20 +20,17 @@ public final class SolutionOperationsImpl implements SolutionOperations {
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    public SolutionOperationsImpl(
-        SolutionOperationsClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    public SolutionOperationsImpl(SolutionOperationsClient innerClient,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<SolutionResource> getWithResponse(String scope, String solutionResourceName, Context context) {
-        Response<SolutionResourceInner> inner =
-            this.serviceClient().getWithResponse(scope, solutionResourceName, context);
+        Response<SolutionResourceInner> inner
+            = this.serviceClient().getWithResponse(scope, solutionResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SolutionResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -50,49 +47,33 @@ public final class SolutionOperationsImpl implements SolutionOperations {
     }
 
     public SolutionResource getById(String id) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String solutionResourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
+        String solutionResourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
         if (solutionResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         return this.getWithResponse(scope, solutionResourceName, Context.NONE).getValue();
     }
 
     public Response<SolutionResource> getByIdWithResponse(String id, Context context) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String solutionResourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
+        String solutionResourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}", "solutionResourceName");
         if (solutionResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'solutions'.", id)));
         }
         return this.getWithResponse(scope, solutionResourceName, context);
     }

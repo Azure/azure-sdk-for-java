@@ -13,8 +13,8 @@ public final class OperationResponseImpl implements OperationResponse {
 
     private final com.azure.resourcemanager.quota.QuotaManager serviceManager;
 
-    OperationResponseImpl(
-        OperationResponseInner innerObject, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
+    OperationResponseImpl(OperationResponseInner innerObject,
+        com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

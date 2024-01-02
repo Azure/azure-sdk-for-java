@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Monthly Schedule properties. */
+/**
+ * Monthly Schedule properties.
+ */
 @Fluent
 public final class MonthlySchedule {
     /*
@@ -40,13 +42,15 @@ public final class MonthlySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
-    /** Creates an instance of MonthlySchedule class. */
+    /**
+     * Creates an instance of MonthlySchedule class.
+     */
     public MonthlySchedule() {
     }
 
     /**
      * Get the snapshotsToKeep property: Monthly snapshot count to keep.
-     *
+     * 
      * @return the snapshotsToKeep value.
      */
     public Integer snapshotsToKeep() {
@@ -55,7 +59,7 @@ public final class MonthlySchedule {
 
     /**
      * Set the snapshotsToKeep property: Monthly snapshot count to keep.
-     *
+     * 
      * @param snapshotsToKeep the snapshotsToKeep value to set.
      * @return the MonthlySchedule object itself.
      */
@@ -67,7 +71,7 @@ public final class MonthlySchedule {
     /**
      * Get the daysOfMonth property: Indicates which days of the month snapshot should be taken. A comma delimited
      * string.
-     *
+     * 
      * @return the daysOfMonth value.
      */
     public String daysOfMonth() {
@@ -77,7 +81,7 @@ public final class MonthlySchedule {
     /**
      * Set the daysOfMonth property: Indicates which days of the month snapshot should be taken. A comma delimited
      * string.
-     *
+     * 
      * @param daysOfMonth the daysOfMonth value to set.
      * @return the MonthlySchedule object itself.
      */
@@ -88,7 +92,7 @@ public final class MonthlySchedule {
 
     /**
      * Get the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @return the hour value.
      */
     public Integer hour() {
@@ -97,7 +101,7 @@ public final class MonthlySchedule {
 
     /**
      * Set the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @param hour the hour value to set.
      * @return the MonthlySchedule object itself.
      */
@@ -108,7 +112,7 @@ public final class MonthlySchedule {
 
     /**
      * Get the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @return the minute value.
      */
     public Integer minute() {
@@ -117,7 +121,7 @@ public final class MonthlySchedule {
 
     /**
      * Set the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @param minute the minute value to set.
      * @return the MonthlySchedule object itself.
      */
@@ -128,7 +132,7 @@ public final class MonthlySchedule {
 
     /**
      * Get the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @return the usedBytes value.
      */
     public Long usedBytes() {
@@ -137,7 +141,7 @@ public final class MonthlySchedule {
 
     /**
      * Set the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @param usedBytes the usedBytes value to set.
      * @return the MonthlySchedule object itself.
      */
@@ -148,7 +152,7 @@ public final class MonthlySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

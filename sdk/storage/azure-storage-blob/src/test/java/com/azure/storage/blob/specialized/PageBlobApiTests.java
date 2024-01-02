@@ -1613,11 +1613,13 @@ public class PageBlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
         return Stream.of(
-            Arguments.of("blob", "blob"),
+            Arguments.of("blobName", "blobName"),
+            Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
             Arguments.of("path/to]a blob", "path/to]a blob"),
-            Arguments.of("path%2Fto%5Da%20blob", "path/to]a blob"),
+            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"),
             Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點"));
+            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點", "斑點"));
     }
 
     @Test
@@ -1663,10 +1665,10 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        PageBlobClient aadBlob = new SpecializedBlobClientBuilder()
+        PageBlobClient aadBlob = instrument(new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildPageBlobClient();
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadBlob.exists());

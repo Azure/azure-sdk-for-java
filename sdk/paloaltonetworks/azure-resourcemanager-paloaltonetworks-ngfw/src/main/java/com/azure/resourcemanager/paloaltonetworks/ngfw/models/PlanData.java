@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Billing plan information. */
+/**
+ * Billing plan information.
+ */
 @Fluent
 public final class PlanData {
     /*
@@ -36,13 +38,15 @@ public final class PlanData {
     @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
-    /** Creates an instance of PlanData class. */
+    /**
+     * Creates an instance of PlanData class.
+     */
     public PlanData() {
     }
 
     /**
      * Get the usageType property: different usage type like PAYG/COMMITTED.
-     *
+     * 
      * @return the usageType value.
      */
     public UsageType usageType() {
@@ -51,7 +55,7 @@ public final class PlanData {
 
     /**
      * Set the usageType property: different usage type like PAYG/COMMITTED.
-     *
+     * 
      * @param usageType the usageType value to set.
      * @return the PlanData object itself.
      */
@@ -62,7 +66,7 @@ public final class PlanData {
 
     /**
      * Get the billingCycle property: different billing cycles like MONTHLY/WEEKLY.
-     *
+     * 
      * @return the billingCycle value.
      */
     public BillingCycle billingCycle() {
@@ -71,7 +75,7 @@ public final class PlanData {
 
     /**
      * Set the billingCycle property: different billing cycles like MONTHLY/WEEKLY.
-     *
+     * 
      * @param billingCycle the billingCycle value to set.
      * @return the PlanData object itself.
      */
@@ -82,7 +86,7 @@ public final class PlanData {
 
     /**
      * Get the planId property: plan id as published by Liftr.PAN.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -91,7 +95,7 @@ public final class PlanData {
 
     /**
      * Set the planId property: plan id as published by Liftr.PAN.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the PlanData object itself.
      */
@@ -102,7 +106,7 @@ public final class PlanData {
 
     /**
      * Get the effectiveDate property: date when plan was applied.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -111,19 +115,17 @@ public final class PlanData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (billingCycle() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property billingCycle in model PlanData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property billingCycle in model PlanData"));
         }
         if (planId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property planId in model PlanData"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property planId in model PlanData"));
         }
     }
 

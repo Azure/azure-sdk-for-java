@@ -9,7 +9,7 @@ import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 /** Samples for Clusters Create. */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateCluster.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateCluster.json
      */
     /**
      * Sample code: CreateCluster.

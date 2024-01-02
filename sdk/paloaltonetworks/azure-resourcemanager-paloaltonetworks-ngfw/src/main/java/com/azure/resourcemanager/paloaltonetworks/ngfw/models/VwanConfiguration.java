@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VwanInfo for Firewall Networking. */
+/**
+ * VwanInfo for Firewall Networking.
+ */
 @Fluent
 public final class VwanConfiguration {
     /*
@@ -41,13 +43,15 @@ public final class VwanConfiguration {
     @JsonProperty(value = "ipOfTrustSubnetForUdr")
     private IpAddress ipOfTrustSubnetForUdr;
 
-    /** Creates an instance of VwanConfiguration class. */
+    /**
+     * Creates an instance of VwanConfiguration class.
+     */
     public VwanConfiguration() {
     }
 
     /**
      * Get the networkVirtualApplianceId property: Network Virtual Appliance resource ID.
-     *
+     * 
      * @return the networkVirtualApplianceId value.
      */
     public String networkVirtualApplianceId() {
@@ -56,7 +60,7 @@ public final class VwanConfiguration {
 
     /**
      * Set the networkVirtualApplianceId property: Network Virtual Appliance resource ID.
-     *
+     * 
      * @param networkVirtualApplianceId the networkVirtualApplianceId value to set.
      * @return the VwanConfiguration object itself.
      */
@@ -67,7 +71,7 @@ public final class VwanConfiguration {
 
     /**
      * Get the vHub property: vHub Address.
-     *
+     * 
      * @return the vHub value.
      */
     public IpAddressSpace vHub() {
@@ -76,7 +80,7 @@ public final class VwanConfiguration {
 
     /**
      * Set the vHub property: vHub Address.
-     *
+     * 
      * @param vHub the vHub value to set.
      * @return the VwanConfiguration object itself.
      */
@@ -87,7 +91,7 @@ public final class VwanConfiguration {
 
     /**
      * Get the trustSubnet property: Trust Subnet.
-     *
+     * 
      * @return the trustSubnet value.
      */
     public IpAddressSpace trustSubnet() {
@@ -96,7 +100,7 @@ public final class VwanConfiguration {
 
     /**
      * Set the trustSubnet property: Trust Subnet.
-     *
+     * 
      * @param trustSubnet the trustSubnet value to set.
      * @return the VwanConfiguration object itself.
      */
@@ -107,7 +111,7 @@ public final class VwanConfiguration {
 
     /**
      * Get the unTrustSubnet property: Untrust Subnet.
-     *
+     * 
      * @return the unTrustSubnet value.
      */
     public IpAddressSpace unTrustSubnet() {
@@ -116,7 +120,7 @@ public final class VwanConfiguration {
 
     /**
      * Set the unTrustSubnet property: Untrust Subnet.
-     *
+     * 
      * @param unTrustSubnet the unTrustSubnet value to set.
      * @return the VwanConfiguration object itself.
      */
@@ -127,7 +131,7 @@ public final class VwanConfiguration {
 
     /**
      * Get the ipOfTrustSubnetForUdr property: IP of trust subnet for UDR.
-     *
+     * 
      * @return the ipOfTrustSubnetForUdr value.
      */
     public IpAddress ipOfTrustSubnetForUdr() {
@@ -136,7 +140,7 @@ public final class VwanConfiguration {
 
     /**
      * Set the ipOfTrustSubnetForUdr property: IP of trust subnet for UDR.
-     *
+     * 
      * @param ipOfTrustSubnetForUdr the ipOfTrustSubnetForUdr value to set.
      * @return the VwanConfiguration object itself.
      */
@@ -147,14 +151,13 @@ public final class VwanConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vHub() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vHub in model VwanConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vHub in model VwanConfiguration"));
         } else {
             vHub().validate();
         }

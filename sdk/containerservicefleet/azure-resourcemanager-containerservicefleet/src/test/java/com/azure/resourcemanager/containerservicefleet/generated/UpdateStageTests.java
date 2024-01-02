@@ -16,24 +16,23 @@ public final class UpdateStageTests {
         UpdateStage model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"cfsf\",\"groups\":[{\"name\":\"mddystkiiux\"},{\"name\":\"qyud\"}],\"afterStageWaitInSeconds\":2120884016}")
+                    "{\"name\":\"masxazjpqyegu\",\"groups\":[{\"name\":\"b\"}],\"afterStageWaitInSeconds\":1163750271}")
                 .toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("masxazjpqyegu", model.name());
+        Assertions.assertEquals("b", model.groups().get(0).name());
+        Assertions.assertEquals(1163750271, model.afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateStage model =
             new UpdateStage()
-                .withName("cfsf")
-                .withGroups(
-                    Arrays.asList(new UpdateGroup().withName("mddystkiiux"), new UpdateGroup().withName("qyud")))
-                .withAfterStageWaitInSeconds(2120884016);
+                .withName("masxazjpqyegu")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("b")))
+                .withAfterStageWaitInSeconds(1163750271);
         model = BinaryData.fromObject(model).toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("masxazjpqyegu", model.name());
+        Assertions.assertEquals("b", model.groups().get(0).name());
+        Assertions.assertEquals(1163750271, model.afterStageWaitInSeconds());
     }
 }

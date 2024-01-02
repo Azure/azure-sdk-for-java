@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -48,7 +47,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
+public class FaultInjectionConnectionErrorRuleTests extends FaultInjectionTestBase {
     private static final int TIMEOUT = 60000;
     private CosmosAsyncClient client;
     private DatabaseAccount databaseAccount;

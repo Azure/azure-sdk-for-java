@@ -15,29 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"d9480628-4fbf-498a-b769-42d157194656\",\"tenantId\":\"e297a5af-2ac5-47fa-b0f3-7dd597725a67\",\"type\":\"None\",\"userAssignedIdentities\":{\"txilnerkujy\":{\"principalId\":\"ae555323-aa31-47a3-9486-817a39c19632\",\"clientId\":\"15f3901a-6b66-459d-98e4-b2bd0a243d47\"},\"eju\":{\"principalId\":\"33cab526-be42-4fe0-b133-6deb34a31890\",\"clientId\":\"d7ccfc61-418a-4823-a9e1-9a05e5e37c6a\"},\"awrlyx\":{\"principalId\":\"00cd18cb-5bac-4bad-9c6b-665993571638\",\"clientId\":\"289f9391-0fbd-4c9c-94b0-c81f1482fb72\"},\"cpr\":{\"principalId\":\"0538de1b-21d9-43c6-9ede-df0b2199ece8\",\"clientId\":\"96914923-6ad5-42f0-8007-5541d5f8e917\"}}}")
-                .toObject(ManagedServiceIdentity.class);
+        ManagedServiceIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"7da3f15f-3155-44b6-af7b-57d700e8f3dc\",\"tenantId\":\"49937368-fbce-4402-86f3-d3aa0a9448f0\",\"type\":\"None\",\"userAssignedIdentities\":{\"txilnerkujy\":{\"principalId\":\"67f3950e-cd0f-487e-816c-470e8537908e\",\"clientId\":\"59f0b0a9-0888-4c2b-ac73-b383c3bc4c43\"},\"eju\":{\"principalId\":\"28575b7b-d38a-4ae5-b132-6015536496ec\",\"clientId\":\"a64c4366-9d5f-4d2d-a216-cdc7b15630f9\"},\"awrlyx\":{\"principalId\":\"fbdd6559-a515-49de-8f75-d3f5ee30a72a\",\"clientId\":\"71db179b-92ad-4b09-830b-cfe4be1c994e\"},\"cpr\":{\"principalId\":\"10c013a1-f476-4177-9ed5-85e204c97d46\",\"clientId\":\"0f13e40b-e69a-425e-bc08-3d4491477e09\"}}}")
+            .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model =
-            new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "txilnerkujy",
-                        new UserAssignedIdentity(),
-                        "eju",
-                        new UserAssignedIdentity(),
-                        "awrlyx",
-                        new UserAssignedIdentity(),
-                        "cpr",
-                        new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("txilnerkujy", new UserAssignedIdentity(), "eju",
+                new UserAssignedIdentity(), "awrlyx", new UserAssignedIdentity(), "cpr", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }

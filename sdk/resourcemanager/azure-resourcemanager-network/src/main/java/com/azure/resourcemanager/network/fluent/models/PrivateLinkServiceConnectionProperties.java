@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the PrivateLinkServiceConnection. */
+/**
+ * Properties of the PrivateLinkServiceConnection.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionProperties {
     /*
@@ -43,13 +45,15 @@ public final class PrivateLinkServiceConnectionProperties {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
-    /** Creates an instance of PrivateLinkServiceConnectionProperties class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionProperties class.
+     */
     public PrivateLinkServiceConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class PrivateLinkServiceConnectionProperties {
 
     /**
      * Get the privateLinkServiceId property: The resource id of private link service.
-     *
+     * 
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
@@ -67,7 +71,7 @@ public final class PrivateLinkServiceConnectionProperties {
 
     /**
      * Set the privateLinkServiceId property: The resource id of private link service.
-     *
+     * 
      * @param privateLinkServiceId the privateLinkServiceId value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
@@ -77,9 +81,9 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
-     * should connect to.
-     *
+     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
+     * endpoint should connect to.
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -87,9 +91,9 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
-     * should connect to.
-     *
+     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
+     * endpoint should connect to.
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Get the requestMessage property: A message passed to the owner of the remote resource with this connection
      * request. Restricted to 140 chars.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -111,7 +115,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Set the requestMessage property: A message passed to the owner of the remote resource with this connection
      * request. Restricted to 140 chars.
-     *
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the remote resource.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -133,19 +137,19 @@ public final class PrivateLinkServiceConnectionProperties {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the remote resource.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.
      */
-    public PrivateLinkServiceConnectionProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateLinkServiceConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

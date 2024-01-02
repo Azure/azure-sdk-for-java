@@ -24,100 +24,57 @@ import org.junit.jupiter.api.Assertions;
 public final class CopyActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyActivityTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"source\":{\"type\":\"CopySource\",\"sourceRetryCount\":\"datap\",\"sourceRetryWait\":\"datahyekggo\",\"maxConcurrentConnections\":\"datalqvuwsqmwqsg\",\"disableMetricsCollection\":\"dataz\",\"\":{\"ursumbci\":\"datatngxvrpkizjnkgd\",\"uyblo\":\"datakbkqpsvoxshxum\",\"samxyjqhwsoj\":\"datarufvmgblbqx\"}},\"sink\":{\"type\":\"CopySink\",\"writeBatchSize\":\"databbgvmowy\",\"writeBatchTimeout\":\"dataqhuhmldhnzsc\",\"sinkRetryCount\":\"datauzuchotdz\",\"sinkRetryWait\":\"datahqhwpuaermaww\",\"maxConcurrentConnections\":\"datasdazqcemcotwfuo\",\"disableMetricsCollection\":\"dataisxzhik\",\"\":{\"xbupsx\":\"datas\",\"gxcgqkhyvtajwkrx\":\"dataoj\",\"zbomjbyssprkbz\":\"datazlmwfncwlwov\"}},\"translator\":\"dataljwfncsaa\",\"enableStaging\":\"datacpgz\",\"stagingSettings\":{\"linkedServiceName\":{\"referenceName\":\"rgppqajdmju\",\"parameters\":{\"etbzfwfuxdtp\":\"dataqqguhvnwrzimi\",\"quyfftqomb\":\"datacsqkedlclx\",\"djbyfdfuaj\":\"datasgqxaciduobzz\",\"vzznyjqbwxpwjvf\":\"datahpyylekubiwv\"}},\"path\":\"dataloquttkb\",\"enableCompression\":\"datagjupjbdqmnk\",\"\":{\"p\":\"dataqssh\",\"womevqvv\":\"datajttnurkmerqzap\"}},\"parallelCopies\":\"datawdlduvimgtceor\",\"dataIntegrationUnits\":\"datao\",\"enableSkipIncompatibleRow\":\"dataapafbjvbk\",\"redirectIncompatibleRowSettings\":{\"linkedServiceName\":\"datagzkcpt\",\"path\":\"datacipy\",\"\":{\"vpuacajxdrgxpuxp\":\"datajgblskizp\",\"pzrycchqz\":\"dataslmfr\",\"dzgszjhekbmd\":\"datafge\"}},\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"hioj\",\"parameters\":{\"tyeuvwysbme\":\"datagp\"}},\"path\":\"datag\",\"logLevel\":\"datanlihbku\",\"enableReliableLogging\":\"dataeywyftvy\",\"\":{\"scyzvv\":\"dataqzjfvbnyyjvz\",\"ssgbscq\":\"dataxmy\",\"qiparctshe\":\"dataeixazebmmjaigax\",\"fawhoosrsol\":\"datagtdvhokx\"}},\"logSettings\":{\"enableCopyActivityLog\":\"datamfoe\",\"copyActivityLogSettings\":{\"logLevel\":\"dataiq\",\"enableReliableLogging\":\"datapelnud\"},\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"fie\",\"parameters\":{\"jllfgmdoaihl\":\"dataorsdvuirqfk\",\"cv\":\"datarsqcivmirybwga\"}},\"path\":\"datay\"}},\"preserveRules\":[\"dataazgtbynxsh\",\"dataawexgeqo\"],\"preserve\":[\"datauzxxkojjphbo\",\"datauovsv\",\"datanpcxdkmtvpa\"],\"validateDataConsistency\":\"dataubnyhm\",\"skipErrorFile\":{\"fileMissing\":\"datadevotucnzbpocum\",\"dataInconsistency\":\"dataftzoemzdnvnoo\"}}")
-                .toObject(CopyActivityTypeProperties.class);
-        Assertions.assertEquals("rgppqajdmju", model.stagingSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("hioj", model.logStorageSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("fie", model.logSettings().logLocationSettings().linkedServiceName().referenceName());
+        CopyActivityTypeProperties model = BinaryData.fromString(
+            "{\"source\":{\"type\":\"CopySource\",\"sourceRetryCount\":\"datar\",\"sourceRetryWait\":\"datazetsspww\",\"maxConcurrentConnections\":\"databotbrepefrli\",\"disableMetricsCollection\":\"dataocyarvsfz\",\"\":{\"fsgilwisqxzpz\":\"datacoo\",\"trfvogknocshmp\":\"datatust\",\"rbrv\":\"datajqtuzb\",\"rhccdgunsjssreo\":\"datahfjqpxydpamctzm\"}},\"sink\":{\"type\":\"CopySink\",\"writeBatchSize\":\"datagkouenpgkxyrs\",\"writeBatchTimeout\":\"datab\",\"sinkRetryCount\":\"datayekggoawlqvu\",\"sinkRetryWait\":\"dataqmwqsgy\",\"maxConcurrentConnections\":\"datanostn\",\"disableMetricsCollection\":\"datavrpkizj\",\"\":{\"sumbcirkbkq\":\"datadsu\",\"shxumuuyblol\":\"datasvo\"}},\"translator\":\"datafvmgblb\",\"enableStaging\":\"datals\",\"stagingSettings\":{\"linkedServiceName\":{\"referenceName\":\"xyjqhwsojnbbbgv\",\"parameters\":{\"hml\":\"datayzxqh\",\"z\":\"datahnzsckfuzuchot\",\"puaermawwlnsdaz\":\"dataqhqh\",\"hisxz\":\"datacemcotwfuo\"}},\"path\":\"datak\",\"enableCompression\":\"datafszxbupsxqo\",\"\":{\"mzlmwfncwl\":\"dataxcgqkhyvtajwkr\",\"byssprkbzralj\":\"dataovkzbom\",\"ylcpgzmxr\":\"datafncsa\",\"unntqqguhv\":\"datappqajdm\"}},\"parallelCopies\":\"datarzimin\",\"dataIntegrationUnits\":\"databzfwfu\",\"enableSkipIncompatibleRow\":\"datatpjcsqkedlclx\",\"redirectIncompatibleRowSettings\":{\"linkedServiceName\":\"datauyff\",\"path\":\"dataombdsgqxa\",\"\":{\"djbyfdfuaj\":\"datauobzz\"}},\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"p\",\"parameters\":{\"qb\":\"dataekubiwvjvzzny\"}},\"path\":\"datapwjvfisloqu\",\"logLevel\":\"datakbzwgjupjbdqmnk\",\"enableReliableLogging\":\"datajqsshu\",\"\":{\"rqza\":\"datattnurkm\",\"qvvtjwdlduvim\":\"datauwome\",\"rmxoxtap\":\"datatce\",\"bkj\":\"datafbj\"}},\"logSettings\":{\"enableCopyActivityLog\":\"datakcptavci\",\"copyActivityLogSettings\":{\"logLevel\":\"datanujgblskizpr\",\"enableReliableLogging\":\"datauacajxdrgxpu\"},\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"pzslmfr\",\"parameters\":{\"jhekbmdh\":\"datarycchqzkfgesdzgs\"}},\"path\":\"dataiojsrhgpi\"}},\"preserveRules\":[\"datauvwys\",\"datamebfgbznlihbk\",\"datapaeyw\"],\"preserve\":[\"datavyzuyqzjfvbn\",\"datayjvzlscyzvvsxmy\",\"datassgbscq\"],\"validateDataConsistency\":\"dataixazebmmjaigaxwq\",\"skipErrorFile\":{\"fileMissing\":\"datarctsh\",\"dataInconsistency\":\"datagtdvhokx\"}}")
+            .toObject(CopyActivityTypeProperties.class);
+        Assertions.assertEquals("xyjqhwsojnbbbgv", model.stagingSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("p", model.logStorageSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("pzslmfr",
+            model.logSettings().logLocationSettings().linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyActivityTypeProperties model =
-            new CopyActivityTypeProperties()
-                .withSource(
-                    new CopySource()
-                        .withSourceRetryCount("datap")
-                        .withSourceRetryWait("datahyekggo")
-                        .withMaxConcurrentConnections("datalqvuwsqmwqsg")
-                        .withDisableMetricsCollection("dataz")
-                        .withAdditionalProperties(mapOf("type", "CopySource")))
-                .withSink(
-                    new CopySink()
-                        .withWriteBatchSize("databbgvmowy")
-                        .withWriteBatchTimeout("dataqhuhmldhnzsc")
-                        .withSinkRetryCount("datauzuchotdz")
-                        .withSinkRetryWait("datahqhwpuaermaww")
-                        .withMaxConcurrentConnections("datasdazqcemcotwfuo")
-                        .withDisableMetricsCollection("dataisxzhik")
-                        .withAdditionalProperties(mapOf("type", "CopySink")))
-                .withTranslator("dataljwfncsaa")
-                .withEnableStaging("datacpgz")
-                .withStagingSettings(
-                    new StagingSettings()
-                        .withLinkedServiceName(
-                            new LinkedServiceReference()
-                                .withReferenceName("rgppqajdmju")
-                                .withParameters(
-                                    mapOf(
-                                        "etbzfwfuxdtp",
-                                        "dataqqguhvnwrzimi",
-                                        "quyfftqomb",
-                                        "datacsqkedlclx",
-                                        "djbyfdfuaj",
-                                        "datasgqxaciduobzz",
-                                        "vzznyjqbwxpwjvf",
-                                        "datahpyylekubiwv")))
-                        .withPath("dataloquttkb")
-                        .withEnableCompression("datagjupjbdqmnk")
-                        .withAdditionalProperties(mapOf()))
-                .withParallelCopies("datawdlduvimgtceor")
-                .withDataIntegrationUnits("datao")
-                .withEnableSkipIncompatibleRow("dataapafbjvbk")
-                .withRedirectIncompatibleRowSettings(
-                    new RedirectIncompatibleRowSettings()
-                        .withLinkedServiceName("datagzkcpt")
-                        .withPath("datacipy")
-                        .withAdditionalProperties(mapOf()))
-                .withLogStorageSettings(
-                    new LogStorageSettings()
-                        .withLinkedServiceName(
-                            new LinkedServiceReference()
-                                .withReferenceName("hioj")
-                                .withParameters(mapOf("tyeuvwysbme", "datagp")))
-                        .withPath("datag")
-                        .withLogLevel("datanlihbku")
-                        .withEnableReliableLogging("dataeywyftvy")
-                        .withAdditionalProperties(mapOf()))
-                .withLogSettings(
-                    new LogSettings()
-                        .withEnableCopyActivityLog("datamfoe")
-                        .withCopyActivityLogSettings(
-                            new CopyActivityLogSettings()
-                                .withLogLevel("dataiq")
-                                .withEnableReliableLogging("datapelnud"))
-                        .withLogLocationSettings(
-                            new LogLocationSettings()
-                                .withLinkedServiceName(
-                                    new LinkedServiceReference()
-                                        .withReferenceName("fie")
-                                        .withParameters(
-                                            mapOf("jllfgmdoaihl", "dataorsdvuirqfk", "cv", "datarsqcivmirybwga")))
-                                .withPath("datay")))
-                .withPreserveRules(Arrays.asList("dataazgtbynxsh", "dataawexgeqo"))
-                .withPreserve(Arrays.asList("datauzxxkojjphbo", "datauovsv", "datanpcxdkmtvpa"))
-                .withValidateDataConsistency("dataubnyhm")
-                .withSkipErrorFile(
-                    new SkipErrorFile()
-                        .withFileMissing("datadevotucnzbpocum")
-                        .withDataInconsistency("dataftzoemzdnvnoo"));
+        CopyActivityTypeProperties model = new CopyActivityTypeProperties()
+            .withSource(new CopySource().withSourceRetryCount("datar").withSourceRetryWait("datazetsspww")
+                .withMaxConcurrentConnections("databotbrepefrli").withDisableMetricsCollection("dataocyarvsfz")
+                .withAdditionalProperties(mapOf("type", "CopySource")))
+            .withSink(new CopySink().withWriteBatchSize("datagkouenpgkxyrs").withWriteBatchTimeout("datab")
+                .withSinkRetryCount("datayekggoawlqvu").withSinkRetryWait("dataqmwqsgy")
+                .withMaxConcurrentConnections("datanostn").withDisableMetricsCollection("datavrpkizj")
+                .withAdditionalProperties(mapOf("type", "CopySink")))
+            .withTranslator("datafvmgblb").withEnableStaging("datals")
+            .withStagingSettings(new StagingSettings()
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xyjqhwsojnbbbgv")
+                    .withParameters(mapOf("hml", "datayzxqh", "z", "datahnzsckfuzuchot", "puaermawwlnsdaz", "dataqhqh",
+                        "hisxz", "datacemcotwfuo")))
+                .withPath("datak").withEnableCompression("datafszxbupsxqo").withAdditionalProperties(mapOf()))
+            .withParallelCopies("datarzimin").withDataIntegrationUnits("databzfwfu")
+            .withEnableSkipIncompatibleRow("datatpjcsqkedlclx")
+            .withRedirectIncompatibleRowSettings(new RedirectIncompatibleRowSettings().withLinkedServiceName("datauyff")
+                .withPath("dataombdsgqxa").withAdditionalProperties(mapOf()))
+            .withLogStorageSettings(new LogStorageSettings()
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("p")
+                    .withParameters(mapOf("qb", "dataekubiwvjvzzny")))
+                .withPath("datapwjvfisloqu").withLogLevel("datakbzwgjupjbdqmnk").withEnableReliableLogging("datajqsshu")
+                .withAdditionalProperties(mapOf()))
+            .withLogSettings(
+                new LogSettings().withEnableCopyActivityLog("datakcptavci")
+                    .withCopyActivityLogSettings(new CopyActivityLogSettings().withLogLevel("datanujgblskizpr")
+                        .withEnableReliableLogging("datauacajxdrgxpu"))
+                    .withLogLocationSettings(new LogLocationSettings()
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pzslmfr")
+                            .withParameters(mapOf("jhekbmdh", "datarycchqzkfgesdzgs")))
+                        .withPath("dataiojsrhgpi")))
+            .withPreserveRules(Arrays.asList("datauvwys", "datamebfgbznlihbk", "datapaeyw"))
+            .withPreserve(Arrays.asList("datavyzuyqzjfvbn", "datayjvzlscyzvvsxmy", "datassgbscq"))
+            .withValidateDataConsistency("dataixazebmmjaigaxwq")
+            .withSkipErrorFile(new SkipErrorFile().withFileMissing("datarctsh").withDataInconsistency("datagtdvhokx"));
         model = BinaryData.fromObject(model).toObject(CopyActivityTypeProperties.class);
-        Assertions.assertEquals("rgppqajdmju", model.stagingSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("hioj", model.logStorageSettings().linkedServiceName().referenceName());
-        Assertions.assertEquals("fie", model.logSettings().logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("xyjqhwsojnbbbgv", model.stagingSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("p", model.logStorageSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("pzslmfr",
+            model.logSettings().logLocationSettings().linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

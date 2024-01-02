@@ -19,7 +19,7 @@ public interface LocationBasedCapabilities {
      * @return capabilities at specified location in a given subscription as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<CapabilityProperties> execute(String locationName);
+    PagedIterable<FlexibleServerCapability> execute(String locationName);
 
     /**
      * Get capabilities at specified location in a given subscription.
@@ -32,5 +32,5 @@ public interface LocationBasedCapabilities {
      * @return capabilities at specified location in a given subscription as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<CapabilityProperties> execute(String locationName, Context context);
+    PagedIterable<FlexibleServerCapability> execute(String locationName, Context context);
 }

@@ -2283,8 +2283,8 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path/to]a file", "斑點,斑點",
-        "%E6%96%91%E9%BB%9E,斑點"})
+    @CsvSource({"file,file", "path/to]a file,path/to]a file", "path%2Fto%5Da%20file,path%2Fto%5Da%20file", "斑點,斑點",
+        "%E6%96%91%E9%BB%9E,%E6%96%91%E9%BB%9E"})
     public void getFileNameAndBuildClient(String originalFileName, String finalFileName) {
         DataLakeFileClient client = dataLakeFileSystemClient.getFileClient(originalFileName);
 
@@ -2375,6 +2375,22 @@ public class FileApiTest extends DataLakeTestBase {
         assertNotNull(response.getValue().getLastModified());
 
         assertEquals(dataSize, fc.getProperties().getFileSize());
+    }
+
+    @Test
+    public void uploadFromFileEmptyFile() {
+        File file = getRandomFile(0);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null,
+            null, null);
+        // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty file,
+        // it will return 201 since only createWithResponse gets called
+        assertEquals(201, response.getStatusCode());
+        assertNotNull(response.getValue().getETag());
+
+        assertEquals(0, fc.getProperties().getFileSize());
     }
 
     private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

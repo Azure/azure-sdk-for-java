@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Databricks Delta Lake dataset. */
+/**
+ * Azure Databricks Delta Lake dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLakeDataset")
 @JsonFlatten
@@ -30,12 +32,15 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties.database")
     private Object database;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeDataset class. */
-    public AzureDatabricksDeltaLakeDataset() {}
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeDataset class.
+     */
+    public AzureDatabricksDeltaLakeDataset() {
+    }
 
     /**
      * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -44,7 +49,7 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Set the table property: The name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureDatabricksDeltaLakeDataset object itself.
      */
@@ -54,8 +59,9 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     }
 
     /**
-     * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
+     * Get the database property: The database name of delta table. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -63,8 +69,9 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     }
 
     /**
-     * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
+     * Set the database property: The database name of delta table. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param database the database value to set.
      * @return the AzureDatabricksDeltaLakeDataset object itself.
      */
@@ -73,49 +80,63 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

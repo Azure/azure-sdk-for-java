@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response for a migrateToIpBased API. */
+/**
+ * The response for a migrateToIpBased API.
+ */
 @Fluent
 public final class MigratedPoolsInner {
     /*
@@ -17,13 +19,15 @@ public final class MigratedPoolsInner {
     @JsonProperty(value = "migratedPools")
     private List<String> migratedPools;
 
-    /** Creates an instance of MigratedPoolsInner class. */
+    /**
+     * Creates an instance of MigratedPoolsInner class.
+     */
     public MigratedPoolsInner() {
     }
 
     /**
      * Get the migratedPools property: A list of pools migrated from Nic based to IP based pool.
-     *
+     * 
      * @return the migratedPools value.
      */
     public List<String> migratedPools() {
@@ -32,7 +36,7 @@ public final class MigratedPoolsInner {
 
     /**
      * Set the migratedPools property: A list of pools migrated from Nic based to IP based pool.
-     *
+     * 
      * @param migratedPools the migratedPools value to set.
      * @return the MigratedPoolsInner object itself.
      */
@@ -43,7 +47,7 @@ public final class MigratedPoolsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

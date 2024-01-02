@@ -14,6 +14,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devtestlabs.DevTestLabsManager;
 import com.azure.resourcemanager.devtestlabs.models.ApplyArtifactsRequest;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactInstallProperties;
+import com.azure.resourcemanager.devtestlabs.models.ArtifactParameterProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -62,21 +63,52 @@ public final class VirtualMachinesApplyArtifactsMockTests {
         manager
             .virtualMachines()
             .applyArtifacts(
-                "hks",
-                "auwazcgwd",
-                "riwgybjp",
+                "eszr",
+                "lhpdhwynctaczcnj",
+                "mbbfnv",
                 new ApplyArtifactsRequest()
                     .withArtifacts(
                         Arrays
                             .asList(
                                 new ArtifactInstallProperties()
-                                    .withArtifactId("scvgl")
-                                    .withArtifactTitle("x")
-                                    .withParameters(Arrays.asList())
-                                    .withStatus("fgw")
-                                    .withDeploymentStatusMessage("qkjvxprwpxsoohu")
-                                    .withVmExtensionStatusMessage("lcsklt")
-                                    .withInstallTime(OffsetDateTime.parse("2021-07-14T20:53:09Z")))),
+                                    .withArtifactId("zovnkrtiklsm")
+                                    .withArtifactTitle("hql")
+                                    .withParameters(
+                                        Arrays
+                                            .asList(
+                                                new ArtifactParameterProperties()
+                                                    .withName("syi")
+                                                    .withValue("hyxwbgbud"),
+                                                new ArtifactParameterProperties().withName("qdo").withValue("ccqcdhth"),
+                                                new ArtifactParameterProperties()
+                                                    .withName("vlirknuc")
+                                                    .withValue("awrdt"),
+                                                new ArtifactParameterProperties()
+                                                    .withName("gzlgpyaixihz")
+                                                    .withValue("jtsmuydqf")))
+                                    .withStatus("kacybdueurgmcdcp")
+                                    .withDeploymentStatusMessage("hlo")
+                                    .withVmExtensionStatusMessage("rmhzicsbf")
+                                    .withInstallTime(OffsetDateTime.parse("2021-08-24T07:22:25Z")),
+                                new ArtifactInstallProperties()
+                                    .withArtifactId("aaknyukibxig")
+                                    .withArtifactTitle("phzwxqte")
+                                    .withParameters(
+                                        Arrays
+                                            .asList(
+                                                new ArtifactParameterProperties()
+                                                    .withName("lhvtozyagj")
+                                                    .withValue("xkbylhyyxgffklv"),
+                                                new ArtifactParameterProperties()
+                                                    .withName("rwtrdgscnvqeonsg")
+                                                    .withValue("xlw"),
+                                                new ArtifactParameterProperties()
+                                                    .withName("zyohxpthc")
+                                                    .withValue("pvkvtwf")))
+                                    .withStatus("sobpbo")
+                                    .withDeploymentStatusMessage("mmlcdyarng")
+                                    .withVmExtensionStatusMessage("jf")
+                                    .withInstallTime(OffsetDateTime.parse("2021-03-20T19:53:39Z")))),
                 com.azure.core.util.Context.NONE);
     }
 }

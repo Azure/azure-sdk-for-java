@@ -6,21 +6,36 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import io.netty.handler.codec.http.HttpMethod;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
 
 class ResponseUtils {
     private static final byte[] EMPTY_BYTE_ARRAY = {};
 
-    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, HttpRequest httpRequest) {
+    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse) {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<byte[]> contentObservable = httpClientResponse.bodyAsByteArray().switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
+        Mono<ByteBuf> contentObservable = httpClientResponse.body().switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
-        return contentObservable.map(byteArrayContent -> {
+        return contentObservable.map(byteBufContent -> {
             // transforms to Mono<StoreResponse>
-            return new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap()), byteArrayContent);
+            int size = 0;
+            if (byteBufContent == null || (size = byteBufContent.readableBytes()) == 0) {
+                return new StoreResponse(
+                    httpClientResponse.statusCode(),
+                    HttpUtils.unescape(httpResponseHeaders.toMap()),
+                    null,
+                    0);
+            }
+
+            return new StoreResponse(
+                httpClientResponse.statusCode(),
+                HttpUtils.unescape(httpResponseHeaders.toMap()),
+                new ByteBufInputStream(byteBufContent, true),
+                size);
         });
     }
 }

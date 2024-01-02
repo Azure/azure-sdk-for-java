@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Server. */
@@ -164,8 +165,8 @@ public interface Server {
 
     /**
      * Gets the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
-     * server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -173,7 +174,7 @@ public interface Server {
 
     /**
      * Gets the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -201,11 +202,27 @@ public interface Server {
     Integer replicaCapacity();
 
     /**
+     * Gets the replica property: Replica properties of a server. These Replica properties are required to be passed
+     * only in case you want to Promote a server.
+     *
+     * @return the replica value.
+     */
+    Replica replica();
+
+    /**
      * Gets the createMode property: The mode to create a new PostgreSQL server.
      *
      * @return the createMode value.
      */
     CreateMode createMode();
+
+    /**
+     * Gets the privateEndpointConnections property: List of private endpoint connections associated with the specified
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
@@ -458,12 +475,12 @@ public interface Server {
         interface WithSourceServerResourceId {
             /**
              * Specifies the sourceServerResourceId property: The source server resource ID to restore from. It's
-             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is
-             * returned only for Replica server.
+             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This
+             * property is returned only for Replica server.
              *
              * @param sourceServerResourceId The source server resource ID to restore from. It's required when
-             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for
-             *     Replica server.
+             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property
+             *     is returned only for Replica server.
              * @return the next definition stage.
              */
             WithCreate withSourceServerResourceId(String sourceServerResourceId);
@@ -473,10 +490,11 @@ public interface Server {
         interface WithPointInTimeUtc {
             /**
              * Specifies the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time
-             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'..
+             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or
+             * 'ReviveDropped'..
              *
              * @param pointInTimeUtc Restore point creation time (ISO8601 format), specifying the time to restore from.
-             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
              * @return the next definition stage.
              */
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
@@ -538,6 +556,7 @@ public interface Server {
             UpdateStages.WithDataEncryption,
             UpdateStages.WithCreateMode,
             UpdateStages.WithReplicationRole,
+            UpdateStages.WithReplica,
             UpdateStages.WithNetwork {
         /**
          * Executes the update request.
@@ -604,9 +623,10 @@ public interface Server {
         /** The stage of the Server update allowing to specify version. */
         interface WithVersion {
             /**
-             * Specifies the version property: PostgreSQL Server version..
+             * Specifies the version property: PostgreSQL Server version. Version 16 is currently not supported for
+             * MVU..
              *
-             * @param version PostgreSQL Server version.
+             * @param version PostgreSQL Server version. Version 16 is currently not supported for MVU.
              * @return the next definition stage.
              */
             Update withVersion(ServerVersion version);
@@ -698,6 +718,19 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withReplicationRole(ReplicationRole replicationRole);
+        }
+
+        /** The stage of the Server update allowing to specify replica. */
+        interface WithReplica {
+            /**
+             * Specifies the replica property: Replica properties of a server. These Replica properties are required to
+             * be passed only in case you want to Promote a server..
+             *
+             * @param replica Replica properties of a server. These Replica properties are required to be passed only in
+             *     case you want to Promote a server.
+             * @return the next definition stage.
+             */
+            Update withReplica(Replica replica);
         }
 
         /** The stage of the Server update allowing to specify network. */

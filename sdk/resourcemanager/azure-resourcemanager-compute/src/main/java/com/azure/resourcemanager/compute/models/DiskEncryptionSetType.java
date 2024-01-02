@@ -8,23 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of key used to encrypt the data of the disk. */
+/**
+ * The type of key used to encrypt the data of the disk.
+ */
 public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryptionSetType> {
-    /** Static value EncryptionAtRestWithCustomerKey for DiskEncryptionSetType. */
-    public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY =
-        fromString("EncryptionAtRestWithCustomerKey");
+    /**
+     * Static value EncryptionAtRestWithCustomerKey for DiskEncryptionSetType.
+     */
+    public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY
+        = fromString("EncryptionAtRestWithCustomerKey");
 
-    /** Static value EncryptionAtRestWithPlatformAndCustomerKeys for DiskEncryptionSetType. */
-    public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS =
-        fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
+    /**
+     * Static value EncryptionAtRestWithPlatformAndCustomerKeys for DiskEncryptionSetType.
+     */
+    public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS
+        = fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
 
-    /** Static value ConfidentialVmEncryptedWithCustomerKey for DiskEncryptionSetType. */
-    public static final DiskEncryptionSetType CONFIDENTIAL_VM_ENCRYPTED_WITH_CUSTOMER_KEY =
-        fromString("ConfidentialVmEncryptedWithCustomerKey");
+    /**
+     * Static value ConfidentialVmEncryptedWithCustomerKey for DiskEncryptionSetType.
+     */
+    public static final DiskEncryptionSetType CONFIDENTIAL_VM_ENCRYPTED_WITH_CUSTOMER_KEY
+        = fromString("ConfidentialVmEncryptedWithCustomerKey");
 
     /**
      * Creates a new instance of DiskEncryptionSetType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +41,7 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
 
     /**
      * Creates or finds a DiskEncryptionSetType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskEncryptionSetType.
      */
@@ -44,7 +52,7 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
 
     /**
      * Gets known DiskEncryptionSetType values.
-     *
+     * 
      * @return known DiskEncryptionSetType values.
      */
     public static Collection<DiskEncryptionSetType> values() {

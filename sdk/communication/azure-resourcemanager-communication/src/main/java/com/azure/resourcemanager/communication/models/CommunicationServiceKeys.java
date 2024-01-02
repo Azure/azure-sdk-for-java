@@ -6,25 +6,27 @@ package com.azure.resourcemanager.communication.models;
 
 import com.azure.resourcemanager.communication.fluent.models.CommunicationServiceKeysInner;
 
-/** An immutable client-side representation of CommunicationServiceKeys. */
+/**
+ * An immutable client-side representation of CommunicationServiceKeys.
+ */
 public interface CommunicationServiceKeys {
     /**
      * Gets the primaryKey property: The primary access key.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: The secondary access key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the primaryConnectionString property: CommunicationService connection string constructed via the primaryKey.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     String primaryConnectionString();
@@ -32,14 +34,14 @@ public interface CommunicationServiceKeys {
     /**
      * Gets the secondaryConnectionString property: CommunicationService connection string constructed via the
      * secondaryKey.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     String secondaryConnectionString();
 
     /**
      * Gets the inner com.azure.resourcemanager.communication.fluent.models.CommunicationServiceKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     CommunicationServiceKeysInner innerModel();

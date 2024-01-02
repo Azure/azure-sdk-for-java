@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Enumeration of supported Text Analysis tasks. */
@@ -42,7 +41,6 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
      * @param name a name to look for.
      * @return the corresponding AnalyzeTextTaskKind.
      */
-    @JsonCreator
     public static AnalyzeTextTaskKind fromString(String name) {
         return fromString(name, AnalyzeTextTaskKind.class);
     }

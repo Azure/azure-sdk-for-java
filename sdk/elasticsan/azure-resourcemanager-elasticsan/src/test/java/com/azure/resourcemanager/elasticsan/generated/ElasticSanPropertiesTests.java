@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanProperties;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -18,13 +19,14 @@ public final class ElasticSanPropertiesTests {
         ElasticSanProperties model =
             BinaryData
                 .fromString(
-                    "{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"aajrm\",\"djwzrlov\",\"clwhijcoejctbz\",\"qsqsy\"],\"provisioningState\":\"Failed\",\"baseSizeTiB\":2042468041956868674,\"extendedCapacitySizeTiB\":922454223620020137,\"totalVolumeSizeGiB\":6954441473774697621,\"volumeGroupCount\":7905979691977489381,\"totalIops\":7972922778163490727,\"totalMBps\":3960203806561274270,\"totalSizeTiB\":8067111908299407616,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{\"id\":\"dtocj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"pmouexhdz\",\"actionsRequired\":\"bqe\"},\"groupIds\":[\"xqbzvddntwnd\",\"icbtwnpzao\",\"vuhrhcffcyddgl\"]},\"id\":\"t\",\"name\":\"jqkwpyeicx\",\"type\":\"qciwqvhkhixuigdt\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"joghmewuama\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ayvvtpgvdf\",\"actionsRequired\":\"otkftutqxlngx\"},\"groupIds\":[\"gug\",\"xkrxdqmi\",\"tthzrvqd\",\"abhjybi\"]},\"id\":\"h\",\"name\":\"qfbow\",\"type\":\"kanyktzlcuiywg\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{\"id\":\"drvyn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"phrcgyncoc\",\"actionsRequired\":\"cfvmmco\"},\"groupIds\":[\"xlzevgbmqjqabcy\",\"mivkwlzuvcc\",\"wnfnbacf\"]},\"id\":\"nlebxetqgtzxd\",\"name\":\"nqbqqwxr\",\"type\":\"feallnwsu\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"ampmngnz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"qwoochcbon\",\"actionsRequired\":\"pkvlrxn\"},\"groupIds\":[\"seiphe\"]},\"id\":\"lokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}]}")
+                    "{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"uigdtopbobjog\",\"m\",\"w\"],\"provisioningState\":\"Invalid\",\"baseSizeTiB\":1066773928950935617,\"extendedCapacitySizeTiB\":5337187329855698822,\"totalVolumeSizeGiB\":1825829126532867613,\"volumeGroupCount\":5532394837865502846,\"totalIops\":6153191727519206956,\"totalMBps\":1144092009173010962,\"totalSizeTiB\":5713676412276621836,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"xlngx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ugnxkrxdqmi\",\"actionsRequired\":\"thz\"},\"groupIds\":[\"drabhjybige\",\"oqfbowskanyk\",\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\"]},\"id\":\"cpecfvmmcoofs\",\"name\":\"lzevgbmqjqab\",\"type\":\"y\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"w\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ccfwnfnbacfion\",\"actionsRequired\":\"bxetqgtzxdpn\"},\"groupIds\":[\"qwxrjfeallnw\"]},\"id\":\"bisnja\",\"name\":\"pmng\",\"type\":\"zscxaqwo\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"onq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lrxnjeaseiphe\",\"actionsRequired\":\"lokeyy\"},\"groupIds\":[\"jbdlwtgrhpdjpju\"]},\"id\":\"sxazjpq\",\"name\":\"e\",\"type\":\"ualhbxxhejj\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{\"id\":\"dgwdslfhot\"},\"privateLinkServiceConnectionState\":{\"status\":\"Failed\",\"description\":\"npwlbjnpg\",\"actionsRequired\":\"ftadehxnltyfs\"},\"groupIds\":[\"usue\",\"nzwdejba\"]},\"id\":\"rxzdmohctbqvudwx\",\"name\":\"ndnvo\",\"type\":\"gujjugwdkcglh\"}],\"publicNetworkAccess\":\"Enabled\"}")
                 .toObject(ElasticSanProperties.class);
         Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("aajrm", model.availabilityZones().get(0));
-        Assertions.assertEquals(2042468041956868674L, model.baseSizeTiB());
-        Assertions.assertEquals(922454223620020137L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("uigdtopbobjog", model.availabilityZones().get(0));
+        Assertions.assertEquals(1066773928950935617L, model.baseSizeTiB());
+        Assertions.assertEquals(5337187329855698822L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,14 +34,16 @@ public final class ElasticSanPropertiesTests {
         ElasticSanProperties model =
             new ElasticSanProperties()
                 .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withAvailabilityZones(Arrays.asList("aajrm", "djwzrlov", "clwhijcoejctbz", "qsqsy"))
-                .withBaseSizeTiB(2042468041956868674L)
-                .withExtendedCapacitySizeTiB(922454223620020137L);
+                .withAvailabilityZones(Arrays.asList("uigdtopbobjog", "m", "w"))
+                .withBaseSizeTiB(1066773928950935617L)
+                .withExtendedCapacitySizeTiB(5337187329855698822L)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanProperties.class);
         Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("aajrm", model.availabilityZones().get(0));
-        Assertions.assertEquals(2042468041956868674L, model.baseSizeTiB());
-        Assertions.assertEquals(922454223620020137L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("uigdtopbobjog", model.availabilityZones().get(0));
+        Assertions.assertEquals(1066773928950935617L, model.baseSizeTiB());
+        Assertions.assertEquals(5337187329855698822L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 }

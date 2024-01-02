@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of the operation. */
+/**
+ * The status of the operation.
+ */
 @Fluent
 public final class SsisObjectMetadataStatusResponse {
     /*
@@ -34,12 +36,15 @@ public final class SsisObjectMetadataStatusResponse {
     @JsonProperty(value = "error")
     private String error;
 
-    /** Creates an instance of SsisObjectMetadataStatusResponse class. */
-    public SsisObjectMetadataStatusResponse() {}
+    /**
+     * Creates an instance of SsisObjectMetadataStatusResponse class.
+     */
+    public SsisObjectMetadataStatusResponse() {
+    }
 
     /**
      * Get the status property: The status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -48,7 +53,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Set the status property: The status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
@@ -59,7 +64,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +73,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
@@ -79,7 +84,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Get the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     public String getProperties() {
@@ -88,7 +93,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Set the properties property: The operation properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
@@ -99,7 +104,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Get the error property: The operation error message.
-     *
+     * 
      * @return the error value.
      */
     public String getError() {
@@ -108,7 +113,7 @@ public final class SsisObjectMetadataStatusResponse {
 
     /**
      * Set the error property: The operation error message.
-     *
+     * 
      * @param error the error value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */

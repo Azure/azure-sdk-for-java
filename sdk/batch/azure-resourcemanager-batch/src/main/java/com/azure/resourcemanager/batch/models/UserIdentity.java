@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The definition of the user identity under which the task is run.
- *
- * <p>Specify either the userName or autoUser property, but not both.
+ * 
+ * Specify either the userName or autoUser property, but not both.
  */
 @Fluent
 public final class UserIdentity {
     /*
      * The name of the user identity under which the task is run.
-     *
+     * 
      * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
      */
     @JsonProperty(value = "userName")
@@ -24,21 +24,23 @@ public final class UserIdentity {
 
     /*
      * Specifies the parameters for the auto user that runs a task on the Batch service.
-     *
+     * 
      * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
      */
     @JsonProperty(value = "autoUser")
     private AutoUserSpecification autoUser;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     public UserIdentity() {
     }
 
     /**
      * Get the username property: The name of the user identity under which the task is run.
-     *
-     * <p>The userName and autoUser properties are mutually exclusive; you must specify one but not both.
-     *
+     * 
+     * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * 
      * @return the username value.
      */
     public String username() {
@@ -47,9 +49,9 @@ public final class UserIdentity {
 
     /**
      * Set the username property: The name of the user identity under which the task is run.
-     *
-     * <p>The userName and autoUser properties are mutually exclusive; you must specify one but not both.
-     *
+     * 
+     * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * 
      * @param username the username value to set.
      * @return the UserIdentity object itself.
      */
@@ -60,9 +62,9 @@ public final class UserIdentity {
 
     /**
      * Get the autoUser property: Specifies the parameters for the auto user that runs a task on the Batch service.
-     *
-     * <p>The userName and autoUser properties are mutually exclusive; you must specify one but not both.
-     *
+     * 
+     * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * 
      * @return the autoUser value.
      */
     public AutoUserSpecification autoUser() {
@@ -71,9 +73,9 @@ public final class UserIdentity {
 
     /**
      * Set the autoUser property: Specifies the parameters for the auto user that runs a task on the Batch service.
-     *
-     * <p>The userName and autoUser properties are mutually exclusive; you must specify one but not both.
-     *
+     * 
+     * The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * 
      * @param autoUser the autoUser value to set.
      * @return the UserIdentity object itself.
      */
@@ -84,7 +86,7 @@ public final class UserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

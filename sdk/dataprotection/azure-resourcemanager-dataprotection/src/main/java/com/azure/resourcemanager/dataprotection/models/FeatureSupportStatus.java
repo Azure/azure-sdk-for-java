@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** feature support status. */
+/**
+ * feature support status.
+ */
 public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupportStatus> {
-    /** Static value Invalid for FeatureSupportStatus. */
+    /**
+     * Static value Invalid for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus INVALID = fromString("Invalid");
 
-    /** Static value NotSupported for FeatureSupportStatus. */
+    /**
+     * Static value NotSupported for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus NOT_SUPPORTED = fromString("NotSupported");
 
-    /** Static value AlphaPreview for FeatureSupportStatus. */
+    /**
+     * Static value AlphaPreview for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus ALPHA_PREVIEW = fromString("AlphaPreview");
 
-    /** Static value PrivatePreview for FeatureSupportStatus. */
+    /**
+     * Static value PrivatePreview for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus PRIVATE_PREVIEW = fromString("PrivatePreview");
 
-    /** Static value PublicPreview for FeatureSupportStatus. */
+    /**
+     * Static value PublicPreview for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus PUBLIC_PREVIEW = fromString("PublicPreview");
 
-    /** Static value GenerallyAvailable for FeatureSupportStatus. */
+    /**
+     * Static value GenerallyAvailable for FeatureSupportStatus.
+     */
     public static final FeatureSupportStatus GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
 
     /**
      * Creates a new instance of FeatureSupportStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupp
 
     /**
      * Creates or finds a FeatureSupportStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FeatureSupportStatus.
      */
@@ -50,7 +64,7 @@ public final class FeatureSupportStatus extends ExpandableStringEnum<FeatureSupp
 
     /**
      * Gets known FeatureSupportStatus values.
-     *
+     * 
      * @return known FeatureSupportStatus values.
      */
     public static Collection<FeatureSupportStatus> values() {
