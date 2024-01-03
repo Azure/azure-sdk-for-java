@@ -90,7 +90,7 @@
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
-      <version>4.5.7.201904151645-r</version> <!-- {x-version-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
+      <version>6.6.1.202309021850-r</version> <!-- {x-version-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.docker-java</groupId>
