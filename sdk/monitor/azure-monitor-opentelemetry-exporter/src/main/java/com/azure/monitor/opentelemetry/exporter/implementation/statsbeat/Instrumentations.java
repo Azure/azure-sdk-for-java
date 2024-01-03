@@ -103,9 +103,8 @@ public class Instrumentations {
         INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webmvc-5.3", 77);
         INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webmvc-6.0", 78);
         INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webflux-5.3", 79);
-        INSTRUMENTATION_MAP.put("io.opentelemetry.oshi", 80);
-        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java8", 81);
-        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java17", 82);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java8", 80);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java17", 81);
     }
 
     // encode BitSet to a long
