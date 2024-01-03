@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "baseName": {
@@ -16,35 +16,21 @@
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
     },
+    "endpointPrefix": {
+      "defaultValue": "documentintelligence",
+      "type": "string"
+    },
+    "cognitiveServicesEndpointSuffix": {
+      "defaultValue": ".cognitiveservices.azure.com",
+      "type": "string"
+    },
     "testApplicationOid": {
       "type": "string",
       "metadata": {
         "description": "The principal to assign the role to. This is application object id."
       }
     },
-    "tenantId": {
-      "type": "string",
-      "metadata": {
-        "description": "The tenant id to which the application and resources belong."
-      }
-    },
-    "testApplicationId": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client id used to run tests."
-      }
-    },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
-    },
-    "documentIntelligenceEndpointSuffix": {
-      "defaultValue": ".cognitiveservices.azure.com/",
-      "type": "string"
-    },
-    "blobStorageAccount": {
+    "trainingDataAccount": {
       "type": "string",
       "defaultValue": "azuresdktrainingdata"
     },
@@ -52,15 +38,28 @@
       "type": "string",
       "defaultValue": "trainingdata"
     },
-    "blobResourceId": {
+    "classifierTrainingDataContainer": {
       "type": "string",
-      "defaultValue": "[resourceId(subscription().subscriptionId, 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
+      "defaultValue": "training-data-classifier"
+    },
+    "trainingDataResourceId": {
+      "type": "string",
+      "defaultValue": "[resourceId('TrainingData', 'Microsoft.Storage/storageAccounts', parameters('trainingDataAccount'))]"
     },
     "trainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('trainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "classifierTrainingSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('classifierTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -72,8 +71,8 @@
     "testingDataSasProperties": {
       "type": "object",
       "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('testingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('testingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -85,8 +84,8 @@
     "multiPageTestingDataSasProperties": {
       "type": "object",
       "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('multiPageTestingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('multiPageTestingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
@@ -98,120 +97,78 @@
     "selectionMarkTrainingDataSasProperties": {
       "type": "object",
       "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('selectionMarkTrainingDataContainer'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
-        "signedPermission": "rl",
-        "signedResource": "c"
-      }
-    },
-    "trainingDataClassifier": {
-      "type": "string",
-      "defaultValue": "training-data-classifier"
-    },
-    "trainingDataClassifierSasProperties": {
-      "type": "object",
-      "defaultValue": {
-        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataClassifier'))]",
-        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "canonicalizedResource": "[concat('/blob/', parameters('trainingDataAccount'), '/', parameters('selectionMarkTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
       }
     }
   },
   "variables": {
-    "authorizationApiVersion": "2018-09-01-preview",
-    "documentIntelligenceBaseName": "[concat('documentintelligence', parameters('baseName'))]",
-    "documentIntelligenceApiVersion": "2017-04-18",
-    "azureDocumentIntelligenceUrl": "[concat('https://', variables('documentIntelligenceBaseName'), parameters('documentIntelligenceEndpointSuffix'))]",
-    "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]",
+    "uniqueSubDomainName": "[format('{0}-{1}', parameters('baseName'), parameters('endpointPrefix'))]",
+    "endpointValue": "[format('https://{0}-{1}{2}', parameters('baseName'), parameters('endpointPrefix'), parameters('cognitiveServicesEndpointSuffix'))]"
   },
   "resources": [
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "[variables('authorizationApiVersion')]",
-      "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), variables('documentIntelligenceBaseName')))]",
-      "dependsOn": [
-        "[variables('documentIntelligenceBaseName')]"
-      ],
-      "properties": {
-        "principalId": "[parameters('testApplicationOid')]",
-        "roleDefinitionId": "[variables('cognitiveServiceUserRoleId')]"
-      }
-    },
-    {
       "type": "Microsoft.CognitiveServices/accounts",
-      "name": "[variables('documentIntelligenceBaseName')]",
-      "apiVersion": "[variables('documentIntelligenceApiVersion')]",
+      "apiVersion": "2017-04-18",
+      "name": "[variables('uniqueSubDomainName')]",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "S0"
       },
-      "kind": "DocumentIntelligence",
-      "location": "[parameters('location')]",
+      "kind": "FormRecognizer",
       "properties": {
-        "customSubDomainName": "[variables('documentIntelligenceBaseName')]"
+        "customSubDomainName": "[variables('uniqueSubDomainName')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id)]",
+      "properties": {
+        "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
       }
     }
   ],
   "outputs": {
-    "AZURE_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
-    "AZURE_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationId')]"
-    },
-    "AZURE_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
-    "DOCUMENTINTELLIGENCE_NAME": {
-      "type": "string",
-      "value": "[variables('documentIntelligenceBaseName')]"
-    },
     "DOCUMENTINTELLIGENCE_API_KEY": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('documentIntelligenceBaseName')), variables('documentIntelligenceApiVersion')).key1]"
+      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts',variables('uniqueSubDomainName')), '2017-04-18').key1]"
     },
     "DOCUMENTINTELLIGENCE_ENDPOINT": {
       "type": "string",
-      "value": "[variables('azureDocumentIntelligenceUrl')]"
-    },
-    "DOCUMENTINTELLIGENCE_TARGET_API_KEY": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('documentIntelligenceBaseName')), variables('documentIntelligenceApiVersion')).key1]"
-    },
-    "DOCUMENTINTELLIGENCE_TARGET_ENDPOINT": {
-      "type": "string",
-      "value": "[variables('azureDocumentIntelligenceUrl')]"
-    },
-    "DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('selectionMarkTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('selectionMarkTrainingDataSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_SAS_URL": {
-      "type": "string",
-      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataClassifier'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataClassifierSasProperties')).serviceSasToken)]"
-    },
-    "DOCUMENTINTELLIGENCE_REGION": {
-      "type": "string",
-      "value": "[parameters('location')]"
+      "value": "[variables('endpointValue')]"
     },
     "DOCUMENTINTELLIGENCE_RESOURCE_ID": {
       "type": "string",
-      "value": "[resourceId('Microsoft.CognitiveServices/accounts', variables('documentIntelligenceBaseName'))]"
+      "value": "[resourceId('Microsoft.CognitiveServices/accounts', variables('uniqueSubDomainName'))]"
+    },
+    "DOCUMENTINTELLIGENCE_RESOURCE_REGION": {
+      "type": "string",
+      "value": "[parameters('location')]"
+    },
+    "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('classifierTrainingDataContainer'), '?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('classifierTrainingSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('selectionMarkTrainingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('selectionMarkTrainingDataContainer'), '?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('trainingDataResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('trainingDataResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
     }
   }
 }
