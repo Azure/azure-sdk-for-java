@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workspaces. */
+/**
+ * Resource collection API of Workspaces.
+ */
 public interface Workspaces {
     /**
      * Lists all the available workspaces under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of workspace object with a next link as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface Workspaces {
 
     /**
      * Lists all the available workspaces under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface Workspaces {
 
     /**
      * Lists all the available workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface Workspaces {
 
     /**
      * Lists all the available workspaces under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,19 +57,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified workspace.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified workspace.
-     */
-    Workspace getByResourceGroup(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets the properties of the specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -79,8 +69,20 @@ public interface Workspaces {
     Response<Workspace> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName, Context context);
 
     /**
+     * Gets the properties of the specified workspace.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified workspace.
+     */
+    Workspace getByResourceGroup(String resourceGroupName, String workspaceName);
+
+    /**
      * Deletes a specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface Workspaces {
 
     /**
      * Deletes a specified workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -103,7 +105,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,7 +116,7 @@ public interface Workspaces {
 
     /**
      * Gets the properties of the specified workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +128,7 @@ public interface Workspaces {
 
     /**
      * Deletes a specified workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,7 +138,7 @@ public interface Workspaces {
 
     /**
      * Deletes a specified workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +149,7 @@ public interface Workspaces {
 
     /**
      * Begins definition for a new Workspace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workspace definition.
      */

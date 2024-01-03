@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -56,8 +57,8 @@ public final class CosmosContainerProperties {
         documentCollection.setPartitionKey(partitionKeyDefinition);
     }
 
-    CosmosContainerProperties(String json) {
-        this.documentCollection = new DocumentCollection(json);
+    CosmosContainerProperties(ObjectNode jsonNode) {
+        this.documentCollection = new DocumentCollection(jsonNode);
     }
 
     // Converting container to CosmosContainerProperties

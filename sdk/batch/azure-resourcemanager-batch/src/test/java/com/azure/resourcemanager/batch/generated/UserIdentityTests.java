@@ -14,28 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class UserIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"userName\":\"iirqtd\",\"autoUser\":{\"scope\":\"Pool\",\"elevationLevel\":\"NonAdmin\"}}")
-                .toObject(UserIdentity.class);
-        Assertions.assertEquals("iirqtd", model.username());
-        Assertions.assertEquals(AutoUserScope.POOL, model.autoUser().scope());
+        UserIdentity model = BinaryData
+            .fromString(
+                "{\"userName\":\"varmywdmj\",\"autoUser\":{\"scope\":\"Task\",\"elevationLevel\":\"NonAdmin\"}}")
+            .toObject(UserIdentity.class);
+        Assertions.assertEquals("varmywdmj", model.username());
+        Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.autoUser().elevationLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserIdentity model =
-            new UserIdentity()
-                .withUsername("iirqtd")
-                .withAutoUser(
-                    new AutoUserSpecification()
-                        .withScope(AutoUserScope.POOL)
-                        .withElevationLevel(ElevationLevel.NON_ADMIN));
+        UserIdentity model = new UserIdentity().withUsername("varmywdmj").withAutoUser(
+            new AutoUserSpecification().withScope(AutoUserScope.TASK).withElevationLevel(ElevationLevel.NON_ADMIN));
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
-        Assertions.assertEquals("iirqtd", model.username());
-        Assertions.assertEquals(AutoUserScope.POOL, model.autoUser().scope());
+        Assertions.assertEquals("varmywdmj", model.username());
+        Assertions.assertEquals(AutoUserScope.TASK, model.autoUser().scope());
         Assertions.assertEquals(ElevationLevel.NON_ADMIN, model.autoUser().elevationLevel());
     }
 }

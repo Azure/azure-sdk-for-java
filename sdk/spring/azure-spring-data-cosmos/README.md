@@ -622,9 +622,10 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
     return content;
 }
 ```
-### Using Azure Cosmos Client through Spring Data Cosmos
-- Azure-spring-data-cosmos supports using Azure Cosmos Client through Spring Data Cosmos. 
-- Users can get `CosmosClient` or `CosmosAsyncClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos Client.
+### Using Azure Cosmos DB Java SDK through Spring Data Cosmos
+- Azure-spring-data-cosmos supports using Azure Cosmos DB Java SDK through Spring Data Cosmos.
+- Users can get `CosmosClient` or `CosmosAsyncClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos DB Java SDK.
+- Refer to [Azure Cosmos DB Java SDK samples][azure_cosmos_db_java_sdk_samples] for more information on how to execute operations.
 - Example:
 ```java readme-sample-CosmosClientBeanCodeSnippet
 @SpringBootApplication
@@ -1129,5 +1130,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 [spring_version_mapping]: https://aka.ms/spring/versions
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
+[azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

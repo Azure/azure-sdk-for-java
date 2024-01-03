@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.25.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.25.0 (2024-01-03)
 
 #### Other Changes
+* Perf-improvement avoiding extra-buffer copy for query and point operations - See [PR 38072](https://github.com/Azure/azure-sdk-for-java/pull/38072)
 
 ### 4.24.1 (2023-12-06)
 

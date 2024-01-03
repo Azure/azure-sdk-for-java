@@ -6,28 +6,23 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class BatchResponseParser {
-
-    private final static Logger logger = LoggerFactory.getLogger(BatchResponseParser.class);
-    private final static char HYBRID_V1 = 129;
 
     /** Creates a transactional batch response from a documentServiceResponse.
      *
@@ -44,9 +39,9 @@ public final class BatchResponseParser {
         final boolean shouldPromoteOperationStatus) {
 
         CosmosBatchResponse response = null;
-        final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
+        final JsonNode responseContentAsJson = documentServiceResponse.getResponseBody();
 
-        if (responseContent != null && responseContent.length > 0) {
+        if (responseContentAsJson != null) {
             response = BatchResponseParser.populateFromResponseContent(documentServiceResponse, request, shouldPromoteOperationStatus);
 
             if (response == null) {
@@ -105,31 +100,21 @@ public final class BatchResponseParser {
         final boolean shouldPromoteOperationStatus) {
 
         final List<CosmosBatchOperationResult> results = new ArrayList<>(request.getOperations().size());
-        final byte[] responseContent = documentServiceResponse.getResponseBodyAsByteArray();
+        final ArrayNode responseContent = (ArrayNode)documentServiceResponse.getResponseBody();
+        final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
+        final ObjectNode[] objectNodes = new ObjectNode[responseContent.size()];
+        int i = 0;
+        for (Iterator<JsonNode> it = responseContent.iterator(); it.hasNext(); ) {
+            JsonNode arrayItemNode = it.next();
+            objectNodes[i] = (ObjectNode)arrayItemNode;
+            i++;
+        }
 
-        if (responseContent[0] != (byte)HYBRID_V1) {
-            // Read from a json response body. To enable hybrid row just complete the else part
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+        for (int index = 0; index < objectNodes.length; index++) {
+            ObjectNode objectInArray = objectNodes[index];
 
-            try {
-                final List<CosmosItemOperation> cosmosItemOperations = request.getOperations();
-                final ObjectNode[] objectNodes = mapper.readValue(responseContent, ObjectNode[].class);
-
-                for (int index = 0; index < objectNodes.length; index++) {
-                    ObjectNode objectInArray = objectNodes[index];
-
-                    results.add(
-                        BatchResponseParser.createBatchOperationResultFromJson(objectInArray, cosmosItemOperations.get(index)));
-                }
-            } catch (IOException ex) {
-                logger.error("Exception in parsing response", ex);
-            }
-
-        } else {
-            // TODO(rakkuma): Implement hybrid row response parsing logic here.
-            // Issue: https://github.com/Azure/azure-sdk-for-java/issues/15856
-            logger.error("Hybrid row is not implemented right now");
-            return null;
+            results.add(
+                BatchResponseParser.createBatchOperationResultFromJson(objectInArray, cosmosItemOperations.get(index)));
         }
 
         int responseStatusCode = documentServiceResponse.getStatusCode();

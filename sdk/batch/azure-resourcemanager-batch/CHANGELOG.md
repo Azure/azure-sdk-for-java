@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2023-12-22)
+
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SecurityTypes` was added
+
+* `models.SecurityProfile` was added
+
+* `models.UefiSettings` was added
+
+* `models.ManagedDisk` was added
+
+* `models.ServiceArtifactReference` was added
+
+#### `models.VirtualMachineConfiguration` was modified
+
+* `securityProfile()` was added
+* `serviceArtifactReference()` was added
+* `withServiceArtifactReference(models.ServiceArtifactReference)` was added
+* `withSecurityProfile(models.SecurityProfile)` was added
+
+#### `models.OSDisk` was modified
+
+* `diskSizeGB()` was added
+* `withDiskSizeGB(java.lang.Integer)` was added
+* `withWriteAcceleratorEnabled(java.lang.Boolean)` was added
+* `withCaching(models.CachingType)` was added
+* `caching()` was added
+* `managedDisk()` was added
+* `writeAcceleratorEnabled()` was added
+* `withManagedDisk(models.ManagedDisk)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withResourceTags(java.util.Map)` was added
+
+#### `models.Pool` was modified
+
+* `resourceTags()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withResourceTags(java.util.Map)` was added
 
 ## 1.1.0-beta.2 (2023-07-26)
 

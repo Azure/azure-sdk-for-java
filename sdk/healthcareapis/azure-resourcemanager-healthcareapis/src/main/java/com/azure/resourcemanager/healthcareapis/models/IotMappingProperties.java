@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The mapping content. */
+/**
+ * The mapping content.
+ */
 @Fluent
 public final class IotMappingProperties {
     /*
@@ -17,8 +19,14 @@ public final class IotMappingProperties {
     private Object content;
 
     /**
+     * Creates an instance of IotMappingProperties class.
+     */
+    public IotMappingProperties() {
+    }
+
+    /**
      * Get the content property: The mapping.
-     *
+     * 
      * @return the content value.
      */
     public Object content() {
@@ -27,7 +35,7 @@ public final class IotMappingProperties {
 
     /**
      * Set the content property: The mapping.
-     *
+     * 
      * @param content the content value to set.
      * @return the IotMappingProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class IotMappingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

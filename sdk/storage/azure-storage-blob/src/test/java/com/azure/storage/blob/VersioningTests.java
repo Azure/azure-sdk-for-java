@@ -289,8 +289,8 @@ public class VersioningTests extends BlobTestBase {
         BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
         sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
-        SyncPoller<BlobCopyInfo, Void> poller = blobClient.beginCopy(sourceBlob.getBlobUrl(),
-            getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            blobClient.beginCopy(sourceBlob.getBlobUrl(), null));
         BlobCopyInfo copyInfo = poller.waitForCompletion().getValue();
 
         assertNotNull(copyInfo.getVersionId());
