@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PhoneNumberCost model. */
 @Immutable
-public final class PhoneNumberCost {
+public class PhoneNumberCost {
     /*
      * The cost amount.
      */
