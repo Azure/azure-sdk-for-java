@@ -4,6 +4,7 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.implementation.BlocklistClientImpl;
+import com.azure.ai.contentsafety.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsOptions;
 import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsResult;
 import com.azure.ai.contentsafety.models.RemoveTextBlocklistItemsOptions;
@@ -134,8 +135,6 @@ public final class BlocklistAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(String name, BinaryData options,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
-        // 'application/merge-patch+json'
         return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(name, options, requestOptions);
     }
 
@@ -557,5 +556,32 @@ public final class BlocklistAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return removeBlocklistItemsWithResponse(name, BinaryData.fromObject(options), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create Or Update Text Blocklist
+     *
+     * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
+     *
+     * @param name Text blocklist name.
+     * @param options The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return text Blocklist on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TextBlocklist> createOrUpdateTextBlocklist(String name, TextBlocklist options) {
+        // Generated convenience method for createOrUpdateTextBlocklistWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, true);
+        BinaryData optionsInBinaryData = BinaryData.fromString(BinaryData.fromObject(options).toString());
+        JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, false);
+        return createOrUpdateTextBlocklistWithResponse(name, optionsInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
     }
 }
