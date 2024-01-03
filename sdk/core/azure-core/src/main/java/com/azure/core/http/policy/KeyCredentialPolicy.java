@@ -22,6 +22,41 @@ import java.util.Objects;
  * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
  * an exception will be thrown to prevent leaking the key.
  */
+
+/**
+ * The {@code KeyCredentialPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
+ * uses a {@link KeyCredential} to set the authorization key for a request in the form of a header.
+ *
+ * <p>This class is useful when you need to authorize requests with a key. It ensures that the requests are sent over
+ * HTTPS to prevent the key from being leaked. The key is set in the header of the HTTP request.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <p>In this example, a {@code KeyCredentialPolicy} is created with a key and a header name. The policy is then added
+ * to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will
+ * include the specified header with the key as its value.</p>
+ *
+ * <pre>
+ * {@code
+ * KeyCredential credential = new KeyCredential("my_key");
+ * KeyCredentialPolicy policy = new KeyCredentialPolicy("my_header", credential);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(policy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.credential.KeyCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.HttpHeaders
+ */
 public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
     private final HttpHeaderName name;

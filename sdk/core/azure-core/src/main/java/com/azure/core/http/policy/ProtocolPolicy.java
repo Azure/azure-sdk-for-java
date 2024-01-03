@@ -16,6 +16,38 @@ import java.net.MalformedURLException;
 /**
  * The pipeline policy that adds a given protocol to each HttpRequest.
  */
+
+/**
+ * The {@code ProtocolPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * used to add a specific protocol to each {@code HttpRequest}.
+ *
+ * <p>This class is useful when you need to set a specific protocol for all requests in a pipeline. It ensures that the
+ * protocol is set correctly for each request.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <p>In this example, a {@code ProtocolPolicy} is created with a protocol of "https" and an overwrite flag set to
+ * true. The policy is then added to the pipeline. The pipeline is used to send an HTTP request, and the response is
+ * retrieved. The request will have its protocol set to "https" by the {@code ProtocolPolicy}.</p>
+ *
+ * <pre>
+ * {@code
+ * ProtocolPolicy protocolPolicy = new ProtocolPolicy("https", true);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(protocolPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ */
 public class ProtocolPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ProtocolPolicy.class);
     private final String protocol;

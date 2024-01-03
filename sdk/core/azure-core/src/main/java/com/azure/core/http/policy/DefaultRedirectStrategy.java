@@ -17,9 +17,39 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * A default implementation of {@link RedirectStrategy} that uses the provided maximum retry attempts,
- * header name to look up redirect url value for, http methods and a known set of
- * redirect status response codes (301, 302, 307, 308) to determine if request should be redirected.
+ * The {@code DefaultRedirectStrategy} class is an implementation of the {@link RedirectStrategy} interface. This
+ * strategy uses the provided maximum retry attempts, header name to look up redirect URL value for, HTTP methods and
+ * a known set of redirect status response codes (301, 302, 307, 308) to determine if a request should be redirected.
+ *
+ * <p>This class is useful when you need to handle HTTP redirects. It ensures that the requests are redirected
+ * correctly based on the response status code and the maximum number of redirect attempts.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * DefaultRedirectStrategy redirectStrategy = new DefaultRedirectStrategy(3, "Location", EnumSet.of(HttpMethod.GET, HttpMethod.HEAD));
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(new RetryPolicy(), new CustomPolicy(), new RedirectPolicy(redirectStrategy))
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, a {@code DefaultRedirectStrategy} is created with a maximum of 3 redirect attempts,
+ * "Location" as the header name to locate the redirect URL, and GET and HEAD as the allowed methods for performing
+ * the redirect. The strategy is then used in a {@code RedirectPolicy} which is added to the pipeline. The pipeline
+ * is used to send an HTTP request, and the response is retrieved. If the server responds with a redirect status code
+ * and provides a "Location" header, the request will be redirected up to 3 times as needed.</p>
+ *
+ * @see com.azure.core.http.policy.RedirectStrategy
+ * @see com.azure.core.http.policy.RedirectPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultRedirectStrategy.class);

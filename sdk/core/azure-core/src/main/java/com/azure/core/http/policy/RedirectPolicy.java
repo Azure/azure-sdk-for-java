@@ -16,8 +16,39 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as
- * {@link HttpResponse response}.
+ * The {@code RedirectPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
+ * handles HTTP redirects by determining if an HTTP request should be redirected based on the received
+ * {@link HttpResponse}.
+ *
+ * <p>This class is useful when you need to handle HTTP redirects in a pipeline. It uses a {@link RedirectStrategy} to
+ * decide if a request should be redirected. By default, it uses the {@link DefaultRedirectStrategy}, which redirects
+ * the request based on the HTTP status code of the response.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <p>In this example, a {@code RedirectPolicy} is created and added to the pipeline. The pipeline is used to send an
+ * HTTP request, and the response is retrieved. If the server responds with a redirect status code, the request will
+ * be redirected according to the {@link RedirectStrategy} used by the {@code RedirectPolicy}.</p>
+ *
+ * <pre>
+ * {@code
+ * RedirectPolicy redirectPolicy = new RedirectPolicy();
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(redirectPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.RedirectStrategy
+ * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;

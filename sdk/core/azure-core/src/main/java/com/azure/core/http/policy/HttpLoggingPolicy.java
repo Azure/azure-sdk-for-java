@@ -48,7 +48,42 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * The pipeline policy that handles logging of HTTP requests and responses.
+ * The {@code HttpLoggingPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface.
+ * This policy handles logging of HTTP requests and responses based on the provided {@link HttpLogOptions}.
+ *
+ * <p>This class is useful when you need to log HTTP traffic for debugging or auditing purposes. It allows you to
+ * control the amount of information that is logged, including the URL, headers, and body of requests and responses.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * HttpLogOptions logOptions = new HttpLogOptions();
+ * logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+ *
+ * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(loggingPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code HttpLogOptions} is created and the log level is set to
+ * {@code HttpLogDetailLevel.BODY_AND_HEADERS}. This means that the URL, HTTP method, headers, and body content of
+ * each request and response will be logged. The {@code HttpLogOptions} is then used to create an
+ * {@code HttpLoggingPolicy}, which is added to the pipeline. The pipeline is used to send an HTTP request, and the
+ * response is retrieved.</p>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.HttpLogOptions
+ * @see com.azure.core.http.policy.HttpLogDetailLevel
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();

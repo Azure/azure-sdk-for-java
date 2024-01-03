@@ -8,10 +8,40 @@ import com.azure.core.credential.AzureKeyCredential;
 import java.util.Objects;
 
 /**
- * Pipeline policy that uses an {@link AzureKeyCredential} to set the authorization key for a request.
- * <p>
- * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the key.
+ * The {@code AzureKeyCredentialPolicy} class is an implementation of the {@link KeyCredentialPolicy} interface. This
+ * policy uses an {@link AzureKeyCredential} to set the authorization key for a request.
+ *
+ * <p>This class is useful when you need to authorize requests with a key from Azure. It ensures that the requests are
+ * sent over HTTPS to prevent the key from being leaked.</p>
+ *
+ * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using
+ * {@code HTTPS} an exception will be thrown to prevent leaking the key.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * AzureKeyCredential credential = new AzureKeyCredential("my_key");
+ * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy("my_header", credential);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(policy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code AzureKeyCredentialPolicy} is created with a key and a header name. The policy is then
+ * added to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will
+ * include the specified header with the key as its value.</p>
+ *
+ * @see com.azure.core.http.policy.KeyCredentialPolicy
+ * @see com.azure.core.credential.AzureKeyCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
     /**

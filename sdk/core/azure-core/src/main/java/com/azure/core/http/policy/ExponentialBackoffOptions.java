@@ -8,9 +8,44 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 
 /**
- * The configuration for exponential backoff that has a delay duration that exponentially
- * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
- * provided max delay duration.
+ * <p>The {@code ExponentialBackoffOptions} class provides configuration options for the {@link ExponentialBackoff}
+ * retry strategy. This strategy uses a delay duration that exponentially increases with each retry attempt until an
+ * upper bound is reached. After reaching the upper bound, every retry attempt is delayed by the provided max delay
+ * duration.</p>
+ *
+ * <p>This class is useful when you need to customize the behavior of the exponential backoff strategy. It allows you
+ * to specify the maximum number of retry attempts, the base delay duration, and the maximum delay duration.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * ExponentialBackoffOptions options = new ExponentialBackoffOptions()
+ *     .setMaxRetries(5)
+ *     .setBaseDelay(Duration.ofSeconds(1))
+ *     .setMaxDelay(Duration.ofSeconds(10));
+ *
+ * ExponentialBackoff retryStrategy = new ExponentialBackoff(options);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code ExponentialBackoffOptions} is created and used to configure an
+ * {@code ExponentialBackoff} retry strategy. The strategy is then used in a {@code RetryPolicy} which is added to the
+ * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. If the server responds with a
+ * transient error, the request will be retried with an exponentially increasing delay.</p>
+ *
+ * @see com.azure.core.http.policy.ExponentialBackoff
+ * @see com.azure.core.http.policy.RetryPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class ExponentialBackoffOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffOptions.class);

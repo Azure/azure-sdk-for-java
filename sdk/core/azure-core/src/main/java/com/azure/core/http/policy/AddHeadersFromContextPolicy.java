@@ -34,6 +34,11 @@ import reactor.core.publisher.Mono;
  *       new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
  * // Above three HttpHeader will be added in outgoing HttpRequest.
  * </pre>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
 

@@ -14,7 +14,35 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 
 /**
- * The pipeline policy that adds the given host to each HttpRequest.
+ * The {@code HostPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
+ * to add a specific host to each HTTP request.
+ *
+ * <p>This class is useful when you need to set a specific host for all requests in a pipeline. It ensures that the
+ * host is set correctly for each request.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * HostPolicy hostPolicy = new HostPolicy("www.example.com");
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(hostPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, a {@code HostPolicy} is created with a host of "www.example.com". The policy is then added to
+ * the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will have
+ * its host set to "www.example.com" by the {@code HostPolicy}.</p>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class HostPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HostPolicy.class);

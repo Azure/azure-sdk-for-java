@@ -10,7 +10,48 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * This class handles adding SPI plug-able policies to a pipeline automatically.
+ * The {@code HttpPolicyProviders} class is responsible for adding Service Provider Interface (SPI) pluggable policies
+ * to an HTTP pipeline automatically.
+ *
+ * <p>This class is useful when you need to add custom policies to the HTTP pipeline that are loaded using Java's
+ * {@link ServiceLoader}. It provides methods to add policies before and after the retry policy in the pipeline.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * List<HttpPipelinePolicy> policies = new ArrayList<>();
+ *
+ * // Add policies that should be executed before the retry policy
+ * HttpPolicyProviders.addBeforeRetryPolicies(policies);
+ *
+ * // Add the retry policy
+ * policies.add(new RetryPolicy());
+ *
+ * // Add policies that should be executed after the retry policy
+ * HttpPolicyProviders.addAfterRetryPolicies(policies);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(policies)
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an empty list of policies is created. Then, the
+ * {@code HttpPolicyProviders.addBeforeRetryPolicies} method is used to add policies that should be executed before
+ * the retry policy. The retry policy is added to the list. The {@code HttpPolicyProviders.addAfterRetryPolicies}
+ * method is used to add policies that should be executed after the retry policy. The list of policies is then used to
+ * build an HTTP pipeline. The pipeline is used to send an HTTP request, and the response is retrieved.</p>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.BeforeRetryPolicyProvider
+ * @see com.azure.core.http.policy.AfterRetryPolicyProvider
  */
 public final class HttpPolicyProviders {
     private static final String INVALID_POLICY = "HttpPipelinePolicy created with %s resulted in a null policy.";

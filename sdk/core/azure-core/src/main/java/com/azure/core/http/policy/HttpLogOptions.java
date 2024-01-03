@@ -15,7 +15,46 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * The log configurations for HTTP messages.
+ * The {@code HttpLogOptions} class provides configuration options for HTTP logging. This includes setting the log level,
+ * specifying allowed header names and query parameters for logging, and controlling whether to pretty print the body
+ * of HTTP messages.
+ *
+ * <p>This class is useful when you need to control the amount of information that is logged during the execution of
+ * HTTP requests and responses. It allows you to specify the log level, which determines the amount of detail included
+ * in the logs (such as the URL, headers, and body of requests and responses).</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * HttpLogOptions logOptions = new HttpLogOptions();
+ * logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+ * logOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList("Date", "x-ms-request-id")));
+ * logOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList("api-version")));
+ * logOptions.setPrettyPrintBody(true);
+ *
+ * HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(loggingPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, the {@code HttpLogOptions} is created and the log level is set to {@code HttpLogDetailLevel.BODY_AND_HEADERS}.
+ * This means that the URL, HTTP method, headers, and body content of each request and response will be logged.
+ * The allowed header names and query parameters for logging are also specified, and pretty printing of the body is enabled.
+ * The {@code HttpLogOptions} is then used to create an {@code HttpLoggingPolicy}, which is added to the pipeline.
+ * The pipeline is used to send an HTTP request, and the response is retrieved.</p>
+ *
+ * @see com.azure.core.http.policy.HttpLoggingPolicy
+ * @see com.azure.core.http.policy.HttpLogDetailLevel
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class HttpLogOptions {
     private String applicationId;

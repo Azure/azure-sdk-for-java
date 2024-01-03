@@ -8,7 +8,39 @@ import com.azure.core.util.Configuration;
 import static com.azure.core.util.Configuration.getGlobalConfiguration;
 
 /**
- * The level of detail to log on HTTP messages.
+ * The {@code HttpLogDetailLevel} class is an enumeration of the levels of detail to log on HTTP messages.
+ *
+ * <p>This class is useful when you need to control the amount of information that is logged during the execution
+ * of HTTP requests. It provides several levels of detail, ranging from no logging at all to logging of headers and
+ * body content.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * HttpLogOptions logOptions = new HttpLogOptions();
+ * logOptions.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(new HttpLoggingPolicy(logOptions), new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code HttpLogOptions} is created and the log level is set to
+ * {@code HttpLogDetailLevel.BODY_AND_HEADERS}. This means that the URL, HTTP method, headers, and body content of
+ * each request and response will be logged. The {@code HttpLogOptions} is then used to create an
+ * {@code HttpLoggingPolicy}, which is added to the pipeline. The pipeline is used to send an HTTP request, and the
+ * response is retrieved.</p>
+ *
+ * @see com.azure.core.http.policy.HttpLoggingPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.HttpLogOptions
  */
 public enum HttpLogDetailLevel {
     /**

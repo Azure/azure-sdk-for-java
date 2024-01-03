@@ -14,8 +14,37 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
+
 /**
- * The pipeline policy that adds a given port to each {@link HttpRequest}.
+ * The {@code PortPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
+ * to add a specific port to each {@link HttpRequest}.
+ *
+ * <p>This class is useful when you need to set a specific port for all requests in a pipeline. It ensures that the
+ * port is set correctly for each request.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <p>In this example, a {@code PortPolicy} is created with a port of 8080 and an overwrite flag set to true. The
+ * policy is then added to the pipeline. The pipeline is used to send an HTTP request, and the response is retrieved.
+ * The request will have its port set to 8080 by the {@code PortPolicy}.</p>
+ *
+ * <pre>
+ * {@code
+ * PortPolicy portPolicy = new PortPolicy(8080, true);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(portPolicy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class PortPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);

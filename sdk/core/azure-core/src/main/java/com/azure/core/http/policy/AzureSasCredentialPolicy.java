@@ -15,7 +15,37 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
+ * The {@code AzureSasCredentialPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This
+ * policy uses an {@link AzureSasCredential} to append a shared access signature (SAS) to the query string of a request.
+ *
+ * <p>This class is useful when you need to authorize requests with a SAS from Azure. It ensures that the requests are
+ * sent over HTTPS to prevent the SAS from being leaked.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * AzureSasCredential credential = new AzureSasCredential("my_sas");
+ * AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy(credential);
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(policy, new RetryPolicy(), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code AzureSasCredentialPolicy} is created with a SAS. The policy is then added to the
+ * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. The request will include the
+ * SAS appended to its query string.</p>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.credential.AzureSasCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);

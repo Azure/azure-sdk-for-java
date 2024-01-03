@@ -15,9 +15,37 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
 
 /**
- * A truncated exponential backoff implementation of {@link RetryStrategy} that has a delay duration that exponentially
- * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
- * provided max delay duration.
+ * <p>The {@code ExponentialBackoff} class is an implementation of the {@link RetryStrategy} interface. This strategy uses
+ * a delay duration that exponentially increases with each retry attempt until an upper bound is reached, after which
+ * every retry attempt is delayed by the provided max delay duration.</p>
+ *
+ * <p>This class is useful when you need to handle retries for operations that may transiently fail. It ensures that
+ * the retries are performed with an increasing delay to avoid overloading the system.</p>
+ *
+ * <p>Here's a code sample of how to use this class:</p>
+ *
+ * <pre>
+ * {@code
+ * ExponentialBackoff retryStrategy = new ExponentialBackoff();
+ *
+ * HttpPipeline pipeline = new HttpPipelineBuilder()
+ *     .policies(new RetryPolicy(retryStrategy), new CustomPolicy())
+ *     .build();
+ *
+ * HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://example.com"));
+ * HttpResponse response = pipeline.send(request).block();
+ * }
+ * </pre>
+ *
+ * <p>In this example, an {@code ExponentialBackoff} is created and used in a {@code RetryPolicy} which is added to the
+ * pipeline. The pipeline is used to send an HTTP request, and the response is retrieved. If the server responds with a
+ * transient error, the request will be retried with an exponentially increasing delay.</p>
+ *
+ * @see com.azure.core.http.policy.RetryStrategy
+ * @see com.azure.core.http.policy.RetryPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class ExponentialBackoff implements RetryStrategy {
     private static final double JITTER_FACTOR = 0.05;
