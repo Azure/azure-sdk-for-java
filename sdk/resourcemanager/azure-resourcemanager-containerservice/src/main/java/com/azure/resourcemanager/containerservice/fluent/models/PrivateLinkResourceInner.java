@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResourceInner {
     /*
@@ -47,7 +49,9 @@ public final class PrivateLinkResourceInner {
     @JsonProperty(value = "privateLinkServiceID", access = JsonProperty.Access.WRITE_ONLY)
     private String privateLinkServiceId;
 
-    /** Creates an instance of PrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourceInner class.
+     */
     public PrivateLinkResourceInner() {
     }
 
@@ -152,8 +156,8 @@ public final class PrivateLinkResourceInner {
     }
 
     /**
-     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only to
-     * NRP internally.
+     * Get the privateLinkServiceId property: The private link service ID of the resource, this field is exposed only
+     * to NRP internally.
      *
      * @return the privateLinkServiceId value.
      */

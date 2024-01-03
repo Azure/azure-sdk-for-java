@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.OutboundEnvironm
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of OutboundEnvironmentEndpoint. */
+/**
+ * Collection of OutboundEnvironmentEndpoint.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
     /*
@@ -25,7 +27,9 @@ public final class OutboundEnvironmentEndpointCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OutboundEnvironmentEndpointCollection class. */
+    /**
+     * Creates an instance of OutboundEnvironmentEndpointCollection class.
+     */
     public OutboundEnvironmentEndpointCollection() {
     }
 
@@ -65,10 +69,8 @@ public final class OutboundEnvironmentEndpointCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model OutboundEnvironmentEndpointCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model OutboundEnvironmentEndpointCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Virtual Machine Scale Set priority. */
+/**
+ * The Virtual Machine Scale Set priority.
+ */
 public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriority> {
-    /** Static value Spot for ScaleSetPriority. */
+    /**
+     * Static value Spot for ScaleSetPriority.
+     */
     public static final ScaleSetPriority SPOT = fromString("Spot");
 
-    /** Static value Regular for ScaleSetPriority. */
+    /**
+     * Static value Regular for ScaleSetPriority.
+     */
     public static final ScaleSetPriority REGULAR = fromString("Regular");
 
     /**

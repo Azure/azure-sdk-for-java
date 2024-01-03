@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for upgrading an agentpool. */
+/**
+ * Settings for upgrading an agentpool.
+ */
 @Fluent
 public final class AgentPoolUpgradeSettings {
     /*
@@ -31,14 +33,16 @@ public final class AgentPoolUpgradeSettings {
     @JsonProperty(value = "drainTimeoutInMinutes")
     private Integer drainTimeoutInMinutes;
 
-    /** Creates an instance of AgentPoolUpgradeSettings class. */
+    /**
+     * Creates an instance of AgentPoolUpgradeSettings class.
+     */
     public AgentPoolUpgradeSettings() {
     }
 
     /**
      * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
      *
-     * <p>This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
      * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
@@ -52,7 +56,7 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
      *
-     * <p>This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
      * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
@@ -68,7 +72,7 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Get the drainTimeoutInMinutes property: The drain timeout for a node
      *
-     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
      * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
      * specified, the default is 30 minutes.
      *
@@ -81,7 +85,7 @@ public final class AgentPoolUpgradeSettings {
     /**
      * Set the drainTimeoutInMinutes property: The drain timeout for a node
      *
-     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
      * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
      * specified, the default is 30 minutes.
      *

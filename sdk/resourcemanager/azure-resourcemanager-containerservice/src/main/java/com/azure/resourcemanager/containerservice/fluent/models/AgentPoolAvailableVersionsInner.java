@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of available versions for an agent pool. */
+/**
+ * The list of available versions for an agent pool.
+ */
 @Fluent
 public final class AgentPoolAvailableVersionsInner {
     /*
@@ -37,7 +39,9 @@ public final class AgentPoolAvailableVersionsInner {
     @JsonProperty(value = "properties", required = true)
     private AgentPoolAvailableVersionsProperties innerProperties = new AgentPoolAvailableVersionsProperties();
 
-    /** Creates an instance of AgentPoolAvailableVersionsInner class. */
+    /**
+     * Creates an instance of AgentPoolAvailableVersionsInner class.
+     */
     public AgentPoolAvailableVersionsInner() {
     }
 
@@ -92,8 +96,8 @@ public final class AgentPoolAvailableVersionsInner {
      * @param agentPoolVersions the agentPoolVersions value to set.
      * @return the AgentPoolAvailableVersionsInner object itself.
      */
-    public AgentPoolAvailableVersionsInner withAgentPoolVersions(
-        List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
+    public AgentPoolAvailableVersionsInner
+        withAgentPoolVersions(List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AgentPoolAvailableVersionsProperties();
         }
@@ -108,10 +112,8 @@ public final class AgentPoolAvailableVersionsInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AgentPoolAvailableVersionsInner"));
         } else {
             innerProperties().validate();
         }
