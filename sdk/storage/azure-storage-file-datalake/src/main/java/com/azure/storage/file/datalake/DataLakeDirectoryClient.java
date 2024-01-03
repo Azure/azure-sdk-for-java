@@ -411,7 +411,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -767,7 +767,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;

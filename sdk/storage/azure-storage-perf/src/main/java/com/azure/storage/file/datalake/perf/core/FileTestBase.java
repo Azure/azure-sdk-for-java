@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
@@ -11,7 +12,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.UUID;
 
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
 
@@ -22,7 +22,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
     public FileTestBase(TOptions options) {
         super(options);
 
-        String fileName = "randomfiletest-" + UUID.randomUUID().toString();
+        String fileName = "randomfiletest-" + CoreUtils.randomUuid();
 
         dataLakeFileClient =  dataLakeDirectoryClient.getFileClient(fileName);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName);
