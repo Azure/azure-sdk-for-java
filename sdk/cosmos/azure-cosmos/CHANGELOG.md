@@ -1,11 +1,9 @@
 ## Release History
 
-### 4.54.0-beta.1 (Unreleased)
+### 4.54.0 (2024-01-03)
 
 #### Features Added
 * Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed issue where AAD/Entra ID related exceptions are not fully propagated to the caller when CosmosAsyncClient is created, causing ambiguity for user on the root cause of the error - See [PR 37977](https://github.com/Azure/azure-sdk-for-java/pull/37977) 
@@ -13,6 +11,7 @@
 
 #### Other Changes
 * Reset `transitTimeoutCount` and `cancellationCount` in `RntbdClientChannelHealthChecker` when CPU load is above threshold. - See [PR 38157](https://github.com/Azure/azure-sdk-for-java/pull/38157)
+* Perf-improvement avoiding extra-buffer copy for query and point operations - See [PR 38072](https://github.com/Azure/azure-sdk-for-java/pull/38072)
 
 ### 4.53.1 (2023-12-06)
 
