@@ -375,6 +375,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",

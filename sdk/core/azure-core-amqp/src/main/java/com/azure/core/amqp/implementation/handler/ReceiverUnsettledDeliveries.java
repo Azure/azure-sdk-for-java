@@ -38,7 +38,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.amqp.implementation.ClientConstants.CALL_SITE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_KEY;
@@ -633,15 +632,8 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * {@link DispositionWork#getMono()}; the Mono is terminated upon the work completion.
      * </p>
      */
-    private static final class DispositionWork {
-        private volatile int tryCount = 1;
-        private static final AtomicIntegerFieldUpdater<DispositionWork> TRY_COUNT_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(DispositionWork.class, "tryCount");
-
-        private volatile int complete = 0;
-        private static final AtomicIntegerFieldUpdater<DispositionWork> COMPLETE_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(DispositionWork.class, "complete");
-
+    private static final class DispositionWork extends AtomicBoolean {
+        private final AtomicInteger tryCount = new AtomicInteger(1);
         private final String deliveryTag;
         private final DeliveryState desiredState;
         private final Duration timeout;
@@ -692,7 +684,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
          * @return the try count.
          */
         int getTryCount() {
-            return TRY_COUNT_UPDATER.get(this);
+            return tryCount.get();
         }
 
         /**
@@ -748,7 +740,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
          * @return {@code true} if the work is completed, {@code true} otherwise.
          */
         boolean isCompleted() {
-            return COMPLETE_UPDATER.get(this) != 0;
+            return this.get();
         }
 
         /**
@@ -775,14 +767,14 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         void onRetriableRejectedOutcome(Throwable error) {
             this.rejectedOutcomeError = error;
             expirationTime = Instant.now().plus(timeout);
-            TRY_COUNT_UPDATER.incrementAndGet(this);
+            tryCount.incrementAndGet();
         }
 
         /**
          * the function invoked upon the successful completion of the work.
          */
         void onComplete() {
-            COMPLETE_UPDATER.set(this, 1);
+            this.set(true);
             Objects.requireNonNull(monoSink);
             monoSink.success();
         }
@@ -793,7 +785,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
          * @param error the error reason.
          */
         void onComplete(Throwable error) {
-            COMPLETE_UPDATER.set(this, 1);
+            this.set(true);
             Objects.requireNonNull(monoSink);
             monoSink.error(error);
         }
