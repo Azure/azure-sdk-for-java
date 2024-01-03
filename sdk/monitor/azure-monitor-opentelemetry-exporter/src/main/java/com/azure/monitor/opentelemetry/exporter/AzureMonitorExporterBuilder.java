@@ -380,15 +380,10 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private Set<Feature> initStatsbeatFeatures() {
-        if (isGraalVmNativeExecution()) {
+        if (System.getProperty("org.graalvm.nativeimage.imagecode") != null) {
             return Collections.singleton(Feature.GRAAL_VM_NATIVE);
         }
         return Collections.emptySet();
-    }
-
-    private static boolean isGraalVmNativeExecution() {
-        String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
-        return imageCode != null;
     }
 
     private StatsbeatConnectionString getStatsbeatConnectionString() {
