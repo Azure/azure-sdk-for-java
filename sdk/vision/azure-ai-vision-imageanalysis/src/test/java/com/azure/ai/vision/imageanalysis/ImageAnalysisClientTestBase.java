@@ -31,6 +31,8 @@ import com.azure.ai.vision.imageanalysis.models.*;
 
 class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
+    final Boolean printResults = false; // Set to true to print results to console window
+
     // We a single image (the same one) for all error-free tests, one hosted on the web and one local
     final String imageUrl = "https://aka.ms/azai/vision/image-analysis-sample.jpg";
     final String imageFile = "./src/test/java/com/azure/ai/vision/imageanalysis/sample.jpg";
@@ -126,7 +128,9 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             }
 
             // Optional: console printout of all results
-            printAnalysisResults(testName, result);
+            if (printResults) {
+                printAnalysisResults(testName, result);
+            }
 
             // Validate all results
             validateAnalysisResult(result, visualFeatures, genderNeutralCaption, aspectRatios);
@@ -146,7 +150,9 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             }
 
             // Optional: console printout of all results
-            printAnalysisResults(testName, result);
+            if (printResults) {
+                printAnalysisResults(testName, result);
+            }
 
             // Validate all results
             validateAnalysisResult(result, visualFeatures, genderNeutralCaption, aspectRatios);
@@ -182,7 +188,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
                 }
             } catch (HttpResponseException e) {
                 System.out.println("Expected exception: " + e.getMessage());
-                assertEquals(e.getResponse().getStatusCode(), expectedStatusCode);
+                assertEquals(expectedStatusCode, e.getResponse().getStatusCode());
                 assertTrue(e.getMessage().contains(expectedMessageContains));
                 return;
             }
@@ -201,7 +207,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
                 }
             } catch (HttpResponseException e) {
                 System.out.println("Expected exception: " + e.getMessage());
-                assertEquals(e.getResponse().getStatusCode(), expectedStatusCode);
+                assertEquals(expectedStatusCode, e.getResponse().getStatusCode());
                 assertTrue(e.getMessage().contains(expectedMessageContains));
                 return;
             }
@@ -265,14 +271,13 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
     private static void validateMetadata(ImageAnalysisResult result) {
         assertNotNull(result.getMetadata());
-        assertEquals(result.getMetadata().getHeight(), 576);
-        assertEquals(result.getMetadata().getWidth(), 864);
+        assertEquals(576, result.getMetadata().getHeight());
+        assertEquals(864, result.getMetadata().getWidth());
     }
 
     private static void validateModelVersion(ImageAnalysisResult result) {
         assertNotNull(result.getModelVersion());
-        assertFalse(result.getModelVersion().isEmpty());
-        assertEquals(result.getModelVersion(), "2023-10-01");
+        assertEquals("2023-10-01", result.getModelVersion());
     }
 
     private static void validateCaption(ImageAnalysisResult result, Boolean genderNeutralCaption) {
@@ -302,8 +307,8 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else {
             assertFalse(firstDenseCaption.getText().isEmpty());
         }
-        assertEquals(firstDenseCaption.getBoundingBox().getX(), 0);
-        assertEquals(firstDenseCaption.getBoundingBox().getY(), 0);
+        assertEquals(0, firstDenseCaption.getBoundingBox().getX());
+        assertEquals(0, firstDenseCaption.getBoundingBox().getY());
         assertEquals(firstDenseCaption.getBoundingBox().getHeight(), result.getMetadata().getHeight());
         assertEquals(firstDenseCaption.getBoundingBox().getWidth(), result.getMetadata().getWidth());
 
@@ -349,7 +354,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         for (DetectedObject object : objectsResult.getValues()) {
             assertNotNull(object);
             assertNotNull(object.getTags());
-            assertEquals(object.getTags().size(), 1);
+            assertEquals(1, object.getTags().size());
             DetectedTag tag = object.getTags().get(0);
             assertNotNull(tag);
             assertNotNull(tag.getName());
@@ -483,14 +488,14 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         ReadResult readResult = result.getRead();
         assertNotNull(readResult);
         assertNotNull(readResult.getBlocks());
-        assertEquals(readResult.getBlocks().size(), 1);
+        assertEquals(1, readResult.getBlocks().size());
 
         DetectedTextBlock block = readResult.getBlocks().get(0);
         assertNotNull(block);
 
         List<DetectedTextLine> lines = block.getLines();
         assertNotNull(lines);
-        assertEquals(lines.size(), 3);
+        assertEquals(3, lines.size());
 
         // Do some validations on the first line
         DetectedTextLine line = lines.get(0);
@@ -499,7 +504,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         List<ImagePoint> polygon = line.getBoundingPolygon();
         assertNotNull(polygon);
-        assertEquals(polygon.size(), 4);
+        assertEquals(4, polygon.size());
         for (int i = 0; i < polygon.size(); i++) {
             assertTrue(polygon.get(i).getX() > 0);
             assertTrue(polygon.get(i).getY() > 0);
@@ -512,7 +517,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         List<DetectedTextWord> words = line.getWords();
         assertNotNull(words);
-        assertEquals(words.size(), 2);
+        assertEquals(2, words.size());
 
         DetectedTextWord word = words.get(1);
         assertNotNull(word);
@@ -522,7 +527,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         polygon = word.getBoundingPolygon();
         assertNotNull(polygon);
-        assertEquals(polygon.size(), 4);
+        assertEquals(4, polygon.size());
         for (int i = 0; i < polygon.size(); i++) {
             assertTrue(polygon.get(i).getX() > 0);
             assertTrue(polygon.get(i).getY() > 0);

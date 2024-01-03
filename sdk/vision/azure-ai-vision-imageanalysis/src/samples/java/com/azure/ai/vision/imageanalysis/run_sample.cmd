@@ -2,7 +2,7 @@ REM
 REM A Windows script to run a single sample. It takes one argument: the name of
 REM the sample file, without the ".java" extension. For example:
 REM
-REM run SampleAnalyzeAllImageFile
+REM run_sample.cmd SampleAnalyzeAllImageFile
 REM
 
 REM Optional cleanup
