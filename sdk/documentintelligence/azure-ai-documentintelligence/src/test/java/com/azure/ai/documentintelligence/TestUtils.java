@@ -51,7 +51,7 @@ public final class TestUtils {
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
     public static final String INVALID_KEY = "invalid key";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
-        + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
+        + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
     static {
