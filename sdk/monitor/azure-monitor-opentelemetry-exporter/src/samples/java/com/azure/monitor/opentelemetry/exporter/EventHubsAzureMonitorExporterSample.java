@@ -49,8 +49,7 @@ public class EventHubsAzureMonitorExporterSample {
      */
     private static Tracer configureAzureMonitorExporter() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-        new AzureMonitorExporterBuilder()
+        AzureMonitor.installer()
             .connectionString("{connection-string}")
             .install(sdkBuilder);
 

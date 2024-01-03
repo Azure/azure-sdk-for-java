@@ -25,8 +25,7 @@ public class AzureMonitorMetricExporterSample {
     private static void sendDoubleHistogram() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-            new AzureMonitorExporterBuilder()
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
                 .install(sdkBuilder);
 
@@ -48,8 +47,7 @@ public class AzureMonitorMetricExporterSample {
     private static void sendLongCounter() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-            new AzureMonitorExporterBuilder()
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
                 .install(sdkBuilder);
 
@@ -74,8 +72,7 @@ public class AzureMonitorMetricExporterSample {
     private static void sendGaugeMetric() {
         try {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-            new AzureMonitorExporterBuilder()
+            AzureMonitor.installer()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
                 .install(sdkBuilder);
 

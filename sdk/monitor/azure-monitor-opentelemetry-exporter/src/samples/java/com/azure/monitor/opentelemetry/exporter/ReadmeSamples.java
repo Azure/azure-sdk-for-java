@@ -44,8 +44,7 @@ public class ReadmeSamples {
         // Create Azure Monitor exporter and initialize OpenTelemetry SDK
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-
-        new AzureMonitorExporterBuilder()
+        AzureMonitor.installer()
             .connectionString("{connection-string}")
             .install(sdkBuilder);
 
