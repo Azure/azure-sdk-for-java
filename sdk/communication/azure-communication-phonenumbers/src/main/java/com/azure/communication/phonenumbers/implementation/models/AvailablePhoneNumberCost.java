@@ -9,4 +9,4 @@ import com.azure.core.annotation.Immutable;
 
 /** The AvailablePhoneNumberCost model. */
 @Immutable
-public final class AvailablePhoneNumberCost extends PhoneNumberCost {}
+public class AvailablePhoneNumberCost extends PhoneNumberCost {}
