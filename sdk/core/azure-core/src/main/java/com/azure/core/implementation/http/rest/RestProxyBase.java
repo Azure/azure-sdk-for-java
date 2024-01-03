@@ -122,6 +122,13 @@ public abstract class RestProxyBase {
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
         HttpRequest request, Context context);
 
+    /**
+     * Update the request with the provided configuration.
+     *
+     * @param requestDataConfiguration the configuration to apply to the request
+     * @param serializerAdapter the serializer adapter to use when updating the request
+     * @throws IOException if an error occurs while updating the request
+     */
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException;
 
