@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ResourceMoveDetails will be returned in response to GetResource call from ARM. */
+/**
+ * ResourceMoveDetails will be returned in response to GetResource call from ARM.
+ */
 @Fluent
 public final class ResourceMoveDetails {
     /*
@@ -40,13 +42,15 @@ public final class ResourceMoveDetails {
     @JsonProperty(value = "targetResourcePath")
     private String targetResourcePath;
 
-    /** Creates an instance of ResourceMoveDetails class. */
+    /**
+     * Creates an instance of ResourceMoveDetails class.
+     */
     public ResourceMoveDetails() {
     }
 
     /**
      * Get the operationId property: CorrelationId of latest ResourceMove operation attempted.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -55,7 +59,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the operationId property: CorrelationId of latest ResourceMove operation attempted.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -66,7 +70,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the startTimeUtc property: Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public String startTimeUtc() {
@@ -75,7 +79,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the startTimeUtc property: Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -87,7 +91,7 @@ public final class ResourceMoveDetails {
     /**
      * Get the completionTimeUtc property: Completion time in UTC of latest ResourceMove operation attempted. ISO 8601
      * format.
-     *
+     * 
      * @return the completionTimeUtc value.
      */
     public String completionTimeUtc() {
@@ -97,7 +101,7 @@ public final class ResourceMoveDetails {
     /**
      * Set the completionTimeUtc property: Completion time in UTC of latest ResourceMove operation attempted. ISO 8601
      * format.
-     *
+     * 
      * @param completionTimeUtc the completionTimeUtc value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -108,7 +112,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the sourceResourcePath property: ARM resource path of source resource.
-     *
+     * 
      * @return the sourceResourcePath value.
      */
     public String sourceResourcePath() {
@@ -117,7 +121,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the sourceResourcePath property: ARM resource path of source resource.
-     *
+     * 
      * @param sourceResourcePath the sourceResourcePath value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -128,7 +132,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the targetResourcePath property: ARM resource path of target resource used in latest ResourceMove operation.
-     *
+     * 
      * @return the targetResourcePath value.
      */
     public String targetResourcePath() {
@@ -137,7 +141,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the targetResourcePath property: ARM resource path of target resource used in latest ResourceMove operation.
-     *
+     * 
      * @param targetResourcePath the targetResourcePath value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -148,7 +152,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for GremlinResources GetGremlinDatabase. */
+/**
+ * Samples for GremlinResources GetGremlinDatabase.
+ */
 public final class GremlinResourcesGetGremlinDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBGremlinDatabaseGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBGremlinDatabaseGet.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinDatabaseGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getGremlinResources()
-            .getGremlinDatabaseWithResponse("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().getGremlinDatabaseWithResponse("rg1",
+            "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

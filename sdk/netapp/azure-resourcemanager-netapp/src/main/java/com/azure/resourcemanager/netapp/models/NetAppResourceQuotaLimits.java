@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetAppResourceQuotaLimits. */
+/**
+ * Resource collection API of NetAppResourceQuotaLimits.
+ */
 public interface NetAppResourceQuotaLimits {
     /**
      * Get quota limits
-     *
-     * <p>Get the default and current limits for quotas.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get the default and current limits for quotas.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,10 +27,10 @@ public interface NetAppResourceQuotaLimits {
 
     /**
      * Get quota limits
-     *
-     * <p>Get the default and current limits for quotas.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get the default and current limits for quotas.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,10 +41,10 @@ public interface NetAppResourceQuotaLimits {
 
     /**
      * Get quota limits
-     *
-     * <p>Get the default and current subscription quota limit.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get the default and current subscription quota limit.
+     * 
+     * @param location The name of the Azure region.
      * @param quotaLimitName The name of the Quota Limit.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,10 +56,10 @@ public interface NetAppResourceQuotaLimits {
 
     /**
      * Get quota limits
-     *
-     * <p>Get the default and current subscription quota limit.
-     *
-     * @param location The name of Azure region.
+     * 
+     * Get the default and current subscription quota limit.
+     * 
+     * @param location The name of the Azure region.
      * @param quotaLimitName The name of the Quota Limit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

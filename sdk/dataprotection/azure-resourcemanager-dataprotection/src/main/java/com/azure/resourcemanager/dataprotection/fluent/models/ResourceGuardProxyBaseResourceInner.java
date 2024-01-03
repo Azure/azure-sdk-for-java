@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.models.DppResource;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ResourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs. */
+/**
+ * ResourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
+ */
 @Fluent
 public final class ResourceGuardProxyBaseResourceInner extends DppResource {
     /*
@@ -18,13 +20,15 @@ public final class ResourceGuardProxyBaseResourceInner extends DppResource {
     @JsonProperty(value = "properties")
     private ResourceGuardProxyBase properties;
 
-    /** Creates an instance of ResourceGuardProxyBaseResourceInner class. */
+    /**
+     * Creates an instance of ResourceGuardProxyBaseResourceInner class.
+     */
     public ResourceGuardProxyBaseResourceInner() {
     }
 
     /**
      * Get the properties property: ResourceGuardProxyBaseResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGuardProxyBase properties() {
@@ -33,7 +37,7 @@ public final class ResourceGuardProxyBaseResourceInner extends DppResource {
 
     /**
      * Set the properties property: ResourceGuardProxyBaseResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGuardProxyBaseResourceInner object itself.
      */
@@ -44,7 +48,7 @@ public final class ResourceGuardProxyBaseResourceInner extends DppResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

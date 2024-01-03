@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.CassandraTableGetResultsIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the Cassandra tables and their properties. */
+/**
+ * The List operation response, that contains the Cassandra tables and their properties.
+ */
 @Immutable
 public final class CassandraTableListResult {
     /*
@@ -18,13 +20,15 @@ public final class CassandraTableListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraTableGetResultsInner> value;
 
-    /** Creates an instance of CassandraTableListResult class. */
+    /**
+     * Creates an instance of CassandraTableListResult class.
+     */
     public CassandraTableListResult() {
     }
 
     /**
      * Get the value property: List of Cassandra tables and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<CassandraTableGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class CassandraTableListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

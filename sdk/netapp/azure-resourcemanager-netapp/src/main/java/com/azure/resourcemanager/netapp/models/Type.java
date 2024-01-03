@@ -10,25 +10,33 @@ import java.util.Collection;
 
 /**
  * quotaType
- *
- * <p>Type of quota.
+ * 
+ * Type of quota.
  */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value DefaultUserQuota for Type. */
+    /**
+     * Static value DefaultUserQuota for Type.
+     */
     public static final Type DEFAULT_USER_QUOTA = fromString("DefaultUserQuota");
 
-    /** Static value DefaultGroupQuota for Type. */
+    /**
+     * Static value DefaultGroupQuota for Type.
+     */
     public static final Type DEFAULT_GROUP_QUOTA = fromString("DefaultGroupQuota");
 
-    /** Static value IndividualUserQuota for Type. */
+    /**
+     * Static value IndividualUserQuota for Type.
+     */
     public static final Type INDIVIDUAL_USER_QUOTA = fromString("IndividualUserQuota");
 
-    /** Static value IndividualGroupQuota for Type. */
+    /**
+     * Static value IndividualGroupQuota for Type.
+     */
     public static final Type INDIVIDUAL_GROUP_QUOTA = fromString("IndividualGroupQuota");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +45,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
@@ -48,7 +56,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

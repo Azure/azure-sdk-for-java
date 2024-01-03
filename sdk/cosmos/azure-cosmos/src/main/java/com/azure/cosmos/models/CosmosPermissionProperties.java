@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -54,10 +55,10 @@ public final class CosmosPermissionProperties {
     /**
      * Initialize a permission object from json string.
      *
-     * @param jsonString the json string that represents the getPermission.
+     * @param jsonNode the json node that represents the getPermission.
      */
-    CosmosPermissionProperties(String jsonString) {
-        this.permission = new Permission(jsonString);
+    CosmosPermissionProperties(ObjectNode jsonNode) {
+        this.permission = new Permission(jsonNode);
         this.permissionName = permission.getId();
         this.permissionMode = permission.getPermissionMode();
         this.resourcePartitionKey = permission.getResourcePartitionKey();
@@ -329,7 +330,7 @@ public final class CosmosPermissionProperties {
     }
 
     static List<CosmosPermissionProperties> getPermissions(List<Permission> results) {
-        return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
+        return results.stream().map(permission -> new CosmosPermissionProperties(permission.getPropertyBag()))
             .collect(Collectors.toList());
     }
 }

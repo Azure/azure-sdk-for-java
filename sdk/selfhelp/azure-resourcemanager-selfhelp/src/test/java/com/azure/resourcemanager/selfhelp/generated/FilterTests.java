@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Filter model =
-            BinaryData
-                .fromString("{\"name\":\"yvshxmz\",\"values\":\"bzoggigrx\",\"operator\":\"ur\"}")
-                .toObject(Filter.class);
+        Filter model = BinaryData.fromString("{\"name\":\"yvshxmz\",\"values\":\"bzoggigrx\",\"operator\":\"ur\"}")
+            .toObject(Filter.class);
         Assertions.assertEquals("yvshxmz", model.name());
         Assertions.assertEquals("bzoggigrx", model.values());
         Assertions.assertEquals("ur", model.operator());

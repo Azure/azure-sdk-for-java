@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.CreationSourceType;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
+import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -403,5 +404,26 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
 
         Assertions.assertEquals(DiskSkuTypes.PREMIUM_V2_LRS, disk.sku());
         Assertions.assertEquals(512, disk.logicalSectorSizeInBytes());
+    }
+
+    @Test
+    public void canCreateAndUpdateManagedDiskWithHyperVGeneration() {
+        Disk disk =
+            computeManager
+                .disks()
+                .define(generateRandomResourceName("disk", 15))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(1)
+                .withSku(DiskSkuTypes.STANDARD_LRS)
+                .withHyperVGeneration(HyperVGeneration.V1)
+                .create();
+        disk.refresh();
+        Assertions.assertEquals(disk.hyperVGeneration(), HyperVGeneration.V1);
+
+        disk.update().withHyperVGeneration(HyperVGeneration.V2).apply();
+        disk.refresh();
+        Assertions.assertEquals(disk.hyperVGeneration(), HyperVGeneration.V2);
     }
 }

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeVersionResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeVersionResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"twhrdxwzywqsm\",\"appPackageUrl\":\"surex\",\"defaultParameterList\":{\"stkiiuxhqyud\":\"ryocfsfksymdd\"}}")
-                .toObject(ApplicationTypeVersionResourceProperties.class);
+        ApplicationTypeVersionResourceProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"twhrdxwzywqsm\",\"appPackageUrl\":\"surex\",\"defaultParameterList\":{\"stkiiuxhqyud\":\"ryocfsfksymdd\"}}")
+            .toObject(ApplicationTypeVersionResourceProperties.class);
         Assertions.assertEquals("surex", model.appPackageUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionResourceProperties model =
-            new ApplicationTypeVersionResourceProperties().withAppPackageUrl("surex");
+        ApplicationTypeVersionResourceProperties model
+            = new ApplicationTypeVersionResourceProperties().withAppPackageUrl("surex");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceProperties.class);
         Assertions.assertEquals("surex", model.appPackageUrl());
     }

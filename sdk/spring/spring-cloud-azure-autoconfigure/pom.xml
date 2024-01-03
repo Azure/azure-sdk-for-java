@@ -126,6 +126,7 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>

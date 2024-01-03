@@ -11,7 +11,9 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointConnectionPr
 import com.azure.resourcemanager.deviceupdate.models.RemotePrivateEndpoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint connection proxy details. */
+/**
+ * Private endpoint connection proxy details.
+ */
 @Fluent
 public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
     /*
@@ -45,8 +47,14 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
     private String status;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionProxyInner class.
+     */
+    public PrivateEndpointConnectionProxyInner() {
+    }
+
+    /**
      * Get the innerProperties property: Private endpoint connection proxy object property bag.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionProxyProperties innerProperties() {
@@ -55,7 +63,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -64,7 +72,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Get the etag property: ETag from NRP.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -73,7 +81,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Get the remotePrivateEndpoint property: Remote private endpoint details.
-     *
+     * 
      * @return the remotePrivateEndpoint value.
      */
     public RemotePrivateEndpoint remotePrivateEndpoint() {
@@ -82,7 +90,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Set the remotePrivateEndpoint property: Remote private endpoint details.
-     *
+     * 
      * @param remotePrivateEndpoint the remotePrivateEndpoint value to set.
      * @return the PrivateEndpointConnectionProxyInner object itself.
      */
@@ -93,7 +101,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -102,7 +110,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateEndpointConnectionProxyInner object itself.
      */
@@ -113,7 +121,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProxyProvisioningState provisioningState() {
@@ -122,7 +130,7 @@ public final class PrivateEndpointConnectionProxyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

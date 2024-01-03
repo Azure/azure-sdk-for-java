@@ -36,6 +36,7 @@ import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 public class AzureMonitorMetricExporterTest {
 
@@ -370,5 +371,44 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(HISTOGRAM);
         assertThat(metricData.getName()).isEqualTo("testDoubleHistogram");
+    }
+
+    @Test
+    public void testNoAttributeWithPrefixApplicationInsightsInternal() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        // create a long counter with two attributes including one with "applicationinsights.internal." as prefix
+        LongCounter longCounter =
+            meter.counterBuilder("testLongCounter")
+                .setDescription("testLongCounter")
+                .setUnit("1").build();
+
+        Attributes attributes = Attributes.of(AttributeKey.stringKey("applicationinsights.internal.test"), "test", AttributeKey.stringKey("foo"), "bar");
+        longCounter.add(1, attributes);
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
+
+        MetricData metricData = metricDataList.get(0);
+        assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
+        PointData pointData = metricData.getData().getPoints().iterator().next();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        assertThat(metricsData.getProperties()).isNotNull();
+        assertThat(metricsData.getProperties().size()).isEqualTo(1);
+        assertThat(metricsData.getProperties()).containsExactly(entry("foo", "bar"));
+        assertThat(metricsData.getProperties().get("applicationinsights.internal.test")).isNull();
+
+        assertThat(metricData.getType()).isEqualTo(LONG_SUM);
+        assertThat(metricData.getName()).isEqualTo("testLongCounter");
     }
 }

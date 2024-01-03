@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for ExportJobs Trigger. */
+/**
+ * Samples for ExportJobs Trigger.
+ */
 public final class ExportJobsTriggerSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/JobCRUD/TriggerExportJobs.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/JobCRUD/
+     * TriggerExportJobs.json
      */
     /**
      * Sample code: Trigger Export Jobs.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerExportJobs(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {

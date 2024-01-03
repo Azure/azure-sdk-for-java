@@ -14,42 +14,31 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationDeltaHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationDeltaHealthPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":956108076},\"serviceTypeDeltaHealthPolicies\":{\"mihe\":{\"maxPercentDeltaUnhealthyServices\":827066207},\"arxzxtheot\":{\"maxPercentDeltaUnhealthyServices\":1134351284},\"vyevcciqi\":{\"maxPercentDeltaUnhealthyServices\":1852537816},\"un\":{\"maxPercentDeltaUnhealthyServices\":720964194}}}")
-                .toObject(ApplicationDeltaHealthPolicy.class);
-        Assertions
-            .assertEquals(956108076, model.defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
-        Assertions
-            .assertEquals(
-                827066207, model.serviceTypeDeltaHealthPolicies().get("mihe").maxPercentDeltaUnhealthyServices());
+        ApplicationDeltaHealthPolicy model = BinaryData.fromString(
+            "{\"defaultServiceTypeDeltaHealthPolicy\":{\"maxPercentDeltaUnhealthyServices\":233179905},\"serviceTypeDeltaHealthPolicies\":{\"lniwpwcukjfkgiaw\":{\"maxPercentDeltaUnhealthyServices\":900623903},\"ryplwckbasyypn\":{\"maxPercentDeltaUnhealthyServices\":1214753692}}}")
+            .toObject(ApplicationDeltaHealthPolicy.class);
+        Assertions.assertEquals(233179905,
+            model.defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(900623903,
+            model.serviceTypeDeltaHealthPolicies().get("lniwpwcukjfkgiaw").maxPercentDeltaUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationDeltaHealthPolicy model =
-            new ApplicationDeltaHealthPolicy()
-                .withDefaultServiceTypeDeltaHealthPolicy(
-                    new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(956108076))
-                .withServiceTypeDeltaHealthPolicies(
-                    mapOf(
-                        "mihe",
-                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(827066207),
-                        "arxzxtheot",
-                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1134351284),
-                        "vyevcciqi",
-                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1852537816),
-                        "un",
-                        new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(720964194)));
+        ApplicationDeltaHealthPolicy model = new ApplicationDeltaHealthPolicy()
+            .withDefaultServiceTypeDeltaHealthPolicy(
+                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(233179905))
+            .withServiceTypeDeltaHealthPolicies(mapOf("lniwpwcukjfkgiaw",
+                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(900623903), "ryplwckbasyypn",
+                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(1214753692)));
         model = BinaryData.fromObject(model).toObject(ApplicationDeltaHealthPolicy.class);
-        Assertions
-            .assertEquals(956108076, model.defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
-        Assertions
-            .assertEquals(
-                827066207, model.serviceTypeDeltaHealthPolicies().get("mihe").maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(233179905,
+            model.defaultServiceTypeDeltaHealthPolicy().maxPercentDeltaUnhealthyServices());
+        Assertions.assertEquals(900623903,
+            model.serviceTypeDeltaHealthPolicies().get("lniwpwcukjfkgiaw").maxPercentDeltaUnhealthyServices());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

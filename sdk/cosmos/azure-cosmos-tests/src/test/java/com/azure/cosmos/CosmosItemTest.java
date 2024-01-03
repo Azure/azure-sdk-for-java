@@ -484,6 +484,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItemWithDuplicateJsonProperties() throws Exception {
+        Utils.configureSimpleObjectMapper(true);
         String id = UUID.randomUUID().toString();
         String rawJson = String.format(
             "{ "
@@ -500,7 +501,6 @@ public class CosmosItemTest extends TestSuiteBase {
             new PartitionKey(id),
             new CosmosItemRequestOptions());
 
-        Utils.configureSimpleObjectMapper(true);
         try {
             CosmosPagedIterable<ObjectNode> pagedIterable = container.queryItems (
                 "SELECT * FROM c WHERE c.id = '" + id + "'",

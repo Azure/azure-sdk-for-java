@@ -10,12 +10,14 @@ import com.azure.resourcemanager.netapp.models.RegionStorageToNetworkProximity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Provides region specific information. */
+/**
+ * Provides region specific information.
+ */
 @Fluent
 public final class RegionInfoInner {
     /*
      * Storage to Network Proximity
-     *
+     * 
      * Provides storage to network proximity information in the region.
      */
     @JsonProperty(value = "storageToNetworkProximity")
@@ -23,21 +25,23 @@ public final class RegionInfoInner {
 
     /*
      * Logical availability zone mappings.
-     *
+     * 
      * Provides logical availability zone mappings for the subscription for a region.
      */
     @JsonProperty(value = "availabilityZoneMappings")
     private List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings;
 
-    /** Creates an instance of RegionInfoInner class. */
+    /**
+     * Creates an instance of RegionInfoInner class.
+     */
     public RegionInfoInner() {
     }
 
     /**
      * Get the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information in the region.
-     *
+     * 
+     * Provides storage to network proximity information in the region.
+     * 
      * @return the storageToNetworkProximity value.
      */
     public RegionStorageToNetworkProximity storageToNetworkProximity() {
@@ -46,9 +50,9 @@ public final class RegionInfoInner {
 
     /**
      * Set the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information in the region.
-     *
+     * 
+     * Provides storage to network proximity information in the region.
+     * 
      * @param storageToNetworkProximity the storageToNetworkProximity value to set.
      * @return the RegionInfoInner object itself.
      */
@@ -59,9 +63,9 @@ public final class RegionInfoInner {
 
     /**
      * Get the availabilityZoneMappings property: Logical availability zone mappings.
-     *
-     * <p>Provides logical availability zone mappings for the subscription for a region.
-     *
+     * 
+     * Provides logical availability zone mappings for the subscription for a region.
+     * 
      * @return the availabilityZoneMappings value.
      */
     public List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings() {
@@ -70,21 +74,21 @@ public final class RegionInfoInner {
 
     /**
      * Set the availabilityZoneMappings property: Logical availability zone mappings.
-     *
-     * <p>Provides logical availability zone mappings for the subscription for a region.
-     *
+     * 
+     * Provides logical availability zone mappings for the subscription for a region.
+     * 
      * @param availabilityZoneMappings the availabilityZoneMappings value to set.
      * @return the RegionInfoInner object itself.
      */
-    public RegionInfoInner withAvailabilityZoneMappings(
-        List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings) {
+    public RegionInfoInner
+        withAvailabilityZoneMappings(List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings) {
         this.availabilityZoneMappings = availabilityZoneMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

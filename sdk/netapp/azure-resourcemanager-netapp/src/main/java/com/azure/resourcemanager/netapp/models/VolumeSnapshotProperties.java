@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume Snapshot Properties. */
+/**
+ * Volume Snapshot Properties.
+ */
 @Fluent
 public final class VolumeSnapshotProperties {
     /*
@@ -16,13 +18,15 @@ public final class VolumeSnapshotProperties {
     @JsonProperty(value = "snapshotPolicyId")
     private String snapshotPolicyId;
 
-    /** Creates an instance of VolumeSnapshotProperties class. */
+    /**
+     * Creates an instance of VolumeSnapshotProperties class.
+     */
     public VolumeSnapshotProperties() {
     }
 
     /**
      * Get the snapshotPolicyId property: Snapshot Policy ResourceId.
-     *
+     * 
      * @return the snapshotPolicyId value.
      */
     public String snapshotPolicyId() {
@@ -31,7 +35,7 @@ public final class VolumeSnapshotProperties {
 
     /**
      * Set the snapshotPolicyId property: Snapshot Policy ResourceId.
-     *
+     * 
      * @param snapshotPolicyId the snapshotPolicyId value to set.
      * @return the VolumeSnapshotProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class VolumeSnapshotProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

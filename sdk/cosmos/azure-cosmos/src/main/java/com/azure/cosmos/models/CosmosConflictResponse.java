@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The type Cosmos conflict response.
@@ -13,11 +14,11 @@ public class CosmosConflictResponse extends CosmosResponse<CosmosConflictPropert
 
     CosmosConflictResponse(ResourceResponse<Conflict> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)) {
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson == null) {
             super.setProperties(null);
         } else {
-            CosmosConflictProperties props = new CosmosConflictProperties(bodyAsString);
+            CosmosConflictProperties props = new CosmosConflictProperties(bodyAsJson);
             super.setProperties(props);
         }
     }

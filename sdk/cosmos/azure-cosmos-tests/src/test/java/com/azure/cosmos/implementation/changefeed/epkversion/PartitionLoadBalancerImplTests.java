@@ -62,7 +62,8 @@ public class PartitionLoadBalancerImplTests {
                 leaseContainerMock,
                 partitionLoadBalancingStrategyMock,
                 Duration.ofSeconds(2),
-                Schedulers.boundedElastic()
+                Schedulers.boundedElastic(),
+                null
             );
 
         partitionLoadBalancerImpl
