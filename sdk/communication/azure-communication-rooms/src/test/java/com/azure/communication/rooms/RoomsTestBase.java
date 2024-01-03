@@ -5,7 +5,6 @@ package com.azure.communication.rooms;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.communication.rooms.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -86,7 +85,6 @@ public class RoomsTestBase extends TestProxyTestBase {
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
                 .credential(new AzureKeyCredential(accessKey))
-                .serviceVersion(CommunicationIdentityServiceVersion.V2022_10_01)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
