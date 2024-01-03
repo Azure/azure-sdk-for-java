@@ -197,7 +197,12 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
+        InputStream inputStream = null;
+        try {
+            // getResourceAsStream could return null, so this should be used in a try-with-resources block as that
+            // could result in a NullPointerException if getResourceAsStream returns null, which we don't want.
+            // Instead, use a try-catch-finally which handles closing the stream if it isn't null.
+            inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName);
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
@@ -207,6 +212,14 @@ public final class CoreUtils {
             }
         } catch (IOException ex) {
             LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    LOGGER.warning("Failed to close input stream from " + propertiesFileName, ex);
+                }
+            }
         }
         return Collections.emptyMap();
     }
