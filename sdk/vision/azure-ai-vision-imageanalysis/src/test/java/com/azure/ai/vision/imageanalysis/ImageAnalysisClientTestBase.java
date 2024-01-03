@@ -21,8 +21,8 @@ import com.azure.core.exception.HttpResponseException;
 // See https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-//import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -412,9 +412,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         // Make sure each tag is unique
         for (int i = 0; i < tagsResult.getValues().size(); i++) {
             for (int j = i + 1; j < tagsResult.getValues().size(); j++) {
-                assertFalse(
-                    tagsResult.getValues().get(j).getName().equals(
-                    tagsResult.getValues().get(i).getName()));
+                assertNotEquals(tagsResult.getValues().get(i).getName(), tagsResult.getValues().get(j).getName());
             }
         }
     }
