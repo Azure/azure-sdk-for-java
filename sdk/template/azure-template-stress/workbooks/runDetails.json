@@ -52,7 +52,7 @@
               "allowCustom": true
             },
             "value": {
-              "durationMs": 3600000
+              "durationMs": 1800000
             }
           },
           {
@@ -69,8 +69,7 @@
             },
             "queryType": 0,
             "resourceType": "microsoft.insights/components",
-            "value": null
-          }
+            "value": null          }
         ],
         "style": "pills",
         "queryType": 0,
@@ -231,9 +230,6 @@
         "aggregation": 3,
         "title": "Thread count",
         "noDataMessageStyle": 5,
-        "timeContext": {
-          "durationMs": 86400000
-        },
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
@@ -251,9 +247,6 @@
         "size": 0,
         "aggregation": 3,
         "title": "% of time spent in GC",
-        "timeContext": {
-          "durationMs": 86400000
-        },
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
@@ -288,9 +281,6 @@
         "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == \"java-template-{runId}\" and severityLevel > 1\r\n| extend severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", \"\")\r\n| summarize warnings = countif(severityLevel==2), errors = countif(severityLevel==3) by bin(timestamp, 1m)\r\n| render timechart\r\n",
         "size": 0,
         "title": "Errors and warnings in logs (sampled at 1%) over time",
-        "timeContext": {
-          "durationMs": 86400000
-        },
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
@@ -301,6 +291,9 @@
         "showBorder": true
       }
     }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-stress-cluster-pg/providers/Microsoft.Insights/components/stress-pg-ai-s7b6dif73rup6"
   ],
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
