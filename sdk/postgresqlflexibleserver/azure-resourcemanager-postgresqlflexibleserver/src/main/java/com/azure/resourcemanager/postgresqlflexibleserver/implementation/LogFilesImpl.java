@@ -19,8 +19,7 @@ public final class LogFilesImpl implements LogFiles {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public LogFilesImpl(
-        LogFilesClient innerClient,
+    public LogFilesImpl(LogFilesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

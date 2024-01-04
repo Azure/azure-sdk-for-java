@@ -38,26 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerThreatProtectionSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerThreatProtectionSettingsClient.
+ */
 public final class ServerThreatProtectionSettingsClientImpl implements ServerThreatProtectionSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerThreatProtectionSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerThreatProtectionSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerThreatProtectionSettingsClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServerThreatProtectionSettingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerThreatProtectionSettingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,87 +70,66 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
     public interface ServerThreatProtectionSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerThreatProtectionListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerThreatProtectionListResult>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerThreatProtectionSettingsModelInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<ServerThreatProtectionSettingsModelInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/advancedThreatProtectionSettings/{threatProtectionName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("threatProtectionName") ThreatProtectionName threatProtectionName,
             @BodyParam("application/json") ServerThreatProtectionSettingsModelInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerThreatProtectionListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server's Threat Protection state along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
+        listByServerSinglePageAsync(String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,32 +140,17 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context))
             .<PagedResponse<ServerThreatProtectionSettingsModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -192,22 +158,18 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server's Threat Protection state along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
+        listByServerSinglePageAsync(String resourceGroupName, String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -219,28 +181,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serverName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,16 +198,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a list of server's Threat Protection state as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(
-        String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+    public PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(String resourceGroupName,
+        String serverName) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -268,16 +216,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a list of server's Threat Protection state as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<ServerThreatProtectionSettingsModelInner> listByServerAsync(String resourceGroupName,
+        String serverName, Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,14 +233,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(
-        String resourceGroupName, String serverName) {
+    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName,
+        String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -303,14 +250,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName,
+        String serverName, Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -318,22 +265,18 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName) {
+    public Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,24 +291,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            threatProtectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, threatProtectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -374,22 +307,18 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName, Context context) {
+    private Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,21 +333,13 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                threatProtectionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serverName, threatProtectionName, accept, context);
     }
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -428,15 +349,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a server's Advanced Threat Protection settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerThreatProtectionSettingsModelInner> getAsync(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName) {
+    public Mono<ServerThreatProtectionSettingsModelInner> getAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName) {
         return getWithResponseAsync(resourceGroupName, serverName, threatProtectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -447,14 +368,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a server's Advanced Threat Protection settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerThreatProtectionSettingsModelInner> getWithResponse(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName, Context context) {
+    public Response<ServerThreatProtectionSettingsModelInner> getWithResponse(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, threatProtectionName, context).block();
     }
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -464,14 +385,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return a server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner get(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName) {
+    public ServerThreatProtectionSettingsModelInner get(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName) {
         return getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -480,25 +401,18 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -518,25 +432,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            threatProtectionName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, threatProtectionName, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -546,26 +450,19 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName,
+        ServerThreatProtectionSettingsModelInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,22 +482,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                threatProtectionName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serverName, threatProtectionName, parameters, accept,
+            context);
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -612,26 +501,19 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
             ServerThreatProtectionSettingsModelInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, threatProtectionName, parameters);
-        return this
-            .client
-            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerThreatProtectionSettingsModelInner.class,
-                ServerThreatProtectionSettingsModelInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, threatProtectionName, parameters);
+        return this.client
+            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ServerThreatProtectionSettingsModelInner.class,
+                ServerThreatProtectionSettingsModelInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -644,28 +526,20 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+            ServerThreatProtectionSettingsModelInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, threatProtectionName, parameters, context);
-        return this
-            .client
-            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerThreatProtectionSettingsModelInner.class,
-                ServerThreatProtectionSettingsModelInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, threatProtectionName, parameters, context);
+        return this.client
+            .<ServerThreatProtectionSettingsModelInner, ServerThreatProtectionSettingsModelInner>getLroResult(mono,
+                this.client.getHttpPipeline(), ServerThreatProtectionSettingsModelInner.class,
+                ServerThreatProtectionSettingsModelInner.class, context);
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -677,19 +551,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
+        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
             ServerThreatProtectionSettingsModelInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -702,20 +572,15 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+            ServerThreatProtectionSettingsModelInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -726,19 +591,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return server's Advanced Threat Protection settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
+    public Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName,
         ServerThreatProtectionSettingsModelInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -750,20 +612,16 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return server's Advanced Threat Protection settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters, context)
-            .last()
+    private Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName,
+        ServerThreatProtectionSettingsModelInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -774,17 +632,14 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters) {
+    public ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters).block();
     }
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -796,89 +651,70 @@ public final class ServerThreatProtectionSettingsClientImpl implements ServerThr
      * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerThreatProtectionSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters,
+    public ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, threatProtectionName, parameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>> listByServerNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
+        listByServerNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServerThreatProtectionSettingsModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's Advanced Threat Protection settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServerThreatProtectionSettingsModelInner>>
+        listByServerNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

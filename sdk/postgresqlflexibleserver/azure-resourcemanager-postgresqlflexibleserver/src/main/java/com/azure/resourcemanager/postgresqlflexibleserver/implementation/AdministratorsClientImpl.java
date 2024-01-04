@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdministratorsClient.
+ */
 public final class AdministratorsClientImpl implements AdministratorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AdministratorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of AdministratorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AdministratorsClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,80 +71,56 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
     public interface AdministratorsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ActiveDirectoryAdministratorAdd parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("objectId") String objectId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("objectId") String objectId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators/{objectId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActiveDirectoryAdministratorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("objectId") String objectId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ActiveDirectoryAdministratorInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("objectId") String objectId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/administrators")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdministratorListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AdministratorListResult>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdministratorListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -147,22 +129,18 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an Active Directory administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId, ActiveDirectoryAdministratorAdd parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -181,25 +159,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            objectId,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serverName, objectId, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -209,26 +176,18 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an Active Directory administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId, ActiveDirectoryAdministratorAdd parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,22 +206,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                objectId,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, serverName,
+            objectId, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -274,23 +224,18 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner>
-        beginCreateAsync(
-            String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, objectId, parameters);
-        return this
-            .client
-            .<ActiveDirectoryAdministratorInner, ActiveDirectoryAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ActiveDirectoryAdministratorInner.class,
-                ActiveDirectoryAdministratorInner.class,
-                this.client.getContext());
+        beginCreateAsync(String resourceGroupName, String serverName, String objectId,
+            ActiveDirectoryAdministratorAdd parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, serverName, objectId, parameters);
+        return this.client.<ActiveDirectoryAdministratorInner, ActiveDirectoryAdministratorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ActiveDirectoryAdministratorInner.class,
+            ActiveDirectoryAdministratorInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -303,28 +248,19 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner>
-        beginCreateAsync(
-            String resourceGroupName,
-            String serverName,
-            String objectId,
-            ActiveDirectoryAdministratorAdd parameters,
-            Context context) {
+        beginCreateAsync(String resourceGroupName, String serverName, String objectId,
+            ActiveDirectoryAdministratorAdd parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, serverName, objectId, parameters, context);
-        return this
-            .client
-            .<ActiveDirectoryAdministratorInner, ActiveDirectoryAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ActiveDirectoryAdministratorInner.class,
-                ActiveDirectoryAdministratorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, serverName, objectId, parameters, context);
+        return this.client.<ActiveDirectoryAdministratorInner, ActiveDirectoryAdministratorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ActiveDirectoryAdministratorInner.class,
+            ActiveDirectoryAdministratorInner.class, context);
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -342,7 +278,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -355,17 +291,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
+        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters,
         Context context) {
         return this.beginCreateAsync(resourceGroupName, serverName, objectId, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -376,16 +309,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return represents an Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ActiveDirectoryAdministratorInner> createAsync(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
-        return beginCreateAsync(resourceGroupName, serverName, objectId, parameters)
-            .last()
+    public Mono<ActiveDirectoryAdministratorInner> createAsync(String resourceGroupName, String serverName,
+        String objectId, ActiveDirectoryAdministratorAdd parameters) {
+        return beginCreateAsync(resourceGroupName, serverName, objectId, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -397,20 +329,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return represents an Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ActiveDirectoryAdministratorInner> createAsync(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, serverName, objectId, parameters, context)
-            .last()
+    private Mono<ActiveDirectoryAdministratorInner> createAsync(String resourceGroupName, String serverName,
+        String objectId, ActiveDirectoryAdministratorAdd parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, serverName, objectId, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -421,14 +348,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActiveDirectoryAdministratorInner create(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters) {
+    public ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
+        ActiveDirectoryAdministratorAdd parameters) {
         return createAsync(resourceGroupName, serverName, objectId, parameters).block();
     }
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -440,18 +367,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActiveDirectoryAdministratorInner create(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
-        Context context) {
+    public ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
+        ActiveDirectoryAdministratorAdd parameters, Context context) {
         return createAsync(resourceGroupName, serverName, objectId, parameters, context).block();
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -461,19 +384,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -487,24 +406,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            objectId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -515,19 +424,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -541,21 +446,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                objectId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serverName, objectId, accept, context);
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -565,18 +462,16 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String objectId) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String objectId) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, objectId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -587,19 +482,18 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String objectId, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String objectId, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, objectId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serverName, objectId, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -609,14 +503,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String objectId) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String objectId) {
         return this.beginDeleteAsync(resourceGroupName, serverName, objectId).getSyncPoller();
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -627,14 +521,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String objectId, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String objectId,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, objectId, context).getSyncPoller();
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -645,14 +539,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId) {
-        return beginDeleteAsync(resourceGroupName, serverName, objectId)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serverName, objectId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -664,14 +557,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String objectId, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, objectId, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serverName, objectId, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -686,7 +578,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -702,7 +594,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -712,19 +604,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId) {
+    public Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String objectId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -738,24 +626,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            objectId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, objectId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -766,19 +644,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId, Context context) {
+    private Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String objectId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -792,21 +666,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                objectId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serverName, objectId, accept, context);
     }
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -816,15 +682,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ActiveDirectoryAdministratorInner> getAsync(
-        String resourceGroupName, String serverName, String objectId) {
+    public Mono<ActiveDirectoryAdministratorInner> getAsync(String resourceGroupName, String serverName,
+        String objectId) {
         return getWithResponseAsync(resourceGroupName, serverName, objectId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -835,14 +701,14 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return information about a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ActiveDirectoryAdministratorInner> getWithResponse(
-        String resourceGroupName, String serverName, String objectId, Context context) {
+    public Response<ActiveDirectoryAdministratorInner> getWithResponse(String resourceGroupName, String serverName,
+        String objectId, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, objectId, context).block();
     }
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -858,29 +724,25 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -891,32 +753,16 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
-            .<PagedResponse<ActiveDirectoryAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context))
+            .<PagedResponse<ActiveDirectoryAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -924,22 +770,18 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -951,28 +793,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serverName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,14 +811,13 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -999,16 +827,15 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return a list of active directory administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<ActiveDirectoryAdministratorInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1023,7 +850,7 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -1033,21 +860,22 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
      * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActiveDirectoryAdministratorInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<ActiveDirectoryAdministratorInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -1055,62 +883,44 @@ public final class AdministratorsClientImpl implements AdministratorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ActiveDirectoryAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ActiveDirectoryAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory administrators along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ActiveDirectoryAdministratorInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

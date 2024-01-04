@@ -83,9 +83,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to PostgreSqlManager. The Microsoft Azure management API provides create, read, update, and delete
- * functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert
- * policies, log files and configurations with new business model.
+ * Entry point to PostgreSqlManager.
+ * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL
+ * resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and
+ * configurations with new business model.
  */
 public final class PostgreSqlManager {
     private Administrators administrators;
@@ -143,18 +144,14 @@ public final class PostgreSqlManager {
     private PostgreSqlManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new PostgreSqlManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new PostgreSqlManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of PostgreSql service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the PostgreSql service API instance.
@@ -167,7 +164,7 @@ public final class PostgreSqlManager {
 
     /**
      * Creates an instance of PostgreSql service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the PostgreSql service API instance.
@@ -180,14 +177,16 @@ public final class PostgreSqlManager {
 
     /**
      * Gets a Configurable instance that can be used to create PostgreSqlManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new PostgreSqlManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -259,8 +258,8 @@ public final class PostgreSqlManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -277,8 +276,8 @@ public final class PostgreSqlManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -298,21 +297,12 @@ public final class PostgreSqlManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.postgresqlflexibleserver")
-                .append("/")
-                .append("1.1.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-")
+                .append("com.azure.resourcemanager.postgresqlflexibleserver").append("/").append("1.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -331,38 +321,25 @@ public final class PostgreSqlManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new PostgreSqlManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Administrators. It manages ActiveDirectoryAdministrator.
-     *
+     * 
      * @return Resource collection API of Administrators.
      */
     public Administrators administrators() {
@@ -374,7 +351,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Backups.
-     *
+     * 
      * @return Resource collection API of Backups.
      */
     public Backups backups() {
@@ -386,20 +363,20 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of LocationBasedCapabilities.
-     *
+     * 
      * @return Resource collection API of LocationBasedCapabilities.
      */
     public LocationBasedCapabilities locationBasedCapabilities() {
         if (this.locationBasedCapabilities == null) {
-            this.locationBasedCapabilities =
-                new LocationBasedCapabilitiesImpl(clientObject.getLocationBasedCapabilities(), this);
+            this.locationBasedCapabilities
+                = new LocationBasedCapabilitiesImpl(clientObject.getLocationBasedCapabilities(), this);
         }
         return locationBasedCapabilities;
     }
 
     /**
      * Gets the resource collection API of ServerCapabilities.
-     *
+     * 
      * @return Resource collection API of ServerCapabilities.
      */
     public ServerCapabilities serverCapabilities() {
@@ -411,33 +388,33 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of CheckNameAvailabilities.
-     *
+     * 
      * @return Resource collection API of CheckNameAvailabilities.
      */
     public CheckNameAvailabilities checkNameAvailabilities() {
         if (this.checkNameAvailabilities == null) {
-            this.checkNameAvailabilities =
-                new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+            this.checkNameAvailabilities
+                = new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
         }
         return checkNameAvailabilities;
     }
 
     /**
      * Gets the resource collection API of CheckNameAvailabilityWithLocations.
-     *
+     * 
      * @return Resource collection API of CheckNameAvailabilityWithLocations.
      */
     public CheckNameAvailabilityWithLocations checkNameAvailabilityWithLocations() {
         if (this.checkNameAvailabilityWithLocations == null) {
-            this.checkNameAvailabilityWithLocations =
-                new CheckNameAvailabilityWithLocationsImpl(clientObject.getCheckNameAvailabilityWithLocations(), this);
+            this.checkNameAvailabilityWithLocations = new CheckNameAvailabilityWithLocationsImpl(
+                clientObject.getCheckNameAvailabilityWithLocations(), this);
         }
         return checkNameAvailabilityWithLocations;
     }
 
     /**
      * Gets the resource collection API of Configurations. It manages Configuration.
-     *
+     * 
      * @return Resource collection API of Configurations.
      */
     public Configurations configurations() {
@@ -449,7 +426,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Databases. It manages Database.
-     *
+     * 
      * @return Resource collection API of Databases.
      */
     public Databases databases() {
@@ -461,7 +438,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of FirewallRules. It manages FirewallRule.
-     *
+     * 
      * @return Resource collection API of FirewallRules.
      */
     public FirewallRules firewallRules() {
@@ -473,7 +450,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Servers. It manages Server.
-     *
+     * 
      * @return Resource collection API of Servers.
      */
     public Servers servers() {
@@ -485,7 +462,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of FlexibleServers.
-     *
+     * 
      * @return Resource collection API of FlexibleServers.
      */
     public FlexibleServers flexibleServers() {
@@ -497,7 +474,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of LtrBackupOperations.
-     *
+     * 
      * @return Resource collection API of LtrBackupOperations.
      */
     public LtrBackupOperations ltrBackupOperations() {
@@ -509,7 +486,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Migrations. It manages MigrationResource.
-     *
+     * 
      * @return Resource collection API of Migrations.
      */
     public Migrations migrations() {
@@ -521,7 +498,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -533,7 +510,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -545,47 +522,46 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of GetPrivateDnsZoneSuffixes.
-     *
+     * 
      * @return Resource collection API of GetPrivateDnsZoneSuffixes.
      */
     public GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes() {
         if (this.getPrivateDnsZoneSuffixes == null) {
-            this.getPrivateDnsZoneSuffixes =
-                new GetPrivateDnsZoneSuffixesImpl(clientObject.getGetPrivateDnsZoneSuffixes(), this);
+            this.getPrivateDnsZoneSuffixes
+                = new GetPrivateDnsZoneSuffixesImpl(clientObject.getGetPrivateDnsZoneSuffixes(), this);
         }
         return getPrivateDnsZoneSuffixes;
     }
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of PrivateEndpointConnectionOperations.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnectionOperations.
      */
     public PrivateEndpointConnectionOperations privateEndpointConnectionOperations() {
         if (this.privateEndpointConnectionOperations == null) {
-            this.privateEndpointConnectionOperations =
-                new PrivateEndpointConnectionOperationsImpl(
-                    clientObject.getPrivateEndpointConnectionOperations(), this);
+            this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsImpl(
+                clientObject.getPrivateEndpointConnectionOperations(), this);
         }
         return privateEndpointConnectionOperations;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -597,7 +573,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of QuotaUsages.
-     *
+     * 
      * @return Resource collection API of QuotaUsages.
      */
     public QuotaUsages quotaUsages() {
@@ -609,7 +585,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of Replicas.
-     *
+     * 
      * @return Resource collection API of Replicas.
      */
     public Replicas replicas() {
@@ -621,7 +597,7 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of LogFiles.
-     *
+     * 
      * @return Resource collection API of LogFiles.
      */
     public LogFiles logFiles() {
@@ -634,20 +610,20 @@ public final class PostgreSqlManager {
     /**
      * Gets the resource collection API of ServerThreatProtectionSettings. It manages
      * ServerThreatProtectionSettingsModel.
-     *
+     * 
      * @return Resource collection API of ServerThreatProtectionSettings.
      */
     public ServerThreatProtectionSettings serverThreatProtectionSettings() {
         if (this.serverThreatProtectionSettings == null) {
-            this.serverThreatProtectionSettings =
-                new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
+            this.serverThreatProtectionSettings
+                = new ServerThreatProtectionSettingsImpl(clientObject.getServerThreatProtectionSettings(), this);
         }
         return serverThreatProtectionSettings;
     }
 
     /**
      * Gets the resource collection API of VirtualEndpoints. It manages VirtualEndpointResource.
-     *
+     * 
      * @return Resource collection API of VirtualEndpoints.
      */
     public VirtualEndpoints virtualEndpoints() {
@@ -659,13 +635,13 @@ public final class PostgreSqlManager {
 
     /**
      * Gets the resource collection API of VirtualNetworkSubnetUsages.
-     *
+     * 
      * @return Resource collection API of VirtualNetworkSubnetUsages.
      */
     public VirtualNetworkSubnetUsages virtualNetworkSubnetUsages() {
         if (this.virtualNetworkSubnetUsages == null) {
-            this.virtualNetworkSubnetUsages =
-                new VirtualNetworkSubnetUsagesImpl(clientObject.getVirtualNetworkSubnetUsages(), this);
+            this.virtualNetworkSubnetUsages
+                = new VirtualNetworkSubnetUsagesImpl(clientObject.getVirtualNetworkSubnetUsages(), this);
         }
         return virtualNetworkSubnetUsages;
     }
@@ -673,7 +649,7 @@ public final class PostgreSqlManager {
     /**
      * Gets wrapped service client PostgreSqlManagementClient providing direct access to the underlying auto-generated
      * API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client PostgreSqlManagementClient.
      */
     public PostgreSqlManagementClient serviceClient() {

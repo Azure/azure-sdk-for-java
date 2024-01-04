@@ -21,8 +21,7 @@ public final class FirewallRulesImpl implements FirewallRules {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public FirewallRulesImpl(
-        FirewallRulesClient innerClient,
+    public FirewallRulesImpl(FirewallRulesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,15 +35,12 @@ public final class FirewallRulesImpl implements FirewallRules {
         this.serviceClient().delete(resourceGroupName, serverName, firewallRuleName, context);
     }
 
-    public Response<FirewallRule> getWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context) {
-        Response<FirewallRuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, firewallRuleName, context);
+    public Response<FirewallRule> getWithResponse(String resourceGroupName, String serverName, String firewallRuleName,
+        Context context) {
+        Response<FirewallRuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, firewallRuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FirewallRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,34 +62,26 @@ public final class FirewallRulesImpl implements FirewallRules {
     }
 
     public PagedIterable<FirewallRule> listByServer(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<FirewallRuleInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        PagedIterable<FirewallRuleInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
         return Utils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
     public FirewallRule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serverName, firewallRuleName, Context.NONE).getValue();
     }
@@ -101,26 +89,18 @@ public final class FirewallRulesImpl implements FirewallRules {
     public Response<FirewallRule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serverName, firewallRuleName, context);
     }
@@ -128,26 +108,18 @@ public final class FirewallRulesImpl implements FirewallRules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         this.delete(resourceGroupName, serverName, firewallRuleName, Context.NONE);
     }
@@ -155,26 +127,18 @@ public final class FirewallRulesImpl implements FirewallRules {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         this.delete(resourceGroupName, serverName, firewallRuleName, context);
     }

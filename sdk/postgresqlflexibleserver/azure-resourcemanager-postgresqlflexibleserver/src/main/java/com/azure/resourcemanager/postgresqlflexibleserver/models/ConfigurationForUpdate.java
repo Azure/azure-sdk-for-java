@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a Configuration. */
+/**
+ * Represents a Configuration.
+ */
 @Fluent
 public final class ConfigurationForUpdate {
     /*
@@ -17,13 +19,15 @@ public final class ConfigurationForUpdate {
     @JsonProperty(value = "properties")
     private ConfigurationProperties innerProperties;
 
-    /** Creates an instance of ConfigurationForUpdate class. */
+    /**
+     * Creates an instance of ConfigurationForUpdate class.
+     */
     public ConfigurationForUpdate() {
     }
 
     /**
      * Get the innerProperties property: The properties of a configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConfigurationProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -41,7 +45,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationForUpdate object itself.
      */
@@ -55,7 +59,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +68,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -73,7 +77,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -82,7 +86,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -91,7 +95,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -100,7 +104,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Set the source property: Source of the configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConfigurationForUpdate object itself.
      */
@@ -114,7 +118,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the isDynamicConfig property: Configuration dynamic or static.
-     *
+     * 
      * @return the isDynamicConfig value.
      */
     public Boolean isDynamicConfig() {
@@ -123,7 +127,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the isReadOnly property: Configuration read-only or not.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public Boolean isReadOnly() {
@@ -132,7 +136,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the isConfigPendingRestart property: Configuration is pending restart or not.
-     *
+     * 
      * @return the isConfigPendingRestart value.
      */
     public Boolean isConfigPendingRestart() {
@@ -141,7 +145,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the unit property: Configuration unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -150,7 +154,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Get the documentationLink property: Configuration documentation link.
-     *
+     * 
      * @return the documentationLink value.
      */
     public String documentationLink() {
@@ -159,7 +163,7 @@ public final class ConfigurationForUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

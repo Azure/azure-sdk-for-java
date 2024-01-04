@@ -84,25 +84,19 @@ public final class VirtualEndpointResourceImpl
     }
 
     public VirtualEndpointResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .create(resourceGroupName, serverName, virtualEndpointName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints().create(resourceGroupName, serverName,
+            virtualEndpointName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualEndpointResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .create(resourceGroupName, serverName, virtualEndpointName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints().create(resourceGroupName, serverName,
+            virtualEndpointName, this.innerModel(), context);
         return this;
     }
 
-    VirtualEndpointResourceImpl(
-        String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+    VirtualEndpointResourceImpl(String name,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = new VirtualEndpointResourceInner();
         this.serviceManager = serviceManager;
         this.virtualEndpointName = name;
@@ -114,25 +108,18 @@ public final class VirtualEndpointResourceImpl
     }
 
     public VirtualEndpointResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .update(resourceGroupName, serverName, virtualEndpointName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints().update(resourceGroupName, serverName,
+            virtualEndpointName, updateParameters, Context.NONE);
         return this;
     }
 
     public VirtualEndpointResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .update(resourceGroupName, serverName, virtualEndpointName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints().update(resourceGroupName, serverName,
+            virtualEndpointName, updateParameters, context);
         return this;
     }
 
-    VirtualEndpointResourceImpl(
-        VirtualEndpointResourceInner innerObject,
+    VirtualEndpointResourceImpl(VirtualEndpointResourceInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -142,22 +129,14 @@ public final class VirtualEndpointResourceImpl
     }
 
     public VirtualEndpointResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints()
+            .getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE).getValue();
         return this;
     }
 
     public VirtualEndpointResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualEndpoints()
-                .getWithResponse(resourceGroupName, serverName, virtualEndpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVirtualEndpoints()
+            .getWithResponse(resourceGroupName, serverName, virtualEndpointName, context).getValue();
         return this;
     }
 

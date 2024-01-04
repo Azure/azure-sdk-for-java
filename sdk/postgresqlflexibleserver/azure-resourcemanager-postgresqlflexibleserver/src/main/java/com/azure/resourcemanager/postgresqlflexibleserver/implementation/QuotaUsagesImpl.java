@@ -19,8 +19,7 @@ public final class QuotaUsagesImpl implements QuotaUsages {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public QuotaUsagesImpl(
-        QuotaUsagesClient innerClient,
+    public QuotaUsagesImpl(QuotaUsagesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

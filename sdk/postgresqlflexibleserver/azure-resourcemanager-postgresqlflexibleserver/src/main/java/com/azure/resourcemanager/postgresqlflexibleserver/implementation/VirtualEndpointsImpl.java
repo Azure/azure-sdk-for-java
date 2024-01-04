@@ -21,8 +21,7 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public VirtualEndpointsImpl(
-        VirtualEndpointsClient innerClient,
+    public VirtualEndpointsImpl(VirtualEndpointsClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,15 +35,12 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
         this.serviceClient().delete(resourceGroupName, serverName, virtualEndpointName, context);
     }
 
-    public Response<VirtualEndpointResource> getWithResponse(
-        String resourceGroupName, String serverName, String virtualEndpointName, Context context) {
-        Response<VirtualEndpointResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
+    public Response<VirtualEndpointResource> getWithResponse(String resourceGroupName, String serverName,
+        String virtualEndpointName, Context context) {
+        Response<VirtualEndpointResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualEndpointResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,8 +48,8 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
     }
 
     public VirtualEndpointResource get(String resourceGroupName, String serverName, String virtualEndpointName) {
-        VirtualEndpointResourceInner inner =
-            this.serviceClient().get(resourceGroupName, serverName, virtualEndpointName);
+        VirtualEndpointResourceInner inner
+            = this.serviceClient().get(resourceGroupName, serverName, virtualEndpointName);
         if (inner != null) {
             return new VirtualEndpointResourceImpl(inner, this.manager());
         } else {
@@ -62,43 +58,33 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
     }
 
     public PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<VirtualEndpointResourceInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName);
+        PagedIterable<VirtualEndpointResourceInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName);
         return Utils.mapPage(inner, inner1 -> new VirtualEndpointResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualEndpointResource> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        PagedIterable<VirtualEndpointResourceInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+    public PagedIterable<VirtualEndpointResource> listByServer(String resourceGroupName, String serverName,
+        Context context) {
+        PagedIterable<VirtualEndpointResourceInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
         return Utils.mapPage(inner, inner1 -> new VirtualEndpointResourceImpl(inner1, this.manager()));
     }
 
     public VirtualEndpointResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String virtualEndpointName = Utils.getValueFromIdByName(id, "virtualendpoints");
         if (virtualEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serverName, virtualEndpointName, Context.NONE).getValue();
     }
@@ -106,28 +92,18 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
     public Response<VirtualEndpointResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String virtualEndpointName = Utils.getValueFromIdByName(id, "virtualendpoints");
         if (virtualEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
     }
@@ -135,28 +111,18 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String virtualEndpointName = Utils.getValueFromIdByName(id, "virtualendpoints");
         if (virtualEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
         }
         this.delete(resourceGroupName, serverName, virtualEndpointName, Context.NONE);
     }
@@ -164,28 +130,18 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
         String virtualEndpointName = Utils.getValueFromIdByName(id, "virtualendpoints");
         if (virtualEndpointName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualendpoints'.", id)));
         }
         this.delete(resourceGroupName, serverName, virtualEndpointName, context);
     }
