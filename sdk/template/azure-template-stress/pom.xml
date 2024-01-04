@@ -5,6 +5,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
   <groupId>com.azure</groupId>
   <artifactId>azure-template-stress</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-template-perf;current} -->
@@ -59,6 +66,22 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.micrometer:micrometer-core:[1.9.17]</include> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.32.0]</include> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>ch.qos.logback:logback-classic:[1.2.12]</include> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
       <plugin>
         <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
         <groupId>org.apache.maven.plugins</groupId>

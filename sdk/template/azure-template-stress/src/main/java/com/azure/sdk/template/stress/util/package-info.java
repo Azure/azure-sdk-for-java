@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Contains classes for stress tests.
+ * Contains classes for stress tests utils.
  */
-package com.azure.sdk.template.stress;
+package com.azure.sdk.template.stress.util;

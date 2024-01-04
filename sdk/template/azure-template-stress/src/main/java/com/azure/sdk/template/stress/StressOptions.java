@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.template.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
@@ -10,6 +13,10 @@ public class StressOptions extends PerfStressOptions {
     @Parameter(names = { "--endpoint" }, description = "Service endpoint")
     private String serviceEndpoint;
 
+    /**
+     * Gets the service endpoint.
+     * @return the service endpoint.
+     */
     public String getServiceEndpoint() {
         return serviceEndpoint;
     }

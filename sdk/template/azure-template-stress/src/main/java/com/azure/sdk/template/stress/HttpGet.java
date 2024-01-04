@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -37,10 +36,15 @@ import java.util.ArrayList;
  */
 public class HttpGet extends ScenarioBase<StressOptions> {
     // there will be multiple instances of scenario
-    private final static TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
-    private final static ClientLogger LOGGER = new ClientLogger(HttpGet.class);
+    private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
     private final URL url;
+
+    /**
+     * Creates an instance of performance test.
+     * @param options stress test options
+     */
     public HttpGet(StressOptions options) {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
@@ -107,7 +111,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
             case NETTY:
                 return NettyAsyncHttpClientProvider.class;
             default:
-                throw new IllegalArgumentException("Unknown HTTP Client provider: " + options.getHttpClient());
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown HTTP Client provider: " + options.getHttpClient()));
         }
     }
 }

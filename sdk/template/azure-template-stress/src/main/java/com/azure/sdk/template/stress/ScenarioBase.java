@@ -19,6 +19,7 @@ public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfS
      * Creates a stress test.
      *
      * @param options Performance test configuration options.
+     * @param telemetryHelper Telemetry helper to monitor test execution and record stats.
      */
     public ScenarioBase(TOptions options, TelemetryHelper telemetryHelper) {
         super(options);
