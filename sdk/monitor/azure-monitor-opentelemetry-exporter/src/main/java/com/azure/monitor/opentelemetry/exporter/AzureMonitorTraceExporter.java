@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.FeatureStatsbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
@@ -53,7 +54,8 @@ final class AzureMonitorTraceExporter implements SpanExporter {
 
         for (SpanData span : spans) {
             LOGGER.verbose("exporting span: {}", span);
-            addInstrumentationToStatBeat(span);
+            FeatureStatsbeat instrumentationStatsbeat = statsbeatModule.getInstrumentationStatsbeat();
+            instrumentationStatsbeat.addInstrumentation(span);
             try {
                 mapper.map(span, telemetryItems::add);
                 OPERATION_LOGGER.recordSuccess();
@@ -64,19 +66,6 @@ final class AzureMonitorTraceExporter implements SpanExporter {
         }
 
         return telemetryItemExporter.send(telemetryItems);
-    }
-
-    private void addInstrumentationToStatBeat(SpanData span) {
-        if (span.getInstrumentationScopeInfo() == null || span.getInstrumentationScopeInfo().getName() == null) {
-            return;
-        }
-        String instrumentationScopeName = span.getInstrumentationScopeInfo().getName();
-        boolean isAnAzureLibraryInstrumentation = instrumentationScopeName.startsWith(
-            "azure-");
-        if (isAnAzureLibraryInstrumentation) {
-            instrumentationScopeName = AZURE_OPENTELEMETRY;
-        }
-        statsbeatModule.getInstrumentationStatsbeat().addInstrumentation(instrumentationScopeName);
     }
 
     /**
