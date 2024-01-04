@@ -18,6 +18,12 @@ public final class HttpPipelineNextSyncPolicyHelper {
      * Type defining the methods to set the non-public properties of an {@link HttpPipelineNextPolicy} instance.
      */
     public interface HttpPipelineNextSyncPolicyAccessor {
+        /**
+         * Converts the given {@link HttpPipelineNextSyncPolicy} to an {@link HttpPipelineNextPolicy}.
+         *
+         * @param syncPolicy The {@link HttpPipelineNextSyncPolicy} to convert.
+         * @return The converted {@link HttpPipelineNextPolicy}.
+         */
         HttpPipelineNextPolicy toAsyncPolicy(HttpPipelineNextSyncPolicy syncPolicy);
     }
 

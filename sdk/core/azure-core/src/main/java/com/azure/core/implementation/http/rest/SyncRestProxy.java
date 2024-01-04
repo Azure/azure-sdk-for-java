@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -31,6 +32,9 @@ import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
+/**
+ * A synchronous REST proxy implementation.
+ */
 public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
@@ -115,16 +119,19 @@ public class SyncRestProxy extends RestProxyBase {
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
+        HttpResponseException exception;
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
+
+        throw LOGGER.logExceptionAsError(exception);
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
@@ -181,7 +188,7 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Object or Page<T>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBody(null);
         }
         return result;
     }
@@ -215,6 +222,7 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
+    @Override
     public void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
