@@ -856,7 +856,7 @@ public class PollerTests {
             if (invocationCount[0] == 0) {
                 return Mono.just(expected);
             } else {
-                return Mono.delay(Duration.ofSeconds(2))
+                return Mono.delay(Duration.ofSeconds(5))
                     .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             }
         };
@@ -865,7 +865,7 @@ public class PollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(100),
+        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),
             SUCCESSFULLY_COMPLETED));
         assertEquals("0", pollResponse.getValue().getResponse());
     }
