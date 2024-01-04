@@ -4,7 +4,24 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <!-- Suppress certain checks for samples. -->
+  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|EqualsAvoidNullCheck|com\.azure\.tools\.checkstyle\.checks\..*)"
+            files=".*[/\\]samples[/\\].*\.java"/>
+
+  <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
+  <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Nested blocks are useful in tests, e.g. when lambdas require effectively final variables. -->
+  <suppress checks="AvoidNestedBlocks" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Don't apply custom Checkstyle rules to files under test package -->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\..*" files=".*[/\\]src[/\\]test(-shared)?[/\\]java[/\\].*\.java"/>
+
+  <!-- Don't check for JavaDocPackage or LineLength in samples or tests-->
+  <suppress checks="(JavadocPackage|LineLength)" files=".*[/\\](samples|test)[/\\].*\.java"/>
+
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="Javadoc" files="src[/\\](test|test-shared)[/\\]java[/\\].*.java"/>
   <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
 
