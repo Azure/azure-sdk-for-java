@@ -5,32 +5,33 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Top level error object that contains all relevant information.
  */
 @Fluent
-public final class AdditionalInfoErrorResponseError {
+public final class AdditionalInfoErrorResponseError implements JsonSerializable<AdditionalInfoErrorResponseError> {
     /*
      * Additional information about the error
      */
-    @JsonProperty(value = "additionalInfo")
     private List<AdditionalInfoErrorResponseErrorAdditionalInfoItem> additionalInfo;
 
     /*
      * Error code
      */
-    @JsonProperty(value = "code", required = true)
-    private String code;
+    private final String code;
 
     /*
      * Error message indicating why the operation failed.
      */
-    @JsonProperty(value = "message", required = true)
-    private String message;
+    private final String message;
 
     /**
      * Creates an instance of AdditionalInfoErrorResponseError class.
@@ -38,9 +39,7 @@ public final class AdditionalInfoErrorResponseError {
      * @param code the code value to set.
      * @param message the message value to set.
      */
-    @JsonCreator
-    public AdditionalInfoErrorResponseError(@JsonProperty(value = "code", required = true) String code,
-        @JsonProperty(value = "message", required = true) String message) {
+    public AdditionalInfoErrorResponseError(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -82,5 +81,68 @@ public final class AdditionalInfoErrorResponseError {
      */
     public String getMessage() {
         return this.message;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("additionalInfo", this.additionalInfo,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalInfoErrorResponseError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalInfoErrorResponseError if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdditionalInfoErrorResponseError.
+     */
+    public static AdditionalInfoErrorResponseError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean codeFound = false;
+            String code = null;
+            boolean messageFound = false;
+            String message = null;
+            List<AdditionalInfoErrorResponseErrorAdditionalInfoItem> additionalInfo = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                    codeFound = true;
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                    messageFound = true;
+                } else if ("additionalInfo".equals(fieldName)) {
+                    additionalInfo = reader
+                        .readArray(reader1 -> AdditionalInfoErrorResponseErrorAdditionalInfoItem.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (codeFound && messageFound) {
+                AdditionalInfoErrorResponseError deserializedAdditionalInfoErrorResponseError
+                    = new AdditionalInfoErrorResponseError(code, message);
+                deserializedAdditionalInfoErrorResponseError.additionalInfo = additionalInfo;
+
+                return deserializedAdditionalInfoErrorResponseError;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!codeFound) {
+                missingProperties.add("code");
+            }
+            if (!messageFound) {
+                missingProperties.add("message");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }
