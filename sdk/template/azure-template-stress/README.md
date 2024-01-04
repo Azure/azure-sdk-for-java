@@ -42,6 +42,12 @@ Get stress test pods and status:
 kubectl get pods -n <stress test namespace>
 ```
 
+To get readable metadata for pods and/or containers use 
+
+```shell
+kubectl describe pod -n <stress test namespace> <stress test pod name>  -c <container-name>
+```
+
 Get stress test pod logs:
 
 ```shell
@@ -59,7 +65,7 @@ kubectl logs -n <stress test namespace> <stress test pod name>
 You may also get logs for specific containers:
 
 ```shell
-kubectl describe pod -n <stress test namespace> <stress test pod name>  -c <container-name>
+kubectl logs -n <stress test namespace> <stress test pod name> -c <container-name>
 ```
 
 Stop and remove deployed package:
@@ -90,21 +96,27 @@ Below is the current structure of project:
 
 ### How to create your own tests
 
-- Start with [Azure SDK stress Wiki](https://aka.ms/azsdk/stress) to learn about stress tests.
-- Copy `src/main/java/com/azure/sdk/template/stress` folder to your service folder.
-- Update the code
-  - Update `pom.xml` to add dependencies on your service.
-  - Implement your first stress test instead of `HttpGet` and make sure to update `StressTestOptions` to your needs.
-- Update configuration
-  - update `stress-test-resources.bicep` to create resources required for your stress test
-  - change chart `name` (in `Chart.yaml`) to match your service name. Please keep `java-` prefix.
-  - update `templates/job.yaml`
-    - remove `server` container 
-    - replace occurrences of `java-template` to match name in the `Chart.yaml`
-    - update test parameters in `test` container
-  - define scenarios and parameters in `scenarios-matrix.yaml`
+Start with [Azure SDK stress Wiki](https://aka.ms/azsdk/stress) to learn about stress tests.
 
-Now you're ready to run tests with `.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<you service directory>`.
+1. Copy `src/main/java/com/azure/sdk/template/azure-template-stress` folder to your service folder.
+2. Update the code
+  - Update `pom.xml` to change artifact name and add dependencies on your service.
+  - Implement your first stress test instead of `HttpGet` and make sure to update `StressTestOptions` to include important parameters for your tests.
+
+Now you can run stress tests locally. Remaining steps are required to run tests on a stress cluster. 
+  
+3. Update `Dockerfile` to build your service artifacts and any dependencies of current version.
+4. Describe Azure resources necessary for your tests in `stress-test-resources.bicep`
+5. Update `Chart.yaml`:
+   - change chart `name` to include your service name. Please keep `java-` prefix.
+   - change `annotations.stressTest` to `true` to enable auto-discovery 
+5. Update `templates/job.yaml`
+   - remove `server` container as you probably don't need it 
+   - replace occurrences of `java-template` to match name in the `Chart.yaml`
+   - update test parameters for `test` container
+6. Define scenarios and parameters in `scenarios-matrix.yaml`
+
+Now you're ready to run tests with `.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<your service directory>`.
 See [Deploying A Stress Test][deploy_stress_test] for more details.
 
 Let's see how we can check test results.
@@ -201,15 +213,14 @@ Then you can import json file from `workbooks` folder.
 Stress tests are intended to detect reliability and resiliency issues:
 - bugs in retry policy
 - graceful degradation under high load and transient failures
-- memory leaks, thread pool starvation, etc
+- memory and connection leaks, thread pool starvation, etc
 
-While we don't have generic solution for fault injection, check out [Chaos mesh](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#chaos-manifest), 
-[Azure Chaos Studio](https://azure.microsoft.com/products/chaos-studio), and [Http Fault injector](https://github.com/Azure/azure-sdk-tools/tree/main/tools/http-fault-injector).
+To explore fault injection options, check out [Chaos mesh](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#chaos-manifest) and [Http Fault injector](https://github.com/Azure/azure-sdk-tools/tree/main/tools/http-fault-injector).
+
+> Note: [Azure Chaos Studio](https://azure.microsoft.com/products/chaos-studio) is not currently supported by the stress test infra.
 
 Even without fault injection, by applying maximum load to the service, we can detect memory leaks, extensive allocations,
-thread pool issues, or other performance issues in the code.
-
-So make sure to configure resource limits and apply the maximum load you can get under them. 
+thread pool issues, or other performance issues in the code. So make sure to configure resource limits and apply the maximum load you can get under them. 
 
 <!-- links -->
 [azure_sdk_stress_test]: https://aka.ms/azsdk/stress
