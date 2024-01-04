@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -119,19 +118,16 @@ public class SyncRestProxy extends RestProxyBase {
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
-        HttpResponseException exception;
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            exception = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
-
-        throw LOGGER.logExceptionAsError(exception);
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,

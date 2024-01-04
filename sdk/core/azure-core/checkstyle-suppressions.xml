@@ -18,8 +18,10 @@
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.implementation.jackson.(MemberNameConverterImpl|ObjectMapperFactory|XmlMapperFactory).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
-            files="com.azure.core.implementation.AccessTokenCache.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.AccessTokenCache.java"/>
+
+  <!-- Don't log in SyncRestProxy to match AsyncRestProxy. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.http.rest.SyncRestProxy.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" />
 
