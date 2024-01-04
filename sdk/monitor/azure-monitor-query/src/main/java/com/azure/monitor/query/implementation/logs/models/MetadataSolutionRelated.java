@@ -5,56 +5,56 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** The related metadata items for the Log Analytics solution. */
+/**
+ * The related metadata items for the Log Analytics solution.
+ */
 @Fluent
-public final class MetadataSolutionRelated {
+public final class MetadataSolutionRelated implements JsonSerializable<MetadataSolutionRelated> {
     /*
      * The tables related to the Log Analytics solution
      */
-    @JsonProperty(value = "tables", required = true)
-    private List<String> tables;
+    private final List<String> tables;
 
     /*
      * The functions related to the Log Analytics solution
      */
-    @JsonProperty(value = "functions")
     private List<String> functions;
 
     /*
      * The categories related to the Log Analytics solution
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * The saved queries related to the Log Analytics solution
      */
-    @JsonProperty(value = "queries")
     private List<String> queries;
 
     /*
      * The Workspaces referenced in the metadata request that are related to the Log Analytics solution
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /**
      * Creates an instance of MetadataSolutionRelated class.
-     *
+     * 
      * @param tables the tables value to set.
      */
-    @JsonCreator
-    public MetadataSolutionRelated(@JsonProperty(value = "tables", required = true) List<String> tables) {
+    public MetadataSolutionRelated(List<String> tables) {
         this.tables = tables;
     }
 
     /**
      * Get the tables property: The tables related to the Log Analytics solution.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -63,7 +63,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the functions property: The functions related to the Log Analytics solution.
-     *
+     * 
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -72,7 +72,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the functions property: The functions related to the Log Analytics solution.
-     *
+     * 
      * @param functions the functions value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -83,7 +83,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the categories property: The categories related to the Log Analytics solution.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -92,7 +92,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the categories property: The categories related to the Log Analytics solution.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -103,7 +103,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the queries property: The saved queries related to the Log Analytics solution.
-     *
+     * 
      * @return the queries value.
      */
     public List<String> getQueries() {
@@ -112,7 +112,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the queries property: The saved queries related to the Log Analytics solution.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -124,7 +124,7 @@ public final class MetadataSolutionRelated {
     /**
      * Get the workspaces property: The Workspaces referenced in the metadata request that are related to the Log
      * Analytics solution.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -134,7 +134,7 @@ public final class MetadataSolutionRelated {
     /**
      * Set the workspaces property: The Workspaces referenced in the metadata request that are related to the Log
      * Analytics solution.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -143,14 +143,69 @@ public final class MetadataSolutionRelated {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataSolutionRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSolutionRelated if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataSolutionRelated.
      */
-    public void validate() {
-        if (getTables() == null) {
-            throw new IllegalArgumentException("Missing required property tables in model MetadataSolutionRelated");
-        }
+    public static MetadataSolutionRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean tablesFound = false;
+            List<String> tables = null;
+            List<String> functions = null;
+            List<String> categories = null;
+            List<String> queries = null;
+            List<String> workspaces = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> reader1.getString());
+                    tablesFound = true;
+                } else if ("functions".equals(fieldName)) {
+                    functions = reader.readArray(reader1 -> reader1.getString());
+                } else if ("categories".equals(fieldName)) {
+                    categories = reader.readArray(reader1 -> reader1.getString());
+                } else if ("queries".equals(fieldName)) {
+                    queries = reader.readArray(reader1 -> reader1.getString());
+                } else if ("workspaces".equals(fieldName)) {
+                    workspaces = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (tablesFound) {
+                MetadataSolutionRelated deserializedMetadataSolutionRelated = new MetadataSolutionRelated(tables);
+                deserializedMetadataSolutionRelated.functions = functions;
+                deserializedMetadataSolutionRelated.categories = categories;
+                deserializedMetadataSolutionRelated.queries = queries;
+                deserializedMetadataSolutionRelated.workspaces = workspaces;
+
+                return deserializedMetadataSolutionRelated;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!tablesFound) {
+                missingProperties.add("tables");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

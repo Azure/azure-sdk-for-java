@@ -5,89 +5,81 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A data table that takes part in a workspace schema.
- *
- * <p>Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
+ * 
+ * Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
  * items.
  */
 @Fluent
-public final class MetadataTable {
+public final class MetadataTable implements JsonSerializable<MetadataTable> {
     /*
      * The ID of the table
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The name of the table
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The description of the table
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The column associated with the timespan query parameter for the table
      */
-    @JsonProperty(value = "timespanColumn")
     private String timespanColumn;
 
     /*
      * The user defined labels of the table
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * The tags associated with the table
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * The properties of the table
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The list of columns defined on the table
      */
-    @JsonProperty(value = "columns")
     private List<MetadataTableColumnsItem> columns;
 
     /*
      * The related metadata items for the table
      */
-    @JsonProperty(value = "related")
     private MetadataTableRelated related;
 
     /**
      * Creates an instance of MetadataTable class.
-     *
+     * 
      * @param id the id value to set.
      * @param name the name value to set.
      */
-    @JsonCreator
-    public MetadataTable(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "name", required = true) String name) {
+    public MetadataTable(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
     /**
      * Get the id property: The ID of the table.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -96,7 +88,7 @@ public final class MetadataTable {
 
     /**
      * Get the name property: The name of the table.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -105,7 +97,7 @@ public final class MetadataTable {
 
     /**
      * Get the description property: The description of the table.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -114,7 +106,7 @@ public final class MetadataTable {
 
     /**
      * Set the description property: The description of the table.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataTable object itself.
      */
@@ -125,7 +117,7 @@ public final class MetadataTable {
 
     /**
      * Get the timespanColumn property: The column associated with the timespan query parameter for the table.
-     *
+     * 
      * @return the timespanColumn value.
      */
     public String getTimespanColumn() {
@@ -134,7 +126,7 @@ public final class MetadataTable {
 
     /**
      * Set the timespanColumn property: The column associated with the timespan query parameter for the table.
-     *
+     * 
      * @param timespanColumn the timespanColumn value to set.
      * @return the MetadataTable object itself.
      */
@@ -145,7 +137,7 @@ public final class MetadataTable {
 
     /**
      * Get the labels property: The user defined labels of the table.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> getLabels() {
@@ -154,7 +146,7 @@ public final class MetadataTable {
 
     /**
      * Set the labels property: The user defined labels of the table.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the MetadataTable object itself.
      */
@@ -165,7 +157,7 @@ public final class MetadataTable {
 
     /**
      * Get the tags property: The tags associated with the table.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -174,7 +166,7 @@ public final class MetadataTable {
 
     /**
      * Set the tags property: The tags associated with the table.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataTable object itself.
      */
@@ -185,7 +177,7 @@ public final class MetadataTable {
 
     /**
      * Get the properties property: The properties of the table.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -194,7 +186,7 @@ public final class MetadataTable {
 
     /**
      * Set the properties property: The properties of the table.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataTable object itself.
      */
@@ -205,7 +197,7 @@ public final class MetadataTable {
 
     /**
      * Get the columns property: The list of columns defined on the table.
-     *
+     * 
      * @return the columns value.
      */
     public List<MetadataTableColumnsItem> getColumns() {
@@ -214,7 +206,7 @@ public final class MetadataTable {
 
     /**
      * Set the columns property: The list of columns defined on the table.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the MetadataTable object itself.
      */
@@ -225,7 +217,7 @@ public final class MetadataTable {
 
     /**
      * Get the related property: The related metadata items for the table.
-     *
+     * 
      * @return the related value.
      */
     public MetadataTableRelated getRelated() {
@@ -234,7 +226,7 @@ public final class MetadataTable {
 
     /**
      * Set the related property: The related metadata items for the table.
-     *
+     * 
      * @param related the related value to set.
      * @return the MetadataTable object itself.
      */
@@ -243,23 +235,93 @@ public final class MetadataTable {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("timespanColumn", this.timespanColumn);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("related", this.related);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataTable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataTable.
      */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataTable");
-        }
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model MetadataTable");
-        }
-        if (getColumns() != null) {
-            getColumns().forEach(e -> e.validate());
-        }
-        if (getRelated() != null) {
-            getRelated().validate();
-        }
+    public static MetadataTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean nameFound = false;
+            String name = null;
+            String description = null;
+            String timespanColumn = null;
+            List<String> labels = null;
+            Object tags = null;
+            Object properties = null;
+            List<MetadataTableColumnsItem> columns = null;
+            MetadataTableRelated related = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("timespanColumn".equals(fieldName)) {
+                    timespanColumn = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    labels = reader.readArray(reader1 -> reader1.getString());
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else if ("columns".equals(fieldName)) {
+                    columns = reader.readArray(reader1 -> MetadataTableColumnsItem.fromJson(reader1));
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataTableRelated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && nameFound) {
+                MetadataTable deserializedMetadataTable = new MetadataTable(id, name);
+                deserializedMetadataTable.description = description;
+                deserializedMetadataTable.timespanColumn = timespanColumn;
+                deserializedMetadataTable.labels = labels;
+                deserializedMetadataTable.tags = tags;
+                deserializedMetadataTable.properties = properties;
+                deserializedMetadataTable.columns = columns;
+                deserializedMetadataTable.related = related;
+
+                return deserializedMetadataTable;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

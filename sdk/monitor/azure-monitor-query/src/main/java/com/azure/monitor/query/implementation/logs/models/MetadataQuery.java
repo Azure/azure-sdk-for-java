@@ -5,82 +5,75 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A stored query.
- *
- * <p>Queries are stored pieces of KQL, along with a list of relevant metadata items.
+ * 
+ * Queries are stored pieces of KQL, along with a list of relevant metadata items.
  */
 @Fluent
-public final class MetadataQuery {
+public final class MetadataQuery implements JsonSerializable<MetadataQuery> {
     /*
      * The ID of the query.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The display name of the query.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the query.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The KQL body of the query.
      */
-    @JsonProperty(value = "body", required = true)
-    private String body;
+    private final String body;
 
     /*
      * The user defined labels associated with the query.
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * The tags associated with the query.
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * The properties of the query.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The related metadata items for the query.
      */
-    @JsonProperty(value = "related")
     private MetadataQueryRelated related;
 
     /**
      * Creates an instance of MetadataQuery class.
-     *
+     * 
      * @param id the id value to set.
      * @param body the body value to set.
      */
-    @JsonCreator
-    public MetadataQuery(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "body", required = true) String body) {
+    public MetadataQuery(String id, String body) {
         this.id = id;
         this.body = body;
     }
 
     /**
      * Get the id property: The ID of the query.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -89,7 +82,7 @@ public final class MetadataQuery {
 
     /**
      * Get the displayName property: The display name of the query.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -98,7 +91,7 @@ public final class MetadataQuery {
 
     /**
      * Set the displayName property: The display name of the query.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataQuery object itself.
      */
@@ -109,7 +102,7 @@ public final class MetadataQuery {
 
     /**
      * Get the description property: The description of the query.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -118,7 +111,7 @@ public final class MetadataQuery {
 
     /**
      * Set the description property: The description of the query.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataQuery object itself.
      */
@@ -129,7 +122,7 @@ public final class MetadataQuery {
 
     /**
      * Get the body property: The KQL body of the query.
-     *
+     * 
      * @return the body value.
      */
     public String getBody() {
@@ -138,7 +131,7 @@ public final class MetadataQuery {
 
     /**
      * Get the labels property: The user defined labels associated with the query.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> getLabels() {
@@ -147,7 +140,7 @@ public final class MetadataQuery {
 
     /**
      * Set the labels property: The user defined labels associated with the query.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the MetadataQuery object itself.
      */
@@ -158,7 +151,7 @@ public final class MetadataQuery {
 
     /**
      * Get the tags property: The tags associated with the query.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -167,7 +160,7 @@ public final class MetadataQuery {
 
     /**
      * Set the tags property: The tags associated with the query.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataQuery object itself.
      */
@@ -178,7 +171,7 @@ public final class MetadataQuery {
 
     /**
      * Get the properties property: The properties of the query.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -187,7 +180,7 @@ public final class MetadataQuery {
 
     /**
      * Set the properties property: The properties of the query.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataQuery object itself.
      */
@@ -198,7 +191,7 @@ public final class MetadataQuery {
 
     /**
      * Get the related property: The related metadata items for the query.
-     *
+     * 
      * @return the related value.
      */
     public MetadataQueryRelated getRelated() {
@@ -207,7 +200,7 @@ public final class MetadataQuery {
 
     /**
      * Set the related property: The related metadata items for the query.
-     *
+     * 
      * @param related the related value to set.
      * @return the MetadataQuery object itself.
      */
@@ -216,20 +209,88 @@ public final class MetadataQuery {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("related", this.related);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataQuery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataQuery if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataQuery.
      */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataQuery");
-        }
-        if (getBody() == null) {
-            throw new IllegalArgumentException("Missing required property body in model MetadataQuery");
-        }
-        if (getRelated() != null) {
-            getRelated().validate();
-        }
+    public static MetadataQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean bodyFound = false;
+            String body = null;
+            String displayName = null;
+            String description = null;
+            List<String> labels = null;
+            Object tags = null;
+            Object properties = null;
+            MetadataQueryRelated related = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("body".equals(fieldName)) {
+                    body = reader.getString();
+                    bodyFound = true;
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    labels = reader.readArray(reader1 -> reader1.getString());
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataQueryRelated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && bodyFound) {
+                MetadataQuery deserializedMetadataQuery = new MetadataQuery(id, body);
+                deserializedMetadataQuery.displayName = displayName;
+                deserializedMetadataQuery.description = description;
+                deserializedMetadataQuery.labels = labels;
+                deserializedMetadataQuery.tags = tags;
+                deserializedMetadataQuery.properties = properties;
+                deserializedMetadataQuery.related = related;
+
+                return deserializedMetadataQuery;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!bodyFound) {
+                missingProperties.add("body");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

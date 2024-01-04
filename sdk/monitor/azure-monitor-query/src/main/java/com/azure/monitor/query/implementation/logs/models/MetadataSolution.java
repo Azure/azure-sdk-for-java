@@ -5,70 +5,64 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Log Analytics solution.
- *
- * <p>Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering.
+ * 
+ * Solutions can group tables and functions that are associated with a certain Azure Log Analytics offering.
  */
 @Fluent
-public final class MetadataSolution {
+public final class MetadataSolution implements JsonSerializable<MetadataSolution> {
     /*
      * The ID of the Log Analytics solution
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The name of the Log Analytics solution
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The display name of the Log Analytics solution
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the Log Analytics solution
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The tags that are associated with the Log Analytics solution
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * The properties of the Log Analytics solution
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The related metadata items for the Log Analytics solution
      */
-    @JsonProperty(value = "related", required = true)
-    private MetadataSolutionRelated related;
+    private final MetadataSolutionRelated related;
 
     /**
      * Creates an instance of MetadataSolution class.
-     *
+     * 
      * @param id the id value to set.
      * @param name the name value to set.
      * @param related the related value to set.
      */
-    @JsonCreator
-    public MetadataSolution(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "related", required = true) MetadataSolutionRelated related) {
+    public MetadataSolution(String id, String name, MetadataSolutionRelated related) {
         this.id = id;
         this.name = name;
         this.related = related;
@@ -76,7 +70,7 @@ public final class MetadataSolution {
 
     /**
      * Get the id property: The ID of the Log Analytics solution.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -85,7 +79,7 @@ public final class MetadataSolution {
 
     /**
      * Get the name property: The name of the Log Analytics solution.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -94,7 +88,7 @@ public final class MetadataSolution {
 
     /**
      * Get the displayName property: The display name of the Log Analytics solution.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -103,7 +97,7 @@ public final class MetadataSolution {
 
     /**
      * Set the displayName property: The display name of the Log Analytics solution.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataSolution object itself.
      */
@@ -114,7 +108,7 @@ public final class MetadataSolution {
 
     /**
      * Get the description property: The description of the Log Analytics solution.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -123,7 +117,7 @@ public final class MetadataSolution {
 
     /**
      * Set the description property: The description of the Log Analytics solution.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataSolution object itself.
      */
@@ -134,7 +128,7 @@ public final class MetadataSolution {
 
     /**
      * Get the tags property: The tags that are associated with the Log Analytics solution.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -143,7 +137,7 @@ public final class MetadataSolution {
 
     /**
      * Set the tags property: The tags that are associated with the Log Analytics solution.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataSolution object itself.
      */
@@ -154,7 +148,7 @@ public final class MetadataSolution {
 
     /**
      * Get the properties property: The properties of the Log Analytics solution.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -163,7 +157,7 @@ public final class MetadataSolution {
 
     /**
      * Set the properties property: The properties of the Log Analytics solution.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataSolution object itself.
      */
@@ -174,29 +168,94 @@ public final class MetadataSolution {
 
     /**
      * Get the related property: The related metadata items for the Log Analytics solution.
-     *
+     * 
      * @return the related value.
      */
     public MetadataSolutionRelated getRelated() {
         return this.related;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("related", this.related);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataSolution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSolution if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataSolution.
      */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataSolution");
-        }
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model MetadataSolution");
-        }
-        if (getRelated() == null) {
-            throw new IllegalArgumentException("Missing required property related in model MetadataSolution");
-        } else {
-            getRelated().validate();
-        }
+    public static MetadataSolution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean nameFound = false;
+            String name = null;
+            boolean relatedFound = false;
+            MetadataSolutionRelated related = null;
+            String displayName = null;
+            String description = null;
+            Object tags = null;
+            Object properties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataSolutionRelated.fromJson(reader);
+                    relatedFound = true;
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && nameFound && relatedFound) {
+                MetadataSolution deserializedMetadataSolution = new MetadataSolution(id, name, related);
+                deserializedMetadataSolution.displayName = displayName;
+                deserializedMetadataSolution.description = description;
+                deserializedMetadataSolution.tags = tags;
+                deserializedMetadataSolution.properties = properties;
+
+                return deserializedMetadataSolution;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!relatedFound) {
+                missingProperties.add("related");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

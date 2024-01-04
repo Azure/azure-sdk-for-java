@@ -5,54 +5,57 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The related metadata items for the table. */
+/**
+ * The related metadata items for the table.
+ */
 @Fluent
-public final class MetadataTableRelated {
+public final class MetadataTableRelated implements JsonSerializable<MetadataTableRelated> {
     /*
      * The related categories for the table
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * The related Log Analytics solutions for the table
      */
-    @JsonProperty(value = "solutions")
     private List<String> solutions;
 
     /*
      * The related resource types for the table
      */
-    @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
     /*
      * The related Log Analytics workspaces for the table
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /*
      * The related functions for the table
      */
-    @JsonProperty(value = "functions")
     private List<String> functions;
 
     /*
      * The related saved queries for the table
      */
-    @JsonProperty(value = "queries")
     private List<String> queries;
 
-    /** Creates an instance of MetadataTableRelated class. */
-    public MetadataTableRelated() {}
+    /**
+     * Creates an instance of MetadataTableRelated class.
+     */
+    public MetadataTableRelated() {
+    }
 
     /**
      * Get the categories property: The related categories for the table.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -61,7 +64,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the categories property: The related categories for the table.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -72,7 +75,7 @@ public final class MetadataTableRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the table.
-     *
+     * 
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -81,7 +84,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the table.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -92,7 +95,7 @@ public final class MetadataTableRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the table.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -101,7 +104,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the table.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -112,7 +115,7 @@ public final class MetadataTableRelated {
 
     /**
      * Get the workspaces property: The related Log Analytics workspaces for the table.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -121,7 +124,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the workspaces property: The related Log Analytics workspaces for the table.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -132,7 +135,7 @@ public final class MetadataTableRelated {
 
     /**
      * Get the functions property: The related functions for the table.
-     *
+     * 
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -141,7 +144,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the functions property: The related functions for the table.
-     *
+     * 
      * @param functions the functions value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -152,7 +155,7 @@ public final class MetadataTableRelated {
 
     /**
      * Get the queries property: The related saved queries for the table.
-     *
+     * 
      * @return the queries value.
      */
     public List<String> getQueries() {
@@ -161,7 +164,7 @@ public final class MetadataTableRelated {
 
     /**
      * Set the queries property: The related saved queries for the table.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the MetadataTableRelated object itself.
      */
@@ -170,10 +173,58 @@ public final class MetadataTableRelated {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataTableRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataTableRelated if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataTableRelated.
      */
-    public void validate() {}
+    public static MetadataTableRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataTableRelated deserializedMetadataTableRelated = new MetadataTableRelated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.categories = categories;
+                } else if ("solutions".equals(fieldName)) {
+                    List<String> solutions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.solutions = solutions;
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<String> resourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.resourceTypes = resourceTypes;
+                } else if ("workspaces".equals(fieldName)) {
+                    List<String> workspaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.workspaces = workspaces;
+                } else if ("functions".equals(fieldName)) {
+                    List<String> functions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.functions = functions;
+                } else if ("queries".equals(fieldName)) {
+                    List<String> queries = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataTableRelated.queries = queries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataTableRelated;
+        });
+    }
 }

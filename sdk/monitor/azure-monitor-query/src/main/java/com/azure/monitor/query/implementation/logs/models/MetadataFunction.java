@@ -5,82 +5,74 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A stored function.
- *
- * <p>Functions are stored Kusto queries that can be specified as part of queries by using their name.
+ * 
+ * Functions are stored Kusto queries that can be specified as part of queries by using their name.
  */
 @Fluent
-public final class MetadataFunction {
+public final class MetadataFunction implements JsonSerializable<MetadataFunction> {
     /*
      * The ID of the function.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The name of the function, to be used in queries.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The parameters/arguments of the function, if any.
      */
-    @JsonProperty(value = "parameters")
     private String parameters;
 
     /*
      * The display name of the function.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the function.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The KQL body of the function.
      */
-    @JsonProperty(value = "body", required = true)
-    private String body;
+    private final String body;
 
     /*
      * The tags associated with the function.
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * The properties of the function.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The related metadata items for the function.
      */
-    @JsonProperty(value = "related")
     private MetadataFunctionRelated related;
 
     /**
      * Creates an instance of MetadataFunction class.
-     *
+     * 
      * @param id the id value to set.
      * @param name the name value to set.
      * @param body the body value to set.
      */
-    @JsonCreator
-    public MetadataFunction(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "body", required = true) String body) {
+    public MetadataFunction(String id, String name, String body) {
         this.id = id;
         this.name = name;
         this.body = body;
@@ -88,7 +80,7 @@ public final class MetadataFunction {
 
     /**
      * Get the id property: The ID of the function.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -97,7 +89,7 @@ public final class MetadataFunction {
 
     /**
      * Get the name property: The name of the function, to be used in queries.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -106,7 +98,7 @@ public final class MetadataFunction {
 
     /**
      * Get the parameters property: The parameters/arguments of the function, if any.
-     *
+     * 
      * @return the parameters value.
      */
     public String getParameters() {
@@ -115,7 +107,7 @@ public final class MetadataFunction {
 
     /**
      * Set the parameters property: The parameters/arguments of the function, if any.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the MetadataFunction object itself.
      */
@@ -126,7 +118,7 @@ public final class MetadataFunction {
 
     /**
      * Get the displayName property: The display name of the function.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -135,7 +127,7 @@ public final class MetadataFunction {
 
     /**
      * Set the displayName property: The display name of the function.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataFunction object itself.
      */
@@ -146,7 +138,7 @@ public final class MetadataFunction {
 
     /**
      * Get the description property: The description of the function.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -155,7 +147,7 @@ public final class MetadataFunction {
 
     /**
      * Set the description property: The description of the function.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataFunction object itself.
      */
@@ -166,7 +158,7 @@ public final class MetadataFunction {
 
     /**
      * Get the body property: The KQL body of the function.
-     *
+     * 
      * @return the body value.
      */
     public String getBody() {
@@ -175,7 +167,7 @@ public final class MetadataFunction {
 
     /**
      * Get the tags property: The tags associated with the function.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -184,7 +176,7 @@ public final class MetadataFunction {
 
     /**
      * Set the tags property: The tags associated with the function.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataFunction object itself.
      */
@@ -195,7 +187,7 @@ public final class MetadataFunction {
 
     /**
      * Get the properties property: The properties of the function.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -204,7 +196,7 @@ public final class MetadataFunction {
 
     /**
      * Set the properties property: The properties of the function.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataFunction object itself.
      */
@@ -215,7 +207,7 @@ public final class MetadataFunction {
 
     /**
      * Get the related property: The related metadata items for the function.
-     *
+     * 
      * @return the related value.
      */
     public MetadataFunctionRelated getRelated() {
@@ -224,7 +216,7 @@ public final class MetadataFunction {
 
     /**
      * Set the related property: The related metadata items for the function.
-     *
+     * 
      * @param related the related value to set.
      * @return the MetadataFunction object itself.
      */
@@ -233,23 +225,97 @@ public final class MetadataFunction {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("parameters", this.parameters);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("related", this.related);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataFunction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataFunction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataFunction.
      */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataFunction");
-        }
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model MetadataFunction");
-        }
-        if (getBody() == null) {
-            throw new IllegalArgumentException("Missing required property body in model MetadataFunction");
-        }
-        if (getRelated() != null) {
-            getRelated().validate();
-        }
+    public static MetadataFunction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean nameFound = false;
+            String name = null;
+            boolean bodyFound = false;
+            String body = null;
+            String parameters = null;
+            String displayName = null;
+            String description = null;
+            Object tags = null;
+            Object properties = null;
+            MetadataFunctionRelated related = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("body".equals(fieldName)) {
+                    body = reader.getString();
+                    bodyFound = true;
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataFunctionRelated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && nameFound && bodyFound) {
+                MetadataFunction deserializedMetadataFunction = new MetadataFunction(id, name, body);
+                deserializedMetadataFunction.parameters = parameters;
+                deserializedMetadataFunction.displayName = displayName;
+                deserializedMetadataFunction.description = description;
+                deserializedMetadataFunction.tags = tags;
+                deserializedMetadataFunction.properties = properties;
+                deserializedMetadataFunction.related = related;
+
+                return deserializedMetadataFunction;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!bodyFound) {
+                missingProperties.add("body");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

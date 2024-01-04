@@ -5,30 +5,45 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The unit of the metric. */
+/**
+ * The unit of the metric.
+ */
 public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
-    /** Unit of raw quantity. */
+    /**
+     * Unit of raw quantity.
+     */
     public static final MetricUnit COUNT = fromString("Count");
 
-    /** Unit of memory in bytes. */
+    /**
+     * Unit of memory in bytes.
+     */
     public static final MetricUnit BYTES = fromString("Bytes");
 
-    /** Unit of time in seconds. */
+    /**
+     * Unit of time in seconds.
+     */
     public static final MetricUnit SECONDS = fromString("Seconds");
 
-    /** Rate unit of raw quantity per second. */
+    /**
+     * Rate unit of raw quantity per second.
+     */
     public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
-    /** Rate unit of memory in bytes per second. */
+    /**
+     * Rate unit of memory in bytes per second.
+     */
     public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
-    /** Percentage unit. */
+    /**
+     * Percentage unit.
+     */
     public static final MetricUnit PERCENT = fromString("Percent");
 
-    /** Unit of time in 1/1000th of a second. */
+    /**
+     * Unit of time in 1/1000th of a second.
+     */
     public static final MetricUnit MILLI_SECONDS = fromString("MilliSeconds");
 
     /**
@@ -37,43 +52,53 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
      */
     public static final MetricUnit BYTE_SECONDS = fromString("ByteSeconds");
 
-    /** No specified unit. */
+    /**
+     * No specified unit.
+     */
     public static final MetricUnit UNSPECIFIED = fromString("Unspecified");
 
-    /** Unit of processing power. */
+    /**
+     * Unit of processing power.
+     */
     public static final MetricUnit CORES = fromString("Cores");
 
-    /** Unit of processing power in 1/1000th of a CPU core. */
+    /**
+     * Unit of processing power in 1/1000th of a CPU core.
+     */
     public static final MetricUnit MILLI_CORES = fromString("MilliCores");
 
-    /** Unit of processing power in one billionth of a CPU core. */
+    /**
+     * Unit of processing power in one billionth of a CPU core.
+     */
     public static final MetricUnit NANO_CORES = fromString("NanoCores");
 
-    /** Rate unit of binary digits per second. */
+    /**
+     * Rate unit of binary digits per second.
+     */
     public static final MetricUnit BITS_PER_SECOND = fromString("BitsPerSecond");
 
     /**
      * Creates a new instance of MetricUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public MetricUnit() {}
+    public MetricUnit() {
+    }
 
     /**
      * Creates or finds a MetricUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricUnit.
      */
-    @JsonCreator
     public static MetricUnit fromString(String name) {
         return fromString(name, MetricUnit.class);
     }
 
     /**
      * Gets known MetricUnit values.
-     *
+     * 
      * @return known MetricUnit values.
      */
     public static Collection<MetricUnit> values() {

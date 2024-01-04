@@ -5,77 +5,71 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/** The result data of a query. */
+/**
+ * The result data of a query.
+ */
 @Fluent
-public final class SubscriptionScopeMetric {
+public final class SubscriptionScopeMetric implements JsonSerializable<SubscriptionScopeMetric> {
     /*
      * the metric Id.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * the resource type of the metric resource.
      */
-    @JsonProperty(value = "type", required = true)
-    private String type;
+    private final String type;
 
     /*
      * the name and the display name of the metric, i.e. it is localizable string.
      */
-    @JsonProperty(value = "name", required = true)
-    private LocalizableString name;
+    private final LocalizableString name;
 
     /*
      * Detailed description of this metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * 'Success' or the error details on query failures for this metric.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Error message encountered querying this specific metric.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit", required = true)
-    private MetricUnit unit;
+    private final MetricUnit unit;
 
     /*
      * the time series returned when a data query is performed.
      */
-    @JsonProperty(value = "timeseries", required = true)
-    private List<TimeSeriesElement> timeseries;
+    private final List<TimeSeriesElement> timeseries;
 
     /**
      * Creates an instance of SubscriptionScopeMetric class.
-     *
+     * 
      * @param id the id value to set.
      * @param type the type value to set.
      * @param name the name value to set.
      * @param unit the unit value to set.
      * @param timeseries the timeseries value to set.
      */
-    @JsonCreator
-    public SubscriptionScopeMetric(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "type", required = true) String type,
-            @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "unit", required = true) MetricUnit unit,
-            @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
+    public SubscriptionScopeMetric(String id, String type, LocalizableString name, MetricUnit unit,
+        List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -85,7 +79,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the id property: the metric Id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -94,7 +88,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the type property: the resource type of the metric resource.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -103,7 +97,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
-     *
+     * 
      * @return the name value.
      */
     public LocalizableString getName() {
@@ -112,7 +106,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String getDisplayDescription() {
@@ -121,7 +115,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the displayDescription property: Detailed description of this metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the SubscriptionScopeMetric object itself.
      */
@@ -132,7 +126,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @return the errorCode value.
      */
     public String getErrorCode() {
@@ -141,7 +135,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the errorCode property: 'Success' or the error details on query failures for this metric.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the SubscriptionScopeMetric object itself.
      */
@@ -152,7 +146,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -161,7 +155,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Set the errorMessage property: Error message encountered querying this specific metric.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the SubscriptionScopeMetric object itself.
      */
@@ -172,7 +166,7 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public MetricUnit getUnit() {
@@ -181,10 +175,108 @@ public final class SubscriptionScopeMetric {
 
     /**
      * Get the timeseries property: the time series returned when a data query is performed.
-     *
+     * 
      * @return the timeseries value.
      */
     public List<TimeSeriesElement> getTimeseries() {
         return this.timeseries;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", Objects.toString(this.unit, null));
+        jsonWriter.writeArrayField("timeseries", this.timeseries, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionScopeMetric from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionScopeMetric if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionScopeMetric.
+     */
+    public static SubscriptionScopeMetric fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean typeFound = false;
+            String type = null;
+            boolean nameFound = false;
+            LocalizableString name = null;
+            boolean unitFound = false;
+            MetricUnit unit = null;
+            boolean timeseriesFound = false;
+            List<TimeSeriesElement> timeseries = null;
+            String displayDescription = null;
+            String errorCode = null;
+            String errorMessage = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                    typeFound = true;
+                } else if ("name".equals(fieldName)) {
+                    name = LocalizableString.fromJson(reader);
+                    nameFound = true;
+                } else if ("unit".equals(fieldName)) {
+                    unit = MetricUnit.fromString(reader.getString());
+                    unitFound = true;
+                } else if ("timeseries".equals(fieldName)) {
+                    timeseries = reader.readArray(reader1 -> TimeSeriesElement.fromJson(reader1));
+                    timeseriesFound = true;
+                } else if ("displayDescription".equals(fieldName)) {
+                    displayDescription = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && typeFound && nameFound && unitFound && timeseriesFound) {
+                SubscriptionScopeMetric deserializedSubscriptionScopeMetric
+                    = new SubscriptionScopeMetric(id, type, name, unit, timeseries);
+                deserializedSubscriptionScopeMetric.displayDescription = displayDescription;
+                deserializedSubscriptionScopeMetric.errorCode = errorCode;
+                deserializedSubscriptionScopeMetric.errorMessage = errorMessage;
+
+                return deserializedSubscriptionScopeMetric;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!typeFound) {
+                missingProperties.add("type");
+            }
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!unitFound) {
+                missingProperties.add("unit");
+            }
+            if (!timeseriesFound) {
+                missingProperties.add("timeseries");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

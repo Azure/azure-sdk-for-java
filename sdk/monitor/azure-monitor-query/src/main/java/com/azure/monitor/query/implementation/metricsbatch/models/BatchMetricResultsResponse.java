@@ -5,24 +5,32 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The metrics result for a resource. */
+/**
+ * The metrics result for a resource.
+ */
 @Fluent
-public final class BatchMetricResultsResponse {
+public final class BatchMetricResultsResponse implements JsonSerializable<BatchMetricResultsResponse> {
     /*
      * The collection of metric data responses per resource, per metric.
      */
-    @JsonProperty(value = "values")
     private List<BatchMetricResultsResponseValuesItem> values;
 
-    /** Creates an instance of BatchMetricResultsResponse class. */
-    public BatchMetricResultsResponse() {}
+    /**
+     * Creates an instance of BatchMetricResultsResponse class.
+     */
+    public BatchMetricResultsResponse() {
+    }
 
     /**
      * Get the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @return the values value.
      */
     public List<BatchMetricResultsResponseValuesItem> getValues() {
@@ -31,12 +39,47 @@ public final class BatchMetricResultsResponse {
 
     /**
      * Set the values property: The collection of metric data responses per resource, per metric.
-     *
+     * 
      * @param values the values value to set.
      * @return the BatchMetricResultsResponse object itself.
      */
     public BatchMetricResultsResponse setValues(List<BatchMetricResultsResponseValuesItem> values) {
         this.values = values;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchMetricResultsResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchMetricResultsResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchMetricResultsResponse.
+     */
+    public static BatchMetricResultsResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchMetricResultsResponse deserializedBatchMetricResultsResponse = new BatchMetricResultsResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("values".equals(fieldName)) {
+                    List<BatchMetricResultsResponseValuesItem> values
+                        = reader.readArray(reader1 -> BatchMetricResultsResponseValuesItem.fromJson(reader1));
+                    deserializedBatchMetricResultsResponse.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchMetricResultsResponse;
+        });
     }
 }

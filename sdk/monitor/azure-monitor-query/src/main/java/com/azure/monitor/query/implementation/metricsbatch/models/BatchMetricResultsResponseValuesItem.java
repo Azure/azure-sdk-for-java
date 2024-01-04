@@ -5,70 +5,67 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/** The BatchMetricResultsResponseValuesItem model. */
+/**
+ * The BatchMetricResultsResponseValuesItem model.
+ */
 @Fluent
-public final class BatchMetricResultsResponseValuesItem {
+public final class BatchMetricResultsResponseValuesItem
+    implements JsonSerializable<BatchMetricResultsResponseValuesItem> {
     /*
      * The start time, in datetime format, for which the data was retrieved.
      */
-    @JsonProperty(value = "starttime", required = true)
-    private String starttime;
+    private final String starttime;
 
     /*
      * The end time, in datetime format, for which the data was retrieved.
      */
-    @JsonProperty(value = "endtime", required = true)
-    private String endtime;
+    private final String endtime;
 
     /*
      * The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format
      * (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from what was originally requested.
      * This is not present if a metadata request was made.
      */
-    @JsonProperty(value = "interval")
     private Duration interval;
 
     /*
      * The namespace of the metrics been queried
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The region of the resource been queried for metrics.
      */
-    @JsonProperty(value = "resourceregion")
     private String resourceregion;
 
     /*
      * The resource that has been queried for metrics.
      */
-    @JsonProperty(value = "resourceid")
     private String resourceid;
 
     /*
      * The value of the collection.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<SubscriptionScopeMetric> value;
+    private final List<SubscriptionScopeMetric> value;
 
     /**
      * Creates an instance of BatchMetricResultsResponseValuesItem class.
-     *
+     * 
      * @param starttime the starttime value to set.
      * @param endtime the endtime value to set.
      * @param value the value value to set.
      */
-    @JsonCreator
-    public BatchMetricResultsResponseValuesItem(
-            @JsonProperty(value = "starttime", required = true) String starttime,
-            @JsonProperty(value = "endtime", required = true) String endtime,
-            @JsonProperty(value = "value", required = true) List<SubscriptionScopeMetric> value) {
+    public BatchMetricResultsResponseValuesItem(String starttime, String endtime, List<SubscriptionScopeMetric> value) {
         this.starttime = starttime;
         this.endtime = endtime;
         this.value = value;
@@ -76,7 +73,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the starttime property: The start time, in datetime format, for which the data was retrieved.
-     *
+     * 
      * @return the starttime value.
      */
     public String getStarttime() {
@@ -85,7 +82,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the endtime property: The end time, in datetime format, for which the data was retrieved.
-     *
+     * 
      * @return the endtime value.
      */
     public String getEndtime() {
@@ -96,7 +93,7 @@ public final class BatchMetricResultsResponseValuesItem {
      * Get the interval property: The interval (window size) for which the metric data was returned in. Follows the
      * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
      * what was originally requested. This is not present if a metadata request was made.
-     *
+     * 
      * @return the interval value.
      */
     public Duration getInterval() {
@@ -107,7 +104,7 @@ public final class BatchMetricResultsResponseValuesItem {
      * Set the interval property: The interval (window size) for which the metric data was returned in. Follows the
      * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
      * what was originally requested. This is not present if a metadata request was made.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the BatchMetricResultsResponseValuesItem object itself.
      */
@@ -118,7 +115,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @return the namespace value.
      */
     public String getNamespace() {
@@ -127,7 +124,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Set the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the BatchMetricResultsResponseValuesItem object itself.
      */
@@ -138,7 +135,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the resourceregion property: The region of the resource been queried for metrics.
-     *
+     * 
      * @return the resourceregion value.
      */
     public String getResourceregion() {
@@ -147,7 +144,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Set the resourceregion property: The region of the resource been queried for metrics.
-     *
+     * 
      * @param resourceregion the resourceregion value to set.
      * @return the BatchMetricResultsResponseValuesItem object itself.
      */
@@ -158,7 +155,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the resourceid property: The resource that has been queried for metrics.
-     *
+     * 
      * @return the resourceid value.
      */
     public String getResourceid() {
@@ -167,7 +164,7 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Set the resourceid property: The resource that has been queried for metrics.
-     *
+     * 
      * @param resourceid the resourceid value to set.
      * @return the BatchMetricResultsResponseValuesItem object itself.
      */
@@ -178,10 +175,95 @@ public final class BatchMetricResultsResponseValuesItem {
 
     /**
      * Get the value property: The value of the collection.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionScopeMetric> getValue() {
         return this.value;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("starttime", this.starttime);
+        jsonWriter.writeStringField("endtime", this.endtime);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("interval", Objects.toString(this.interval, null));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("resourceregion", this.resourceregion);
+        jsonWriter.writeStringField("resourceid", this.resourceid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchMetricResultsResponseValuesItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchMetricResultsResponseValuesItem if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchMetricResultsResponseValuesItem.
+     */
+    public static BatchMetricResultsResponseValuesItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean starttimeFound = false;
+            String starttime = null;
+            boolean endtimeFound = false;
+            String endtime = null;
+            boolean valueFound = false;
+            List<SubscriptionScopeMetric> value = null;
+            Duration interval = null;
+            String namespace = null;
+            String resourceregion = null;
+            String resourceid = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("starttime".equals(fieldName)) {
+                    starttime = reader.getString();
+                    starttimeFound = true;
+                } else if ("endtime".equals(fieldName)) {
+                    endtime = reader.getString();
+                    endtimeFound = true;
+                } else if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> SubscriptionScopeMetric.fromJson(reader1));
+                    valueFound = true;
+                } else if ("interval".equals(fieldName)) {
+                    interval = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("namespace".equals(fieldName)) {
+                    namespace = reader.getString();
+                } else if ("resourceregion".equals(fieldName)) {
+                    resourceregion = reader.getString();
+                } else if ("resourceid".equals(fieldName)) {
+                    resourceid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (starttimeFound && endtimeFound && valueFound) {
+                BatchMetricResultsResponseValuesItem deserializedBatchMetricResultsResponseValuesItem
+                    = new BatchMetricResultsResponseValuesItem(starttime, endtime, value);
+                deserializedBatchMetricResultsResponseValuesItem.interval = interval;
+                deserializedBatchMetricResultsResponseValuesItem.namespace = namespace;
+                deserializedBatchMetricResultsResponseValuesItem.resourceregion = resourceregion;
+                deserializedBatchMetricResultsResponseValuesItem.resourceid = resourceid;
+
+                return deserializedBatchMetricResultsResponseValuesItem;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!starttimeFound) {
+                missingProperties.add("starttime");
+            }
+            if (!endtimeFound) {
+                missingProperties.add("endtime");
+            }
+            if (!valueFound) {
+                missingProperties.add("value");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

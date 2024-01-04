@@ -5,47 +5,52 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** Metric namespace class specifies the metadata for a metric namespace. */
+/**
+ * Metric namespace class specifies the metadata for a metric namespace.
+ */
 @Fluent
-public final class MetricNamespace {
+public final class MetricNamespace implements JsonSerializable<MetricNamespace> {
     /*
      * The ID of the metric namespace.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The type of the namespace.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The escaped name of the namespace.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Kind of namespace
      */
-    @JsonProperty(value = "classification")
     private NamespaceClassification classification;
 
     /*
      * Properties which include the fully qualified namespace name.
      */
-    @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
 
-    /** Creates an instance of MetricNamespace class. */
-    public MetricNamespace() {}
+    /**
+     * Creates an instance of MetricNamespace class.
+     */
+    public MetricNamespace() {
+    }
 
     /**
      * Get the id property: The ID of the metric namespace.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -54,7 +59,7 @@ public final class MetricNamespace {
 
     /**
      * Set the id property: The ID of the metric namespace.
-     *
+     * 
      * @param id the id value to set.
      * @return the MetricNamespace object itself.
      */
@@ -65,7 +70,7 @@ public final class MetricNamespace {
 
     /**
      * Get the type property: The type of the namespace.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -74,7 +79,7 @@ public final class MetricNamespace {
 
     /**
      * Set the type property: The type of the namespace.
-     *
+     * 
      * @param type the type value to set.
      * @return the MetricNamespace object itself.
      */
@@ -85,7 +90,7 @@ public final class MetricNamespace {
 
     /**
      * Get the name property: The escaped name of the namespace.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -94,7 +99,7 @@ public final class MetricNamespace {
 
     /**
      * Set the name property: The escaped name of the namespace.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricNamespace object itself.
      */
@@ -105,7 +110,7 @@ public final class MetricNamespace {
 
     /**
      * Get the classification property: Kind of namespace.
-     *
+     * 
      * @return the classification value.
      */
     public NamespaceClassification getClassification() {
@@ -114,7 +119,7 @@ public final class MetricNamespace {
 
     /**
      * Set the classification property: Kind of namespace.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the MetricNamespace object itself.
      */
@@ -125,7 +130,7 @@ public final class MetricNamespace {
 
     /**
      * Get the properties property: Properties which include the fully qualified namespace name.
-     *
+     * 
      * @return the properties value.
      */
     public MetricNamespaceName getProperties() {
@@ -134,7 +139,7 @@ public final class MetricNamespace {
 
     /**
      * Set the properties property: Properties which include the fully qualified namespace name.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetricNamespace object itself.
      */
@@ -143,14 +148,48 @@ public final class MetricNamespace {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("classification", Objects.toString(this.classification, null));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetricNamespace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricNamespace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricNamespace.
      */
-    public void validate() {
-        if (getProperties() != null) {
-            getProperties().validate();
-        }
+    public static MetricNamespace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricNamespace deserializedMetricNamespace = new MetricNamespace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMetricNamespace.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMetricNamespace.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetricNamespace.name = reader.getString();
+                } else if ("classification".equals(fieldName)) {
+                    deserializedMetricNamespace.classification = NamespaceClassification.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMetricNamespace.properties = MetricNamespaceName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricNamespace;
+        });
     }
 }

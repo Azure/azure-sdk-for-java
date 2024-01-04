@@ -5,48 +5,52 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The related metadata items for the function. */
+/**
+ * The related metadata items for the function.
+ */
 @Fluent
-public final class MetadataFunctionRelated {
+public final class MetadataFunctionRelated implements JsonSerializable<MetadataFunctionRelated> {
     /*
      * The related tables for the function.
      */
-    @JsonProperty(value = "tables")
     private List<String> tables;
 
     /*
      * The related Log Analytics solutions for the function.
      */
-    @JsonProperty(value = "solutions")
     private List<String> solutions;
 
     /*
      * The related resource types for the function.
      */
-    @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
     /*
      * The related categories for the function.
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * The related workspaces for the function.
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
-    /** Creates an instance of MetadataFunctionRelated class. */
-    public MetadataFunctionRelated() {}
+    /**
+     * Creates an instance of MetadataFunctionRelated class.
+     */
+    public MetadataFunctionRelated() {
+    }
 
     /**
      * Get the tables property: The related tables for the function.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -55,7 +59,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the tables property: The related tables for the function.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -66,7 +70,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the function.
-     *
+     * 
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -75,7 +79,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the function.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -86,7 +90,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the function.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -95,7 +99,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the function.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -106,7 +110,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the categories property: The related categories for the function.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -115,7 +119,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the categories property: The related categories for the function.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -126,7 +130,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the workspaces property: The related workspaces for the function.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -135,7 +139,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the workspaces property: The related workspaces for the function.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -144,10 +148,54 @@ public final class MetadataFunctionRelated {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataFunctionRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataFunctionRelated if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataFunctionRelated.
      */
-    public void validate() {}
+    public static MetadataFunctionRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataFunctionRelated deserializedMetadataFunctionRelated = new MetadataFunctionRelated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    List<String> tables = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataFunctionRelated.tables = tables;
+                } else if ("solutions".equals(fieldName)) {
+                    List<String> solutions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataFunctionRelated.solutions = solutions;
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<String> resourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataFunctionRelated.resourceTypes = resourceTypes;
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataFunctionRelated.categories = categories;
+                } else if ("workspaces".equals(fieldName)) {
+                    List<String> workspaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataFunctionRelated.workspaces = workspaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataFunctionRelated;
+        });
+    }
 }

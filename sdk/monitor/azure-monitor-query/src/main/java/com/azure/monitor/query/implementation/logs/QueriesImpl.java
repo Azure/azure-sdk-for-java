@@ -29,17 +29,23 @@ import com.azure.monitor.query.implementation.logs.models.QueryResults;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Queries. */
+/**
+ * An instance of this class provides access to all the operations defined in Queries.
+ */
 public final class QueriesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QueriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureLogAnalyticsImpl client;
 
     /**
      * Initializes an instance of Queries.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QueriesImpl(AzureLogAnalyticsImpl client) {
@@ -55,166 +61,112 @@ public final class QueriesImpl {
     @ServiceInterface(name = "AzureLogAnalyticsQue")
     public interface QueriesService {
         @Get("/workspaces/{workspaceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> get(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> get(@HostParam("$host") String host, @PathParam("workspaceId") String workspaceId,
+            @QueryParam("query") String query, @QueryParam("timespan") Duration timespan,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/workspaces/{workspaceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> getSync(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> getSync(@HostParam("$host") String host, @PathParam("workspaceId") String workspaceId,
+            @QueryParam("query") String query, @QueryParam("timespan") Duration timespan,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/workspaces/{workspaceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> execute(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> execute(@HostParam("$host") String host,
+            @PathParam("workspaceId") String workspaceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/workspaces/{workspaceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> executeSync(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> executeSync(@HostParam("$host") String host,
+            @PathParam("workspaceId") String workspaceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> resourceGet(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> resourceGet(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("query") String query,
+            @QueryParam("timespan") Duration timespan, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> resourceGetSync(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> resourceGetSync(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("query") String query,
+            @QueryParam("timespan") Duration timespan, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> resourceExecute(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> resourceExecute(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> resourceExecuteSync(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> resourceExecuteSync(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/$batch")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<BatchResponse>> batch(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") BatchRequest body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BatchResponse>> batch(@HostParam("$host") String host,
+            @BodyParam("application/json") BatchRequest body, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/$batch")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<BatchResponse> batchSync(
-                @HostParam("$host") String host,
-                @BodyParam("application/json") BatchRequest body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<BatchResponse> batchSync(@HostParam("$host") String host,
+            @BodyParam("application/json") BatchRequest body, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> resourceGetXms(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> resourceGetXms(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("query") String query,
+            @QueryParam("timespan") Duration timespan, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> resourceGetXmsSync(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @QueryParam("query") String query,
-                @QueryParam("timespan") Duration timespan,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> resourceGetXmsSync(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("query") String query,
+            @QueryParam("timespan") Duration timespan, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<QueryResults>> resourceExecuteXms(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<QueryResults>> resourceExecuteXms(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{resourceId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<QueryResults> resourceExecuteXmsSync(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceId", encoded = true) String resourceId,
-                @HeaderParam("Prefer") String prefer,
-                @BodyParam("application/json") QueryBody body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<QueryResults> resourceExecuteXmsSync(@HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Prefer") String prefer,
+            @BodyParam("application/json") QueryBody body, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,30 +174,21 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> getWithResponseAsync(String workspaceId, String query, Duration timespan) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getHost(), workspaceId, query, timespan, accept, context));
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getHost(), workspaceId, query, timespan, accept, context));
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -253,31 +196,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> getWithResponseAsync(
-            String workspaceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Mono<Response<QueryResults>> getWithResponseAsync(String workspaceId, String query, Duration timespan,
+        Context context) {
         final String accept = "application/json";
         return service.get(this.client.getHost(), workspaceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,14 +224,14 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -307,19 +241,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> getAsync(String workspaceId, String query, Duration timespan, Context context) {
         return getWithResponseAsync(workspaceId, query, timespan, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -327,31 +261,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> getWithResponse(
-            String workspaceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Response<QueryResults> getWithResponse(String workspaceId, String query, Duration timespan,
+        Context context) {
         final String accept = "application/json";
         return service.getSync(this.client.getHost(), workspaceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data.
-     *
+     * 
+     * Executes an Analytics query for data.
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -364,13 +289,13 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -379,31 +304,20 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> executeWithResponseAsync(String workspaceId, QueryBody body, String prefer) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.execute(this.client.getHost(), workspaceId, prefer, body, accept, context));
+        return FluxUtil
+            .withContext(context -> service.execute(this.client.getHost(), workspaceId, prefer, body, accept, context));
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,32 +326,21 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> executeWithResponseAsync(
-            String workspaceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Mono<Response<QueryResults>> executeWithResponseAsync(String workspaceId, QueryBody body, String prefer,
+        Context context) {
         final String accept = "application/json";
         return service.execute(this.client.getHost(), workspaceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -451,13 +354,13 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,18 +371,18 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> executeAsync(String workspaceId, QueryBody body, String prefer, Context context) {
         return executeWithResponseAsync(workspaceId, body, prefer, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -488,32 +391,21 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> executeWithResponse(
-            String workspaceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Response<QueryResults> executeWithResponse(String workspaceId, QueryBody body, String prefer,
+        Context context) {
         final String accept = "application/json";
         return service.executeSync(this.client.getHost(), workspaceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query
-     *
-     * <p>Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
+     * 
+     * Executes an Analytics query for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an
      * example for using POST with an Analytics query.
-     *
+     * 
      * @param workspaceId ID of the workspace. This is Workspace ID from the Properties blade in the Azure portal.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -527,50 +419,41 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceGetWithResponseAsync(
-            String resourceId, String query, Duration timespan) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Mono<Response<QueryResults>> resourceGetWithResponseAsync(String resourceId, String query,
+        Duration timespan) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.resourceGet(this.client.getHost(), resourceId, query, timespan, accept, context));
+            context -> service.resourceGet(this.client.getHost(), resourceId, query, timespan, accept, context));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -578,33 +461,24 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceGetWithResponseAsync(
-            String resourceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Mono<Response<QueryResults>> resourceGetWithResponseAsync(String resourceId, String query, Duration timespan,
+        Context context) {
         final String accept = "application/json";
         return service.resourceGet(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -613,21 +487,21 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceGetAsync(String resourceId, String query, Duration timespan) {
         return resourceGetWithResponseAsync(resourceId, query, timespan)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -637,21 +511,21 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceGetAsync(String resourceId, String query, Duration timespan, Context context) {
         return resourceGetWithResponseAsync(resourceId, query, timespan, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -659,33 +533,24 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> resourceGetWithResponse(
-            String resourceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Response<QueryResults> resourceGetWithResponse(String resourceId, String query, Duration timespan,
+        Context context) {
         final String accept = "application/json";
         return service.resourceGetSync(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -698,14 +563,14 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -713,34 +578,23 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(
-            String resourceId, QueryBody body, String prefer) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(String resourceId, QueryBody body,
+        String prefer) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.resourceExecute(this.client.getHost(), resourceId, prefer, body, accept, context));
+            context -> service.resourceExecute(this.client.getHost(), resourceId, prefer, body, accept, context));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,33 +603,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(
-            String resourceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(String resourceId, QueryBody body,
+        String prefer, Context context) {
         final String accept = "application/json";
         return service.resourceExecute(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -785,19 +628,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceExecuteAsync(String resourceId, QueryBody body, String prefer) {
         return resourceExecuteWithResponseAsync(resourceId, body, prefer)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -808,19 +651,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceExecuteAsync(String resourceId, QueryBody body, String prefer, Context context) {
         return resourceExecuteWithResponseAsync(resourceId, body, prefer, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,33 +672,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> resourceExecuteWithResponse(
-            String resourceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Response<QueryResults> resourceExecuteWithResponse(String resourceId, QueryBody body, String prefer,
+        Context context) {
         final String accept = "application/json";
         return service.resourceExecuteSync(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -869,11 +701,10 @@ public final class QueriesImpl {
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -882,25 +713,16 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.batch(this.client.getHost(), body, accept, context));
     }
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,25 +732,16 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.batch(this.client.getHost(), body, accept, context);
     }
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -942,11 +755,10 @@ public final class QueriesImpl {
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -961,11 +773,10 @@ public final class QueriesImpl {
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -975,25 +786,16 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchResponse> batchWithResponse(BatchRequest body, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.batchSync(this.client.getHost(), body, accept, context);
     }
 
     /**
      * Execute a batch of Analytics queries
-     *
-     * <p>Executes a batch of Analytics queries for data.
-     * [Here](https://dev.loganalytics.io/documentation/Using-the-API) is an example for using POST with an Analytics
-     * query.
-     *
+     * 
+     * Executes a batch of Analytics queries for data. [Here](https://dev.loganalytics.io/documentation/Using-the-API)
+     * is an example for using POST with an Analytics query.
+     * 
      * @param body The batch request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1007,50 +809,41 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(
-            String resourceId, String query, Duration timespan) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(String resourceId, String query,
+        Duration timespan) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.resourceGetXms(this.client.getHost(), resourceId, query, timespan, accept, context));
+            context -> service.resourceGetXms(this.client.getHost(), resourceId, query, timespan, accept, context));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1058,33 +851,24 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(
-            String resourceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(String resourceId, String query,
+        Duration timespan, Context context) {
         final String accept = "application/json";
         return service.resourceGetXms(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1093,21 +877,21 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceGetXmsAsync(String resourceId, String query, Duration timespan) {
         return resourceGetXmsWithResponseAsync(resourceId, query, timespan)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1117,21 +901,21 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceGetXmsAsync(String resourceId, String query, Duration timespan, Context context) {
         return resourceGetXmsWithResponseAsync(resourceId, query, timespan, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1139,33 +923,24 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> resourceGetXmsWithResponse(
-            String resourceId, String query, Duration timespan, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (query == null) {
-            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
-        }
+    public Response<QueryResults> resourceGetXmsWithResponse(String resourceId, String query, Duration timespan,
+        Context context) {
         final String accept = "application/json";
         return service.resourceGetXmsSync(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource URI
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param query The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param timespan Optional. The timespan over which to query data. This is an ISO8601 time period value. This
-     *     timespan is applied in addition to any that are specified in the query expression.
+     * timespan is applied in addition to any that are specified in the query expression.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1178,14 +953,14 @@ public final class QueriesImpl {
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1193,35 +968,23 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(
-            String resourceId, QueryBody body, String prefer) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(String resourceId, QueryBody body,
+        String prefer) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.resourceExecuteXms(this.client.getHost(), resourceId, prefer, body, accept, context));
+            context -> service.resourceExecuteXms(this.client.getHost(), resourceId, prefer, body, accept, context));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1230,33 +993,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(
-            String resourceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(String resourceId, QueryBody body,
+        String prefer, Context context) {
         final String accept = "application/json";
         return service.resourceExecuteXms(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1266,19 +1018,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResults> resourceExecuteXmsAsync(String resourceId, QueryBody body, String prefer) {
         return resourceExecuteXmsWithResponseAsync(resourceId, body, prefer)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1287,22 +1039,22 @@ public final class QueriesImpl {
      * @return a query response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueryResults> resourceExecuteXmsAsync(
-            String resourceId, QueryBody body, String prefer, Context context) {
+    public Mono<QueryResults> resourceExecuteXmsAsync(String resourceId, QueryBody body, String prefer,
+        Context context) {
         return resourceExecuteXmsWithResponseAsync(resourceId, body, prefer, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1311,33 +1063,22 @@ public final class QueriesImpl {
      * @return a query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueryResults> resourceExecuteXmsWithResponse(
-            String resourceId, QueryBody body, String prefer, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceId == null) {
-            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
-        }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        } else {
-            body.validate();
-        }
+    public Response<QueryResults> resourceExecuteXmsWithResponse(String resourceId, QueryBody body, String prefer,
+        Context context) {
         final String accept = "application/json";
         return service.resourceExecuteXmsSync(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**
      * Execute an Analytics query using resource ID
-     *
-     * <p>Executes an Analytics query for data in the context of a resource.
+     * 
+     * Executes an Analytics query for data in the context of a resource.
      * [Here](https://docs.microsoft.com/azure/azure-monitor/logs/api/azure-resource-queries) is an example for using
      * POST with an Analytics query.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param body The Analytics query. Learn more about the [Analytics query
-     *     syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+     * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
      * @param prefer Optional. The prefer header to set server timeout, query statistics and visualization information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

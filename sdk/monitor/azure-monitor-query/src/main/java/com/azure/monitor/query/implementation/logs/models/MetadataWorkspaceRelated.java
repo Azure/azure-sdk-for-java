@@ -5,48 +5,52 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The related metadata items for the Log Analytics workspace. */
+/**
+ * The related metadata items for the Log Analytics workspace.
+ */
 @Fluent
-public final class MetadataWorkspaceRelated {
+public final class MetadataWorkspaceRelated implements JsonSerializable<MetadataWorkspaceRelated> {
     /*
      * The related tables for the Log Analytics workspace.
      */
-    @JsonProperty(value = "tables")
     private List<String> tables;
 
     /*
      * The related Log Analytics solutions for the Log Analytics workspace.
      */
-    @JsonProperty(value = "solutions")
     private List<String> solutions;
 
     /*
      * The related resource types for the Log Analytics workspace.
      */
-    @JsonProperty(value = "resourceTypes")
     private List<String> resourceTypes;
 
     /*
      * The related functions for the Log Analytics workspace.
      */
-    @JsonProperty(value = "functions")
     private List<String> functions;
 
     /*
      * The related Azure resources for the Log Analytics workspace.
      */
-    @JsonProperty(value = "resources")
     private List<String> resources;
 
-    /** Creates an instance of MetadataWorkspaceRelated class. */
-    public MetadataWorkspaceRelated() {}
+    /**
+     * Creates an instance of MetadataWorkspaceRelated class.
+     */
+    public MetadataWorkspaceRelated() {
+    }
 
     /**
      * Get the tables property: The related tables for the Log Analytics workspace.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -55,7 +59,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the tables property: The related tables for the Log Analytics workspace.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -66,7 +70,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the Log Analytics workspace.
-     *
+     * 
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -75,7 +79,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the Log Analytics workspace.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -86,7 +90,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the Log Analytics workspace.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -95,7 +99,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the Log Analytics workspace.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -106,7 +110,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the functions property: The related functions for the Log Analytics workspace.
-     *
+     * 
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -115,7 +119,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the functions property: The related functions for the Log Analytics workspace.
-     *
+     * 
      * @param functions the functions value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -126,7 +130,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Get the resources property: The related Azure resources for the Log Analytics workspace.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> getResources() {
@@ -135,7 +139,7 @@ public final class MetadataWorkspaceRelated {
 
     /**
      * Set the resources property: The related Azure resources for the Log Analytics workspace.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the MetadataWorkspaceRelated object itself.
      */
@@ -144,10 +148,54 @@ public final class MetadataWorkspaceRelated {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resourceTypes", this.resourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataWorkspaceRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataWorkspaceRelated if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataWorkspaceRelated.
      */
-    public void validate() {}
+    public static MetadataWorkspaceRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataWorkspaceRelated deserializedMetadataWorkspaceRelated = new MetadataWorkspaceRelated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    List<String> tables = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataWorkspaceRelated.tables = tables;
+                } else if ("solutions".equals(fieldName)) {
+                    List<String> solutions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataWorkspaceRelated.solutions = solutions;
+                } else if ("resourceTypes".equals(fieldName)) {
+                    List<String> resourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataWorkspaceRelated.resourceTypes = resourceTypes;
+                } else if ("functions".equals(fieldName)) {
+                    List<String> functions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataWorkspaceRelated.functions = functions;
+                } else if ("resources".equals(fieldName)) {
+                    List<String> resources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetadataWorkspaceRelated.resources = resources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataWorkspaceRelated;
+        });
+    }
 }

@@ -5,54 +5,53 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A query response.
- *
- * <p>Contains the tables, columns &amp; rows resulting from a query.
+ * 
+ * Contains the tables, columns &amp; rows resulting from a query.
  */
 @Fluent
-public final class QueryResults {
+public final class QueryResults implements JsonSerializable<QueryResults> {
     /*
      * The list of tables, columns and rows.
      */
-    @JsonProperty(value = "tables", required = true)
-    private List<Table> tables;
+    private final List<Table> tables;
 
     /*
      * Statistics represented in JSON format.
      */
-    @JsonProperty(value = "statistics")
     private Object statistics;
 
     /*
      * Visualization data in JSON format.
      */
-    @JsonProperty(value = "render")
     private Object render;
 
     /*
      * The code and message for an error.
      */
-    @JsonProperty(value = "error")
     private ErrorInfo error;
 
     /**
      * Creates an instance of QueryResults class.
-     *
+     * 
      * @param tables the tables value to set.
      */
-    @JsonCreator
-    public QueryResults(@JsonProperty(value = "tables", required = true) List<Table> tables) {
+    public QueryResults(List<Table> tables) {
         this.tables = tables;
     }
 
     /**
      * Get the tables property: The list of tables, columns and rows.
-     *
+     * 
      * @return the tables value.
      */
     public List<Table> getTables() {
@@ -61,7 +60,7 @@ public final class QueryResults {
 
     /**
      * Get the statistics property: Statistics represented in JSON format.
-     *
+     * 
      * @return the statistics value.
      */
     public Object getStatistics() {
@@ -70,7 +69,7 @@ public final class QueryResults {
 
     /**
      * Set the statistics property: Statistics represented in JSON format.
-     *
+     * 
      * @param statistics the statistics value to set.
      * @return the QueryResults object itself.
      */
@@ -81,7 +80,7 @@ public final class QueryResults {
 
     /**
      * Get the render property: Visualization data in JSON format.
-     *
+     * 
      * @return the render value.
      */
     public Object getRender() {
@@ -90,7 +89,7 @@ public final class QueryResults {
 
     /**
      * Set the render property: Visualization data in JSON format.
-     *
+     * 
      * @param render the render value to set.
      * @return the QueryResults object itself.
      */
@@ -101,7 +100,7 @@ public final class QueryResults {
 
     /**
      * Get the error property: The code and message for an error.
-     *
+     * 
      * @return the error value.
      */
     public ErrorInfo getError() {
@@ -110,7 +109,7 @@ public final class QueryResults {
 
     /**
      * Set the error property: The code and message for an error.
-     *
+     * 
      * @param error the error value to set.
      * @return the QueryResults object itself.
      */
@@ -119,19 +118,64 @@ public final class QueryResults {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("statistics", this.statistics);
+        jsonWriter.writeUntypedField("render", this.render);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of QueryResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryResults if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryResults.
      */
-    public void validate() {
-        if (getTables() == null) {
-            throw new IllegalArgumentException("Missing required property tables in model QueryResults");
-        } else {
-            getTables().forEach(e -> e.validate());
-        }
-        if (getError() != null) {
-            getError().validate();
-        }
+    public static QueryResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean tablesFound = false;
+            List<Table> tables = null;
+            Object statistics = null;
+            Object render = null;
+            ErrorInfo error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> Table.fromJson(reader1));
+                    tablesFound = true;
+                } else if ("statistics".equals(fieldName)) {
+                    statistics = reader.readUntyped();
+                } else if ("render".equals(fieldName)) {
+                    render = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    error = ErrorInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (tablesFound) {
+                QueryResults deserializedQueryResults = new QueryResults(tables);
+                deserializedQueryResults.statistics = statistics;
+                deserializedQueryResults.render = render;
+                deserializedQueryResults.error = error;
+
+                return deserializedQueryResults;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!tablesFound) {
+                missingProperties.add("tables");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -5,82 +5,75 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A type of resource in Azure.
- *
- * <p>Metadata about types of Azure resources, containing relevant tables, functions, etc.
+ * 
+ * Metadata about types of Azure resources, containing relevant tables, functions, etc.
  */
 @Fluent
-public final class MetadataResourceType {
+public final class MetadataResourceType implements JsonSerializable<MetadataResourceType> {
     /*
      * The ID of the resource-type
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The type of the resource-type
      */
-    @JsonProperty(value = "type", required = true)
-    private String type;
+    private final String type;
 
     /*
      * The display name of the resource-type
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the resource-type
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The user-defined labels of the resource-type
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * The tags associated with the resource-type
      */
-    @JsonProperty(value = "tags")
     private Object tags;
 
     /*
      * The properties of the resource-type
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The related metadata items for the resource-type
      */
-    @JsonProperty(value = "related")
     private MetadataResourceTypeRelated related;
 
     /**
      * Creates an instance of MetadataResourceType class.
-     *
+     * 
      * @param id the id value to set.
      * @param type the type value to set.
      */
-    @JsonCreator
-    public MetadataResourceType(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "type", required = true) String type) {
+    public MetadataResourceType(String id, String type) {
         this.id = id;
         this.type = type;
     }
 
     /**
      * Get the id property: The ID of the resource-type.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -89,7 +82,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the type property: The type of the resource-type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -98,7 +91,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the displayName property: The display name of the resource-type.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -107,7 +100,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the displayName property: The display name of the resource-type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -118,7 +111,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the description property: The description of the resource-type.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -127,7 +120,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the description property: The description of the resource-type.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -138,7 +131,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the labels property: The user-defined labels of the resource-type.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> getLabels() {
@@ -147,7 +140,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the labels property: The user-defined labels of the resource-type.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -158,7 +151,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the tags property: The tags associated with the resource-type.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -167,7 +160,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the tags property: The tags associated with the resource-type.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -178,7 +171,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the properties property: The properties of the resource-type.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -187,7 +180,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the properties property: The properties of the resource-type.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -198,7 +191,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the related property: The related metadata items for the resource-type.
-     *
+     * 
      * @return the related value.
      */
     public MetadataResourceTypeRelated getRelated() {
@@ -207,7 +200,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the related property: The related metadata items for the resource-type.
-     *
+     * 
      * @param related the related value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -216,20 +209,88 @@ public final class MetadataResourceType {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("tags", this.tags);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("related", this.related);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Reads an instance of MetadataResourceType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataResourceType if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataResourceType.
      */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataResourceType");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model MetadataResourceType");
-        }
-        if (getRelated() != null) {
-            getRelated().validate();
-        }
+    public static MetadataResourceType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean typeFound = false;
+            String type = null;
+            String displayName = null;
+            String description = null;
+            List<String> labels = null;
+            Object tags = null;
+            Object properties = null;
+            MetadataResourceTypeRelated related = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                    typeFound = true;
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    labels = reader.readArray(reader1 -> reader1.getString());
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    properties = reader.readUntyped();
+                } else if ("related".equals(fieldName)) {
+                    related = MetadataResourceTypeRelated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && typeFound) {
+                MetadataResourceType deserializedMetadataResourceType = new MetadataResourceType(id, type);
+                deserializedMetadataResourceType.displayName = displayName;
+                deserializedMetadataResourceType.description = description;
+                deserializedMetadataResourceType.labels = labels;
+                deserializedMetadataResourceType.tags = tags;
+                deserializedMetadataResourceType.properties = properties;
+                deserializedMetadataResourceType.related = related;
+
+                return deserializedMetadataResourceType;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!typeFound) {
+                missingProperties.add("type");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }
