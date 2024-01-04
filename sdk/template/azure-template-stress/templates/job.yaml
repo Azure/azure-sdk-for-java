@@ -32,6 +32,8 @@ spec:
           source $ENV_FILE &&
           export APPLICATIONINSIGHTS_ROLE_NAME={{ .Release.Name }}-{{ .Stress.BaseName }} &&
           java -javaagent:applicationinsights-agent.jar \
+          -Dotel.instrumentation.okhttp.enabled=false \
+          -Dotel.instrumentation.http-url-connection.enabled=false \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.concurrency }} \

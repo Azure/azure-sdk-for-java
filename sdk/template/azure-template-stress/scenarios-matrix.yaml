@@ -2,13 +2,13 @@ matrix:
   scenarios:
     default-sync-get:
       imageBuildDir: ..\..\..\
-      testDurationMin: 15
+      testDurationMin: 480
       testScenario: httpget
       concurrency: 75
       sync: true
     okhttp-sync-get:
       imageBuildDir: ..\..\..\
-      testDurationMin: 15
+      testDurationMin: 480
       testScenario: httpget
       concurrency: 75
       sync: true

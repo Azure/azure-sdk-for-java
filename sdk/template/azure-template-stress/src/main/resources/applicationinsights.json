@@ -1,16 +1,16 @@
 {
     "sampling": {
-      "percentage": 1
+      "percentage": 0.01
     },
     "instrumentation": {
       "azureSdk": {
-        "enabled": true
+        "enabled": false
       },
       "reactor": {
         "enabled": false
       },
       "logging": {
-        "level": "INFO"
+        "level": "WARN"
       }
     },
     "preview": {

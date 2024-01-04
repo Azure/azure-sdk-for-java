@@ -4,7 +4,6 @@
 package com.azure.sdk.template.stress.util;
 
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.sdk.template.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -17,29 +16,25 @@ import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Instant;
 import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
 
 public class TelemetryHelper {
     private final Tracer tracer;
     private final ClientLogger logger;
     private final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenario_name");
     private final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
+    private final Attributes commonAttributes;
+    private final Attributes canceledAttributes;
     private final String scenarioName;
     private final Meter meter;
     private final DoubleHistogram runDuration;
 
-    static {
-        // enables micrometer metrics from Reactor schedulers allowing to monitor thread pool usage and starvation
-        Schedulers.enableMetrics();
-    }
-
     public TelemetryHelper(Class<?> scenarioClass) {
         this.scenarioName = scenarioClass.getName();
+        this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
+        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
         this.tracer = GlobalOpenTelemetry.getTracer(scenarioName);
         this.meter = GlobalOpenTelemetry.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
@@ -49,11 +44,11 @@ public class TelemetryHelper {
     }
 
     @SuppressWarnings("try")
-    public void instrumentRun(Consumer<Context> oneRun) {
+    public void instrumentRun(Runnable oneRun) {
         Instant start = Instant.now();
         Span span = tracer.spanBuilder("run").startSpan();
         try (Scope s = span.makeCurrent()) {
-            oneRun.accept(new Context(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+            oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
             if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
@@ -64,26 +59,11 @@ public class TelemetryHelper {
         }
     }
 
-    @SuppressWarnings("try")
-    public Mono<Void> instrumentRunAsync(Mono<Void> runAsync) {
-        return Mono.defer(() -> {
-                Instant start = Instant.now();
-                Span span = tracer.spanBuilder("runAsync").startSpan();
-                try (Scope s = span.makeCurrent()) {
-                    return runAsync.doOnError(e -> trackFailure(start, e, span))
-                        .doOnCancel(() -> trackCancellation(start, span))
-                        .doOnSuccess(v -> trackSuccess(start, span))
-                        .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
-                }
-            });
-    }
-
     private void trackSuccess(Instant start, Span span) {
         logger.atInfo()
             .log("run ended");
 
-        Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, attributes, io.opentelemetry.context.Context.current().with(span));
+        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, commonAttributes);
         span.end();
     }
 
@@ -91,9 +71,9 @@ public class TelemetryHelper {
         logger.atWarning()
             .addKeyValue("error.type", "cancelled")
             .log("run ended");
-        Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
 
-        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, attributes, io.opentelemetry.context.Context.current().with(span));
+
+        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, commonAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
         span.setStatus(StatusCode.ERROR);
         span.end();
@@ -110,8 +90,7 @@ public class TelemetryHelper {
             .addKeyValue("error.type", errorType)
             .log("run ended", unwrapped);
 
-        Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
-        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, attributes, io.opentelemetry.context.Context.current().with(span));
+        runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, canceledAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
 

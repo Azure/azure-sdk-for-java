@@ -4,6 +4,7 @@
 package com.azure.sdk.template.stress;
 
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.sdk.template.stress.util.TelemetryHelper;
 import com.generic.core.http.client.HttpClient;
@@ -18,6 +19,8 @@ import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.http.policy.RetryPolicy;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -26,16 +29,23 @@ import java.util.ArrayList;
 public class HttpGet extends ScenarioBase<StressOptions> {
     // there will be multiple instances of scenario
     private final static TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpGet.class);
+    private final static ClientLogger LOGGER = new ClientLogger(HttpGet.class);
     private final HttpPipeline pipeline;
+    private final URL url;
 
     public HttpGet(StressOptions options) {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
+        try {
+            url = new URL(options.getServiceEndpoint());
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+        }
     }
 
     @Override
     public void run() {
-        TELEMETRY_HELPER.instrumentRun(ctx -> runInternal());
+        TELEMETRY_HELPER.instrumentRun(this::runInternal);
     }
 
     @Override
@@ -44,11 +54,11 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private void runInternal() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, options.getServiceEndpoint());
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        HttpResponse response = pipeline.send(request);
-        response.getBody().toBytes();
-        response.close();
+        try(HttpResponse response = pipeline.send(request)) {
+            response.getBody().toBytes();
+        }
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {

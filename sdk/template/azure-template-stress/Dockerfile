@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=builder /stress/sdk/template/azure-template-stress/target .
 
 # Configure monitoring
-ARG APPLICATION_INSIGHTS_AGENT_VERSION=3.4.18
+ARG APPLICATION_INSIGHTS_AGENT_VERSION=3.4.19
 ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/${APPLICATION_INSIGHTS_AGENT_VERSION}/applicationinsights-agent-${APPLICATION_INSIGHTS_AGENT_VERSION}.jar
 ADD ${AGENT_URL} ./applicationinsights-agent.jar
 
