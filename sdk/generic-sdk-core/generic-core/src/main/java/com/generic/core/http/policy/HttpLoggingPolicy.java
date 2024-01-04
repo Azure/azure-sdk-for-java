@@ -98,7 +98,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger = httpRequest.getMetadata().getRequestLogger();
+        ClientLogger logger = httpRequest.getMetadata().getRequestLogger();
+        if (logger == null) {
+            logger = LOGGER;
+        }
+
         final long startNs = System.nanoTime();
 
         requestLogger.logRequest(logger, httpRequest);

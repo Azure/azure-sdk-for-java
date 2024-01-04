@@ -1,0 +1,50 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template") -}}
+{{- define "stress.java-template" -}}
+metadata:
+  labels:
+    testName: "{{ .Release.Name }}"
+spec:
+  containers:
+    # simple and fast .NET Core HTTP server to run tests against
+    # When writing real stress test, you probably won't need it and would use corresponding Azure Service.
+    - name: server
+      image: stresspgs7b6dif73rup6.azurecr.io/stress/simplehttpserver
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          export ASPNETCORE_URLS=http://localhost:5000 &&
+          export Test__DurationInSec={{ mul ( add .Stress.testDurationMin 1) 60 }} &&
+          dotnet /app/dotnet_simple.dll
+      resources:
+        limits:
+          memory: "200Mi"
+          cpu: "1"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: test
+      image: {{ .Stress.imageTag }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          export APPLICATIONINSIGHTS_ROLE_NAME={{ .Release.Name }}-{{ .Stress.BaseName }} &&
+          java -javaagent:applicationinsights-agent.jar \
+          -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+          {{ .Stress.testScenario }} \
+          --parallel {{ .Stress.concurrency }} \
+          --duration {{ mul .Stress.testDurationMin 60 }} \
+          --endpoint http://127.0.0.1:5000 \
+          {{ if .Stress.httpClient }}--http-client {{ .Stress.httpClient }}{{ end }} \
+          {{ ternary "--sync" "" .Stress.sync }} \
+          --warmup 0
+      # add your test parameters here
+      resources:
+        # make sure to configure resource limits for your test
+        limits:
+          memory: "1Gi"
+          cpu: "1"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}
