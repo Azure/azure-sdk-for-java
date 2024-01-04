@@ -45,11 +45,6 @@ public class FeatureStatsbeat extends BaseStatsbeat {
         return Instrumentations.encode(instrumentationList);
     }
 
-    // this is used by Exporter
-    public void addInstrumentation(String instrumentation) {
-        instrumentationList.add(instrumentation);
-    }
-
    // To use from the Application Insights Java agent
     public void addInstrumentation(SpanData span) {
         if (span.getInstrumentationScopeInfo() == null || span.getInstrumentationScopeInfo().getName() == null) {
