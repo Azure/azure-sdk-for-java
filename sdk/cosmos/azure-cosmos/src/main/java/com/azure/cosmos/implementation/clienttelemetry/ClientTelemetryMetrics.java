@@ -148,6 +148,28 @@ public final class ClientTelemetryMetrics {
         );
     }
 
+    private static boolean hasAnyActualMeterRegistry() {
+        Set<MeterRegistry> meteRegistriesSnapshot = compositeRegistry.getRegistries();
+        if (meteRegistriesSnapshot.isEmpty()) {
+            return false;
+        }
+
+        for (MeterRegistry registry : meteRegistriesSnapshot) {
+            if (registry instanceof CompositeMeterRegistry) {
+                if (!(((CompositeMeterRegistry)registry).getRegistries().isEmpty())) {
+                    logger.info("Found actual meter registry {} - {}", registry.getClass().getName(), registry.config());
+                    return true;
+                }
+            } else {
+                logger.info("Found actual meter registry {} - {}", registry.getClass().getName(), registry.config());
+                return true;
+            }
+        }
+
+        logger.info("No actual meter registry found.");
+        return false;
+    }
+
 
     private static void recordOperation(
         CosmosAsyncClient client,
@@ -168,8 +190,7 @@ public final class ClientTelemetryMetrics {
     ) {
         boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
 
-        if (compositeRegistry.getRegistries().isEmpty() ||
-            !isClientTelemetryMetricsEnabled) {
+        if (!hasAnyActualMeterRegistry() || !isClientTelemetryMetricsEnabled) {
             return;
         }
 
