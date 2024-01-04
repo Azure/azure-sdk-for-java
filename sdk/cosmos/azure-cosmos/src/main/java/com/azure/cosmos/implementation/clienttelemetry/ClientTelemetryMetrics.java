@@ -157,19 +157,15 @@ public final class ClientTelemetryMetrics {
         for (MeterRegistry registry : meteRegistriesSnapshot) {
             if (registry instanceof CompositeMeterRegistry) {
                 if (!(((CompositeMeterRegistry)registry).getRegistries().isEmpty())) {
-                    logger.info("Found actual meter registry {} - {}", registry.getClass().getName(), registry.config());
                     return true;
                 }
             } else {
-                logger.info("Found actual meter registry {} - {}", registry.getClass().getName(), registry.config());
                 return true;
             }
         }
 
-        logger.info("No actual meter registry found.");
         return false;
     }
-
 
     private static void recordOperation(
         CosmosAsyncClient client,
