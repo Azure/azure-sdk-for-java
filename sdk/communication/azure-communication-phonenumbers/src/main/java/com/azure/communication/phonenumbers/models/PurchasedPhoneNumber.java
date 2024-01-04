@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSource;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -72,12 +71,6 @@ public final class PurchasedPhoneNumber {
      */
     @JsonProperty(value = "operatorName")
     private String operatorName;
-
-    /*
-     * Source of the number, e.g. Cloud or OperatorConnect
-     */
-    @JsonProperty(value = "phoneNumberSource")
-    private PhoneNumberSource phoneNumberSource;
 
     /**
      * Get the id property: The id of the phone number, e.g. 11234567890.
@@ -189,26 +182,6 @@ public final class PurchasedPhoneNumber {
      */
     public PurchasedPhoneNumber setOperatorName(String operatorName) {
         this.operatorName = operatorName;
-        return this;
-    }
-
-    /**
-     * Get the phoneNumberSource property: Source of the number, e.g. Cloud or OperatorConnect.
-     *
-     * @return the phoneNumberSource value.
-     */
-    public PhoneNumberSource getPhoneNumberSource() {
-        return this.phoneNumberSource;
-    }
-
-    /**
-     * Set the phoneNumberSource property: Source of the number, e.g. Cloud or OperatorConnect.
-     *
-     * @param phoneNumberSource the phoneNumberSource value to set.
-     * @return the PurchasedPhoneNumber object itself.
-     */
-    public PurchasedPhoneNumber setPhoneNumberSource(PhoneNumberSource phoneNumberSource) {
-        this.phoneNumberSource = phoneNumberSource;
         return this;
     }
 }

@@ -205,3 +205,10 @@ directive:
   where-model: PhoneNumberSearchResult
   remove-property: errorCode
 ```
+
+### Removed Property phoneNumberSource from PurchasedPhoneNumber
+``` yaml
+directive:
+  where-model: PurchasedPhoneNumber
+  remove-property: phoneNumberSource
+```
