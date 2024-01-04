@@ -71,7 +71,7 @@
               <includes>
                 <include>io.micrometer:micrometer-core:[1.9.17]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-api:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>ch.qos.logback:logback-classic:[1.2.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
+                <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
