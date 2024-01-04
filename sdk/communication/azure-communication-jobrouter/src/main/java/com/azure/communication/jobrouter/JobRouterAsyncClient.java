@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
@@ -39,6 +40,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -46,6 +48,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
@@ -221,7 +224,6 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json'
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
@@ -1212,7 +1214,6 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertWorkerWithResponse(String workerId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json'
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
     }
 
@@ -2420,5 +2421,125 @@ public final class JobRouterAsyncClient {
         }
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterJobInternal> upsertJob(String jobId, RouterJobInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromString(BinaryData.fromObject(resource).toString());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterJobInternal.class));
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterJobInternal> upsertJob(String jobId, RouterJobInternal resource) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromString(BinaryData.fromObject(resource).toString());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterJobInternal.class));
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterWorkerInternal> upsertWorker(String workerId, RouterWorkerInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromString(BinaryData.fromObject(resource).toString());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorkerInternal.class));
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterWorkerInternal> upsertWorker(String workerId, RouterWorkerInternal resource) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromString(BinaryData.fromObject(resource).toString());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorkerInternal.class));
     }
 }
