@@ -1,5 +1,5 @@
-{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template") -}}
-{{- define "stress.java-template" -}}
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template2") -}}
+{{- define "stress.java-template2" -}}
 metadata:
   labels:
     testName: "{{ .Release.Name }}"
@@ -34,16 +34,15 @@ spec:
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
           -Dotel.traces.sampler.arg=0.00001 \
-          -XX:InitialRAMPercentage=75.0 \
+          -Xms500m \
           -XX:MaxRAMPercentage=75.0 \
-          -Dreactor.schedulers.defaultBoundedElasticSize={{ max 20 .Stress.concurrency }} \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.concurrency }} \
           --duration {{ mul .Stress.testDurationMin 60 }} \
           --endpoint https://localhost:8081 \
-          {{ ternary "--sync" "" .Stress.sync }} \
-          --http-client {{ default "netty" .Stress.httpClient }} \
+          {{ if .Stress.httpClient != "default" }}--http-client {{ .Stress.httpClient }}{{ end }} \
+          --sync \
           --warmup 0
       # add your test parameters here
       resources:
