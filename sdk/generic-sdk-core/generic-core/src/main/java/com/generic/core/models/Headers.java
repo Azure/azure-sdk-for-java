@@ -109,6 +109,35 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
+     * Adds a {@link Header} with the given name and value if a {@link Header} with that name doesn't already exist,
+     * otherwise adds the {@code values} to the existing header.
+     *
+     * @param name The name of the {@link Header}.
+     * @param values The values of the {@link Header}.
+     * @return The updated {@link Headers} object.
+     */
+    public Headers add(HeaderName name, List<String> values) {
+        return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
+    }
+
+    private Headers addInternal(String formattedName, String name, List<String> values) {
+        if (name == null || CoreUtils.isNullOrEmpty(values)) {
+            return this;
+        }
+
+        headers.compute(formattedName, (key, header) -> {
+            if (header == null) {
+                return new Header(name, values);
+            } else {
+                header.addValues(values);
+                return header;
+            }
+        });
+
+        return this;
+    }
+
+    /**
      * Sets a {@link Header} with the given name and value. If a {@link Header} with same name already exists then the
      * value will be overwritten. If the given value is {@code null}, the header with the given name will be removed.
      *
