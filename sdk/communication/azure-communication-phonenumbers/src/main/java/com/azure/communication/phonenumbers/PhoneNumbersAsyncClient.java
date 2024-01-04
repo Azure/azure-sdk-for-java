@@ -452,7 +452,7 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Boolean consentToNotResellNumbers) {
-        return beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers);
+        return beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers, null);
     }
 
     PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
@@ -461,7 +461,7 @@ public final class PhoneNumbersAsyncClient {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
-                    purchaseNumbersInitOperation(searchId, context),
+                    purchaseNumbersInitOperation(searchId, consentToNotResellNumbers, context),
                     pollOperation(),
                     (pollingContext, firstResponse) -> Mono
                             .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
@@ -472,14 +472,14 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>> purchaseNumbersInitOperation(
-            String searchId, Context context) {
+            String searchId, Boolean consentToNotResellNumbers, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
                 return client
-                        .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId),
+                        .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId).setConsentToNotResellNumbers(consentToNotResellNumbers),
                                 contextValue)
                         .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                         .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {

@@ -521,7 +521,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         if (withOptions) {
             return setPollInterval(client
                     .beginSearchAvailablePhoneNumbers(
-                            COUNTRY_CODE,
+                            "CA",
                             PhoneNumberType.TOLL_FREE,
                             PhoneNumberAssignmentType.APPLICATION,
                             capabilities,
@@ -529,7 +529,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         }
         return setPollInterval(client
                 .beginSearchAvailablePhoneNumbers(
-                        COUNTRY_CODE,
+                        "CA",
                         PhoneNumberType.TOLL_FREE,
                         PhoneNumberAssignmentType.APPLICATION,
                         capabilities));
