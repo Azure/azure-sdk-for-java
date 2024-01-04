@@ -140,7 +140,7 @@ Notes:
 * Caption is only supported in English at the moment.
 
 ```java imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;
@@ -151,7 +151,7 @@ import java.util.Arrays;
 ImageAnalysisResult result = client.analyze(
     BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-    new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+    new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
 // Print analysis results to the console
 System.out.println("Image analysis results:");
@@ -167,7 +167,7 @@ To generate captions for additional images, simply call the `analyze` multiple t
 This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
 
 ```java imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import java.net.URL;
@@ -177,7 +177,7 @@ import java.util.Arrays;
 ImageAnalysisResult result = client.analyze(
     new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-    new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+    new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
 // Print analysis results to the console
 System.out.println("Image analysis results:");

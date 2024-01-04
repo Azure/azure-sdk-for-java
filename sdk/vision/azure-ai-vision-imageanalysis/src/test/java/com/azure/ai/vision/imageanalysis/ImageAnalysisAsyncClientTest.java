@@ -50,15 +50,15 @@ class ImageAnalysisAsyncClientTest extends ImageAnalysisClientTestBase {
         String imageSource = imageUrl;
 
         List<VisualFeatures> visualFeatures =  Arrays.asList(VisualFeatures.DENSE_CAPTIONS);
-        ImageAnalysisOptions options = new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build();
+        ImageAnalysisOptions options = new ImageAnalysisOptions().setGenderNeutralCaption(true);
         doAnalysis(methodName + ":DenseCaptions", sync, imageSource, visualFeatures, options);
 
         visualFeatures =  Arrays.asList(VisualFeatures.SMART_CROPS);
-        options = new ImageAnalysisOptionsBuilder().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33)).build();
+        options = new ImageAnalysisOptions().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33));
         doAnalysis(methodName + ":SmartCrops", sync, imageSource, visualFeatures, options);
 
         visualFeatures =  Arrays.asList(VisualFeatures.TAGS);
-        options = new ImageAnalysisOptionsBuilder().setLanguage("en").build();
+        options = new ImageAnalysisOptions().setLanguage("en");
         doAnalysis(methodName + ":Tags", sync, imageSource, visualFeatures, options);
 
         visualFeatures =  Arrays.asList(VisualFeatures.PEOPLE);

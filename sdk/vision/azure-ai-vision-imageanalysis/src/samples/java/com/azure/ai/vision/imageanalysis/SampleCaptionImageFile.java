@@ -34,7 +34,7 @@ import com.azure.core.credential.KeyCredential;
 // END: imports-for-create-client-snippet
 
 // BEGIN: imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;
@@ -68,7 +68,7 @@ public class SampleCaptionImageFile {
         ImageAnalysisResult result = client.analyze(
             BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-            new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+            new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
         // Print analysis results to the console
         System.out.println("Image analysis results:");

@@ -33,9 +33,9 @@ Add the following method to the bottom of the class ImagePoint in file ImagePoin
     }
 ```
 
-## Add new class ImageAnalysisOptions and ImageAnalysisOptionsBuilder
+## Add new class ImageAnalysisOptions
 
-Copy new files ImageAnalysisOptions.java and ImageAnalysisOptionsBuilder.java in to the models folder: `src\main\java\com\azure\ai\vision\imageanalysis`
+Copy the new file ImageAnalysisOptions.java in to the folder: `src\main\java\com\azure\ai\vision\imageanalysis`
 
 ## Updates to ImageAnalysisClient.java
 

@@ -43,12 +43,8 @@ class ImageAnalysisClientTest extends ImageAnalysisClientTestBase {
         String language = "en";
         List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
         String modelVersion = "latest";
-        ImageAnalysisOptions options = new ImageAnalysisOptionsBuilder()
-            .setLanguage(language)
-            .setGenderNeutralCaption(genderNeutralCaption)
-            .setSmartCropsAspectRatios(aspectRatios)
-            .setModelVersion(modelVersion)
-            .build();
+        ImageAnalysisOptions options = new ImageAnalysisOptions(
+            language, genderNeutralCaption, aspectRatios, modelVersion);
         doAnalysis(methodName, sync, imageSource, visualFeatures, options);
     }
 

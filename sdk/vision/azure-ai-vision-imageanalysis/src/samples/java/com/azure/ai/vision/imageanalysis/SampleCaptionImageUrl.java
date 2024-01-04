@@ -33,7 +33,7 @@ import com.azure.core.credential.KeyCredential;
 import java.net.MalformedURLException;
 
 // BEGIN: imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import java.net.URL;
@@ -64,7 +64,7 @@ public class SampleCaptionImageUrl {
         ImageAnalysisResult result = client.analyze(
             new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-            new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+            new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
         // Print analysis results to the console
         System.out.println("Image analysis results:");

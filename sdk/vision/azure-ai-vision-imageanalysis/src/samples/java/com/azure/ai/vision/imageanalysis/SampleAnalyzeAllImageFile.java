@@ -30,7 +30,6 @@
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
 import com.azure.ai.vision.imageanalysis.models.DenseCaption;
 import com.azure.ai.vision.imageanalysis.models.DetectedObject;
@@ -70,12 +69,11 @@ public class SampleAnalyzeAllImageFile {
             .buildClient();
 
         // Specify analysis options (or set `options` to null for defaults)
-        ImageAnalysisOptions options = new ImageAnalysisOptionsBuilder()
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
             .setLanguage("en") // language (optional): Relevant only for TAGS. See https://aka.ms/cv-languages for supported languages.
             .setGenderNeutralCaption(true) // genderNeutralCaption (optional): Relevant only if CAPTION or DENSE_CAPTIONS were specified above.
             .setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33)) // smartCropsAspectRatios (optional). Relevant only if SMART_CROPS was specified above.
-            .setModelVersion("latest")  // modelVersion (optional): The model version to use. When not specified, the default value of "latest" is used.
-            .build();
+            .setModelVersion("latest"); // modelVersion (optional): The model version to use. When not specified, the default value of "latest" is used.
 
         try {
 

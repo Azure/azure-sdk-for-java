@@ -29,7 +29,7 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
@@ -63,7 +63,7 @@ public class SampleCaptionImageFileAsync {
             ImageAnalysisResult result = client.analyze(
                 BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
-                new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+                new ImageAnalysisOptions().setGenderNeutralCaption(true)) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
                 .block(); 
 
             printAnalysisResults(result);

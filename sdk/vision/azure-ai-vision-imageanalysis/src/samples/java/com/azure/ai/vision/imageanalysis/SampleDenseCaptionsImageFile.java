@@ -33,7 +33,7 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.DenseCaption;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
@@ -66,7 +66,7 @@ public class SampleDenseCaptionsImageFile {
             ImageAnalysisResult result = client.analyze(
                 BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.DENSE_CAPTIONS), // visualFeatures
-                new ImageAnalysisOptionsBuilder().setGenderNeutralCaption(true).build()); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
+                new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
             printAnalysisResults(result);
         } catch (Exception e) {

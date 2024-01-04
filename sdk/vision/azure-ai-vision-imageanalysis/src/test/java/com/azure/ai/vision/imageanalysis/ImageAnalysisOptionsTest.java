@@ -14,8 +14,7 @@ class ImageAnalysisOptionsTest {
     @Test
     public void testDefaultOptions() {
 
-        ImageAnalysisOptionsBuilder builder = new ImageAnalysisOptionsBuilder();
-        ImageAnalysisOptions options = builder.build();
+        ImageAnalysisOptions options = new ImageAnalysisOptions();
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == null;
@@ -27,13 +26,12 @@ class ImageAnalysisOptionsTest {
     public void testAllOptionsAssignedAtOnce() {
 
         Boolean genderNeutralCaption = true;
-        String language = "en";
+        String language = "de";
         List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
         String modelVersion = "latest";
 
-        ImageAnalysisOptionsBuilder builder = new ImageAnalysisOptionsBuilder(
+        ImageAnalysisOptions options = new ImageAnalysisOptions(
             language, genderNeutralCaption, aspectRatios, modelVersion);
-        ImageAnalysisOptions options = builder.build();
 
         assert options.getSmartCropsAspectRatios() == aspectRatios;
         assert options.getLanguage() == language;
@@ -45,16 +43,15 @@ class ImageAnalysisOptionsTest {
     public void testAllOptionsUsingBuilderPattern() {
 
         Boolean genderNeutralCaption = true;
-        String language = "en";
+        String language = "de";
         List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
         String modelVersion = "latest";
 
-        ImageAnalysisOptions options = new ImageAnalysisOptionsBuilder()
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
             .setLanguage(language)
             .setGenderNeutralCaption(genderNeutralCaption)
             .setSmartCropsAspectRatios(aspectRatios)
-            .setModelVersion(modelVersion)
-            .build();
+            .setModelVersion(modelVersion);
 
         assert options.getSmartCropsAspectRatios() == aspectRatios;
         assert options.getLanguage() == language;
@@ -66,12 +63,11 @@ class ImageAnalysisOptionsTest {
     public void testSomeOptionsUsingBuilderPattern() {
 
         Boolean genderNeutralCaption = true;
-        String language = "en";
+        String language = "de";
 
-        ImageAnalysisOptions options = new ImageAnalysisOptionsBuilder()
+        ImageAnalysisOptions options = new ImageAnalysisOptions()
             .setLanguage(language)
-            .setGenderNeutralCaption(genderNeutralCaption)
-            .build();
+            .setGenderNeutralCaption(genderNeutralCaption);
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == language;

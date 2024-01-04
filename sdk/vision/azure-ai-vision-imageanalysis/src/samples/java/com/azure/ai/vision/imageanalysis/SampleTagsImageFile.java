@@ -28,7 +28,7 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.DetectedTag;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
@@ -61,7 +61,7 @@ public class SampleTagsImageFile {
             ImageAnalysisResult result = client.analyze(
                 BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.TAGS), // visualFeatures
-                new ImageAnalysisOptionsBuilder().setLanguage("en").build()); // options: See https://aka.ms/cv-languages for supported languages. Or null to use the default of "en" (English).
+                new ImageAnalysisOptions().setLanguage("en")); // options: See https://aka.ms/cv-languages for supported languages. Or null to use the default of "en" (English).
 
             printAnalysisResults(result);
         } catch (Exception e) {

@@ -34,7 +34,7 @@
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptionsBuilder;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
@@ -67,7 +67,7 @@ public class SampleSmartCropsImageFile {
             ImageAnalysisResult result = client.analyze(
                 BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.SMART_CROPS), // visualFeatures
-                new ImageAnalysisOptionsBuilder().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33)).build()); // options: Set one or more aspect ratios, or null for default.
+                new ImageAnalysisOptions().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))); // options: Set one or more aspect ratios, or null for default.
 
             printAnalysisResults(result);
         } catch (Exception e) {
