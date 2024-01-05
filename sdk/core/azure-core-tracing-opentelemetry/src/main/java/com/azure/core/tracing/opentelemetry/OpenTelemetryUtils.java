@@ -42,6 +42,15 @@ class OpenTelemetryUtils {
     }
 
     private static String mapAttributeName(String name) {
+        if ("http.method".equals(name)) {
+            return "http.request.method";
+        }
+        if ("http.status_code".equals(name)) {
+            return "http.response.status_code";
+        }
+        if ("http.url".equals(name)) {
+            return "url.full";
+        }
         if (ENTITY_PATH_KEY.equals(name)) {
             return "messaging.destination.name";
         }
