@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,6 +66,10 @@ public final class ClientTelemetryMetrics {
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
     private static CosmosMeterOptions cpuOptions;
     private static CosmosMeterOptions memoryOptions;
+
+    private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
+
+    private static final Object lockObject = new Object();
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -149,14 +155,38 @@ public final class ClientTelemetryMetrics {
     }
 
     private static boolean hasAnyActualMeterRegistry() {
-        Set<MeterRegistry> meteRegistriesSnapshot = compositeRegistry.getRegistries();
-        if (meteRegistriesSnapshot.isEmpty()) {
-            return false;
+
+        Instant nowSnapshot = Instant.now();
+        DescendantValidationResult snapshot = lastDescendantValidation;
+        if (nowSnapshot.isBefore(snapshot.getExpiration())) {
+            return snapshot.getResult();
         }
 
-        for (MeterRegistry registry : meteRegistriesSnapshot) {
+        synchronized (lockObject) {
+            snapshot = lastDescendantValidation;
+            if (nowSnapshot.isBefore(snapshot.getExpiration())) {
+                return snapshot.getResult();
+            }
+
+            DescendantValidationResult newResult = new DescendantValidationResult(
+                nowSnapshot.plus(10, ChronoUnit.SECONDS),
+                hasAnyActualMeterRegistryCore(compositeRegistry, 1)
+            );
+
+            lastDescendantValidation = newResult;
+            return newResult.getResult();
+        }
+    }
+
+    private static boolean hasAnyActualMeterRegistryCore(CompositeMeterRegistry compositeMeterRegistry, int depth) {
+
+        if (depth > 100) {
+            return true;
+        }
+
+        for (MeterRegistry registry : compositeMeterRegistry.getRegistries()) {
             if (registry instanceof CompositeMeterRegistry) {
-                if (!(((CompositeMeterRegistry)registry).getRegistries().isEmpty())) {
+                if (hasAnyActualMeterRegistryCore((CompositeMeterRegistry)registry, depth + 1)) {
                     return true;
                 }
             } else {
@@ -1305,6 +1335,24 @@ public final class ClientTelemetryMetrics {
             } else {
                 requestRecord.stop();
             }
+        }
+    }
+
+    static class DescendantValidationResult {
+        private final Instant expiration;
+        private final boolean result;
+
+        public DescendantValidationResult(Instant expiration, boolean result) {
+            this.expiration = expiration;
+            this.result = result;
+        }
+
+        public Instant getExpiration() {
+            return this.expiration;
+        }
+
+        public boolean getResult() {
+            return this.result;
         }
     }
 }
