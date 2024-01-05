@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of a hostname derived from a domain. */
+/**
+ * Details of a hostname derived from a domain.
+ */
 @Fluent
 public final class Hostname {
     /*
@@ -49,13 +51,15 @@ public final class Hostname {
     @JsonProperty(value = "hostNameType")
     private HostnameType hostnameType;
 
-    /** Creates an instance of Hostname class. */
+    /**
+     * Creates an instance of Hostname class.
+     */
     public Hostname() {
     }
 
     /**
      * Get the name property: Name of the hostname.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class Hostname {
 
     /**
      * Set the name property: Name of the hostname.
-     *
+     * 
      * @param name the name value to set.
      * @return the Hostname object itself.
      */
@@ -76,7 +80,7 @@ public final class Hostname {
     /**
      * Get the siteNames property: List of apps the hostname is assigned to. This list will have more than one app only
      * if the hostname is pointing to a Traffic Manager.
-     *
+     * 
      * @return the siteNames value.
      */
     public List<String> siteNames() {
@@ -86,7 +90,7 @@ public final class Hostname {
     /**
      * Set the siteNames property: List of apps the hostname is assigned to. This list will have more than one app only
      * if the hostname is pointing to a Traffic Manager.
-     *
+     * 
      * @param siteNames the siteNames value to set.
      * @return the Hostname object itself.
      */
@@ -98,7 +102,7 @@ public final class Hostname {
     /**
      * Get the azureResourceName property: Name of the Azure resource the hostname is assigned to. If it is assigned to
      * a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
-     *
+     * 
      * @return the azureResourceName value.
      */
     public String azureResourceName() {
@@ -108,7 +112,7 @@ public final class Hostname {
     /**
      * Set the azureResourceName property: Name of the Azure resource the hostname is assigned to. If it is assigned to
      * a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
-     *
+     * 
      * @param azureResourceName the azureResourceName value to set.
      * @return the Hostname object itself.
      */
@@ -119,7 +123,7 @@ public final class Hostname {
 
     /**
      * Get the azureResourceType property: Type of the Azure resource the hostname is assigned to.
-     *
+     * 
      * @return the azureResourceType value.
      */
     public AzureResourceType azureResourceType() {
@@ -128,7 +132,7 @@ public final class Hostname {
 
     /**
      * Set the azureResourceType property: Type of the Azure resource the hostname is assigned to.
-     *
+     * 
      * @param azureResourceType the azureResourceType value to set.
      * @return the Hostname object itself.
      */
@@ -139,7 +143,7 @@ public final class Hostname {
 
     /**
      * Get the customHostnameDnsRecordType property: Type of the DNS record.
-     *
+     * 
      * @return the customHostnameDnsRecordType value.
      */
     public CustomHostnameDnsRecordType customHostnameDnsRecordType() {
@@ -148,7 +152,7 @@ public final class Hostname {
 
     /**
      * Set the customHostnameDnsRecordType property: Type of the DNS record.
-     *
+     * 
      * @param customHostnameDnsRecordType the customHostnameDnsRecordType value to set.
      * @return the Hostname object itself.
      */
@@ -159,7 +163,7 @@ public final class Hostname {
 
     /**
      * Get the hostnameType property: Type of the hostname.
-     *
+     * 
      * @return the hostnameType value.
      */
     public HostnameType hostnameType() {
@@ -168,7 +172,7 @@ public final class Hostname {
 
     /**
      * Set the hostnameType property: Type of the hostname.
-     *
+     * 
      * @param hostnameType the hostnameType value to set.
      * @return the Hostname object itself.
      */
@@ -179,7 +183,7 @@ public final class Hostname {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

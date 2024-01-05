@@ -4,7 +4,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestMode;
-import com.azure.storage.common.Utility;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -63,7 +62,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         fileSystemClient.delete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void restorePath() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
@@ -92,12 +91,11 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertEquals(file.getPathUrl(), returnedClient.getPathUrl());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @ParameterizedTest
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
         " my cool directory ", "directory"})
     public void restorePathSpecialCharacters(String name) {
-        name = Utility.urlEncode(name);
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient("dir" + name);
         dir.create();
         dir.delete();
@@ -111,13 +109,13 @@ public class SoftDeleteTests extends DataLakeTestBase {
         String dirDeletionId = paths.next().getDeletionId();
         String fileDeletionId = paths.next().getDeletionId();
 
-        DataLakePathClient returnedClient = fileSystemClient.undeletePath(Utility.urlEncode(dir.getDirectoryName()),
+        DataLakePathClient returnedClient = fileSystemClient.undeletePath(dir.getDirectoryName(),
             dirDeletionId);
 
         assertInstanceOf(DataLakeDirectoryClient.class, returnedClient);
         assertNotNull(dir.getProperties());
 
-        returnedClient = fileSystemClient.undeletePath(Utility.urlEncode(file.getFileName()), fileDeletionId);
+        returnedClient = fileSystemClient.undeletePath(file.getFileName(), fileDeletionId);
 
         assertInstanceOf(DataLakeFileClient.class, returnedClient);
         assertNotNull(file.getProperties());
@@ -158,7 +156,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
         assertThrows(DataLakeStorageException.class, () -> fsc.listDeletedPaths().iterator().next());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void listDeletedPathsPath() {
         DataLakeDirectoryClient dir = fileSystemClient.getDirectoryClient(generatePathName());
@@ -180,7 +178,7 @@ public class SoftDeleteTests extends DataLakeTestBase {
     }
 
     // TODO (gapra): Add more get paths tests (Github issue created)
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200804ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-08-04")
     @Test
     public void listDeletedPaths() {
         DataLakeFileClient fc1 = fileSystemClient.getFileClient(generatePathName());

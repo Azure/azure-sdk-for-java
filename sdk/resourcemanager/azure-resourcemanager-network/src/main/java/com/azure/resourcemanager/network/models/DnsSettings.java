@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DNS Proxy Settings in Firewall Policy. */
+/**
+ * DNS Proxy Settings in Firewall Policy.
+ */
 @Fluent
 public final class DnsSettings {
     /*
@@ -29,13 +31,15 @@ public final class DnsSettings {
     @JsonProperty(value = "requireProxyForNetworkRules")
     private Boolean requireProxyForNetworkRules;
 
-    /** Creates an instance of DnsSettings class. */
+    /**
+     * Creates an instance of DnsSettings class.
+     */
     public DnsSettings() {
     }
 
     /**
      * Get the servers property: List of Custom DNS Servers.
-     *
+     * 
      * @return the servers value.
      */
     public List<String> servers() {
@@ -44,7 +48,7 @@ public final class DnsSettings {
 
     /**
      * Set the servers property: List of Custom DNS Servers.
-     *
+     * 
      * @param servers the servers value to set.
      * @return the DnsSettings object itself.
      */
@@ -55,7 +59,7 @@ public final class DnsSettings {
 
     /**
      * Get the enableProxy property: Enable DNS Proxy on Firewalls attached to the Firewall Policy.
-     *
+     * 
      * @return the enableProxy value.
      */
     public Boolean enableProxy() {
@@ -64,7 +68,7 @@ public final class DnsSettings {
 
     /**
      * Set the enableProxy property: Enable DNS Proxy on Firewalls attached to the Firewall Policy.
-     *
+     * 
      * @param enableProxy the enableProxy value to set.
      * @return the DnsSettings object itself.
      */
@@ -75,7 +79,7 @@ public final class DnsSettings {
 
     /**
      * Get the requireProxyForNetworkRules property: FQDNs in Network Rules are supported when set to true.
-     *
+     * 
      * @return the requireProxyForNetworkRules value.
      */
     public Boolean requireProxyForNetworkRules() {
@@ -84,7 +88,7 @@ public final class DnsSettings {
 
     /**
      * Set the requireProxyForNetworkRules property: FQDNs in Network Rules are supported when set to true.
-     *
+     * 
      * @param requireProxyForNetworkRules the requireProxyForNetworkRules value to set.
      * @return the DnsSettings object itself.
      */
@@ -95,7 +99,7 @@ public final class DnsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedCluste
 public final class ProvisionedClusterPoolUpgradeProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProvisionedClusterPoolUpgradeProfileProperties model =
-            BinaryData
-                .fromString("{\"kubernetesVersion\":\"dw\",\"isPreview\":true}")
+        ProvisionedClusterPoolUpgradeProfileProperties model
+            = BinaryData.fromString("{\"kubernetesVersion\":\"bciqfouflm\",\"isPreview\":false}")
                 .toObject(ProvisionedClusterPoolUpgradeProfileProperties.class);
     }
 

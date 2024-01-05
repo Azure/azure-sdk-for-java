@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureMySqlSource;
 public final class AzureMySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMySqlSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureMySqlSource\",\"query\":\"datawwzpbamcfrf\",\"queryTimeout\":\"datatcygoombnrm\",\"additionalColumns\":\"dataklfp\",\"sourceRetryCount\":\"datagfvvnkpwl\",\"sourceRetryWait\":\"datazxdzold\",\"maxConcurrentConnections\":\"datafnpn\",\"disableMetricsCollection\":\"dataterjjuzarege\",\"\":{\"uggdh\":\"datazpuda\",\"keculxvkuxvccpda\":\"datattg\"}}")
-                .toObject(AzureMySqlSource.class);
+        AzureMySqlSource model = BinaryData.fromString(
+            "{\"type\":\"AzureMySqlSource\",\"query\":\"dataqyoyjptkyfrk\",\"queryTimeout\":\"datatxwyqkkdumxd\",\"additionalColumns\":\"dataimsioffyboo\",\"sourceRetryCount\":\"dataovfundk\",\"sourceRetryWait\":\"datamyxmsbtq\",\"maxConcurrentConnections\":\"datagn\",\"disableMetricsCollection\":\"datacbjxgjudgbwr\",\"\":{\"mgsm\":\"datauzlfqhzihlzljqc\",\"ybdz\":\"dataujunqwkjfmt\"}}")
+            .toObject(AzureMySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSource model =
-            new AzureMySqlSource()
-                .withSourceRetryCount("datagfvvnkpwl")
-                .withSourceRetryWait("datazxdzold")
-                .withMaxConcurrentConnections("datafnpn")
-                .withDisableMetricsCollection("dataterjjuzarege")
-                .withQueryTimeout("datatcygoombnrm")
-                .withAdditionalColumns("dataklfp")
-                .withQuery("datawwzpbamcfrf");
+        AzureMySqlSource model = new AzureMySqlSource().withSourceRetryCount("dataovfundk")
+            .withSourceRetryWait("datamyxmsbtq").withMaxConcurrentConnections("datagn")
+            .withDisableMetricsCollection("datacbjxgjudgbwr").withQueryTimeout("datatxwyqkkdumxd")
+            .withAdditionalColumns("dataimsioffyboo").withQuery("dataqyoyjptkyfrk");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSource.class);
     }
 }

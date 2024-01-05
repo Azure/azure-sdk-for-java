@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Operation type. */
+/**
+ * Operation type.
+ */
 public enum BackupRestoreOperationType {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Clone. */
+    /**
+     * Enum value Clone.
+     */
     CLONE("Clone"),
 
-    /** Enum value Relocation. */
+    /**
+     * Enum value Relocation.
+     */
     RELOCATION("Relocation"),
 
-    /** Enum value Snapshot. */
+    /**
+     * Enum value Snapshot.
+     */
     SNAPSHOT("Snapshot"),
 
-    /** Enum value CloudFS. */
+    /**
+     * Enum value CloudFS.
+     */
     CLOUD_FS("CloudFS");
 
-    /** The actual serialized value for a BackupRestoreOperationType instance. */
+    /**
+     * The actual serialized value for a BackupRestoreOperationType instance.
+     */
     private final String value;
 
     BackupRestoreOperationType(String value) {
@@ -33,7 +47,7 @@ public enum BackupRestoreOperationType {
 
     /**
      * Parses a serialized value to a BackupRestoreOperationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BackupRestoreOperationType object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum BackupRestoreOperationType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

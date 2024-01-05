@@ -8,24 +8,22 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the continueMethod operation. */
+/**
+ * Contains all response data for the continueMethod operation.
+ */
 public final class TroubleshootersContinueMethodResponse
     extends ResponseBase<TroubleshootersContinueMethodHeaders, Void> {
     /**
      * Creates an instance of TroubleshootersContinueMethodResponse.
-     *
+     * 
      * @param request the request which resulted in this TroubleshootersContinueMethodResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TroubleshootersContinueMethodResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        TroubleshootersContinueMethodHeaders headers) {
+    public TroubleshootersContinueMethodResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, TroubleshootersContinueMethodHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

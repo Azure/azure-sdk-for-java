@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -41,10 +42,10 @@ public final class CosmosStoredProcedureProperties {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the stored procedure.
+     * @param jsonNode the json node that represents the stored procedure.
      */
-    CosmosStoredProcedureProperties(String jsonString) {
-        this.storedProcedure = new StoredProcedure(jsonString);
+    CosmosStoredProcedureProperties(ObjectNode jsonNode) {
+        this.storedProcedure = new StoredProcedure(jsonNode);
     }
 
     /**
@@ -122,7 +123,7 @@ public final class CosmosStoredProcedureProperties {
     }
 
     static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
-        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
+        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.getPropertyBag()))
             .collect(Collectors.toList());
     }
 }

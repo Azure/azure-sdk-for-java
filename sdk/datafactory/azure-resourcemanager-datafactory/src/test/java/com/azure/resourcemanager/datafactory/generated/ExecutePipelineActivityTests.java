@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExecutePipelineActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecutePipelineActivity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ExecutePipeline\",\"policy\":{\"secureInput\":true,\"\":{\"xr\":\"datadixoflxvsu\",\"rwbcycwasmrfbwsi\":\"datatcozfjsfrbjrbqcb\",\"gd\":\"datamhhvbovblxfyle\",\"ezszlr\":\"dataiurfemnykfzsouo\"}},\"typeProperties\":{\"pipeline\":{\"referenceName\":\"z\",\"name\":\"dgiijnpkxprb\"},\"parameters\":{\"hbvlljkql\":\"datajfh\",\"btgm\":\"datauhhkkbfgrmscbmd\",\"qjyrqouyfcfdedeu\":\"datapdredcvwsbsdy\",\"elksghsowm\":\"datahgnfaanubjeb\"},\"waitOnCompletion\":false},\"name\":\"jdhw\",\"description\":\"b\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"c\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"ovrsrtldijgrbit\":\"dataavdopecj\",\"hcjtwhwgbaj\":\"datadwuoxirziluzokx\"}},{\"activity\":\"gctwamjjwvmugis\",\"dependencyConditions\":[\"Completed\",\"Completed\",\"Completed\"],\"\":{\"tdyxzg\":\"dataopedmk\",\"rvkqxhkhj\":\"dataqtgfbmocvb\",\"yrqtu\":\"datarcqpxaajt\",\"ssbvlj\":\"datatzmubxngspazm\"}}],\"userProperties\":[{\"name\":\"be\",\"value\":\"datauhwcakkewgzao\"}],\"\":{\"vahqjdi\":\"datalqtjjewezcknpm\",\"ehudicxolmmhfd\":\"datajoldwa\",\"jqvmpzcjvogr\":\"datavxoiwb\",\"ydespwwkdmsnez\":\"dataipop\"}}")
-                .toObject(ExecutePipelineActivity.class);
+        ExecutePipelineActivity model = BinaryData.fromString(
+            "{\"type\":\"ExecutePipeline\",\"policy\":{\"secureInput\":true,\"\":{\"xr\":\"datadixoflxvsu\",\"rwbcycwasmrfbwsi\":\"datatcozfjsfrbjrbqcb\",\"gd\":\"datamhhvbovblxfyle\",\"ezszlr\":\"dataiurfemnykfzsouo\"}},\"typeProperties\":{\"pipeline\":{\"referenceName\":\"z\",\"name\":\"dgiijnpkxprb\"},\"parameters\":{\"hbvlljkql\":\"datajfh\",\"btgm\":\"datauhhkkbfgrmscbmd\",\"qjyrqouyfcfdedeu\":\"datapdredcvwsbsdy\",\"elksghsowm\":\"datahgnfaanubjeb\"},\"waitOnCompletion\":false},\"name\":\"jdhw\",\"description\":\"b\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"c\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"ovrsrtldijgrbit\":\"dataavdopecj\",\"hcjtwhwgbaj\":\"datadwuoxirziluzokx\"}},{\"activity\":\"gctwamjjwvmugis\",\"dependencyConditions\":[\"Completed\",\"Completed\",\"Completed\"],\"\":{\"tdyxzg\":\"dataopedmk\",\"rvkqxhkhj\":\"dataqtgfbmocvb\",\"yrqtu\":\"datarcqpxaajt\",\"ssbvlj\":\"datatzmubxngspazm\"}}],\"userProperties\":[{\"name\":\"be\",\"value\":\"datauhwcakkewgzao\"}],\"\":{\"vahqjdi\":\"datalqtjjewezcknpm\",\"ehudicxolmmhfd\":\"datajoldwa\",\"jqvmpzcjvogr\":\"datavxoiwb\",\"ydespwwkdmsnez\":\"dataipop\"}}")
+            .toObject(ExecutePipelineActivity.class);
         Assertions.assertEquals("jdhw", model.name());
         Assertions.assertEquals("b", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
@@ -41,42 +39,20 @@ public final class ExecutePipelineActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutePipelineActivity model =
-            new ExecutePipelineActivity()
-                .withName("jdhw")
-                .withDescription("b")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new ActivityDependency()
-                                .withActivity("c")
-                                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED))
-                                .withAdditionalProperties(mapOf()),
-                            new ActivityDependency()
-                                .withActivity("gctwamjjwvmugis")
-                                .withDependencyConditions(
-                                    Arrays
-                                        .asList(
-                                            DependencyCondition.COMPLETED,
-                                            DependencyCondition.COMPLETED,
-                                            DependencyCondition.COMPLETED))
-                                .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("be").withValue("datauhwcakkewgzao")))
-                .withPolicy(new ExecutePipelineActivityPolicy().withSecureInput(true).withAdditionalProperties(mapOf()))
-                .withPipeline(new PipelineReference().withReferenceName("z").withName("dgiijnpkxprb"))
-                .withParameters(
-                    mapOf(
-                        "hbvlljkql",
-                        "datajfh",
-                        "btgm",
-                        "datauhhkkbfgrmscbmd",
-                        "qjyrqouyfcfdedeu",
-                        "datapdredcvwsbsdy",
-                        "elksghsowm",
-                        "datahgnfaanubjeb"))
-                .withWaitOnCompletion(false);
+        ExecutePipelineActivity model = new ExecutePipelineActivity().withName("jdhw").withDescription("b")
+            .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("c")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED)).withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("gctwamjjwvmugis")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED,
+                        DependencyCondition.COMPLETED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("be").withValue("datauhwcakkewgzao")))
+            .withPolicy(new ExecutePipelineActivityPolicy().withSecureInput(true).withAdditionalProperties(mapOf()))
+            .withPipeline(new PipelineReference().withReferenceName("z").withName("dgiijnpkxprb"))
+            .withParameters(mapOf("hbvlljkql", "datajfh", "btgm", "datauhhkkbfgrmscbmd", "qjyrqouyfcfdedeu",
+                "datapdredcvwsbsdy", "elksghsowm", "datahgnfaanubjeb"))
+            .withWaitOnCompletion(false);
         model = BinaryData.fromObject(model).toObject(ExecutePipelineActivity.class);
         Assertions.assertEquals("jdhw", model.name());
         Assertions.assertEquals("b", model.description());

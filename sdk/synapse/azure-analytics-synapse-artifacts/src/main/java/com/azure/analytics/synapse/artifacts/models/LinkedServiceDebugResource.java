@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Linked service debug resource. */
+/**
+ * Linked service debug resource.
+ */
 @Fluent
 public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     /*
@@ -16,12 +18,15 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private LinkedService properties;
 
-    /** Creates an instance of LinkedServiceDebugResource class. */
-    public LinkedServiceDebugResource() {}
+    /**
+     * Creates an instance of LinkedServiceDebugResource class.
+     */
+    public LinkedServiceDebugResource() {
+    }
 
     /**
      * Get the properties property: Properties of linked service.
-     *
+     * 
      * @return the properties value.
      */
     public LinkedService getProperties() {
@@ -30,7 +35,7 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
 
     /**
      * Set the properties property: Properties of linked service.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LinkedServiceDebugResource object itself.
      */
@@ -39,7 +44,9 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LinkedServiceDebugResource setName(String name) {
         super.setName(name);

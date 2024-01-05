@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of an AzureKB search result. */
+/**
+ * Details of an AzureKB search result.
+ */
 @Fluent
 public final class SearchResult {
     /*
@@ -58,13 +60,15 @@ public final class SearchResult {
     @JsonProperty(value = "link")
     private String link;
 
-    /** Creates an instance of SearchResult class. */
+    /**
+     * Creates an instance of SearchResult class.
+     */
     public SearchResult() {
     }
 
     /**
      * Get the solutionId property: Unique id of the result.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -73,7 +77,7 @@ public final class SearchResult {
 
     /**
      * Set the solutionId property: Unique id of the result.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the SearchResult object itself.
      */
@@ -84,7 +88,7 @@ public final class SearchResult {
 
     /**
      * Get the content property: Content of the search result.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -93,7 +97,7 @@ public final class SearchResult {
 
     /**
      * Set the content property: Content of the search result.
-     *
+     * 
      * @param content the content value to set.
      * @return the SearchResult object itself.
      */
@@ -104,7 +108,7 @@ public final class SearchResult {
 
     /**
      * Get the title property: Title of the search result.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -113,7 +117,7 @@ public final class SearchResult {
 
     /**
      * Set the title property: Title of the search result.
-     *
+     * 
      * @param title the title value to set.
      * @return the SearchResult object itself.
      */
@@ -124,7 +128,7 @@ public final class SearchResult {
 
     /**
      * Get the confidence property: Confidence of the search result.
-     *
+     * 
      * @return the confidence value.
      */
     public Confidence confidence() {
@@ -133,7 +137,7 @@ public final class SearchResult {
 
     /**
      * Set the confidence property: Confidence of the search result.
-     *
+     * 
      * @param confidence the confidence value to set.
      * @return the SearchResult object itself.
      */
@@ -144,7 +148,7 @@ public final class SearchResult {
 
     /**
      * Get the source property: Source of the search result.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -153,7 +157,7 @@ public final class SearchResult {
 
     /**
      * Set the source property: Source of the search result.
-     *
+     * 
      * @param source the source value to set.
      * @return the SearchResult object itself.
      */
@@ -164,7 +168,7 @@ public final class SearchResult {
 
     /**
      * Get the resultType property: Result type of the search result.
-     *
+     * 
      * @return the resultType value.
      */
     public ResultType resultType() {
@@ -173,7 +177,7 @@ public final class SearchResult {
 
     /**
      * Set the resultType property: Result type of the search result.
-     *
+     * 
      * @param resultType the resultType value to set.
      * @return the SearchResult object itself.
      */
@@ -184,7 +188,7 @@ public final class SearchResult {
 
     /**
      * Get the rank property: rank of the search result.
-     *
+     * 
      * @return the rank value.
      */
     public Integer rank() {
@@ -193,7 +197,7 @@ public final class SearchResult {
 
     /**
      * Set the rank property: rank of the search result.
-     *
+     * 
      * @param rank the rank value to set.
      * @return the SearchResult object itself.
      */
@@ -204,7 +208,7 @@ public final class SearchResult {
 
     /**
      * Get the link property: Link to the document.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -213,7 +217,7 @@ public final class SearchResult {
 
     /**
      * Set the link property: Link to the document.
-     *
+     * 
      * @param link the link value to set.
      * @return the SearchResult object itself.
      */
@@ -224,7 +228,7 @@ public final class SearchResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

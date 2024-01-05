@@ -28,9 +28,9 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -309,7 +309,7 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void blobSasTags() {
         BlobSasPermission permissions = new BlobSasPermission()
@@ -350,7 +350,7 @@ public class SasClientTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> client.setTags(tags));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void containerSasTags() {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
@@ -396,7 +396,7 @@ public class SasClientTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> client.setTags(tags));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void containerSasFilterBlobs() {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
@@ -423,7 +423,7 @@ public class SasClientTests extends BlobTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void containerSasFilterBlobsFail() {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()
@@ -506,7 +506,7 @@ public class SasClientTests extends BlobTestBase {
         });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
     @Test
     public void containerUserDelegationCorrelationIdError() {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission().setListPermission(true);
@@ -531,7 +531,7 @@ public class SasClientTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> client.listBlobs().iterator().hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void blobSasEncryptionScope(boolean userDelegation) {
@@ -564,7 +564,7 @@ public class SasClientTests extends BlobTestBase {
         assertEquals("testscope1", sasClient.getProperties().getEncryptionScope());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @Test
     public void accountSasEncryptionScope() {
         AccountSasService service = new AccountSasService()
@@ -591,7 +591,7 @@ public class SasClientTests extends BlobTestBase {
         assertEquals("testscope1", client.getProperties().getEncryptionScope());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void accountSasTagsAndFilterTags() {
         AccountSasService service = new AccountSasService()
@@ -924,7 +924,7 @@ public class SasClientTests extends BlobTestBase {
      individual parts later.
      */
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("blobSasImplUtilStringToSignSupplier")
     public void blobSasImplUtilStringToSign(OffsetDateTime startTime, String identifier, SasIpRange ipRange,
@@ -987,7 +987,7 @@ public class SasClientTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("blobSasImplUtilStringToSignUserDelegationKeySupplier")
     public void blobSasImplUtilStringToSignUserDelegationKey(OffsetDateTime startTime, String keyOid, String keyTid,
@@ -1064,7 +1064,7 @@ public class SasClientTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("blobSasImplUtilCanonicalizedResourceSupplier")
     public void blobSasImplUtilCanonicalizedResource(String containerName, String blobName, String snapId,
@@ -1093,7 +1093,7 @@ public class SasClientTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
     @MethodSource("accountSasImplUtilStringToSignSupplier")
     public void accountSasImplUtilStringToSign(OffsetDateTime startTime, SasIpRange ipRange, SasProtocol protocol,

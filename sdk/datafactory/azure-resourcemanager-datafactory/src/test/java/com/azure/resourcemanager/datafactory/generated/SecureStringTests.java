@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SecureStringTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureString model =
-            BinaryData.fromString("{\"type\":\"SecureString\",\"value\":\"pylx\"}").toObject(SecureString.class);
+        SecureString model
+            = BinaryData.fromString("{\"type\":\"SecureString\",\"value\":\"pylx\"}").toObject(SecureString.class);
         Assertions.assertEquals("pylx", model.value());
     }
 

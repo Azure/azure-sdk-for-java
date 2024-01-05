@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RouteFilterRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RouteFilterRulesClient.
+ */
 public interface RouteFilterRulesClient {
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -32,12 +34,12 @@ public interface RouteFilterRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String routeFilterName, String ruleName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String routeFilterName,
+        String ruleName);
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -47,12 +49,12 @@ public interface RouteFilterRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String routeFilterName, String ruleName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeFilterName,
+        String ruleName);
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -66,7 +68,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -77,12 +79,12 @@ public interface RouteFilterRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String routeFilterName, String ruleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeFilterName, String ruleName,
+        Context context);
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -96,7 +98,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -109,7 +111,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Deletes the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -123,23 +125,23 @@ public interface RouteFilterRulesClient {
 
     /**
      * Gets the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified rule from a route filter along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified rule from a route filter along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteFilterRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String routeFilterName, String ruleName);
+    Mono<Response<RouteFilterRuleInner>> getWithResponseAsync(String resourceGroupName, String routeFilterName,
+        String ruleName);
 
     /**
      * Gets the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -153,7 +155,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Gets the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -164,12 +166,12 @@ public interface RouteFilterRulesClient {
      * @return the specified rule from a route filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteFilterRuleInner> getWithResponse(
-        String resourceGroupName, String routeFilterName, String ruleName, Context context);
+    Response<RouteFilterRuleInner> getWithResponse(String resourceGroupName, String routeFilterName, String ruleName,
+        Context context);
 
     /**
      * Gets the specified rule from a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
@@ -183,7 +185,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -194,15 +196,12 @@ public interface RouteFilterRulesClient {
      * @return route Filter Rule Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
-        RouteFilterRuleInner routeFilterRuleParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeFilterName,
+        String ruleName, RouteFilterRuleInner routeFilterRuleParameters);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -214,14 +213,12 @@ public interface RouteFilterRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
+        String resourceGroupName, String routeFilterName, String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -232,15 +229,12 @@ public interface RouteFilterRulesClient {
      * @return the {@link SyncPoller} for polling of route Filter Rule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
-        RouteFilterRuleInner routeFilterRuleParameters);
+    SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -252,16 +246,12 @@ public interface RouteFilterRulesClient {
      * @return the {@link SyncPoller} for polling of route Filter Rule Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
-        RouteFilterRuleInner routeFilterRuleParameters,
-        Context context);
+    SyncPoller<PollResult<RouteFilterRuleInner>, RouteFilterRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String routeFilterName, String ruleName, RouteFilterRuleInner routeFilterRuleParameters, Context context);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -272,15 +262,12 @@ public interface RouteFilterRulesClient {
      * @return route Filter Rule Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteFilterRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
+    Mono<RouteFilterRuleInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -291,15 +278,12 @@ public interface RouteFilterRulesClient {
      * @return route Filter Rule Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterRuleInner createOrUpdate(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
+    RouteFilterRuleInner createOrUpdate(String resourceGroupName, String routeFilterName, String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters);
 
     /**
      * Creates or updates a route in the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the route filter rule.
@@ -311,16 +295,12 @@ public interface RouteFilterRulesClient {
      * @return route Filter Rule Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterRuleInner createOrUpdate(
-        String resourceGroupName,
-        String routeFilterName,
-        String ruleName,
-        RouteFilterRuleInner routeFilterRuleParameters,
-        Context context);
+    RouteFilterRuleInner createOrUpdate(String resourceGroupName, String routeFilterName, String ruleName,
+        RouteFilterRuleInner routeFilterRuleParameters, Context context);
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,7 +313,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +326,7 @@ public interface RouteFilterRulesClient {
 
     /**
      * Gets all RouteFilterRules in a route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -356,6 +336,6 @@ public interface RouteFilterRulesClient {
      * @return all RouteFilterRules in a route filter as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RouteFilterRuleInner> listByRouteFilter(
-        String resourceGroupName, String routeFilterName, Context context);
+    PagedIterable<RouteFilterRuleInner> listByRouteFilter(String resourceGroupName, String routeFilterName,
+        Context context);
 }

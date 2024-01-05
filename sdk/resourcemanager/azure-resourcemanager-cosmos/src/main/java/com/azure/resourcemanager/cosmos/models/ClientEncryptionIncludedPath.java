@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** . */
+/**
+ * .
+ */
 @Fluent
 public final class ClientEncryptionIncludedPath {
     /*
@@ -35,13 +37,15 @@ public final class ClientEncryptionIncludedPath {
     @JsonProperty(value = "encryptionAlgorithm", required = true)
     private String encryptionAlgorithm;
 
-    /** Creates an instance of ClientEncryptionIncludedPath class. */
+    /**
+     * Creates an instance of ClientEncryptionIncludedPath class.
+     */
     public ClientEncryptionIncludedPath() {
     }
 
     /**
      * Get the path property: Path that needs to be encrypted.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -50,7 +54,7 @@ public final class ClientEncryptionIncludedPath {
 
     /**
      * Set the path property: Path that needs to be encrypted.
-     *
+     * 
      * @param path the path value to set.
      * @return the ClientEncryptionIncludedPath object itself.
      */
@@ -62,7 +66,7 @@ public final class ClientEncryptionIncludedPath {
     /**
      * Get the clientEncryptionKeyId property: The identifier of the Client Encryption Key to be used to encrypt the
      * path.
-     *
+     * 
      * @return the clientEncryptionKeyId value.
      */
     public String clientEncryptionKeyId() {
@@ -72,7 +76,7 @@ public final class ClientEncryptionIncludedPath {
     /**
      * Set the clientEncryptionKeyId property: The identifier of the Client Encryption Key to be used to encrypt the
      * path.
-     *
+     * 
      * @param clientEncryptionKeyId the clientEncryptionKeyId value to set.
      * @return the ClientEncryptionIncludedPath object itself.
      */
@@ -83,7 +87,7 @@ public final class ClientEncryptionIncludedPath {
 
     /**
      * Get the encryptionType property: The type of encryption to be performed. Eg - Deterministic, Randomized.
-     *
+     * 
      * @return the encryptionType value.
      */
     public String encryptionType() {
@@ -92,7 +96,7 @@ public final class ClientEncryptionIncludedPath {
 
     /**
      * Set the encryptionType property: The type of encryption to be performed. Eg - Deterministic, Randomized.
-     *
+     * 
      * @param encryptionType the encryptionType value to set.
      * @return the ClientEncryptionIncludedPath object itself.
      */
@@ -104,7 +108,7 @@ public final class ClientEncryptionIncludedPath {
     /**
      * Get the encryptionAlgorithm property: The encryption algorithm which will be used. Eg -
      * AEAD_AES_256_CBC_HMAC_SHA256.
-     *
+     * 
      * @return the encryptionAlgorithm value.
      */
     public String encryptionAlgorithm() {
@@ -114,7 +118,7 @@ public final class ClientEncryptionIncludedPath {
     /**
      * Set the encryptionAlgorithm property: The encryption algorithm which will be used. Eg -
      * AEAD_AES_256_CBC_HMAC_SHA256.
-     *
+     * 
      * @param encryptionAlgorithm the encryptionAlgorithm value to set.
      * @return the ClientEncryptionIncludedPath object itself.
      */
@@ -125,33 +129,25 @@ public final class ClientEncryptionIncludedPath {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property path in model ClientEncryptionIncludedPath"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property path in model ClientEncryptionIncludedPath"));
         }
         if (clientEncryptionKeyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
         }
         if (encryptionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionType in model ClientEncryptionIncludedPath"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property encryptionType in model ClientEncryptionIncludedPath"));
         }
         if (encryptionAlgorithm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
         }
     }
 

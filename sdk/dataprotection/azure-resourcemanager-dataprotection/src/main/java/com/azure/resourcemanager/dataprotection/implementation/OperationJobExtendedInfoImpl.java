@@ -12,8 +12,7 @@ public final class OperationJobExtendedInfoImpl implements OperationJobExtendedI
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    OperationJobExtendedInfoImpl(
-        OperationJobExtendedInfoInner innerObject,
+    OperationJobExtendedInfoImpl(OperationJobExtendedInfoInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

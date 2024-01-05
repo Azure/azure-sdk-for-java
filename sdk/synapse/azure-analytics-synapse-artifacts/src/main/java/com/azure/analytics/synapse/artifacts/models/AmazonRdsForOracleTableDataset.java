@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The AmazonRdsForOracle database dataset. */
+/**
+ * The AmazonRdsForOracle database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRdsForOracleTable")
 @JsonFlatten
@@ -30,13 +32,16 @@ public class AmazonRdsForOracleTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of AmazonRdsForOracleTableDataset class. */
-    public AmazonRdsForOracleTableDataset() {}
+    /**
+     * Creates an instance of AmazonRdsForOracleTableDataset class.
+     */
+    public AmazonRdsForOracleTableDataset() {
+    }
 
     /**
-     * Get the schemaTypePropertiesSchema property: The schema name of the AmazonRdsForOracle database. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the schemaTypePropertiesSchema property: The schema name of the AmazonRdsForOracle database. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -44,9 +49,9 @@ public class AmazonRdsForOracleTableDataset extends Dataset {
     }
 
     /**
-     * Set the schemaTypePropertiesSchema property: The schema name of the AmazonRdsForOracle database. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the schemaTypePropertiesSchema property: The schema name of the AmazonRdsForOracle database. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the AmazonRdsForOracleTableDataset object itself.
      */
@@ -58,7 +63,7 @@ public class AmazonRdsForOracleTableDataset extends Dataset {
     /**
      * Get the table property: The table name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -68,7 +73,7 @@ public class AmazonRdsForOracleTableDataset extends Dataset {
     /**
      * Set the table property: The table name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AmazonRdsForOracleTableDataset object itself.
      */
@@ -77,49 +82,63 @@ public class AmazonRdsForOracleTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

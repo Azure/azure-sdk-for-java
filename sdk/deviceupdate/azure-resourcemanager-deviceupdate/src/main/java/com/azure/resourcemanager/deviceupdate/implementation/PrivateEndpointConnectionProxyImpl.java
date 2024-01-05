@@ -13,10 +13,8 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointConnectionPr
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
 import com.azure.resourcemanager.deviceupdate.models.RemotePrivateEndpoint;
 
-public final class PrivateEndpointConnectionProxyImpl
-    implements PrivateEndpointConnectionProxy,
-        PrivateEndpointConnectionProxy.Definition,
-        PrivateEndpointConnectionProxy.Update {
+public final class PrivateEndpointConnectionProxyImpl implements PrivateEndpointConnectionProxy,
+    PrivateEndpointConnectionProxy.Definition, PrivateEndpointConnectionProxy.Update {
     private PrivateEndpointConnectionProxyInner innerObject;
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
@@ -78,27 +76,19 @@ public final class PrivateEndpointConnectionProxyImpl
     }
 
     public PrivateEndpointConnectionProxy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .createOrUpdate(
-                    resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies().createOrUpdate(
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionProxy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .createOrUpdate(
-                    resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies().createOrUpdate(
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionProxyImpl(
-        String name, com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
+    PrivateEndpointConnectionProxyImpl(String name,
+        com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionProxyInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionProxyId = name;
@@ -109,87 +99,59 @@ public final class PrivateEndpointConnectionProxyImpl
     }
 
     public PrivateEndpointConnectionProxy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .createOrUpdate(
-                    resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies().createOrUpdate(
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionProxy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .createOrUpdate(
-                    resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies().createOrUpdate(
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionProxyImpl(
-        PrivateEndpointConnectionProxyInner innerObject,
+    PrivateEndpointConnectionProxyImpl(PrivateEndpointConnectionProxyInner innerObject,
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.privateEndpointConnectionProxyId =
-            Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnectionProxies");
+        this.privateEndpointConnectionProxyId
+            = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnectionProxies");
     }
 
     public PrivateEndpointConnectionProxy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies()
+            .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE).getValue();
         return this;
     }
 
     public PrivateEndpointConnectionProxy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnectionProxies()
-                .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionProxies()
+            .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, context).getValue();
         return this;
     }
 
-    public void validate(PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        serviceManager
-            .privateEndpointConnectionProxies()
-            .validate(resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
+    public Response<Void> validateWithResponse(PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+        Context context) {
+        return serviceManager.privateEndpointConnectionProxies().validateWithResponse(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointConnectionProxy, context);
     }
 
-    public Response<Void> validateWithResponse(
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context) {
-        return serviceManager
-            .privateEndpointConnectionProxies()
-            .validateWithResponse(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context);
+    public void validate(PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+        serviceManager.privateEndpointConnectionProxies().validate(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
+    }
+
+    public Response<Void> updatePrivateEndpointPropertiesWithResponse(PrivateEndpointUpdate privateEndpointUpdate,
+        Context context) {
+        return serviceManager.privateEndpointConnectionProxies().updatePrivateEndpointPropertiesWithResponse(
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate, context);
     }
 
     public void updatePrivateEndpointProperties(PrivateEndpointUpdate privateEndpointUpdate) {
-        serviceManager
-            .privateEndpointConnectionProxies()
-            .updatePrivateEndpointProperties(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate);
-    }
-
-    public Response<Void> updatePrivateEndpointPropertiesWithResponse(
-        PrivateEndpointUpdate privateEndpointUpdate, Context context) {
-        return serviceManager
-            .privateEndpointConnectionProxies()
-            .updatePrivateEndpointPropertiesWithResponse(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate, context);
+        serviceManager.privateEndpointConnectionProxies().updatePrivateEndpointProperties(resourceGroupName,
+            accountName, privateEndpointConnectionProxyId, privateEndpointUpdate);
     }
 
     public PrivateEndpointConnectionProxyImpl withRemotePrivateEndpoint(RemotePrivateEndpoint remotePrivateEndpoint) {

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** String dictionary resource. */
+/**
+ * String dictionary resource.
+ */
 @Fluent
 public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     /*
@@ -21,13 +23,15 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ConnStringValueTypePair> properties;
 
-    /** Creates an instance of ConnectionStringDictionaryInner class. */
+    /**
+     * Creates an instance of ConnectionStringDictionaryInner class.
+     */
     public ConnectionStringDictionaryInner() {
     }
 
     /**
      * Get the properties property: Connection strings.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, ConnStringValueTypePair> properties() {
@@ -36,7 +40,7 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
 
     /**
      * Set the properties property: Connection strings.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConnectionStringDictionaryInner object itself.
      */
@@ -45,7 +49,9 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionStringDictionaryInner withKind(String kind) {
         super.withKind(kind);
@@ -54,21 +60,18 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (properties() != null) {
-            properties()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            properties().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

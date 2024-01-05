@@ -31,7 +31,7 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                             @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/boms/spring-cloud-azure-dependencies/           @chenrujun @netyyyy @saragluna @moarychan
 
 ####
 # Service teams
@@ -76,7 +76,7 @@
 /sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/          @DimaKolomiiets @ozgurcivi-msft @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
+/sdk/communication/azure-communication-sms/          @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/
@@ -138,12 +138,12 @@
 # PRLabel: %Azure.Identity
 /sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azure-sdk-write-identity
 # PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/             @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/identity/azure-identity-extensions/             @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                       @vcolin7 @g2vinay @samvaity @Azure/azsdk-keyvault
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/keyvault/azure-security-keyvault-jca/           @chenrujun @netyyyy @saragluna @moarychan
 
 /sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
@@ -159,6 +159,9 @@
 
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %Image Analysis
+/sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
@@ -191,20 +194,20 @@
 /sdk/tools/                                          @srnagar @jonathangiles
 
 # PRLabel: %azure-spring
-/sdk/spring/                                         @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/                                         @chenrujun @netyyyy @saragluna @moarychan
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                            @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
 /sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @chenrujun @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
 
 
 # PRLabel: %DevCenter
@@ -476,6 +479,9 @@
 
 # ServiceLabel: %HPC Cache %Service Attention
 #/<NotInRepo>/          @romahamu @omzevall
+
+# ServiceLabel: %Image Analysis %Service Attention
+/sdk/vision/azure-ai-vision-imageanalysis/          @dargilco @rhurey
 
 # ServiceLabel: %Import Export %Service Attention
 #/<NotInRepo>/          @madhurinms
@@ -761,7 +767,7 @@
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
-/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @chenrujun @netyyyy @saragluna @moarychan
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /sdk/parents/                                        @alzimmermsft
 

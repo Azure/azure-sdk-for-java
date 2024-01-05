@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Firewall FQDN Tag Properties. */
+/**
+ * Azure Firewall FQDN Tag Properties.
+ */
 @Immutable
 public final class AzureFirewallFqdnTagPropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class AzureFirewallFqdnTagPropertiesFormat {
     @JsonProperty(value = "fqdnTagName", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdnTagName;
 
-    /** Creates an instance of AzureFirewallFqdnTagPropertiesFormat class. */
+    /**
+     * Creates an instance of AzureFirewallFqdnTagPropertiesFormat class.
+     */
     public AzureFirewallFqdnTagPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,7 +42,7 @@ public final class AzureFirewallFqdnTagPropertiesFormat {
 
     /**
      * Get the fqdnTagName property: The name of this FQDN Tag.
-     *
+     * 
      * @return the fqdnTagName value.
      */
     public String fqdnTagName() {
@@ -47,7 +51,7 @@ public final class AzureFirewallFqdnTagPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Greenplum Dataset Properties. */
+/**
+ * Greenplum Dataset Properties.
+ */
 @Fluent
 public final class GreenplumDatasetTypeProperties {
     /*
@@ -28,14 +30,16 @@ public final class GreenplumDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
-    /** Creates an instance of GreenplumDatasetTypeProperties class. */
+    /**
+     * Creates an instance of GreenplumDatasetTypeProperties class.
+     */
     public GreenplumDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +49,7 @@ public final class GreenplumDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the GreenplumDatasetTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class GreenplumDatasetTypeProperties {
 
     /**
      * Get the table property: The table name of Greenplum. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -65,7 +69,7 @@ public final class GreenplumDatasetTypeProperties {
 
     /**
      * Set the table property: The table name of Greenplum. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the GreenplumDatasetTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class GreenplumDatasetTypeProperties {
 
     /**
      * Get the schema property: The schema name of Greenplum. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -85,7 +89,7 @@ public final class GreenplumDatasetTypeProperties {
 
     /**
      * Set the schema property: The schema name of Greenplum. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the GreenplumDatasetTypeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class GreenplumDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

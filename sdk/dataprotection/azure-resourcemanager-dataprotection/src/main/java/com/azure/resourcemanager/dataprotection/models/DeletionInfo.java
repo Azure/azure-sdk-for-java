@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deletion Info. */
+/**
+ * Deletion Info.
+ */
 @Immutable
 public final class DeletionInfo {
     /*
@@ -34,13 +36,15 @@ public final class DeletionInfo {
     @JsonProperty(value = "deleteActivityID", access = JsonProperty.Access.WRITE_ONLY)
     private String deleteActivityId;
 
-    /** Creates an instance of DeletionInfo class. */
+    /**
+     * Creates an instance of DeletionInfo class.
+     */
     public DeletionInfo() {
     }
 
     /**
      * Get the deletionTime property: Specifies time of deletion.
-     *
+     * 
      * @return the deletionTime value.
      */
     public String deletionTime() {
@@ -49,7 +53,7 @@ public final class DeletionInfo {
 
     /**
      * Get the billingEndDate property: Specifies billing end date.
-     *
+     * 
      * @return the billingEndDate value.
      */
     public String billingEndDate() {
@@ -58,7 +62,7 @@ public final class DeletionInfo {
 
     /**
      * Get the scheduledPurgeTime property: Specifies purge time.
-     *
+     * 
      * @return the scheduledPurgeTime value.
      */
     public String scheduledPurgeTime() {
@@ -67,7 +71,7 @@ public final class DeletionInfo {
 
     /**
      * Get the deleteActivityId property: Delete activity ID for troubleshooting purpose.
-     *
+     * 
      * @return the deleteActivityId value.
      */
     public String deleteActivityId() {
@@ -76,7 +80,7 @@ public final class DeletionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

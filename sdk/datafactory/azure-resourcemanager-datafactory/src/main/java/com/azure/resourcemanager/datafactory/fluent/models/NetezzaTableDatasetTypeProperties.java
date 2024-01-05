@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Netezza dataset properties. */
+/**
+ * Netezza dataset properties.
+ */
 @Fluent
 public final class NetezzaTableDatasetTypeProperties {
     /*
@@ -28,14 +30,16 @@ public final class NetezzaTableDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
-    /** Creates an instance of NetezzaTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of NetezzaTableDatasetTypeProperties class.
+     */
     public NetezzaTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +49,7 @@ public final class NetezzaTableDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the NetezzaTableDatasetTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class NetezzaTableDatasetTypeProperties {
 
     /**
      * Get the table property: The table name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -65,7 +69,7 @@ public final class NetezzaTableDatasetTypeProperties {
 
     /**
      * Set the table property: The table name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the NetezzaTableDatasetTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class NetezzaTableDatasetTypeProperties {
 
     /**
      * Get the schema property: The schema name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -85,7 +89,7 @@ public final class NetezzaTableDatasetTypeProperties {
 
     /**
      * Set the schema property: The schema name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the NetezzaTableDatasetTypeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class NetezzaTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.query.LimitContinuationToken;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -14,7 +15,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import com.azure.cosmos.implementation.query.TakeContinuationToken;
+import com.azure.cosmos.implementation.query.TopContinuationToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
@@ -112,26 +113,50 @@ public class TopQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void topContinuationTokenRoundTrips() throws Exception {
+    public void limitContinuationTokenRoundTrips() throws Exception {
         {
             // Positive
-            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(42, "asdf");
-            String serialized = takeContinuationToken.toString();
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            LimitContinuationToken limitContinuationToken = new LimitContinuationToken(42, "asdf");
+            String serialized = limitContinuationToken.toString();
+            ValueHolder<LimitContinuationToken> outLimitContinuationToken = new ValueHolder<LimitContinuationToken>();
 
-            assertThat(TakeContinuationToken.tryParse(serialized, outTakeContinuationToken)).isTrue();
-            TakeContinuationToken deserialized = outTakeContinuationToken.v;
+            assertThat(LimitContinuationToken.tryParse(serialized, outLimitContinuationToken)).isTrue();
+            LimitContinuationToken deserialized = outLimitContinuationToken.v;
 
-            assertThat(deserialized.getTakeCount()).isEqualTo(42);
+            assertThat(deserialized.getLimitCount()).isEqualTo(42);
             assertThat(deserialized.getSourceToken()).isEqualTo("asdf");
         }
 
         {
             // Negative
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            ValueHolder<LimitContinuationToken> outLimitContinuationToken = new ValueHolder<LimitContinuationToken>();
             assertThat(
-                    TakeContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outTakeContinuationToken))
+                LimitContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outLimitContinuationToken))
                             .isFalse();
+        }
+    }
+
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    public void topContinuationTokenRoundTrips() throws Exception {
+        {
+            // Positive
+            TopContinuationToken topContinuationToken = new TopContinuationToken(42, "asdf");
+            String serialized = topContinuationToken.toString();
+            ValueHolder<TopContinuationToken> outTopContinuationToken = new ValueHolder<TopContinuationToken>();
+
+            assertThat(TopContinuationToken.tryParse(serialized, outTopContinuationToken)).isTrue();
+            TopContinuationToken deserialized = outTopContinuationToken.v;
+
+            assertThat(deserialized.getTopCount()).isEqualTo(42);
+            assertThat(deserialized.getSourceToken()).isEqualTo("asdf");
+        }
+
+        {
+            // Negative
+            ValueHolder<TopContinuationToken> outTopContinuationToken = new ValueHolder<TopContinuationToken>();
+            assertThat(
+                TopContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outTopContinuationToken))
+                .isFalse();
         }
     }
 

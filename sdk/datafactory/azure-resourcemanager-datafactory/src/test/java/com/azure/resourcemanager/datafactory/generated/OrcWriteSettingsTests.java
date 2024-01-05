@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datafactory.models.OrcWriteSettings;
 public final class OrcWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrcWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"datamkakgwl\",\"fileNamePrefix\":\"datano\",\"\":{\"oxe\":\"datagyheyayktutflhe\",\"jqzmqjhghih\":\"datasahmdcoeexwgzs\"}}")
-                .toObject(OrcWriteSettings.class);
+        OrcWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"OrcWriteSettings\",\"maxRowsPerFile\":\"datamkakgwl\",\"fileNamePrefix\":\"datano\",\"\":{\"oxe\":\"datagyheyayktutflhe\",\"jqzmqjhghih\":\"datasahmdcoeexwgzs\"}}")
+            .toObject(OrcWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test

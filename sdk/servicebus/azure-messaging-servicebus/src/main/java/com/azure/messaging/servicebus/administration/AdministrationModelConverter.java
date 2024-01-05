@@ -432,11 +432,8 @@ class AdministrationModelConverter {
     Response<QueueProperties> deserializeQueue(Response<Object> response) {
         final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
 
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+        // This was an empty response (ie. 204) or the entity does not exist.
+        if (entry == null || entry.getContent() == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getQueueDescription() == null) {
             final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
@@ -455,11 +452,8 @@ class AdministrationModelConverter {
     Response<TopicProperties> deserializeTopic(Response<Object> response) {
         final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
 
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+        // This was an empty response (i.e. 204) or the entity does not exist.
+        if (entry == null || entry.getContent() == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
             final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);

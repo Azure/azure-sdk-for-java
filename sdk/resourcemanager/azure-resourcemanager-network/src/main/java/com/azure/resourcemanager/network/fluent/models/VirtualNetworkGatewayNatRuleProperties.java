@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.VpnNatRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VirtualNetworkGatewayNatRule. */
+/**
+ * Parameters for VirtualNetworkGatewayNatRule.
+ */
 @Fluent
 public final class VirtualNetworkGatewayNatRuleProperties {
     /*
@@ -51,13 +53,15 @@ public final class VirtualNetworkGatewayNatRuleProperties {
     @JsonProperty(value = "ipConfigurationId")
     private String ipConfigurationId;
 
-    /** Creates an instance of VirtualNetworkGatewayNatRuleProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayNatRuleProperties class.
+     */
     public VirtualNetworkGatewayNatRuleProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -66,7 +70,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Get the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @return the type value.
      */
     public VpnNatRuleType type() {
@@ -75,7 +79,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Set the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualNetworkGatewayNatRuleProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Get the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
@@ -95,7 +99,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Set the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the VirtualNetworkGatewayNatRuleProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Get the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
@@ -115,7 +119,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Set the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @param internalMappings the internalMappings value to set.
      * @return the VirtualNetworkGatewayNatRuleProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Get the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
@@ -135,7 +139,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Set the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @param externalMappings the externalMappings value to set.
      * @return the VirtualNetworkGatewayNatRuleProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Get the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -155,7 +159,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Set the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the VirtualNetworkGatewayNatRuleProperties object itself.
      */
@@ -166,7 +170,7 @@ public final class VirtualNetworkGatewayNatRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

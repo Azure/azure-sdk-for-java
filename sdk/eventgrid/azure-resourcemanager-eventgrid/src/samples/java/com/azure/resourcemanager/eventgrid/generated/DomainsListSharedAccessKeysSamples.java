@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for Domains ListSharedAccessKeys. */
+/**
+ * Samples for Domains ListSharedAccessKeys.
+ */
 public final class DomainsListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Domains_ListSharedAccessKeys.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Domains_ListSharedAccessKeys.json
      */
     /**
      * Sample code: Domains_ListSharedAccessKeys.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void domainsListSharedAccessKeys(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .domains()
-            .listSharedAccessKeysWithResponse("examplerg", "exampledomain2", com.azure.core.util.Context.NONE);
+        manager.domains().listSharedAccessKeysWithResponse("examplerg", "exampledomain2",
+            com.azure.core.util.Context.NONE);
     }
 }

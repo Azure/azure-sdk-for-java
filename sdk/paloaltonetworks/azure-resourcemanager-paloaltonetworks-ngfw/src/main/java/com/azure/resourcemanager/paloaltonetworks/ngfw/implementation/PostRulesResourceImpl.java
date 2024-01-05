@@ -24,8 +24,7 @@ public final class PostRulesResourceImpl implements PostRulesResource {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    PostRulesResourceImpl(
-        PostRulesResourceInner innerObject,
+    PostRulesResourceImpl(PostRulesResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for AppServiceEnvironments List. */
+/**
+ * Samples for AppServiceEnvironments List.
+ */
 public final class AppServiceEnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_List.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_List.json
      */
     /**
      * Sample code: Get all App Service Environments for a subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAllAppServiceEnvironmentsForASubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void
+        getAllAppServiceEnvironmentsForASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.webApps().manager().serviceClient().getAppServiceEnvironments().list(com.azure.core.util.Context.NONE);
     }
 }

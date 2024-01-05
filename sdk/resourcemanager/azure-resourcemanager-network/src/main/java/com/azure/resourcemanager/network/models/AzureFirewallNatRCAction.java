@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureFirewall NAT Rule Collection Action. */
+/**
+ * AzureFirewall NAT Rule Collection Action.
+ */
 @Fluent
 public final class AzureFirewallNatRCAction {
     /*
@@ -16,13 +18,15 @@ public final class AzureFirewallNatRCAction {
     @JsonProperty(value = "type")
     private AzureFirewallNatRCActionType type;
 
-    /** Creates an instance of AzureFirewallNatRCAction class. */
+    /**
+     * Creates an instance of AzureFirewallNatRCAction class.
+     */
     public AzureFirewallNatRCAction() {
     }
 
     /**
      * Get the type property: The type of action.
-     *
+     * 
      * @return the type value.
      */
     public AzureFirewallNatRCActionType type() {
@@ -31,7 +35,7 @@ public final class AzureFirewallNatRCAction {
 
     /**
      * Set the type property: The type of action.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureFirewallNatRCAction object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureFirewallNatRCAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

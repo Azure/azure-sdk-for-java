@@ -289,8 +289,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeFileClient getFileClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
         return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(fileName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + fileName).buildBlockBlobClient());
     }
 
     /**
@@ -409,7 +411,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -642,8 +644,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public DataLakeDirectoryClient getSubdirectoryClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
         return new DataLakeDirectoryClient(dataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient(subdirectoryName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(subdirectoryName).buildBlockBlobClient());
+            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + subdirectoryName).buildBlockBlobClient());
     }
 
     /**
@@ -764,7 +767,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;

@@ -4,7 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.AzureCommunicationRoutingServiceVersion;
+import com.azure.communication.jobrouter.JobRouterServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -71,14 +71,14 @@ public final class JobRouterAdministrationClientImpl {
     /**
      * Service version.
      */
-    private final AzureCommunicationRoutingServiceVersion serviceVersion;
+    private final JobRouterServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public AzureCommunicationRoutingServiceVersion getServiceVersion() {
+    public JobRouterServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -116,7 +116,7 @@ public final class JobRouterAdministrationClientImpl {
      * @param endpoint Uri of your Communication resource.
      * @param serviceVersion Service version.
      */
-    public JobRouterAdministrationClientImpl(String endpoint, AzureCommunicationRoutingServiceVersion serviceVersion) {
+    public JobRouterAdministrationClientImpl(String endpoint, JobRouterServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -129,7 +129,7 @@ public final class JobRouterAdministrationClientImpl {
      * @param serviceVersion Service version.
      */
     public JobRouterAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        AzureCommunicationRoutingServiceVersion serviceVersion) {
+        JobRouterServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -142,7 +142,7 @@ public final class JobRouterAdministrationClientImpl {
      * @param serviceVersion Service version.
      */
     public JobRouterAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, AzureCommunicationRoutingServiceVersion serviceVersion) {
+        String endpoint, JobRouterServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -2308,7 +2308,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2323,7 +2323,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2385,7 +2385,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2400,7 +2400,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2436,7 +2436,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2470,7 +2470,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2522,7 +2522,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2577,7 +2577,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2650,7 +2650,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2703,7 +2703,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -3068,7 +3068,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -3110,7 +3110,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }

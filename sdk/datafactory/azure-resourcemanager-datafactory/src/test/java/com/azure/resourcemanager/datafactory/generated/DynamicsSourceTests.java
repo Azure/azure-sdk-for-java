@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.DynamicsSource;
 public final class DynamicsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsSource\",\"query\":\"datasyntc\",\"additionalColumns\":\"dataluqaqnlygfvbfej\",\"sourceRetryCount\":\"datazklgpifv\",\"sourceRetryWait\":\"datamvk\",\"maxConcurrentConnections\":\"datauw\",\"disableMetricsCollection\":\"datanplqf\",\"\":{\"ov\":\"datafqmdjz\",\"rjkmpaxoe\":\"datakp\",\"mqzagrqcqhwfs\":\"datalpofaog\"}}")
-                .toObject(DynamicsSource.class);
+        DynamicsSource model = BinaryData.fromString(
+            "{\"type\":\"DynamicsSource\",\"query\":\"datakfvvxiikrja\",\"additionalColumns\":\"datatvnmr\",\"sourceRetryCount\":\"datatypuotmkbofuh\",\"sourceRetryWait\":\"dataksgou\",\"maxConcurrentConnections\":\"dataegtn\",\"disableMetricsCollection\":\"datanotrgyyje\",\"\":{\"ufegbvvkuz\":\"datavjdunbaets\",\"mhzpurnp\":\"datagzrzubdtzsac\",\"albx\":\"datakbxkzcfios\",\"nluvcwuafbhxoa\":\"datad\"}}")
+            .toObject(DynamicsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsSource model =
-            new DynamicsSource()
-                .withSourceRetryCount("datazklgpifv")
-                .withSourceRetryWait("datamvk")
-                .withMaxConcurrentConnections("datauw")
-                .withDisableMetricsCollection("datanplqf")
-                .withQuery("datasyntc")
-                .withAdditionalColumns("dataluqaqnlygfvbfej");
+        DynamicsSource model
+            = new DynamicsSource().withSourceRetryCount("datatypuotmkbofuh").withSourceRetryWait("dataksgou")
+                .withMaxConcurrentConnections("dataegtn").withDisableMetricsCollection("datanotrgyyje")
+                .withQuery("datakfvvxiikrja").withAdditionalColumns("datatvnmr");
         model = BinaryData.fromObject(model).toObject(DynamicsSource.class);
     }
 }

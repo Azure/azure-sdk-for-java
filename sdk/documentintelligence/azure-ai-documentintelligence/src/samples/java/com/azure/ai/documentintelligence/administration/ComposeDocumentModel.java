@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.ComponentDocumentModelDetails;
@@ -37,7 +37,7 @@ public class ComposeDocumentModel {
      */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -45,26 +45,26 @@ public class ComposeDocumentModel {
         // Build custom document analysis model
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> model1Poller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> model1Poller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(model1TrainingFiles)));
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails> model2Poller =
+        SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> model2Poller =
             client.beginBuildDocumentModel(new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                 .setAzureBlobSource(new AzureBlobContentSource(model2TrainingFiles)));
 
-        String labeledModelId1 = model1Poller.getFinalResult().getResult().getModelId();
-        String labeledModelId2 = model2Poller.getFinalResult().getResult().getModelId();
+        String labeledModelId1 = model1Poller.getFinalResult().getModelId();
+        String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
             client.beginComposeModel(
                 new ComposeDocumentModelRequest(composedModelId, Arrays.asList(new ComponentDocumentModelDetails(labeledModelId1), new ComponentDocumentModelDetails(labeledModelId2)))
                     .setDescription("my composed model description"))
                 .setPollInterval(Duration.ofSeconds(5))
-                .getFinalResult().getResult();
+                .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model description: %s%n", documentModelDetails.getDescription());

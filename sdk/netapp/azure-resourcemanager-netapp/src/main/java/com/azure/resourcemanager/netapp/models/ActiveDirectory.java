@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Active Directory. */
+/**
+ * Active Directory.
+ */
 @Fluent
 public final class ActiveDirectory {
     /*
@@ -157,13 +159,15 @@ public final class ActiveDirectory {
     @JsonProperty(value = "preferredServersForLdapClient")
     private String preferredServersForLdapClient;
 
-    /** Creates an instance of ActiveDirectory class. */
+    /**
+     * Creates an instance of ActiveDirectory class.
+     */
     public ActiveDirectory() {
     }
 
     /**
      * Get the activeDirectoryId property: Id of the Active Directory.
-     *
+     * 
      * @return the activeDirectoryId value.
      */
     public String activeDirectoryId() {
@@ -172,7 +176,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the activeDirectoryId property: Id of the Active Directory.
-     *
+     * 
      * @param activeDirectoryId the activeDirectoryId value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -183,7 +187,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the username property: A domain user account with permission to create machine accounts.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -192,7 +196,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the username property: A domain user account with permission to create machine accounts.
-     *
+     * 
      * @param username the username value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -204,7 +208,7 @@ public final class ActiveDirectory {
     /**
      * Get the password property: Plain text password of Active Directory domain administrator, value is masked in the
      * response.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -214,7 +218,7 @@ public final class ActiveDirectory {
     /**
      * Set the password property: Plain text password of Active Directory domain administrator, value is masked in the
      * response.
-     *
+     * 
      * @param password the password value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -225,7 +229,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the domain property: Name of the Active Directory domain.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -234,7 +238,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the domain property: Name of the Active Directory domain.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -246,7 +250,7 @@ public final class ActiveDirectory {
     /**
      * Get the dns property: Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory
      * domain.
-     *
+     * 
      * @return the dns value.
      */
     public String dns() {
@@ -256,7 +260,7 @@ public final class ActiveDirectory {
     /**
      * Set the dns property: Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory
      * domain.
-     *
+     * 
      * @param dns the dns value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -267,7 +271,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the status property: Status of the Active Directory.
-     *
+     * 
      * @return the status value.
      */
     public ActiveDirectoryStatus status() {
@@ -276,7 +280,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the statusDetails property: Any details in regards to the Status of the Active Directory.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -286,7 +290,7 @@ public final class ActiveDirectory {
     /**
      * Get the smbServerName property: NetBIOS name of the SMB server. This name will be registered as a computer
      * account in the AD and used to mount volumes.
-     *
+     * 
      * @return the smbServerName value.
      */
     public String smbServerName() {
@@ -296,7 +300,7 @@ public final class ActiveDirectory {
     /**
      * Set the smbServerName property: NetBIOS name of the SMB server. This name will be registered as a computer
      * account in the AD and used to mount volumes.
-     *
+     * 
      * @param smbServerName the smbServerName value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -307,7 +311,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the organizationalUnit property: The Organizational Unit (OU) within the Windows Active Directory.
-     *
+     * 
      * @return the organizationalUnit value.
      */
     public String organizationalUnit() {
@@ -316,7 +320,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the organizationalUnit property: The Organizational Unit (OU) within the Windows Active Directory.
-     *
+     * 
      * @param organizationalUnit the organizationalUnit value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -327,7 +331,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the site property: The Active Directory site the service will limit Domain Controller discovery to.
-     *
+     * 
      * @return the site value.
      */
     public String site() {
@@ -336,7 +340,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the site property: The Active Directory site the service will limit Domain Controller discovery to.
-     *
+     * 
      * @param site the site value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -348,7 +352,7 @@ public final class ActiveDirectory {
     /**
      * Get the backupOperators property: Users to be added to the Built-in Backup Operator active directory group. A
      * list of unique usernames without domain specifier.
-     *
+     * 
      * @return the backupOperators value.
      */
     public List<String> backupOperators() {
@@ -358,7 +362,7 @@ public final class ActiveDirectory {
     /**
      * Set the backupOperators property: Users to be added to the Built-in Backup Operator active directory group. A
      * list of unique usernames without domain specifier.
-     *
+     * 
      * @param backupOperators the backupOperators value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -370,7 +374,7 @@ public final class ActiveDirectory {
     /**
      * Get the administrators property: Users to be added to the Built-in Administrators active directory group. A list
      * of unique usernames without domain specifier.
-     *
+     * 
      * @return the administrators value.
      */
     public List<String> administrators() {
@@ -380,7 +384,7 @@ public final class ActiveDirectory {
     /**
      * Set the administrators property: Users to be added to the Built-in Administrators active directory group. A list
      * of unique usernames without domain specifier.
-     *
+     * 
      * @param administrators the administrators value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -390,9 +394,9 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
-     * only while creating kerberos volume.
-     *
+     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
+     * used only while creating kerberos volume.
+     * 
      * @return the kdcIp value.
      */
     public String kdcIp() {
@@ -400,9 +404,9 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
-     * only while creating kerberos volume.
-     *
+     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
+     * used only while creating kerberos volume.
+     * 
      * @param kdcIp the kdcIp value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -414,7 +418,7 @@ public final class ActiveDirectory {
     /**
      * Get the adName property: Name of the active directory machine. This optional parameter is used only while
      * creating kerberos volume.
-     *
+     * 
      * @return the adName value.
      */
     public String adName() {
@@ -424,7 +428,7 @@ public final class ActiveDirectory {
     /**
      * Set the adName property: Name of the active directory machine. This optional parameter is used only while
      * creating kerberos volume.
-     *
+     * 
      * @param adName the adName value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -435,9 +439,9 @@ public final class ActiveDirectory {
 
     /**
      * Get the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
-     * used only for dual protocol with LDAP user-mapping volumes.
-     *
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
+     * is used only for dual protocol with LDAP user-mapping volumes.
+     * 
      * @return the serverRootCACertificate value.
      */
     public String serverRootCACertificate() {
@@ -446,9 +450,9 @@ public final class ActiveDirectory {
 
     /**
      * Set the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
-     * used only for dual protocol with LDAP user-mapping volumes.
-     *
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
+     * is used only for dual protocol with LDAP user-mapping volumes.
+     * 
      * @param serverRootCACertificate the serverRootCACertificate value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -459,7 +463,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the aesEncryption property: If enabled, AES encryption will be enabled for SMB communication.
-     *
+     * 
      * @return the aesEncryption value.
      */
     public Boolean aesEncryption() {
@@ -468,7 +472,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the aesEncryption property: If enabled, AES encryption will be enabled for SMB communication.
-     *
+     * 
      * @param aesEncryption the aesEncryption value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -479,7 +483,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the ldapSigning property: Specifies whether or not the LDAP traffic needs to be signed.
-     *
+     * 
      * @return the ldapSigning value.
      */
     public Boolean ldapSigning() {
@@ -488,7 +492,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the ldapSigning property: Specifies whether or not the LDAP traffic needs to be signed.
-     *
+     * 
      * @param ldapSigning the ldapSigning value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -501,7 +505,7 @@ public final class ActiveDirectory {
      * Get the securityOperators property: Domain Users in the Active directory to be given SeSecurityPrivilege
      * privilege (Needed for SMB Continuously available shares for SQL). A list of unique usernames without domain
      * specifier.
-     *
+     * 
      * @return the securityOperators value.
      */
     public List<String> securityOperators() {
@@ -512,7 +516,7 @@ public final class ActiveDirectory {
      * Set the securityOperators property: Domain Users in the Active directory to be given SeSecurityPrivilege
      * privilege (Needed for SMB Continuously available shares for SQL). A list of unique usernames without domain
      * specifier.
-     *
+     * 
      * @param securityOperators the securityOperators value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -523,7 +527,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the ldapOverTls property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
-     *
+     * 
      * @return the ldapOverTls value.
      */
     public Boolean ldapOverTls() {
@@ -532,7 +536,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the ldapOverTls property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
-     *
+     * 
      * @param ldapOverTls the ldapOverTls value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -544,7 +548,7 @@ public final class ActiveDirectory {
     /**
      * Get the allowLocalNfsUsersWithLdap property: If enabled, NFS client local users can also (in addition to LDAP
      * users) access the NFS volumes.
-     *
+     * 
      * @return the allowLocalNfsUsersWithLdap value.
      */
     public Boolean allowLocalNfsUsersWithLdap() {
@@ -554,7 +558,7 @@ public final class ActiveDirectory {
     /**
      * Set the allowLocalNfsUsersWithLdap property: If enabled, NFS client local users can also (in addition to LDAP
      * users) access the NFS volumes.
-     *
+     * 
      * @param allowLocalNfsUsersWithLdap the allowLocalNfsUsersWithLdap value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -566,7 +570,7 @@ public final class ActiveDirectory {
     /**
      * Get the encryptDCConnections property: If enabled, Traffic between the SMB server to Domain Controller (DC) will
      * be encrypted.
-     *
+     * 
      * @return the encryptDCConnections value.
      */
     public Boolean encryptDCConnections() {
@@ -576,7 +580,7 @@ public final class ActiveDirectory {
     /**
      * Set the encryptDCConnections property: If enabled, Traffic between the SMB server to Domain Controller (DC) will
      * be encrypted.
-     *
+     * 
      * @param encryptDCConnections the encryptDCConnections value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -587,7 +591,7 @@ public final class ActiveDirectory {
 
     /**
      * Get the ldapSearchScope property: LDAP Search scope options.
-     *
+     * 
      * @return the ldapSearchScope value.
      */
     public LdapSearchScopeOpt ldapSearchScope() {
@@ -596,7 +600,7 @@ public final class ActiveDirectory {
 
     /**
      * Set the ldapSearchScope property: LDAP Search scope options.
-     *
+     * 
      * @param ldapSearchScope the ldapSearchScope value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -608,7 +612,7 @@ public final class ActiveDirectory {
     /**
      * Get the preferredServersForLdapClient property: Comma separated list of IPv4 addresses of preferred servers for
      * LDAP client. At most two comma separated IPv4 addresses can be passed.
-     *
+     * 
      * @return the preferredServersForLdapClient value.
      */
     public String preferredServersForLdapClient() {
@@ -618,7 +622,7 @@ public final class ActiveDirectory {
     /**
      * Set the preferredServersForLdapClient property: Comma separated list of IPv4 addresses of preferred servers for
      * LDAP client. At most two comma separated IPv4 addresses can be passed.
-     *
+     * 
      * @param preferredServersForLdapClient the preferredServersForLdapClient value to set.
      * @return the ActiveDirectory object itself.
      */
@@ -629,7 +633,7 @@ public final class ActiveDirectory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

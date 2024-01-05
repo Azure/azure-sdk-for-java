@@ -17,8 +17,7 @@ public final class PrivateLinkResourceListResultDescriptionImpl implements Priva
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    PrivateLinkResourceListResultDescriptionImpl(
-        PrivateLinkResourceListResultDescriptionInner innerObject,
+    PrivateLinkResourceListResultDescriptionImpl(PrivateLinkResourceListResultDescriptionInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class PrivateLinkResourceListResultDescriptionImpl implements Priva
     public List<PrivateLinkResourceDescription> value() {
         List<PrivateLinkResourceDescriptionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

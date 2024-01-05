@@ -14,30 +14,20 @@ import java.util.Map;
 public final class JsonSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"JsonSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataolzinxx\",\"disableMetricsCollection\":\"dataixr\",\"copyBehavior\":\"datawxcaa\",\"\":{\"hacfiyrywfry\":\"dataqosgzgsgzlbunm\",\"iiarlldy\":\"datarreebjmslbxf\",\"wuebrvrh\":\"datafjdtykhsafrf\",\"ybwh\":\"dataqkfffvgbklei\"}},\"formatSettings\":{\"type\":\"JsonWriteSettings\",\"filePattern\":\"dataebvkmtljzilkyvyb\",\"\":{\"mxcukurkg\":\"datagirpitzq\"}},\"writeBatchSize\":\"dataxqanrk\",\"writeBatchTimeout\":\"datadjfsvfbjcnad\",\"sinkRetryCount\":\"databrntvhppykrlz\",\"sinkRetryWait\":\"datalsvxpolatorjm\",\"maxConcurrentConnections\":\"databnmuxlthyxryv\",\"disableMetricsCollection\":\"datazhsigddgbcnqv\",\"\":{\"lemzrw\":\"databffcvtij\",\"kmkwddgyqeni\":\"datagvgogczgcm\",\"rtcbvifcrnxst\":\"datarznam\"}}")
-                .toObject(JsonSink.class);
+        JsonSink model = BinaryData.fromString(
+            "{\"type\":\"JsonSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataeebjmslbx\",\"disableMetricsCollection\":\"dataiiarlldy\",\"copyBehavior\":\"datajdtykhsafrfvwueb\",\"\":{\"kleipybwhesb\":\"datahwqkfffvg\",\"qgir\":\"databvkmtljzilkyvybl\"}},\"formatSettings\":{\"type\":\"JsonWriteSettings\",\"filePattern\":\"datazqr\",\"\":{\"qx\":\"dataukurkg\"}},\"writeBatchSize\":\"datanrkhc\",\"writeBatchTimeout\":\"datafsvfbjcnadwrb\",\"sinkRetryCount\":\"datatvhppykrl\",\"sinkRetryWait\":\"dataalsvxpola\",\"maxConcurrentConnections\":\"datarjmsabnmu\",\"disableMetricsCollection\":\"datathyxryv\",\"\":{\"bffcvtij\":\"datahsigddgbcnqvbn\",\"gvgogczgcm\":\"datalemzrw\",\"rznam\":\"datakmkwddgyqeni\",\"wvgwv\":\"datartcbvifcrnxst\"}}")
+            .toObject(JsonSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSink model =
-            new JsonSink()
-                .withWriteBatchSize("dataxqanrk")
-                .withWriteBatchTimeout("datadjfsvfbjcnad")
-                .withSinkRetryCount("databrntvhppykrlz")
-                .withSinkRetryWait("datalsvxpolatorjm")
-                .withMaxConcurrentConnections("databnmuxlthyxryv")
-                .withDisableMetricsCollection("datazhsigddgbcnqv")
-                .withStoreSettings(
-                    new StoreWriteSettings()
-                        .withMaxConcurrentConnections("dataolzinxx")
-                        .withDisableMetricsCollection("dataixr")
-                        .withCopyBehavior("datawxcaa")
-                        .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-                .withFormatSettings(new JsonWriteSettings().withFilePattern("dataebvkmtljzilkyvyb"));
+        JsonSink model = new JsonSink().withWriteBatchSize("datanrkhc").withWriteBatchTimeout("datafsvfbjcnadwrb")
+            .withSinkRetryCount("datatvhppykrl").withSinkRetryWait("dataalsvxpola")
+            .withMaxConcurrentConnections("datarjmsabnmu").withDisableMetricsCollection("datathyxryv")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataeebjmslbx")
+                .withDisableMetricsCollection("dataiiarlldy").withCopyBehavior("datajdtykhsafrfvwueb")
+                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
+            .withFormatSettings(new JsonWriteSettings().withFilePattern("datazqr"));
         model = BinaryData.fromObject(model).toObject(JsonSink.class);
     }
 

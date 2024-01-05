@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Nat Gateway properties. */
+/**
+ * Nat Gateway properties.
+ */
 @Fluent
 public final class NatGatewayPropertiesFormat {
     /*
@@ -49,13 +51,15 @@ public final class NatGatewayPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NatGatewayPropertiesFormat class. */
+    /**
+     * Creates an instance of NatGatewayPropertiesFormat class.
+     */
     public NatGatewayPropertiesFormat() {
     }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -64,7 +68,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the NatGatewayPropertiesFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Get the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -84,7 +88,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Set the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     *
+     * 
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the NatGatewayPropertiesFormat object itself.
      */
@@ -95,7 +99,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Get the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     *
+     * 
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -104,7 +108,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Set the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     *
+     * 
      * @param publicIpPrefixes the publicIpPrefixes value to set.
      * @return the NatGatewayPropertiesFormat object itself.
      */
@@ -115,7 +119,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Get the subnets property: An array of references to the subnets using this nat gateway resource.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubResource> subnets() {
@@ -124,7 +128,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -133,7 +137,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -142,7 +146,7 @@ public final class NatGatewayPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

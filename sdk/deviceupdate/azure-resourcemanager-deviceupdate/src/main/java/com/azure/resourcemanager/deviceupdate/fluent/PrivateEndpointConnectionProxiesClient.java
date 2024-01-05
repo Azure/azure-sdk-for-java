@@ -20,21 +20,21 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
 public interface PrivateEndpointConnectionProxiesClient {
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedIterable}.
+     * of ARM requirements) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(String resourceGroupName, String accountName);
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -42,15 +42,33 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedIterable}.
+     * of ARM requirements) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(
-        String resourceGroupName, String accountName, Context context);
+    PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @param privateEndpointConnectionProxy The parameters for creating a private endpoint connection proxy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> validateWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+        Context context);
+
+    /**
+     * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -60,54 +78,12 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void validate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
+    void validate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
         PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy);
 
     /**
-     * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
-     * @param privateEndpointConnectionProxy The parameters for creating a private endpoint connection proxy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> validateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-        Context context);
-
-    /**
      * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
-     * @param privateEndpointUpdate The parameters for updating a private endpoint connection proxy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePrivateEndpointProperties(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate);
-
-    /**
-     * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -119,33 +95,28 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePrivateEndpointPropertiesWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate,
-        Context context);
+    Response<Void> updatePrivateEndpointPropertiesWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate, Context context);
 
     /**
-     * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
-     * account.
-     *
+     * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @param privateEndpointUpdate The parameters for updating a private endpoint connection proxy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionProxyInner get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId);
+    void updatePrivateEndpointProperties(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate);
 
     /**
      * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -156,13 +127,29 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return private endpoint connection proxy details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionProxyInner> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context);
+    Response<PrivateEndpointConnectionProxyInner> getWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context);
+
+    /**
+     * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
+     * account.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection proxy details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionProxyInner get(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId);
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -174,16 +161,13 @@ public interface PrivateEndpointConnectionProxiesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
+        beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
             PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy);
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -196,17 +180,13 @@ public interface PrivateEndpointConnectionProxiesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
-            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context);
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -217,16 +197,13 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return private endpoint connection proxy details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionProxyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy);
+    PrivateEndpointConnectionProxyInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy);
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -238,17 +215,14 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return private endpoint connection proxy details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionProxyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+    PrivateEndpointConnectionProxyInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context);
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -258,13 +232,13 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId);
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -275,13 +249,13 @@ public interface PrivateEndpointConnectionProxiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context);
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -295,7 +269,7 @@ public interface PrivateEndpointConnectionProxiesClient {
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.

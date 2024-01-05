@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the source of the connection. */
+/**
+ * Parameters that define the source of the connection.
+ */
 @Fluent
 public final class ConnectivitySource {
     /*
@@ -23,13 +25,15 @@ public final class ConnectivitySource {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of ConnectivitySource class. */
+    /**
+     * Creates an instance of ConnectivitySource class.
+     */
     public ConnectivitySource() {
     }
 
     /**
      * Get the resourceId property: The ID of the resource from which a connectivity check will be initiated.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -38,7 +42,7 @@ public final class ConnectivitySource {
 
     /**
      * Set the resourceId property: The ID of the resource from which a connectivity check will be initiated.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectivitySource object itself.
      */
@@ -49,7 +53,7 @@ public final class ConnectivitySource {
 
     /**
      * Get the port property: The source port from which a connectivity check will be performed.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -58,7 +62,7 @@ public final class ConnectivitySource {
 
     /**
      * Set the port property: The source port from which a connectivity check will be performed.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectivitySource object itself.
      */
@@ -69,14 +73,13 @@ public final class ConnectivitySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model ConnectivitySource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model ConnectivitySource"));
         }
     }
 

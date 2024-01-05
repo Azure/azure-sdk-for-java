@@ -12,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * this domain will simply restore it and this operation will not cost anything.
  */
 public enum DomainType {
-    /** Enum value Regular. */
+    /**
+     * Enum value Regular.
+     */
     REGULAR("Regular"),
 
-    /** Enum value SoftDeleted. */
+    /**
+     * Enum value SoftDeleted.
+     */
     SOFT_DELETED("SoftDeleted");
 
-    /** The actual serialized value for a DomainType instance. */
+    /**
+     * The actual serialized value for a DomainType instance.
+     */
     private final String value;
 
     DomainType(String value) {
@@ -27,7 +33,7 @@ public enum DomainType {
 
     /**
      * Parses a serialized value to a DomainType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DomainType object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum DomainType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

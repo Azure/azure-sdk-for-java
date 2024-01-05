@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the registration for the Apple provider. */
+/**
+ * The configuration settings of the registration for the Apple provider.
+ */
 @Fluent
 public final class AppleRegistration {
     /*
@@ -22,13 +24,15 @@ public final class AppleRegistration {
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
-    /** Creates an instance of AppleRegistration class. */
+    /**
+     * Creates an instance of AppleRegistration class.
+     */
     public AppleRegistration() {
     }
 
     /**
      * Get the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -37,7 +41,7 @@ public final class AppleRegistration {
 
     /**
      * Set the clientId property: The Client ID of the app used for login.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AppleRegistration object itself.
      */
@@ -48,7 +52,7 @@ public final class AppleRegistration {
 
     /**
      * Get the clientSecretSettingName property: The app setting name that contains the client secret.
-     *
+     * 
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
@@ -57,7 +61,7 @@ public final class AppleRegistration {
 
     /**
      * Set the clientSecretSettingName property: The app setting name that contains the client secret.
-     *
+     * 
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the AppleRegistration object itself.
      */
@@ -68,7 +72,7 @@ public final class AppleRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The application resource properties. */
+/**
+ * The application resource properties.
+ */
 @Fluent
 public final class ApplicationResourceProperties extends ApplicationResourceUpdateProperties {
     /*
@@ -27,14 +29,16 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
     @JsonProperty(value = "typeName")
     private String typeName;
 
-    /** Creates an instance of ApplicationResourceProperties class. */
+    /**
+     * Creates an instance of ApplicationResourceProperties class.
+     */
     public ApplicationResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -43,7 +47,7 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
 
     /**
      * Get the typeName property: The application type name as defined in the application manifest.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -52,7 +56,7 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
 
     /**
      * Set the typeName property: The application type name as defined in the application manifest.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the ApplicationResourceProperties object itself.
      */
@@ -61,66 +65,82 @@ public final class ApplicationResourceProperties extends ApplicationResourceUpda
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withTypeVersion(String typeVersion) {
         super.withTypeVersion(typeVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withParameters(Map<String, String> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withUpgradePolicy(ApplicationUpgradePolicy upgradePolicy) {
         super.withUpgradePolicy(upgradePolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withMinimumNodes(Long minimumNodes) {
         super.withMinimumNodes(minimumNodes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withMaximumNodes(Long maximumNodes) {
         super.withMaximumNodes(maximumNodes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withRemoveApplicationCapacity(Boolean removeApplicationCapacity) {
         super.withRemoveApplicationCapacity(removeApplicationCapacity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationResourceProperties withMetrics(List<ApplicationMetricDescription> metrics) {
         super.withMetrics(metrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ApplicationResourceProperties withManagedIdentities(
-        List<ApplicationUserAssignedIdentity> managedIdentities) {
+    public ApplicationResourceProperties
+        withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities) {
         super.withManagedIdentities(managedIdentities);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

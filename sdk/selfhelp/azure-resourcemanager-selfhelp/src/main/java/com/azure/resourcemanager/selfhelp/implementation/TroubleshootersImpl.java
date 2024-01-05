@@ -26,20 +26,17 @@ public final class TroubleshootersImpl implements Troubleshooters {
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    public TroubleshootersImpl(
-        TroubleshootersClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    public TroubleshootersImpl(TroubleshootersClient innerClient,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<TroubleshooterResource> getWithResponse(String scope, String troubleshooterName, Context context) {
-        Response<TroubleshooterResourceInner> inner =
-            this.serviceClient().getWithResponse(scope, troubleshooterName, context);
+        Response<TroubleshooterResourceInner> inner
+            = this.serviceClient().getWithResponse(scope, troubleshooterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TroubleshooterResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,8 +52,8 @@ public final class TroubleshootersImpl implements Troubleshooters {
         }
     }
 
-    public TroubleshootersContinueMethodResponse continueMethodWithResponse(
-        String scope, String troubleshooterName, ContinueRequestBody continueRequestBody, Context context) {
+    public TroubleshootersContinueMethodResponse continueMethodWithResponse(String scope, String troubleshooterName,
+        ContinueRequestBody continueRequestBody, Context context) {
         return this.serviceClient().continueMethodWithResponse(scope, troubleshooterName, continueRequestBody, context);
     }
 
@@ -72,15 +69,12 @@ public final class TroubleshootersImpl implements Troubleshooters {
         this.serviceClient().end(scope, troubleshooterName);
     }
 
-    public Response<RestartTroubleshooterResponse> restartWithResponse(
-        String scope, String troubleshooterName, Context context) {
-        TroubleshootersRestartResponse inner =
-            this.serviceClient().restartWithResponse(scope, troubleshooterName, context);
+    public Response<RestartTroubleshooterResponse> restartWithResponse(String scope, String troubleshooterName,
+        Context context) {
+        TroubleshootersRestartResponse inner
+            = this.serviceClient().restartWithResponse(scope, troubleshooterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RestartTroubleshooterResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -97,51 +91,33 @@ public final class TroubleshootersImpl implements Troubleshooters {
     }
 
     public TroubleshooterResource getById(String id) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String troubleshooterName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
+        String troubleshooterName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
         if (troubleshooterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
         }
         return this.getWithResponse(scope, troubleshooterName, Context.NONE).getValue();
     }
 
     public Response<TroubleshooterResource> getByIdWithResponse(String id, Context context) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String troubleshooterName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
+        String troubleshooterName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/troubleshooters/{troubleshooterName}", "troubleshooterName");
         if (troubleshooterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'troubleshooters'.", id)));
         }
         return this.getWithResponse(scope, troubleshooterName, context);
     }

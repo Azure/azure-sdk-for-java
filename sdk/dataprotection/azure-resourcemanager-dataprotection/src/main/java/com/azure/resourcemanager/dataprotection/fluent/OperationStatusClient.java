@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceInner;
 
-/** An instance of this class provides access to all the operations defined in OperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationStatusClient.
+ */
 public interface OperationStatusClient {
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param location The location parameter.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -28,7 +30,7 @@ public interface OperationStatusClient {
 
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param location The location parameter.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

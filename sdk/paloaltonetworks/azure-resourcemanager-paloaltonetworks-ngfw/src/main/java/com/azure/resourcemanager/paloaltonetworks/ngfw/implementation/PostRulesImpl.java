@@ -25,8 +25,7 @@ public final class PostRulesImpl implements PostRules {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public PostRulesImpl(
-        PostRulesClient innerClient,
+    public PostRulesImpl(PostRulesClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -43,13 +42,10 @@ public final class PostRulesImpl implements PostRules {
     }
 
     public Response<PostRulesResource> getWithResponse(String globalRulestackName, String priority, Context context) {
-        Response<PostRulesResourceInner> inner =
-            this.serviceClient().getWithResponse(globalRulestackName, priority, context);
+        Response<PostRulesResourceInner> inner
+            = this.serviceClient().getWithResponse(globalRulestackName, priority, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PostRulesResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class PostRulesImpl implements PostRules {
         }
     }
 
-    public PostRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource) {
+    public PostRulesResource createOrUpdate(String globalRulestackName, String priority,
+        PostRulesResourceInner resource) {
         PostRulesResourceInner inner = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource);
         if (inner != null) {
             return new PostRulesResourceImpl(inner, this.manager());
@@ -75,10 +71,10 @@ public final class PostRulesImpl implements PostRules {
         }
     }
 
-    public PostRulesResource createOrUpdate(
-        String globalRulestackName, String priority, PostRulesResourceInner resource, Context context) {
-        PostRulesResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, priority, resource, context);
+    public PostRulesResource createOrUpdate(String globalRulestackName, String priority,
+        PostRulesResourceInner resource, Context context) {
+        PostRulesResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource, context);
         if (inner != null) {
             return new PostRulesResourceImpl(inner, this.manager());
         } else {
@@ -94,15 +90,12 @@ public final class PostRulesImpl implements PostRules {
         this.serviceClient().delete(globalRulestackName, priority, context);
     }
 
-    public Response<RuleCounter> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterInner> inner =
-            this.serviceClient().getCountersWithResponse(globalRulestackName, priority, firewallName, context);
+    public Response<RuleCounter> getCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
+        Response<RuleCounterInner> inner
+            = this.serviceClient().getCountersWithResponse(globalRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -118,8 +111,8 @@ public final class PostRulesImpl implements PostRules {
         }
     }
 
-    public Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
+    public Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context) {
         return this.serviceClient().refreshCountersWithResponse(globalRulestackName, priority, firewallName, context);
     }
 
@@ -127,15 +120,12 @@ public final class PostRulesImpl implements PostRules {
         this.serviceClient().refreshCounters(globalRulestackName, priority);
     }
 
-    public Response<RuleCounterReset> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context) {
-        Response<RuleCounterResetInner> inner =
-            this.serviceClient().resetCountersWithResponse(globalRulestackName, priority, firewallName, context);
+    public Response<RuleCounterReset> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context) {
+        Response<RuleCounterResetInner> inner
+            = this.serviceClient().resetCountersWithResponse(globalRulestackName, priority, firewallName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RuleCounterResetImpl(inner.getValue(), this.manager()));
         } else {
             return null;

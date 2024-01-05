@@ -6,13 +6,16 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -24,6 +27,7 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -102,6 +106,38 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    public void canCreateAndUpdateVirtualMachineWithUserData() {
+        String userDataForCreate = "N0ZBN0MxRkYtMkNCMC00RUM3LUE1RDctMDY2MUI0RTdDNzY4";
+        String userDataForUpdate = "Njc5MDI3MUItQ0RGRC00RjdELUI5NTEtMTA4QjA2RTNGNDRE";
+
+        // Create
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withUserData(userDataForCreate)
+            .create();
+        Response<VirtualMachineInner> response = computeManager.serviceClient().getVirtualMachines()
+            .getByResourceGroupWithResponse(rgName, vmName, InstanceViewTypes.USER_DATA, Context.NONE);
+        Assertions.assertEquals(userDataForCreate, response.getValue().userData());
+
+        // Update
+        vm.update().withUserData(userDataForUpdate).apply();
+        response = computeManager.serviceClient().getVirtualMachines()
+            .getByResourceGroupWithResponse(rgName, vmName, InstanceViewTypes.USER_DATA, Context.NONE);
+        Assertions.assertEquals(userDataForUpdate, response.getValue().userData());
     }
 
     @Test

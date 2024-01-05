@@ -21,37 +21,28 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName,
-        String parentType,
-        String parentName,
-        String privateLinkResourceName,
-        Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, parentType, parentName, privateLinkResourceName, context);
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String parentType, String parentName,
+        String privateLinkResourceName, Context context) {
+        Response<PrivateLinkResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName, parentType,
+            parentName, privateLinkResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PrivateLinkResource get(
-        String resourceGroupName, String parentType, String parentName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, parentType, parentName, privateLinkResourceName);
+    public PrivateLinkResource get(String resourceGroupName, String parentType, String parentName,
+        String privateLinkResourceName) {
+        PrivateLinkResourceInner inner
+            = this.serviceClient().get(resourceGroupName, parentType, parentName, privateLinkResourceName);
         if (inner != null) {
             return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
@@ -59,17 +50,17 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public PagedIterable<PrivateLinkResource> listByResource(
-        String resourceGroupName, String parentType, String parentName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByResource(resourceGroupName, parentType, parentName);
+    public PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String parentType,
+        String parentName) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByResource(resourceGroupName, parentType, parentName);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> listByResource(
-        String resourceGroupName, String parentType, String parentName, String filter, Integer top, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByResource(resourceGroupName, parentType, parentName, filter, top, context);
+    public PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String parentType,
+        String parentName, String filter, Integer top, Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByResource(resourceGroupName, parentType, parentName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 

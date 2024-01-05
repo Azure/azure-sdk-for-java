@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisPropertyOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisPropertyOverride model =
-            BinaryData
-                .fromString("{\"value\":\"datalxjbrqbut\",\"isSensitive\":false}")
-                .toObject(SsisPropertyOverride.class);
+        SsisPropertyOverride model = BinaryData.fromString("{\"value\":\"datalxjbrqbut\",\"isSensitive\":false}")
+            .toObject(SsisPropertyOverride.class);
         Assertions.assertEquals(false, model.isSensitive());
     }
 

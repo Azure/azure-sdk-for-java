@@ -13,14 +13,14 @@ import java.util.List;
 
 /**
  * Network sibling set
- *
- * <p>Describes the contents of a network sibling set.
+ * 
+ * Describes the contents of a network sibling set.
  */
 @Fluent
 public final class NetworkSiblingSetInner {
     /*
      * Network Sibling Set ID
-     *
+     * 
      * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
      */
     @JsonProperty(value = "networkSiblingSetId")
@@ -28,16 +28,17 @@ public final class NetworkSiblingSetInner {
 
     /*
      * Subnet resource Id
-     *
+     * 
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
-     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}
+     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
+     * subnets/{mySubnet}
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * Network sibling set state Id
-     *
+     * 
      * Network sibling set state Id identifying the current state of the sibling set.
      */
     @JsonProperty(value = "networkSiblingSetStateId")
@@ -45,7 +46,7 @@ public final class NetworkSiblingSetInner {
 
     /*
      * Network features
-     *
+     * 
      * Network features available to the volume, or current state of update.
      */
     @JsonProperty(value = "networkFeatures")
@@ -63,15 +64,17 @@ public final class NetworkSiblingSetInner {
     @JsonProperty(value = "nicInfoList")
     private List<NicInfo> nicInfoList;
 
-    /** Creates an instance of NetworkSiblingSetInner class. */
+    /**
+     * Creates an instance of NetworkSiblingSetInner class.
+     */
     public NetworkSiblingSetInner() {
     }
 
     /**
      * Get the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
-     *
+     * 
+     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * 
      * @return the networkSiblingSetId value.
      */
     public String networkSiblingSetId() {
@@ -80,9 +83,9 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Set the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
-     *
+     * 
+     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * 
      * @param networkSiblingSetId the networkSiblingSetId value to set.
      * @return the NetworkSiblingSetInner object itself.
      */
@@ -93,10 +96,10 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Get the subnetId property: Subnet resource Id
-     *
-     * <p>The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * 
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -105,10 +108,10 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Set the subnetId property: Subnet resource Id
-     *
-     * <p>The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * 
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkSiblingSetInner object itself.
      */
@@ -119,9 +122,9 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Get the networkSiblingSetStateId property: Network sibling set state Id
-     *
-     * <p>Network sibling set state Id identifying the current state of the sibling set.
-     *
+     * 
+     * Network sibling set state Id identifying the current state of the sibling set.
+     * 
      * @return the networkSiblingSetStateId value.
      */
     public String networkSiblingSetStateId() {
@@ -130,9 +133,9 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Set the networkSiblingSetStateId property: Network sibling set state Id
-     *
-     * <p>Network sibling set state Id identifying the current state of the sibling set.
-     *
+     * 
+     * Network sibling set state Id identifying the current state of the sibling set.
+     * 
      * @param networkSiblingSetStateId the networkSiblingSetStateId value to set.
      * @return the NetworkSiblingSetInner object itself.
      */
@@ -143,9 +146,9 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Get the networkFeatures property: Network features
-     *
-     * <p>Network features available to the volume, or current state of update.
-     *
+     * 
+     * Network features available to the volume, or current state of update.
+     * 
      * @return the networkFeatures value.
      */
     public NetworkFeatures networkFeatures() {
@@ -154,9 +157,9 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Set the networkFeatures property: Network features
-     *
-     * <p>Network features available to the volume, or current state of update.
-     *
+     * 
+     * Network features available to the volume, or current state of update.
+     * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the NetworkSiblingSetInner object itself.
      */
@@ -168,7 +171,7 @@ public final class NetworkSiblingSetInner {
     /**
      * Get the provisioningState property: Gets the status of the NetworkSiblingSet at the time the operation was
      * called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NetworkSiblingSetProvisioningState provisioningState() {
@@ -177,7 +180,7 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Get the nicInfoList property: List of NIC information.
-     *
+     * 
      * @return the nicInfoList value.
      */
     public List<NicInfo> nicInfoList() {
@@ -186,7 +189,7 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Set the nicInfoList property: List of NIC information.
-     *
+     * 
      * @param nicInfoList the nicInfoList value to set.
      * @return the NetworkSiblingSetInner object itself.
      */
@@ -197,7 +200,7 @@ public final class NetworkSiblingSetInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

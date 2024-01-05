@@ -5,7 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,14 @@ public final class ResourceResponse<T extends Resource> {
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.cls = cls;
+    }
+
+    public boolean hasPayload() {
+        return this.response.hasPayload();
+    }
+
+    public int getResponsePayloadLength() {
+        return this.response.getResponsePayloadLength();
     }
 
     /**
@@ -256,12 +266,21 @@ public final class ResourceResponse<T extends Resource> {
         return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
-    public byte[] getBodyAsByteArray() {
-        return this.response.getResponseBodyAsByteArray();
+    public JsonNode getBody() {
+        return this.response.getResponseBody();
     }
 
-    public String getBodyAsString() {
-        return this.response.getResponseBodyAsString();
+    public <TBody> TBody getBody(Class<TBody> itemClassType) {
+        JsonNode jsonBody =  this.response.getResponseBody();
+        if (jsonBody == null) {
+            return null;
+        }
+
+        try {
+            return Utils.getSimpleObjectMapper().treeToValue(jsonBody, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", jsonBody), e);
+        }
     }
 
     /**

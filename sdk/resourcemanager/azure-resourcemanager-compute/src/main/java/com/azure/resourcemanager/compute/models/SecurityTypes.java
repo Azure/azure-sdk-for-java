@@ -13,15 +13,19 @@ import java.util.Collection;
  * The default behavior is: UefiSettings will not be enabled unless this property is set.
  */
 public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
-    /** Static value TrustedLaunch for SecurityTypes. */
+    /**
+     * Static value TrustedLaunch for SecurityTypes.
+     */
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
-    /** Static value ConfidentialVM for SecurityTypes. */
+    /**
+     * Static value ConfidentialVM for SecurityTypes.
+     */
     public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
 
     /**
      * Creates a new instance of SecurityTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
 
     /**
      * Creates or finds a SecurityTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityTypes.
      */
@@ -41,7 +45,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
 
     /**
      * Gets known SecurityTypes values.
-     *
+     * 
      * @return known SecurityTypes values.
      */
     public static Collection<SecurityTypes> values() {

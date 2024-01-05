@@ -4,28 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for Collection ListUsages. */
+/**
+ * Samples for Collection ListUsages.
+ */
 public final class CollectionListUsagesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCollectionGetUsages.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBCollectionGetUsages.json
      */
     /**
      * Sample code: CosmosDBCollectionGetUsages.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getCollections()
-            .listUsages(
-                "rg1",
-                "ddb1",
-                "databaseRid",
-                "collectionRid",
-                "$filter=name.value eq 'Storage'",
-                com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getCollections().listUsages("rg1", "ddb1", "databaseRid",
+            "collectionRid", "$filter=name.value eq 'Storage'", com.azure.core.util.Context.NONE);
     }
 }

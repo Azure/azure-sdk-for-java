@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration view of an OS version. */
+/**
+ * Configuration view of an OS version.
+ */
 @Immutable
 public final class OSVersionPropertiesBase {
     /*
@@ -34,13 +36,15 @@ public final class OSVersionPropertiesBase {
     @JsonProperty(value = "isActive", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isActive;
 
-    /** Creates an instance of OSVersionPropertiesBase class. */
+    /**
+     * Creates an instance of OSVersionPropertiesBase class.
+     */
     public OSVersionPropertiesBase() {
     }
 
     /**
      * Get the version property: The OS version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -49,7 +53,7 @@ public final class OSVersionPropertiesBase {
 
     /**
      * Get the label property: The OS version label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -58,7 +62,7 @@ public final class OSVersionPropertiesBase {
 
     /**
      * Get the isDefault property: Specifies whether this is the default OS version for its family.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -67,7 +71,7 @@ public final class OSVersionPropertiesBase {
 
     /**
      * Get the isActive property: Specifies whether this OS version is active.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -76,7 +80,7 @@ public final class OSVersionPropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

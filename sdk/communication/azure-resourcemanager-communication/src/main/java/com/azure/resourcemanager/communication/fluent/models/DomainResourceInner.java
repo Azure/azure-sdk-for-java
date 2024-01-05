@@ -15,7 +15,9 @@ import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A class representing a Domains resource. */
+/**
+ * A class representing a Domains resource.
+ */
 @Fluent
 public final class DomainResourceInner extends Resource {
     /*
@@ -30,13 +32,15 @@ public final class DomainResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DomainResourceInner class. */
+    /**
+     * Creates an instance of DomainResourceInner class.
+     */
     public DomainResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Domains resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DomainProperties innerProperties() {
@@ -45,21 +49,25 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DomainResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DomainResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -68,7 +76,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DomainsProvisioningState provisioningState() {
@@ -77,7 +85,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the dataLocation property: The location where the Domains resource data is stored at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -86,7 +94,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the fromSenderDomain property: P2 sender domain that is displayed to the email recipients [RFC 5322].
-     *
+     * 
      * @return the fromSenderDomain value.
      */
     public String fromSenderDomain() {
@@ -95,7 +103,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the mailFromSenderDomain property: P1 sender domain that is present on the email envelope [RFC 5321].
-     *
+     * 
      * @return the mailFromSenderDomain value.
      */
     public String mailFromSenderDomain() {
@@ -104,7 +112,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @return the domainManagement value.
      */
     public DomainManagement domainManagement() {
@@ -113,7 +121,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Set the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @param domainManagement the domainManagement value to set.
      * @return the DomainResourceInner object itself.
      */
@@ -127,7 +135,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the verificationStates property: List of VerificationStatusRecord.
-     *
+     * 
      * @return the verificationStates value.
      */
     public DomainPropertiesVerificationStates verificationStates() {
@@ -136,7 +144,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the verificationRecords property: List of DnsRecord.
-     *
+     * 
      * @return the verificationRecords value.
      */
     public DomainPropertiesVerificationRecords verificationRecords() {
@@ -145,7 +153,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -154,7 +162,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the DomainResourceInner object itself.
      */
@@ -168,7 +176,7 @@ public final class DomainResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

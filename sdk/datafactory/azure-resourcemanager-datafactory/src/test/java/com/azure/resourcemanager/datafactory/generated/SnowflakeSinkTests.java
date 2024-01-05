@@ -13,30 +13,21 @@ import java.util.Map;
 public final class SnowflakeSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeSink\",\"preCopyScript\":\"datax\",\"importSettings\":{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"chysnmyuvfml\":\"datanghtknr\",\"pxoelfobehr\":\"datanrapxwt\",\"lojjcz\":\"dataf\"},\"additionalFormatOptions\":{\"gnqa\":\"datafwkvirmbrd\",\"ybh\":\"datankms\",\"enazjvyiiezd\":\"datadzvuhw\"},\"\":{\"y\":\"dataxtqzdbrmyutzttr\",\"ztz\":\"dataivkkuzrvceg\",\"lro\":\"datacfuwmxezzum\"}},\"writeBatchSize\":\"dataflh\",\"writeBatchTimeout\":\"dataspxblyokjwsszye\",\"sinkRetryCount\":\"dataoukdhnf\",\"sinkRetryWait\":\"datadggjihnzvoehgw\",\"maxConcurrentConnections\":\"datagcnkghgczjx\",\"disableMetricsCollection\":\"dataxigdwpgmhqhvne\",\"\":{\"aqlymmhzvnetecfy\":\"dataxqwc\",\"zxqwvvfkqbgkss\":\"datasfkcwfpoaflgkz\"}}")
-                .toObject(SnowflakeSink.class);
+        SnowflakeSink model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeSink\",\"preCopyScript\":\"datauax\",\"importSettings\":{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"dipnd\":\"dataw\",\"jrhctb\":\"dataql\",\"gdam\":\"datav\"},\"additionalFormatOptions\":{\"izbyczmepcacgvln\":\"dataqfjpkezq\",\"rulnhbqtvyhs\":\"datajjbyryrktuvdest\",\"pcuizvxjsvzh\":\"datahcrffjxex\"},\"\":{\"qkxzrflo\":\"dataotds\",\"fq\":\"datazmvemliyd\",\"h\":\"datanftrrhhgwawi\",\"dvkdnf\":\"datanvcf\"}},\"writeBatchSize\":\"datatxultxhqqvdhd\",\"writeBatchTimeout\":\"dataadtxnepubsdinf\",\"sinkRetryCount\":\"dataytmqvsdyqy\",\"sinkRetryWait\":\"datamfot\",\"maxConcurrentConnections\":\"dataxed\",\"disableMetricsCollection\":\"dataxmyxtpbapojknv\",\"\":{\"vr\":\"datatlpspiipfgdnqpk\",\"ruoduexhskh\":\"dataoqyvqdv\",\"xhegc\":\"dataqlvocrdd\"}}")
+            .toObject(SnowflakeSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeSink model =
-            new SnowflakeSink()
-                .withWriteBatchSize("dataflh")
-                .withWriteBatchTimeout("dataspxblyokjwsszye")
-                .withSinkRetryCount("dataoukdhnf")
-                .withSinkRetryWait("datadggjihnzvoehgw")
-                .withMaxConcurrentConnections("datagcnkghgczjx")
-                .withDisableMetricsCollection("dataxigdwpgmhqhvne")
-                .withPreCopyScript("datax")
-                .withImportSettings(
-                    new SnowflakeImportCopyCommand()
-                        .withAdditionalCopyOptions(
-                            mapOf("chysnmyuvfml", "datanghtknr", "pxoelfobehr", "datanrapxwt", "lojjcz", "dataf"))
-                        .withAdditionalFormatOptions(
-                            mapOf("gnqa", "datafwkvirmbrd", "ybh", "datankms", "enazjvyiiezd", "datadzvuhw")));
+        SnowflakeSink model = new SnowflakeSink().withWriteBatchSize("datatxultxhqqvdhd")
+            .withWriteBatchTimeout("dataadtxnepubsdinf").withSinkRetryCount("dataytmqvsdyqy")
+            .withSinkRetryWait("datamfot").withMaxConcurrentConnections("dataxed")
+            .withDisableMetricsCollection("dataxmyxtpbapojknv").withPreCopyScript("datauax")
+            .withImportSettings(new SnowflakeImportCopyCommand()
+                .withAdditionalCopyOptions(mapOf("dipnd", "dataw", "jrhctb", "dataql", "gdam", "datav"))
+                .withAdditionalFormatOptions(mapOf("izbyczmepcacgvln", "dataqfjpkezq", "rulnhbqtvyhs",
+                    "datajjbyryrktuvdest", "pcuizvxjsvzh", "datahcrffjxex")));
         model = BinaryData.fromObject(model).toObject(SnowflakeSink.class);
     }
 

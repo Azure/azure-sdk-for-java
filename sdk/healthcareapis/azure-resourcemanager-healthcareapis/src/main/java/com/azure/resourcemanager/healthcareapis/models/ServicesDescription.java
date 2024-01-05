@@ -10,117 +10,132 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.healthcareapis.fluent.models.ServicesDescriptionInner;
 import java.util.Map;
 
-/** An immutable client-side representation of ServicesDescription. */
+/**
+ * An immutable client-side representation of ServicesDescription.
+ */
 public interface ServicesDescription {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the kind property: The kind of the service.
-     *
+     * 
      * @return the kind value.
      */
     Kind kind();
 
     /**
      * Gets the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     ServicesResourceIdentity identity();
 
     /**
      * Gets the properties property: The common properties of a service.
-     *
+     * 
      * @return the properties value.
      */
     ServicesProperties properties();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.healthcareapis.fluent.models.ServicesDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ServicesDescriptionInner innerModel();
 
-    /** The entirety of the ServicesDescription definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithKind,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the ServicesDescription definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithKind, DefinitionStages.WithCreate {
     }
-    /** The ServicesDescription definition stages. */
+
+    /**
+     * The ServicesDescription definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ServicesDescription definition. */
+        /**
+         * The first stage of the ServicesDescription definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the ServicesDescription definition allowing to specify location. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -128,158 +143,186 @@ public interface ServicesDescription {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the ServicesDescription definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group that contains the service instance.
              * @return the next definition stage.
              */
             WithKind withExistingResourceGroup(String resourceGroupName);
         }
-        /** The stage of the ServicesDescription definition allowing to specify kind. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify kind.
+         */
         interface WithKind {
             /**
              * Specifies the kind property: The kind of the service..
-             *
+             * 
              * @param kind The kind of the service.
              * @return the next definition stage.
              */
             WithCreate withKind(Kind kind);
         }
+
         /**
          * The stage of the ServicesDescription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ServicesDescription create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ServicesDescription create(Context context);
         }
-        /** The stage of the ServicesDescription definition allowing to specify tags. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ServicesDescription definition allowing to specify etag. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify etag.
+         */
         interface WithEtag {
             /**
              * Specifies the etag property: An etag associated with the resource, used for optimistic concurrency when
              * editing it..
-             *
+             * 
              * @param etag An etag associated with the resource, used for optimistic concurrency when editing it.
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
         }
-        /** The stage of the ServicesDescription definition allowing to specify identity. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Setting indicating whether the service has a managed identity associated
              * with it..
-             *
+             * 
              * @param identity Setting indicating whether the service has a managed identity associated with it.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ServicesResourceIdentity identity);
         }
-        /** The stage of the ServicesDescription definition allowing to specify properties. */
+
+        /**
+         * The stage of the ServicesDescription definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The common properties of a service..
-             *
+             * 
              * @param properties The common properties of a service.
              * @return the next definition stage.
              */
             WithCreate withProperties(ServicesProperties properties);
         }
     }
+
     /**
      * Begins update for the ServicesDescription resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ServicesDescription.Update update();
 
-    /** The template for ServicesDescription update. */
+    /**
+     * The template for ServicesDescription update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ServicesDescription apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ServicesDescription apply(Context context);
     }
-    /** The ServicesDescription update stages. */
+
+    /**
+     * The ServicesDescription update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ServicesDescription update allowing to specify tags. */
+        /**
+         * The stage of the ServicesDescription update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Instance tags.
-             *
+             * 
              * @param tags Instance tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the ServicesDescription update allowing to specify publicNetworkAccess. */
+
+        /**
+         * The stage of the ServicesDescription update allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Control permission for data plane traffic coming from public
              * networks while private endpoint is enabled..
-             *
+             * 
              * @param publicNetworkAccess Control permission for data plane traffic coming from public networks while
-             *     private endpoint is enabled.
+             * private endpoint is enabled.
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ServicesDescription refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

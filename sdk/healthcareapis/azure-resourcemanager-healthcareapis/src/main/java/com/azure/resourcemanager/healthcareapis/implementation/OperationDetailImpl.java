@@ -15,8 +15,7 @@ public final class OperationDetailImpl implements OperationDetail {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    OperationDetailImpl(
-        OperationDetailInner innerObject,
+    OperationDetailImpl(OperationDetailInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

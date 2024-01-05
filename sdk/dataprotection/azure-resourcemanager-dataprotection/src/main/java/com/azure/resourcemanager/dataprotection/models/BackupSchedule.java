@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * BackupSchedule
- *
- * <p>Schedule for backup.
+ * 
+ * Schedule for backup.
  */
 @Fluent
 public final class BackupSchedule {
@@ -28,13 +28,15 @@ public final class BackupSchedule {
     @JsonProperty(value = "timeZone")
     private String timeZone;
 
-    /** Creates an instance of BackupSchedule class. */
+    /**
+     * Creates an instance of BackupSchedule class.
+     */
     public BackupSchedule() {
     }
 
     /**
      * Get the repeatingTimeIntervals property: ISO 8601 repeating time interval format.
-     *
+     * 
      * @return the repeatingTimeIntervals value.
      */
     public List<String> repeatingTimeIntervals() {
@@ -43,7 +45,7 @@ public final class BackupSchedule {
 
     /**
      * Set the repeatingTimeIntervals property: ISO 8601 repeating time interval format.
-     *
+     * 
      * @param repeatingTimeIntervals the repeatingTimeIntervals value to set.
      * @return the BackupSchedule object itself.
      */
@@ -54,7 +56,7 @@ public final class BackupSchedule {
 
     /**
      * Get the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -63,7 +65,7 @@ public final class BackupSchedule {
 
     /**
      * Set the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the BackupSchedule object itself.
      */
@@ -74,15 +76,13 @@ public final class BackupSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (repeatingTimeIntervals() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property repeatingTimeIntervals in model BackupSchedule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property repeatingTimeIntervals in model BackupSchedule"));
         }
     }
 

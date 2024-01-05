@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Will describe the query to run against the IDPS signatures DB. */
+/**
+ * Will describe the query to run against the IDPS signatures DB.
+ */
 @Fluent
 public final class IdpsQueryObject {
     /*
@@ -41,13 +43,15 @@ public final class IdpsQueryObject {
     @JsonProperty(value = "skip")
     private Integer skip;
 
-    /** Creates an instance of IdpsQueryObject class. */
+    /**
+     * Creates an instance of IdpsQueryObject class.
+     */
     public IdpsQueryObject() {
     }
 
     /**
      * Get the filters property: Contain all filters names and values.
-     *
+     * 
      * @return the filters value.
      */
     public List<FilterItems> filters() {
@@ -56,7 +60,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the filters property: Contain all filters names and values.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -67,7 +71,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the search property: Search term in all columns.
-     *
+     * 
      * @return the search value.
      */
     public String search() {
@@ -76,7 +80,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the search property: Search term in all columns.
-     *
+     * 
      * @param search the search value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -87,7 +91,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the orderBy property: Column to sort response by.
-     *
+     * 
      * @return the orderBy value.
      */
     public OrderBy orderBy() {
@@ -96,7 +100,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the orderBy property: Column to sort response by.
-     *
+     * 
      * @param orderBy the orderBy value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -107,7 +111,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the resultsPerPage property: The number of the results to return in each page.
-     *
+     * 
      * @return the resultsPerPage value.
      */
     public Integer resultsPerPage() {
@@ -116,7 +120,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the resultsPerPage property: The number of the results to return in each page.
-     *
+     * 
      * @param resultsPerPage the resultsPerPage value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -127,7 +131,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the skip property: The number of records matching the filter to skip.
-     *
+     * 
      * @return the skip value.
      */
     public Integer skip() {
@@ -136,7 +140,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the skip property: The number of records matching the filter to skip.
-     *
+     * 
      * @param skip the skip value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -147,7 +151,7 @@ public final class IdpsQueryObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

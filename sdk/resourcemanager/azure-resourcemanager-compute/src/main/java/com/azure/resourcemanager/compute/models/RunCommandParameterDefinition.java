@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a run command parameter. */
+/**
+ * Describes the properties of a run command parameter.
+ */
 @Fluent
 public final class RunCommandParameterDefinition {
     /*
@@ -35,13 +37,15 @@ public final class RunCommandParameterDefinition {
     @JsonProperty(value = "required")
     private Boolean required;
 
-    /** Creates an instance of RunCommandParameterDefinition class. */
+    /**
+     * Creates an instance of RunCommandParameterDefinition class.
+     */
     public RunCommandParameterDefinition() {
     }
 
     /**
      * Get the name property: The run command parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Set the name property: The run command parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunCommandParameterDefinition object itself.
      */
@@ -61,7 +65,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Get the type property: The run command parameter type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +74,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Set the type property: The run command parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the RunCommandParameterDefinition object itself.
      */
@@ -81,7 +85,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Get the defaultValue property: The run command parameter default value.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -90,7 +94,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Set the defaultValue property: The run command parameter default value.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the RunCommandParameterDefinition object itself.
      */
@@ -101,7 +105,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Get the required property: The run command parameter required.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -110,7 +114,7 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Set the required property: The run command parameter required.
-     *
+     * 
      * @param required the required value to set.
      * @return the RunCommandParameterDefinition object itself.
      */
@@ -121,21 +125,17 @@ public final class RunCommandParameterDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RunCommandParameterDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RunCommandParameterDefinition"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model RunCommandParameterDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model RunCommandParameterDefinition"));
         }
     }
 

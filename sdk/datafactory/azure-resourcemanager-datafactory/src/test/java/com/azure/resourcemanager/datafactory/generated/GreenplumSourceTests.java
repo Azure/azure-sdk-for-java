@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.GreenplumSource;
 public final class GreenplumSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GreenplumSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"GreenplumSource\",\"query\":\"dataszbe\",\"queryTimeout\":\"datahxikrgokyngarwz\",\"additionalColumns\":\"datazjxgassmna\",\"sourceRetryCount\":\"datapolueylqysgmiix\",\"sourceRetryWait\":\"dataekcwec\",\"maxConcurrentConnections\":\"datatkdginm\",\"disableMetricsCollection\":\"datagp\",\"\":{\"wrwvbqv\":\"dataqccey\",\"iqfaxtljpyzcgugs\":\"datacqgqrsopq\",\"vslocdkpvv\":\"datapvyktfuhfaabi\",\"xnzjzashhiz\":\"dataqlkh\"}}")
-                .toObject(GreenplumSource.class);
+        GreenplumSource model = BinaryData.fromString(
+            "{\"type\":\"GreenplumSource\",\"query\":\"datawczarywta\",\"queryTimeout\":\"datakishhmtypgrkdm\",\"additionalColumns\":\"dataaunbwcqtig\",\"sourceRetryCount\":\"datazdsnrjhjlplo\",\"sourceRetryWait\":\"datapplrdkcazujvh\",\"maxConcurrentConnections\":\"datazbsx\",\"disableMetricsCollection\":\"datavncuelaaexcnxrtl\",\"\":{\"mzisljxphwynimc\":\"datakbqfeavzzp\"}}")
+            .toObject(GreenplumSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumSource model =
-            new GreenplumSource()
-                .withSourceRetryCount("datapolueylqysgmiix")
-                .withSourceRetryWait("dataekcwec")
-                .withMaxConcurrentConnections("datatkdginm")
-                .withDisableMetricsCollection("datagp")
-                .withQueryTimeout("datahxikrgokyngarwz")
-                .withAdditionalColumns("datazjxgassmna")
-                .withQuery("dataszbe");
+        GreenplumSource model = new GreenplumSource().withSourceRetryCount("datazdsnrjhjlplo")
+            .withSourceRetryWait("datapplrdkcazujvh").withMaxConcurrentConnections("datazbsx")
+            .withDisableMetricsCollection("datavncuelaaexcnxrtl").withQueryTimeout("datakishhmtypgrkdm")
+            .withAdditionalColumns("dataaunbwcqtig").withQuery("datawczarywta");
         model = BinaryData.fromObject(model).toObject(GreenplumSource.class);
     }
 }

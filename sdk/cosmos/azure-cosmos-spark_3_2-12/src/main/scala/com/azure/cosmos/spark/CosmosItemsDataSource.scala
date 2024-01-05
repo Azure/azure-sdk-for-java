@@ -21,7 +21,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with BasicLoggingTrait {
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private lazy val sparkSession = {
     assertOnSparkDriver()
