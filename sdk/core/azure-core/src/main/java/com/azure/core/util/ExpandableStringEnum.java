@@ -21,9 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
-    private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
-        = new ConcurrentHashMap<>();
+    private static final SimpleCache<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new SimpleCache<>();
+    private static final SimpleCache<Class<?>, Map<String, ? extends ExpandableStringEnum<?>>> VALUES
+        = new SimpleCache<>();
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpandableStringEnum.class);
     private String name;
@@ -57,16 +57,12 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             return null;
         }
 
-        ConcurrentHashMap<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
+        Map<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
         T value = (T) clazzValues.get(name);
 
         if (value != null) {
             return value;
         } else {
-            if (CONSTRUCTORS.size() > 10000) {
-                CONSTRUCTORS.clear();
-            }
-
             ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
 
             if (ctor == null) {
@@ -104,7 +100,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         this.name = name;
         this.clazz = clazz;
 
-        ((ConcurrentHashMap<String, T>) VALUES.get(clazz)).put(name, value);
+        ((Map<String, T>) VALUES.get(clazz)).put(name, value);
         return (T) this;
     }
 
@@ -117,7 +113,8 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
-        return new ArrayList<T>((Collection<T>) VALUES.getOrDefault(clazz, new ConcurrentHashMap<>()).values());
+        Map<String, ? extends ExpandableStringEnum<?>> values = VALUES.get(clazz);
+        return (values == null) ? new ArrayList<>() : new ArrayList<>((Collection<T>) values.values());
     }
 
     @Override
@@ -131,19 +128,17 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         return Objects.hash(this.clazz, this.name);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        } else if (clazz == null || !clazz.isAssignableFrom(obj.getClass())) {
-            return false;
-        } else if (obj == this) {
+        if (obj == this) {
             return true;
-        } else if (this.name == null) {
-            return ((ExpandableStringEnum<T>) obj).name == null;
-        } else {
-            return this.name.equals(((ExpandableStringEnum<T>) obj).name);
         }
+
+        if (!(obj instanceof ExpandableStringEnum)) {
+            return false;
+        }
+
+        ExpandableStringEnum<?> other = (ExpandableStringEnum<?>) obj;
+        return Objects.equals(this.clazz, other.clazz) && Objects.equals(this.name, other.name);
     }
 }
