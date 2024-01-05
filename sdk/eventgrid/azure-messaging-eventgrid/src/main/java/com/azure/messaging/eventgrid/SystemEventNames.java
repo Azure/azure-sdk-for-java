@@ -188,6 +188,8 @@ import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventDa
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskAssignmentCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskAssignmentQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageTaskCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageTaskQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
@@ -1248,6 +1250,16 @@ public final class SystemEventNames {
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
     /**
+     * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentCompleted event.
+     */
+    public static final String STORAGE_TASK_ASSIGNMENT_COMPLETED = "Microsoft.Storage.StorageTaskAssignmentCompleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentQueued event.
+     */
+    public static final String STORAGE_TASK_ASSIGNMENT_QUEUED = "Microsoft.Storage.StorageTaskAssignmentQueued";
+
+    /**
      * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event.
      */
     public static final String STORAGE_TASK_COMPLETED = "Microsoft.Storage.StorageTaskCompleted";
@@ -1561,6 +1573,8 @@ public final class SystemEventNames {
             put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
             put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
             put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+            put(STORAGE_TASK_ASSIGNMENT_COMPLETED, StorageTaskAssignmentCompletedEventData.class);
+            put(STORAGE_TASK_ASSIGNMENT_QUEUED, StorageTaskAssignmentQueuedEventData.class);
             put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
             put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
             put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
