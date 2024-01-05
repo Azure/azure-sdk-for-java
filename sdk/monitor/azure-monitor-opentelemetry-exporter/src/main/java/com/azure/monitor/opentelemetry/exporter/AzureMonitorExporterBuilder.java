@@ -102,7 +102,6 @@ public final class AzureMonitorExporterBuilder {
     // this is only populated after the builder is frozen
     private StatsbeatModule statsbeatModule;
 
-
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
