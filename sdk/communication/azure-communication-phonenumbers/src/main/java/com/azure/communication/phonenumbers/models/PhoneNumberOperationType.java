@@ -4,13 +4,11 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PhoneNumberOperationType. */
-@Generated
 public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNumberOperationType> {
     /** Static value purchase for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType PURCHASE = fromString("purchase");
