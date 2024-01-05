@@ -81,7 +81,7 @@ public final class ReflectionSerializable {
                 LOGGER.log(LogLevel.VERBOSE, () -> "XmlSerializable serialization and deserialization isn't supported. "
                     + "If it is required add a dependency of 'com.azure:azure-xml', or another dependencies which "
                     + "include 'com.azure:azure-xml' as a transitive dependency. If your application runs as expected "
-                    + "this informational message can be ignored.");
+                    + "this informational message can be ignored.", e);
             } else {
                 throw (Error) e;
             }

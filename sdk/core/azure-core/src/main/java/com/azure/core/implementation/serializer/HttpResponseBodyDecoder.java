@@ -15,6 +15,7 @@ import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
@@ -74,7 +75,7 @@ public final class HttpResponseBodyDecoder {
                 // return.
                 //
                 // Return the exception as the body type, RestProxyBase will handle this later.
-                LOGGER.warning("Failed to deserialize the error entity.", ex);
+                LOGGER.log(LogLevel.WARNING, () -> "Failed to deserialize the error entity.", ex);
                 return ex;
             }
         } else {

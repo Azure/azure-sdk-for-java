@@ -10,6 +10,7 @@ import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -308,7 +309,7 @@ public final class ObjectMapperShim {
                 throw (RuntimeException) exception;
             }
 
-            LOGGER.verbose("Failed to find or use invoker Constructor that accepts HttpHeaders for "
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to find or use invoker Constructor that accepts HttpHeaders for "
                 + deserializedHeadersType + ".");
         }
 
