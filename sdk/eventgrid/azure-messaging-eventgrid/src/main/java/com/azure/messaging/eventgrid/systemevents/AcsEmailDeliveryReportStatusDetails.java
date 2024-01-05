@@ -5,23 +5,32 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Detailed information about the status if any. */
+/**
+ * Detailed information about the status if any.
+ */
 @Fluent
-public final class AcsEmailDeliveryReportStatusDetails {
+public final class AcsEmailDeliveryReportStatusDetails
+    implements JsonSerializable<AcsEmailDeliveryReportStatusDetails> {
     /*
      * Detailed status message
      */
-    @JsonProperty(value = "statusMessage")
     private String statusMessage;
 
-    /** Creates an instance of AcsEmailDeliveryReportStatusDetails class. */
-    public AcsEmailDeliveryReportStatusDetails() {}
+    /**
+     * Creates an instance of AcsEmailDeliveryReportStatusDetails class.
+     */
+    public AcsEmailDeliveryReportStatusDetails() {
+    }
 
     /**
      * Get the statusMessage property: Detailed status message.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String getStatusMessage() {
@@ -30,12 +39,46 @@ public final class AcsEmailDeliveryReportStatusDetails {
 
     /**
      * Set the statusMessage property: Detailed status message.
-     *
+     * 
      * @param statusMessage the statusMessage value to set.
      * @return the AcsEmailDeliveryReportStatusDetails object itself.
      */
     public AcsEmailDeliveryReportStatusDetails setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("statusMessage", this.statusMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsEmailDeliveryReportStatusDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsEmailDeliveryReportStatusDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsEmailDeliveryReportStatusDetails.
+     */
+    public static AcsEmailDeliveryReportStatusDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsEmailDeliveryReportStatusDetails deserializedAcsEmailDeliveryReportStatusDetails
+                = new AcsEmailDeliveryReportStatusDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusMessage".equals(fieldName)) {
+                    deserializedAcsEmailDeliveryReportStatusDetails.statusMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsEmailDeliveryReportStatusDetails;
+        });
     }
 }

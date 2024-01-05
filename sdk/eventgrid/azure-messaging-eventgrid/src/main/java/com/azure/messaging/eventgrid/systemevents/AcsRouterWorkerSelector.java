@@ -4,52 +4,56 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Router Job Worker Selector. */
+/**
+ * Router Job Worker Selector.
+ */
 @Fluent
-public final class AcsRouterWorkerSelector {
+public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouterWorkerSelector> {
 
     /*
      * Router Job Worker Selector Key
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * Router Job Worker Selector Label Operator
      */
-    @JsonProperty(value = "labelOperator")
     private AcsRouterLabelOperator labelOperator;
 
     /*
      * Router Job Worker Selector Value
      */
-    @JsonProperty(value = "labelValue")
     private Object labelValue;
 
     /*
      * Router Job Worker Selector Time to Live in Seconds
      */
-    @JsonProperty(value = "ttlSeconds")
     private Float ttlSeconds;
 
     /*
      * Router Job Worker Selector State
      */
-    @JsonProperty(value = "state")
     private AcsRouterWorkerSelectorState state;
 
     /*
      * Router Job Worker Selector Expiration Time
      */
-    @JsonProperty(value = "expirationTime")
     private OffsetDateTime expirationTime;
 
-    /** Creates an instance of AcsRouterWorkerSelector class. */
-    public AcsRouterWorkerSelector() {}
+    /**
+     * Creates an instance of AcsRouterWorkerSelector class.
+     */
+    public AcsRouterWorkerSelector() {
+    }
 
     /**
      * Get the key property: Router Job Worker Selector Key.
@@ -171,5 +175,55 @@ public final class AcsRouterWorkerSelector {
     public AcsRouterWorkerSelector setExpirationTime(OffsetDateTime expirationTime) {
         this.expirationTime = expirationTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
+        jsonWriter.writeUntypedField("labelValue", this.labelValue);
+        jsonWriter.writeNumberField("ttlSeconds", this.ttlSeconds);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("expirationTime",
+            this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterWorkerSelector from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterWorkerSelector if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterWorkerSelector.
+     */
+    public static AcsRouterWorkerSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterWorkerSelector deserializedAcsRouterWorkerSelector = new AcsRouterWorkerSelector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("key".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.key = reader.getString();
+                } else if ("labelOperator".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.labelOperator
+                        = AcsRouterLabelOperator.fromString(reader.getString());
+                } else if ("labelValue".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.labelValue = reader.readUntyped();
+                } else if ("ttlSeconds".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.ttlSeconds = reader.getNullable(JsonReader::getFloat);
+                } else if ("state".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.state
+                        = AcsRouterWorkerSelectorState.fromString(reader.getString());
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedAcsRouterWorkerSelector.expirationTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAcsRouterWorkerSelector;
+        });
     }
 }

@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
@@ -17,12 +16,11 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +55,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class Utils {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
+    public static final Class<?> byteArrayClass = new byte[0].getClass();
 
     private static final int JAVA_VERSION = getJavaVersion();
     private static final int ONE_KB = 1024;
@@ -135,12 +135,12 @@ public class Utils {
         }
     }
 
-    public static byte[] getUTF8BytesOrNull(String str) {
+    public static ByteBuf getUTF8BytesOrNull(String str) {
         if (str == null) {
             return null;
         }
 
-        return str.getBytes(StandardCharsets.UTF_8);
+        return Unpooled.wrappedBuffer(str.getBytes(StandardCharsets.UTF_8));
     }
 
     public static byte[] getUTF8Bytes(String str) {
@@ -531,6 +531,18 @@ public class Utils {
         }
     }
 
+    public static ObjectNode parseJson(String itemResponseBodyAsString) {
+        if (StringUtils.isEmpty(itemResponseBodyAsString)) {
+            return null;
+        }
+        try {
+            return (ObjectNode)getSimpleObjectMapper().readTree(itemResponseBodyAsString);
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                String.format("Failed to parse json string [%s] to ObjectNode.", itemResponseBodyAsString), e);
+        }
+    }
+
     public static <T> T parse(byte[] item, Class<T> itemClassType) {
         if (Utils.isEmpty(item)) {
             return null;
@@ -540,7 +552,7 @@ public class Utils {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
+                String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);
         }
     }
 
@@ -569,14 +581,6 @@ public class Utils {
 
     public static boolean isEmpty(byte[] bytes) {
         return bytes == null || bytes.length == 0;
-    }
-
-    public static String utf8StringFromOrNull(byte[] bytes) {
-        if (bytes == null) {
-            return null;
-        }
-
-        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public static CosmosChangeFeedRequestOptions getEffectiveCosmosChangeFeedRequestOptions(
