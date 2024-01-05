@@ -35,5 +35,8 @@ ARG APPLICATION_INSIGHTS_AGENT_VERSION=3.4.19
 ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/${APPLICATION_INSIGHTS_AGENT_VERSION}/applicationinsights-agent-${APPLICATION_INSIGHTS_AGENT_VERSION}.jar
 ADD ${AGENT_URL} ./applicationinsights-agent.jar
 
+COPY --from=builder /stress/sdk/template/azure-template-stress/src/main/resources/simplehttpserver.crt ./simplehttpserver.crt
+RUN keytool -import -alias simple -file ./simplehttpserver.crt -keystore /usr/lib/jvm/msopenjdk-11/lib/security/cacerts  -noprompt -keypass changeit -storepass changeit
+
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]

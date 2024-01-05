@@ -14,7 +14,7 @@ spec:
       args:
         - |
           set -a &&
-          export ASPNETCORE_URLS=http://localhost:8080;https://localhost:8081 &&
+          export ASPNETCORE_URLS="http://localhost:8080;https://localhost:8081" &&
           export Test__DurationInSec={{ mul ( add .Stress.testDurationMin 1) 60 }} &&
           dotnet /app/dotnet_simple.dll
       resources:
@@ -35,11 +35,12 @@ spec:
           -Dreactor.schedulers.defaultBoundedElasticSize={{ max 20 .Stress.concurrency }} \
           -Dotel.instrumentation.okhttp.enabled=false \
           -Dotel.instrumentation.http-url-connection.enabled=false \
+          -Dotel.instrumentation.reactor.enabled=false \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.concurrency }} \
           --duration {{ mul .Stress.testDurationMin 60 }} \
-          --endpoint https://127.0.0.1:8081 \
+          --endpoint https://localhost:8081 \
           {{ ternary "--sync" "" .Stress.sync }} \
           --http-client {{ default "NETTY" .Stress.httpClient }} \
           --warmup 0
