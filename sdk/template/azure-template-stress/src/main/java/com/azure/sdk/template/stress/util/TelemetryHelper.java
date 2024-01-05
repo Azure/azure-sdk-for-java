@@ -15,8 +15,10 @@ import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import org.w3c.dom.Attr;
 import reactor.core.Exceptions;
 
+import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.concurrent.TimeoutException;
 
@@ -81,6 +83,9 @@ public class TelemetryHelper {
 
     private void trackFailure(Instant start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
+        if (unwrapped instanceof UncheckedIOException) {
+            unwrapped = unwrapped.getCause();
+        }
 
         span.recordException(unwrapped);
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
@@ -90,6 +95,7 @@ public class TelemetryHelper {
             .addKeyValue("error.type", errorType)
             .log("run ended", unwrapped);
 
+        Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
         runDuration.record((Instant.now().toEpochMilli() - start.toEpochMilli())/1000d, canceledAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
