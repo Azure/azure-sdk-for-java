@@ -18,6 +18,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
@@ -46,7 +47,6 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -120,7 +120,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
     @Test
     public void createDefaultsWithOptions() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -321,7 +321,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createEncryptionScopeSas() {
         PathSasPermission permissions = new PathSasPermission()
@@ -344,7 +344,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createEncryptionScopeAccountSas() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
@@ -372,7 +372,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-12-06")
     @Test
     public void createEncryptionScopeIdentitySas() {
         UserDelegationKey key = getOAuthServiceClient()
@@ -401,7 +401,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
     @Test
     public void createOptionsWithAcl() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
@@ -416,7 +416,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
     @Test
     public void createOptionsWithOwnerAndGroup() {
         dc = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName());
@@ -879,7 +879,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveMin() {
         setupStandardRecursiveAclTest();
@@ -894,7 +894,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
@@ -911,7 +911,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
@@ -935,7 +935,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
@@ -974,7 +974,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
@@ -1014,7 +1014,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         return getDirectoryAsyncClient(sas, directoryClient.getDirectoryUrl(), directoryClient.getDirectoryPath());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1069,7 +1069,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1135,7 +1135,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1197,7 +1197,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1290,7 +1290,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void setACLRecursiveErrorMiddleOfBatches(Throwable error) {
@@ -1317,7 +1317,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 getStubResponse(500, new HttpRequest(HttpMethod.PUT, "https://www.fake.com")), null));
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursive() {
         setupStandardRecursiveAclTest();
@@ -1331,7 +1331,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
@@ -1350,7 +1350,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
@@ -1374,7 +1374,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
@@ -1412,7 +1412,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
@@ -1443,7 +1443,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertEquals(2, iterations);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1496,7 +1496,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertNotNull(progress.failures.get(0).getErrorMessage());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1561,7 +1561,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1623,7 +1623,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1714,7 +1714,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void updateACLRecursiveErrorMiddleOfBatches(Throwable error) {
@@ -1734,7 +1734,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursive() {
         setupStandardRecursiveAclTest();
@@ -1747,7 +1747,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatches() {
         setupStandardRecursiveAclTest();
@@ -1765,7 +1765,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesResume() {
         setupStandardRecursiveAclTest();
@@ -1789,7 +1789,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesProgress() {
         setupStandardRecursiveAclTest();
@@ -1827,7 +1827,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             + progress.cumulativeCounters.get(3).getChangedDirectoriesCount());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesFollowToken() {
         setupStandardRecursiveAclTest();
@@ -1858,7 +1858,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertEquals(2, iterations);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveProgressWithFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1912,7 +1912,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         assertNotNull(progress.failures.get(0).getErrorMessage());
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveContinueOnFailure() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -1976,7 +1976,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveContinueOnFailureBatchFailures() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2039,7 +2039,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveContinueOnFailureBatchesResume() {
         dataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient()
@@ -2133,7 +2133,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @ParameterizedTest
     @MethodSource("setACLRecursiveErrorSupplier")
     public void removeACLRecursiveErrorMiddleOfBatches(Throwable error) {
@@ -2398,7 +2398,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             200);
     }
 
-    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200612ServiceVersion")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-06-12")
     @Test
     public void getPropertiesOwnerGroupPermissions() {
         StepVerifier.create(dc.getPropertiesWithResponse(null))

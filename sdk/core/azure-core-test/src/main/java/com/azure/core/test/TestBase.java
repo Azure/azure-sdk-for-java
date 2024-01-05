@@ -163,7 +163,7 @@ public abstract class TestBase implements BeforeEachCallback {
             localTestMode = TestMode.LIVE;
         }
 
-        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName());
+        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName(), testInfo.getTestClass());
         Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
         this.testContextManager =
             new TestContextManager(testInfo.getTestMethod().get(),
@@ -214,7 +214,7 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName());
+        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName(), testInfo.getTestClass());
         if (shouldLogExecutionStatus()) {
             if (testStartTimeMillis > 0) {
                 long duration = System.currentTimeMillis() - testStartTimeMillis;
@@ -435,13 +435,14 @@ public abstract class TestBase implements BeforeEachCallback {
             : httpClient);
     }
 
-    static String getTestName(Optional<Method> testMethod, String displayName) {
+    static String getTestName(Optional<Method> testMethod, String displayName, Optional<Class<?>> testClass) {
         String testName = "";
         String fullyQualifiedTestName = "";
         if (testMethod.isPresent()) {
             Method method = testMethod.get();
+            String className = testClass.map(Class::getName).orElse(method.getDeclaringClass().getName());
             testName = method.getName();
-            fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
+            fullyQualifiedTestName = className + "." + testName;
         }
 
         return Objects.equals(displayName, testName)

@@ -28,9 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_STATUS_CODE;
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_HOST_NAME;
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_PEER_NAME;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_RESPONSE_STATUS_CODE;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.SERVER_ADDRESS;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
@@ -119,7 +118,7 @@ public class AzureMonitorMetricExporterTest {
 
         DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
         Attributes attributes = Attributes.builder()
-            .put(NET_PEER_NAME, "example.io")
+            .put(SERVER_ADDRESS, "example.io")
             .put(AttributeKey.stringKey("foo"), "bar")
             .build();
 
@@ -140,7 +139,7 @@ public class AzureMonitorMetricExporterTest {
         Map<String, String> properties = metricsData.getProperties();
 
         assertThat(properties.size()).isEqualTo(2);
-        assertThat(properties.get(NET_PEER_NAME.getKey())).isEqualTo("example.io");
+        assertThat(properties.get(SERVER_ADDRESS.getKey())).isEqualTo("example.io");
         assertThat(properties.get("foo")).isEqualTo("bar");
     }
 
@@ -155,8 +154,8 @@ public class AzureMonitorMetricExporterTest {
 
         DoubleHistogram serverDuration = meter.histogramBuilder("http.server.duration").build();
         Attributes attributes = Attributes.builder()
-            .put(HTTP_STATUS_CODE, 200)
-            .put(NET_HOST_NAME, "example.io")
+            .put(HTTP_RESPONSE_STATUS_CODE, 200)
+            .put(SERVER_ADDRESS, "example.io")
             .put(AttributeKey.stringKey("foo"), "baz")
             .build();
         serverDuration.record(0.1, attributes);

@@ -1121,6 +1121,12 @@
       ]
     },
     {
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
+      "words": [
+        "javac"
+      ]
+    },
+    {
       "filename": "sdk/purview/azure-analytics-purview-sharing/**",
       "words": [
         "ADLS",
