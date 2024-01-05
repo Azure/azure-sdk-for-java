@@ -369,6 +369,10 @@
     "AZURE_MONITOR_METRICS_RESOURCE_URI_2": {
       "type": "string",
       "value": "[resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName'))]"
+    },
+    "AZURE_MONITOR_REGION": {
+      "type": "string",
+      "value": "[parameters('regionId')]"
     }
   }
 }

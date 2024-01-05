@@ -8,6 +8,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,10 +21,11 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
     protected String metricEndpoint;
     protected MetricsBatchQueryClientBuilder clientBuilder;
     protected ConfigurationClient configClient;
+    protected ConfigurationAsyncClient configAsyncClient;
 
     @Override
     public void beforeTest() {
-        metricEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
+        metricEndpoint = "https://" + Configuration.getGlobalConfiguration().get("AZURE_MONITOR_REGION", "westus2") + ".metrics.monitor.azure.com";
 
         MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder();
         ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder();
@@ -59,5 +61,6 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
         }
         this.clientBuilder = clientBuilder.endpoint(metricEndpoint);
         this.configClient = configClientBuilder.buildClient();
+        this.configAsyncClient = configClientBuilder.buildAsyncClient();
     }
 }

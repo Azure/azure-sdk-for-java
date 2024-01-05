@@ -38,6 +38,9 @@ Refer to the instructions in this reference document on how to [configure loggin
 
 ### Enable HTTP request/response logging
 
+HTTP request/response logging requires your logger to be configured at `DEBUG` level. If you are using the built-in logging framework, 
+you can set `AZURE_LOG_LEVEL` environment variable to `1`.
+
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in
 troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the
 MetricsQueryClient can be configured as shown below:
