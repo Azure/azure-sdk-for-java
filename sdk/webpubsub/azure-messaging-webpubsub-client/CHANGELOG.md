@@ -19,8 +19,8 @@
 
 ### Other Changes
 
-- Upgraded `azure-core` from `1.38.0` to version `1.45.0`.
-- Upgraded `netty-codec-http` from `4.1.89.Final` to version `4.1.100.Final`.
+- Upgraded `azure-core` from `1.38.0` to version `1.45.1`.
+- Upgraded `netty-codec-http` from `4.1.89.Final` to version `4.1.101.Final`.
 
 ## 1.0.0-beta.1 (2023-04-17)
 
