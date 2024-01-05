@@ -4,7 +4,7 @@ This document specifies the hand-customization done to the auto-generated Java I
 
 ## Add ImageBoundingBox.toString()
 
-Add the following method to the class ImageBoundingBox in file ImageBoundingBox.java:
+The following method was added to the class `ImageBoundingBox` (file `ImageBoundingBox.java`):
 ```java
     /**
      * Returns a compact string containing the bounding box values in a style suitable for printing.
@@ -20,7 +20,7 @@ Add the following method to the class ImageBoundingBox in file ImageBoundingBox.
 
 ## Add ImagePoint.toString()
 
-Add the following method to the bottom of the class ImagePoint in file ImagePoint.java
+The following method was added to the class `ImagePoint` (file `ImagePoint.java`):
 
 ```Java
     /**
@@ -35,11 +35,11 @@ Add the following method to the bottom of the class ImagePoint in file ImagePoin
 
 ## Add new class ImageAnalysisOptions
 
-Copy the new file ImageAnalysisOptions.java in to the folder: `src\main\java\com\azure\ai\vision\imageanalysis`
+A new Java file `ImageAnalysisOptions.java` was written and placed in the folder `src\main\java\com\azure\ai\vision\imageanalysis`.
 
-## Updates to ImageAnalysisClient.java
+## Updates to class ImageAnalysisClient
 
-Add the following two methods at the bottom of the source file:
+The following two public methods were added to the class `ImageAnalysisClient` (file `ImageAnalysisClient.java`):
 
 ```java
 import java.net.URL;
@@ -101,9 +101,9 @@ import java.net.URL;
     }
 ```
 
-## Updates to ImageAnalysisAsyncClient.java
+## Updates to class ImageAnalysisAsyncClient
 
-Add the following two methods at the bottom of the source file:
+The following two public methods were added to the class `ImageAnalysisAsyncClient` (file `ImageAnalysisAsyncClient.java`):
 
 ```java
 import java.net.URL;

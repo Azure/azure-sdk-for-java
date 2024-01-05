@@ -10,7 +10,9 @@
 //     an `ImageAnalysisResult` object, which contains separate result properties for each one of the visual features.
 //     This sample prints all the results to the console.
 //
-//     The sample also shows how to turn on SDK logs, which may be needed for troubleshooting purposes.
+//     The sample also shows how to turn on console SDK logs by calling httpLogOptions, which may be needed
+//     for troubleshooting purposes. You will also need to set environment variable `AZURE_LOG_LEVEL` to `debug`
+//     to see the logs.
 //
 //     For more information on a particular visual feature, and optional setting associated with it,
 //     have a look at the sample in this folder dedicated to that visual feature.
