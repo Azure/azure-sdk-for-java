@@ -222,7 +222,7 @@ public final class ImageAnalysisClientImpl {
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * At the moment, only tags can be generated in non-English languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -397,7 +397,7 @@ public final class ImageAnalysisClientImpl {
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * At the moment, only tags can be generated in non-English languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -570,7 +570,7 @@ public final class ImageAnalysisClientImpl {
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * At the moment, only tags can be generated in non-English languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -747,7 +747,7 @@ public final class ImageAnalysisClientImpl {
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
      * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * At the moment, only tags can be generated in non-English languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
