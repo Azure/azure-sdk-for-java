@@ -58,6 +58,11 @@ public final class HttpResponseBodyDecoder {
             return null;
         } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
+                // Deserialize will return null if the body is empty. Early out.
+                if (body == null || body.length == 0) {
+                    return null;
+                }
+
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                     null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
@@ -79,6 +84,11 @@ public final class HttpResponseBodyDecoder {
 
             byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
             try {
+                // Deserialize will return null if the body is empty. Early out.
+                if (bodyAsByteArray == null || bodyAsByteArray.length == 0) {
+                    return null;
+                }
+
                 return deserializeBody(bodyAsByteArray,
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));

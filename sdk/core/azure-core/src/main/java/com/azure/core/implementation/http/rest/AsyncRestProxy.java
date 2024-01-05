@@ -316,7 +316,7 @@ public class AsyncRestProxy extends RestProxyBase {
                 request.setBody(bodyContentString);
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
-            request.setBody(Flux.just((ByteBuffer) bodyContentObject));
+            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
         } else {
             request.setBody(serializerAdapter.serializeToBytes(bodyContentObject,
                 SerializerEncoding.fromHeaders(request.getHeaders())));

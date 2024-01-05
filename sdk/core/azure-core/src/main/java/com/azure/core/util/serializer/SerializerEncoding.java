@@ -59,7 +59,7 @@ public enum SerializerEncoding {
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
         final String mimeContentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         if (CoreUtils.isNullOrEmpty(mimeContentType)) {
-            LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);
+            LOGGER.verbose("'{}' not found. Returning default encoding: JSON", CONTENT_TYPE);
             return DEFAULT_ENCODING;
         }
 
@@ -72,8 +72,8 @@ public enum SerializerEncoding {
 
         int contentTypeTypeSplit = contentType.indexOf('/');
         if (contentTypeTypeSplit == -1) {
-            LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
-                + "Returning default: {}", contentType, DEFAULT_ENCODING);
+            LOGGER.verbose("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
+                + "Returning default: JSON", contentType);
             return DEFAULT_ENCODING;
         }
 
@@ -94,8 +94,7 @@ public enum SerializerEncoding {
             return JSON;
         }
 
-        LOGGER.warning("Content-Type '{}' does not match any supported one. Returning default: {}",
-            mimeContentType, DEFAULT_ENCODING);
+        LOGGER.verbose("Content-Type '{}' does not match any supported one. Returning default: JSON", mimeContentType);
 
         return DEFAULT_ENCODING;
     }
