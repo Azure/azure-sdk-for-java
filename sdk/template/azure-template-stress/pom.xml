@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-template-stress</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-template-perf;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-template-stress;current} -->
   <packaging>jar</packaging>
 
   <properties>
