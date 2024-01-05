@@ -22,7 +22,7 @@ mvn -f /stress/sdk/parents/azure-perf-test-parent/pom.xml clean install ${SKIP_C
 mvn -f /stress/sdk/tools/pom.xml clean install -Dcheckstyle.skip ${SKIP_CHECKS} && \
 mvn -f /stress/sdk/template/azure-template-stress/pom.xml clean install ${SKIP_CHECKS}
 
-FROM mcr.microsoft.com/openjdk/jdk:11-mariner
+FROM mcr.microsoft.com/openjdk/jdk:21-mariner
 
 RUN yum -y update
 
@@ -36,7 +36,7 @@ ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/dow
 ADD ${AGENT_URL} ./applicationinsights-agent.jar
 
 COPY --from=builder /stress/sdk/template/azure-template-stress/src/main/resources/simplehttpserver.crt ./simplehttpserver.crt
-RUN keytool -import -alias simple -file ./simplehttpserver.crt -keystore /usr/lib/jvm/msopenjdk-11/lib/security/cacerts  -noprompt -keypass changeit -storepass changeit
+RUN keytool -import -alias simple -file ./simplehttpserver.crt -keystore /usr/lib/jvm/msopenjdk-21/lib/security/cacerts  -noprompt -keypass changeit -storepass changeit
 
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]
