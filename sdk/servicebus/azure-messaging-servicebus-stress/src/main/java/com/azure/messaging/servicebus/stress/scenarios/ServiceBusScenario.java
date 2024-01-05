@@ -58,7 +58,6 @@ public abstract class ServiceBusScenario implements AutoCloseable {
 
     /**
      * Run test scenario
-     * @return test result
      */
     public abstract void run() throws InterruptedException;
 

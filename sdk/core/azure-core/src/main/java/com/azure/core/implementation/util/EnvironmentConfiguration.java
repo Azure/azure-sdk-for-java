@@ -9,11 +9,10 @@ import com.azure.core.util.ConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -25,7 +24,7 @@ public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final Set<String> DEFAULT_CONFIGURATIONS = new HashSet<>(Arrays.asList(
+    private static final List<String> DEFAULT_CONFIGURATIONS = Arrays.asList(
         Configuration.PROPERTY_HTTP_PROXY,
         Configuration.PROPERTY_HTTPS_PROXY,
         Configuration.PROPERTY_IDENTITY_ENDPOINT,
@@ -56,7 +55,7 @@ public class EnvironmentConfiguration {
         Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
         Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
         Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT
-    ));
+    );
 
     private static final EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
 
@@ -73,6 +72,8 @@ public class EnvironmentConfiguration {
 
     /**
      * Clones original configuration.
+     *
+     * @param original configuration to clone.
      */
     public EnvironmentConfiguration(EnvironmentConfiguration original) {
         this.explicitConfigurations = new ConcurrentHashMap<>(original.explicitConfigurations);
@@ -82,8 +83,12 @@ public class EnvironmentConfiguration {
 
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
+     *
+     * @param systemPropertiesConfigurationSource mocked system properties configuration source.
+     * @param environmentConfigurationSource mocked environment configuration source.
      */
-    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
+    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource,
+        ConfigurationSource environmentConfigurationSource) {
         this.explicitConfigurations = new ConcurrentHashMap<>();
 
         if (environmentConfigurationSource == null) {
@@ -110,6 +115,11 @@ public class EnvironmentConfiguration {
         }
     }
 
+    /**
+     * Gets the global configuration.
+     *
+     * @return The global configuration.
+     */
     public static EnvironmentConfiguration getGlobalConfiguration() {
         return GLOBAL_CONFIGURATION;
     }
@@ -189,7 +199,7 @@ public class EnvironmentConfiguration {
      * <p>
      * This will overwrite the previous configuration value if it existed.
      *
-     * @param name  Name of the configuration.
+     * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
      */
@@ -218,9 +228,16 @@ public class EnvironmentConfiguration {
         return System.getProperty(name);
     }
 
+    /**
+     * A configuration source that loads configuration values from the environment variables.
+     */
     public static final class EnvironmentVariablesConfigurationSource implements ConfigurationSource {
+        /**
+         * The global environment variables configuration source.
+         */
         public static final ConfigurationSource GLOBAL_SOURCE = new EnvironmentVariablesConfigurationSource();
-        Map<String, String> configurations;
+
+        private final Map<String, String> configurations;
 
         private EnvironmentVariablesConfigurationSource() {
             configurations = new HashMap<>();

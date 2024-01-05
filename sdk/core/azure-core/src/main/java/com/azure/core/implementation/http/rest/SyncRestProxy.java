@@ -31,6 +31,9 @@ import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
+/**
+ * A synchronous REST proxy implementation.
+ */
 public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
@@ -181,7 +184,7 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Object or Page<T>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBody(null);
         }
         return result;
     }
@@ -215,6 +218,7 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
+    @Override
     public void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();

@@ -45,6 +45,13 @@ public final class RestProxyUtils {
     private RestProxyUtils() {
     }
 
+    /**
+     * Validates the {@code Content-Length} of an asynchronous request.
+     *
+     * @param request the request to validate.
+     * @return a Mono that emits the request on successful validation.
+     * @throws UnexpectedLengthException if the request body is larger or smaller than the expected length.
+     */
     public static Mono<HttpRequest> validateLengthAsync(final HttpRequest request) {
         final BinaryData body = request.getBodyAsBinaryData();
 
@@ -117,6 +124,7 @@ public final class RestProxyUtils {
      * Validates the Length of the input request matches its configured Content Length.
      * @param request the input request to validate.
      * @return the requests body as BinaryData on successful validation.
+     * @throws IllegalStateException if the request body is an instance of FluxByteBufferContent.
      */
     public static BinaryData validateLengthSync(final HttpRequest request) {
         final BinaryData binaryData = request.getBodyAsBinaryData();

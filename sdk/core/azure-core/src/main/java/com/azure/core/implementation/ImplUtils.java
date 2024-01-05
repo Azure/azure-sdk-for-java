@@ -48,6 +48,9 @@ public final class ImplUtils {
     private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
 
     // future improvement - make this configurable
+    /**
+     * The maximum number of items to cache in a cache.
+     */
     public static final int MAX_CACHE_SIZE = 10000;
 
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
@@ -210,6 +213,9 @@ public final class ImplUtils {
         return result;
     }
 
+    /**
+     * Iterates over the query parameters in a URL query string.
+     */
     public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
         private final int queryParametersLength;
@@ -217,6 +223,11 @@ public final class ImplUtils {
         private boolean done = false;
         private int position;
 
+        /**
+         * Creates an iterator over the query parameters in a URL query string.
+         *
+         * @param queryParameters The URL query string.
+         */
         public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
@@ -354,6 +365,18 @@ public final class ImplUtils {
         return new URL(urlString);
     }
 
+    /**
+     * Gets a {@link Class} from the given {@code className}.
+     * <p>
+     * This method will attempt to load the class from the current thread's context class loader. If the class cannot be
+     * found on the classpath an exception will be thrown. Unlike calling {@link Class#forName(String)} directly, this
+     * utility method doesn't throw a checked exception, rather it throws a {@link RuntimeException}.
+     *
+     * @param <T> The type of class to load.
+     * @param className The name of the class to load.
+     * @return The {@link Class} with the given {@code className}.
+     * @throws RuntimeException If the class cannot be found on the classpath.
+     */
     @SuppressWarnings("unchecked")
     public static <T> Class<? extends T> getClassByName(String className) {
         Objects.requireNonNull(className, "'className' cannot be null");
@@ -370,6 +393,8 @@ public final class ImplUtils {
      *
      * @param retryOptions The retry options.
      * @return The retry strategy based on the retry options.
+     * @throws NullPointerException If {@code retryOptions} is null.
+     * @throws IllegalArgumentException If {@code retryOptions} doesn't define any retry strategy options.
      */
     public static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
@@ -384,6 +409,13 @@ public final class ImplUtils {
         }
     }
 
+    /**
+     * Sneakily throws a checked exception in a way where it doesn't need to be declared in the method signature.
+     *
+     * @param <E> The type of checked exception.
+     * @param e The checked exception to throw.
+     * @throws E The checked exception.
+     */
     @SuppressWarnings("unchecked")
     public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
         throw (E) e;
