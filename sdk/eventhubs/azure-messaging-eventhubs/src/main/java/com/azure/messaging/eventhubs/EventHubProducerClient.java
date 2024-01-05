@@ -12,7 +12,6 @@ import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.util.Objects;
 
 /**
