@@ -140,7 +140,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .then(next.process())
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
-            .doOnError(throwable -> createBasicLoggingContext(LogLevel.WARNING, context.getHttpRequest()).log("HTTP FAILED", throwable));
+            .doOnError(throwable -> createBasicLoggingContext(logger, LogLevel.WARNING, context.getHttpRequest()).log("HTTP FAILED", throwable));
     }
 
     @Override
@@ -163,14 +163,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
             return response;
         } catch (RuntimeException e) {
-            createBasicLoggingContext(LogLevel.WARNING, context.getHttpRequest())
+            createBasicLoggingContext(logger, LogLevel.WARNING, context.getHttpRequest())
                 .log("HTTP FAILED", e);
             throw e;
         }
     }
 
-    private LoggingEventBuilder createBasicLoggingContext(LogLevel level, HttpRequest request) {
-        LoggingEventBuilder log = LOGGER.atLevel(level);
+    private LoggingEventBuilder createBasicLoggingContext(ClientLogger logger, LogLevel level, HttpRequest request) {
+        LoggingEventBuilder log = logger.atLevel(level);
         if (LOGGER.canLogAtLevel(level) && request != null) {
             if (allowedHeaderNames.contains(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName())) {
                 String clientRequestId = request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);

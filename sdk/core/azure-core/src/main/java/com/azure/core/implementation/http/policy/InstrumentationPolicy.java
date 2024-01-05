@@ -89,6 +89,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             Context span = startSpan(context);
             return next.process()
                 .doOnSuccess(response -> updateSpan(response, span))
+                // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
                 .map(response -> new TraceableResponse(response, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
                 .doOnError(exception -> tracer.end(null, exception, span));
@@ -106,6 +107,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
             HttpResponse response = next.processSync();
             updateSpan(response, span);
+            // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
             return new TraceableResponse(response, span);
         } catch (RuntimeException ex) {
             tracer.end(null, ex, span);
