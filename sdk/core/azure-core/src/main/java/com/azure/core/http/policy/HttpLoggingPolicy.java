@@ -154,9 +154,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final long startNs = System.nanoTime();
 
         requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
-        HttpResponse response = null;
         try {
-            response = next.processSync();
+            HttpResponse response = next.processSync();
             if (response != null) {
                 response = responseLogger.logResponseSync(
                     logger, getResponseLoggingOptions(response, startNs, context));
