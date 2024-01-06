@@ -111,7 +111,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             case JDK:
                 if (options.isInsecure()) {
                     // can't configure JDK HttpClient for insecure mode with source set to Java 8
-                    throw new IllegalStateException("Can't configure JDK HttpClient for insecure mode.");
+                    throw new UnsupportedOperationException("Can't configure JDK HttpClient for insecure mode.");
                 } else {
                     return new JdkHttpClientProvider().createInstance();
                 }
