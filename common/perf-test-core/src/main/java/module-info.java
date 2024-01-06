@@ -5,6 +5,7 @@ module com.azure.core.test.perf {
     requires com.azure.core;
     requires com.azure.core.http.okhttp;
     requires com.azure.http.netty;
+    requires com.azure.core.http.jdk.httpclient;
     requires reactor.core;
     requires org.reactivestreams;
     requires jcommander;

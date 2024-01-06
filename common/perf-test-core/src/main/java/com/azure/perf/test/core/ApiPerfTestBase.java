@@ -5,6 +5,7 @@ package com.azure.perf.test.core;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -106,6 +107,13 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                     }
                 } else {
                     return new OkHttpAsyncClientProvider().createInstance();
+                }
+            case JDK:
+                if (options.isInsecure()) {
+                    // can't configure JDK HttpClient for insecure mode with source set to Java 8
+                    throw new IllegalStateException("Can't configure JDK HttpClient for insecure mode.");
+                } else {
+                    return new JdkHttpClientProvider().createInstance();
                 }
             default:
                 throw new IllegalArgumentException("Unsupported http client " + httpClientType);
