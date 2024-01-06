@@ -70,6 +70,9 @@ public final class ClientTelemetryMetrics {
     private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
 
     private static final Object lockObject = new Object();
+    private static final Tag QUERYPLAN_TAG = Tag.of(
+        TagName.RequestOperationType.toString(),
+        ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -330,12 +333,12 @@ public final class ClientTelemetryMetrics {
         }
 
         if (metricTagNames.contains(TagName.Container)) {
-            String containerTagValue = String.format(
-                "%s/%s/%s",
-                escape(accountTagValue),
-                databaseId != null ? escape(databaseId) : "NONE",
-                containerId != null ? escape(containerId) : "NONE"
-            );
+            String containerTagValue =
+                escape(accountTagValue)
+                + "/"
+                + databaseId != null ? escape(databaseId) : "NONE"
+                + "/"
+                + containerId != null ? escape(containerId) : "NONE";
 
             effectiveTags.add(Tag.of(TagName.Container.toString(), containerTagValue));
         }
@@ -747,12 +750,7 @@ public final class ClientTelemetryMetrics {
             List<Tag> effectiveTags = new ArrayList<>();
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
-                effectiveTags.add(Tag.of(
-                    TagName.RequestOperationType.toString(),
-                    String.format(
-                        "%s/%s",
-                        ResourceType.DocumentCollection,
-                        OperationType.QueryPlan)));
+                effectiveTags.add(QUERYPLAN_TAG);
             }
 
             return Tags.of(effectiveTags);
@@ -870,7 +868,7 @@ public final class ClientTelemetryMetrics {
 
                 Timer eventMeter = Timer
                     .builder(timelineOptions.getMeterName().toString() + "." + escape(event.getName()))
-                    .description(String.format("Request timeline (%s)", event.getName()))
+                    .description("Request timeline (" + event.getName() + ")")
                     .maximumExpectedValue(Duration.ofSeconds(300))
                     .publishPercentiles(timelineOptions.getPercentiles())
                     .publishPercentileHistogram(timelineOptions.isHistogramPublishingEnabled())
