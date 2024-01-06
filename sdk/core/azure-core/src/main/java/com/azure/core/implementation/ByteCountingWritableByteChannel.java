@@ -23,6 +23,12 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
         AtomicLongFieldUpdater.newUpdater(ByteCountingWritableByteChannel.class, "bytesWritten");
     private volatile long bytesWritten;
 
+    /**
+     * Creates an instance of {@link ByteCountingWritableByteChannel} that counts bytes written to the target channel.
+     *
+     * @param channel The {@link WritableByteChannel} to adapt.
+     * @param progressReporter The {@link ProgressReporter} to report progress on write operations.
+     */
     public ByteCountingWritableByteChannel(WritableByteChannel channel, ProgressReporter progressReporter) {
         this.channel = Objects.requireNonNull(channel, "'channel' must not be null");
         this.progressReporter = progressReporter;
@@ -50,6 +56,11 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
         channel.close();
     }
 
+    /**
+     * Get the number of bytes written to the target channel.
+     *
+     * @return the number of bytes written to the target channel.
+     */
     public long getBytesWritten() {
         return BYTES_WRITTEN_ATOMIC_UPDATER.get(this);
     }
