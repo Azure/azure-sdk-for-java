@@ -63,7 +63,7 @@ public class SampleOcrImageUrlAsync {
         try {
             // Extract text from an input image URL. This is an synchronous (non-blocking) call, but here we block until the service responds.
             ImageAnalysisResult result = client.analyze(
-                new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze
+                new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageContent: the URL of the image to analyze
                 Arrays.asList(VisualFeatures.READ), // visualFeatures
                 null)
                 .block();

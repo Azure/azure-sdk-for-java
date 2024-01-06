@@ -11,8 +11,8 @@ Use the Image Analysis client library to:
 [Product documentation][image_analysis_overview] 
 | [Samples][samples]
 | [Vision Studio][vision_studio]
-| [API reference documentation](https://learn.microsoft.com/java/api/com.azure.ai.vision.imageanalysis)
-| [Maven Package](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis)
+| [API reference documentation](https://aka.ms/azsdk/image-analysis/ref-docs/java)
+| [Maven Package](https://aka.ms/azsdk/image-analysis/package/maven)
 | [SDK source code][sdk_source_code]
 
 ## Getting started
@@ -164,7 +164,7 @@ To generate captions for additional images, simply call `analyze` multiple times
 
 ### Generate an image caption for an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
+This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-caption-url-snippet
 import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
@@ -175,7 +175,7 @@ import java.util.Arrays;
 ```
 ```java caption-url-snippet
 ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
+    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -226,7 +226,7 @@ To extract text for additional images, simply call the `analyze` multiple times.
 
 ### Extract text from an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
+This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-ocr-url-snippet
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
@@ -238,7 +238,7 @@ import java.util.Arrays;
 ```
 ```java ocr-url-snippet
 ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze
+    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageContent: the URL of the image to analyze
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 
