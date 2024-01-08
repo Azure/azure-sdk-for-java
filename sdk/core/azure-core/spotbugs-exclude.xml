@@ -404,4 +404,10 @@
     <Class name="com.azure.core.util.CoreUtils" />
     <Method name="getProperties" />
   </Match>
+
+  <Match>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+    <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser" />
+    <Method name="serialize" />
+  </Match>
 </FindBugsFilter>
