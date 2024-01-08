@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -169,13 +168,7 @@ public final class QueryResults implements JsonSerializable<QueryResults> {
 
                 return deserializedQueryResults;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!tablesFound) {
-                missingProperties.add("tables");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: tables");
         });
     }
 }

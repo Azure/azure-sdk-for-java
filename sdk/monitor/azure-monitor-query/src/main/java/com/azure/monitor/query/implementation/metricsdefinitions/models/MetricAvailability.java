@@ -9,9 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.monitor.query.implementation.metricsdefinitions.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * Metric availability specifies the time grain (aggregation interval or frequency) and the retention period for that
@@ -82,8 +82,8 @@ public final class MetricAvailability implements JsonSerializable<MetricAvailabi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timeGrain", Objects.toString(this.timeGrain, null));
-        jsonWriter.writeStringField("retention", Objects.toString(this.retention, null));
+        jsonWriter.writeStringField("timeGrain", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeGrain));
+        jsonWriter.writeStringField("retention", CoreToCodegenBridgeUtils.durationToStringWithDays(this.retention));
         return jsonWriter.writeEndObject();
     }
 

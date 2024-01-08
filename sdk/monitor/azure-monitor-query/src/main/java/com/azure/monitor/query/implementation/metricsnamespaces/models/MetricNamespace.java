@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Metric namespace class specifies the metadata for a metric namespace.
@@ -154,7 +153,8 @@ public final class MetricNamespace implements JsonSerializable<MetricNamespace> 
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("classification", Objects.toString(this.classification, null));
+        jsonWriter.writeStringField("classification",
+            this.classification == null ? null : this.classification.toString());
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }

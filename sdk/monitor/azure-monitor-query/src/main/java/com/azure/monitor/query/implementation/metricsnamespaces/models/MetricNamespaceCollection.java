@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,17 +72,9 @@ public final class MetricNamespaceCollection implements JsonSerializable<MetricN
                 }
             }
             if (valueFound) {
-                MetricNamespaceCollection deserializedMetricNamespaceCollection = new MetricNamespaceCollection(value);
-
-                return deserializedMetricNamespaceCollection;
+                return new MetricNamespaceCollection(value);
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!valueFound) {
-                missingProperties.add("value");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: value");
         });
     }
 }

@@ -5,7 +5,7 @@
 These settings apply only when `--tag=package-log` is specified on the command line.
 
 ```yaml $(tag) == 'package-log'
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 java: true
 output-folder: ../
@@ -30,7 +30,7 @@ stream-style-serialization: true
 These settings apply only when `--tag=package-metrics` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics'
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metrics_API.json
 java: true
 output-folder: ../
@@ -77,7 +77,7 @@ directive:
 These settings apply only when `--tag=package-metrics-namespaces` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-namespaces'
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 service-name: MetricsNamespaces
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 java: true
@@ -103,7 +103,7 @@ stream-style-serialization: true
 These settings apply only when `--tag=package-metrics-definitions` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-definitions'
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
@@ -129,7 +129,7 @@ stream-style-serialization: true
 These settings apply only when `--tag=package-metrics-batch` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-batch'
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/monitor/data-plane/Microsoft.Insights/preview/2023-05-01-preview/metricBatch.json
 service-name: MetricsDefinitions
 java: true

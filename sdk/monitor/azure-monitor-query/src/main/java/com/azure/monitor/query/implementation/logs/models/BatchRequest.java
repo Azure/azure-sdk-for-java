@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,17 +72,9 @@ public final class BatchRequest implements JsonSerializable<BatchRequest> {
                 }
             }
             if (requestsFound) {
-                BatchRequest deserializedBatchRequest = new BatchRequest(requests);
-
-                return deserializedBatchRequest;
+                return new BatchRequest(requests);
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!requestsFound) {
-                missingProperties.add("requests");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: requests");
         });
     }
 }

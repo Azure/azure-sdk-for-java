@@ -10,8 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The localizable string class.
@@ -107,13 +105,7 @@ public final class LocalizableString implements JsonSerializable<LocalizableStri
 
                 return deserializedLocalizableString;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!valueFound) {
-                missingProperties.add("value");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: value");
         });
     }
 }

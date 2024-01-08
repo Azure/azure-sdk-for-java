@@ -9,11 +9,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.monitor.query.implementation.metricsbatch.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The MetricResultsResponseValuesItem model.
@@ -187,7 +187,7 @@ public final class MetricResultsResponseValuesItem implements JsonSerializable<M
         jsonWriter.writeStringField("starttime", this.starttime);
         jsonWriter.writeStringField("endtime", this.endtime);
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("interval", Objects.toString(this.interval, null));
+        jsonWriter.writeStringField("interval", CoreToCodegenBridgeUtils.durationToStringWithDays(this.interval));
         jsonWriter.writeStringField("namespace", this.namespace);
         jsonWriter.writeStringField("resourceregion", this.resourceregion);
         jsonWriter.writeStringField("resourceid", this.resourceid);

@@ -10,8 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The response to a metrics query that results in a bad request, with optional additional information.
@@ -73,18 +71,9 @@ public final class AdditionalInfoErrorResponse implements JsonSerializable<Addit
                 }
             }
             if (errorFound) {
-                AdditionalInfoErrorResponse deserializedAdditionalInfoErrorResponse
-                    = new AdditionalInfoErrorResponse(error);
-
-                return deserializedAdditionalInfoErrorResponse;
+                return new AdditionalInfoErrorResponse(error);
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!errorFound) {
-                missingProperties.add("error");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: error");
         });
     }
 }

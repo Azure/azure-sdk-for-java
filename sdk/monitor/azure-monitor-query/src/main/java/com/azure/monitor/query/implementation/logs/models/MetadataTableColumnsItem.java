@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The MetadataTableColumnsItem model.
@@ -140,7 +139,7 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeBooleanField("isPreferredFacet", this.isPreferredFacet);
         jsonWriter.writeUntypedField("source", this.source);

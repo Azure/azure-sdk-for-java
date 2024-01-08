@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The result data of a query.
@@ -187,7 +186,7 @@ public final class Metric implements JsonSerializable<Metric> {
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("name", this.name);
-        jsonWriter.writeStringField("unit", Objects.toString(this.unit, null));
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
         jsonWriter.writeArrayField("timeseries", this.timeseries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("displayDescription", this.displayDescription);
         jsonWriter.writeStringField("errorCode", this.errorCode);

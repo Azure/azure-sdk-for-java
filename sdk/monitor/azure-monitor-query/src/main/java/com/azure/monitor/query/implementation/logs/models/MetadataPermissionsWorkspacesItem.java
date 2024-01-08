@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,13 +107,7 @@ public final class MetadataPermissionsWorkspacesItem implements JsonSerializable
 
                 return deserializedMetadataPermissionsWorkspacesItem;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!resourceIdFound) {
-                missingProperties.add("resourceId");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: resourceId");
         });
     }
 }

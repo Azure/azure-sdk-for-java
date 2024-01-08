@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a metric value.
@@ -174,7 +172,8 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timeStamp", Objects.toString(this.timeStamp, null));
+        jsonWriter.writeStringField("timeStamp",
+            this.timeStamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeStamp));
         jsonWriter.writeNumberField("average", this.average);
         jsonWriter.writeNumberField("minimum", this.minimum);
         jsonWriter.writeNumberField("maximum", this.maximum);
@@ -232,13 +231,7 @@ public final class MetricValue implements JsonSerializable<MetricValue> {
 
                 return deserializedMetricValue;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!timeStampFound) {
-                missingProperties.add("timeStamp");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: timeStamp");
         });
     }
 }

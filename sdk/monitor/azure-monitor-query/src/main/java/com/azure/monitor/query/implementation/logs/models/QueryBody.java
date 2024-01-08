@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -141,13 +140,7 @@ public final class QueryBody implements JsonSerializable<QueryBody> {
 
                 return deserializedQueryBody;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!queryFound) {
-                missingProperties.add("query");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: query");
         });
     }
 }

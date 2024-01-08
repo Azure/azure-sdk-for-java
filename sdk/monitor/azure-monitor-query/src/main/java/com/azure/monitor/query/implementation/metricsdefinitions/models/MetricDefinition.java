@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Metric definition class specifies the metadata for a metric.
@@ -360,11 +359,12 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
         jsonWriter.writeJsonField("name", this.name);
         jsonWriter.writeStringField("displayDescription", this.displayDescription);
         jsonWriter.writeStringField("category", this.category);
-        jsonWriter.writeStringField("metricClass", Objects.toString(this.metricClass, null));
-        jsonWriter.writeStringField("unit", Objects.toString(this.unit, null));
-        jsonWriter.writeStringField("primaryAggregationType", Objects.toString(this.primaryAggregationType, null));
+        jsonWriter.writeStringField("metricClass", this.metricClass == null ? null : this.metricClass.toString());
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeStringField("primaryAggregationType",
+            this.primaryAggregationType == null ? null : this.primaryAggregationType.toString());
         jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("metricAvailabilities", this.metricAvailabilities,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("id", this.id);

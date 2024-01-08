@@ -120,9 +120,7 @@ public final class Table implements JsonSerializable<Table> {
                 }
             }
             if (nameFound && columnsFound && rowsFound) {
-                Table deserializedTable = new Table(name, columns, rows);
-
-                return deserializedTable;
+                return new Table(name, columns, rows);
             }
             List<String> missingProperties = new ArrayList<>();
             if (!nameFound) {
