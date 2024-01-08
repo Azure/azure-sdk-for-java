@@ -11,6 +11,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -31,6 +33,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
 class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
     private static final ScheduledExecutorService THREAD_POOL = ImplUtils.createThreadPoolWithShutdownHook();
+    private static final Scheduler SCHEDULER = Schedulers.fromExecutorService(THREAD_POOL);
 
     static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
         LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>, PollResponse<T>> pollOperation,
@@ -97,6 +100,7 @@ class PollingUtil {
             // Do polling
             // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
+                .subscribeOn(SCHEDULER)
                 .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
                 .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
