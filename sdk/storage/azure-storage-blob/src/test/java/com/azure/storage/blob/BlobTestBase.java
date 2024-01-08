@@ -907,36 +907,4 @@ public class BlobTestBase extends TestProxyTestBase {
         cc.setAccessPolicy(access, identifiers).block();
         sleepIfRunningAgainstService(30 * 1000);
     }
-
-    protected boolean areIdentifiersEqual(List<BlobSignedIdentifier> l1, List<BlobSignedIdentifier> l2) {
-        if (l1 == null && l2 == null) {
-            return true;
-        }
-        if (l1 == null || l2 == null) {
-            return false;
-        }
-        for (int x = 0; x < l1.size(); x++) {
-            BlobSignedIdentifier i1 = l1.get(x);
-            BlobSignedIdentifier i2 = l2.get(x);
-            if (!Objects.equals(i1.getId(), i2.getId())) {
-                return false;
-            }
-            if (i1.getAccessPolicy().getExpiresOn() != null && !i1.getAccessPolicy().getExpiresOn().equals(i2.getAccessPolicy().getExpiresOn())) {
-                return false;
-            }
-            if (i1.getAccessPolicy().getExpiresOn() == null && i2.getAccessPolicy().getExpiresOn() != null) {
-                return false;
-            }
-            if (i1.getAccessPolicy().getStartsOn() != null && !i1.getAccessPolicy().getStartsOn().equals(i2.getAccessPolicy().getStartsOn())) {
-                return false;
-            }
-            if (i1.getAccessPolicy().getStartsOn() == null && i2.getAccessPolicy().getStartsOn() != null) {
-                return false;
-            }
-            if (!Objects.equals(i1.getAccessPolicy().getPermissions(), i2.getAccessPolicy().getPermissions())) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
