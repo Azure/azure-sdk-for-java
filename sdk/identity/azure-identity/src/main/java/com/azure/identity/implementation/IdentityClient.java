@@ -550,11 +550,10 @@ public class IdentityClient extends IdentityClientBase {
 
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
-        System.out.println("Parsed Resource: " + resource);
         return managedIdentityMsalApplicationAccessor.getValue()
             .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
                 com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
-                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder("https://vault.azure.net/");
+                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder(resource);
                     try {
                         return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
                     } catch (Exception e) {
