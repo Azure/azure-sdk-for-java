@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration values for periodic mode backup. */
+/**
+ * Configuration values for periodic mode backup.
+ */
 @Fluent
 public final class PeriodicModeProperties {
     /*
@@ -28,13 +30,15 @@ public final class PeriodicModeProperties {
     @JsonProperty(value = "backupStorageRedundancy")
     private BackupStorageRedundancy backupStorageRedundancy;
 
-    /** Creates an instance of PeriodicModeProperties class. */
+    /**
+     * Creates an instance of PeriodicModeProperties class.
+     */
     public PeriodicModeProperties() {
     }
 
     /**
      * Get the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
-     *
+     * 
      * @return the backupIntervalInMinutes value.
      */
     public Integer backupIntervalInMinutes() {
@@ -43,7 +47,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Set the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
-     *
+     * 
      * @param backupIntervalInMinutes the backupIntervalInMinutes value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class PeriodicModeProperties {
     /**
      * Get the backupRetentionIntervalInHours property: An integer representing the time (in hours) that each backup is
      * retained.
-     *
+     * 
      * @return the backupRetentionIntervalInHours value.
      */
     public Integer backupRetentionIntervalInHours() {
@@ -65,7 +69,7 @@ public final class PeriodicModeProperties {
     /**
      * Set the backupRetentionIntervalInHours property: An integer representing the time (in hours) that each backup is
      * retained.
-     *
+     * 
      * @param backupRetentionIntervalInHours the backupRetentionIntervalInHours value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Get the backupStorageRedundancy property: Enum to indicate type of backup residency.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -85,7 +89,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Set the backupStorageRedundancy property: Enum to indicate type of backup residency.
-     *
+     * 
      * @param backupStorageRedundancy the backupStorageRedundancy value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

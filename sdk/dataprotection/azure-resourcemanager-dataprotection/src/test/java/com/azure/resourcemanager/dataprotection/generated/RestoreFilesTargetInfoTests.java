@@ -14,37 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreFilesTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreFilesTargetInfo model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"RestoreFilesTargetInfo\",\"targetDetails\":{\"filePrefix\":\"owzfttsttkt\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"hbq\",\"targetResourceArmId\":\"tx\"},\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"ukxit\"}")
-                .toObject(RestoreFilesTargetInfo.class);
+        RestoreFilesTargetInfo model = BinaryData.fromString(
+            "{\"objectType\":\"RestoreFilesTargetInfo\",\"targetDetails\":{\"filePrefix\":\"smsks\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"iml\",\"targetResourceArmId\":\"ljxkcgxxlx\"},\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"gcvizqzdwlvwlyou\"}")
+            .toObject(RestoreFilesTargetInfo.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("ukxit", model.restoreLocation());
-        Assertions.assertEquals("owzfttsttkt", model.targetDetails().filePrefix());
+        Assertions.assertEquals("gcvizqzdwlvwlyou", model.restoreLocation());
+        Assertions.assertEquals("smsks", model.targetDetails().filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.targetDetails().restoreTargetLocationType());
-        Assertions.assertEquals("hbq", model.targetDetails().url());
-        Assertions.assertEquals("tx", model.targetDetails().targetResourceArmId());
+        Assertions.assertEquals("iml", model.targetDetails().url());
+        Assertions.assertEquals("ljxkcgxxlx", model.targetDetails().targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreFilesTargetInfo model =
-            new RestoreFilesTargetInfo()
-                .withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                .withRestoreLocation("ukxit")
-                .withTargetDetails(
-                    new TargetDetails()
-                        .withFilePrefix("owzfttsttkt")
-                        .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
-                        .withUrl("hbq")
-                        .withTargetResourceArmId("tx"));
+        RestoreFilesTargetInfo model = new RestoreFilesTargetInfo().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
+            .withRestoreLocation("gcvizqzdwlvwlyou")
+            .withTargetDetails(new TargetDetails().withFilePrefix("smsks")
+                .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID).withUrl("iml")
+                .withTargetResourceArmId("ljxkcgxxlx"));
         model = BinaryData.fromObject(model).toObject(RestoreFilesTargetInfo.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.recoveryOption());
-        Assertions.assertEquals("ukxit", model.restoreLocation());
-        Assertions.assertEquals("owzfttsttkt", model.targetDetails().filePrefix());
+        Assertions.assertEquals("gcvizqzdwlvwlyou", model.restoreLocation());
+        Assertions.assertEquals("smsks", model.targetDetails().filePrefix());
         Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.targetDetails().restoreTargetLocationType());
-        Assertions.assertEquals("hbq", model.targetDetails().url());
-        Assertions.assertEquals("tx", model.targetDetails().targetResourceArmId());
+        Assertions.assertEquals("iml", model.targetDetails().url());
+        Assertions.assertEquals("ljxkcgxxlx", model.targetDetails().targetResourceArmId());
     }
 }

@@ -28,6 +28,13 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
     private Subscription subscription;
     private boolean done = false;
 
+    /**
+     * Creates a subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a
+     * {@link AsynchronousByteChannel}.
+     *
+     * @param channel The channel to write the stream of {@link ByteBuffer ByteBuffers} to.
+     * @param emitter The emitter to signal when the stream has been written, or an error has occurred.
+     */
     public AsynchronousByteChannelWriteSubscriber(AsynchronousByteChannel channel, MonoSink<Void> emitter) {
         this.channel = channel;
         this.emitter = emitter;

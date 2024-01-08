@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/OperationList.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/OperationList.json
      */
     /**
      * Sample code: OperationList.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void operationList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

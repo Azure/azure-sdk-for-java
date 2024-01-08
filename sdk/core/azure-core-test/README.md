@@ -218,6 +218,7 @@ to the process of updating recordings.
     - These settings are also set with environment variables `GIT_COMMIT_OWNER` and `GIT_COMMIT_EMAIL`, respectively (in
       your environment or your local `.env` file).
 - Membership in the `azure-sdk-write` GitHub group.
+- `test-proxy` tool [installed](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation)
 
 Test recordings will be updated if tests are run and the environment variable `AZURE_TEST_MODE` is set to `RECORD`.
 Since the recordings themselves are no longer in the `azure-sdk-for-java` repo, though, these updates will be reflected

@@ -15,33 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchAccountIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchAccountIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"rcryuanzwuxzdxta\",\"tenantId\":\"lhmwhfpmrqobm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kohdbiha\":{\"principalId\":\"ryrtihfxtijbpzv\",\"clientId\":\"wzsymglzufcy\"},\"git\":{\"principalId\":\"fhfcb\",\"clientId\":\"s\"},\"n\":{\"principalId\":\"qhabifpikxwcz\",\"clientId\":\"scnpqxuhivy\"},\"grtfwvu\":{\"principalId\":\"b\",\"clientId\":\"rkxvdum\"}}}")
-                .toObject(BatchAccountIdentity.class);
+        BatchAccountIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"rcryuanzwuxzdxta\",\"tenantId\":\"lhmwhfpmrqobm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kohdbiha\":{\"principalId\":\"ryrtihfxtijbpzv\",\"clientId\":\"wzsymglzufcy\"},\"git\":{\"principalId\":\"fhfcb\",\"clientId\":\"s\"},\"n\":{\"principalId\":\"qhabifpikxwcz\",\"clientId\":\"scnpqxuhivy\"},\"grtfwvu\":{\"principalId\":\"b\",\"clientId\":\"rkxvdum\"}}}")
+            .toObject(BatchAccountIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchAccountIdentity model =
-            new BatchAccountIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "kohdbiha",
-                        new UserAssignedIdentities(),
-                        "git",
-                        new UserAssignedIdentities(),
-                        "n",
-                        new UserAssignedIdentities(),
-                        "grtfwvu",
-                        new UserAssignedIdentities()));
+        BatchAccountIdentity model
+            = new BatchAccountIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(
+                mapOf("kohdbiha", new UserAssignedIdentities(), "git", new UserAssignedIdentities(), "n",
+                    new UserAssignedIdentities(), "grtfwvu", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchAccountIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

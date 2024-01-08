@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Re-establish request object supplied in the body of the operation. */
+/**
+ * Re-establish request object supplied in the body of the operation.
+ */
 @Fluent
 public final class ReestablishReplicationRequest {
     /*
@@ -16,13 +18,15 @@ public final class ReestablishReplicationRequest {
     @JsonProperty(value = "sourceVolumeId")
     private String sourceVolumeId;
 
-    /** Creates an instance of ReestablishReplicationRequest class. */
+    /**
+     * Creates an instance of ReestablishReplicationRequest class.
+     */
     public ReestablishReplicationRequest() {
     }
 
     /**
      * Get the sourceVolumeId property: Resource id of the source volume for the replication.
-     *
+     * 
      * @return the sourceVolumeId value.
      */
     public String sourceVolumeId() {
@@ -31,7 +35,7 @@ public final class ReestablishReplicationRequest {
 
     /**
      * Set the sourceVolumeId property: Resource id of the source volume for the replication.
-     *
+     * 
      * @param sourceVolumeId the sourceVolumeId value to set.
      * @return the ReestablishReplicationRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class ReestablishReplicationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

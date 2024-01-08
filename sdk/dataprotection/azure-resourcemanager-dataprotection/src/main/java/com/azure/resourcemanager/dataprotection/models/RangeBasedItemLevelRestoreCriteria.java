@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Item Level target info for restore operation. */
+/**
+ * Item Level target info for restore operation.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("RangeBasedItemLevelRestoreCriteria")
 @Fluent
@@ -26,13 +28,15 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
     @JsonProperty(value = "maxMatchingValue")
     private String maxMatchingValue;
 
-    /** Creates an instance of RangeBasedItemLevelRestoreCriteria class. */
+    /**
+     * Creates an instance of RangeBasedItemLevelRestoreCriteria class.
+     */
     public RangeBasedItemLevelRestoreCriteria() {
     }
 
     /**
      * Get the minMatchingValue property: minimum value for range prefix match.
-     *
+     * 
      * @return the minMatchingValue value.
      */
     public String minMatchingValue() {
@@ -41,7 +45,7 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
 
     /**
      * Set the minMatchingValue property: minimum value for range prefix match.
-     *
+     * 
      * @param minMatchingValue the minMatchingValue value to set.
      * @return the RangeBasedItemLevelRestoreCriteria object itself.
      */
@@ -52,7 +56,7 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
 
     /**
      * Get the maxMatchingValue property: maximum value for range prefix match.
-     *
+     * 
      * @return the maxMatchingValue value.
      */
     public String maxMatchingValue() {
@@ -61,7 +65,7 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
 
     /**
      * Set the maxMatchingValue property: maximum value for range prefix match.
-     *
+     * 
      * @param maxMatchingValue the maxMatchingValue value to set.
      * @return the RangeBasedItemLevelRestoreCriteria object itself.
      */
@@ -72,7 +76,7 @@ public final class RangeBasedItemLevelRestoreCriteria extends ItemLevelRestoreCr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

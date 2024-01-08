@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Backup policy Details for create and update. */
+/**
+ * Backup policy Details for create and update.
+ */
 @Fluent
 public final class BackupPolicyPatch extends Resource {
     /*
@@ -20,27 +22,33 @@ public final class BackupPolicyPatch extends Resource {
     @JsonProperty(value = "properties")
     private BackupPolicyProperties innerProperties;
 
-    /** Creates an instance of BackupPolicyPatch class. */
+    /**
+     * Creates an instance of BackupPolicyPatch class.
+     */
     public BackupPolicyPatch() {
     }
 
     /**
      * Get the innerProperties property: Backup policy Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupPolicyProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyPatch withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -58,7 +66,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -67,7 +75,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @return the dailyBackupsToKeep value.
      */
     public Integer dailyBackupsToKeep() {
@@ -76,7 +84,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Set the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
      * @return the BackupPolicyPatch object itself.
      */
@@ -90,7 +98,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @return the weeklyBackupsToKeep value.
      */
     public Integer weeklyBackupsToKeep() {
@@ -99,7 +107,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
      * @return the BackupPolicyPatch object itself.
      */
@@ -113,7 +121,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @return the monthlyBackupsToKeep value.
      */
     public Integer monthlyBackupsToKeep() {
@@ -122,7 +130,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
      * @return the BackupPolicyPatch object itself.
      */
@@ -136,7 +144,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the volumesAssigned property: Volumes using current backup policy.
-     *
+     * 
      * @return the volumesAssigned value.
      */
     public Integer volumesAssigned() {
@@ -145,7 +153,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -154,7 +162,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BackupPolicyPatch object itself.
      */
@@ -168,7 +176,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Get the volumeBackups property: A list of volumes assigned to this policy.
-     *
+     * 
      * @return the volumeBackups value.
      */
     public List<VolumeBackups> volumeBackups() {
@@ -177,7 +185,7 @@ public final class BackupPolicyPatch extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

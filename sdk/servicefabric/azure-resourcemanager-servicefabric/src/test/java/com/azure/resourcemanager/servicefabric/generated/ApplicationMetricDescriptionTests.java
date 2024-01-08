@@ -11,29 +11,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationMetricDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationMetricDescription model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"yaqcslyjpkiidz\",\"maximumCapacity\":5205006651659908970,\"reservationCapacity\":2324400612208346628,\"totalApplicationCapacity\":3061117133295228827}")
-                .toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("yaqcslyjpkiidz", model.name());
-        Assertions.assertEquals(5205006651659908970L, model.maximumCapacity());
-        Assertions.assertEquals(2324400612208346628L, model.reservationCapacity());
-        Assertions.assertEquals(3061117133295228827L, model.totalApplicationCapacity());
+        ApplicationMetricDescription model = BinaryData.fromString(
+            "{\"name\":\"qig\",\"maximumCapacity\":1427620858530935166,\"reservationCapacity\":8642059696861181136,\"totalApplicationCapacity\":5173080348817508321}")
+            .toObject(ApplicationMetricDescription.class);
+        Assertions.assertEquals("qig", model.name());
+        Assertions.assertEquals(1427620858530935166L, model.maximumCapacity());
+        Assertions.assertEquals(8642059696861181136L, model.reservationCapacity());
+        Assertions.assertEquals(5173080348817508321L, model.totalApplicationCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationMetricDescription model =
-            new ApplicationMetricDescription()
-                .withName("yaqcslyjpkiidz")
-                .withMaximumCapacity(5205006651659908970L)
-                .withReservationCapacity(2324400612208346628L)
-                .withTotalApplicationCapacity(3061117133295228827L);
+        ApplicationMetricDescription model
+            = new ApplicationMetricDescription().withName("qig").withMaximumCapacity(1427620858530935166L)
+                .withReservationCapacity(8642059696861181136L).withTotalApplicationCapacity(5173080348817508321L);
         model = BinaryData.fromObject(model).toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("yaqcslyjpkiidz", model.name());
-        Assertions.assertEquals(5205006651659908970L, model.maximumCapacity());
-        Assertions.assertEquals(2324400612208346628L, model.reservationCapacity());
-        Assertions.assertEquals(3061117133295228827L, model.totalApplicationCapacity());
+        Assertions.assertEquals("qig", model.name());
+        Assertions.assertEquals(1427620858530935166L, model.maximumCapacity());
+        Assertions.assertEquals(8642059696861181136L, model.reservationCapacity());
+        Assertions.assertEquals(5173080348817508321L, model.totalApplicationCapacity());
     }
 }

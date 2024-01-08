@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Accounts GetByResourceGroup. */
+/**
+ * Samples for Accounts GetByResourceGroup.
+ */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Accounts_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

@@ -126,6 +126,7 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -162,7 +163,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.53.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.54.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

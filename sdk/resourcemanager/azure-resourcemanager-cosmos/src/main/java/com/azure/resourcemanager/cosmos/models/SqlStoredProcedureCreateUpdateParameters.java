@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlStoredProcedureCreateUp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB storedProcedure. */
+/**
+ * Parameters to create and update Cosmos DB storedProcedure.
+ */
 @Fluent
 public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
     @JsonProperty(value = "properties", required = true)
     private SqlStoredProcedureCreateUpdateProperties innerProperties = new SqlStoredProcedureCreateUpdateProperties();
 
-    /** Creates an instance of SqlStoredProcedureCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlStoredProcedureCreateUpdateParameters class.
+     */
     public SqlStoredProcedureCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB storedProcedure.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlStoredProcedureCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlStoredProcedureCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlStoredProcedureCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
 
     /**
      * Get the resource property: The standard JSON format of a storedProcedure.
-     *
+     * 
      * @return the resource value.
      */
     public SqlStoredProcedureResource resource() {
@@ -57,7 +65,7 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
 
     /**
      * Set the resource property: The standard JSON format of a storedProcedure.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlStoredProcedureCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlStoredProcedureCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SqlStoredProcedureCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SqlStoredProcedureCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

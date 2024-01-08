@@ -11,7 +11,6 @@ import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +41,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
 public final class LoggingEventBuilder {
     private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-    private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
+    private static final String AZURE_SDK_LOG_MESSAGE_JSON_START = "{\"az.sdk.message\":\"";
 
     private final Logger logger;
     private final LogLevel level;
@@ -70,7 +69,6 @@ public final class LoggingEventBuilder {
         this.logger = logger;
         this.level = level;
         this.isEnabled = isEnabled;
-        this.context = Collections.emptyList();
         this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
         this.hasGlobalContext = !this.globalContextCached.isEmpty();
     }
@@ -126,7 +124,9 @@ public final class LoggingEventBuilder {
      */
     public LoggingEventBuilder addKeyValue(String key, Object value) {
         if (this.isEnabled) {
-            addKeyValueInternal(key, value == null ? null : value.toString());
+            // Previously this eagerly called toString() on the value, but that can be expensive and unnecessary.
+            // This is now deferred until the value is being logged, which was calling toString() anyway.
+            addKeyValueInternal(key, value);
         }
 
         return this;
@@ -181,7 +181,7 @@ public final class LoggingEventBuilder {
      */
     public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
         if (this.isEnabled) {
-            if (this.context.isEmpty()) {
+            if (this.context == null) {
                 this.context = new ArrayList<>();
             }
 
@@ -197,7 +197,7 @@ public final class LoggingEventBuilder {
      */
     public void log(String message) {
         if (this.isEnabled) {
-            performLogging(level, message);
+            performLogging(level, getMessageWithContext(message, null), (Throwable) null);
         }
     }
 
@@ -209,7 +209,7 @@ public final class LoggingEventBuilder {
     public void log(Supplier<String> messageSupplier) {
         if (this.isEnabled) {
             String message = messageSupplier != null ? messageSupplier.get() : null;
-            performLogging(level, message);
+            performLogging(level, getMessageWithContext(message, null), (Throwable) null);
         }
     }
 
@@ -222,7 +222,8 @@ public final class LoggingEventBuilder {
     public void log(Supplier<String> messageSupplier, Throwable throwable) {
         if (this.isEnabled) {
             String message = messageSupplier != null ? messageSupplier.get() : null;
-            performLogging(level, message, throwable);
+            performLogging(level, getMessageWithContext(message, throwable),
+                logger.isDebugEnabled() ? throwable : null);
         }
     }
 
@@ -250,7 +251,7 @@ public final class LoggingEventBuilder {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
 
         if (this.isEnabled) {
-            performLogging(level, null, throwable);
+            performLogging(level, getMessageWithContext(null, throwable), logger.isDebugEnabled() ? throwable : null);
         }
 
         return throwable;
@@ -268,9 +269,10 @@ public final class LoggingEventBuilder {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
         if (this.isEnabled) {
-            performLogging(level, null, runtimeException);
-        }
+            performLogging(level, getMessageWithContext(null, runtimeException),
+                logger.isDebugEnabled() ? runtimeException : null);
 
+        }
         return runtimeException;
     }
 
@@ -279,43 +281,44 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length()
+        StringBuilder sb = new StringBuilder(20 + (context == null ? 0 : context.size()) * 20 + message.length()
             + globalContextCached.length());
-        sb.append("{\"")
-            // message must be first for log parsing tooling to work, key also works as a
-            // marker for Azure SDK logs so we'll write it even if there is no message
-            .append(AZURE_SDK_LOG_MESSAGE_KEY)
-            .append("\":\"");
+        // message must be first for log parsing tooling to work, key also works as a
+        // marker for Azure SDK logs so we'll write it even if there is no message
+        sb.append(AZURE_SDK_LOG_MESSAGE_JSON_START);
         JSON_STRING_ENCODER.quoteAsString(message, sb);
-        sb.append("\"");
+        sb.append('"');
 
         if (throwable != null) {
             sb.append(",\"exception\":");
 
+            // todo (alzimmer): Is adding '"exception": null' useful?
             String exceptionMessage = throwable.getMessage();
             if (exceptionMessage != null) {
-                sb.append("\"");
+                sb.append('"');
                 JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
-                sb.append("\"");
+                sb.append('"');
             } else {
                 sb.append("null");
             }
         }
 
         if (hasGlobalContext) {
-            sb.append(",").append(globalContextCached);
+            sb.append(',').append(globalContextCached);
         }
 
-        for (ContextKeyValuePair contextKeyValuePair : context) {
-            contextKeyValuePair.write(sb.append(","));
+        if (context != null) {
+            for (ContextKeyValuePair contextKeyValuePair : context) {
+                contextKeyValuePair.write(sb.append(','));
+            }
         }
 
-        sb.append("}");
+        sb.append('}');
         return sb.toString();
     }
 
     private void addKeyValueInternal(String key, Object value) {
-        if (this.context.isEmpty()) {
+        if (this.context == null) {
             this.context = new ArrayList<>();
         }
 
@@ -329,7 +332,6 @@ public final class LoggingEventBuilder {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, String format, Object... args) {
-
         Throwable throwable = null;
         if (doesArgsHaveThrowable(args)) {
             Object throwableObj = args[args.length - 1];
@@ -351,18 +353,22 @@ public final class LoggingEventBuilder {
         FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
         String message = getMessageWithContext(tuple.getMessage(), throwable);
 
+        performLogging(logLevel, message, tuple.getThrowable());
+    }
+
+    private void performLogging(LogLevel logLevel, String message, Throwable throwable) {
         switch (logLevel) {
             case VERBOSE:
-                logger.debug(message, tuple.getThrowable());
+                logger.debug(message, throwable);
                 break;
             case INFORMATIONAL:
-                logger.info(message, tuple.getThrowable());
+                logger.info(message, throwable);
                 break;
             case WARNING:
-                logger.warn(message, tuple.getThrowable());
+                logger.warn(message, throwable);
                 break;
             case ERROR:
-                logger.error(message, tuple.getThrowable());
+                logger.error(message, throwable);
                 break;
             default:
                 // Don't do anything, this state shouldn't be possible.
@@ -386,49 +392,45 @@ public final class LoggingEventBuilder {
         }
 
         StringBuilder formatter = new StringBuilder(context.size() * 20);
+
+        // Keep track of whether we've written a value yet so we don't write a trailing comma.
+        // The previous implementation would delete the trailing comma, but internally this causes StringBuilder to
+        // copy the entirety of the string to a new buffer, which is very expensive.
+        boolean firstValueWritten = false;
         for (Map.Entry<String, Object> pair : context.entrySet()) {
-            writeKeyAndValue(pair.getKey(), pair.getValue(), formatter).append(",");
+            if (firstValueWritten) {
+                formatter.append(',');
+            } else {
+                firstValueWritten = true;
+            }
+
+            writeKeyAndValue(pair.getKey(), pair.getValue(), formatter);
         }
 
-        // remove trailing comma just in case
-        return formatter.deleteCharAt(formatter.length() - 1)
-            .toString();
+        return formatter.toString();
     }
 
-    private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
-        formatter.append("\"");
+    private static void writeKeyAndValue(String key, Object value, StringBuilder formatter) {
+        formatter.append('"');
         JSON_STRING_ENCODER.quoteAsString(key, formatter);
         formatter.append("\":");
 
         if (value == null) {
-            return formatter.append("null");
-        }
-
-        if (isPrimitive(value)) {
+            formatter.append("null");
+        } else if (isUnquotedType(value)) {
             JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-            return formatter;
+        } else {
+            formatter.append('"');
+            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+            formatter.append('"');
         }
-
-        formatter.append("\"");
-        JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-        return formatter.append("\"");
     }
 
     /**
-     *  Returns true if the value is an instance of a primitive type and false otherwise.
+     *  Returns true if the value is an unquoted JSON type (boolean, number, null).
      */
-    private static boolean isPrimitive(Object value) {
-        // most of the time values are strings
-        if (value instanceof String) {
-            return false;
-        }
-
-        return value instanceof Boolean
-            || value instanceof Integer
-            || value instanceof Long
-            || value instanceof Byte
-            || value instanceof Double
-            || value instanceof Float;
+    private static boolean isUnquotedType(Object value) {
+        return value instanceof Boolean || value instanceof Number;
     }
 
     private static final class ContextKeyValuePair {
@@ -451,12 +453,12 @@ public final class LoggingEventBuilder {
         /**
          * Writes "key":"value" json string to provided StringBuilder.
          */
-        public StringBuilder write(StringBuilder formatter) {
+        public void write(StringBuilder formatter) {
             if (valueSupplier == null) {
-                return writeKeyAndValue(key, value, formatter);
+                writeKeyAndValue(key, value, formatter);
+            } else {
+                writeKeyAndValue(key, valueSupplier.get(), formatter);
             }
-
-            return writeKeyAndValue(key, valueSupplier.get(), formatter);
         }
     }
 }

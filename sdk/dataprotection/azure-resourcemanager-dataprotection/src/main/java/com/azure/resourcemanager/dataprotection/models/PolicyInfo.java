@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * PolicyInfo
- *
- * <p>Policy Info in backupInstance.
+ * 
+ * Policy Info in backupInstance.
  */
 @Fluent
 public final class PolicyInfo {
@@ -33,13 +33,15 @@ public final class PolicyInfo {
     @JsonProperty(value = "policyParameters")
     private PolicyParameters policyParameters;
 
-    /** Creates an instance of PolicyInfo class. */
+    /**
+     * Creates an instance of PolicyInfo class.
+     */
     public PolicyInfo() {
     }
 
     /**
      * Get the policyId property: The policyId property.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -48,7 +50,7 @@ public final class PolicyInfo {
 
     /**
      * Set the policyId property: The policyId property.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the PolicyInfo object itself.
      */
@@ -59,7 +61,7 @@ public final class PolicyInfo {
 
     /**
      * Get the policyVersion property: The policyVersion property.
-     *
+     * 
      * @return the policyVersion value.
      */
     public String policyVersion() {
@@ -68,7 +70,7 @@ public final class PolicyInfo {
 
     /**
      * Get the policyParameters property: Policy parameters for the backup instance.
-     *
+     * 
      * @return the policyParameters value.
      */
     public PolicyParameters policyParameters() {
@@ -77,7 +79,7 @@ public final class PolicyInfo {
 
     /**
      * Set the policyParameters property: Policy parameters for the backup instance.
-     *
+     * 
      * @param policyParameters the policyParameters value to set.
      * @return the PolicyInfo object itself.
      */
@@ -88,14 +90,13 @@ public final class PolicyInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property policyId in model PolicyInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property policyId in model PolicyInfo"));
         }
         if (policyParameters() != null) {
             policyParameters().validate();

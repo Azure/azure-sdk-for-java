@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,10 +20,10 @@ public final class CosmosClientEncryptionKeyProperties {
     /**
      * Initialize a ClientEncryptionKey object from json string.
      *
-     * @param jsonString the json string that represents the database clientEncryptionKey.
+     * @param jsonNode the json node that represents the database clientEncryptionKey.
      */
-    CosmosClientEncryptionKeyProperties(String jsonString) {
-        this.clientEncryptionKey = new ClientEncryptionKey(jsonString);
+    CosmosClientEncryptionKeyProperties(ObjectNode jsonNode) {
+        this.clientEncryptionKey = new ClientEncryptionKey(jsonNode);
     }
 
     CosmosClientEncryptionKeyProperties(ClientEncryptionKey clientEncryptionKey) {
@@ -156,7 +157,7 @@ public final class CosmosClientEncryptionKeyProperties {
     }
 
     ClientEncryptionKey getClientEncryptionKey() {
-        return new ClientEncryptionKey(this.clientEncryptionKey.toJson());
+        return new ClientEncryptionKey(this.clientEncryptionKey.getPropertyBag());
     }
 
     static List<CosmosClientEncryptionKeyProperties> getClientEncryptionKeys(List<ClientEncryptionKey> results) {

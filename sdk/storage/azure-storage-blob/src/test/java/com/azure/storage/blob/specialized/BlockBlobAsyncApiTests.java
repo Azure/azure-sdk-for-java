@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -20,6 +21,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
@@ -53,13 +55,14 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.RequestAssertionPolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -352,10 +355,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailure() {
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         byte[] data = getRandomByteArray(10);
         String blockId = getBlockID();
@@ -368,17 +369,14 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void stageBlockRetryOnTransientFailureWithRetriableBinaryData() {
         List<BinaryData> binaryDataList = Arrays.asList(
             BinaryData.fromBytes(DATA.getDefaultBytes()),
             BinaryData.fromString(DATA.getDefaultText()),
             BinaryData.fromFile(DATA.getDefaultFile()));
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         for (BinaryData binaryData : binaryDataList) {
             String blockId = getBlockID();
@@ -693,7 +691,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("commitBlockListTagsSupplier")
     public void commitBlockListTags(String key1, String value1, String key2, String value2) {
@@ -723,7 +721,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void commitBlockListAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -745,7 +743,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             null, null, bac), 201);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void commitBlockListACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
@@ -777,7 +775,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                 .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void commitBlockListColdTier() {
         blockBlobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -889,7 +887,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void getBlockListTags() {
         Map<String, String> t = new HashMap<>();
@@ -902,7 +900,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void getBlockListTagsFail() {
         StepVerifier.create(blockBlobAsyncClient.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
@@ -985,7 +983,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadFromFileSupplier")
     public void uploadFromFile(int fileSize, Long blockSize, int committedBlockCount) throws IOException {
@@ -1037,7 +1035,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void uploadFromFileWithMetadata() throws IOException {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
@@ -1063,8 +1061,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @LiveOnly
     @Test
     public void uploadFromFileWithTags() throws IOException {
         Map<String, String> tags = Collections.singletonMap(testResourceNamer.randomName(prefix, 20),
@@ -1091,7 +1089,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void uploadFromFileDefaultNoOverwrite() throws IOException {
         File file = getRandomFile(50);
@@ -1113,7 +1111,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void uploadFromFileOverwrite() throws IOException {
         File file = getRandomFile(50);
@@ -1152,7 +1150,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("uploadFromFileReporterSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void uploadFromFileReporter(int size, Long blockSize, Integer bufferCount) throws IOException {
         FileUploadReporter uploadReporter = new FileUploadReporter();
         File file = getRandomFile(size);
@@ -1183,7 +1181,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("uploadFromFileReporterSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void uploadFromFileListener(int size, Long blockSize, Integer bufferCount) throws IOException {
         FileUploadReporter uploadListener = new FileUploadReporter();
         File file = getRandomFile(size);
@@ -1205,7 +1203,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("uploadFromFileOptionsSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void uploadFromFileOptions(int dataSize, Long singleUploadSize, Long blockSize, double expectedBlockCount)
         throws IOException {
         File file = getRandomFile(dataSize);
@@ -1386,7 +1384,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("commitBlockListTagsSupplier")
     public void uploadTags(String key1, String value1, String key2, String value2) {
@@ -1409,7 +1407,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void uploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1431,7 +1429,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             DATA.getDefaultDataSize(), null, null, null, null, bac), 201);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void uploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1482,7 +1480,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void uploadWithAccessTierCold() {
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -1511,11 +1509,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void uploadRetryOnTransientFailure() {
-        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        ).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy()).getBlockBlobAsyncClient();
 
         clientWithFailure.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true);
 
@@ -1524,7 +1519,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void asyncBufferedUploadEmpty() {
         StepVerifier.create(blobAsyncClient.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null,
@@ -1539,7 +1534,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadEmptyBuffersSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void asyncBufferedUploadEmptyBuffers(ByteBuffer buffer1, ByteBuffer buffer2, ByteBuffer buffer3,
                                                 byte[] expectedDownload) {
         StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable(Arrays.asList(buffer1, buffer2, buffer3)),
@@ -1572,7 +1567,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void asyncBufferedUpload(int dataSize, long bufferSize, int numBuffs, int blockCount) {
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(bufferSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
@@ -1619,7 +1614,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("asyncBufferedUploadComputeMd5Supplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void asyncBufferedUploadComputeMd5(int size, Long maxSingleUploadSize, Long blockSize, int byteBufferCount) {
         List<ByteBuffer> byteBufferList = new ArrayList<>();
         for (int i = 0; i < byteBufferCount; i++) {
@@ -1708,7 +1703,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadWithReporter(int size, long blockSize, int bufferCount) {
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(blockSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
@@ -1746,7 +1741,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("bufferedUploadWithReporterSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadWithListener(int size, long blockSize, int bufferCount) {
         BlobAsyncClient asyncClient = getPrimaryServiceClientForWrites(blockSize)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
@@ -1775,7 +1770,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("bufferedUploadChunkedSourceSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadChunkedSource(int[] dataSizeList, long bufferSize, int numBuffers, int blockCount) {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -1817,7 +1812,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadHandlePathing(int[] dataSizeList, int blockCount) {
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
@@ -1846,7 +1841,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadHandlePathingHotFlux(int[] dataSizeList, int blockCount) {
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
@@ -1867,13 +1862,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("bufferedUploadHandlePathingHotFluxWithTransientFailureSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadHandlePathingHotFluxWithTransientFailure(int[] dataSizeList, int blockCount) {
-        BlobAsyncClient clientWithFailure = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(),
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        );
+        BlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            blobAsyncClient.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy());
 
         List<ByteBuffer> dataList = new ArrayList<>();
         for (int size : dataSizeList) {
@@ -1926,7 +1918,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("bufferedUploadHeadersSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadHeaders(int dataSize, String cacheControl, String contentDisposition,
                                       String contentEncoding, String contentLanguage, boolean validateContentMD5,
                                       String contentType)
@@ -1965,7 +1957,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("bufferedUploadMetadataSupplier")
     public void bufferedUploadMetadata(String key1, String value1, String key2, String value2) {
@@ -1998,10 +1990,10 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("bufferedUploadTagsSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadTags(String key1, String value1, String key2, String value2) {
         Map<String, String> tags = new HashMap<>();
         if (key1 != null) {
@@ -2032,7 +2024,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("bufferedUploadOptionsSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadOptions(int dataSize, Long singleUploadSize, Long blockSize, int expectedBlockCount) {
         ByteBuffer data = getRandomData(dataSize);
 
@@ -2062,7 +2054,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("bufferedUploadWithLengthSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadWithLength(int dataSize, Long singleUploadSize, Long blockSize, int expectedBlockCount) {
         Flux<ByteBuffer> data = Flux.just(getRandomData(dataSize));
         BinaryData binaryData = BinaryData.fromFlux(data, (long) dataSize).block();
@@ -2086,7 +2078,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // Only run these tests in live mode as they use variables that can't be captured.
     @ParameterizedTest
     @MethodSource("bufferedUploadACSupplier")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void bufferedUploadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
         blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
@@ -2117,7 +2109,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fileACFailSupplier")
     public void bufferedUploadACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -2147,7 +2139,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     // (discovered when a leaseId was invalid)
     @ParameterizedTest
     @CsvSource(value = {"16,7,2", "16,5,2"})
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     public void uploadBufferPoolLockThreeOrMoreBuffers(int dataLength, int blockSize, int numBuffers) {
         blockBlobAsyncClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true).block();
         String leaseID = setupBlobLeaseCondition(blockBlobAsyncClient, GARBAGE_LEASE_ID);
@@ -2162,7 +2154,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(BlobStorageException.class, it));
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadNetworkError() throws MalformedURLException {
         /*
@@ -2172,8 +2164,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         blockBlobAsyncClient.upload(Flux.just(DATA.getDefaultData()), DATA.getDefaultDataSize(), true).block();
 
         // Mock a response that will always be retried.
-        HttpResponse mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT,
-            new URL("https://www.fake.com")));
+        HttpResponse mockHttpResponse = new MockHttpResponse(new HttpRequest(HttpMethod.PUT, "https://www.fake.com"),
+            500);
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         ByteBuffer localData = DATA.getDefaultData();
@@ -2204,7 +2196,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             });
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadDefaultNoOverwrite() {
         StepVerifier.create(blobAsyncClient.upload(DATA.getDefaultFlux(), null))
@@ -2217,7 +2209,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyError(IllegalArgumentException.class);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadNoOverwriteInterrupted() throws IOException {
         File smallFile = getRandomFile(50);
@@ -2238,7 +2230,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         });
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadWithSpecifiedLength() {
         Flux<ByteBuffer> fluxData = Flux.just(getRandomData(DATA.getDefaultDataSize()));
@@ -2248,7 +2240,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .assertNext(it -> assertNotNull(it.getValue().getETag())).verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void bufferedUploadOverwrite() throws IOException {
         File file = getRandomFile(50);
@@ -2298,11 +2290,13 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
         return Stream.of(
-            Arguments.of("blob", "blob"),
+            Arguments.of("blobName", "blobName"),
+            Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
             Arguments.of("path/to]a blob", "path/to]a blob"),
-            Arguments.of("path%2Fto%5Da%20blob", "path/to]a blob"),
+            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"),
             Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點"));
+            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點", "斑點"));
     }
 
     @Test
@@ -2339,7 +2333,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlMin() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2364,7 +2358,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlOverwrite() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2387,7 +2381,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlOverwriteFailsOnExistingBlob() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2411,7 +2405,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromUrlMax() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2459,7 +2453,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void uploadFromWithInvalidSourceMD5() throws NoSuchAlgorithmException {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
@@ -2481,7 +2475,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @ParameterizedTest
     @MethodSource("uploadFromUrlSourceRequestConditionsSupplier")
     public void uploadFromUrlSourceRequestConditions(BlobRequestConditions requestConditions, BlobErrorCode errorCode) {
@@ -2512,7 +2506,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @ParameterizedTest
     @MethodSource("uploadFromUrlDestinationRequestConditionsSupplier")
     public void uploadFromUrlDestinationRequestConditions(BlobRequestConditions requestConditions,
@@ -2549,7 +2543,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                 BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("uploadFromUrlCopySourceTagsSupplier")
     public void uploadFromUrlCopySourceTags(BlobCopySourceTagsMode mode) {
@@ -2589,7 +2583,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void uploadFromUrlAccessTierCold() {
         BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)

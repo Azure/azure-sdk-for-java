@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** SingletonPartitionSchemeDescription. */
+/**
+ * SingletonPartitionSchemeDescription.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "partitionScheme")
 @JsonTypeName("Singleton")
 @Immutable
 public final class SingletonPartitionSchemeDescription extends PartitionSchemeDescription {
-    /** Creates an instance of SingletonPartitionSchemeDescription class. */
+    /**
+     * Creates an instance of SingletonPartitionSchemeDescription class.
+     */
     public SingletonPartitionSchemeDescription() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

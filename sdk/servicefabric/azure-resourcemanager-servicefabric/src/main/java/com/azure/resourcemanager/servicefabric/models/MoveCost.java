@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the move cost for the service. */
+/**
+ * Specifies the move cost for the service.
+ */
 public final class MoveCost extends ExpandableStringEnum<MoveCost> {
-    /** Static value Zero for MoveCost. */
+    /**
+     * Static value Zero for MoveCost.
+     */
     public static final MoveCost ZERO = fromString("Zero");
 
-    /** Static value Low for MoveCost. */
+    /**
+     * Static value Low for MoveCost.
+     */
     public static final MoveCost LOW = fromString("Low");
 
-    /** Static value Medium for MoveCost. */
+    /**
+     * Static value Medium for MoveCost.
+     */
     public static final MoveCost MEDIUM = fromString("Medium");
 
-    /** Static value High for MoveCost. */
+    /**
+     * Static value High for MoveCost.
+     */
     public static final MoveCost HIGH = fromString("High");
 
     /**
      * Creates a new instance of MoveCost value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class MoveCost extends ExpandableStringEnum<MoveCost> {
 
     /**
      * Creates or finds a MoveCost from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MoveCost.
      */
@@ -44,7 +54,7 @@ public final class MoveCost extends ExpandableStringEnum<MoveCost> {
 
     /**
      * Gets known MoveCost values.
-     *
+     * 
      * @return known MoveCost values.
      */
     public static Collection<MoveCost> values() {

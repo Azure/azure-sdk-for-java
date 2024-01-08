@@ -56,6 +56,7 @@ public abstract class BinaryDataContent {
      *
      * @param <T> Type of the deserialized Object.
      * @param typeReference The {@link Class} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} that will be used to deserialize the data.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryDataContent}.
      * @throws NullPointerException If {@code typeReference} is null.
      * @see JsonSerializer

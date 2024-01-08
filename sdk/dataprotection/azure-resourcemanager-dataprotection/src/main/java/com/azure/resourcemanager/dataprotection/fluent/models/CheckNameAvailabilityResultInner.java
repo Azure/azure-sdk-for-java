@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * CheckNameAvailabilityResult
- *
- * <p>CheckNameAvailability Result.
+ * 
+ * CheckNameAvailability Result.
  */
 @Fluent
 public final class CheckNameAvailabilityResultInner {
@@ -32,13 +32,15 @@ public final class CheckNameAvailabilityResultInner {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityResultInner class.
+     */
     public CheckNameAvailabilityResultInner() {
     }
 
     /**
      * Get the message property: Gets or sets the message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -47,7 +49,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the message property: Gets or sets the message.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -58,7 +60,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the nameAvailable property: Gets or sets a value indicating whether [name available].
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -67,7 +69,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the nameAvailable property: Gets or sets a value indicating whether [name available].
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -78,7 +80,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the reason property: Gets or sets the reason.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -87,7 +89,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the reason property: Gets or sets the reason.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -98,7 +100,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

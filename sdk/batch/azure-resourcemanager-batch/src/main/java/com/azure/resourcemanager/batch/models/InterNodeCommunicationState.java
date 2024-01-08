@@ -9,18 +9,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Whether the pool permits direct communication between nodes.
- *
- * <p>This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of
+ * 
+ * This imposes restrictions on which nodes can be assigned to the pool. Enabling this value can reduce the chance of
  * the requested number of nodes to be allocated in the pool. If not specified, this value defaults to 'Disabled'.
  */
 public enum InterNodeCommunicationState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a InterNodeCommunicationState instance. */
+    /**
+     * The actual serialized value for a InterNodeCommunicationState instance.
+     */
     private final String value;
 
     InterNodeCommunicationState(String value) {
@@ -29,7 +35,7 @@ public enum InterNodeCommunicationState {
 
     /**
      * Parses a serialized value to a InterNodeCommunicationState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed InterNodeCommunicationState object, or null if unable to parse.
      */
@@ -47,7 +53,9 @@ public enum InterNodeCommunicationState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

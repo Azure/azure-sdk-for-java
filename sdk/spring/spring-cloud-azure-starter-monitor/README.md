@@ -19,6 +19,11 @@ For more information, please read [introduction to Application Insights][applica
 
 ### Build update
 
+#### OpenTelemetry configuration
+
+Import the OpenTelemetry Bills of Materials (BOM)
+by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
+
 #### Add monitoring dependency
 [//]: # ({x-version-update-start;com.azure:azure-monitor-azure-monitor-spring-native;current})
 ```xml
@@ -33,50 +38,6 @@ For more information, please read [introduction to Application Insights][applica
 #### Required native image build configuration
 
 [Instruction][azure_native] for Spring Boot native image applications.
-
-#### OpenTelemetry version adjustment
-
-You may have to align the OpenTelemetry versions of Spring Boot 3 and `spring-cloud-azure-starter-monitor`. If this is the case, you will notice a WARN message during the application start-up:
-```
-WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
-```
-To fix this with Maven, you can set the `opentelemetry.version` property:
-
-```xml
-<properties>
-   <opentelemetry.version>{otel-version-given-in-the-warn-log}</opentelemetry.version>
-</properties>
-```
-
-Another way is to declare the `opentelemetry-bom` BOM:
-
-```xml
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-bom</artifactId>
-            <version>{otel-version-given-in-the-warn-log}</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-```
-
-With Gradle, you can fix the issue in this way:
-
-```
-plugins {
-    id 'org.springframework.boot'
-    id 'io.spring.dependency-management'
-}
-
-dependencyManagement {
-    imports {
-        mavenBom 'io.opentelemetry:opentelemetry-bom:{otel-version-given-in-the-warn-log}'
-    }
-}
-```
 
 ### Azure Monitor configuration
 
@@ -110,7 +71,13 @@ docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image
 ```
 where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
 
-### Debug
+### Disable the monitoring
+
+You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
+
+### Troubleshooting
+
+#### Debug
 
 If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
 
@@ -125,9 +92,16 @@ docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 
 You have to replace `{image-name}` by your docker image name.
 
-### Disable the monitoring
+#### OpenTelemetry version issue
 
-You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
+You may notice the following message during the application start-up:
+```
+WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
+```
+
+In this case, you have to import the OpenTelemetry Bills of Materials
+by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
+
 
 ## Contributing
 

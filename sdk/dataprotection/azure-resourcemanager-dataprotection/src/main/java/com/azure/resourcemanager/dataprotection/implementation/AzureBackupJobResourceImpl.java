@@ -14,8 +14,7 @@ public final class AzureBackupJobResourceImpl implements AzureBackupJobResource 
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    AzureBackupJobResourceImpl(
-        AzureBackupJobResourceInner innerObject,
+    AzureBackupJobResourceImpl(AzureBackupJobResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
