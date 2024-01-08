@@ -3,6 +3,7 @@
 ## 4.21.0-beta.1 (Unreleased)
 
 ### Features Added
+- New SystemEvents for Storage
 
 ### Breaking Changes
 
