@@ -8,5 +8,5 @@ module com.azure.monitor.ingestion {
     exports com.azure.monitor.ingestion;
     exports com.azure.monitor.ingestion.models;
 
-    opens com.azure.monitor.ingestion to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.monitor.ingestion to com.azure.core;
 }
