@@ -36,23 +36,28 @@ import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBaseRes
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DppResourceGuardProxiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DppResourceGuardProxiesClient.
+ */
 public final class DppResourceGuardProxiesClientImpl implements DppResourceGuardProxiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DppResourceGuardProxiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of DppResourceGuardProxiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DppResourceGuardProxiesClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy
-                .create(DppResourceGuardProxiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DppResourceGuardProxiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,118 +68,88 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface DppResourceGuardProxiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGuardProxyBaseResourceList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceGuardProxyBaseResourceList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGuardProxyBaseResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceGuardProxyBaseResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGuardProxyBaseResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourceGuardProxyBaseResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ResourceGuardProxyBaseResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}/unlockDelete")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupResourceGuardProxies/{resourceGuardProxyName}/unlockDelete")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UnlockDeleteResponseInner>> unlockDelete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<UnlockDeleteResponseInner>> unlockDelete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGuardProxyName") String resourceGuardProxyName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UnlockDeleteRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") UnlockDeleteRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceGuardProxyBaseResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,32 +160,16 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ResourceGuardProxyBaseResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ResourceGuardProxyBaseResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -218,22 +177,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,28 +200,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,13 +218,13 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardProxyBaseResourceInner> listAsync(String resourceGroupName, String vaultName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -292,16 +234,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceGuardProxyBaseResourceInner> listAsync(
-        String resourceGroupName, String vaultName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
+    private PagedFlux<ResourceGuardProxyBaseResourceInner> listAsync(String resourceGroupName, String vaultName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +257,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -326,14 +267,14 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceGuardProxyBaseResourceInner> list(
-        String resourceGroupName, String vaultName, Context context) {
+    public PagedIterable<ResourceGuardProxyBaseResourceInner> list(String resourceGroupName, String vaultName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
     }
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -341,22 +282,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName) {
+    private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String resourceGuardProxyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -366,30 +303,19 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            resourceGuardProxyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -398,22 +324,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context) {
+    private Mono<Response<ResourceGuardProxyBaseResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String resourceGuardProxyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -423,27 +345,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                resourceGuardProxyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            resourceGuardProxyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -451,18 +364,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceGuardProxyBaseResourceInner> getAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName) {
+    private Mono<ResourceGuardProxyBaseResourceInner> getAsync(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName) {
         return getWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -471,17 +384,17 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context) {
+    public Response<ResourceGuardProxyBaseResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, context).block();
     }
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -491,14 +404,14 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGuardProxyBaseResourceInner get(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName) {
+    public ResourceGuardProxyBaseResourceInner get(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName) {
         return getWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, Context.NONE).getValue();
     }
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -507,25 +420,19 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
+        String resourceGroupName, String vaultName, String resourceGuardProxyName,
         ResourceGuardProxyBaseResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,9 +442,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -546,25 +452,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            resourceGuardProxyName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -574,26 +470,19 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceGuardProxyBaseResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters,
-        Context context) {
+        String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        ResourceGuardProxyBaseResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -603,9 +492,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -614,22 +502,13 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                resourceGuardProxyName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -638,21 +517,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceGuardProxyBaseResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters) {
+    private Mono<ResourceGuardProxyBaseResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -662,23 +538,19 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceGuardProxyBaseResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters,
+    public Response<ResourceGuardProxyBaseResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String vaultName, String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, vaultName, resourceGuardProxyName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters,
+            context).block();
     }
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -689,19 +561,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGuardProxyBaseResourceInner createOrUpdate(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, vaultName, resourceGuardProxyName, parameters, Context.NONE)
-            .getValue();
+    public ResourceGuardProxyBaseResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -711,19 +579,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -733,30 +597,19 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            resourceGuardProxyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -767,19 +620,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -789,27 +638,18 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                resourceGuardProxyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            resourceGuardProxyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -826,7 +666,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -837,14 +677,14 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, context).block();
     }
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -859,7 +699,7 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -870,19 +710,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return response of Unlock Delete API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+    private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(String resourceGroupName,
+        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -892,9 +728,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -903,25 +738,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .unlockDelete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            resourceGuardProxyName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.unlockDelete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -933,23 +758,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return response of Unlock Delete API along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context) {
+    private Mono<Response<UnlockDeleteResponseInner>> unlockDeleteWithResponseAsync(String resourceGroupName,
+        String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -959,9 +776,8 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (resourceGuardProxyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceGuardProxyName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -970,22 +786,13 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .unlockDelete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                resourceGuardProxyName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.unlockDelete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, resourceGuardProxyName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -996,15 +803,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return response of Unlock Delete API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UnlockDeleteResponseInner> unlockDeleteAsync(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+    private Mono<UnlockDeleteResponseInner> unlockDeleteAsync(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters) {
         return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -1016,19 +823,15 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return response of Unlock Delete API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context) {
+    public Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
         return unlockDeleteWithResponseAsync(resourceGroupName, vaultName, resourceGuardProxyName, parameters, context)
             .block();
     }
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -1039,22 +842,23 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
      * @return response of Unlock Delete API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnlockDeleteResponseInner unlockDelete(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+    public UnlockDeleteResponseInner unlockDelete(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters) {
         return unlockDeleteWithResponse(resourceGroupName, vaultName, resourceGuardProxyName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1062,62 +866,43 @@ public final class DppResourceGuardProxiesClientImpl implements DppResourceGuard
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ResourceGuardProxyBaseResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceGuardProxyBaseResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

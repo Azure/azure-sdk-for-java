@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedServiceIdentityUserAssignedIdentities model. */
+/**
+ * The ManagedServiceIdentityUserAssignedIdentities model.
+ */
 @Immutable
 public final class ManagedServiceIdentityUserAssignedIdentities {
     /*
@@ -22,13 +24,15 @@ public final class ManagedServiceIdentityUserAssignedIdentities {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of ManagedServiceIdentityUserAssignedIdentities class. */
+    /**
+     * Creates an instance of ManagedServiceIdentityUserAssignedIdentities class.
+     */
     public ManagedServiceIdentityUserAssignedIdentities() {
     }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class ManagedServiceIdentityUserAssignedIdentities {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +50,7 @@ public final class ManagedServiceIdentityUserAssignedIdentities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

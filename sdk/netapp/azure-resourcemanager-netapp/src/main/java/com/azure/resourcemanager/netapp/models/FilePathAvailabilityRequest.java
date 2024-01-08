@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** File path availability request content - availability is based on the name and the subnetId. */
+/**
+ * File path availability request content - availability is based on the name and the subnetId.
+ */
 @Fluent
 public final class FilePathAvailabilityRequest {
     /*
@@ -23,13 +25,15 @@ public final class FilePathAvailabilityRequest {
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
-    /** Creates an instance of FilePathAvailabilityRequest class. */
+    /**
+     * Creates an instance of FilePathAvailabilityRequest class.
+     */
     public FilePathAvailabilityRequest() {
     }
 
     /**
      * Get the name property: File path to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class FilePathAvailabilityRequest {
 
     /**
      * Set the name property: File path to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the FilePathAvailabilityRequest object itself.
      */
@@ -50,7 +54,7 @@ public final class FilePathAvailabilityRequest {
     /**
      * Get the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -60,7 +64,7 @@ public final class FilePathAvailabilityRequest {
     /**
      * Set the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the FilePathAvailabilityRequest object itself.
      */
@@ -71,21 +75,17 @@ public final class FilePathAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model FilePathAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model FilePathAvailabilityRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model FilePathAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnetId in model FilePathAvailabilityRequest"));
         }
     }
 

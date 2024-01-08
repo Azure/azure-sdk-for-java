@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ClientEncryptionKeyGetResu
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the client encryption keys and their properties. */
+/**
+ * The List operation response, that contains the client encryption keys and their properties.
+ */
 @Immutable
 public final class ClientEncryptionKeysListResult {
     /*
@@ -18,13 +20,15 @@ public final class ClientEncryptionKeysListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClientEncryptionKeyGetResultsInner> value;
 
-    /** Creates an instance of ClientEncryptionKeysListResult class. */
+    /**
+     * Creates an instance of ClientEncryptionKeysListResult class.
+     */
     public ClientEncryptionKeysListResult() {
     }
 
     /**
      * Get the value property: List of client encryption keys and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<ClientEncryptionKeyGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class ClientEncryptionKeysListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

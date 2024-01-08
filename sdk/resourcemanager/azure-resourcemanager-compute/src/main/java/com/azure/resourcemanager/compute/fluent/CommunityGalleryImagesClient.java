@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryImageInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunityGalleryImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunityGalleryImagesClient.
+ */
 public interface CommunityGalleryImagesClient {
     /**
      * Get a community gallery image.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
@@ -27,12 +29,12 @@ public interface CommunityGalleryImagesClient {
      * @return a community gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CommunityGalleryImageInner>> getWithResponseAsync(
-        String location, String publicGalleryName, String galleryImageName);
+    Mono<Response<CommunityGalleryImageInner>> getWithResponseAsync(String location, String publicGalleryName,
+        String galleryImageName);
 
     /**
      * Get a community gallery image.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
@@ -46,7 +48,7 @@ public interface CommunityGalleryImagesClient {
 
     /**
      * Get a community gallery image.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
@@ -57,12 +59,12 @@ public interface CommunityGalleryImagesClient {
      * @return a community gallery image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunityGalleryImageInner> getWithResponse(
-        String location, String publicGalleryName, String galleryImageName, Context context);
+    Response<CommunityGalleryImageInner> getWithResponse(String location, String publicGalleryName,
+        String galleryImageName, Context context);
 
     /**
      * Get a community gallery image.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param galleryImageName The name of the community gallery image definition.
@@ -76,7 +78,7 @@ public interface CommunityGalleryImagesClient {
 
     /**
      * List community gallery images inside a gallery.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface CommunityGalleryImagesClient {
 
     /**
      * List community gallery images inside a gallery.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +104,7 @@ public interface CommunityGalleryImagesClient {
 
     /**
      * List community gallery images inside a gallery.
-     *
+     * 
      * @param location Resource location.
      * @param publicGalleryName The public name of the community gallery.
      * @param context The context to associate with this operation.

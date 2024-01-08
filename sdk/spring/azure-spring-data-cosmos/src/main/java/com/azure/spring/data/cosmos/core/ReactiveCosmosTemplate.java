@@ -51,7 +51,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -170,7 +169,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
         return createDatabaseIfNotExists()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
                     this.responseDiagnosticsProcessor))
@@ -292,7 +291,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getContainer(containerName)
             .queryItems("SELECT * FROM r", cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
@@ -352,7 +351,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .getContainer(finalContainerName)
                                 .queryItems(sqlQuerySpec, options, JsonNode.class)
                                 .byPage()
-                                .publishOn(Schedulers.parallel())
+                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                                 .flatMap(cosmosItemFeedResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemFeedResponse.getCosmosDiagnostics(),
@@ -386,7 +385,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                                 .getContainer(containerName)
                                 .readItem(idToFind, partitionKey, JsonNode.class)
-                                .publishOn(Schedulers.parallel())
+                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
@@ -445,7 +444,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .createItem(originalItem, partitionKey, options)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
                     this.responseDiagnosticsProcessor))
@@ -514,7 +513,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                              .getDatabase(this.getDatabaseName())
                              .getContainer(containerName)
                              .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
-                             .publishOn(Schedulers.parallel())
+                             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                              .onErrorResume(throwable ->
                                  CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
                                      this.responseDiagnosticsProcessor))
@@ -571,7 +570,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .patchItem(id.toString(), partitionKey, patchOperations, options, JsonNode.class)
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
                     this.responseDiagnosticsProcessor))
@@ -622,7 +621,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                                 .getContainer(containerName)
                                 .upsertItem(originalItem, options)
-                                .publishOn(Schedulers.parallel())
+                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
@@ -659,7 +658,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                                 .getContainer(containerName)
                                 .deleteItem(idToDelete, partitionKey, cosmosItemRequestOptions)
-                                .publishOn(Schedulers.parallel())
+                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                                 .doOnNext(cosmosItemResponse ->
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null))
@@ -733,7 +732,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .getDatabase(this.getDatabaseName())
                    .getContainer(containerName)
                    .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                   .publishOn(Schedulers.parallel())
+                   .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                    .onErrorResume(throwable ->
                        CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                            this.responseDiagnosticsProcessor)).then();
@@ -795,7 +794,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-                .publishOn(Schedulers.parallel())
+                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                         this.responseDiagnosticsProcessor))
@@ -910,7 +909,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .getContainer(containerName)
                    .queryItems(querySpec, options, JsonNode.class)
                    .byPage()
-                   .publishOn(Schedulers.parallel())
+                   .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                    .flatMap(cosmosItemFeedResponse -> {
                        CosmosUtils
                            .fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
@@ -1021,7 +1020,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .getContainer(containerName)
             .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
             .byPage()
-            .publishOn(Schedulers.parallel())
+            .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
@@ -1042,7 +1041,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
                                 .getContainer(containerName)
                                 .deleteItem(jsonNode, options)
-                                .publishOn(Schedulers.parallel())
+                                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
                                 .map(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);

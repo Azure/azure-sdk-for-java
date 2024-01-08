@@ -8,19 +8,23 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ProgressListener;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
@@ -35,6 +39,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.Block;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -46,6 +51,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.SyncCopyStatusType;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -55,6 +61,7 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -65,16 +72,19 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.TestDataFactory;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
+import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
@@ -108,6 +118,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -192,7 +203,7 @@ public class BlobApiTests extends BlobTestBase {
 
     /* TODO (gapra): Add more tests to test large data sizes. */
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void uploadInputStreamLargeData() {
         byte[] randomData = getRandomByteArray(20 * Constants.MB);
@@ -213,7 +224,7 @@ public class BlobApiTests extends BlobTestBase {
         }
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("uploadNumBlocksSupplier")
     public void uploadNumBlocks(int size, Long maxUploadSize, long numBlocks) {
@@ -293,7 +304,7 @@ public class BlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(bc.downloadContent().toBytes(), DATA.getDefaultBytes());
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     // Reading from recordings will not allow for the timing of the test to work correctly.
     public void uploadTimeout() {
@@ -305,7 +316,7 @@ public class BlobApiTests extends BlobTestBase {
             null, null, null, null, Duration.ofNanos(5L), null));
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
         // setting very small timeout values for the service client
@@ -338,7 +349,7 @@ public class BlobApiTests extends BlobTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void uploadStreamAccessTierCold() {
         byte[] randomData = getRandomByteArray(Constants.KB);
@@ -350,7 +361,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(AccessTier.COLD, properties.getAccessTier());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void downloadAllNull() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -390,7 +401,7 @@ public class BlobApiTests extends BlobTestBase {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void downloadAllNullStreaming() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -429,7 +440,7 @@ public class BlobApiTests extends BlobTestBase {
 //        headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void downloadAllNullBinaryData() {
         bc.setTags(Collections.singletonMap("foo", "bar"));
@@ -546,7 +557,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(3, 2L, DATA.getDefaultText().substring(3, 3 + 2)));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void downloadAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -569,7 +580,7 @@ public class BlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void downloadACStreaming(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -592,7 +603,7 @@ public class BlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void downloadACBinaryData(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -801,7 +812,7 @@ public class BlobApiTests extends BlobTestBase {
         testFile.delete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {
         0, // empty file
@@ -833,8 +844,7 @@ public class BlobApiTests extends BlobTestBase {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
-
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {
         0, // empty file
@@ -872,7 +882,52 @@ public class BlobApiTests extends BlobTestBase {
         blobServiceClient.deleteBlobContainer(containerName);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @LiveOnly
+    @ParameterizedTest
+    @ValueSource(ints = {
+        0, // empty file
+        20, // small file
+        16 * 1024 * 1024, // medium file in several chunks
+        8 * 1026 * 1024 + 10, // medium file not aligned to block
+        50 * Constants.MB // large file requiring multiple requests
+    })
+    public void downloadFileAsyncBufferCopy(int fileSize) throws IOException {
+        String containerName = generateContainerName();
+        BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            .buildAsyncClient();
+
+        BlobAsyncClient blobAsyncClient = Objects.requireNonNull(blobServiceAsyncClient
+            .createBlobContainer(containerName).block()).getBlobAsyncClient(generateBlobName());
+
+        File file = getRandomFile(fileSize);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        outFile.deleteOnExit();
+
+        Mono<Response<BlobProperties>> downloadMono = blobAsyncClient.downloadToFileWithResponse(
+            outFile.toPath().toString(), null, new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
+            null, null, false);
+
+        StepVerifier.create(downloadMono)
+            .assertNext(it -> assertEquals(it.getValue().getBlobType(), BlobType.BLOCK_BLOB))
+            .verifyComplete();
+
+        assertTrue(compareFiles(file, outFile, 0, fileSize));
+
+        // cleanup:
+        blobServiceAsyncClient.deleteBlobContainer(containerName);
+    }
+
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("downloadFileRangeSupplier")
     public void downloadFileRange(BlobRange range) throws IOException {
@@ -906,7 +961,7 @@ public class BlobApiTests extends BlobTestBase {
     This is to exercise some additional corner cases and ensure there are no arithmetic errors that give false success.
      */
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void downloadFileRangeFail() throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
@@ -923,7 +978,7 @@ public class BlobApiTests extends BlobTestBase {
 
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void downloadFileCountNull() throws IOException {
         File file = getRandomFile(DATA.getDefaultDataSize());
@@ -942,7 +997,7 @@ public class BlobApiTests extends BlobTestBase {
 
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("downloadFileACSupplier")
     public void downloadFileAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -977,7 +1032,7 @@ public class BlobApiTests extends BlobTestBase {
         );
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#fileACFailSupplier")
     public void downloadFileACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1004,7 +1059,7 @@ public class BlobApiTests extends BlobTestBase {
             || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void downloadFileETagLock() throws IOException {
         File file = getRandomFile(Constants.MB);
@@ -1085,7 +1140,7 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @SuppressWarnings("deprecation")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressReceiver(int fileSize) throws IOException {
@@ -1137,7 +1192,7 @@ public class BlobApiTests extends BlobTestBase {
     }
 
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @ParameterizedTest
     @ValueSource(ints = {100, 8 * 1026 * 1024 + 10})
     public void downloadFileProgressListener(int fileSize) throws Exception {
@@ -1217,7 +1272,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(6000L * Constants.MB, 5100L * Constants.MB));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void getPropertiesDefault() {
         bc.setTags(Collections.singletonMap("foo", "bar"));
@@ -1266,7 +1321,7 @@ public class BlobApiTests extends BlobTestBase {
         assertResponseStatusCode(bc.getPropertiesWithResponse(null, null, null), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1305,7 +1360,7 @@ public class BlobApiTests extends BlobTestBase {
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void getPropertiesORS() throws MalformedURLException {
         BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
@@ -1403,7 +1458,7 @@ public class BlobApiTests extends BlobTestBase {
                 "type"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void setHTTPHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1487,7 +1542,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of("foo", "bar0, bar1", null, null, 200)); /* Test comma separated values */
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("downloadFileACSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1551,7 +1606,7 @@ public class BlobApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.setMetadata(null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTagsAllNull() {
         Response<Void> response = bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<>()),
@@ -1560,7 +1615,7 @@ public class BlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 204);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTagsMin() {
         Map<String, String> tags = new HashMap<>();
@@ -1569,7 +1624,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(tags, bc.getTags());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("setTagsTagsSupplier")
     public void setTagsTags(String key1, String value1, String key2, String value2, int statusCode) {
@@ -1592,7 +1647,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null, 204));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("setTagsACSupplier")
     public void setTagsAC(String tags) {
@@ -1613,7 +1668,7 @@ public class BlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20190707ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
     @Test
     public void setTagsACFail() {
         Map<String, String> t = new HashMap<>();
@@ -1624,7 +1679,7 @@ public class BlobApiTests extends BlobTestBase {
                 .setRequestConditions(new BlobRequestConditions().setTagsConditions(tags)), null, null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void getTagsAC() {
         Map<String, String> t = new HashMap<>();
@@ -1653,7 +1708,7 @@ public class BlobApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.setTags(new HashMap<>()));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTagsLease() {
         Map<String, String> tags = new HashMap<>();
@@ -1668,7 +1723,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(tags, bc.getTags());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void getTagsLease() {
         Map<String, String> tags = new HashMap<>();
@@ -1684,7 +1739,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(tags, response.getValue());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTagsLeaseFail() {
         Map<String, String> tags = new HashMap<>();
@@ -1756,7 +1811,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void snapshotAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -1800,11 +1855,247 @@ public class BlobApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> bc.createSnapshot());
     }
 
+    @Test
+    public void copy() {
+        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null));
+
+        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
+        BlobProperties properties = copyDestBlob.getProperties().block();
+
+        assertEquals(CopyStatusType.SUCCESS, properties.getCopyStatus());
+        assertNotNull(properties.getCopyCompletionTime());
+        assertNotNull(properties.getCopyProgress());
+        assertNotNull(properties.getCopySource());
+        assertNotNull(response);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+        BlobCopyInfo blobInfo = response.getValue();
+        assertNotNull(blobInfo);
+        assertEquals(properties.getCopyId(), blobInfo.getCopyId());
+    }
+
+    @Test
+    public void copyMin() {
+        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null));
+        StepVerifier.create(poller.take(1)).assertNext(it -> {
+            assertNotNull(it.getValue());
+            assertNotNull(it.getValue().getCopyId());
+            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
+            } else {
+                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            }
+            assertTrue(it.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+                || it.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        }).verifyComplete();
+    }
+
+    @Test
+    public void copyPoller() {
+        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null));
+
+        AsyncPollResponse<BlobCopyInfo, Void> lastResponse = poller.doOnNext(it -> {
+            assertNotNull(it.getValue());
+            assertNotNull(it.getValue().getCopyId());
+            if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
+            } else {
+                assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
+            }
+        }).blockLast();
+
+        assertNotNull(lastResponse);
+        assertNotNull(lastResponse.getValue());
+
+        StepVerifier.create(copyDestBlob.getProperties()).assertNext(it -> {
+            assertEquals(lastResponse.getValue().getCopyId(), it.getCopyId());
+            assertEquals(CopyStatusType.SUCCESS, it.getCopyStatus());
+            assertNotNull(it.getCopyCompletionTime());
+            assertNotNull(it.getCopyProgress());
+            assertNotNull(it.getCopySource());
+            assertNotNull(it.getCopyId());
+        }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("snapshotMetadataSupplier")
+    public void copyMetadata(String key1, String value1, String key2, String value2) {
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        Map<String, String> metadata = new HashMap<>();
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1);
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2);
+        }
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, null));
+        poller.blockLast();
+
+        StepVerifier.create(bu2.getProperties()).assertNext(it -> assertEquals(metadata, it.getMetadata()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @ParameterizedTest
+    @MethodSource("copyTagsSupplier")
+    public void copyTags(String key1, String value1, String key2, String value2) {
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        Map<String, String> tags = new HashMap<>();
+        if (key1 != null && value1 != null) {
+            tags.put(key1, value1);
+        }
+        if (key2 != null && value2 != null) {
+            tags.put(key2, value2);
+        }
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)));
+        poller.blockLast();
+
+        StepVerifier.create(bu2.getTags()).assertNext(it -> assertEquals(it, tags)).verifyComplete();
+    }
+
     private static Stream<Arguments> copyTagsSupplier() {
         return Stream.of(
             Arguments.of(null, null, null, null),
             Arguments.of("foo", "bar", "fizz", "buzz"),
             Arguments.of(" +-./:=_  +-./:=_", " +-./:=_", null, null));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @ParameterizedTest
+    @CsvSource({"true,true", "true,false", "false,true", "false,false"})
+    public void copySeal(boolean source, boolean destination) {
+        AppendBlobClient appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        appendBlobClient.create();
+        if (source) {
+            appendBlobClient.seal();
+        }
+
+        AppendBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)));
+        poller.blockLast();
+
+        StepVerifier.create(bu2.getProperties()).assertNext(it ->
+            assertEquals(Boolean.TRUE.equals(it.isSealed()), destination)).verifyComplete();
+
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @ParameterizedTest
+    @MethodSource("copySourceACSupplier")
+    public void copySourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t);
+        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        match = setupBlobMatchCondition(bc, match);
+        BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags);
+
+        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
+            .setSourceRequestConditions(mac));
+        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+    }
+
+    private static Stream<Arguments> copySourceACSupplier() {
+        return Stream.of(Arguments.of(null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("copySourceACFailSupplier")
+    public void copySourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String tags) {
+        BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        BlobBeginCopySourceRequestConditions mac = new BlobBeginCopySourceRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags);
+
+        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl())
+            .setSourceRequestConditions(mac));
+        assertThrows(BlobStorageException.class, poller::blockLast);
+    }
+
+    private static Stream<Arguments> copySourceACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void copyDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        bu2.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bu2.setTags(t).block();
+        match = setupBlobMatchCondition(bu2, match);
+        leaseID = setupBlobLeaseCondition(bu2, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, null));
+        AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
+        assertNotNull(response);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void copyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch);
+        setupBlobLeaseCondition(bu2, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class, () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null,
+            bac, null, null));
     }
 
     @Test
@@ -1825,8 +2116,8 @@ public class BlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null,
-            null, blobRequestConditions, getPollingDuration(500));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
         BlobCopyInfo blobCopyInfo = response.getValue();
@@ -1855,9 +2146,8 @@ public class BlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null,
-            null, null, null, null,
-            getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, null, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
@@ -1891,8 +2181,8 @@ public class BlobApiTests extends BlobTestBase {
 
         String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)));
-        SyncPoller<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null,
-            null, null, null, blobAccess, getPollingDuration(1000));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
+            bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobAccess, null));
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
 
         assertNotNull(lastResponse);
@@ -1960,7 +2250,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(metadata, bu2.getProperties().getMetadata());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("copyTagsSupplier")
     public void syncCopyTags(String key1, String value1, String key2, String value2) {
@@ -2030,7 +2320,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void syncCopyDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -2078,7 +2368,7 @@ public class BlobApiTests extends BlobTestBase {
             null, null, null, bac, null, null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
     @ParameterizedTest
     @MethodSource("syncCopySourceTagsSupplier")
     public void syncCopySourceTags(BlobCopySourceTagsMode mode) {
@@ -2114,7 +2404,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(BlobCopySourceTagsMode.REPLACE));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void syncCopyFromUrlAccessTierCold() {
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
@@ -2168,7 +2458,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(DeleteSnapshotsOptionType.ONLY, 2));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -2269,7 +2559,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(cc.listBlobs().stream().count(), blobsRemaining);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -2407,7 +2697,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(AccessTier.ARCHIVE, AccessTier.HOT, ArchiveStatus.REHYDRATE_PENDING_TO_HOT));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void setTierCold() {
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
@@ -2426,7 +2716,7 @@ public class BlobApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void setTierArchiveStatusRehydratePendingToCold() {
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateBlobName());
@@ -2441,7 +2731,7 @@ public class BlobApiTests extends BlobTestBase {
             ArchiveStatus.REHYDRATE_PENDING_TO_COLD);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("setTierRehydratePrioritySupplier")
     public void setTierRehydratePriority(RehydratePriority rehydratePriority) {
@@ -2463,7 +2753,7 @@ public class BlobApiTests extends BlobTestBase {
             Arguments.of(RehydratePriority.HIGH));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTierSnapshot() {
         BlobClientBase bc2 = bc.createSnapshot();
@@ -2524,7 +2814,7 @@ public class BlobApiTests extends BlobTestBase {
             "garbage", null, null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void setTierTags() {
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
@@ -2624,13 +2914,17 @@ public class BlobApiTests extends BlobTestBase {
 
     private static Stream<Arguments> getBlobNameSupplier() {
         return Stream.of(
-            Arguments.of("blobName", "blobName"), // standard names should be preserved
-            // encoded names should be decoded (not double decoded))
-            Arguments.of(Utility.urlEncode("dir1/a%20b.txt"), "dir1/a%20b.txt"));
+            Arguments.of("blobName", "blobName"),
+            Arguments.of("dir1/a%20b.txt", "dir1/a%20b.txt"),
+            Arguments.of("path/to]a blob", "path/to]a blob"),
+            Arguments.of("path%2Fto%5Da%20blob", "path%2Fto%5Da%20blob"),
+            Arguments.of("斑點", "斑點"),
+            Arguments.of("%E6%96%91%E9%BB%9E", "%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點", "斑點"));
     }
 
     @ParameterizedTest
-    @MethodSource("getBlobNameAndBuildClientSupplier")
+    @MethodSource("getBlobNameSupplier")
     public void getBlobNameAndBuildClient(String originalBlobName, String finalBlobName) {
         BlobClient client = cc.getBlobClient(originalBlobName);
         BlobClientBase baseClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
@@ -2638,13 +2932,52 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(baseClient.getBlobName(), finalBlobName);
     }
 
-    private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
+    private static Stream<Arguments> getNonEncodedBlobNameSupplier() {
         return Stream.of(
-            Arguments.of("blob", "blob"),
-            Arguments.of("path/to]a blob", "path/to]a blob"),
-            Arguments.of("path%2Fto%5Da%20blob", "path/to]a blob"),
-            Arguments.of("斑點", "斑點"),
-            Arguments.of("%E6%96%91%E9%BB%9E", "斑點"));
+            Arguments.of("test%test"),
+            Arguments.of("ab2a7d5f-b973-4222-83ba-d0581817a819 %Россия 한국 中国!?/file"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedBlobNameSupplier")
+    public void getNonEncodedBlobName(String originalBlobName) {
+        BlobClient client = cc.getBlobClient(originalBlobName);
+        BlockBlobClient blockBlobClient = cc.getBlobClient(client.getBlobName()).getBlockBlobClient();
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedSpecializedBlob() {
+        String originalBlobName = "test%test";
+        SpecializedBlobClientBuilder specializedBlobClientBuilder = getSpecializedBuilder(cc.getBlobContainerUrl());
+        specializedBlobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
+
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
+        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
+    }
+
+    @Test
+    public void getNonEncodedBlobClient() {
+        String originalBlobName = "test%test";
+        BlobClientBuilder blobClientBuilder = getBlobClientBuilder(cc.getBlobContainerUrl());
+        blobClientBuilder.containerName(cc.getBlobContainerName()).blobName(originalBlobName);
+
+        BlobClient blobClient = blobClientBuilder.buildClient();
+        assertEquals(blobClient.getBlobName(), originalBlobName);
+
+        // see if the blob name will be properly encoded in the url
+        String encodedName = Utility.urlEncode(originalBlobName);
+        assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
     }
 
     @Test

@@ -4,30 +4,43 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Helps with categorization of errors. */
+/**
+ * Helps with categorization of errors.
+ */
 public enum MediaJobErrorCategory {
-    /** The error is service related. */
+    /**
+     * The error is service related.
+     */
     SERVICE("Service"),
 
-    /** The error is download related. */
+    /**
+     * The error is download related.
+     */
     DOWNLOAD("Download"),
 
-    /** The error is upload related. */
+    /**
+     * The error is upload related.
+     */
     UPLOAD("Upload"),
 
-    /** The error is configuration related. */
+    /**
+     * The error is configuration related.
+     */
     CONFIGURATION("Configuration"),
 
-    /** The error is related to data in the input files. */
+    /**
+     * The error is related to data in the input files.
+     */
     CONTENT("Content"),
 
-    /** The error is related to account information. */
+    /**
+     * The error is related to account information.
+     */
     ACCOUNT("Account");
 
-    /** The actual serialized value for a MediaJobErrorCategory instance. */
+    /**
+     * The actual serialized value for a MediaJobErrorCategory instance.
+     */
     private final String value;
 
     MediaJobErrorCategory(String value) {
@@ -36,11 +49,10 @@ public enum MediaJobErrorCategory {
 
     /**
      * Parses a serialized value to a MediaJobErrorCategory instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobErrorCategory object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobErrorCategory fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum MediaJobErrorCategory {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Binary source. */
+/**
+ * A copy activity Binary source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BinarySource")
 @Fluent
@@ -26,12 +28,15 @@ public final class BinarySource extends CopySource {
     @JsonProperty(value = "formatSettings")
     private BinaryReadSettings formatSettings;
 
-    /** Creates an instance of BinarySource class. */
-    public BinarySource() {}
+    /**
+     * Creates an instance of BinarySource class.
+     */
+    public BinarySource() {
+    }
 
     /**
      * Get the storeSettings property: Binary store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -40,7 +45,7 @@ public final class BinarySource extends CopySource {
 
     /**
      * Set the storeSettings property: Binary store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the BinarySource object itself.
      */
@@ -51,7 +56,7 @@ public final class BinarySource extends CopySource {
 
     /**
      * Get the formatSettings property: Binary format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public BinaryReadSettings getFormatSettings() {
@@ -60,7 +65,7 @@ public final class BinarySource extends CopySource {
 
     /**
      * Set the formatSettings property: Binary format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the BinarySource object itself.
      */
@@ -69,21 +74,27 @@ public final class BinarySource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

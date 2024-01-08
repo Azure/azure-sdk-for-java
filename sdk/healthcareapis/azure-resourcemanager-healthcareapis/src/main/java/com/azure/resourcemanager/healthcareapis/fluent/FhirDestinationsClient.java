@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.healthcareapis.fluent.models.IotFhirDestinationInner;
 
-/** An instance of this class provides access to all the operations defined in FhirDestinationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FhirDestinationsClient.
+ */
 public interface FhirDestinationsClient {
     /**
      * Lists all FHIR destinations for the given IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -24,12 +26,12 @@ public interface FhirDestinationsClient {
      * @return a collection of IoT Connector FHIR destinations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IotFhirDestinationInner> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName);
+    PagedIterable<IotFhirDestinationInner> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName);
 
     /**
      * Lists all FHIR destinations for the given IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -40,6 +42,6 @@ public interface FhirDestinationsClient {
      * @return a collection of IoT Connector FHIR destinations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IotFhirDestinationInner> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context);
+    PagedIterable<IotFhirDestinationInner> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName, Context context);
 }

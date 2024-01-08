@@ -19,13 +19,15 @@ public final class SourceVault {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of SourceVault class. */
+    /**
+     * Creates an instance of SourceVault class.
+     */
     public SourceVault() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +36,7 @@ public final class SourceVault {
 
     /**
      * Set the id property: Resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SourceVault object itself.
      */
@@ -45,7 +47,7 @@ public final class SourceVault {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

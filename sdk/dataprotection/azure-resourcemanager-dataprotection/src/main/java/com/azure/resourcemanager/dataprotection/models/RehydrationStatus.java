@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RehydrationStatus. */
+/**
+ * Defines values for RehydrationStatus.
+ */
 public final class RehydrationStatus extends ExpandableStringEnum<RehydrationStatus> {
-    /** Static value CREATE_IN_PROGRESS for RehydrationStatus. */
+    /**
+     * Static value CREATE_IN_PROGRESS for RehydrationStatus.
+     */
     public static final RehydrationStatus CREATE_IN_PROGRESS = fromString("CREATE_IN_PROGRESS");
 
-    /** Static value COMPLETED for RehydrationStatus. */
+    /**
+     * Static value COMPLETED for RehydrationStatus.
+     */
     public static final RehydrationStatus COMPLETED = fromString("COMPLETED");
 
-    /** Static value DELETE_IN_PROGRESS for RehydrationStatus. */
+    /**
+     * Static value DELETE_IN_PROGRESS for RehydrationStatus.
+     */
     public static final RehydrationStatus DELETE_IN_PROGRESS = fromString("DELETE_IN_PROGRESS");
 
-    /** Static value DELETED for RehydrationStatus. */
+    /**
+     * Static value DELETED for RehydrationStatus.
+     */
     public static final RehydrationStatus DELETED = fromString("DELETED");
 
-    /** Static value FAILED for RehydrationStatus. */
+    /**
+     * Static value FAILED for RehydrationStatus.
+     */
     public static final RehydrationStatus FAILED = fromString("FAILED");
 
     /**
      * Creates a new instance of RehydrationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class RehydrationStatus extends ExpandableStringEnum<RehydrationSta
 
     /**
      * Creates or finds a RehydrationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RehydrationStatus.
      */
@@ -47,7 +59,7 @@ public final class RehydrationStatus extends ExpandableStringEnum<RehydrationSta
 
     /**
      * Gets known RehydrationStatus values.
-     *
+     * 
      * @return known RehydrationStatus values.
      */
     public static Collection<RehydrationStatus> values() {

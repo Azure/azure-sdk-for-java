@@ -722,9 +722,13 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
                 }
             }
             if (contentResponseOnWriteEnabled) {
-                assertThat(response.getItem().get("id").asText()).isEqualTo(expectedId);
-                assertThat(response.getItem().get("mypk").asText()).isEqualTo(expectedId);
-                assertThat(response.getItem()).isNotNull();
+                if (response.getItem() == null) {
+                    assertThat(expectedId).isNull();
+                } else {
+                    assertThat(response.getItem().get("id").asText()).isEqualTo(expectedId);
+                    assertThat(response.getItem().get("mypk").asText()).isEqualTo(expectedId);
+                    assertThat(response.getItem()).isNotNull();
+                }
             } else {
                 assertThat(response.getItem()).isNull();
             }

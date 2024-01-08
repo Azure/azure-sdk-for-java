@@ -14,27 +14,35 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -651,5 +659,151 @@ public class RetryPolicyTests {
             Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {new TimeoutException(),
                 new RuntimeException(), new RuntimeException()}, RuntimeException.class)
         );
+    }
+
+    @Test
+    public void nothingIsClonedIfThereIsNoRetryAsync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 400 : 200)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void nothingIsClonedIfThereIsNoRetrySync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 400 : 200)))
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void requestIsClonedIfThereIsRetryAsync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(1, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 200 : 400)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void requestIsClonedIfThereIsRetrySync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(1, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 200 : 400)))
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void requestBodyIsOnlyClonedOnceAsync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+        Map<BinaryData, Boolean> set = new IdentityHashMap<>();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(r -> {
+                set.put(r.getBodyAsBinaryData(), true);
+                return Mono.just(new MockHttpResponse(r, 503));
+            })
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> {
+                assertEquals(503, response.getStatusCode());
+                // The request body should only be buffered once.
+                assertEquals(1, set.size());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void requestBodyIsOnlyClonedOnceSync() {
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
+        Map<BinaryData, Boolean> set = new IdentityHashMap<>();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(r -> {
+                set.put(r.getBodyAsBinaryData(), true);
+                return Mono.just(new MockHttpResponse(r, 503));
+            })
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(503, response.getStatusCode());
+            // The request body should only be buffered once.
+            assertEquals(1, set.size());
+        }
+    }
+
+    @Test
+    public void requestIsDeeplyClonedForRetriesAsync() {
+        byte[] data = new byte[8192];
+        ThreadLocalRandom.current().nextBytes(data);
+        Flux<ByteBuffer> onlyOnce = Flux.just(ByteBuffer.wrap(data)).publish().autoConnect();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(onlyOnce);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody(), 8192)
+                .map(bytes -> {
+                    Assertions.assertArrayEquals(data, bytes);
+                    return new MockHttpResponse(r, 503);
+                }))
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> assertEquals(503, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void requestIsDeeplyClonedForRetriesSync() {
+        byte[] data = new byte[8192];
+        ThreadLocalRandom.current().nextBytes(data);
+        Flux<ByteBuffer> onlyOnce = Flux.just(ByteBuffer.wrap(data)).publish().autoConnect();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(onlyOnce);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody(), 8192)
+                .map(bytes -> {
+                    Assertions.assertArrayEquals(data, bytes);
+                    return new MockHttpResponse(r, 503);
+                }))
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(503, response.getStatusCode());
+        }
     }
 }

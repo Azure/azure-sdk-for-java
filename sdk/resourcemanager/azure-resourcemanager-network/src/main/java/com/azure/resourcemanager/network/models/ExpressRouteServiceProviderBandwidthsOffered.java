@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains bandwidths offered in ExpressRouteServiceProvider resources. */
+/**
+ * Contains bandwidths offered in ExpressRouteServiceProvider resources.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderBandwidthsOffered {
     /*
@@ -22,13 +24,15 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
     @JsonProperty(value = "valueInMbps")
     private Integer valueInMbps;
 
-    /** Creates an instance of ExpressRouteServiceProviderBandwidthsOffered class. */
+    /**
+     * Creates an instance of ExpressRouteServiceProviderBandwidthsOffered class.
+     */
     public ExpressRouteServiceProviderBandwidthsOffered() {
     }
 
     /**
      * Get the offerName property: The OfferName.
-     *
+     * 
      * @return the offerName value.
      */
     public String offerName() {
@@ -37,7 +41,7 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
 
     /**
      * Set the offerName property: The OfferName.
-     *
+     * 
      * @param offerName the offerName value to set.
      * @return the ExpressRouteServiceProviderBandwidthsOffered object itself.
      */
@@ -48,7 +52,7 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
 
     /**
      * Get the valueInMbps property: The ValueInMbps.
-     *
+     * 
      * @return the valueInMbps value.
      */
     public Integer valueInMbps() {
@@ -57,7 +61,7 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
 
     /**
      * Set the valueInMbps property: The ValueInMbps.
-     *
+     * 
      * @param valueInMbps the valueInMbps value to set.
      * @return the ExpressRouteServiceProviderBandwidthsOffered object itself.
      */
@@ -68,7 +72,7 @@ public final class ExpressRouteServiceProviderBandwidthsOffered {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

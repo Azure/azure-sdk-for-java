@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error response from the Batch service. */
+/**
+ * An error response from the Batch service.
+ */
 @Fluent
 public final class DeleteCertificateError {
     /*
@@ -36,14 +38,16 @@ public final class DeleteCertificateError {
     @JsonProperty(value = "details")
     private List<DeleteCertificateError> details;
 
-    /** Creates an instance of DeleteCertificateError class. */
+    /**
+     * Creates an instance of DeleteCertificateError class.
+     */
     public DeleteCertificateError() {
     }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -53,7 +57,7 @@ public final class DeleteCertificateError {
     /**
      * Set the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     *
+     * 
      * @param code the code value to set.
      * @return the DeleteCertificateError object itself.
      */
@@ -65,7 +69,7 @@ public final class DeleteCertificateError {
     /**
      * Get the message property: A message describing the error, intended to be suitable for display in a user
      * interface.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -75,7 +79,7 @@ public final class DeleteCertificateError {
     /**
      * Set the message property: A message describing the error, intended to be suitable for display in a user
      * interface.
-     *
+     * 
      * @param message the message value to set.
      * @return the DeleteCertificateError object itself.
      */
@@ -86,7 +90,7 @@ public final class DeleteCertificateError {
 
     /**
      * Get the target property: The target of the particular error. For example, the name of the property in error.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -95,7 +99,7 @@ public final class DeleteCertificateError {
 
     /**
      * Set the target property: The target of the particular error. For example, the name of the property in error.
-     *
+     * 
      * @param target the target value to set.
      * @return the DeleteCertificateError object itself.
      */
@@ -106,7 +110,7 @@ public final class DeleteCertificateError {
 
     /**
      * Get the details property: A list of additional details about the error.
-     *
+     * 
      * @return the details value.
      */
     public List<DeleteCertificateError> details() {
@@ -115,7 +119,7 @@ public final class DeleteCertificateError {
 
     /**
      * Set the details property: A list of additional details about the error.
-     *
+     * 
      * @param details the details value to set.
      * @return the DeleteCertificateError object itself.
      */
@@ -126,19 +130,17 @@ public final class DeleteCertificateError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property code in model DeleteCertificateError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property code in model DeleteCertificateError"));
         }
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model DeleteCertificateError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property message in model DeleteCertificateError"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());

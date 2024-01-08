@@ -158,11 +158,13 @@
       ${additionalSurefireArgLine}
     </additionalFailsafeArgLine>
 
-    <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is true. -->
-    <parallelizeTests>true</parallelizeTests>
+    <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is concurrent. -->
+    <!-- Choices are same_thread (no parallelization) and concurrent (parallelization). -->
+    <parallelizeTests>concurrent</parallelizeTests>
 
-    <!-- This property configures whether LIVE or RECORD tests are ran in parallel. Default is false. -->
-    <parallelizeLiveTests>false</parallelizeLiveTests>
+    <!-- This property configures whether LIVE or RECORD tests are ran in parallel. Default is same_thread. -->
+    <!-- Choices are same_thread (no parallelization) and concurrent (parallelization). -->
+    <parallelizeLiveTests>same_thread</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
     <codesnippet.skip>false</codesnippet.skip>
@@ -180,6 +182,9 @@
 
     <!-- This property configures whether test source files are included in Checkstyle. Default is true. -->
     <checkstyle.includeTestSourceDirectory>true</checkstyle.includeTestSourceDirectory>
+
+    <!-- This property configures the location of the checkstyle-suppressions.xml file. -->
+    <checkstyle.suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
 
     <!-- The following properties configure the spotbugs-maven-plugin. -->
     <!-- This property configures whether the spotbugs-maven-plugin should be used. -->
@@ -281,7 +286,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -623,7 +628,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+          <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
@@ -639,7 +644,7 @@
           <configuration>
             <skip>${checkstyle.skip}</skip>
             <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-            <suppressionsLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+            <suppressionsLocation>${checkstyle.suppressionsLocation}</suppressionsLocation>
             <headerLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
             <excludes>${checkstyle.excludes}</excludes>
             <propertyExpansion>samedir=</propertyExpansion>
@@ -821,8 +826,14 @@
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
-              <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-              <junit.jupiter.execution.parallel.enabled>${parallelizeTests}</junit.jupiter.execution.parallel.enabled>
+              <!-- Always set junit.jupiter.execution.parallel.enabled to true. -->
+              <!-- This simply configures whether test parallelization is enabled, the default parallelization mode is same_thread. -->
+              <!-- same_thread indicates no parallelization, but without parallelization enabled @ExecutionMode annotations don't take effect. -->
+              <!-- See https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution for more details. -->
+              <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
+              <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
+              <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -852,8 +863,14 @@
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
-              <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-              <junit.jupiter.execution.parallel.enabled>${parallelizeTests}</junit.jupiter.execution.parallel.enabled>
+              <!-- Always set junit.jupiter.execution.parallel.enabled to true. -->
+              <!-- This simply configures whether test parallelization is enabled, the default parallelization mode is same_thread. -->
+              <!-- same_thread indicates no parallelization, but without parallelization enabled @ExecutionMode annotations don't take effect. -->
+              <!-- See https://junit.org/junit5/docs/current/user-guide/#writing-tests-parallel-execution for more details. -->
+              <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+              <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
+              <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
+              <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -945,7 +962,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>

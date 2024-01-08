@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * Network Virtual Appliance Sku Properties
- *
- * <p>Properties specific to NetworkVirtualApplianceSkus.
+ * 
+ * Properties specific to NetworkVirtualApplianceSkus.
  */
 @Fluent
 public final class NetworkVirtualApplianceSkuPropertiesFormat {
@@ -34,13 +34,15 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
     @JsonProperty(value = "availableScaleUnits")
     private List<NetworkVirtualApplianceSkuInstances> availableScaleUnits;
 
-    /** Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class.
+     */
     public NetworkVirtualApplianceSkuPropertiesFormat() {
     }
 
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -49,7 +51,7 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Get the availableVersions property: Available Network Virtual Appliance versions.
-     *
+     * 
      * @return the availableVersions value.
      */
     public List<String> availableVersions() {
@@ -58,7 +60,7 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Get the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @return the availableScaleUnits value.
      */
     public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
@@ -67,19 +69,19 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Set the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @param availableScaleUnits the availableScaleUnits value to set.
      * @return the NetworkVirtualApplianceSkuPropertiesFormat object itself.
      */
-    public NetworkVirtualApplianceSkuPropertiesFormat withAvailableScaleUnits(
-        List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
+    public NetworkVirtualApplianceSkuPropertiesFormat
+        withAvailableScaleUnits(List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
         this.availableScaleUnits = availableScaleUnits;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -45,12 +45,15 @@ public class RerunTumblingWindowTrigger extends Trigger {
     @JsonProperty(value = "typeProperties.rerunConcurrency", required = true)
     private int rerunConcurrency;
 
-    /** Creates an instance of RerunTumblingWindowTrigger class. */
-    public RerunTumblingWindowTrigger() {}
+    /**
+     * Creates an instance of RerunTumblingWindowTrigger class.
+     */
+    public RerunTumblingWindowTrigger() {
+    }
 
     /**
      * Get the parentTrigger property: The parent trigger reference.
-     *
+     * 
      * @return the parentTrigger value.
      */
     public Object getParentTrigger() {
@@ -59,7 +62,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
 
     /**
      * Set the parentTrigger property: The parent trigger reference.
-     *
+     * 
      * @param parentTrigger the parentTrigger value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -71,7 +74,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the requestedStartTime property: The start time for the time period for which restatement is initiated. Only
      * UTC time is currently supported.
-     *
+     * 
      * @return the requestedStartTime value.
      */
     public OffsetDateTime getRequestedStartTime() {
@@ -81,7 +84,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the requestedStartTime property: The start time for the time period for which restatement is initiated. Only
      * UTC time is currently supported.
-     *
+     * 
      * @param requestedStartTime the requestedStartTime value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -93,7 +96,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the requestedEndTime property: The end time for the time period for which restatement is initiated. Only UTC
      * time is currently supported.
-     *
+     * 
      * @return the requestedEndTime value.
      */
     public OffsetDateTime getRequestedEndTime() {
@@ -103,7 +106,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the requestedEndTime property: The end time for the time period for which restatement is initiated. Only UTC
      * time is currently supported.
-     *
+     * 
      * @param requestedEndTime the requestedEndTime value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -115,7 +118,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
      * rerun is triggered.
-     *
+     * 
      * @return the rerunConcurrency value.
      */
     public int getRerunConcurrency() {
@@ -125,7 +128,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
      * rerun is triggered.
-     *
+     * 
      * @param rerunConcurrency the rerunConcurrency value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -134,14 +137,18 @@ public class RerunTumblingWindowTrigger extends Trigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RerunTumblingWindowTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RerunTumblingWindowTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

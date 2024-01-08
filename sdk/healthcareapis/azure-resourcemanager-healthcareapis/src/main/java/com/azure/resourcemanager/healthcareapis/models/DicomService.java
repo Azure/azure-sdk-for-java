@@ -11,81 +11,90 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.DicomServiceInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of DicomService. */
+/**
+ * An immutable client-side representation of DicomService.
+ */
 public interface DicomService {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the location property: The resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     ServiceManagedIdentityIdentity identity();
 
     /**
      * Gets the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     DicomServiceAuthenticationConfiguration authenticationConfiguration();
 
     /**
+     * Gets the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @return the corsConfiguration value.
+     */
+    CorsConfiguration corsConfiguration();
+
+    /**
      * Gets the serviceUrl property: The url of the Dicom Services.
-     *
+     * 
      * @return the serviceUrl value.
      */
     String serviceUrl();
@@ -93,7 +102,7 @@ public interface DicomService {
     /**
      * Gets the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnection> privateEndpointConnections();
@@ -101,83 +110,115 @@ public interface DicomService {
     /**
      * Gets the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
      * while private endpoint is enabled.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     PublicNetworkAccess publicNetworkAccess();
 
     /**
+     * Gets the eventState property: DICOM Service event support status.
+     * 
+     * @return the eventState value.
+     */
+    ServiceEventState eventState();
+
+    /**
+     * Gets the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @return the encryption value.
+     */
+    Encryption encryption();
+
+    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.healthcareapis.fluent.models.DicomServiceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DicomServiceInner innerModel();
 
-    /** The entirety of the DicomService definition. */
+    /**
+     * The entirety of the DicomService definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The DicomService definition stages. */
+
+    /**
+     * The DicomService definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DicomService definition. */
+        /**
+         * The first stage of the DicomService definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the DicomService definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group that contains the service instance.
              * @param workspaceName The name of workspace resource.
              * @return the next definition stage.
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the DicomService definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithAuthenticationConfiguration,
-                DefinitionStages.WithPublicNetworkAccess {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithEtag, DefinitionStages.WithIdentity, DefinitionStages.WithAuthenticationConfiguration,
+            DefinitionStages.WithCorsConfiguration, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DicomService create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DicomService create(Context context);
         }
-        /** The stage of the DicomService definition allowing to specify location. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The resource location.
              * @return the next definition stage.
              */
@@ -185,126 +226,179 @@ public interface DicomService {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The resource location.
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);
         }
-        /** The stage of the DicomService definition allowing to specify tags. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the DicomService definition allowing to specify etag. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify etag.
+         */
         interface WithEtag {
             /**
              * Specifies the etag property: An etag associated with the resource, used for optimistic concurrency when
              * editing it..
-             *
+             * 
              * @param etag An etag associated with the resource, used for optimistic concurrency when editing it.
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
         }
-        /** The stage of the DicomService definition allowing to specify identity. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Setting indicating whether the service has a managed identity associated
              * with it..
-             *
+             * 
              * @param identity Setting indicating whether the service has a managed identity associated with it.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ServiceManagedIdentityIdentity identity);
         }
-        /** The stage of the DicomService definition allowing to specify authenticationConfiguration. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify authenticationConfiguration.
+         */
         interface WithAuthenticationConfiguration {
             /**
              * Specifies the authenticationConfiguration property: Dicom Service authentication configuration..
-             *
+             * 
              * @param authenticationConfiguration Dicom Service authentication configuration.
              * @return the next definition stage.
              */
-            WithCreate withAuthenticationConfiguration(
-                DicomServiceAuthenticationConfiguration authenticationConfiguration);
+            WithCreate
+                withAuthenticationConfiguration(DicomServiceAuthenticationConfiguration authenticationConfiguration);
         }
-        /** The stage of the DicomService definition allowing to specify publicNetworkAccess. */
+
+        /**
+         * The stage of the DicomService definition allowing to specify corsConfiguration.
+         */
+        interface WithCorsConfiguration {
+            /**
+             * Specifies the corsConfiguration property: Dicom Service Cors configuration..
+             * 
+             * @param corsConfiguration Dicom Service Cors configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withCorsConfiguration(CorsConfiguration corsConfiguration);
+        }
+
+        /**
+         * The stage of the DicomService definition allowing to specify publicNetworkAccess.
+         */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: Control permission for data plane traffic coming from public
              * networks while private endpoint is enabled..
-             *
+             * 
              * @param publicNetworkAccess Control permission for data plane traffic coming from public networks while
-             *     private endpoint is enabled.
+             * private endpoint is enabled.
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
+        /**
+         * The stage of the DicomService definition allowing to specify encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: The encryption settings of the DICOM service.
+             * 
+             * @param encryption The encryption settings of the DICOM service.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(Encryption encryption);
+        }
     }
+
     /**
      * Begins update for the DicomService resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DicomService.Update update();
 
-    /** The template for DicomService update. */
+    /**
+     * The template for DicomService update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DicomService apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DicomService apply(Context context);
     }
-    /** The DicomService update stages. */
+
+    /**
+     * The DicomService update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DicomService update allowing to specify tags. */
+        /**
+         * The stage of the DicomService update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the DicomService update allowing to specify identity. */
+
+        /**
+         * The stage of the DicomService update allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Setting indicating whether the service has a managed identity associated
              * with it..
-             *
+             * 
              * @param identity Setting indicating whether the service has a managed identity associated with it.
              * @return the next definition stage.
              */
             Update withIdentity(ServiceManagedIdentityIdentity identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DicomService refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

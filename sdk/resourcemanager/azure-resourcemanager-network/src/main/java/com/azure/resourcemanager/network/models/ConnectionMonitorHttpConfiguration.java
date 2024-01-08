@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the HTTP configuration. */
+/**
+ * Describes the HTTP configuration.
+ */
 @Fluent
 public final class ConnectionMonitorHttpConfiguration {
     /*
@@ -47,13 +49,15 @@ public final class ConnectionMonitorHttpConfiguration {
     @JsonProperty(value = "preferHTTPS")
     private Boolean preferHttps;
 
-    /** Creates an instance of ConnectionMonitorHttpConfiguration class. */
+    /**
+     * Creates an instance of ConnectionMonitorHttpConfiguration class.
+     */
     public ConnectionMonitorHttpConfiguration() {
     }
 
     /**
      * Get the port property: The port to connect to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -62,7 +66,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Set the port property: The port to connect to.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -73,7 +77,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Get the method property: The HTTP method to use.
-     *
+     * 
      * @return the method value.
      */
     public HttpConfigurationMethod method() {
@@ -82,7 +86,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Set the method property: The HTTP method to use.
-     *
+     * 
      * @param method the method value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -93,7 +97,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Get the path property: The path component of the URI. For instance, "/dir1/dir2".
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -102,7 +106,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Set the path property: The path component of the URI. For instance, "/dir1/dir2".
-     *
+     * 
      * @param path the path value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -113,7 +117,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Get the requestHeaders property: The HTTP headers to transmit with the request.
-     *
+     * 
      * @return the requestHeaders value.
      */
     public List<HttpHeader> requestHeaders() {
@@ -122,7 +126,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Set the requestHeaders property: The HTTP headers to transmit with the request.
-     *
+     * 
      * @param requestHeaders the requestHeaders value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -134,7 +138,7 @@ public final class ConnectionMonitorHttpConfiguration {
     /**
      * Get the validStatusCodeRanges property: HTTP status codes to consider successful. For instance,
      * "2xx,301-304,418".
-     *
+     * 
      * @return the validStatusCodeRanges value.
      */
     public List<String> validStatusCodeRanges() {
@@ -144,7 +148,7 @@ public final class ConnectionMonitorHttpConfiguration {
     /**
      * Set the validStatusCodeRanges property: HTTP status codes to consider successful. For instance,
      * "2xx,301-304,418".
-     *
+     * 
      * @param validStatusCodeRanges the validStatusCodeRanges value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -156,7 +160,7 @@ public final class ConnectionMonitorHttpConfiguration {
     /**
      * Get the preferHttps property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
      * not explicit.
-     *
+     * 
      * @return the preferHttps value.
      */
     public Boolean preferHttps() {
@@ -166,7 +170,7 @@ public final class ConnectionMonitorHttpConfiguration {
     /**
      * Set the preferHttps property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
      * not explicit.
-     *
+     * 
      * @param preferHttps the preferHttps value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
@@ -177,7 +181,7 @@ public final class ConnectionMonitorHttpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

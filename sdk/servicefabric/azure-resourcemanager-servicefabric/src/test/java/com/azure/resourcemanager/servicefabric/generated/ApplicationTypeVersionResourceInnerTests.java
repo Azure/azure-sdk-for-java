@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeVersionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeVersionResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"menevfyexfwh\",\"appPackageUrl\":\"bcibvyvdcsitynn\",\"defaultParameterList\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"}},\"location\":\"sounqecanoaeu\",\"tags\":{\"tuo\":\"yhltrpmopjmcm\"},\"etag\":\"hfuiuaodsfc\",\"id\":\"vxodpu\",\"name\":\"zmyzydagf\",\"type\":\"axbezyiuo\"}")
-                .toObject(ApplicationTypeVersionResourceInner.class);
+        ApplicationTypeVersionResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"menevfyexfwh\",\"appPackageUrl\":\"bcibvyvdcsitynn\",\"defaultParameterList\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"}},\"location\":\"sounqecanoaeu\",\"tags\":{\"tuo\":\"yhltrpmopjmcm\"},\"etag\":\"hfuiuaodsfc\",\"id\":\"vxodpu\",\"name\":\"zmyzydagf\",\"type\":\"axbezyiuo\"}")
+            .toObject(ApplicationTypeVersionResourceInner.class);
         Assertions.assertEquals("sounqecanoaeu", model.location());
         Assertions.assertEquals("yhltrpmopjmcm", model.tags().get("tuo"));
         Assertions.assertEquals("bcibvyvdcsitynn", model.appPackageUrl());
@@ -25,17 +23,15 @@ public final class ApplicationTypeVersionResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionResourceInner model =
-            new ApplicationTypeVersionResourceInner()
-                .withLocation("sounqecanoaeu")
-                .withTags(mapOf("tuo", "yhltrpmopjmcm"))
-                .withAppPackageUrl("bcibvyvdcsitynn");
+        ApplicationTypeVersionResourceInner model = new ApplicationTypeVersionResourceInner()
+            .withLocation("sounqecanoaeu").withTags(mapOf("tuo", "yhltrpmopjmcm")).withAppPackageUrl("bcibvyvdcsitynn");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceInner.class);
         Assertions.assertEquals("sounqecanoaeu", model.location());
         Assertions.assertEquals("yhltrpmopjmcm", model.tags().get("tuo"));
         Assertions.assertEquals("bcibvyvdcsitynn", model.appPackageUrl());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

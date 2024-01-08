@@ -8,8 +8,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobAudience;
@@ -25,6 +27,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
@@ -40,14 +43,16 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
@@ -220,7 +225,7 @@ public class ServiceApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listDeleted() {
         int numContainers = 5;
@@ -246,7 +251,7 @@ public class ServiceApiTests extends BlobTestBase {
         assertEquals(numContainers, listResult.stream().count());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listWithAllDetails() {
         int numContainers = 5;
@@ -305,7 +310,7 @@ public class ServiceApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     @ResourceLock("ServiceProperties")
     public void listSystemContainers() {
@@ -332,13 +337,13 @@ public class ServiceApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMin() {
         assertDoesNotThrow(() -> primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20200408ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void findBlobsQuery() {
         BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName());
@@ -365,7 +370,7 @@ public class ServiceApiTests extends BlobTestBase {
         containerClient.delete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMarker() {
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
@@ -396,7 +401,7 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResults() {
         int numBlobs = 7;
@@ -420,7 +425,7 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResultsByPage() {
         int numBlobs = 7;
@@ -444,6 +449,39 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void findBlobsByPageAsync() {
+        BlobContainerAsyncClient containerAsyncClient =
+            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        containerAsyncClient.create().block();
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+
+        for (int i = 0; i < 15; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+        }
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+        String query = String.format("\"%s\"='%s'", tagKey, tagValue);
+        FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
+
+        List<TaggedBlobItem> list = primaryBlobServiceAsyncClient
+            .findBlobsByTags(searchOptions)
+            .byPage(10) // byPage should take precedence
+            .take(1, true)
+            .concatMapIterable(ContinuablePage::getElements).collectList().block();
+
+        assertEquals(10, list.size());
+
+        List<TaggedBlobItem> list2 = primaryBlobServiceAsyncClient
+            .findBlobsByTags(searchOptions)
+            .byPage() // since no number is specified, it should use the max number specified in options
+            .take(1, true)
+            .concatMapIterable(ContinuablePage::getElements).collectList().block();
+
+        assertEquals(12, list2.size());
+    }
+
     @Test
     public void findBlobsError() {
         assertThrows(BlobStorageException.class, () ->
@@ -459,7 +497,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
         int numBlobs = 5;
@@ -565,7 +603,6 @@ public class ServiceApiTests extends BlobTestBase {
             // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
             sleepIfRunningAgainstService(30 * 1000);
 
-
             BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties();
 
             assertNotNull(headers.getValue(X_MS_REQUEST_ID));
@@ -645,7 +682,7 @@ public class ServiceApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsStaticWebsite() {
@@ -863,7 +900,7 @@ public class ServiceApiTests extends BlobTestBase {
         assertThrows(IllegalArgumentException.class, builder::buildClient);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainer() {
         BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -886,8 +923,8 @@ public class ServiceApiTests extends BlobTestBase {
         assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @PlaybackOnly
     @Test
     public void restoreContainerIntoOtherContainer() {
         BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -911,7 +948,7 @@ public class ServiceApiTests extends BlobTestBase {
         assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerWithResponse() {
         BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -937,14 +974,14 @@ public class ServiceApiTests extends BlobTestBase {
         assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerError() {
         assertThrows(BlobStorageException.class,
             () -> primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerIntoExistingContainerError() {
         BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -1049,7 +1086,7 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     // We can't guarantee that the requests will always happen before the container is garbage collected
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void deleteContainerIfExistsAlreadyDeleted() {
         String containerName = generateContainerName();
@@ -1066,7 +1103,7 @@ public class ServiceApiTests extends BlobTestBase {
         assertResponseStatusCode(response2, 202);
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @LiveOnly
     @Test
     public void serviceTimeoutPolicy() {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()

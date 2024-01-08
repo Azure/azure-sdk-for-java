@@ -10,11 +10,13 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
-/** An instance of this class provides access to all the operations defined in ExportJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportJobsClient.
+ */
 public interface ExportJobsClient {
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -41,7 +43,7 @@ public interface ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.

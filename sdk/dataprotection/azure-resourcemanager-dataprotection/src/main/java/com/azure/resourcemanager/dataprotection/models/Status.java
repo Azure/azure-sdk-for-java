@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the protection status of the resource. */
+/**
+ * Specifies the protection status of the resource.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value ConfiguringProtection for Status. */
+    /**
+     * Static value ConfiguringProtection for Status.
+     */
     public static final Status CONFIGURING_PROTECTION = fromString("ConfiguringProtection");
 
-    /** Static value ConfiguringProtectionFailed for Status. */
+    /**
+     * Static value ConfiguringProtectionFailed for Status.
+     */
     public static final Status CONFIGURING_PROTECTION_FAILED = fromString("ConfiguringProtectionFailed");
 
-    /** Static value ProtectionConfigured for Status. */
+    /**
+     * Static value ProtectionConfigured for Status.
+     */
     public static final Status PROTECTION_CONFIGURED = fromString("ProtectionConfigured");
 
-    /** Static value ProtectionStopped for Status. */
+    /**
+     * Static value ProtectionStopped for Status.
+     */
     public static final Status PROTECTION_STOPPED = fromString("ProtectionStopped");
 
-    /** Static value SoftDeleted for Status. */
+    /**
+     * Static value SoftDeleted for Status.
+     */
     public static final Status SOFT_DELETED = fromString("SoftDeleted");
 
-    /** Static value SoftDeleting for Status. */
+    /**
+     * Static value SoftDeleting for Status.
+     */
     public static final Status SOFT_DELETING = fromString("SoftDeleting");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
@@ -50,7 +64,7 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

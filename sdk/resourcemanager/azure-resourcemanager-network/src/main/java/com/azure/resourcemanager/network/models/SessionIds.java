@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of session IDs. */
+/**
+ * List of session IDs.
+ */
 @Fluent
 public final class SessionIds {
     /*
@@ -17,13 +19,15 @@ public final class SessionIds {
     @JsonProperty(value = "sessionIds")
     private List<String> sessionIds;
 
-    /** Creates an instance of SessionIds class. */
+    /**
+     * Creates an instance of SessionIds class.
+     */
     public SessionIds() {
     }
 
     /**
      * Get the sessionIds property: List of session IDs.
-     *
+     * 
      * @return the sessionIds value.
      */
     public List<String> sessionIds() {
@@ -32,7 +36,7 @@ public final class SessionIds {
 
     /**
      * Set the sessionIds property: List of session IDs.
-     *
+     * 
      * @param sessionIds the sessionIds value to set.
      * @return the SessionIds object itself.
      */
@@ -43,7 +47,7 @@ public final class SessionIds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

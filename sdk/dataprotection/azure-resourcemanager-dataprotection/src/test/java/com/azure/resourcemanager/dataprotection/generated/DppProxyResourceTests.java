@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DppProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppProxyResource model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"zq\":\"gyepsbjt\",\"fjz\":\"gxywpmue\"},\"id\":\"qkqujidsu\",\"name\":\"onobglaocqx\",\"type\":\"ccm\"}")
-                .toObject(DppProxyResource.class);
+        DppProxyResource model = BinaryData.fromString(
+            "{\"tags\":{\"zq\":\"gyepsbjt\",\"fjz\":\"gxywpmue\"},\"id\":\"qkqujidsu\",\"name\":\"onobglaocqx\",\"type\":\"ccm\"}")
+            .toObject(DppProxyResource.class);
         Assertions.assertEquals("gyepsbjt", model.tags().get("zq"));
     }
 
@@ -28,6 +26,7 @@ public final class DppProxyResourceTests {
         Assertions.assertEquals("gyepsbjt", model.tags().get("zq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

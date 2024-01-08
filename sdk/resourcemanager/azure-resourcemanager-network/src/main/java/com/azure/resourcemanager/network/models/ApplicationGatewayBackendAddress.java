@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Backend address of an application gateway. */
+/**
+ * Backend address of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayBackendAddress {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayBackendAddress {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of ApplicationGatewayBackendAddress class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendAddress class.
+     */
     public ApplicationGatewayBackendAddress() {
     }
 
     /**
      * Get the fqdn property: Fully qualified domain name (FQDN).
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayBackendAddress {
 
     /**
      * Set the fqdn property: Fully qualified domain name (FQDN).
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the ApplicationGatewayBackendAddress object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayBackendAddress {
 
     /**
      * Get the ipAddress property: IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayBackendAddress {
 
     /**
      * Set the ipAddress property: IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the ApplicationGatewayBackendAddress object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayBackendAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

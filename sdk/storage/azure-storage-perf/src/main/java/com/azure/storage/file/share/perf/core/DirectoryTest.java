@@ -3,12 +3,11 @@
 
 package com.azure.storage.file.share.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.share.ShareDirectoryAsyncClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends ShareTest<TOptions> {
     protected final ShareDirectoryClient shareDirectoryClient;
@@ -17,7 +16,7 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
     public DirectoryTest(TOptions options) {
         super(options);
         // Setup the container clients
-        String directroyName = "perfstressdirectoryv11" + UUID.randomUUID().toString();
+        String directroyName = "perfstressdirectoryv11" + CoreUtils.randomUuid();
         shareDirectoryClient = shareClient.getDirectoryClient(directroyName);
         shareDirectoryAsyncClient = shareAsyncClient.getDirectoryClient(directroyName);
     }

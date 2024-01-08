@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -21,7 +22,7 @@ public class PermissionTest {
                 "    'resource': 'dbs/AQAAAA==/colls/AQAAAJ0fgTc='," +
                 "    'resourcePartitionKey': ['/id']" +
                 "}";
-        Permission p = new Permission(json);
+        Permission p = new Permission(Utils.parseJson(json));
         assertThat(p.getResourcePartitionKey()).isEqualToComparingFieldByField(new PartitionKey("/id"));
         assertThat(p.getPermissionMode()).isEqualTo(PermissionMode.READ);
     }

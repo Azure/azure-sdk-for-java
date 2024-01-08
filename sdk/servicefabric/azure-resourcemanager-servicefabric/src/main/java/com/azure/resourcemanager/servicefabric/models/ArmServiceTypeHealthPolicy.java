@@ -7,12 +7,14 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the health policy used to evaluate the health of services belonging to a service type. */
+/**
+ * Represents the health policy used to evaluate the health of services belonging to a service type.
+ */
 @Fluent
 public final class ArmServiceTypeHealthPolicy {
     /*
      * The maximum percentage of services allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUnhealthyServices")
     private Integer maxPercentUnhealthyServices;
@@ -20,7 +22,7 @@ public final class ArmServiceTypeHealthPolicy {
     /*
      * The maximum percentage of partitions per service allowed to be unhealthy before your application is considered
      * in error.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUnhealthyPartitionsPerService")
     private Integer maxPercentUnhealthyPartitionsPerService;
@@ -28,19 +30,21 @@ public final class ArmServiceTypeHealthPolicy {
     /*
      * The maximum percentage of replicas per partition allowed to be unhealthy before your application is considered
      * in error.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUnhealthyReplicasPerPartition")
     private Integer maxPercentUnhealthyReplicasPerPartition;
 
-    /** Creates an instance of ArmServiceTypeHealthPolicy class. */
+    /**
+     * Creates an instance of ArmServiceTypeHealthPolicy class.
+     */
     public ArmServiceTypeHealthPolicy() {
     }
 
     /**
      * Get the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @return the maxPercentUnhealthyServices value.
      */
     public Integer maxPercentUnhealthyServices() {
@@ -50,7 +54,7 @@ public final class ArmServiceTypeHealthPolicy {
     /**
      * Set the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @param maxPercentUnhealthyServices the maxPercentUnhealthyServices value to set.
      * @return the ArmServiceTypeHealthPolicy object itself.
      */
@@ -62,7 +66,7 @@ public final class ArmServiceTypeHealthPolicy {
     /**
      * Get the maxPercentUnhealthyPartitionsPerService property: The maximum percentage of partitions per service
      * allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      * @return the maxPercentUnhealthyPartitionsPerService value.
      */
     public Integer maxPercentUnhealthyPartitionsPerService() {
@@ -72,12 +76,12 @@ public final class ArmServiceTypeHealthPolicy {
     /**
      * Set the maxPercentUnhealthyPartitionsPerService property: The maximum percentage of partitions per service
      * allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      * @param maxPercentUnhealthyPartitionsPerService the maxPercentUnhealthyPartitionsPerService value to set.
      * @return the ArmServiceTypeHealthPolicy object itself.
      */
-    public ArmServiceTypeHealthPolicy withMaxPercentUnhealthyPartitionsPerService(
-        Integer maxPercentUnhealthyPartitionsPerService) {
+    public ArmServiceTypeHealthPolicy
+        withMaxPercentUnhealthyPartitionsPerService(Integer maxPercentUnhealthyPartitionsPerService) {
         this.maxPercentUnhealthyPartitionsPerService = maxPercentUnhealthyPartitionsPerService;
         return this;
     }
@@ -85,7 +89,7 @@ public final class ArmServiceTypeHealthPolicy {
     /**
      * Get the maxPercentUnhealthyReplicasPerPartition property: The maximum percentage of replicas per partition
      * allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      * @return the maxPercentUnhealthyReplicasPerPartition value.
      */
     public Integer maxPercentUnhealthyReplicasPerPartition() {
@@ -95,19 +99,19 @@ public final class ArmServiceTypeHealthPolicy {
     /**
      * Set the maxPercentUnhealthyReplicasPerPartition property: The maximum percentage of replicas per partition
      * allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      * @param maxPercentUnhealthyReplicasPerPartition the maxPercentUnhealthyReplicasPerPartition value to set.
      * @return the ArmServiceTypeHealthPolicy object itself.
      */
-    public ArmServiceTypeHealthPolicy withMaxPercentUnhealthyReplicasPerPartition(
-        Integer maxPercentUnhealthyReplicasPerPartition) {
+    public ArmServiceTypeHealthPolicy
+        withMaxPercentUnhealthyReplicasPerPartition(Integer maxPercentUnhealthyReplicasPerPartition) {
         this.maxPercentUnhealthyReplicasPerPartition = maxPercentUnhealthyReplicasPerPartition;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

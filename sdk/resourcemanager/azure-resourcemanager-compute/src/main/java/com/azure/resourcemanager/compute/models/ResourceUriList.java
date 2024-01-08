@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List resources which are encrypted with the disk encryption set. */
+/**
+ * The List resources which are encrypted with the disk encryption set.
+ */
 @Fluent
 public final class ResourceUriList {
     /*
@@ -25,13 +27,16 @@ public final class ResourceUriList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ResourceUriList class. */
+    /**
+     * Creates an instance of ResourceUriList class.
+     */
     public ResourceUriList() {
     }
 
     /**
-     * Get the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.
-     *
+     * Get the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption
+     * set.
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -39,8 +44,9 @@ public final class ResourceUriList {
     }
 
     /**
-     * Set the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.
-     *
+     * Set the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption
+     * set.
+     * 
      * @param value the value value to set.
      * @return the ResourceUriList object itself.
      */
@@ -52,7 +58,7 @@ public final class ResourceUriList {
     /**
      * Get the nextLink property: The uri to fetch the next page of encrypted resources. Call ListNext() with this to
      * fetch the next page of encrypted resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +68,7 @@ public final class ResourceUriList {
     /**
      * Set the nextLink property: The uri to fetch the next page of encrypted resources. Call ListNext() with this to
      * fetch the next page of encrypted resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceUriList object itself.
      */
@@ -73,14 +79,13 @@ public final class ResourceUriList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ResourceUriList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ResourceUriList"));
         }
     }
 

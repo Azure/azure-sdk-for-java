@@ -20,18 +20,20 @@ public final class CreateUpdateOptions {
     private Integer throughput;
 
     /*
-     * Specifies the Autoscale settings.
+     * Specifies the Autoscale settings. Note: Either throughput or autoscaleSettings is required, but not both.
      */
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
-    /** Creates an instance of CreateUpdateOptions class. */
+    /**
+     * Creates an instance of CreateUpdateOptions class.
+     */
     public CreateUpdateOptions() {
     }
 
     /**
      * Get the throughput property: Request Units per second. For example, "throughput": 10000.
-     *
+     * 
      * @return the throughput value.
      */
     public Integer throughput() {
@@ -40,7 +42,7 @@ public final class CreateUpdateOptions {
 
     /**
      * Set the throughput property: Request Units per second. For example, "throughput": 10000.
-     *
+     * 
      * @param throughput the throughput value to set.
      * @return the CreateUpdateOptions object itself.
      */
@@ -50,8 +52,9 @@ public final class CreateUpdateOptions {
     }
 
     /**
-     * Get the autoscaleSettings property: Specifies the Autoscale settings.
-     *
+     * Get the autoscaleSettings property: Specifies the Autoscale settings. Note: Either throughput or
+     * autoscaleSettings is required, but not both.
+     * 
      * @return the autoscaleSettings value.
      */
     public AutoscaleSettings autoscaleSettings() {
@@ -59,8 +62,9 @@ public final class CreateUpdateOptions {
     }
 
     /**
-     * Set the autoscaleSettings property: Specifies the Autoscale settings.
-     *
+     * Set the autoscaleSettings property: Specifies the Autoscale settings. Note: Either throughput or
+     * autoscaleSettings is required, but not both.
+     * 
      * @param autoscaleSettings the autoscaleSettings value to set.
      * @return the CreateUpdateOptions object itself.
      */
@@ -71,7 +75,7 @@ public final class CreateUpdateOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

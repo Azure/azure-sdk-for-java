@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Extension operation response. */
+/**
+ * The List Extension operation response.
+ */
 @Fluent
 public final class VirtualMachineExtensionsListResultInner {
     /*
@@ -17,13 +19,15 @@ public final class VirtualMachineExtensionsListResultInner {
     @JsonProperty(value = "value")
     private List<VirtualMachineExtensionInner> value;
 
-    /** Creates an instance of VirtualMachineExtensionsListResultInner class. */
+    /**
+     * Creates an instance of VirtualMachineExtensionsListResultInner class.
+     */
     public VirtualMachineExtensionsListResultInner() {
     }
 
     /**
      * Get the value property: The list of extensions.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineExtensionInner> value() {
@@ -32,7 +36,7 @@ public final class VirtualMachineExtensionsListResultInner {
 
     /**
      * Set the value property: The list of extensions.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineExtensionsListResultInner object itself.
      */
@@ -43,7 +47,7 @@ public final class VirtualMachineExtensionsListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** To scrub sensitive log fields. */
+/**
+ * To scrub sensitive log fields.
+ */
 @Fluent
 public final class PolicySettingsLogScrubbing {
     /*
@@ -23,13 +25,15 @@ public final class PolicySettingsLogScrubbing {
     @JsonProperty(value = "scrubbingRules")
     private List<WebApplicationFirewallScrubbingRules> scrubbingRules;
 
-    /** Creates an instance of PolicySettingsLogScrubbing class. */
+    /**
+     * Creates an instance of PolicySettingsLogScrubbing class.
+     */
     public PolicySettingsLogScrubbing() {
     }
 
     /**
      * Get the state property: State of the log scrubbing config. Default value is Enabled.
-     *
+     * 
      * @return the state value.
      */
     public WebApplicationFirewallScrubbingState state() {
@@ -38,7 +42,7 @@ public final class PolicySettingsLogScrubbing {
 
     /**
      * Set the state property: State of the log scrubbing config. Default value is Enabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the PolicySettingsLogScrubbing object itself.
      */
@@ -49,7 +53,7 @@ public final class PolicySettingsLogScrubbing {
 
     /**
      * Get the scrubbingRules property: The rules that are applied to the logs for scrubbing.
-     *
+     * 
      * @return the scrubbingRules value.
      */
     public List<WebApplicationFirewallScrubbingRules> scrubbingRules() {
@@ -58,7 +62,7 @@ public final class PolicySettingsLogScrubbing {
 
     /**
      * Set the scrubbingRules property: The rules that are applied to the logs for scrubbing.
-     *
+     * 
      * @param scrubbingRules the scrubbingRules value to set.
      * @return the PolicySettingsLogScrubbing object itself.
      */
@@ -69,7 +73,7 @@ public final class PolicySettingsLogScrubbing {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.OSFamilyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a cloud service OS family. */
+/**
+ * Describes a cloud service OS family.
+ */
 @Fluent
 public final class OSFamilyInner {
     /*
@@ -41,13 +43,15 @@ public final class OSFamilyInner {
     @JsonProperty(value = "properties")
     private OSFamilyProperties properties;
 
-    /** Creates an instance of OSFamilyInner class. */
+    /**
+     * Creates an instance of OSFamilyInner class.
+     */
     public OSFamilyInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class OSFamilyInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class OSFamilyInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -74,7 +78,7 @@ public final class OSFamilyInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -83,7 +87,7 @@ public final class OSFamilyInner {
 
     /**
      * Get the properties property: OS family properties.
-     *
+     * 
      * @return the properties value.
      */
     public OSFamilyProperties properties() {
@@ -92,7 +96,7 @@ public final class OSFamilyInner {
 
     /**
      * Set the properties property: OS family properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OSFamilyInner object itself.
      */
@@ -103,7 +107,7 @@ public final class OSFamilyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

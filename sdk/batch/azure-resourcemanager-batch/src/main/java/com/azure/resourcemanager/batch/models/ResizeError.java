@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error that occurred when resizing a pool. */
+/**
+ * An error that occurred when resizing a pool.
+ */
 @Fluent
 public final class ResizeError {
     /*
@@ -30,14 +32,16 @@ public final class ResizeError {
     @JsonProperty(value = "details")
     private List<ResizeError> details;
 
-    /** Creates an instance of ResizeError class. */
+    /**
+     * Creates an instance of ResizeError class.
+     */
     public ResizeError() {
     }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -47,7 +51,7 @@ public final class ResizeError {
     /**
      * Set the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     *
+     * 
      * @param code the code value to set.
      * @return the ResizeError object itself.
      */
@@ -59,7 +63,7 @@ public final class ResizeError {
     /**
      * Get the message property: A message describing the error, intended to be suitable for display in a user
      * interface.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -69,7 +73,7 @@ public final class ResizeError {
     /**
      * Set the message property: A message describing the error, intended to be suitable for display in a user
      * interface.
-     *
+     * 
      * @param message the message value to set.
      * @return the ResizeError object itself.
      */
@@ -80,7 +84,7 @@ public final class ResizeError {
 
     /**
      * Get the details property: Additional details about the error.
-     *
+     * 
      * @return the details value.
      */
     public List<ResizeError> details() {
@@ -89,7 +93,7 @@ public final class ResizeError {
 
     /**
      * Set the details property: Additional details about the error.
-     *
+     * 
      * @param details the details value to set.
      * @return the ResizeError object itself.
      */
@@ -100,19 +104,17 @@ public final class ResizeError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property code in model ResizeError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property code in model ResizeError"));
         }
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property message in model ResizeError"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property message in model ResizeError"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());

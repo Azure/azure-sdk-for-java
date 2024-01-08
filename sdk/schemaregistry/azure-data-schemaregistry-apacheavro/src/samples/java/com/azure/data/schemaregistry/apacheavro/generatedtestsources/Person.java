@@ -23,10 +23,10 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
   private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Person> ENCODER =
-      new BinaryMessageEncoder<Person>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<Person> DECODER =
-      new BinaryMessageDecoder<Person>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +50,7 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Person> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<Person>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -96,9 +96,14 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
     this.favourite_colour = favourite_colour;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return name;
@@ -109,6 +114,7 @@ public class Person extends org.apache.avro.specific.SpecificRecordBase implemen
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {

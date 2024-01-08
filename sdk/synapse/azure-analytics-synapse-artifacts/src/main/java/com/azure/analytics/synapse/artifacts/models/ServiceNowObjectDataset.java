@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** ServiceNow server dataset. */
+/**
+ * ServiceNow server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ServiceNowObject")
 @JsonFlatten
@@ -24,12 +26,15 @@ public class ServiceNowObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
-    /** Creates an instance of ServiceNowObjectDataset class. */
-    public ServiceNowObjectDataset() {}
+    /**
+     * Creates an instance of ServiceNowObjectDataset class.
+     */
+    public ServiceNowObjectDataset() {
+    }
 
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -38,7 +43,7 @@ public class ServiceNowObjectDataset extends Dataset {
 
     /**
      * Set the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the ServiceNowObjectDataset object itself.
      */
@@ -47,49 +52,63 @@ public class ServiceNowObjectDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceNowObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

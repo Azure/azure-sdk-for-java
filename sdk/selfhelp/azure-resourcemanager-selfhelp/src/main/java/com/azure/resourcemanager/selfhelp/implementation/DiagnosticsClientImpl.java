@@ -32,22 +32,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiagnosticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiagnosticsClient.
+ */
 public final class DiagnosticsClientImpl implements DiagnosticsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DiagnosticsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HelpRPImpl client;
 
     /**
      * Initializes an instance of DiagnosticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DiagnosticsClientImpl(HelpRPImpl client) {
-        this.service =
-            RestProxy.create(DiagnosticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DiagnosticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,40 +64,36 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @Host("{$host}")
     @ServiceInterface(name = "HelpRPDiagnostics")
     public interface DiagnosticsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("diagnosticsResourceName") String diagnosticsResourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DiagnosticResourceInner diagnosticResourceRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiagnosticResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DiagnosticResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("diagnosticsResourceName") String diagnosticsResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,49 +102,38 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String scope, String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String scope, String diagnosticsResourceName,
+        DiagnosticResourceInner diagnosticResourceRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (diagnosticsResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
         }
         if (diagnosticResourceRequest != null) {
             diagnosticResourceRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            scope,
-                            diagnosticsResourceName,
-                            this.client.getApiVersion(),
-                            diagnosticResourceRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), scope, diagnosticsResourceName,
+                this.client.getApiVersion(), diagnosticResourceRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @param context The context to associate with this operation.
@@ -152,49 +143,37 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String scope,
-        String diagnosticsResourceName,
-        DiagnosticResourceInner diagnosticResourceRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String scope, String diagnosticsResourceName,
+        DiagnosticResourceInner diagnosticResourceRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (diagnosticsResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
         }
         if (diagnosticResourceRequest != null) {
             diagnosticResourceRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                scope,
-                diagnosticsResourceName,
-                this.client.getApiVersion(),
-                diagnosticResourceRequest,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), scope, diagnosticsResourceName, this.client.getApiVersion(),
+            diagnosticResourceRequest, accept, context);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,28 +182,24 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link PollerFlux} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(
-        String scope, String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest);
-        return this
-            .client
-            .<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiagnosticResourceInner.class,
-                DiagnosticResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(String scope,
+        String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest);
+        return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DiagnosticResourceInner.class, DiagnosticResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -232,29 +207,25 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link PollerFlux} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(
-        String scope, String diagnosticsResourceName) {
+    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(String scope,
+        String diagnosticsResourceName) {
         final DiagnosticResourceInner diagnosticResourceRequest = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest);
-        return this
-            .client
-            .<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiagnosticResourceInner.class,
-                DiagnosticResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest);
+        return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DiagnosticResourceInner.class, DiagnosticResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @param context The context to associate with this operation.
@@ -264,32 +235,24 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link PollerFlux} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(
-        String scope,
-        String diagnosticsResourceName,
-        DiagnosticResourceInner diagnosticResourceRequest,
-        Context context) {
+    private PollerFlux<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreateAsync(String scope,
+        String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context);
-        return this
-            .client
-            .<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DiagnosticResourceInner.class,
-                DiagnosticResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context);
+        return this.client.<DiagnosticResourceInner, DiagnosticResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DiagnosticResourceInner.class, DiagnosticResourceInner.class, context);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -297,20 +260,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link SyncPoller} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(
-        String scope, String diagnosticsResourceName) {
+    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
+        String diagnosticsResourceName) {
         final DiagnosticResourceInner diagnosticResourceRequest = null;
         return this.beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest).getSyncPoller();
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @param context The context to associate with this operation.
@@ -320,24 +284,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return the {@link SyncPoller} for polling of diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(
-        String scope,
-        String diagnosticsResourceName,
-        DiagnosticResourceInner diagnosticResourceRequest,
-        Context context) {
-        return this
-            .beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context)
+    public SyncPoller<PollResult<DiagnosticResourceInner>, DiagnosticResourceInner> beginCreate(String scope,
+        String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest, Context context) {
+        return this.beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,21 +307,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnosticResourceInner> createAsync(
-        String scope, String diagnosticsResourceName, DiagnosticResourceInner diagnosticResourceRequest) {
-        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest)
-            .last()
+    private Mono<DiagnosticResourceInner> createAsync(String scope, String diagnosticsResourceName,
+        DiagnosticResourceInner diagnosticResourceRequest) {
+        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -370,19 +331,19 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticResourceInner> createAsync(String scope, String diagnosticsResourceName) {
         final DiagnosticResourceInner diagnosticResourceRequest = null;
-        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest)
-            .last()
+        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @param context The context to associate with this operation.
@@ -392,24 +353,21 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DiagnosticResourceInner> createAsync(
-        String scope,
-        String diagnosticsResourceName,
-        DiagnosticResourceInner diagnosticResourceRequest,
-        Context context) {
-        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context)
-            .last()
+    private Mono<DiagnosticResourceInner> createAsync(String scope, String diagnosticsResourceName,
+        DiagnosticResourceInner diagnosticResourceRequest, Context context) {
+        return beginCreateAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,12 +382,13 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a diagnostic for the specific resource using solutionId and requiredInputs* from discovery solutions.
-     * &lt;br/&gt;Diagnostics tells you precisely the root cause of the issue and the steps to address it. You can get
-     * diagnostics once you discover the relevant solution for your Azure issue. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:
-     * &lt;/b&gt; requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an
-     * input to Diagnostics API.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * &lt;br/&gt;Diagnostics are powerful solutions that access product resources or other relevant data and provide
+     * the root cause of the issue and the steps to address the issue.&lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note: &lt;/b&gt;
+     * ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’ as an input to
+     * Diagnostics API.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param diagnosticResourceRequest The required request body for this insightResource invocation.
      * @param context The context to associate with this operation.
@@ -439,107 +398,87 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticResourceInner create(
-        String scope,
-        String diagnosticsResourceName,
-        DiagnosticResourceInner diagnosticResourceRequest,
-        Context context) {
+    public DiagnosticResourceInner create(String scope, String diagnosticsResourceName,
+        DiagnosticResourceInner diagnosticResourceRequest, Context context) {
         return createAsync(scope, diagnosticsResourceName, diagnosticResourceRequest, context).block();
     }
 
     /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiagnosticResourceInner>> getWithResponseAsync(String scope, String diagnosticsResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (diagnosticsResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            diagnosticsResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, diagnosticsResourceName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticResourceInner>> getWithResponseAsync(
-        String scope, String diagnosticsResourceName, Context context) {
+    private Mono<Response<DiagnosticResourceInner>> getWithResponseAsync(String scope, String diagnosticsResourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (diagnosticsResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter diagnosticsResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                scope,
-                diagnosticsResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), scope, diagnosticsResourceName, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticResourceInner> getAsync(String scope, String diagnosticsResourceName) {
@@ -548,26 +487,28 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticResourceInner> getWithResponse(
-        String scope, String diagnosticsResourceName, Context context) {
+    public Response<DiagnosticResourceInner> getWithResponse(String scope, String diagnosticsResourceName,
+        Context context) {
         return getWithResponseAsync(scope, diagnosticsResourceName, context).block();
     }
 
     /**
      * Get the diagnostics using the 'diagnosticsResourceName' you chose while creating the diagnostic.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param diagnosticsResourceName Unique resource name for insight resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

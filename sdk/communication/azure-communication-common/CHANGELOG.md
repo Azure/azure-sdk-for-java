@@ -1,10 +1,12 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for a new communication identifier `MicrosoftTeamsAppIdentifier`.
 
 ### Breaking Changes
+- Introduction of `MicrosoftTeamsAppIdentifier` is a breaking change. It will impact any code that previously depended on the use of UnknownIdentifier with rawIDs starting with `28:orgid:`, `28:dod:`, or `28:gcch:`.
 
 ### Bugs Fixed
 

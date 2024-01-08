@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes Windows Remote Management configuration of the VM. */
+/**
+ * Describes Windows Remote Management configuration of the VM.
+ */
 @Fluent
 public final class WinRMConfiguration {
     /*
@@ -17,13 +19,15 @@ public final class WinRMConfiguration {
     @JsonProperty(value = "listeners")
     private List<WinRMListener> listeners;
 
-    /** Creates an instance of WinRMConfiguration class. */
+    /**
+     * Creates an instance of WinRMConfiguration class.
+     */
     public WinRMConfiguration() {
     }
 
     /**
      * Get the listeners property: The list of Windows Remote Management listeners.
-     *
+     * 
      * @return the listeners value.
      */
     public List<WinRMListener> listeners() {
@@ -32,7 +36,7 @@ public final class WinRMConfiguration {
 
     /**
      * Set the listeners property: The list of Windows Remote Management listeners.
-     *
+     * 
      * @param listeners the listeners value to set.
      * @return the WinRMConfiguration object itself.
      */
@@ -43,7 +47,7 @@ public final class WinRMConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

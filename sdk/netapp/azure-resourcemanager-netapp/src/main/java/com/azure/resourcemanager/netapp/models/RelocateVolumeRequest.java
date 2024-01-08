@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Relocate volume request. */
+/**
+ * Relocate volume request.
+ */
 @Fluent
 public final class RelocateVolumeRequest {
     /*
@@ -16,13 +18,15 @@ public final class RelocateVolumeRequest {
     @JsonProperty(value = "creationToken")
     private String creationToken;
 
-    /** Creates an instance of RelocateVolumeRequest class. */
+    /**
+     * Creates an instance of RelocateVolumeRequest class.
+     */
     public RelocateVolumeRequest() {
     }
 
     /**
      * Get the creationToken property: New creation token for the volume that controls the mount point name.
-     *
+     * 
      * @return the creationToken value.
      */
     public String creationToken() {
@@ -31,7 +35,7 @@ public final class RelocateVolumeRequest {
 
     /**
      * Set the creationToken property: New creation token for the volume that controls the mount point name.
-     *
+     * 
      * @param creationToken the creationToken value to set.
      * @return the RelocateVolumeRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class RelocateVolumeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

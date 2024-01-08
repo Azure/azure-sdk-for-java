@@ -8,27 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource type used for verification. */
+/**
+ * Resource type used for verification.
+ */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
-    /** Static value Microsoft.NetApp/netAppAccounts for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS =
-        fromString("Microsoft.NetApp/netAppAccounts");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS
+        = fromString("Microsoft.NetApp/netAppAccounts");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS =
-        fromString("Microsoft.NetApp/netAppAccounts/capacityPools");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES =
-        fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes");
 
-    /** Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS =
-        fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
+    /**
+     * Static value Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS
+        = fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
      * Creates a new instance of CheckNameResourceTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +47,7 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
 
     /**
      * Creates or finds a CheckNameResourceTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CheckNameResourceTypes.
      */
@@ -48,7 +58,7 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
 
     /**
      * Gets known CheckNameResourceTypes values.
-     *
+     * 
      * @return known CheckNameResourceTypes values.
      */
     public static Collection<CheckNameResourceTypes> values() {

@@ -22,10 +22,10 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
@@ -282,7 +282,7 @@ public class CPKNTests extends BlobTestBase {
         Assertions.assertEquals(scope1, response.getValue().getEncryptionScope());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @Test
     public void syncCopyEncryptionScope() {
         BlobClient blobSource = cc.getBlobClient(generateBlobName());

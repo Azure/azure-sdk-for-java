@@ -19,7 +19,6 @@ public final class AudioTranslationOptions {
      * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @Generated
     @JsonProperty(value = "file")
     private byte[] file;
 
@@ -58,24 +57,12 @@ public final class AudioTranslationOptions {
     private String model;
 
     /**
-     * Creates an instance of AudioTranslationOptions class.
-     *
-     * @param file the file value to set.
-     */
-    @Generated
-    @JsonCreator
-    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
-        this.file = file;
-    }
-
-    /**
      * Get the file property: The audio data to translate. This must be the binary content of a file in one of the
      * supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      *
      * @return the file value.
      */
-    @Generated
     public byte[] getFile() {
         return CoreUtils.clone(this.file);
     }
@@ -179,6 +166,74 @@ public final class AudioTranslationOptions {
     @Generated
     public AudioTranslationOptions setResponseFormat(AudioTranslationFormat responseFormat) {
         this.responseFormat = responseFormat;
+        return this;
+    }
+
+    /*
+     * The optional filename or descriptive identifier to associate with with the audio data.
+     */
+    @Generated
+    @JsonProperty(value = "filename")
+    private String filename;
+
+    /**
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
+    }
+
+    /**
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @param filename the filename value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    @Generated
+    public AudioTranslationOptions setFilename(String filename) {
+        this.filename = filename;
+        return this;
+    }
+
+    /*
+     * The filename for file
+     */
+    @Generated
+    @JsonProperty(value = "file")
+    private String fileFilename = "file";
+
+    /**
+     * Creates an instance of AudioTranslationOptions class.
+     *
+     * @param file the file value to set.
+     */
+    @JsonCreator
+    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
+        this.file = file;
+    }
+
+    /**
+     * Get the fileFilename property: The filename for file.
+     *
+     * @return the fileFilename value.
+     */
+    String getFileFilename() {
+        return this.fileFilename;
+    }
+
+    /**
+     * Set the fileFilename property: The filename for file.
+     *
+     * @param fileFilename the fileFilename value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    AudioTranslationOptions setFileFilename(String fileFilename) {
+        this.fileFilename = fileFilename;
         return this;
     }
 }

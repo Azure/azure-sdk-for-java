@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.compute.models.UpgradeOperationHistoricalStatusInfoProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Machine Scale Set OS Upgrade History operation response. */
+/**
+ * Virtual Machine Scale Set OS Upgrade History operation response.
+ */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoInner {
     /*
@@ -29,13 +31,15 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of UpgradeOperationHistoricalStatusInfoInner class. */
+    /**
+     * Creates an instance of UpgradeOperationHistoricalStatusInfoInner class.
+     */
     public UpgradeOperationHistoricalStatusInfoInner() {
     }
 
     /**
      * Get the properties property: Information about the properties of the upgrade operation.
-     *
+     * 
      * @return the properties value.
      */
     public UpgradeOperationHistoricalStatusInfoProperties properties() {
@@ -44,7 +48,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +57,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -62,7 +66,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

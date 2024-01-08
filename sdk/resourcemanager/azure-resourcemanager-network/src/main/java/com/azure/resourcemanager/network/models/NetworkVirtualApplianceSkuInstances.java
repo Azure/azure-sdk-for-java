@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Network Virtual Appliance Sku Instances
- *
- * <p>List of available Sku and instances.
+ * 
+ * List of available Sku and instances.
  */
 @Immutable
 public final class NetworkVirtualApplianceSkuInstances {
@@ -26,13 +26,15 @@ public final class NetworkVirtualApplianceSkuInstances {
     @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
-    /** Creates an instance of NetworkVirtualApplianceSkuInstances class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceSkuInstances class.
+     */
     public NetworkVirtualApplianceSkuInstances() {
     }
 
     /**
      * Get the scaleUnit property: Scale Unit.
-     *
+     * 
      * @return the scaleUnit value.
      */
     public String scaleUnit() {
@@ -41,7 +43,7 @@ public final class NetworkVirtualApplianceSkuInstances {
 
     /**
      * Get the instanceCount property: Instance Count.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -50,7 +52,7 @@ public final class NetworkVirtualApplianceSkuInstances {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

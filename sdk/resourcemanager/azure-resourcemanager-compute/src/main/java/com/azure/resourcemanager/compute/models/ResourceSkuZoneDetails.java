@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes The zonal capabilities of a SKU. */
+/**
+ * Describes The zonal capabilities of a SKU.
+ */
 @Immutable
 public final class ResourceSkuZoneDetails {
     /*
@@ -23,13 +25,15 @@ public final class ResourceSkuZoneDetails {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuCapabilities> capabilities;
 
-    /** Creates an instance of ResourceSkuZoneDetails class. */
+    /**
+     * Creates an instance of ResourceSkuZoneDetails class.
+     */
     public ResourceSkuZoneDetails() {
     }
 
     /**
      * Get the name property: The set of zones that the SKU is available in with the specified capabilities.
-     *
+     * 
      * @return the name value.
      */
     public List<String> name() {
@@ -39,7 +43,7 @@ public final class ResourceSkuZoneDetails {
     /**
      * Get the capabilities property: A list of capabilities that are available for the SKU in the specified list of
      * zones.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceSkuCapabilities> capabilities() {
@@ -48,7 +52,7 @@ public final class ResourceSkuZoneDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationStatus. */
+/**
+ * Resource collection API of OperationStatus.
+ */
 public interface OperationStatus {
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param location The location parameter.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -24,7 +26,7 @@ public interface OperationStatus {
 
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param location The location parameter.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

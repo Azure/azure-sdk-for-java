@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of the resource. */
+/**
+ * The status of the resource.
+ */
 @Fluent
 public final class ResponseOption {
     /*
@@ -22,13 +24,15 @@ public final class ResponseOption {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ResponseOption class. */
+    /**
+     * Creates an instance of ResponseOption class.
+     */
     public ResponseOption() {
     }
 
     /**
      * Get the key property: Unique string.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -37,7 +41,7 @@ public final class ResponseOption {
 
     /**
      * Set the key property: Unique string.
-     *
+     * 
      * @param key the key value to set.
      * @return the ResponseOption object itself.
      */
@@ -48,7 +52,7 @@ public final class ResponseOption {
 
     /**
      * Get the value property: Option description.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class ResponseOption {
 
     /**
      * Set the value property: Option description.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResponseOption object itself.
      */
@@ -68,7 +72,7 @@ public final class ResponseOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

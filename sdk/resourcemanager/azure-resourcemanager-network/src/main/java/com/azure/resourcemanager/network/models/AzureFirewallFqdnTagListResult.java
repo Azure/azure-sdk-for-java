@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.AzureFirewallFqdnTagInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListAzureFirewallFqdnTags API service call. */
+/**
+ * Response for ListAzureFirewallFqdnTags API service call.
+ */
 @Fluent
 public final class AzureFirewallFqdnTagListResult {
     /*
@@ -24,13 +26,15 @@ public final class AzureFirewallFqdnTagListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AzureFirewallFqdnTagListResult class. */
+    /**
+     * Creates an instance of AzureFirewallFqdnTagListResult class.
+     */
     public AzureFirewallFqdnTagListResult() {
     }
 
     /**
      * Get the value property: List of Azure Firewall FQDN Tags in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureFirewallFqdnTagInner> value() {
@@ -39,7 +43,7 @@ public final class AzureFirewallFqdnTagListResult {
 
     /**
      * Set the value property: List of Azure Firewall FQDN Tags in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureFirewallFqdnTagListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AzureFirewallFqdnTagListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AzureFirewallFqdnTagListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AzureFirewallFqdnTagListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AzureFirewallFqdnTagListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

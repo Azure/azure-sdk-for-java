@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies VM Size Property settings on the virtual machine. */
+/**
+ * Specifies VM Size Property settings on the virtual machine.
+ */
 @Fluent
 public final class VMSizeProperties {
     /*
@@ -28,7 +30,9 @@ public final class VMSizeProperties {
     @JsonProperty(value = "vCPUsPerCore")
     private Integer vCpusPerCore;
 
-    /** Creates an instance of VMSizeProperties class. */
+    /**
+     * Creates an instance of VMSizeProperties class.
+     */
     public VMSizeProperties() {
     }
 
@@ -37,7 +41,7 @@ public final class VMSizeProperties {
      * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
      * exposed in api response of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
-     *
+     * 
      * @return the vCpusAvailable value.
      */
     public Integer vCpusAvailable() {
@@ -49,7 +53,7 @@ public final class VMSizeProperties {
      * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
      * exposed in api response of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
-     *
+     * 
      * @param vCpusAvailable the vCpusAvailable value to set.
      * @return the VMSizeProperties object itself.
      */
@@ -60,11 +64,11 @@ public final class VMSizeProperties {
 
     /**
      * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
-     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
-     * of [List all available virtual machine sizes in a
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api
+     * response of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
      * means that hyper-threading is disabled.**.
-     *
+     * 
      * @return the vCpusPerCore value.
      */
     public Integer vCpusPerCore() {
@@ -73,11 +77,11 @@ public final class VMSizeProperties {
 
     /**
      * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
-     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
-     * of [List all available virtual machine sizes in a
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api
+     * response of [List all available virtual machine sizes in a
      * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
      * means that hyper-threading is disabled.**.
-     *
+     * 
      * @param vCpusPerCore the vCpusPerCore value to set.
      * @return the VMSizeProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class VMSizeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

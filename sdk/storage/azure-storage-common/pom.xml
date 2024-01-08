@@ -46,19 +46,19 @@
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.common=java.desktop
     </javaModulesSurefireArgLine>
-    <parallelizeLiveTests>true</parallelizeLiveTests>
+    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.45.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.10</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -80,13 +80,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.22.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.22.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -116,13 +116,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.16</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-core</artifactId>
-      <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <version>1.11.17</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -192,40 +186,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.gmavenplus</groupId>
-        <artifactId>gmavenplus-plugin</artifactId>
-        <version>2.1.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>addTestSources</goal>
-              <goal>generateTestStubs</goal>
-              <goal>compileTests</goal>
-              <goal>removeTestStubs</goal>
-            </goals>
-            <phase>test-compile</phase>
-          </execution>
-        </executions>
-        <configuration>
-          <skipTests>${skipTestCompile}</skipTests>
-          <testSources>
-            <testSource>
-              <directory>${project.basedir}/src/test</directory>
-              <includes>
-                <include>**/*.groovy</include>
-              </includes>
-            </testSource>
-            <testSource>
-              <directory>${project.basedir}/src/test-shared</directory>
-              <includes>
-                <include>**/*.groovy</include>
-              </includes>
-            </testSource>
-          </testSources>
         </configuration>
       </plugin>
     </plugins>

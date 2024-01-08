@@ -31,6 +31,9 @@ import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
+/**
+ * A synchronous REST proxy implementation.
+ */
 public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
@@ -181,7 +184,7 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getSourceResponse().getBodyAsBinaryData();
         } else {
             // Object or Page<T>
-            result = response.getDecodedBody((byte[]) null);
+            result = response.getDecodedBody(null);
         }
         return result;
     }
@@ -215,6 +218,7 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
+    @Override
     public void updateRequest(RequestDataConfiguration requestDataConfiguration,
         SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
@@ -246,13 +250,9 @@ public class SyncRestProxy extends RestProxyBase {
                 request.setBody(bodyContentString);
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
-            if (((ByteBuffer) bodyContentObject).hasArray()) {
-                request.setBody(((ByteBuffer) bodyContentObject).array());
-            } else {
-                byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
-                ((ByteBuffer) bodyContentObject).get(array);
-                request.setBody(array);
-            }
+            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
+        } else if (bodyContentObject instanceof InputStream) {
+            request.setBody(BinaryData.fromStream((InputStream) bodyContentObject));
         } else {
             SerializerEncoding encoding = SerializerEncoding.fromHeaders(request.getHeaders());
             request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, encoding));
