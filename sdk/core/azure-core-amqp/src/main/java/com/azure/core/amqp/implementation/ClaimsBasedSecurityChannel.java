@@ -27,6 +27,9 @@ import static com.azure.core.amqp.implementation.ExceptionUtil.amqpResponseCodeT
 import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusCode;
 import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusDescription;
 
+/**
+ * Channel responsible for managing the lifecycle of an AMQP CBS node.
+ */
 public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_TYPE = "type";
     static final String PUT_TOKEN_AUDIENCE = "name";
@@ -39,6 +42,15 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private final CbsAuthorizationType authorizationType;
     private final AmqpRetryOptions retryOptions;
 
+    /**
+     * Creates a new instance of {@link ClaimsBasedSecurityChannel}.
+     *
+     * @param responseChannelMono The mono that completes with the {@link RequestResponseChannel} to send the CBS node
+     * requests.
+     * @param tokenCredential The credential to authorize with the CBS node.
+     * @param authorizationType The type of authorization to use.
+     * @param retryOptions The retry options to use when sending requests to the CBS node.
+     */
     public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
 

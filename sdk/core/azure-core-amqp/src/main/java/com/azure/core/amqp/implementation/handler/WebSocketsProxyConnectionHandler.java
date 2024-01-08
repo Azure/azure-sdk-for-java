@@ -64,7 +64,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the connection.
      * @param proxyOptions The options to use for proxy.
-     *
+     * @param peerDetails The peer details for this connection.
+     * @param metricsProvider The AMQP metrics provider.
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */
