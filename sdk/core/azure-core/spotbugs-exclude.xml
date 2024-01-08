@@ -154,6 +154,25 @@
         <Class name="com.azure.core.implementation.jackson.ObjectMapperShim" />
         <Method name="createJsonMapper" />
       </And>
+      <And>
+        <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker" />
+        <Or>
+          <Method name="invokeStatic" />
+          <Method name="invokeWithArguments" />
+        </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.JsonSerializableDeserializer" />
+        <Method name="deserialize" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.ObjectMapperFactory" />
+        <Method name="attemptJackson215Mutation" />
+      </And>
+      <And>
+        <Class name="com.azure.core.implementation.jackson.XmlMapperFactory" />
+        <Method name="&lt;init&gt;" />
+      </And>
     </Or>
   </Match>
 
