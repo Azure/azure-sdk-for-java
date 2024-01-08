@@ -209,6 +209,7 @@ public final class CoreUtils {
         } catch (IOException ex) {
             LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
         }
+
         return Collections.emptyMap();
     }
 

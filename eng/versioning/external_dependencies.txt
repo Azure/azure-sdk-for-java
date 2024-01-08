@@ -19,9 +19,9 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.5
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.5
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.5
 com.fasterxml.woodstox:woodstox-core;6.4.0
-com.github.spotbugs:spotbugs;4.8.0
-com.github.spotbugs:spotbugs-annotations;4.8.0
-com.github.spotbugs:spotbugs-maven-plugin;4.7.3.6
+com.github.spotbugs:spotbugs;4.8.3
+com.github.spotbugs:spotbugs-annotations;4.8.3
+com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 com.google.code.gson:gson;2.10
 com.google.guava:guava;32.0.1-jre
 com.h2database:h2;2.2.220
