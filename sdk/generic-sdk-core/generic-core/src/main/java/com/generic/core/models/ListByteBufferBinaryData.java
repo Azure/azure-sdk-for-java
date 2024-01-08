@@ -1,12 +1,16 @@
 package com.generic.core.models;
 
+import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +74,23 @@ public final class ListByteBufferBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        for (ByteBuffer bb : content) {
+            ImplUtils.writeByteBufferToStream(bb, outputStream);
+        }
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        for (ByteBuffer bb : content) {
+            bb = bb.duplicate();
+            while (bb.hasRemaining()) {
+                channel.write(bb);
+            }
+        }
     }
 
     @Override

@@ -44,8 +44,7 @@ public final class StreamUtil {
      * @return List of byte buffers.
      * @throws IOException If IO operation fails.
      */
-    public static List<ByteBuffer> readStreamToListOfByteBuffers(
-        InputStream inputStream, Long lengthHint,
+    public static List<ByteBuffer> readStreamToListOfByteBuffers(InputStream inputStream, Long lengthHint,
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
@@ -65,7 +64,7 @@ public final class StreamUtil {
         int chunkSize = initialBufferSize;
         // If length is known use it to allocate larger buffer eagerly.
         if (lengthHint != null) {
-            chunkSize = (int) Math.max(1, Math.min(maxBufferSize, lengthHint));
+            chunkSize = (int) Math.max(4096, Math.min(maxBufferSize, lengthHint));
         }
 
         int read;

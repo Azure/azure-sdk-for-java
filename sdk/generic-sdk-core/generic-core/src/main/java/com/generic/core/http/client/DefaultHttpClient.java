@@ -9,13 +9,9 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.ByteArrayBinaryData;
-import com.generic.core.models.ByteBufferBinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.models.SerializableBinaryData;
-import com.generic.core.models.StringBinaryData;
 import com.generic.core.util.ClientLogger;
 
 import javax.net.ssl.SSLSocket;
@@ -152,10 +148,6 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private static final EnumSet<HttpMethod> METHODS_WITHOUT_BODY = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
-    private static final EnumSet<HttpMethod> METHODS_WITH_BODY = EnumSet.of(HttpMethod.OPTIONS, HttpMethod.TRACE,
-        HttpMethod.CONNECT, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE);
-
     /**
      * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
      *
@@ -165,42 +157,34 @@ class DefaultHttpClient implements HttpClient {
      */
     private void sendBody(HttpRequest httpRequest, Object progressReporter, HttpURLConnection connection) {
         BinaryData body = httpRequest.getBody();
+        if (body == null) {
+            return;
+        }
 
-        if (body != null) {
-            HttpMethod method = httpRequest.getHttpMethod();
-            if (METHODS_WITHOUT_BODY.contains(method)) {
+        HttpMethod method = httpRequest.getHttpMethod();
+        switch (httpRequest.getHttpMethod()) {
+            case GET:
+            case HEAD:
                 return;
-            }
 
-            if (!METHODS_WITH_BODY.contains(method)) {
+            case OPTIONS:
+            case TRACE:
+            case CONNECT:
+            case POST:
+            case PUT:
+            case DELETE:
+                connection.setDoOutput(true);
+
+                try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
+                    body.writeTo(os);
+                    os.flush();
+                } catch (IOException e) {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                }
+                return;
+
+            default:
                 throw LOGGER.logThrowableAsError(new IllegalStateException("Unknown HTTP Method: " + method));
-            }
-
-            connection.setDoOutput(true);
-
-            if (body instanceof ByteArrayBinaryData || body instanceof ByteBufferBinaryData
-                || body instanceof SerializableBinaryData || body instanceof StringBinaryData) {
-                // Request body types that are known to fit into memory.
-                try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
-                    os.write(body.toBytes());
-                    os.flush();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                }
-            } else {
-                // Request body types that may not fit into memory.
-                byte[] buffer = new byte[8192];
-                try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
-                    InputStream is = body.toStream();
-                    int read;
-                    while ((read = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, read);
-                    }
-                    os.flush();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                }
-            }
         }
     }
 

@@ -1,9 +1,12 @@
 package com.generic.core.models;
 
+import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -57,6 +60,12 @@ public final class ByteBufferBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         return content.asReadOnlyBuffer();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        ByteBuffer buffer = toByteBuffer();
+        ImplUtils.writeByteBufferToStream(buffer, outputStream);
     }
 
     @Override

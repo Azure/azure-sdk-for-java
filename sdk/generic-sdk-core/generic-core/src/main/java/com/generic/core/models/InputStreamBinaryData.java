@@ -4,6 +4,7 @@
 package com.generic.core.models;
 
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
+import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.implementation.util.StreamUtil;
 import com.generic.core.util.ClientLogger;
@@ -11,8 +12,10 @@ import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +33,7 @@ public final class InputStreamBinaryData extends BinaryData {
     private final Supplier<InputStream> content;
     private final Long length;
     private final boolean isReplayable;
+    private final List<ByteBuffer> bufferedContent;
 
     private volatile byte[] bytes;
     private static final AtomicReferenceFieldUpdater<InputStreamBinaryData, byte[]> BYTES_UPDATER
@@ -51,12 +55,15 @@ public final class InputStreamBinaryData extends BinaryData {
         } else {
             this.content = () -> inputStream;
         }
+        this.bufferedContent = null;
     }
 
-    private InputStreamBinaryData(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {
+    private InputStreamBinaryData(Supplier<InputStream> inputStreamSupplier, Long length,
+        List<ByteBuffer> bufferedContent) {
         this.content = Objects.requireNonNull(inputStreamSupplier, "'inputStreamSupplier' cannot be null.");
         this.length = length;
-        this.isReplayable = isReplayable;
+        this.isReplayable = true;
+        this.bufferedContent = bufferedContent;
     }
 
     @Override
@@ -86,6 +93,50 @@ public final class InputStreamBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        InputStream inputStream = content.get();
+        if (bufferedContent != null) {
+            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
+            for (ByteBuffer bb : bufferedContent) {
+                ImplUtils.writeByteBufferToStream(bb, outputStream);
+            }
+        } else {
+            // Otherwise use a generic write to.
+            // More optimizations can be done here based on the type of InputStream but this is the initial
+            // implementation, so it has been kept simple.
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+        }
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        InputStream inputStream = content.get();
+        if (bufferedContent != null) {
+            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
+            for (ByteBuffer bb : bufferedContent) {
+                bb = bb.duplicate();
+                while (bb.hasRemaining()) {
+                    channel.write(bb);
+                }
+            }
+        } else {
+            // Otherwise use a generic write to.
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                ByteBuffer bb = ByteBuffer.wrap(buffer, 0, read);
+                while (bb.hasRemaining()) {
+                    channel.write(bb);
+                }
+            }
+        }
     }
 
     @Override
@@ -130,7 +181,7 @@ public final class InputStreamBinaryData extends BinaryData {
                 inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
             return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, true);
+                length, byteBuffers);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }

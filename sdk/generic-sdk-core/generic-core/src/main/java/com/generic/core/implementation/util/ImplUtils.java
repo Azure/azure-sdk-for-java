@@ -3,12 +3,11 @@
 
 package com.generic.core.implementation.util;
 
-
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.implementation.http.policy.RetryStrategy;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -163,7 +162,22 @@ public final class ImplUtils {
             return;
         }
 
-        // If no optimizations are available, fallback to the standard method of writing the ByteBuffer into the
+        // All optimizations have been exhausted, fallback to buffering write.
+        stream.write(byteBufferToArray(buffer));
+    }
+
+    /**
+     * Gets the content of the provided ByteBuffer as a byte array. This method will create a new byte array even if the
+     * ByteBuffer can have optionally backing array.
+     *
+     * @param byteBuffer the byte buffer
+     * @return the byte array
+     */
+    public static byte[] byteBufferToArray(ByteBuffer byteBuffer) {
+        int length = byteBuffer.remaining();
+        byte[] byteArray = new byte[length];
+        byteBuffer.get(byteArray);
+        return byteArray;
     }
 
     /**
