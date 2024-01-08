@@ -5,50 +5,54 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed event.
+ */
 @Fluent
 public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEventData {
     /*
      * Router Job Priority
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Router Job Scheduling Failed Attached Worker Selector Expired
      */
-    @JsonProperty(value = "expiredAttachedWorkerSelectors")
     private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
 
     /*
      * Router Job Scheduling Failed Requested Worker Selector Expired
      */
-    @JsonProperty(value = "expiredRequestedWorkerSelectors")
     private List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors;
 
     /*
      * Router Job Scheduling Failed Scheduled Time in UTC
      */
-    @JsonProperty(value = "scheduledOn")
     private OffsetDateTime scheduledOn;
 
     /*
      * Router Job Scheduling Failed Reason
      */
-    @JsonProperty(value = "failureReason")
     private String failureReason;
 
-    /** Creates an instance of AcsRouterJobSchedulingFailedEventData class. */
-    public AcsRouterJobSchedulingFailedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobSchedulingFailedEventData class.
+     */
+    public AcsRouterJobSchedulingFailedEventData() {
+    }
 
     /**
      * Get the priority property: Router Job Priority.
-     *
+     * 
      * @return the priority value.
      */
     public Integer getPriority() {
@@ -57,7 +61,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the priority property: Router Job Priority.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -68,7 +72,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Get the expiredAttachedWorkerSelectors property: Router Job Scheduling Failed Attached Worker Selector Expired.
-     *
+     * 
      * @return the expiredAttachedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredAttachedWorkerSelectors() {
@@ -77,19 +81,20 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the expiredAttachedWorkerSelectors property: Router Job Scheduling Failed Attached Worker Selector Expired.
-     *
+     * 
      * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
-    public AcsRouterJobSchedulingFailedEventData setExpiredAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
+    public AcsRouterJobSchedulingFailedEventData
+        setExpiredAttachedWorkerSelectors(List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
         this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
         return this;
     }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
-     *
+     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
+     * Expired.
+     * 
      * @return the expiredRequestedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredRequestedWorkerSelectors() {
@@ -97,20 +102,21 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     }
 
     /**
-     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
-     *
+     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
+     * Expired.
+     * 
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
-    public AcsRouterJobSchedulingFailedEventData setExpiredRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
+    public AcsRouterJobSchedulingFailedEventData
+        setExpiredRequestedWorkerSelectors(List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
         this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
         return this;
     }
 
     /**
      * Get the scheduledOn property: Router Job Scheduling Failed Scheduled Time in UTC.
-     *
+     * 
      * @return the scheduledOn value.
      */
     public OffsetDateTime getScheduledOn() {
@@ -119,7 +125,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the scheduledOn property: Router Job Scheduling Failed Scheduled Time in UTC.
-     *
+     * 
      * @param scheduledOn the scheduledOn value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -130,7 +136,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Get the failureReason property: Router Job Scheduling Failed Reason.
-     *
+     * 
      * @return the failureReason value.
      */
     public String getFailureReason() {
@@ -139,7 +145,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the failureReason property: Router Job Scheduling Failed Reason.
-     *
+     * 
      * @param failureReason the failureReason value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -148,45 +154,133 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", getQueueId());
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("expiredAttachedWorkerSelectors", this.expiredAttachedWorkerSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("expiredRequestedWorkerSelectors", this.expiredRequestedWorkerSelectors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scheduledOn",
+            this.scheduledOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledOn));
+        jsonWriter.writeStringField("failureReason", this.failureReason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobSchedulingFailedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobSchedulingFailedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobSchedulingFailedEventData.
+     */
+    public static AcsRouterJobSchedulingFailedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobSchedulingFailedEventData deserializedAcsRouterJobSchedulingFailedEventData
+                = new AcsRouterJobSchedulingFailedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.setQueueId(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobSchedulingFailedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobSchedulingFailedEventData.setTags(tags);
+                } else if ("priority".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("expiredAttachedWorkerSelectors".equals(fieldName)) {
+                    List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors
+                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                    deserializedAcsRouterJobSchedulingFailedEventData.expiredAttachedWorkerSelectors
+                        = expiredAttachedWorkerSelectors;
+                } else if ("expiredRequestedWorkerSelectors".equals(fieldName)) {
+                    List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors
+                        = reader.readArray(reader1 -> AcsRouterWorkerSelector.fromJson(reader1));
+                    deserializedAcsRouterJobSchedulingFailedEventData.expiredRequestedWorkerSelectors
+                        = expiredRequestedWorkerSelectors;
+                } else if ("scheduledOn".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.scheduledOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("failureReason".equals(fieldName)) {
+                    deserializedAcsRouterJobSchedulingFailedEventData.failureReason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobSchedulingFailedEventData;
+        });
     }
 }
