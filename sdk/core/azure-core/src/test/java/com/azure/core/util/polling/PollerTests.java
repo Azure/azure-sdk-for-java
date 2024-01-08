@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -754,7 +755,7 @@ public class PollerTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @Test
+    @RepeatedTest(100)
     public void waitForCompletionSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
@@ -775,7 +776,7 @@ public class PollerTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @Test
+    @RepeatedTest(100)
     public void waitForCompletionOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
@@ -804,7 +805,7 @@ public class PollerTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @Test
+    @RepeatedTest(100)
     public void waitUntilSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
@@ -823,8 +824,8 @@ public class PollerTests {
     /**
      * Tests that the last received PollResponse is used when waitUtil times out.
      */
-    @Test
-    public void waitUntilOperationWithTimeout() {
+    @RepeatedTest(100)
+    public void waitUntilOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
         int[] invocationCount = new int[1];
@@ -853,7 +854,7 @@ public class PollerTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @Test
+    @RepeatedTest(100)
     public void getFinalResultSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
@@ -874,7 +875,7 @@ public class PollerTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @Test
+    @RepeatedTest(100)
     public void getFinalResultOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
