@@ -4,10 +4,9 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
@@ -21,15 +20,13 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
-import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
-import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
-import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
@@ -50,6 +47,8 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
@@ -64,16 +63,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ServiceApiTests extends BlobTestBase {
-    private BlobServiceClient anonymousClient;
+public class ServiceAsyncApiTests extends BlobTestBase {
+
+    private BlobServiceAsyncClient anonymousClient;
     private String tagKey;
     private String tagValue;
 
@@ -82,7 +82,7 @@ public class ServiceApiTests extends BlobTestBase {
         // We shouldn't be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .buildClient();
+            .buildAsyncClient();
 
         tagKey = testResourceNamer.randomName(prefix, 20);
         tagValue = testResourceNamer.randomName(prefix, 20);
@@ -90,7 +90,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     private void setInitialProperties() {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
+        primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
             .setDeleteRetentionPolicy(disabled)
             .setCors(null)
@@ -100,12 +100,12 @@ public class ServiceApiTests extends BlobTestBase {
                 .setRetentionPolicy(disabled))
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
-            .setDefaultServiceVersion("2018-03-28"));
+            .setDefaultServiceVersion("2018-03-28")).block();
     }
 
     private void resetProperties() {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        primaryBlobServiceClient.setProperties(new BlobServiceProperties()
+        primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
             .setStaticWebsite(new StaticWebsite().setEnabled(false))
             .setDeleteRetentionPolicy(disabled)
             .setCors(null)
@@ -115,49 +115,51 @@ public class ServiceApiTests extends BlobTestBase {
                 .setRetentionPolicy(disabled))
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
-            .setDefaultServiceVersion("2018-03-28"));
+            .setDefaultServiceVersion("2018-03-28")).block();
     }
 
     @Test
     public void listContainers() {
-        PagedIterable<BlobContainerItem> response = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(prefix), null);
-
-        for (BlobContainerItem c : response) {
-            assertTrue(c.getName().startsWith(prefix));
-            assertNotNull(c.getProperties().getLastModified());
-            assertNotNull(c.getProperties().getETag());
-            assertNotNull(c.getProperties().getLeaseStatus());
-            assertNotNull(c.getProperties().getLeaseState());
-            assertNull(c.getProperties().getLeaseDuration());
-            assertNull(c.getProperties().getPublicAccess());
-            assertFalse(c.getProperties().isHasLegalHold());
-            assertFalse(c.getProperties().isHasImmutabilityPolicy());
-            assertFalse(c.getProperties().isEncryptionScopeOverridePrevented());
-            assertNotNull(c.getProperties().getDefaultEncryptionScope());
-//            !c.isDeleted() // Container soft delete
-        }
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(prefix)))
+            .thenConsumeWhile(c -> {
+                assertTrue(c.getName().startsWith(prefix));
+                assertNotNull(c.getProperties().getLastModified());
+                assertNotNull(c.getProperties().getETag());
+                assertNotNull(c.getProperties().getLeaseStatus());
+                assertNotNull(c.getProperties().getLeaseState());
+                assertNull(c.getProperties().getLeaseDuration());
+                assertNull(c.getProperties().getPublicAccess());
+                assertFalse(c.getProperties().isHasLegalHold());
+                assertFalse(c.getProperties().isHasImmutabilityPolicy());
+                assertFalse(c.getProperties().isEncryptionScopeOverridePrevented());
+                assertNotNull(c.getProperties().getDefaultEncryptionScope());
+                return true;
+            })
+            .verifyComplete();
     }
 
     @Test
     public void listContainersMin() {
-        assertDoesNotThrow(() -> primaryBlobServiceClient.listBlobContainers().iterator().hasNext());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers())
+            .thenConsumeWhile(r -> true)
+            .verifyComplete();
     }
 
     @Test
     public void listContainersMarker() {
         for (int i = 0; i < 10; i++) {
-            primaryBlobServiceClient.createBlobContainer(generateContainerName());
+            primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         }
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setMaxResultsPerPage(5);
-        PagedResponse<BlobContainerItem> firstPage = primaryBlobServiceClient.listBlobContainers(options, null)
-            .iterableByPage().iterator().next();
+        PagedResponse<BlobContainerItem> firstPage = primaryBlobServiceAsyncClient.listBlobContainers(options)
+            .byPage().blockFirst();
         String marker = firstPage.getContinuationToken();
         String firstContainerName = firstPage.getValue().get(0).getName();
 
-        PagedResponse<BlobContainerItem> secondPage = primaryBlobServiceClient.listBlobContainers()
-            .iterableByPage(marker).iterator().next();
+        PagedResponse<BlobContainerItem> secondPage = primaryBlobServiceAsyncClient.listBlobContainers()
+            .byPage(marker).blockLast();
 
         // Assert that the second segment is indeed after the first alphabetically
         assertTrue(firstContainerName.compareTo(secondPage.getValue().get(0).getName()) < 0);
@@ -168,14 +170,15 @@ public class ServiceApiTests extends BlobTestBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
         String containerName = generateContainerName();
-        cc = primaryBlobServiceClient.createBlobContainerWithResponse(containerName, metadata, null, null)
-            .getValue();
+        ccAsync = primaryBlobServiceAsyncClient.createBlobContainerWithResponse(containerName, metadata,
+            null, null)
+            .block().getValue();
 
-        assertEquals(metadata,
-            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
-                .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
-                .setPrefix(containerName), null)
-                .iterator().next().getMetadata());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+            .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
+            .setPrefix(containerName)))
+            .assertNext(r -> assertEquals(metadata, r.getMetadata()))
+            .verifyComplete();
     }
 
     @Test
@@ -184,18 +187,20 @@ public class ServiceApiTests extends BlobTestBase {
         int pageResults = 3;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerClient> containers = new ArrayList<>();
+        List<BlobContainerAsyncClient> containers = new ArrayList<>();
         for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i));
+            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
         }
 
-        assertEquals(pageResults, primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setMaxResultsPerPage(pageResults), null)
-            .iterableByPage().iterator().next().getValue().size());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setMaxResultsPerPage(pageResults)).byPage())
+            .assertNext(r -> assertEquals(pageResults, r.getValue().size()))
+            .expectNextCount(1)
+            .verifyComplete();
 
         // cleanup:
-        for (BlobContainerClient container : containers) {
-            container.delete();
+        for (BlobContainerAsyncClient container : containers) {
+            container.delete().block();
         }
     }
 
@@ -205,20 +210,22 @@ public class ServiceApiTests extends BlobTestBase {
         int pageResults = 3;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerClient> containers = new ArrayList<>();
+        List<BlobContainerAsyncClient> containers = new ArrayList<>();
         for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i));
+            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
         }
 
-        for (PagedResponse<BlobContainerItem> page : primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix), null).iterableByPage(pageResults)) {
-            assertTrue(page.getValue().size() <= pageResults);
-        }
-
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(containerNamePrefix)).byPage(pageResults))
+            .thenConsumeWhile(r -> {
+                assertTrue(r.getValue().size() <= pageResults);
+                return true;
+            })
+            .verifyComplete();
 
         // cleanup:
-        for (BlobContainerClient container : containers) {
-            container.delete();
+        for (BlobContainerAsyncClient container : containers) {
+            container.delete().block();
         }
     }
 
@@ -228,24 +235,28 @@ public class ServiceApiTests extends BlobTestBase {
         int numContainers = 5;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerClient> containers = new ArrayList<>();
+        List<BlobContainerAsyncClient> containers = new ArrayList<>();
         for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i));
+            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
         }
 
         // delete each container
-        for (BlobContainerClient container : containers) {
-            container.delete();
+        for (BlobContainerAsyncClient container : containers) {
+            container.delete().block();
         }
 
-        PagedIterable<BlobContainerItem> listResult = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(
-                new BlobContainerListDetails().setRetrieveDeleted(true)), null);
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))))
+            .thenConsumeWhile(r -> {
+                assertTrue(r.isDeleted());
+                return true;
+            })
+            .verifyComplete();
 
-        for (BlobContainerItem item : listResult) {
-            assertTrue(item.isDeleted());
-        }
-        assertEquals(numContainers, listResult.stream().count());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).count())
+            .assertNext(r -> assertEquals(numContainers, r))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -254,36 +265,45 @@ public class ServiceApiTests extends BlobTestBase {
         int numContainers = 5;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerClient> containers = new ArrayList<>();
+        List<BlobContainerAsyncClient> containers = new ArrayList<>();
         for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i));
+            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
         }
 
         // delete each container
-        for (BlobContainerClient container : containers) {
-            container.delete();
+        for (BlobContainerAsyncClient container : containers) {
+            container.delete().block();
         }
 
-        PagedIterable<BlobContainerItem> listResult = primaryBlobServiceClient.listBlobContainers(
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
             new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails()
                 .setRetrieveDeleted(true)
-                .setRetrieveMetadata(true)), null);
+                .setRetrieveMetadata(true))))
+            .thenConsumeWhile(r -> {
+                assertTrue(r.isDeleted());
+                return true;
+            })
+            .verifyComplete();
 
-        for (BlobContainerItem item : listResult) {
-            assertTrue(item.isDeleted());
-        }
-        assertEquals(numContainers, listResult.stream().count());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails()
+                .setRetrieveDeleted(true)
+                .setRetrieveMetadata(true))).count())
+            .assertNext(r -> assertEquals(numContainers, r))
+            .verifyComplete();
     }
 
     @Test
     public void listContainersError() {
-        assertThrows(BlobStorageException.class, () ->
-            primaryBlobServiceClient.listBlobContainers().streamByPage("garbage continuation token").count());
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers()
+            .byPage("garbage continuation token").count())
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void listContainersAnonymous() {
-        assertThrows(IllegalStateException.class, () -> anonymousClient.listBlobContainers().iterator());
+        StepVerifier.create(anonymousClient.listBlobContainers())
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
@@ -291,19 +311,21 @@ public class ServiceApiTests extends BlobTestBase {
         int numContainers = 5;
         int pageResults = 3;
 
-        List<BlobContainerClient> containers = new ArrayList<>();
+        List<BlobContainerAsyncClient> containers = new ArrayList<>();
         for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceClient.createBlobContainer(generateContainerName()));
+            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block());
         }
 
         // when: "Consume results by page, then should still have paging functionality""
-        assertDoesNotThrow(() -> primaryBlobServiceClient.listBlobContainers(
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainersWithOptionalTimeout(
             new ListBlobContainersOptions().setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10)).streamByPage().count());
+            Duration.ofSeconds(10)).byPage().count())
+            .expectNextCount(1)
+            .verifyComplete();
 
         // cleanup:
-        for (BlobContainerClient container : containers) {
-            container.delete();
+        for (BlobContainerAsyncClient container : containers) {
+            container.delete().block();
         }
     }
 
@@ -320,15 +342,16 @@ public class ServiceApiTests extends BlobTestBase {
             BlobServiceProperties serviceProps = new BlobServiceProperties().setLogging(logging);
 
             // Ensure $logs container exists. These will be reverted in test cleanup
-            primaryBlobServiceClient.setPropertiesWithResponse(serviceProps, null, null);
+            primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProps).block();
 
             sleepIfRunningAgainstService(30 * 1000); // allow the service properties to take effect
 
-            PagedIterable<BlobContainerItem> containers = primaryBlobServiceClient.listBlobContainers(
-                new ListBlobContainersOptions()
-                    .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true)), null);
-
-            assertTrue(containers.stream().anyMatch(c -> c.getName().equals("$logs")));
+            StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+                .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(x -> true)
+                .consumeRecordedWith(r -> assertTrue(r.stream().anyMatch(c -> c.getName().equals("$logs"))))
+                .verifyComplete();
         } finally {
             resetProperties();
         }
@@ -337,65 +360,66 @@ public class ServiceApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMin() {
-        assertDoesNotThrow(() -> primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext());
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags("\"key\"='value'"))
+            .thenConsumeWhile(r -> true)
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void findBlobsQuery() {
-        BlobContainerClient containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName());
-        BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
+        BlobContainerAsyncClient containerClient = primaryBlobServiceAsyncClient
+            .createBlobContainer(generateContainerName()).block();
+        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient(generateBlobName());
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value")), null, null);
-        blobClient = containerClient.getBlobClient(generateBlobName());
+            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value"))).block();
+        blobClient = containerClient.getBlobAsyncClient(generateBlobName());
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo")), null, null);
-        blobClient = containerClient.getBlobClient(generateBlobName());
-        blobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo"))).block();
+        blobClient = containerClient.getBlobAsyncClient(generateBlobName());
+        blobClient.upload(DATA.getDefaultFlux(), null).block();
 
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
-        PagedIterable<TaggedBlobItem> results = primaryBlobServiceClient.findBlobsByTags(
-            String.format("@container='%s' AND \"bar\"='foo'", containerClient.getBlobContainerName()));
-
-        assertEquals(1, results.stream().count());
-        Map<String, String> tags = results.iterator().next().getTags();
-        assertEquals(1, tags.size());
-        assertEquals("foo", tags.get("bar"));
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
+            String.format("@container='%s' AND \"bar\"='foo'", containerClient.getBlobContainerName())))
+            .assertNext(r -> {
+                assertEquals(1, r.getTags().size());
+                assertEquals("foo", r.getTags().get("bar"));
+            })
+            .verifyComplete();
 
         // cleanup:
-        containerClient.delete();
+        containerClient.delete().block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMarker() {
-        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
         for (int i = 0; i < 10; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
         }
 
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
-
-        PagedResponse<TaggedBlobItem> firstPage = primaryBlobServiceClient.findBlobsByTags(
+        PagedResponse<TaggedBlobItem> firstPage = primaryBlobServiceAsyncClient.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                .setMaxResultsPerPage(5), null, Context.NONE).iterableByPage().iterator().next();
+                .setMaxResultsPerPage(5), null, Context.NONE).byPage().blockFirst();
         String marker = firstPage.getContinuationToken();
         String firstBlobName = firstPage.getValue().get(0).getName();
 
-        PagedResponse<TaggedBlobItem> secondPage = primaryBlobServiceClient.findBlobsByTags(
+        PagedResponse<TaggedBlobItem> secondPage = primaryBlobServiceAsyncClient.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-            Context.NONE).iterableByPage(marker).iterator().next();
+            Context.NONE).byPage(marker).blockLast();
 
         // Assert that the second segment is indeed after the first alphabetically
         assertTrue(firstBlobName.compareTo(secondPage.getValue().get(0).getName()) < 0);
 
         // cleanup:
-        cc.delete();
+        cc.delete().block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -403,23 +427,25 @@ public class ServiceApiTests extends BlobTestBase {
     public void findBlobsMaxResults() {
         int numBlobs = 7;
         int pageResults = 3;
-        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
         }
 
-        for (PagedResponse<TaggedBlobItem> page : primaryBlobServiceClient.findBlobsByTags(
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            null, Context.NONE).iterableByPage()) {
-            assertTrue(page.getValue().size() <= pageResults);
-        }
+            null, Context.NONE).byPage())
+            .thenConsumeWhile(r -> {
+                assertTrue(r.getValue().size() <= pageResults);
+                return true;
+            })
+            .verifyComplete();
 
         // cleanup:
-        cc.delete();
+        cc.delete().block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -427,23 +453,24 @@ public class ServiceApiTests extends BlobTestBase {
     public void findBlobsMaxResultsByPage() {
         int numBlobs = 7;
         int pageResults = 3;
-        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
         }
 
-        for (PagedResponse<TaggedBlobItem> page : primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
-            .iterableByPage(pageResults)) {
-            assertTrue(page.getValue().size() <= pageResults);
-        }
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))).byPage(pageResults))
+            .thenConsumeWhile(r -> {
+                assertTrue(r.getValue().size() <= pageResults);
+                return true;
+            })
+            .verifyComplete();
 
         // cleanup:
-        cc.delete();
+        cc.delete().block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -455,8 +482,8 @@ public class ServiceApiTests extends BlobTestBase {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < 15; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+            ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
         }
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
         String query = String.format("\"%s\"='%s'", tagKey, tagValue);
@@ -481,17 +508,15 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void findBlobsError() {
-        assertThrows(BlobStorageException.class, () ->
-                primaryBlobServiceClient.findBlobsByTags("garbageTag").streamByPage().count());
-
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags("garbageTag").byPage().count())
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void findBlobsAnonymous() {
         // Invalid query, but the anonymous check will fail before hitting the wire
-        assertThrows(IllegalStateException.class, () ->
-                anonymousClient.findBlobsByTags("foo=bar").iterator().next());
-
+        StepVerifier.create(anonymousClient.findBlobsByTags("foo=bar"))
+            .verifyError(IllegalStateException.class);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -499,22 +524,22 @@ public class ServiceApiTests extends BlobTestBase {
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
         int numBlobs = 5;
         int pageResults = 3;
-        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
+        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
         }
 
         // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions(
-            String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults), Duration.ofSeconds(10),
-                Context.NONE).streamByPage().count());
+        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(new FindBlobsOptions(
+            String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults)).byPage().count())
+            .expectNextCount(1)
+            .verifyComplete();
 
         // cleanup:
-        cc.delete();
+        cc.delete().block();
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
@@ -594,17 +619,20 @@ public class ServiceApiTests extends BlobTestBase {
                 .setDeleteRetentionPolicy(retentionPolicy)
                 .setStaticWebsite(website);
 
-            HttpHeaders headers =
-                primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders();
+            StepVerifier.create(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties))
+                .assertNext(r -> {
+                    assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                    assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+                })
+                .verifyComplete();
 
             // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
             sleepIfRunningAgainstService(30 * 1000);
 
-            BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties();
 
-            assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-            assertNotNull(headers.getValue(X_MS_VERSION));
-            validatePropsSet(sentProperties, receivedProperties);
+            StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
+                .assertNext(r -> validatePropsSet(sentProperties, r))
+                .verifyComplete();
         } finally {
             resetProperties();
         }
@@ -650,7 +678,8 @@ public class ServiceApiTests extends BlobTestBase {
                 .setDeleteRetentionPolicy(retentionPolicy)
                 .setStaticWebsite(website);
 
-            assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null), 202);
+            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties),
+                202);
         } finally {
             resetProperties();
         }
@@ -662,7 +691,7 @@ public class ServiceApiTests extends BlobTestBase {
         setInitialProperties();
 
         try {
-            BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
+            BlobServiceProperties serviceProperties = primaryBlobServiceAsyncClient.getProperties().block();
 
             // Some properties are not set and this test validates that they are not null when sent to the service
             BlobCorsRule rule = new BlobCorsRule()
@@ -672,7 +701,7 @@ public class ServiceApiTests extends BlobTestBase {
                 .setAllowedHeaders("x-ms-version");
 
             serviceProperties.setCors(Collections.singletonList(rule));
-            assertResponseStatusCode(primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null),
+            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProperties),
                 202);
         } finally {
             resetProperties();
@@ -686,7 +715,7 @@ public class ServiceApiTests extends BlobTestBase {
         setInitialProperties();
 
         try {
-            BlobServiceProperties serviceProperties = primaryBlobServiceClient.getProperties();
+            BlobServiceProperties serviceProperties = primaryBlobServiceAsyncClient.getProperties().block();
             String errorDocument404Path = "error/404.html";
             String defaultIndexDocumentPath = "index.html";
 
@@ -695,13 +724,16 @@ public class ServiceApiTests extends BlobTestBase {
                 .setErrorDocument404Path(errorDocument404Path)
                 .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
 
-            Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null);
+            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProperties),
+                202);
 
-            assertResponseStatusCode(resp, 202);
-            StaticWebsite staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite();
-            assertTrue(staticWebsite.isEnabled());
-            assertEquals(errorDocument404Path, staticWebsite.getErrorDocument404Path());
-            assertEquals(defaultIndexDocumentPath, staticWebsite.getDefaultIndexDocumentPath());
+            StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
+                .assertNext(r -> {
+                    assertTrue(r.getStaticWebsite().isEnabled());
+                    assertEquals(errorDocument404Path, r.getStaticWebsite().getErrorDocument404Path());
+                    assertEquals(defaultIndexDocumentPath, r.getStaticWebsite().getDefaultIndexDocumentPath());
+                })
+                .verifyComplete();
         } finally {
             resetProperties();
         }
@@ -710,14 +742,16 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsError() {
-        assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            "https://error.blob.core.windows.net").setProperties(new BlobServiceProperties()));
+        StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            "https://error.blob.core.windows.net").setProperties(new BlobServiceProperties()))
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsAnonymous() {
-        assertThrows(IllegalStateException.class, () -> anonymousClient.setProperties(new BlobServiceProperties()));
+        StepVerifier.create(anonymousClient.setProperties(new BlobServiceProperties()))
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
@@ -726,7 +760,8 @@ public class ServiceApiTests extends BlobTestBase {
         setInitialProperties();
 
         try {
-            assertResponseStatusCode(primaryBlobServiceClient.getPropertiesWithResponse(null, null), 200);
+            assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.getPropertiesWithResponse(),
+                200);
         } finally {
             resetProperties();
         }
@@ -734,13 +769,15 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getPropsError() {
-        assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            "https://error.blob.core.windows.net").getProperties());
+        StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            "https://error.blob.core.windows.net").getProperties())
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void getPropsAnonymous() {
-        assertThrows(IllegalStateException.class, () -> anonymousClient.getProperties());
+        StepVerifier.create(anonymousClient.getProperties())
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
@@ -748,35 +785,35 @@ public class ServiceApiTests extends BlobTestBase {
         OffsetDateTime start = testResourceNamer.now();
         OffsetDateTime expiry = start.plusDays(1);
 
-        Response<UserDelegationKey> response = getOAuthServiceClient()
-            .getUserDelegationKeyWithResponse(start, expiry, null, null);
-
-        assertResponseStatusCode(response, 200);
-        assertNotNull(response.getValue());
-        assertNotNull(response.getValue().getSignedObjectId());
-        assertNotNull(response.getValue().getSignedTenantId());
-        assertNotNull(response.getValue().getSignedStart());
-        assertNotNull(response.getValue().getSignedExpiry());
-        assertNotNull(response.getValue().getSignedService());
-        assertNotNull(response.getValue().getSignedVersion());
-        assertNotNull(response.getValue().getValue());
+        StepVerifier.create(getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(start, expiry))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 200);
+                assertNotNull(r.getValue());
+                assertNotNull(r.getValue().getSignedObjectId());
+                assertNotNull(r.getValue().getSignedTenantId());
+                assertNotNull(r.getValue().getSignedStart());
+                assertNotNull(r.getValue().getSignedExpiry());
+                assertNotNull(r.getValue().getSignedService());
+                assertNotNull(r.getValue().getSignedVersion());
+                assertNotNull(r.getValue().getValue());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void getUserDelegationKeyMin() {
         OffsetDateTime expiry = testResourceNamer.now().plusDays(1);
 
-        Response<UserDelegationKey> response = getOAuthServiceClient().getUserDelegationKeyWithResponse(null, expiry,
-            null, null);
-
-        assertResponseStatusCode(response, 200);
+        assertAsyncResponseStatusCode(getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(null, expiry),
+            200);
     }
 
     @ParameterizedTest
     @MethodSource("getUserDelegationKeyErrorSupplier")
     public void getUserDelegationKeyError(OffsetDateTime start, OffsetDateTime expiry,
-        Class<? extends Throwable> exception) {
-        assertThrows(exception, () -> getOAuthServiceClient().getUserDelegationKey(start, expiry));
+                                          Class<? extends Throwable> exception) {
+        StepVerifier.create(getOAuthServiceAsyncClient().getUserDelegationKey(start, expiry))
+            .verifyError(exception);
     }
 
     private static Stream<Arguments> getUserDelegationKeyErrorSupplier() {
@@ -788,62 +825,67 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getUserDelegationKeyAnonymous() {
-        assertThrows(IllegalStateException.class, () ->
-            anonymousClient.getUserDelegationKey(null, testResourceNamer.now().plusDays(1)));
+        StepVerifier.create(anonymousClient.getUserDelegationKey(null, testResourceNamer.now().plusDays(1)))
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
     public void getStats() {
-        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
-        Response<BlobServiceStatistics> response = serviceClient.getStatisticsWithResponse(null, null);
-
-        assertNotNull(response.getHeaders().getValue(X_MS_VERSION));
-        assertNotNull(response.getHeaders().getValue(X_MS_REQUEST_ID));
-        assertNotNull(response.getHeaders().getValue(HttpHeaderName.DATE));
-        assertNotNull(response.getValue().getGeoReplication());
-
-        // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
-        // but there are two other statuses, unavailable and bootstrap, which will return null.
-        if (response.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
-            assertNotNull(response.getValue().getGeoReplication().getLastSyncTime());
-        } else {
-            assertNull(response.getValue().getGeoReplication().getLastSyncTime());
-        }
+        StepVerifier.create(serviceClient.getStatisticsWithResponse())
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.DATE));
+                assertNotNull(r.getValue().getGeoReplication());
+                // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
+                // but there are two other statuses, unavailable and bootstrap, which will return null.
+                if (r.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
+                    assertNotNull(r.getValue().getGeoReplication().getLastSyncTime());
+                } else {
+                    assertNull(r.getValue().getGeoReplication().getLastSyncTime());
+                }
+            })
+            .verifyComplete();
     }
 
     @Test
     public void getStatsMin() {
-        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
 
-        assertResponseStatusCode(serviceClient.getStatisticsWithResponse(null, null), 200);
+        assertAsyncResponseStatusCode(serviceClient.getStatisticsWithResponse(), 200);
     }
 
     @Test
     public void getStatsError() {
-        assertThrows(BlobStorageException.class, () -> primaryBlobServiceClient.getStatistics());
+        StepVerifier.create(primaryBlobServiceAsyncClient.getStatistics())
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void getStatsAnonymous() {
-        assertThrows(IllegalStateException.class, () -> anonymousClient.getStatistics());
+        StepVerifier.create(anonymousClient.getStatistics())
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
     public void getAccountInfo() {
-        Response<StorageAccountInfo> response = primaryBlobServiceClient.getAccountInfoWithResponse(null, null);
-
-        assertNotNull(response.getHeaders().getValue(HttpHeaderName.DATE));
-        assertNotNull(response.getHeaders().getValue(X_MS_VERSION));
-        assertNotNull(response.getHeaders().getValue(X_MS_REQUEST_ID));
-        assertNotNull(response.getValue().getAccountKind());
-        assertNotNull(response.getValue().getSkuName());
+        StepVerifier.create(primaryBlobServiceAsyncClient.getAccountInfoWithResponse())
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.DATE));
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getValue().getAccountKind());
+                assertNotNull(r.getValue().getSkuName());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void getAccountInfoMin() {
-        assertResponseStatusCode(primaryBlobServiceClient.getAccountInfoWithResponse(null, null), 200);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.getAccountInfoWithResponse(), 200);
     }
 
     // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
@@ -851,17 +893,19 @@ public class ServiceApiTests extends BlobTestBase {
     @ResourceLock("ServiceProperties")
     public void invalidAccountName() throws MalformedURLException {
         URL badURL = new URL("http://fake.blobfake.core.windows.net");
-        BlobServiceClient client = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            badURL.toString())
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100L, 1000L, null))
-            .buildClient();
+        BlobServiceAsyncClient client = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            badURL.toString()).retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2,
+            60, 100L, 1000L, null))
+            .buildAsyncClient();
 
-        assertThrows(RuntimeException.class, client::getProperties);
+        StepVerifier.create(client.getProperties())
+            .expectError();
     }
 
     @Test
     public void getAccountInfoAnonymous() {
-        assertThrows(IllegalStateException.class, () -> anonymousClient.getAccountInfo());
+        StepVerifier.create(anonymousClient.getAccountInfo())
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
@@ -877,135 +921,149 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void builderCpkValidation() {
-        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceAsyncClient.getAccountUrl()).setScheme("http").toUrl()
             .toString();
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .customerProvidedKey(new CustomerProvidedKey(Base64.getEncoder()
                 .encodeToString(getRandomByteArray(256)))).endpoint(endpoint);
 
-        assertThrows(IllegalArgumentException.class, builder::buildClient);
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
     }
 
     @Test
     public void builderBearerTokenValidation() {
-        String endpoint = BlobUrlParts.parse(primaryBlobServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        String endpoint = BlobUrlParts.parse(primaryBlobServiceAsyncClient.getAccountUrl()).setScheme("http").toUrl()
             .toString();
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        assertThrows(IllegalArgumentException.class, builder::buildClient);
+        assertThrows(IllegalArgumentException.class, builder::buildAsyncClient);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void restoreContainer() {
-        BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc1.create();
+    public void restoreContainerAsync() {
+        BlobContainerAsyncClient cc1 =
+            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         String blobName = generateBlobName();
-        cc1.getBlobClient(blobName).upload(DATA.getDefaultInputStream(), 7);
-        cc1.delete();
-        BlobContainerItem blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).stream().iterator().next();
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
 
-        sleepIfRunningAgainstService(30000);
+        Mono<BlobContainerItem> blobContainerItemMono = cc1.create()
+            .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), new ParallelTransferOptions()))
+            .then(cc1.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
+            .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+            ).next());
 
-        BlobContainerClient restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainer(
-            blobContainerItem.getName(), blobContainerItem.getVersion());
+        Mono<BlobContainerAsyncClient> restoredContainerClientMono = blobContainerItemMono.flatMap(blobContainerItem ->
+            primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(),
+                blobContainerItem.getVersion()));
 
-        assertEquals(1, restoredContainerClient.listBlobs().stream().count());
-        assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
+        StepVerifier.create(restoredContainerClientMono.flatMap(restoredContainerClient ->
+                restoredContainerClient.listBlobs().collectList()))
+            .assertNext(it -> {
+                assertEquals(1, it.size());
+                assertEquals(blobName, it.get(0).getName());
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @PlaybackOnly
     @Test
     public void restoreContainerIntoOtherContainer() {
-        BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc1.create();
+        BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        cc1.create().block();
         String blobName = generateBlobName();
-        cc1.getBlobClient(blobName).upload(DATA.getDefaultInputStream(), 7);
-        cc1.delete();
-        BlobContainerItem blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+        cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null).block();
+        cc1.delete().block();
+        BlobContainerItem blobContainerItem = primaryBlobServiceAsyncClient.listBlobContainers(
             new ListBlobContainersOptions()
                 .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)), null).iterator().next();
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).blockFirst();
 
         sleepIfRunningAgainstService(30000);
 
-        BlobContainerClient restoredContainerClient =
-            primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()), null,
-                Context.NONE).getValue();
-
-        assertEquals(1, restoredContainerClient.listBlobs().stream().count());
-        assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
+        StepVerifier.create(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
+            .flatMap(r -> r.getValue().listBlobs().collectList()))
+            .assertNext(r -> {
+                assertEquals(1, r.size());
+                assertEquals(blobName, r.get(0).getName());
+            })
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void restoreContainerWithResponse() {
-        BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc1.create();
+    public void restoreContainerAsyncWithResponse() {
+        BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         String blobName = generateBlobName();
-        cc1.getBlobClient(blobName).upload(DATA.getDefaultInputStream(), 7);
-        cc1.delete();
-        BlobContainerItem blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)), null).iterator().next();
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
 
-        sleepIfRunningAgainstService(30000);
+        Mono<BlobContainerItem> blobContainerItemMono = cc1.create()
+            .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), new ParallelTransferOptions()))
+            .then(cc1.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
+            .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+            ).next());
 
-        Response<BlobContainerClient> response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
-            Duration.ofMinutes(1), Context.NONE);
-        BlobContainerClient restoredContainerClient = response.getValue();
+        Mono<Response<BlobContainerAsyncClient>> responseMono = blobContainerItemMono.flatMap(blobContainerItem ->
+            primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())));
 
-        assertNotNull(response);
-        assertResponseStatusCode(response, 201);
-        assertEquals(1, restoredContainerClient.listBlobs().stream().count());
-        assertEquals(blobName, restoredContainerClient.listBlobs().stream().iterator().next().getName());
+        StepVerifier.create(responseMono).assertNext(it -> {
+            assertNotNull(it);
+            assertEquals(201, it.getStatusCode());
+            assertNotNull(it.getValue());
+            assertEquals(cc1.getBlobContainerName(), it.getValue().getBlobContainerName());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerError() {
-        assertThrows(BlobStorageException.class,
-            () -> primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
+        StepVerifier.create(primaryBlobServiceAsyncClient.undeleteBlobContainer(generateContainerName(),
+            "01D60F8BB59A4652"))
+            .verifyError(BlobStorageException.class);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerIntoExistingContainerError() {
-        BlobContainerClient cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        cc1.create();
+        BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+        cc1.create().block();
         String blobName = generateBlobName();
-        cc1.getBlobClient(blobName).upload(DATA.getDefaultInputStream(), 7);
-        cc1.delete();
-        BlobContainerItem blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+        cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null).block();
+        cc1.delete().block();
+        BlobContainerItem blobContainerItem = primaryBlobServiceAsyncClient.listBlobContainers(
             new ListBlobContainersOptions()
                 .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).iterator().next();
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).blockFirst();
 
         sleepIfRunningAgainstService(30000);
 
-        BlobContainerClient cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName());
-        assertThrows(BlobStorageException.class, () -> primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+        BlobContainerAsyncClient cc2 = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        StepVerifier.create(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE));
+            .setDestinationContainerName(cc2.getBlobContainerName())))
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildClient();
+        BlobServiceAsyncClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildAsyncClient();
 
-        assertDoesNotThrow(serviceClient::getProperties);
+        StepVerifier.create(serviceClient.getProperties())
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -1016,8 +1074,8 @@ public class ServiceApiTests extends BlobTestBase {
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            BlobServiceClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildClient();
-            client.getBlobContainerClient(container).getBlobClient("blobname");
+            BlobServiceAsyncClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildAsyncClient();
+            client.getBlobContainerAsyncClient(container).getBlobAsyncClient("blobname");
         });
 
         assertFalse(e.getMessage().contains(mockSas));
@@ -1036,50 +1094,53 @@ public class ServiceApiTests extends BlobTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        BlobServiceClient sc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl())
+        BlobServiceAsyncClient sc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryBlobServiceAsyncClient.getAccountUrl())
             .addPolicy(getPerCallVersionPolicy())
-            .buildClient();
+            .buildAsyncClient();
 
-        Response<BlobServiceProperties> response = sc.getPropertiesWithResponse(null, null);
-        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+        StepVerifier.create(sc.getPropertiesWithResponse())
+            .assertNext(r -> assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
+            .verifyComplete();
     }
 
     @Test
     public void createContainerIfNotExists() {
         String containerName = generateContainerName();
-        Response<BlobContainerClient> response = primaryBlobServiceClient
-            .createBlobContainerIfNotExistsWithResponse(containerName, null, null);
-        Response<BlobContainerClient> response2 = primaryBlobServiceClient
-            .createBlobContainerIfNotExistsWithResponse(containerName, null, null);
-
-        assertResponseStatusCode(response, 201);
-        assertResponseStatusCode(response2, 409);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient
+            .createBlobContainerIfNotExistsWithResponse(containerName, null), 201);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient
+            .createBlobContainerIfNotExistsWithResponse(containerName, null), 409);
     }
 
     @Test
     public void deleteContainerIfExists() {
         String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        Response<Boolean> response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(
-            containerName, null);
-
-        assertTrue(response.getValue());
-        assertResponseStatusCode(response, 202);
+        StepVerifier.create(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(containerName))
+            .assertNext(r -> {
+                assertTrue(r.getValue());
+                assertResponseStatusCode(r, 202);
+            })
+            .verifyComplete();
     }
 
     @Test
     public void deleteContainerIfExistsMin() {
         String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        assertTrue(primaryBlobServiceClient.deleteBlobContainerIfExists(containerName));
+        StepVerifier.create(primaryBlobServiceAsyncClient.deleteBlobContainerIfExists(containerName))
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test
     public void deleteContainerIfExistsContainerDoesNotExist() {
-        assertFalse(primaryBlobServiceClient.deleteBlobContainerIfExists(generateContainerName()));
+        StepVerifier.create(primaryBlobServiceAsyncClient.deleteBlobContainerIfExists(generateContainerName()))
+            .expectNext(false)
+            .verifyComplete();
     }
 
     // We can't guarantee that the requests will always happen before the container is garbage collected
@@ -1087,186 +1148,87 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     public void deleteContainerIfExistsAlreadyDeleted() {
         String containerName = generateContainerName();
-        primaryBlobServiceClient.createBlobContainer(containerName);
+        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        Response<Boolean> response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(
-            containerName, null);
-        Response<Boolean> response2 = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(
-            containerName, null);
-
-        assertResponseStatusCode(response, 202);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(
+            containerName), 202);
         // Confirming the behavior of the api when the container is in the deleting state.
         // After delete has been called once but before it has been garbage collected
-        assertResponseStatusCode(response2, 202);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(
+            containerName), 202);
     }
 
     @LiveOnly
     @Test
     public void serviceTimeoutPolicy() {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
+        BlobServiceAsyncClient serviceClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .addPolicy(new ServiceTimeoutPolicy(Duration.ofSeconds(1)))
-            .buildClient();
+            .buildAsyncClient();
 
-        BlobContainerClient blobContainerClient = serviceClient.getBlobContainerClient(generateContainerName());
-        blobContainerClient.createIfNotExists();
-        BlobClient blobClient = blobContainerClient.getBlobClient(generateBlobName());
+        BlobContainerAsyncClient blobContainerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
+        blobContainerClient.createIfNotExists().block();
+        BlobAsyncClient blobClient = blobContainerClient.getBlobAsyncClient(generateBlobName());
 
         // testing with large dataset that is guaranteed to take longer than the specified timeout (1 second)
         byte[] randomData = getRandomByteArray(256 * Constants.MB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () ->
-                blobClient.uploadWithResponse(new BlobParallelUploadOptions(input), null, null));
-
-        assertEquals(BlobErrorCode.OPERATION_TIMED_OUT, e.getErrorCode());
+        StepVerifier.create(blobClient.uploadWithResponse(new BlobParallelUploadOptions(input)))
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.OPERATION_TIMED_OUT, e.getErrorCode());
+            });
     }
 
     @Test
     public void defaultAudience() {
-        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+        BlobServiceAsyncClient aadService = getServiceClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
             .audience(null)
-            .buildClient();
+            .buildAsyncClient();
 
-        assertNotNull(aadService.getProperties());
+        StepVerifier.create(aadService.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test
     public void storageAccountAudience() {
-        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
-            .buildClient();
+        BlobServiceAsyncClient aadService = getServiceClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(ccAsync.getAccountName()))
+            .buildAsyncClient();
 
-        assertNotNull(aadService.getProperties());
+        StepVerifier.create(aadService.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test
     public void audienceError() {
-        BlobServiceClient aadService = instrument(new BlobServiceClientBuilder()
-            .endpoint(cc.getBlobContainerUrl())
+        BlobServiceAsyncClient aadService = instrument(new BlobServiceClientBuilder()
+            .endpoint(ccAsync.getBlobContainerUrl())
             .credential(new MockTokenCredential())
             .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
-            .buildClient();
+            .buildAsyncClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadService.getProperties());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        StepVerifier.create(aadService.getProperties())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+            });
     }
 
     @Test
     public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
-        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+        BlobServiceAsyncClient aadService = getServiceClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
             .audience(audience)
-            .buildClient();
+            .buildAsyncClient();
 
-        assertNotNull(aadService.getProperties());
-    }
-
-//    public void renameBlob() container() {
-//        setup:
-//        def oldName = generateContainerName()
-//        def newName = generateContainerName()
-//        primaryBlobServiceClient.createBlobContainer(oldName)
-//
-//        when:
-//        def renamedContainer = primaryBlobServiceClient.renameBlobContainer(oldName, newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null), 200);
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
-//
-//    public void renameBlob() container sas() {
-//        setup:
-//        def oldName = generateContainerName()
-//        def newName = generateContainerName()
-//        primaryBlobServiceClient.createBlobContainer(oldName)
-//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
-//        def serviceClient = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
-//
-//        when:
-//        def renamedContainer = serviceClient.renameBlobContainer(oldName, newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null), 200);
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
-//
-//    @ParameterizedTest
-//    public void renameBlob() container AC() {
-//        setup:
-//        leaseID = setupContainerLeaseCondition(cc, leaseID)
-//        BlobRequestConditions cac = new BlobRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        expect:
-//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
-//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
-//            null, null), 200);
-//
-//        where:
-//        leaseID         || _
-//        null            || _
-//        receivedLeaseID || _
-//    }
-//
-//    @ParameterizedTest
-//    public void renameBlob() container AC fail() {
-//        setup:
-//        BlobRequestConditions cac = new BlobRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        when:
-//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
-//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
-//            null, null)
-//
-//        then:
-//        assertThrows(BlobStorageException.class, () ->
-//
-//        where:
-//        leaseID         || _
-//        garbageLeaseID  || _
-//    }
-//
-//    @ParameterizedTest
-//    public void renameBlob() container AC illegal() {
-//        setup:
-//        BlobRequestConditions ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
-//
-//        when:
-//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
-//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
-//            null, null)
-//
-//        then:
-//        thrown(UnsupportedOperationException)
-//
-//        where:
-//        modified | unmodified | match        | noneMatch    | tags
-//        oldDate  | null       | null         | null         | null
-//        null     | newDate    | null         | null         | null
-//        null     | null       | receivedEtag | null         | null
-//        null     | null       | null         | garbageEtag  | null
-//        null     | null       | null         | null         | "tags"
-//    }
-//
-//    public void renameBlob() container error() {
-//        setup:
-//        def oldName = generateContainerName()
-//        def newName = generateContainerName()
-//
-//        when:
-//        primaryBlobServiceClient.renameBlobContainer(oldName, newName)
-//
-//        then:
-//        assertThrows(BlobStorageException.class, () ->
-//    }
+        StepVerifier.create(aadService.getProperties())
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();        }
 }
