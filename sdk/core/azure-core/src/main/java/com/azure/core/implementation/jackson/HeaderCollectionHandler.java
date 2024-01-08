@@ -68,7 +68,8 @@ final class HeaderCollectionHandler {
             declaringField.set(deserializedHeaders, values);
             logger.verbose("Set header collection by accessing the field directly.");
         } catch (IllegalAccessException ex) {
-            logger.warning("Failed to inject header collection values into deserialized headers.", ex);
+            logger.log(LogLevel.WARNING, () -> "Failed to inject header collection values into deserialized headers.",
+                ex);
         } finally {
             if (!declaredFieldAccessibleBackup) {
                 java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
