@@ -27,13 +27,14 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
     final Map<Short, T> headers;
     final EnumMap<T, RntbdToken> tokens;
 
-    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids, final ByteBuf in) {
+    RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids, final ByteBuf in, final Class<T> classType) {
 
         checkNotNull(headers, "expected non-null headers");
         checkNotNull(ids, "expected non-null ids");
         checkNotNull(in, "expected non-null in");
 
-        this.tokens = new EnumMap<T, RntbdToken>(headers.stream().collect(Collectors.toMap(h -> h, RntbdToken::create)));
+        this.tokens = new EnumMap<T, RntbdToken>(classType);
+        headers.stream().forEach(h -> tokens.put(h, RntbdToken.create(h)));
         this.headers = ids;
         this.in = in;
     }
