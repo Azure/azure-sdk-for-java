@@ -214,7 +214,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                     capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities()
                         .getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND
                         ? PhoneNumberCapabilityType.OUTBOUND
-                        : PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+                        : PhoneNumberCapabilityType.NONE);
                     return beginUpdatePhoneNumberCapabilitiesHelper(client, phoneNumber, capabilities)
                         .last()
                         .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasedPhoneNumber> result) -> {

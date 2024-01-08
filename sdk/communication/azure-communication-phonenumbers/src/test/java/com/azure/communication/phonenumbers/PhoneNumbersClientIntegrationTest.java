@@ -561,7 +561,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                         : PhoneNumberCapabilityType.INBOUND);
         capabilities.setSms(responseAcquiredPhone.getValue().getCapabilities()
                 .getSms() == PhoneNumberCapabilityType.INBOUND_OUTBOUND ? PhoneNumberCapabilityType.OUTBOUND
-                        : PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+                        : PhoneNumberCapabilityType.NONE);
         if (withContext) {
             return setPollInterval(client.beginUpdatePhoneNumberCapabilities(phoneNumber, capabilities, Context.NONE));
         }
