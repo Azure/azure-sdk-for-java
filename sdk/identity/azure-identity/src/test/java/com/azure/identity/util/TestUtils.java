@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
 import com.azure.identity.implementation.MsalToken;
+import com.microsoft.aad.msal4j.AuthenticationResultMetadata;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.ITenantProfile;
@@ -73,6 +74,11 @@ public final class TestUtils {
             public Date expiresOnDate() {
                 // Access token dials back 2 minutes
                 return Date.from(expiresOn.plusMinutes(2).toInstant());
+            }
+
+            @Override
+            public AuthenticationResultMetadata metadata() {
+                return null;
             }
         };
     }

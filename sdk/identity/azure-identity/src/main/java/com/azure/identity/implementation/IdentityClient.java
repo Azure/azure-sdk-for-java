@@ -17,22 +17,7 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
-import com.microsoft.aad.msal4j.AppTokenProviderParameters;
-import com.microsoft.aad.msal4j.ClaimsRequest;
-import com.microsoft.aad.msal4j.ClientCredentialFactory;
-import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ConfidentialClientApplication;
-import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.RefreshTokenParameters;
-import com.microsoft.aad.msal4j.SilentParameters;
-import com.microsoft.aad.msal4j.TokenProviderResult;
-import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4j.*;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,6 +63,7 @@ public class IdentityClient extends IdentityClientBase {
 
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
     private final SynchronizedAccessor<ConfidentialClientApplication> managedIdentityConfidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMsalApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
@@ -118,11 +104,24 @@ public class IdentityClient extends IdentityClientBase {
         this.managedIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getManagedIdentityConfidentialClientApplication);
 
+        this.managedIdentityMsalApplicationAccessor =
+            new SynchronizedAccessor<>(this::getManagedIdentityMsalClient);
+
         this.workloadIdentityConfidentialClientApplicationAccessor =
             new SynchronizedAccessor<>(this::getWorkloadIdentityConfidentialClientApplication);
 
         Duration cacheTimeout = (clientAssertionTimeout == null) ? Duration.ofMinutes(5) : clientAssertionTimeout;
         this.clientAssertionAccessor = new SynchronizedAccessor<>(this::parseClientAssertion, cacheTimeout);
+    }
+
+    public Mono<ManagedIdentityApplication> getManagedIdentityMsalClient() {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(this.getManagedIdentityMsalApplication());
+            } catch (RuntimeException e) {
+                return Mono.error(e);
+            }
+        });
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication(boolean enableCae) {
@@ -544,6 +543,23 @@ public class IdentityClient extends IdentityClientBase {
                             .tenant(IdentityUtil
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
+                }
+            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .map(MsalToken::new);
+    }
+
+    public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
+        String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
+        System.out.println("Parsed Resource: " + resource);
+        return managedIdentityMsalApplicationAccessor.getValue()
+            .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
+                com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
+                        com.microsoft.aad.msal4j.ManagedIdentityParameters.builder("https://vault.azure.net/");
+                    try {
+                        return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
             .map(MsalToken::new);
