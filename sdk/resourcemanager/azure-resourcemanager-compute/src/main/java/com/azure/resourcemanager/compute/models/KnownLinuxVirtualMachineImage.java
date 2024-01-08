@@ -21,20 +21,26 @@ public enum KnownLinuxVirtualMachineImage {
 
     /**
      * OpenSUSE-Leap 15.1.
-     * @deprecated use OPENSUSE_LEAP_15.
+     * @deprecated use OPENSUSE_LEAP_15_1.
      */
     @Deprecated
     OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap-15-3", "gen1"),
-    /** OpenSUSE-Leap 15. */
+    /** OpenSUSE-Leap 15.
+     * @deprecated use OPENSUSE_LEAP_15.
+     */
+    @Deprecated
     OPENSUSE_LEAP_15("SUSE", "openSUSE-Leap-15-3", "gen1"),
 
     /**
      * SLES 15-SP1-gen1.
-     * @deprecated use SLES_15.
+     * @deprecated use SLES_15_SP1.
      */
     @Deprecated
     SLES_15_SP1("SUSE", "sles-15-sp2", "gen1"),
-    /** SLES 15. */
+    /** SLES 15.
+     * * @deprecated use SLES_15.
+     */
+    @Deprecated
     SLES_15("SUSE", "sles-15-sp2", "gen1"),
 
     /** RedHat RHEL 8.2. */
