@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `time-window-filter-setting-end` is specified, the feature will be considered on until that time. If only start is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
 
 ```yaml
 feature-management:
@@ -192,8 +192,8 @@ feature-management:
         -
          name: TimeWindowFilter
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            Start: "Wed, 01 May 2019 13:59:59 GMT",
+            End: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 ### TargetingFilter
@@ -247,16 +247,14 @@ An example web application that uses the targeting feature filter is available i
 To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, `ITargetingContextAccessor`. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
 
 ```java
-public class TargetingContextAccessor implements ITargetingContextAccessor {
+public class TargetingContextAccessorImpl implements TargetingContextAccessor {
 
     @Override
-    public Mono<TargetingContext> getContextAsync() {
-        TargetingContext context = new TargetingContext();
+    void configureTargetingContext(TargetingContext context) {
         context.setUserId("Jeff");
         ArrayList<String> groups = new ArrayList<String>();
         groups.add("Ring0");
         context.setGroups(groups);
-        return Mono.just(context);
     }
 
 }
@@ -268,10 +266,188 @@ Options are available to customize how targeting evaluation is performed across 
 
 ```java
     @Bean
-    public TargetingFilter targetingFilter(ITargetingContextAccessor contextAccessor) {
+    public TargetingFilter targetingFilter(TargetingContextAccessor contextAccessor) {
         return new TargetingFilter(contextAccessor, new TargetingEvaluationOptions().setIgnoreCase(true));
     }
 ```
+
+## Variants
+
+When new features are added to an application, there may come a time when a feature has multiple different proposed design options. A common solution for deciding on a design is some form of A/B testing, which involves providing a different version of the feature to different segments of the user base and choosing a version based on user interaction. In this library, this functionality is enabled by representing different configurations of a feature with variants.
+
+Variants enable a feature flag to become more than a simple on/off flag. A variant represents a value of a feature flag that can be a string, a number, a boolean, or even a configuration object. A feature flag that declares variants should define under what circumstances each variant should be used, which is covered in greater detail in the [Allocating a Variant](./README.md#allocating-a-variant) section.
+
+```java
+public class Variant {
+
+    /**
+     * Variant
+     * @param name Name of the Variant
+     * @param value Instance of the Variant
+     */
+    public Variant(String name, Object value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @return the value
+     */
+    public Object getValue() {
+        return value;
+    }
+
+}
+```
+
+### Getting a Feature's Variant
+
+A feature's variant can be retrieved using the `IVariantFeatureManager`'s `GetVariantAsync`/`GetVariant` methods. What the value is depends on the type of variant. If the variant uses "ConfigurationValue" then the value will be a `Map<String, Object>` that represents the fully resolved configuration object. If the variant uses "ConfigurationReference" then the value will be an actual instance of the referenced object, if this is don't the `@ConfigurationProperties` must be modified to support this, see [Configuration Reference](./README.md#configuration-reference) for more details.
+
+```java
+…
+@Autowired
+FeatureManager featureManager;
+
+
+public void endpoint() {
+  Variant variant = featureManager.GetVariant("ShoppingCart");
+
+  MyVariant variantConfiguration = variant.getConfiguration();
+
+  // Do something with the resulting variant and its configuration
+}
+```
+
+#### Configuration Reference
+
+To support resolving configuration references `@ConfigurationProperties` must be setup that implement `VariantProperties`.
+
+```java
+@ConfigurationProperties(prefix = "variant")
+class MyVariantProperties implements VariantProperties {
+
+    Map<String, ShoppingCart> shoppingCart;
+
+    public Map<String, ShoppingCart> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(Map<String, ShoppingCart> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+}
+```
+
+The required naming for a configuration reference is `<feature-name>.<variant-name>`. In the example above, the configuration reference would be `ShoppingCart.Big`. This enables the return of the actual instance of the configuration.
+
+### Setting a Variant's Configuration
+
+For each of the variants in the `Variants` property of a feature, there is a specified configuration. This can be set using either the `ConfigurationReference` or `ConfigurationValue` properties. `ConfigurationReference` is a string path that references a section of the current configuration that contains the feature flag declaration. `ConfigurationValue` is an inline configuration that can be a string, number, boolean, or configuration object. If both are specified, `ConfigurationValue` is used. If neither are specified, the returned variant's `Configuration` property will be null.
+
+```yml
+feature-management:
+  ShoppingCart:
+    variants:
+      - name: Big
+        configurationReference: ShoppingCart.Big
+      - name: Small
+        configurationValue:
+          size: 300
+```
+
+### Allocating a Variant
+
+The process of allocating a variant to a specific feature is determined by the `Allocation` property of the feature.
+
+```yml
+feature-management:
+  ShoppingCart:
+    allocation:
+      defaultWhenEnabled: Small
+      defaultWhenDisabled: Small
+      user:
+        - variant: Big
+          users:
+            - Marsha
+      group:
+        - variant: Big
+          groups:
+            - Ring1
+      percentile:
+        - variant: Big
+          from: 0
+          to: 10
+      seed: 13973240
+    variants:
+      - name: Big
+        configurationReference: ShoppingCart.Big
+      - name: Small
+        configurationValue:
+          size: 300
+```
+
+The `Allocation` setting of a feature flag has the following properties:
+
+| Property | Description |
+| ---------------- | ---------------- |
+| `DefaultWhenDisabled` | Specifies which variant should be used when a variant is requested while the feature is considered disabled. |
+| `DefaultWhenEnabled` | Specifies which variant should be used when a variant is requested while the feature is considered enabled and no variant was allocated to the user. |
+| `User` | Specifies a variant and a list of users for which that variant should be used. |
+| `Group` | Specifies a variant and a list of groups the current user has to be in for that variant to be used. |
+| `Percentile` | Specifies a variant and a percentage range the user's calculated percentage has to fit into for that variant to be used. |
+| `Seed` | The value which percentage calculations for `Percentile` are based on. The percentage calculation for a specific user will be the same across all features if the same `Seed` value is used. If no `Seed` is specified, then a default seed is created based on the feature name. |
+
+In the above example, if the feature is not enabled, `GetVariantAsync` would return the variant allocated by `DefaultWhenDisabled`, which is `Small` in this case.
+
+If the feature is enabled, the feature manager will check the `User`, `Group`, and `Percentile` allocations in that order to allocate a variant for this feature. If the user being evaluated is named `Marsha`, in the group named `Ring1`, or the user happens to fall between the 0 and 10th percentile calculated with the given `Seed`, then the specified variant is returned for that allocation. In this case, all of these would return the `Big` variant. If none of these allocations match, the `DefaultWhenEnabled` variant is returned, which is `Small`.
+
+Allocation logic is similar to the [Microsoft.Targeting](./README.md#TargetingFilter) feature filter, but there are some parameters that are present in targeting that aren't in allocation, and vice versa. The outcomes of targeting and allocation are not related.
+
+### Overriding Enabled State with a Variant
+
+You can use variants to override the enabled state of a feature flag. This gives variants an opportunity to extend the evaluation of a feature flag. If a caller is checking whether a flag that has variants is enabled, then variant allocation will be performed to see if an allocated variant is set up to override the result. This is done using the optional variant property `StatusOverride`. By default, this property is set to `None`, which means the variant doesn't affect whether the flag is considered enabled or disabled. Setting `StatusOverride` to `Enabled` allows the variant, when chosen, to override a flag to be enabled. Setting `StatusOverride` to `Disabled` provides the opposite functionality, therefore disabling the flag when the variant is chosen. A feature with a `Status` of `Disabled` cannot be overridden.
+
+If you are using a feature flag with binary variants, the `StatusOverride` property can be very helpful. It allows you to continue using APIs like `isEnabledAsync`/`isEnabled` and `@FeatureGate` in your application, all while benefiting from the new features that come with variants, such as percentile allocation and seed.
+
+```json
+"Allocation": {
+    "Percentile": [{
+        "Variant": "On",
+        "From": 10,
+        "To": 20
+    }],
+    "DefaultWhenEnabled":  "Off",
+    "Seed": "Enhanced-Feature-Group"
+},
+"Variants": [
+    { 
+        "Name": "On"
+    },
+    { 
+        "Name": "Off",
+        "StatusOverride": "Disabled"
+    }    
+],
+"EnabledFor": [ 
+    { 
+        "Name": "AlwaysOn" 
+    } 
+] 
+```
+
+In the above example, the feature is enabled by the `AlwaysOn` filter. If the current user is in the calculated percentile range of 10 to 20, then the `On` variant is returned. Otherwise, the `Off` variant is returned and because `StatusOverride` is equal to `Disabled`, the feature will now be considered disabled.
+
+## Request Based Features/Variants
+
+There are scenarios which require the state of a feature or variant to remain consistent during the lifetime of a request. The values returned from the standard `FeatureManager` may change if the configuration source which it is pulling from is updated during the request. This can be prevented by using `FeatureManagerSnapshot` and `@FeatureOn( snapshot = true )`. `FeatureManagerSnapshot` can be retrieved in the same manner as `FeatureManager`. `FeatureManagerSnapshot` calls `FeatureManager`, but it caches the first evaluated state of a feature during a request and will return the same state of a feature during its lifetime.
 
 <!-- Links -->
 [example_project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/feature-management-web-sample

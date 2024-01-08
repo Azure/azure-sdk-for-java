@@ -4,6 +4,7 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
@@ -22,11 +23,17 @@ public class Feature {
     @JsonProperty("evaluate")
     private Boolean evaluate = true;
 
-    @JsonProperty("enabled-for")
-    private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
-
     @JsonProperty("requirement-type")
-    private String requirementType = DEFAULT_REQUIREMENT_TYPE;;
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
+
+    @JsonProperty("enabled-for")
+    private Map<Integer, FeatureFilterEvaluationContext> enabledFor = new HashMap<>();
+
+    @JsonProperty("allocation")
+    private Allocation allocation = new Allocation();
+
+    @JsonProperty("variants")
+    private Map<String, VariantReference> variants = new HashMap<>();
 
     /**
      * @return the key
@@ -66,7 +73,7 @@ public class Feature {
     /**
      * @param enabledFor the enabledFor to set
      */
-    public void setEnabledFor(Map<Integer, FeatureFilterEvaluationContext> enabledFor) {
+    public void setEnabledFor(HashMap<Integer, FeatureFilterEvaluationContext> enabledFor) {
         this.enabledFor = enabledFor;
     }
 
@@ -82,6 +89,34 @@ public class Feature {
      */
     public void setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+    }
+
+    /**
+     * @return the variants
+     */
+    public Map<String, VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public void setVariants(Map<String, VariantReference> variants) {
+        this.variants = variants;
     }
 
 }

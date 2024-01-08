@@ -77,15 +77,16 @@ public class AppConfigurationConstants {
 
     public static final String GROUPS_CAPS = "Groups";
 
-    public static final String TARGETING_FILTER = "targetingFilter";
+    public static final String TARGETING_FILTER = "Microsoft.Targeting";
 
     public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     public static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
     
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
-
+    
     public static final String REQUIREMENT_TYPE_SERVICE = "requirement_type";
-
+    
     public static final String REQUIREMENT_TYPE = "requirement-type";
+
 }
