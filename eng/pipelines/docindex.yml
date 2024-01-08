@@ -105,6 +105,7 @@ jobs:
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
+              Commitish: $(DailyDocsBranchName)
 
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
@@ -168,6 +169,17 @@ jobs:
           WorkingDirectory: $(DailyDocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
           PushArgs: -f
+
+      # - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+      #   parameters:
+      #     BaseRepoBranch: $(DailyDocsBranchName)
+      #     BaseRepoOwner: $(DocRepoOwner)
+      #     CommitMsg: "Bring daily docs branch from azure-sdk fork to main repo"
+      #     TargetRepoName: $(DocRepoName)
+      #     TargetRepoOwner: Azure
+      #     WorkingDirectory: $(DailyDocRepoLocation)
+      #     ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+      #     PushArgs: -f
 
       - task: PowerShell@2
         displayName: Queue Docs CI build
