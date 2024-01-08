@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
@@ -353,20 +354,14 @@ public class SimpleSyncPollerTests {
     public void waitForCompletionSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            throw new RuntimeException("Poll should not be called more than once");
+
+            return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SimpleSyncPoller<>(TEN_MILLIS,
@@ -386,13 +381,11 @@ public class SimpleSyncPollerTests {
     public void waitForCompletionOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
-            } else if (invocationCount[0] == 1) {
+            } else {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -400,8 +393,6 @@ public class SimpleSyncPollerTests {
                 }
 
                 return new PollResponse<>(IN_PROGRESS, new Response("1"), TEN_MILLIS);
-            } else {
-                throw new RuntimeException("Poll should not be called more than twice");
             }
         };
 
@@ -422,20 +413,14 @@ public class SimpleSyncPollerTests {
     public void waitUntilSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            throw new RuntimeException("Poll should not be called more than once");
+
+            return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SimpleSyncPoller<>(TEN_MILLIS,
@@ -454,14 +439,12 @@ public class SimpleSyncPollerTests {
     public void waitUntilOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), null);
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return expected;
-            } else if (invocationCount[0] == 1) {
+            } else {
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
@@ -469,8 +452,6 @@ public class SimpleSyncPollerTests {
                 }
 
                 return new PollResponse<>(IN_PROGRESS, new Response("1"), TEN_MILLIS);
-            } else {
-                throw new RuntimeException("Poll should not be called more than twice");
             }
         };
 
@@ -491,20 +472,14 @@ public class SimpleSyncPollerTests {
     public void getFinalResultSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            throw new RuntimeException("Poll should not be called more than once");
+
+            return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SimpleSyncPoller<>(TEN_MILLIS,
@@ -524,22 +499,18 @@ public class SimpleSyncPollerTests {
     public void getFinalResultOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
-            } else if (invocationCount[0] == 1) {
+            } else {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
                 return new PollResponse<>(IN_PROGRESS, new Response("1"), TEN_MILLIS);
-            } else {
-                throw new RuntimeException("Poll should not be called more than twice");
             }
         };
 

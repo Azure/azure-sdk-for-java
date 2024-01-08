@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -780,15 +781,13 @@ public class PollerTests {
     public void waitForCompletionOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             } else {
                 return Mono.delay(Duration.ofSeconds(2))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             }
         };
 
@@ -828,12 +827,10 @@ public class PollerTests {
     public void waitUntilOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), null);
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return Mono.just(expected);
             } else {
                 return Mono.delay(Duration.ofSeconds(10))
@@ -879,15 +876,13 @@ public class PollerTests {
     public void getFinalResultOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
+        AtomicBoolean hasBeenRan = new AtomicBoolean();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
+            if (hasBeenRan.compareAndSet(false, true)) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             } else {
                 return Mono.delay(Duration.ofSeconds(2))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             }
         };
 
