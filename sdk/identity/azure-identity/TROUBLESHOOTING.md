@@ -344,7 +344,7 @@ If you choose "Use another account", and type in an MSA outlook.com account, it 
 
 ![Fail on use another account](./images/MSA2.png)
 
-When constructing the credential, you can call `InteractiveBrowserBrokerCredentialBuilder.enableLegacyMsaPassthrough()` when constructing the credential, and MSA outlook.com accounts that are logged in to Windows are automatically listed:
+You can call `InteractiveBrowserBrokerCredentialBuilder.enableLegacyMsaPassthrough()` when constructing the credential, and MSA outlook.com accounts that are logged in to Windows are automatically listed:
 
 ![Enable MSA](./images/MSA3.png)
 
