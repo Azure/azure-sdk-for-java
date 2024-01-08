@@ -196,6 +196,9 @@
     <!-- This property configures whether the spotbugs-maven-plugin should fail on errors. -->
     <spotbugs.failOnError>true</spotbugs.failOnError>
 
+    <!-- This property configures where the Spotbugs exclusion file can be found. -->
+    <spotbugs.excludeFilterFile>spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
@@ -301,7 +304,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>verify</phase>
@@ -661,7 +664,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
@@ -671,7 +674,7 @@
             <dependency>
               <groupId>com.github.spotbugs</groupId>
               <artifactId>spotbugs</artifactId>
-              <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
             </dependency>
             <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
             <dependency>
@@ -686,7 +689,7 @@
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+            <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
             <fork>true</fork>
             <failOnError>${spotbugs.failOnError}</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
@@ -975,7 +978,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.7.3.6</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -1560,7 +1563,7 @@
               <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs</artifactId>
-                <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+                <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>

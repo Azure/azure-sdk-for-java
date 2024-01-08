@@ -583,8 +583,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else if (value instanceof ExpandableStringEnum<?> || value.getClass().isEnum()) {
             // Enum and ExpandableStringEnum need special handling as these could be wrapping a null String which would
-            // be "null" is serialized with JacksonAdapter.
-            String stringValue = String.valueOf(value);
+            // be "null" if serialized with JacksonAdapter.
+            String stringValue = value.toString();
             return (stringValue == null) ? "null" : stringValue;
         } else {
             return serializer.serializeRaw(value);
