@@ -33,7 +33,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         checkNotNull(ids, "expected non-null ids");
         checkNotNull(in, "expected non-null in");
 
-        this.tokens = new EnumMap<>(headers.stream().collect(Collectors.toMap(h -> h, RntbdToken::create)));
+        this.tokens = new EnumMap<T, RntbdToken>(headers.stream().collect(Collectors.toMap(h -> h, RntbdToken::create)));
         this.headers = ids;
         this.in = in;
     }
