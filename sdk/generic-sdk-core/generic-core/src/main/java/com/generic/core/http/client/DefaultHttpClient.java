@@ -3,21 +3,20 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
+import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +34,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -156,39 +156,35 @@ class DefaultHttpClient implements HttpClient {
      * @param connection The HttpURLConnection that is being sent to
      */
     private void sendBody(HttpRequest httpRequest, Object progressReporter, HttpURLConnection connection) {
-        BinaryData binaryDataBody = httpRequest.getBody();
+        BinaryData body = httpRequest.getBody();
+        if (body == null) {
+            return;
+        }
 
-        if (binaryDataBody != null) {
-            switch (httpRequest.getHttpMethod()) {
-                case GET:
-                case HEAD: {
-                    return;
+        HttpMethod method = httpRequest.getHttpMethod();
+        switch (httpRequest.getHttpMethod()) {
+            case GET:
+            case HEAD:
+                return;
+
+            case OPTIONS:
+            case TRACE:
+            case CONNECT:
+            case POST:
+            case PUT:
+            case DELETE:
+                connection.setDoOutput(true);
+
+                try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
+                    body.writeTo(os);
+                    os.flush();
+                } catch (IOException e) {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
                 }
-                case OPTIONS:
-                case TRACE:
-                case CONNECT:
-                case POST:
-                case PUT:
-                case DELETE: {
-                    connection.setDoOutput(true);
+                return;
 
-                    byte[] bytes = binaryDataBody.toBytes();
-
-                    try (DataOutputStream os = new DataOutputStream(
-                        new BufferedOutputStream(connection.getOutputStream()))) {
-                        os.write(bytes);
-                        os.flush();
-                    } catch (IOException e) {
-                        throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                    }
-
-                    return;
-                }
-                default: {
-                    throw LOGGER.logThrowableAsError(
-                        new IllegalStateException("Unknown HTTP Method: " + httpRequest.getHttpMethod()));
-                }
-            }
+            default:
+                throw LOGGER.logThrowableAsError(new IllegalStateException("Unknown HTTP Method: " + method));
         }
     }
 
@@ -204,33 +200,28 @@ class DefaultHttpClient implements HttpClient {
         try {
             int responseCode = connection.getResponseCode();
 
-            Headers responseHeaders = new Headers();
+            Map<String, List<String>> hucHeaders = connection.getHeaderFields();
+            Headers responseHeaders = new Headers((int) (hucHeaders.size() / 0.75F));
 
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
-                    for (String headerValue : entry.getValue()) {
-                        responseHeaders.add(HeaderName.fromString(entry.getKey()), headerValue);
-                    }
+                    responseHeaders.add(HeaderName.fromString(entry.getKey()), entry.getValue());
                 }
             }
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
 
             try (InputStream errorStream = connection.getErrorStream();
                  InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[8192];
                 int length;
                 while ((length = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, length);
                 }
             }
 
-            return new DefaultHttpClientResponse(
-                httpRequest,
-                responseCode,
-                responseHeaders,
-                BinaryData.fromByteBuffer(ByteBuffer.wrap(outputStream.toByteArray()))
-            );
+            return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders,
+                BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         } finally {
@@ -294,11 +285,8 @@ class DefaultHttpClient implements HttpClient {
                 buildAndSend(httpRequest, out);
                 DefaultHttpClientResponse response = buildResponse(httpRequest, in);
 
-                String redirectLocation = response.getHeaders().stream()
-                    .filter(h -> h.getName().equalsIgnoreCase("Location"))
-                    .map(Header::getValue)
-                    .findFirst()
-                    .orElse(null);
+                Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
+                String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
                 if (redirectLocation != null) {
                     if (redirectLocation.startsWith("http")) {

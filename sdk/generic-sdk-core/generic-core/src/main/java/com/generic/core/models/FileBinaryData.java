@@ -9,10 +9,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -145,6 +147,21 @@ public class FileBinaryData extends BinaryData {
         }
 
         return toByteBufferInternal();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        try (FileInputStream inputStream = new FileInputStream(file.toFile())) {
+            inputStream.skip(position); // Set the FileInputStream reader to the offset represented by position.
+            inputStream.transferTo(outputStream);
+        }
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        try (FileChannel fileChannel = FileChannel.open(file)) {
+            fileChannel.transferTo(position, length, channel);
+        }
     }
 
     protected ByteBuffer toByteBufferInternal() {

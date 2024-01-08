@@ -6,10 +6,14 @@ package com.generic.core.models;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.serializer.ObjectSerializer;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
+import java.nio.channels.Channel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -542,6 +546,43 @@ public abstract class BinaryData {
      * @return An {@link InputStream} representing the {@link BinaryData}.
      */
     public abstract InputStream toStream();
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link OutputStream}.
+     * <p>
+     * This method does not close the {@link OutputStream}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param outputStream The {@link OutputStream} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code outputStream} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(OutputStream outputStream) throws IOException {
+        outputStream.write(toBytes());
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link WritableByteChannel}.
+     * <p>
+     * This method does not close the {@link WritableByteChannel}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param channel The {@link WritableByteChannel} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code outputStream} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        ByteBuffer buffer = toByteBuffer().duplicate();
+        while (buffer.hasRemaining()) {
+            channel.write(buffer);
+        }
+    }
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
