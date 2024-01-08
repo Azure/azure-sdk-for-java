@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -206,7 +207,7 @@ public final class CoreUtils {
                         entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
         }
 
         return Collections.emptyMap();
@@ -321,7 +322,7 @@ public final class CoreUtils {
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atWarning()
+            logger.atInfo()
                 .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);

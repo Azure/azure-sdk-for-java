@@ -159,8 +159,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
             return response;
         } catch (RuntimeException e) {
-            logger.warning("<-- HTTP FAILED: ", e);
-            throw logger.logExceptionAsWarning(e);
+            logger.log(LogLevel.WARNING, () -> "<-- HTTP FAILED: ", e);
+            throw e;
         }
     }
 
@@ -415,7 +415,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);
                 result = PRETTY_PRINTER.writeValueAsString(deserialized);
             } catch (Exception e) {
-                logger.warning("Failed to pretty print JSON", e);
+                logger.log(LogLevel.WARNING, () -> "Failed to pretty print JSON", e);
             }
         }
         return result;
@@ -439,7 +439,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException e) {
-            logger.warning("Could not parse the HTTP header content-length: '{}'.", contentLengthString, e);
+            logger.log(LogLevel.INFORMATIONAL,
+                () -> "Could not parse the HTTP header content-length: '" + contentLengthString + "'.", e);
         }
 
         return contentLength;
@@ -476,7 +477,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             return Integer.valueOf(rawRetryCount.toString());
         } catch (NumberFormatException ex) {
-            LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
+            LOGGER.log(LogLevel.INFORMATIONAL,
+                () -> "Could not parse the request retry count: '" + rawRetryCount + "'.");
             return null;
         }
     }
