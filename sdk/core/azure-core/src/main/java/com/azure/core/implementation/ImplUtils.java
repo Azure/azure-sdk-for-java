@@ -35,6 +35,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -63,6 +67,8 @@ public final class ImplUtils {
     private static final byte FE = (byte) 0xFE;
     private static final byte FF = (byte) 0xFF;
     private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
+
+    private static final long THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -419,6 +425,36 @@ public final class ImplUtils {
     @SuppressWarnings("unchecked")
     public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
         throw (E) e;
+    }
+
+    /**
+     * Creates a new {@link ExecutorService} that will shut down when the JVM exits.
+     *
+     * @return A new {@link ExecutorService} that will shut down when the JVM exits.
+     */
+    public static ScheduledExecutorService createThreadPoolWithShutdownHook() {
+        ScheduledExecutorService threadPool = Executors.newScheduledThreadPool(
+            Runtime.getRuntime().availableProcessors());
+        registerShutdownHook(threadPool);
+        return threadPool;
+    }
+
+    static Thread registerShutdownHook(ExecutorService threadPool) {
+        long halfTimeout = TimeUnit.SECONDS.toNanos(THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+        return hook;
     }
 
     private ImplUtils() {

@@ -501,9 +501,6 @@ public class PollerTests {
 
     @Test
     public void eachPollShouldReceiveLastPollResponse() {
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(new Response("A"));
-
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = pollingContext -> {
             Assertions.assertNotNull(pollingContext.getActivationResponse());
             Assertions.assertNotNull(pollingContext.getLatestResponse());
@@ -514,8 +511,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new Response("A")), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = poller.poll();
         Assertions.assertNotNull(pollResponse);
@@ -545,8 +542,6 @@ public class PollerTests {
             new Response("2"), Duration.ofMillis(10));
 
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         int[] pollCallCount = new int[1];
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
@@ -559,8 +554,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
@@ -571,8 +566,6 @@ public class PollerTests {
     @Test
     public void getResultShouldPollUntilCompletionAndFetchResult() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
@@ -591,8 +584,8 @@ public class PollerTests {
             = ignored -> Mono.just(new CertificateOutput("cert1"));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, fetchResultOperation);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, fetchResultOperation);
 
         CertificateOutput certificateOutput = poller.getFinalResult();
         Assertions.assertNotNull(certificateOutput);
@@ -606,8 +599,6 @@ public class PollerTests {
             new Response("2"), Duration.ofMillis(10));
 
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         Function<PollingContext<Response>, Mono<CertificateOutput>> fetchResultOperation
             = ignored -> Mono.just(new CertificateOutput("cert1"));
@@ -623,8 +614,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, fetchResultOperation);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, fetchResultOperation);
 
         PollResponse<Response> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
@@ -639,8 +630,6 @@ public class PollerTests {
     @Test
     public void waitUntilShouldPollAfterMatchingStatus() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         LongRunningOperationStatus matchStatus
             = LongRunningOperationStatus.fromString("OTHER_1", false);
@@ -658,8 +647,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = poller.waitUntil(matchStatus);
         assertEquals(matchStatus, pollResponse.getStatus());
@@ -669,8 +658,6 @@ public class PollerTests {
     @Test
     public void verifyExceptionPropagationFromPollingOperationSyncPoller() {
         final Response activationResponse = new Response("Foo");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         final AtomicInteger cnt = new AtomicInteger();
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = (pollingContext) -> {
@@ -687,8 +674,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         RuntimeException exception = assertThrows(RuntimeException.class, poller::getFinalResult);
         assertEquals(exception.getMessage(), "Polling operation failed!");
@@ -770,16 +757,14 @@ public class PollerTests {
     @Test
     public void waitForCompletionSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
             Mono.delay(Duration.ofSeconds(2))
                 .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitForCompletion(Duration.ofMillis(100)));
@@ -793,8 +778,6 @@ public class PollerTests {
     @Test
     public void waitForCompletionOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
@@ -809,8 +792,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitForCompletion(Duration.ofMillis(100)));
@@ -824,16 +807,14 @@ public class PollerTests {
     @Test
     public void waitUntilSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
             Mono.delay(Duration.ofSeconds(2))
                 .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED);
         assertEquals(activationResponse.getResponse(), pollResponse.getValue().getResponse());
@@ -845,25 +826,23 @@ public class PollerTests {
     @Test
     public void waitUntilOperationWithTimeout() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10));
+        PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), null);
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 return Mono.just(expected);
             } else {
-                return Mono.delay(Duration.ofSeconds(5))
+                return Mono.delay(Duration.ofSeconds(10))
                     .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             }
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),
             SUCCESSFULLY_COMPLETED));
@@ -877,16 +856,14 @@ public class PollerTests {
     @Test
     public void getFinalResultSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
             Mono.delay(Duration.ofSeconds(2))
                 .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.getFinalResult(Duration.ofMillis(100)));
@@ -900,8 +877,6 @@ public class PollerTests {
     @Test
     public void getFinalResultOperationTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<Response>, Mono<Response>> activationOperation
-            = ignored -> Mono.just(activationResponse);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
@@ -916,8 +891,8 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.getFinalResult(Duration.ofMillis(100)));
