@@ -5,39 +5,44 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recording channel type - Mixed, Unmixed. */
+/**
+ * The recording channel type - Mixed, Unmixed.
+ */
 public final class RecordingChannelType extends ExpandableStringEnum<RecordingChannelType> {
-    /** Static value Mixed for RecordingChannelType. */
+    /**
+     * Static value Mixed for RecordingChannelType.
+     */
     public static final RecordingChannelType MIXED = fromString("Mixed");
 
-    /** Static value Unmixed for RecordingChannelType. */
+    /**
+     * Static value Unmixed for RecordingChannelType.
+     */
     public static final RecordingChannelType UNMIXED = fromString("Unmixed");
 
     /**
      * Creates a new instance of RecordingChannelType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecordingChannelType() {}
+    public RecordingChannelType() {
+    }
 
     /**
      * Creates or finds a RecordingChannelType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingChannelType.
      */
-    @JsonCreator
     public static RecordingChannelType fromString(String name) {
         return fromString(name, RecordingChannelType.class);
     }
 
     /**
      * Gets known RecordingChannelType values.
-     *
+     * 
      * @return known RecordingChannelType values.
      */
     public static Collection<RecordingChannelType> values() {
