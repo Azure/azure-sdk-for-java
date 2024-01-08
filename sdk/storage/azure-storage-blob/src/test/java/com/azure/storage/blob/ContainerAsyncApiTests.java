@@ -41,11 +41,11 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -687,7 +687,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     // We can't guarantee that the requests will always happen before the container is garbage collected
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void deleteIfExistsContainerThatWasAlreadyDeleted() {
         StepVerifier.create(ccAsync.deleteIfExists())
@@ -743,7 +743,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listAppendBlobsFlat() {
         String name = generateBlobName();
@@ -839,8 +839,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         normal.create(512).block();
 
         PageBlobAsyncClient copyBlob = ccAsync.getBlobAsyncClient(copyName).getPageBlobAsyncClient();
-        PollerFlux<BlobCopyInfo, Void> poller = copyBlob.beginCopy(normal.getBlobUrl(),
-            getPollingDuration(5000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(copyBlob.beginCopy(normal.getBlobUrl(),
+            null));
         poller.blockLast();
 
         PageBlobAsyncClient metadataBlob = ccAsync.getBlobAsyncClient(metadataName).getPageBlobAsyncClient();
@@ -910,7 +910,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void listBlobsFlatOptionsLastAccessTime() {
         BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -921,7 +921,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listBlobsFlatOptionsTags() {
         ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true));
@@ -1039,7 +1039,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
@@ -1121,7 +1121,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         assertNull(pagedResponse2.getContinuationToken());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("listBlobsFlatRehydratePrioritySupplier")
     public void listBlobsFlatRehydratePriority(RehydratePriority rehydratePriority) {
@@ -1146,7 +1146,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             Arguments.of(RehydratePriority.HIGH));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-02-12")
     @Test
     public void listBlobsFlatInvalidXml() {
         String blobName = "dir1/dir2/file\uFFFE.blob";
@@ -1201,7 +1201,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    //@PlaybackOnly
     @Disabled("Need to re-record once account is setup properly.")
     @Test
     public void listBlobsFlatORS() {
@@ -1311,7 +1311,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete(); //tags
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listBlobsHierOptionsTags() {
         ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveTags(true));
@@ -1407,7 +1407,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void listBlobsHierOptionsDeletedWithVersions() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
@@ -1500,7 +1500,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void listBlobsHierORS() {
         BlobContainerAsyncClient sourceContainer = primaryBlobServiceAsyncClient
@@ -1544,7 +1544,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("listBlobsFlatRehydratePrioritySupplier")
     public void listBlobsHierRehydratePriority(RehydratePriority rehydratePriority) {
@@ -1563,7 +1563,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void listAppendBlobsHier() {
         String name = generateBlobName();
@@ -1604,7 +1604,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-02-12")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void listBlobsHierInvalidXml(boolean delimiter) {
@@ -1646,7 +1646,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
         BlobContainerAsyncClient versionedCC = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
@@ -1680,14 +1680,14 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         versionedCC.delete().block();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsMin() {
         StepVerifier.create(ccAsync.findBlobsByTags("\"key\"='value'"))
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsQuery() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
@@ -1710,7 +1710,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsMarker() {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
@@ -1735,7 +1735,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         assertTrue(firstBlobName.compareTo(secondPage.getValue().iterator().next().getName()) < 0);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsMaxResults() {
         int numBlobs = 7;
@@ -1756,7 +1756,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsMaxResultsByPage() {
         int numBlobs = 7;
@@ -1783,7 +1783,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
         int numBlobs = 5;
@@ -1857,9 +1857,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             null, null, null, null, null), 201);
 
         StepVerifier.create(ccAsync.listBlobs())
-            .assertNext(r -> assertEquals(Utility.urlDecode(name), r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "2", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "3", r.getName()))
+            .assertNext(r -> assertEquals(name, r.getName()))
+            .assertNext(r -> assertEquals(name + "2", r.getName()))
+            .assertNext(r -> assertEquals(name + "3", r.getName()))
             .verifyComplete();
     }
 

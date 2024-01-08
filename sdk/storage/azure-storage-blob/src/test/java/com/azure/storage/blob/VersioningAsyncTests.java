@@ -311,8 +311,8 @@ public class VersioningAsyncTests extends BlobTestBase {
         BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
         sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
 
-        PollerFlux<BlobCopyInfo, Void> poller = blobClient.beginCopy(sourceBlob.getBlobUrl(),
-            getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(blobClient.beginCopy(
+            sourceBlob.getBlobUrl(), null));
         BlobCopyInfo copyInfo = poller.blockLast().getValue();
 
         assertNotNull(copyInfo.getVersionId());

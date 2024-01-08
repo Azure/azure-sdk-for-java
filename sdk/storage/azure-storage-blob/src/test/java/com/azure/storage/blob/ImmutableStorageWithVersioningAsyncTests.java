@@ -47,14 +47,14 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -249,7 +249,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyMin() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
@@ -268,7 +268,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicy() {
         BlobImmutabilityPolicyMode policyMode = BlobImmutabilityPolicyMode.UNLOCKED;
@@ -308,7 +308,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyAC() {
         List<OffsetDateTime> unmodifiedDates = Arrays.asList(null, NEW_DATE);
@@ -326,7 +326,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyACFail() {
         BlobRequestConditions bac = new BlobRequestConditions()
@@ -343,7 +343,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
     @MethodSource("setImmutabilityPolicyACIASupplier")
     public void setImmutabilityPolicyACIA(String leaseId, String tags, String ifMatch, String ifNoneMatch,
@@ -379,7 +379,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyError() {
         BlobAsyncClient blob = vlwContainer.getBlobAsyncClient(generateBlobName());
@@ -395,7 +395,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyIA() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
@@ -410,7 +410,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void deleteImmutabilityPolicyMin() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
@@ -429,7 +429,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void deleteImmutabilityPolicy() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
@@ -448,7 +448,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void deleteImmutabilityPolicyError() {
         BlobAsyncClient blobClient = vlwContainer.getBlobAsyncClient(generateBlobName());
@@ -459,7 +459,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void setLegalHoldMin(boolean legalHold) {
@@ -468,7 +468,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void setLegalHold(boolean legalHold) {
@@ -493,7 +493,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setLegalHoldError() {
         BlobAsyncClient blob = vlwContainer.getBlobAsyncClient(generateBlobName());
@@ -505,7 +505,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             });
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void containerProperties() {
         StepVerifier.create(vlwContainer.getProperties())
@@ -518,7 +518,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void appendBlobCreate() {
         AppendBlobAsyncClient appendBlob = vlwContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
@@ -542,7 +542,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void pageBlobCreate() {
         PageBlobAsyncClient pageBlob = vlwContainer.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
@@ -566,7 +566,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void blockBlobCommitBlockList() {
         BlockBlobAsyncClient blockBlob = vlwBlob.getBlockBlobAsyncClient();
@@ -590,7 +590,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void blockBlobUpload() {
         BlockBlobAsyncClient blockBlob = vlwBlob.getBlockBlobAsyncClient();
@@ -614,8 +614,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
+    @LiveOnly
     @ParameterizedTest
     @MethodSource("blobUploadSupplier")
     public void blobUpload(Long blockSize) {
@@ -645,7 +645,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         return Stream.of(Arguments.of(1L), Arguments.of((Long) null));
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void syncCopy() {
         vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
@@ -674,7 +674,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         vlwContainer.setAccessPolicy(null, null).block();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void copy() {
         BlockBlobAsyncClient destination = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -685,9 +685,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        PollerFlux<BlobCopyInfo, Void> poller = destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
+            destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
             .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true).setPollInterval(getPollingDuration(1000)));
+            .setLegalHold(true)));
         poller.blockLast();
 
         StepVerifier.create(destination.getProperties())
@@ -701,7 +702,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
     /* SAS tests */
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void accountSas() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
@@ -731,7 +732,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void containerSas() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
@@ -759,7 +760,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void blobSas() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
