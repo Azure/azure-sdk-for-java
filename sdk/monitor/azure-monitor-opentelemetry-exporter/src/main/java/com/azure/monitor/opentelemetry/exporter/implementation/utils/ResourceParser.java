@@ -10,6 +10,7 @@ import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 
 public final class ResourceParser {
 
@@ -25,7 +26,7 @@ public final class ResourceParser {
 
     // visible for testing
     ResourceParser(Map<String, String> envVars) {
-        websiteSiteName = getWebsiteSiteNameEnvVar(envVars);
+        websiteSiteName = getWebsiteSiteNameEnvVar(envVars::get);
         websiteSiteInstance = envVars.get("WEBSITE_INSTANCE_ID");
     }
 
@@ -75,8 +76,8 @@ public final class ResourceParser {
         return HostName.get(); // default hostname
     }
 
-    private static String getWebsiteSiteNameEnvVar(Map<String, String> envVars) {
-        String websiteSiteName = envVars.get("WEBSITE_SITE_NAME");
+    public static String getWebsiteSiteNameEnvVar(Function<String, String> envVars) {
+        String websiteSiteName = envVars.apply("WEBSITE_SITE_NAME");
         if (websiteSiteName != null && inAzureFunctionsWorker(envVars)) {
             // special case for Azure Functions
             return websiteSiteName.toLowerCase(Locale.ROOT);
@@ -84,7 +85,7 @@ public final class ResourceParser {
         return websiteSiteName;
     }
 
-    public static boolean inAzureFunctionsWorker(Map<String, String> envVars) {
-        return "java".equals(envVars.get("FUNCTIONS_WORKER_RUNTIME"));
+    public static boolean inAzureFunctionsWorker(Function<String, String> envVars) {
+        return "java".equals(envVars.apply("FUNCTIONS_WORKER_RUNTIME"));
     }
 }
