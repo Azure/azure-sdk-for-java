@@ -28,10 +28,7 @@
   intention that a null could be passed in. In the original code, it would have thrown a
   NullReferenceException. -->
   <Match>
-    <Or>
-      <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
-      <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
-    </Or>
+    <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
     <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
   </Match>
 
@@ -59,12 +56,7 @@
 
   <!-- Internal implementation details, not at risk.-->
   <Match>
-    <Or>
-      <!-- Internal implementation details, not at risk.-->
-      <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
-      <!-- Testing model. -->
-      <Class name="com.azure.core.test.http.HttpClientTests$BinaryDataTestData"/>
-    </Or>
+    <Class name="~com\.azure\.identity\.implementation\.intellij\.IntelliJKdbxMetadata"/>
     <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
   </Match>
 
@@ -124,7 +116,6 @@
   <!-- Cases where null arrays should return null instead of empty arrays -->
   <Match>
     <Or>
-      <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter"/>
       <And>
         <Class name="com.microsoft.azure.servicebus.Utils"/>
         <Method name="getDataFromMessageBody"/>
@@ -146,10 +137,6 @@
         <Method name="getX509Thumbprint"/>
       </And>
       <And>
-        <Class name="com.azure.json.implementation.DefaultJsonReader"/>
-        <Method name="getBinary"/>
-      </And>
-      <And>
         <Class name="com.azure.json.gson.GsonJsonReader"/>
         <Method name="getBinary"/>
       </And>
@@ -159,14 +146,6 @@
       </And>
       <And>
         <Class name="com.azure.json.reflect.JacksonJsonReader"/>
-        <Method name="getBinary"/>
-      </And>
-      <And>
-        <Class name="com.azure.core.serializer.json.gson.implementation.GsonJsonReader"/>
-        <Method name="getBinary"/>
-      </And>
-      <And>
-        <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
       <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
@@ -182,20 +161,12 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
-  <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
-  <Match>
-    <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim"/>
-    <Method name="createJsonMapper"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
-      <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -408,28 +379,6 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
-  the class proposed. Suppress the warning for current design. -->
-  <Match>
-    <Class
-      name="~com\.azure\.core\.management\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-
-  <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
-  the class proposed. Suppress the warning for current design. -->
-  <Match>
-    <Class
-      name="~com\.azure\.core\.management\.implementation\.(CompletedPollStrategy\$CompletedPollStrategyData|ProvisioningStatePollStrategy\$ProvisioningStatePollStrategyData)"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- The checked field is always not null. -->
-  <Match>
-    <Class name="com.azure.core.management.implementation.AzureProxy"/>
-    <Bug pattern="NP_NULL_PARAM_DEREF"/>
-  </Match>
-
   <!-- The switch cases are encoded version of all SAS query parameters, which will further be appended to a request URL it seems like. A default case wouldn't make sense -->
   <Match>
     <Class name="com.microsoft.azure.storage.blob.SASQueryParameters"/>
@@ -601,10 +550,7 @@
 
   <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
   <Match>
-    <Or>
-      <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
-      <Class name="com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper"/>
-    </Or>
+    <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
@@ -634,29 +580,6 @@
     <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
   </Match>
-
-  <!-- Serializers define non-transient non-serializable instance field -->
-  <Match>
-    <Or>
-      <Class name="~com\.azure\.core\.serializer\.json\.jackson\.implementation\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
-      <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter$GlobalSerializerAdapter"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- FIXME: spotbugs issues in core test packages -->
-  <Match>
-    <Package name="com.azure.core.test(.(implementation|http))?"/>
-    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING,
-                  DM_CONVERT_CASE,
-                  EC_UNRELATED_TYPES,
-                  REC_CATCH_EXCEPTION,
-                  DM_DEFAULT_ENCODING,
-                  NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
-                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
-                  UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
 
   <!-- The field is read by parent class StorageOutputStream methods. -->
   <Match>
@@ -1765,11 +1688,6 @@
 
   <!-- Exception in AutoCloseable.close is ignored -->
   <Match>
-    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
-    <Method name="subscribe"/>
-    <Bug pattern="DE_MIGHT_IGNORE"/>
-  </Match>
-  <Match>
     <Class name="com.azure.cosmos.implementation.TracerProvider"/>
     <Method name="subscribe"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
@@ -1962,13 +1880,6 @@
     <Bug pattern="DM_EXIT"/>
   </Match>
 
-  <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
-  <Match>
-    <Class name="~com\.azure\.core\.http\.(okhttp|vertx)\.implementation\.(OkHttpAsyncResponse|VertxHttpAsyncResponse)(.*)"/>
-    <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
-    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-
   <!-- Internal Avro Parser does read the blockCount field. Seems to be a false positive.  -->
   <Match>
     <Or>
@@ -2151,14 +2062,6 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <Match>
-    <Or>
-      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
-      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
-      <Class name="com.azure.core.test.http.LocalTestServer"/>
-    </Or>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
   <!-- Setup in Identity Test classes, required for the tests to work properly.-->
   <Match>
     <Class name="com.azure.identity.ClientCertificateCredentialTest"/>
@@ -2213,19 +2116,6 @@
   <Match>
     <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
     <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-
-  <!-- Buffered responses are only used when we know the response body will be deserialized into a POJO. -->
-  <!-- Given that we don't want to waste resources copying the array when we return it. -->
-  <!-- Additionally, we don't need to copy the array when receiving it as the process to convert the response into an array -->
-  <!-- it will be deeply copied. -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse"/>
-      <Class name="com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse"/>
-    </Or>
-    <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
   <!-- This is an internal type used to hold the request body which will not be mutated outside this class -->
@@ -2291,13 +2181,6 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
-  <!-- If the ServiceVersion type doesn't implement Enum it would have already thrown an exception. -->
-  <Match>
-    <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
-    <Method name="getServiceVersions"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
   <!-- This is inside Azure Maps Implementation package (codegen), and cannot be modified via a customization. -->
   <Match>
     <Class name="com.azure.maps.render.implementation.RenderV2sImpl"/>
@@ -2342,33 +2225,6 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
-  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
-  <Match>
-    <Class name="com.azure.core.serializer.json.jackson.implementation.FlatteningSerializer"/>
-    <Method name="propertyOnlyFlattenSerialize"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody"/>
-      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody"/>
-    </Or>
-    <Method name="writeTo"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Shaded code shouldn't run Spotbugs -->
-  <Match>
-    <Package name="~com\.azure\.json\.implementation\.jackson\.core.*"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.xml.implementation.DefaultXmlReader"/>
-    <Bug pattern="XXE_XMLSTREAMREADER"/>
-  </Match>
-
   <!-- This is intentional when calculating the Jenkins' lookup3 hash. -->
   <Match>
     <Class name="com.azure.messaging.eventhubs.PartitionResolver"/>
@@ -2399,30 +2255,6 @@
       <Class name="com.azure.search.documents.GeographyPointTests"/>
       <Field name="searchClient"/>
     </Or>
-  </Match>
-  <!-- Derived type changes this field as a marker. -->
-  <Match>
-    <Class name="com.azure.core.test.TestBase"/>
-    <Field name="enableTestProxy"/>
-    <Bug pattern="MS_SHOULD_BE_FINAL"/>
-  </Match>
-  <!-- Exception is ignored in a loop waiting for an http endpoint -->
-  <Match>
-    <Class name="com.azure.core.test.utils.TestProxyManager"/>
-    <Method name="checkAlive"/>
-    <Bug pattern="DE_MIGHT_IGNORE"/>
-  </Match>
-
-  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
-  <Match>
-    <Class name="com.azure.core.test.models.RecordFilePayload"/>
-    <Field name="recordingFile"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.core.test.models.RecordFilePayload"/>
-    <Field name="assetFile"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Build tool suppressions -->
