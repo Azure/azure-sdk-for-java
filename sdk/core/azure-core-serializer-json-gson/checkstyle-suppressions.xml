@@ -4,4 +4,10 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.gson.GsonJsonProvider.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.serializer.json.gson.implementation.JsonSerializableTypeAdapter.java" />
+
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.serializer.json.gson.implementation.JsonSerializableTypeAdapter.java" />
 </suppressions>
