@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies details of the Jobs to be created on a schedule. */
+/**
+ * Specifies details of the Jobs to be created on a schedule.
+ */
 @Fluent
 public final class BatchJobSpecification {
 
@@ -157,10 +159,10 @@ public final class BatchJobSpecification {
     }
 
     /**
-     * Get the priority property: The priority of Jobs created under this schedule. Priority values can range from -1000
-     * to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0. This
-     * priority is used as the default for all Jobs under the Job Schedule. You can update a Job's priority after it has
-     * been created using by using the update Job API.
+     * Get the priority property: The priority of Jobs created under this schedule. Priority values can range from
+     * -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
+     * This priority is used as the default for all Jobs under the Job Schedule. You can update a Job's priority after
+     * it has been created using by using the update Job API.
      *
      * @return the priority value.
      */
@@ -170,10 +172,10 @@ public final class BatchJobSpecification {
     }
 
     /**
-     * Set the priority property: The priority of Jobs created under this schedule. Priority values can range from -1000
-     * to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0. This
-     * priority is used as the default for all Jobs under the Job Schedule. You can update a Job's priority after it has
-     * been created using by using the update Job API.
+     * Set the priority property: The priority of Jobs created under this schedule. Priority values can range from
+     * -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
+     * This priority is used as the default for all Jobs under the Job Schedule. You can update a Job's priority after
+     * it has been created using by using the update Job API.
      *
      * @param priority the priority value to set.
      * @return the BatchJobSpecification object itself.
@@ -322,9 +324,9 @@ public final class BatchJobSpecification {
 
     /**
      * Get the onTaskFailure property: The action the Batch service should take when any Task fails in a Job created
-     * under this schedule. A Task is considered to have failed if it have failed if has a failureInfo. A failureInfo is
-     * set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error
-     * starting the Task, for example due to a resource file download error. The default is noaction.
+     * under this schedule. A Task is considered to have failed if it have failed if has a failureInfo. A failureInfo
+     * is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an
+     * error starting the Task, for example due to a resource file download error. The default is noaction.
      *
      * @return the onTaskFailure value.
      */
@@ -335,9 +337,9 @@ public final class BatchJobSpecification {
 
     /**
      * Set the onTaskFailure property: The action the Batch service should take when any Task fails in a Job created
-     * under this schedule. A Task is considered to have failed if it have failed if has a failureInfo. A failureInfo is
-     * set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error
-     * starting the Task, for example due to a resource file download error. The default is noaction.
+     * under this schedule. A Task is considered to have failed if it have failed if has a failureInfo. A failureInfo
+     * is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an
+     * error starting the Task, for example due to a resource file download error. The default is noaction.
      *
      * @param onTaskFailure the onTaskFailure value to set.
      * @return the BatchJobSpecification object itself.

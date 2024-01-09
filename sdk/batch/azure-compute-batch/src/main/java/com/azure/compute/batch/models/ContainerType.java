@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ContainerType enums. */
+/**
+ * ContainerType enums.
+ */
 public final class ContainerType extends ExpandableStringEnum<ContainerType> {
 
-    /** A Docker compatible container technology will be used to launch the containers. */
-    @Generated public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
+    /**
+     * A Docker compatible container technology will be used to launch the containers.
+     */
+    @Generated
+    public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
 
-    /** A CRI based technology will be used to launch the containers. */
-    @Generated public static final ContainerType CRI_COMPATIBLE = fromString("criCompatible");
+    /**
+     * A CRI based technology will be used to launch the containers.
+     */
+    @Generated
+    public static final ContainerType CRI_COMPATIBLE = fromString("criCompatible");
 
     /**
      * Creates a new instance of ContainerType value.
@@ -24,7 +32,8 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
      */
     @Generated
     @Deprecated
-    public ContainerType() {}
+    public ContainerType() {
+    }
 
     /**
      * Creates or finds a ContainerType from its string representation.

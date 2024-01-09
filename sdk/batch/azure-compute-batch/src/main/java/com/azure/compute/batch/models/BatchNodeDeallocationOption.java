@@ -8,32 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchNodeDeallocationOption enums. */
+/**
+ * BatchNodeDeallocationOption enums.
+ */
 public final class BatchNodeDeallocationOption extends ExpandableStringEnum<BatchNodeDeallocationOption> {
 
     /**
      * Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute Node is
      * available. Remove Compute Nodes as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeDeallocationOption REQUEUE = fromString("requeue");
+    @Generated
+    public static final BatchNodeDeallocationOption REQUEUE = fromString("requeue");
 
     /**
      * Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were terminated, and
      * will not run again. Remove Compute Nodes as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeDeallocationOption TERMINATE = fromString("terminate");
+    @Generated
+    public static final BatchNodeDeallocationOption TERMINATE = fromString("terminate");
 
     /**
      * Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Remove Compute Nodes when all
      * Tasks have completed.
      */
-    @Generated public static final BatchNodeDeallocationOption TASK_COMPLETION = fromString("taskcompletion");
+    @Generated
+    public static final BatchNodeDeallocationOption TASK_COMPLETION = fromString("taskcompletion");
 
     /**
      * Allow currently running Tasks to complete, then wait for all Task data retention periods to expire. Schedule no
      * new Tasks while waiting. Remove Compute Nodes when all Task retention periods have expired.
      */
-    @Generated public static final BatchNodeDeallocationOption RETAINED_DATA = fromString("retaineddata");
+    @Generated
+    public static final BatchNodeDeallocationOption RETAINED_DATA = fromString("retaineddata");
 
     /**
      * Creates a new instance of BatchNodeDeallocationOption value.
@@ -42,7 +48,8 @@ public final class BatchNodeDeallocationOption extends ExpandableStringEnum<Batc
      */
     @Generated
     @Deprecated
-    public BatchNodeDeallocationOption() {}
+    public BatchNodeDeallocationOption() {
+    }
 
     /**
      * Creates or finds a BatchNodeDeallocationOption from its string representation.

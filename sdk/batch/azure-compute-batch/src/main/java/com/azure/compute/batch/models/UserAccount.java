@@ -8,7 +8,10 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to create a user used to execute Tasks on an Azure Batch Compute Node. */
+/**
+ * Properties used to create a user used to execute Tasks on an Azure Batch
+ * Compute Node.
+ */
 @Fluent
 public final class UserAccount {
 
@@ -133,8 +136,8 @@ public final class UserAccount {
 
     /**
      * Get the windowsUserConfiguration property: The Windows-specific user configuration for the user Account. This
-     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user
-     * is created with the default options.
+     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the
+     * user is created with the default options.
      *
      * @return the windowsUserConfiguration value.
      */
@@ -145,8 +148,8 @@ public final class UserAccount {
 
     /**
      * Set the windowsUserConfiguration property: The Windows-specific user configuration for the user Account. This
-     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user
-     * is created with the default options.
+     * property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the
+     * user is created with the default options.
      *
      * @param windowsUserConfiguration the windowsUserConfiguration value to set.
      * @return the UserAccount object itself.

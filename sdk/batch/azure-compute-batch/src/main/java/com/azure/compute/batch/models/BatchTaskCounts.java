@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Task counts for a Job. */
+/**
+ * The Task counts for a Job.
+ */
 @Immutable
 public final class BatchTaskCounts {
 
@@ -59,12 +61,9 @@ public final class BatchTaskCounts {
      */
     @Generated
     @JsonCreator
-    private BatchTaskCounts(
-            @JsonProperty(value = "active") int active,
-            @JsonProperty(value = "running") int running,
-            @JsonProperty(value = "completed") int completed,
-            @JsonProperty(value = "succeeded") int succeeded,
-            @JsonProperty(value = "failed") int failed) {
+    private BatchTaskCounts(@JsonProperty(value = "active") int active, @JsonProperty(value = "running") int running,
+        @JsonProperty(value = "completed") int completed, @JsonProperty(value = "succeeded") int succeeded,
+        @JsonProperty(value = "failed") int failed) {
         this.active = active;
         this.running = running;
         this.completed = completed;
@@ -114,8 +113,8 @@ public final class BatchTaskCounts {
     }
 
     /**
-     * Get the failed property: The number of Tasks which failed. A Task fails if its result (found in the executionInfo
-     * property) is 'failure'.
+     * Get the failed property: The number of Tasks which failed. A Task fails if its result (found in the
+     * executionInfo property) is 'failure'.
      *
      * @return the failed value.
      */

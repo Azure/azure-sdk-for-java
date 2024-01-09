@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An inbound endpoint on a Compute Node. */
+/**
+ * An inbound endpoint on a Compute Node.
+ */
 @Immutable
 public final class InboundEndpoint {
 
@@ -66,13 +68,11 @@ public final class InboundEndpoint {
      */
     @Generated
     @JsonCreator
-    private InboundEndpoint(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
-            @JsonProperty(value = "publicIPAddress") String publicIpAddress,
-            @JsonProperty(value = "publicFQDN") String publicFQDN,
-            @JsonProperty(value = "frontendPort") int frontendPort,
-            @JsonProperty(value = "backendPort") int backendPort) {
+    private InboundEndpoint(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
+        @JsonProperty(value = "publicIPAddress") String publicIpAddress,
+        @JsonProperty(value = "publicFQDN") String publicFQDN, @JsonProperty(value = "frontendPort") int frontendPort,
+        @JsonProperty(value = "backendPort") int backendPort) {
         this.name = name;
         this.protocol = protocol;
         this.publicIpAddress = publicIpAddress;

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for creating an Azure Batch Job Schedule. */
+/**
+ * Parameters for creating an Azure Batch Job Schedule.
+ */
 @Fluent
 public final class BatchJobScheduleCreateParameters {
 
@@ -63,10 +65,9 @@ public final class BatchJobScheduleCreateParameters {
      */
     @Generated
     @JsonCreator
-    public BatchJobScheduleCreateParameters(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "schedule") Schedule schedule,
-            @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
+    public BatchJobScheduleCreateParameters(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "schedule") Schedule schedule,
+        @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
         this.id = id;
         this.schedule = schedule;
         this.jobSpecification = jobSpecification;
@@ -131,8 +132,8 @@ public final class BatchJobScheduleCreateParameters {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
-     * does not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
+     * service does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -142,8 +143,8 @@ public final class BatchJobScheduleCreateParameters {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
-     * does not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
+     * service does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobScheduleCreateParameters object itself.

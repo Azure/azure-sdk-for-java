@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Information about the execution of a Task. */
+/**
+ * Information about the execution of a Task.
+ */
 @Immutable
 public final class BatchTaskExecutionInfo {
 
@@ -110,9 +112,8 @@ public final class BatchTaskExecutionInfo {
      */
     @Generated
     @JsonCreator
-    private BatchTaskExecutionInfo(
-            @JsonProperty(value = "retryCount") int retryCount,
-            @JsonProperty(value = "requeueCount") int requeueCount) {
+    private BatchTaskExecutionInfo(@JsonProperty(value = "retryCount") int retryCount,
+        @JsonProperty(value = "requeueCount") int requeueCount) {
         this.retryCount = retryCount;
         this.requeueCount = requeueCount;
     }
@@ -180,9 +181,10 @@ public final class BatchTaskExecutionInfo {
     }
 
     /**
-     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task application
-     * failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload
-     * errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
+     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task
+     * application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and
+     * file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the
+     * constraints.
      *
      * @return the retryCount value.
      */

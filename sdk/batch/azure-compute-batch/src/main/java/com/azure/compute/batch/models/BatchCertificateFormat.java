@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchCertificateFormat enums. */
+/**
+ * BatchCertificateFormat enums.
+ */
 public final class BatchCertificateFormat extends ExpandableStringEnum<BatchCertificateFormat> {
 
-    /** The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain. */
-    @Generated public static final BatchCertificateFormat PFX = fromString("pfx");
+    /**
+     * The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.
+     */
+    @Generated
+    public static final BatchCertificateFormat PFX = fromString("pfx");
 
-    /** The Certificate is a base64-encoded X.509 Certificate. */
-    @Generated public static final BatchCertificateFormat CER = fromString("cer");
+    /**
+     * The Certificate is a base64-encoded X.509 Certificate.
+     */
+    @Generated
+    public static final BatchCertificateFormat CER = fromString("cer");
 
     /**
      * Creates a new instance of BatchCertificateFormat value.
@@ -24,7 +32,8 @@ public final class BatchCertificateFormat extends ExpandableStringEnum<BatchCert
      */
     @Generated
     @Deprecated
-    public BatchCertificateFormat() {}
+    public BatchCertificateFormat() {
+    }
 
     /**
      * Creates or finds a BatchCertificateFormat from its string representation.

@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of the Job Preparation and Job Release Tasks on a Compute Node. */
+/**
+ * The status of the Job Preparation and Job Release Tasks on a Compute Node.
+ */
 @Immutable
 public final class BatchJobPreparationAndReleaseTaskStatus {
 
@@ -47,9 +49,12 @@ public final class BatchJobPreparationAndReleaseTaskStatus {
     @JsonProperty(value = "jobReleaseTaskExecutionInfo")
     private BatchJobReleaseTaskExecutionInfo jobReleaseTaskExecutionInfo;
 
-    /** Creates an instance of BatchJobPreparationAndReleaseTaskStatus class. */
+    /**
+     * Creates an instance of BatchJobPreparationAndReleaseTaskStatus class.
+     */
     @Generated
-    private BatchJobPreparationAndReleaseTaskStatus() {}
+    private BatchJobPreparationAndReleaseTaskStatus() {
+    }
 
     /**
      * Get the poolId property: The ID of the Pool containing the Compute Node to which this entry refers.

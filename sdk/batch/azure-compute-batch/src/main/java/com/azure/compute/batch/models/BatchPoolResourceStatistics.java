@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Statistics related to resource consumption by Compute Nodes in a Pool. */
+/**
+ * Statistics related to resource consumption by Compute Nodes in a Pool.
+ */
 @Immutable
 public final class BatchPoolResourceStatistics {
 
@@ -124,20 +126,18 @@ public final class BatchPoolResourceStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchPoolResourceStatistics(
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-            @JsonProperty(value = "avgCPUPercentage") double avgCpuPercentage,
-            @JsonProperty(value = "avgMemoryGiB") double avgMemoryGiB,
-            @JsonProperty(value = "peakMemoryGiB") double peakMemoryGiB,
-            @JsonProperty(value = "avgDiskGiB") double avgDiskGiB,
-            @JsonProperty(value = "peakDiskGiB") double peakDiskGiB,
-            @JsonProperty(value = "diskReadIOps") int diskReadIOps,
-            @JsonProperty(value = "diskWriteIOps") int diskWriteIOps,
-            @JsonProperty(value = "diskReadGiB") double diskReadGiB,
-            @JsonProperty(value = "diskWriteGiB") double diskWriteGiB,
-            @JsonProperty(value = "networkReadGiB") double networkReadGiB,
-            @JsonProperty(value = "networkWriteGiB") double networkWriteGiB) {
+    private BatchPoolResourceStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "avgCPUPercentage") double avgCpuPercentage,
+        @JsonProperty(value = "avgMemoryGiB") double avgMemoryGiB,
+        @JsonProperty(value = "peakMemoryGiB") double peakMemoryGiB,
+        @JsonProperty(value = "avgDiskGiB") double avgDiskGiB, @JsonProperty(value = "peakDiskGiB") double peakDiskGiB,
+        @JsonProperty(value = "diskReadIOps") int diskReadIOps,
+        @JsonProperty(value = "diskWriteIOps") int diskWriteIOps,
+        @JsonProperty(value = "diskReadGiB") double diskReadGiB,
+        @JsonProperty(value = "diskWriteGiB") double diskWriteGiB,
+        @JsonProperty(value = "networkReadGiB") double networkReadGiB,
+        @JsonProperty(value = "networkWriteGiB") double networkWriteGiB) {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.avgCpuPercentage = avgCpuPercentage;
@@ -246,7 +246,8 @@ public final class BatchPoolResourceStatistics {
     }
 
     /**
-     * Get the diskReadGiB property: The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
+     * Get the diskReadGiB property: The total amount of data in GiB of disk reads across all Compute Nodes in the
+     * Pool.
      *
      * @return the diskReadGiB value.
      */
@@ -267,8 +268,8 @@ public final class BatchPoolResourceStatistics {
     }
 
     /**
-     * Get the networkReadGiB property: The total amount of data in GiB of network reads across all Compute Nodes in the
-     * Pool.
+     * Get the networkReadGiB property: The total amount of data in GiB of network reads across all Compute Nodes in
+     * the Pool.
      *
      * @return the networkReadGiB value.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error that occurred when resizing a Pool. */
+/**
+ * An error that occurred when resizing a Pool.
+ */
 @Immutable
 public final class ResizeError {
 
@@ -33,9 +35,12 @@ public final class ResizeError {
     @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
-    /** Creates an instance of ResizeError class. */
+    /**
+     * Creates an instance of ResizeError class.
+     */
     @Generated
-    private ResizeError() {}
+    private ResizeError() {
+    }
 
     /**
      * Get the code property: An identifier for the Pool resize error. Codes are invariant and are intended to be

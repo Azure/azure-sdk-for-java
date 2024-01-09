@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private container registry. */
+/**
+ * A private container registry.
+ */
 @Fluent
 public final class ContainerRegistry {
 
@@ -40,9 +42,12 @@ public final class ContainerRegistry {
     @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
-    /** Creates an instance of ContainerRegistry class. */
+    /**
+     * Creates an instance of ContainerRegistry class.
+     */
     @Generated
-    public ContainerRegistry() {}
+    public ContainerRegistry() {
+    }
 
     /**
      * Get the username property: The user name to log into the registry server.

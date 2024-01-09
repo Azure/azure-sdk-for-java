@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchSubtaskState enums. */
+/**
+ * BatchSubtaskState enums.
+ */
 public final class BatchSubtaskState extends ExpandableStringEnum<BatchSubtaskState> {
 
     /**
@@ -16,21 +18,24 @@ public final class BatchSubtaskState extends ExpandableStringEnum<BatchSubtaskSt
      * the Compute Node. If the Job Preparation Task succeeds, the Task will move to running. If the Job Preparation
      * Task fails, the Task will return to active and will be eligible to be assigned to a different Compute Node.
      */
-    @Generated public static final BatchSubtaskState PREPARING = fromString("preparing");
+    @Generated
+    public static final BatchSubtaskState PREPARING = fromString("preparing");
 
     /**
      * The Task is running on a Compute Node. This includes task-level preparation such as downloading resource files or
      * deploying Packages specified on the Task - it does not necessarily mean that the Task command line has started
      * executing.
      */
-    @Generated public static final BatchSubtaskState RUNNING = fromString("running");
+    @Generated
+    public static final BatchSubtaskState RUNNING = fromString("running");
 
     /**
      * The Task is no longer eligible to run, usually because the Task has finished successfully, or the Task has
      * finished unsuccessfully and has exhausted its retry limit. A Task is also marked as completed if an error
      * occurred launching the Task, or when the Task has been terminated.
      */
-    @Generated public static final BatchSubtaskState COMPLETED = fromString("completed");
+    @Generated
+    public static final BatchSubtaskState COMPLETED = fromString("completed");
 
     /**
      * Creates a new instance of BatchSubtaskState value.
@@ -39,7 +44,8 @@ public final class BatchSubtaskState extends ExpandableStringEnum<BatchSubtaskSt
      */
     @Generated
     @Deprecated
-    public BatchSubtaskState() {}
+    public BatchSubtaskState() {
+    }
 
     /**
      * Creates or finds a BatchSubtaskState from its string representation.

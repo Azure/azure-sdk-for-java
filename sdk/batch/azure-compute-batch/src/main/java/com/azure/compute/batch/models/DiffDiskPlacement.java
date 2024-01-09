@@ -8,11 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AccessDiffDiskPlacementScope enums. */
+/**
+ * AccessDiffDiskPlacementScope enums.
+ */
 public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacement> {
 
-    /** The Ephemeral OS Disk is stored on the VM cache. */
-    @Generated public static final DiffDiskPlacement CACHE_DISK = fromString("cachedisk");
+    /**
+     * The Ephemeral OS Disk is stored on the VM cache.
+     */
+    @Generated
+    public static final DiffDiskPlacement CACHE_DISK = fromString("cachedisk");
 
     /**
      * Creates a new instance of DiffDiskPlacement value.
@@ -21,7 +26,8 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
      */
     @Generated
     @Deprecated
-    public DiffDiskPlacement() {}
+    public DiffDiskPlacement() {
+    }
 
     /**
      * Creates or finds a DiffDiskPlacement from its string representation.

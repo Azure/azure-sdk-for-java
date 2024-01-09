@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Info about the current state of the virtual machine. */
+/**
+ * Info about the current state of the virtual machine.
+ */
 @Immutable
 public final class VirtualMachineInfo {
 
@@ -18,9 +20,12 @@ public final class VirtualMachineInfo {
     @JsonProperty(value = "imageReference")
     private ImageReference imageReference;
 
-    /** Creates an instance of VirtualMachineInfo class. */
+    /**
+     * Creates an instance of VirtualMachineInfo class.
+     */
     @Generated
-    private VirtualMachineInfo() {}
+    private VirtualMachineInfo() {
+    }
 
     /**
      * Get the imageReference property: The reference to the Azure Virtual Machine's Marketplace Image.
@@ -30,5 +35,25 @@ public final class VirtualMachineInfo {
     @Generated
     public ImageReference getImageReference() {
         return this.imageReference;
+    }
+
+    /*
+     * The resource ID of the Compute Node's current Virtual Machine Scale Set VM. Only defined if the Batch Account
+     * was created with its poolAllocationMode property set to 'UserSubscription'.
+     */
+    @Generated
+    @JsonProperty(value = "scaleSetVmResourceId")
+    private String scaleSetVmResourceId;
+
+    /**
+     * Get the scaleSetVmResourceId property: The resource ID of the Compute Node's current Virtual Machine Scale Set
+     * VM. Only defined if the Batch Account was created with its poolAllocationMode property set to
+     * 'UserSubscription'.
+     *
+     * @return the scaleSetVmResourceId value.
+     */
+    @Generated
+    public String getScaleSetVmResourceId() {
+        return this.scaleSetVmResourceId;
     }
 }

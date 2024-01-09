@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for evaluating an automatic scaling formula on an Azure Batch Pool. */
+/**
+ * Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
+ */
 @Immutable
 public final class BatchPoolEvaluateAutoScaleParameters {
 
@@ -36,8 +38,8 @@ public final class BatchPoolEvaluateAutoScaleParameters {
     /**
      * Get the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. The formula
      * is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool,
-     * 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale
-     * Compute Nodes in an Azure Batch Pool
+     * 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically
+     * scale Compute Nodes in an Azure Batch Pool
      * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      *
      * @return the autoScaleFormula value.

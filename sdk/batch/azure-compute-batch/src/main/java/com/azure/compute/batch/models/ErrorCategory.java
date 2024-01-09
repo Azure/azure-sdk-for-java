@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ErrorCategory enums. */
+/**
+ * ErrorCategory enums.
+ */
 public final class ErrorCategory extends ExpandableStringEnum<ErrorCategory> {
 
-    /** The error is due to a user issue, such as misconfiguration. */
-    @Generated public static final ErrorCategory USER_ERROR = fromString("usererror");
+    /**
+     * The error is due to a user issue, such as misconfiguration.
+     */
+    @Generated
+    public static final ErrorCategory USER_ERROR = fromString("usererror");
 
-    /** The error is due to an internal server issue. */
-    @Generated public static final ErrorCategory SERVER_ERROR = fromString("servererror");
+    /**
+     * The error is due to an internal server issue.
+     */
+    @Generated
+    public static final ErrorCategory SERVER_ERROR = fromString("servererror");
 
     /**
      * Creates a new instance of ErrorCategory value.
@@ -24,7 +32,8 @@ public final class ErrorCategory extends ExpandableStringEnum<ErrorCategory> {
      */
     @Generated
     @Deprecated
-    public ErrorCategory() {}
+    public ErrorCategory() {
+    }
 
     /**
      * Creates or finds a ErrorCategory from its string representation.

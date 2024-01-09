@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A single file or multiple files to be downloaded to a Compute Node. */
+/**
+ * A single file or multiple files to be downloaded to a Compute Node.
+ */
 @Fluent
 public final class ResourceFile {
 
@@ -82,9 +84,12 @@ public final class ResourceFile {
     @JsonProperty(value = "identityReference")
     private BatchNodeIdentityReference identityReference;
 
-    /** Creates an instance of ResourceFile class. */
+    /**
+     * Creates an instance of ResourceFile class.
+     */
     @Generated
-    public ResourceFile() {}
+    public ResourceFile() {
+    }
 
     /**
      * Get the autoStorageContainerName property: The storage container name in the auto storage Account. The
@@ -177,8 +182,8 @@ public final class ResourceFile {
     /**
      * Get the blobPrefix property: The blob prefix to use when downloading blobs from an Azure Storage container. Only
      * the blobs whose names begin with the specified prefix will be downloaded. The property is valid only when
-     * autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a subdirectory.
-     * If a prefix is not specified, all the files in the container will be downloaded.
+     * autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a
+     * subdirectory. If a prefix is not specified, all the files in the container will be downloaded.
      *
      * @return the blobPrefix value.
      */
@@ -190,8 +195,8 @@ public final class ResourceFile {
     /**
      * Set the blobPrefix property: The blob prefix to use when downloading blobs from an Azure Storage container. Only
      * the blobs whose names begin with the specified prefix will be downloaded. The property is valid only when
-     * autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a subdirectory.
-     * If a prefix is not specified, all the files in the container will be downloaded.
+     * autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a
+     * subdirectory. If a prefix is not specified, all the files in the container will be downloaded.
      *
      * @param blobPrefix the blobPrefix value to set.
      * @return the ResourceFile object itself.
@@ -206,10 +211,10 @@ public final class ResourceFile {
      * Get the filePath property: The location on the Compute Node to which to download the file(s), relative to the
      * Task's working directory. If the httpUrl property is specified, the filePath is required and describes the path
      * which the file will be downloaded to, including the filename. Otherwise, if the autoStorageContainerName or
-     * storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In
-     * the case where filePath is used as a directory, any directory structure already associated with the input data
-     * will be retained in full and appended to the specified filePath directory. The specified relative path cannot
-     * break out of the Task's working directory (for example by using '..').
+     * storageContainerUrl property is specified, filePath is optional and is the directory to download the files to.
+     * In the case where filePath is used as a directory, any directory structure already associated with the input
+     * data will be retained in full and appended to the specified filePath directory. The specified relative path
+     * cannot break out of the Task's working directory (for example by using '..').
      *
      * @return the filePath value.
      */
@@ -222,10 +227,10 @@ public final class ResourceFile {
      * Set the filePath property: The location on the Compute Node to which to download the file(s), relative to the
      * Task's working directory. If the httpUrl property is specified, the filePath is required and describes the path
      * which the file will be downloaded to, including the filename. Otherwise, if the autoStorageContainerName or
-     * storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In
-     * the case where filePath is used as a directory, any directory structure already associated with the input data
-     * will be retained in full and appended to the specified filePath directory. The specified relative path cannot
-     * break out of the Task's working directory (for example by using '..').
+     * storageContainerUrl property is specified, filePath is optional and is the directory to download the files to.
+     * In the case where filePath is used as a directory, any directory structure already associated with the input
+     * data will be retained in full and appended to the specified filePath directory. The specified relative path
+     * cannot break out of the Task's working directory (for example by using '..').
      *
      * @param filePath the filePath value to set.
      * @return the ResourceFile object itself.

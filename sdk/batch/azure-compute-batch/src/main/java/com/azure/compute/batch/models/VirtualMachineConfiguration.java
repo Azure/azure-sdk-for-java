@@ -9,7 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration for Compute Nodes in a Pool based on the Azure Virtual Machines infrastructure. */
+/**
+ * The configuration for Compute Nodes in a Pool based on the Azure Virtual
+ * Machines infrastructure.
+ */
 @Fluent
 public final class VirtualMachineConfiguration {
 
@@ -47,9 +50,11 @@ public final class VirtualMachineConfiguration {
      * disk is empty. When the Compute Node is removed from the Pool, the disk and all data associated with it is also
      * deleted. The disk is not formatted after being attached, it must be formatted before use - for more information
      * see
-     * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-
+     * linux
      * and
-     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-
+     * virtual-machine.
      */
     @Generated
     @JsonProperty(value = "dataDisks")
@@ -60,11 +65,11 @@ public final class VirtualMachineConfiguration {
      * should only be used when you hold valid on-premises licenses for the Compute
      * Nodes which will be deployed. If omitted, no on-premises licensing discount is
      * applied. Values are:
-     *
+     * 
      * Windows_Server - The on-premises license is for Windows
      * Server.
      * Windows_Client - The on-premises license is for Windows Client.
-     *
+     * 
      */
     @Generated
     @JsonProperty(value = "licenseType")
@@ -118,9 +123,8 @@ public final class VirtualMachineConfiguration {
      */
     @Generated
     @JsonCreator
-    public VirtualMachineConfiguration(
-            @JsonProperty(value = "imageReference") ImageReference imageReference,
-            @JsonProperty(value = "nodeAgentSKUId") String nodeAgentSkuId) {
+    public VirtualMachineConfiguration(@JsonProperty(value = "imageReference") ImageReference imageReference,
+        @JsonProperty(value = "nodeAgentSKUId") String nodeAgentSkuId) {
         this.imageReference = imageReference;
         this.nodeAgentSkuId = nodeAgentSkuId;
     }
@@ -139,10 +143,11 @@ public final class VirtualMachineConfiguration {
     /**
      * Get the nodeAgentSkuId property: The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in
      * the Pool. The Batch Compute Node agent is a program that runs on each Compute Node in the Pool, and provides the
-     * command-and-control interface between the Compute Node and the Batch service. There are different implementations
-     * of the Compute Node agent, known as SKUs, for different operating systems. You must specify a Compute Node agent
-     * SKU which matches the selected Image reference. To get the list of supported Compute Node agent SKUs along with
-     * their list of verified Image references, see the 'List supported Compute Node agent SKUs' operation.
+     * command-and-control interface between the Compute Node and the Batch service. There are different
+     * implementations of the Compute Node agent, known as SKUs, for different operating systems. You must specify a
+     * Compute Node agent SKU which matches the selected Image reference. To get the list of supported Compute Node
+     * agent SKUs along with their list of verified Image references, see the 'List supported Compute Node agent SKUs'
+     * operation.
      *
      * @return the nodeAgentSkuId value.
      */
@@ -214,12 +219,14 @@ public final class VirtualMachineConfiguration {
     }
 
     /**
-     * Get the licenseType property: This only applies to Images that contain the Windows operating system, and should
-     * only be used when you hold valid on-premises licenses for the Compute Nodes which will be deployed. If omitted,
-     * no on-premises licensing discount is applied. Values are:
+     * Get the licenseType property: This only applies to Images that contain the Windows operating system, and
+     * should only be used when you hold valid on-premises licenses for the Compute
+     * Nodes which will be deployed. If omitted, no on-premises licensing discount is
+     * applied. Values are:
      *
-     * <p>Windows_Server - The on-premises license is for Windows Server. Windows_Client - The on-premises license is
-     * for Windows Client.
+     * Windows_Server - The on-premises license is for Windows
+     * Server.
+     * Windows_Client - The on-premises license is for Windows Client.
      *
      * @return the licenseType value.
      */
@@ -229,12 +236,14 @@ public final class VirtualMachineConfiguration {
     }
 
     /**
-     * Set the licenseType property: This only applies to Images that contain the Windows operating system, and should
-     * only be used when you hold valid on-premises licenses for the Compute Nodes which will be deployed. If omitted,
-     * no on-premises licensing discount is applied. Values are:
+     * Set the licenseType property: This only applies to Images that contain the Windows operating system, and
+     * should only be used when you hold valid on-premises licenses for the Compute
+     * Nodes which will be deployed. If omitted, no on-premises licensing discount is
+     * applied. Values are:
      *
-     * <p>Windows_Server - The on-premises license is for Windows Server. Windows_Client - The on-premises license is
-     * for Windows Client.
+     * Windows_Server - The on-premises license is for Windows
+     * Server.
+     * Windows_Client - The on-premises license is for Windows Client.
      *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineConfiguration object itself.
@@ -247,8 +256,8 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Get the containerConfiguration property: The container configuration for the Pool. If specified, setup is
-     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager
-     * Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
+     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job
+     * manager Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
      *
      * @return the containerConfiguration value.
      */
@@ -259,8 +268,8 @@ public final class VirtualMachineConfiguration {
 
     /**
      * Set the containerConfiguration property: The container configuration for the Pool. If specified, setup is
-     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager
-     * Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
+     * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job
+     * manager Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
      *
      * @param containerConfiguration the containerConfiguration value to set.
      * @return the VirtualMachineConfiguration object itself.
@@ -290,8 +299,8 @@ public final class VirtualMachineConfiguration {
      * @return the VirtualMachineConfiguration object itself.
      */
     @Generated
-    public VirtualMachineConfiguration setDiskEncryptionConfiguration(
-            DiskEncryptionConfiguration diskEncryptionConfiguration) {
+    public VirtualMachineConfiguration
+        setDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration) {
         this.diskEncryptionConfiguration = diskEncryptionConfiguration;
         return this;
     }
@@ -315,8 +324,8 @@ public final class VirtualMachineConfiguration {
      * @return the VirtualMachineConfiguration object itself.
      */
     @Generated
-    public VirtualMachineConfiguration setNodePlacementConfiguration(
-            BatchNodePlacementConfiguration nodePlacementConfiguration) {
+    public VirtualMachineConfiguration
+        setNodePlacementConfiguration(BatchNodePlacementConfiguration nodePlacementConfiguration) {
         this.nodePlacementConfiguration = nodePlacementConfiguration;
         return this;
     }
@@ -364,6 +373,75 @@ public final class VirtualMachineConfiguration {
     @Generated
     public VirtualMachineConfiguration setOsDisk(OSDisk osDisk) {
         this.osDisk = osDisk;
+        return this;
+    }
+
+    /*
+     * Specifies the security profile settings for the virtual machine or virtual machine scale set.
+     */
+    @Generated
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
+
+    /*
+     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
+     * set when using 'latest' image version. The service artifact reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     */
+    @Generated
+    @JsonProperty(value = "serviceArtifactReference")
+    private ServiceArtifactReference serviceArtifactReference;
+
+    /**
+     * Get the securityProfile property: Specifies the security profile settings for the virtual machine or virtual
+     * machine scale set.
+     *
+     * @return the securityProfile value.
+     */
+    @Generated
+    public SecurityProfile getSecurityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the security profile settings for the virtual machine or virtual
+     * machine scale set.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
+     * Get the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
+     * version for all virtual machines in the scale set when using 'latest' image version. The service artifact
+     * reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
+     *
+     * @return the serviceArtifactReference value.
+     */
+    @Generated
+    public ServiceArtifactReference getServiceArtifactReference() {
+        return this.serviceArtifactReference;
+    }
+
+    /**
+     * Set the serviceArtifactReference property: Specifies the service artifact reference id used to set same image
+     * version for all virtual machines in the scale set when using 'latest' image version. The service artifact
+     * reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
+     *
+     * @param serviceArtifactReference the serviceArtifactReference value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setServiceArtifactReference(ServiceArtifactReference serviceArtifactReference) {
+        this.serviceArtifactReference = serviceArtifactReference;
         return this;
     }
 }

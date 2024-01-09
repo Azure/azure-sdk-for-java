@@ -8,26 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchNodeDisableSchedulingOption enums. */
+/**
+ * BatchNodeDisableSchedulingOption enums.
+ */
 public final class BatchNodeDisableSchedulingOption extends ExpandableStringEnum<BatchNodeDisableSchedulingOption> {
 
     /**
      * Terminate running Task processes and requeue the Tasks. The Tasks may run again on other Compute Nodes, or when
      * Task scheduling is re-enabled on this Compute Node. Enter offline state as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeDisableSchedulingOption REQUEUE = fromString("requeue");
+    @Generated
+    public static final BatchNodeDisableSchedulingOption REQUEUE = fromString("requeue");
 
     /**
      * Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were terminated, and
      * will not run again. Enter offline state as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeDisableSchedulingOption TERMINATE = fromString("terminate");
+    @Generated
+    public static final BatchNodeDisableSchedulingOption TERMINATE = fromString("terminate");
 
     /**
      * Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Enter offline state when all
      * Tasks have completed.
      */
-    @Generated public static final BatchNodeDisableSchedulingOption TASK_COMPLETION = fromString("taskcompletion");
+    @Generated
+    public static final BatchNodeDisableSchedulingOption TASK_COMPLETION = fromString("taskcompletion");
 
     /**
      * Creates a new instance of BatchNodeDisableSchedulingOption value.
@@ -36,7 +41,8 @@ public final class BatchNodeDisableSchedulingOption extends ExpandableStringEnum
      */
     @Generated
     @Deprecated
-    public BatchNodeDisableSchedulingOption() {}
+    public BatchNodeDisableSchedulingOption() {
+    }
 
     /**
      * Creates or finds a BatchNodeDisableSchedulingOption from its string representation.

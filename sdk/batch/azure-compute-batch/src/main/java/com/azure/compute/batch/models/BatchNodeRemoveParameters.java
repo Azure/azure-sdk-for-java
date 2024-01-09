@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** Parameters for removing nodes from an Azure Batch Pool. */
+/**
+ * Parameters for removing nodes from an Azure Batch Pool.
+ */
 @Fluent
 public final class BatchNodeRemoveParameters {
 
@@ -63,8 +65,8 @@ public final class BatchNodeRemoveParameters {
 
     /**
      * Get the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
-     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns
+     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @return the resizeTimeout value.
      */
@@ -75,8 +77,8 @@ public final class BatchNodeRemoveParameters {
 
     /**
      * Set the resizeTimeout property: The timeout for removal of Compute Nodes to the Pool. The default value is 15
-     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an
-     * error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns
+     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchNodeRemoveParameters object itself.

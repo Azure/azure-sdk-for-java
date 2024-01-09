@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The file system to mount on each node. */
+/**
+ * The file system to mount on each node.
+ */
 @Fluent
 public final class MountConfiguration {
 
@@ -40,9 +42,12 @@ public final class MountConfiguration {
     @JsonProperty(value = "azureFileShareConfiguration")
     private AzureFileShareConfiguration azureFileShareConfiguration;
 
-    /** Creates an instance of MountConfiguration class. */
+    /**
+     * Creates an instance of MountConfiguration class.
+     */
     @Generated
-    public MountConfiguration() {}
+    public MountConfiguration() {
+    }
 
     /**
      * Get the azureBlobFileSystemConfiguration property: The Azure Storage Container to mount using blob FUSE on each
@@ -63,8 +68,8 @@ public final class MountConfiguration {
      * @return the MountConfiguration object itself.
      */
     @Generated
-    public MountConfiguration setAzureBlobFileSystemConfiguration(
-            AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration) {
+    public MountConfiguration
+        setAzureBlobFileSystemConfiguration(AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration) {
         this.azureBlobFileSystemConfiguration = azureBlobFileSystemConfiguration;
         return this;
     }

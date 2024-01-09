@@ -8,20 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DisableBatchJobOption enums. */
+/**
+ * DisableBatchJobOption enums.
+ */
 public final class DisableBatchJobOption extends ExpandableStringEnum<DisableBatchJobOption> {
 
-    /** Terminate running Tasks and requeue them. The Tasks will run again when the Job is enabled. */
-    @Generated public static final DisableBatchJobOption REQUEUE = fromString("requeue");
+    /**
+     * Terminate running Tasks and requeue them. The Tasks will run again when the Job is enabled.
+     */
+    @Generated
+    public static final DisableBatchJobOption REQUEUE = fromString("requeue");
 
     /**
      * Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were terminated, and
      * will not run again.
      */
-    @Generated public static final DisableBatchJobOption TERMINATE = fromString("terminate");
+    @Generated
+    public static final DisableBatchJobOption TERMINATE = fromString("terminate");
 
-    /** Allow currently running Tasks to complete. */
-    @Generated public static final DisableBatchJobOption WAIT = fromString("wait");
+    /**
+     * Allow currently running Tasks to complete.
+     */
+    @Generated
+    public static final DisableBatchJobOption WAIT = fromString("wait");
 
     /**
      * Creates a new instance of DisableBatchJobOption value.
@@ -30,7 +39,8 @@ public final class DisableBatchJobOption extends ExpandableStringEnum<DisableBat
      */
     @Generated
     @Deprecated
-    public DisableBatchJobOption() {}
+    public DisableBatchJobOption() {
+    }
 
     /**
      * Creates or finds a DisableBatchJobOption from its string representation.

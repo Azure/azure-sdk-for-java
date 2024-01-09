@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration for container-enabled Pools. */
+/**
+ * The configuration for container-enabled Pools.
+ */
 @Fluent
 public final class ContainerConfiguration {
 

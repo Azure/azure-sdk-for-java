@@ -9,7 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A Certificate that can be installed on Compute Nodes and can be used to authenticate operations on the machine. */
+/**
+ * A Certificate that can be installed on Compute Nodes and can be used to
+ * authenticate operations on the machine.
+ */
 @Fluent
 public final class BatchCertificate {
 
@@ -110,10 +113,9 @@ public final class BatchCertificate {
      */
     @Generated
     @JsonCreator
-    public BatchCertificate(
-            @JsonProperty(value = "thumbprint") String thumbprint,
-            @JsonProperty(value = "thumbprintAlgorithm") String thumbprintAlgorithm,
-            @JsonProperty(value = "data") String data) {
+    public BatchCertificate(@JsonProperty(value = "thumbprint") String thumbprint,
+        @JsonProperty(value = "thumbprintAlgorithm") String thumbprintAlgorithm,
+        @JsonProperty(value = "data") String data) {
         this.thumbprint = thumbprint;
         this.thumbprintAlgorithm = thumbprintAlgorithm;
         this.data = data;

@@ -31,6 +31,6 @@ public class SyncTaskSubmitter implements TaskSubmitter {
      */
     @Override
     public BatchTaskAddCollectionResult submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception {
-        return client.createTaskCollectionInternal(jobId, taskCollection);
+        return client.createTaskCollection(jobId, taskCollection);
     }
 }

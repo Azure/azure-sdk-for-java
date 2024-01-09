@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the most recent Job to run under the Job Schedule. */
+/**
+ * Information about the most recent Job to run under the Job Schedule.
+ */
 @Immutable
 public final class RecentBatchJob {
 
@@ -25,9 +27,12 @@ public final class RecentBatchJob {
     @JsonProperty(value = "url")
     private String url;
 
-    /** Creates an instance of RecentBatchJob class. */
+    /**
+     * Creates an instance of RecentBatchJob class.
+     */
     @Generated
-    private RecentBatchJob() {}
+    private RecentBatchJob() {
+    }
 
     /**
      * Get the id property: The ID of the Job.

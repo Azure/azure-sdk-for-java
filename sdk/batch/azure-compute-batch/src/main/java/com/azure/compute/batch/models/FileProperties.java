@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a file on a Compute Node. */
+/**
+ * The properties of a file on a Compute Node.
+ */
 @Immutable
 public final class FileProperties {
 
@@ -56,9 +58,8 @@ public final class FileProperties {
      */
     @Generated
     @JsonCreator
-    private FileProperties(
-            @JsonProperty(value = "lastModified") OffsetDateTime lastModified,
-            @JsonProperty(value = "contentLength") int contentLength) {
+    private FileProperties(@JsonProperty(value = "lastModified") OffsetDateTime lastModified,
+        @JsonProperty(value = "contentLength") int contentLength) {
         this.lastModified = lastModified;
         this.contentLength = contentLength;
     }

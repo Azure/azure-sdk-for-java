@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * The Batch Compute Node agent is a program that runs on each Compute Node in the Pool and provides Batch capability on
- * the Compute Node.
+ * The Batch Compute Node agent is a program that runs on each Compute Node in the
+ * Pool and provides Batch capability on the Compute Node.
  */
 @Immutable
 public final class BatchNodeAgentInfo {
@@ -41,9 +41,8 @@ public final class BatchNodeAgentInfo {
      */
     @Generated
     @JsonCreator
-    private BatchNodeAgentInfo(
-            @JsonProperty(value = "version") String version,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
+    private BatchNodeAgentInfo(@JsonProperty(value = "version") String version,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
         this.version = version;
         this.lastUpdateTime = lastUpdateTime;
     }

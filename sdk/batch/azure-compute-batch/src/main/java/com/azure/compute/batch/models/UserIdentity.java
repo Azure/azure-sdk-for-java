@@ -30,9 +30,12 @@ public final class UserIdentity {
     @JsonProperty(value = "autoUser")
     private AutoUserSpecification autoUser;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     @Generated
-    public UserIdentity() {}
+    public UserIdentity() {
+    }
 
     /**
      * Get the username property: The name of the user identity under which the Task is run. The userName and autoUser

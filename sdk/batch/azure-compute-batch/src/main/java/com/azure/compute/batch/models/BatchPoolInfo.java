@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies how a Job should be assigned to a Pool. */
+/**
+ * Specifies how a Job should be assigned to a Pool.
+ */
 @Fluent
 public final class BatchPoolInfo {
 
@@ -34,16 +36,19 @@ public final class BatchPoolInfo {
     @JsonProperty(value = "autoPoolSpecification")
     private BatchAutoPoolSpecification autoPoolSpecification;
 
-    /** Creates an instance of BatchPoolInfo class. */
+    /**
+     * Creates an instance of BatchPoolInfo class.
+     */
     @Generated
-    public BatchPoolInfo() {}
+    public BatchPoolInfo() {
+    }
 
     /**
-     * Get the poolId property: The ID of an existing Pool. All the Tasks of the Job will run on the specified Pool. You
-     * must ensure that the Pool referenced by this property exists. If the Pool does not exist at the time the Batch
-     * service tries to schedule a Job, no Tasks for the Job will run until you create a Pool with that id. Note that
-     * the Batch service will not reject the Job request; it will simply not run Tasks until the Pool exists. You must
-     * specify either the Pool ID or the auto Pool specification, but not both.
+     * Get the poolId property: The ID of an existing Pool. All the Tasks of the Job will run on the specified Pool.
+     * You must ensure that the Pool referenced by this property exists. If the Pool does not exist at the time the
+     * Batch service tries to schedule a Job, no Tasks for the Job will run until you create a Pool with that id. Note
+     * that the Batch service will not reject the Job request; it will simply not run Tasks until the Pool exists. You
+     * must specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @return the poolId value.
      */
@@ -53,11 +58,11 @@ public final class BatchPoolInfo {
     }
 
     /**
-     * Set the poolId property: The ID of an existing Pool. All the Tasks of the Job will run on the specified Pool. You
-     * must ensure that the Pool referenced by this property exists. If the Pool does not exist at the time the Batch
-     * service tries to schedule a Job, no Tasks for the Job will run until you create a Pool with that id. Note that
-     * the Batch service will not reject the Job request; it will simply not run Tasks until the Pool exists. You must
-     * specify either the Pool ID or the auto Pool specification, but not both.
+     * Set the poolId property: The ID of an existing Pool. All the Tasks of the Job will run on the specified Pool.
+     * You must ensure that the Pool referenced by this property exists. If the Pool does not exist at the time the
+     * Batch service tries to schedule a Job, no Tasks for the Job will run until you create a Pool with that id. Note
+     * that the Batch service will not reject the Job request; it will simply not run Tasks until the Pool exists. You
+     * must specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @param poolId the poolId value to set.
      * @return the BatchPoolInfo object itself.
@@ -73,8 +78,8 @@ public final class BatchPoolInfo {
      * create this auto Pool when the Job is submitted. If auto Pool creation fails, the Batch service moves the Job to
      * a completed state, and the Pool creation error is set in the Job's scheduling error property. The Batch service
      * manages the lifetime (both creation and, unless keepAlive is specified, deletion) of the auto Pool. Any user
-     * actions that affect the lifetime of the auto Pool while the Job is active will result in unexpected behavior. You
-     * must specify either the Pool ID or the auto Pool specification, but not both.
+     * actions that affect the lifetime of the auto Pool while the Job is active will result in unexpected behavior.
+     * You must specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @return the autoPoolSpecification value.
      */
@@ -88,8 +93,8 @@ public final class BatchPoolInfo {
      * create this auto Pool when the Job is submitted. If auto Pool creation fails, the Batch service moves the Job to
      * a completed state, and the Pool creation error is set in the Job's scheduling error property. The Batch service
      * manages the lifetime (both creation and, unless keepAlive is specified, deletion) of the auto Pool. Any user
-     * actions that affect the lifetime of the auto Pool while the Job is active will result in unexpected behavior. You
-     * must specify either the Pool ID or the auto Pool specification, but not both.
+     * actions that affect the lifetime of the auto Pool while the Job is active will result in unexpected behavior.
+     * You must specify either the Pool ID or the auto Pool specification, but not both.
      *
      * @param autoPoolSpecification the autoPoolSpecification value to set.
      * @return the BatchPoolInfo object itself.

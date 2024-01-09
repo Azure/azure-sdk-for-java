@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Task and TaskSlot counts for a Job. */
+/**
+ * The Task and TaskSlot counts for a Job.
+ */
 @Immutable
 public final class BatchTaskCountsResult {
 
@@ -34,9 +36,8 @@ public final class BatchTaskCountsResult {
      */
     @Generated
     @JsonCreator
-    private BatchTaskCountsResult(
-            @JsonProperty(value = "taskCounts") BatchTaskCounts taskCounts,
-            @JsonProperty(value = "taskSlotCounts") BatchTaskSlotCounts taskSlotCounts) {
+    private BatchTaskCountsResult(@JsonProperty(value = "taskCounts") BatchTaskCounts taskCounts,
+        @JsonProperty(value = "taskSlotCounts") BatchTaskSlotCounts taskSlotCounts) {
         this.taskCounts = taskCounts;
         this.taskSlotCounts = taskSlotCounts;
     }

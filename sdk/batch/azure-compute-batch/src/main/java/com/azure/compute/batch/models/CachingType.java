@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** CachingType enums. */
+/**
+ * CachingType enums.
+ */
 public final class CachingType extends ExpandableStringEnum<CachingType> {
 
-    /** The caching mode for the disk is not enabled. */
-    @Generated public static final CachingType NONE = fromString("none");
+    /**
+     * The caching mode for the disk is not enabled.
+     */
+    @Generated
+    public static final CachingType NONE = fromString("none");
 
-    /** The caching mode for the disk is read only. */
-    @Generated public static final CachingType READ_ONLY = fromString("readonly");
+    /**
+     * The caching mode for the disk is read only.
+     */
+    @Generated
+    public static final CachingType READ_ONLY = fromString("readonly");
 
-    /** The caching mode for the disk is read and write. */
-    @Generated public static final CachingType READ_WRITE = fromString("readwrite");
+    /**
+     * The caching mode for the disk is read and write.
+     */
+    @Generated
+    public static final CachingType READ_WRITE = fromString("readwrite");
 
     /**
      * Creates a new instance of CachingType value.
@@ -27,7 +38,8 @@ public final class CachingType extends ExpandableStringEnum<CachingType> {
      */
     @Generated
     @Deprecated
-    public CachingType() {}
+    public CachingType() {
+    }
 
     /**
      * Creates or finds a CachingType from its string representation.

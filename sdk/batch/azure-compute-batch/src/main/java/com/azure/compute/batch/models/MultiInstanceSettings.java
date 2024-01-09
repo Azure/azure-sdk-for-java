@@ -10,9 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if any of the subtasks fail (for
- * example due to exiting with a non-zero exit code) the entire multi-instance Task fails. The multi-instance Task is
- * then terminated and retried, up to its retry limit.
+ * Multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case,
+ * if any of the subtasks fail (for example due to exiting with a non-zero exit
+ * code) the entire multi-instance Task fails. The multi-instance Task is then
+ * terminated and retried, up to its retry limit.
  */
 @Fluent
 public final class MultiInstanceSettings {
@@ -38,8 +39,8 @@ public final class MultiInstanceSettings {
      * difference between common resource files and Task resource files is that common resource files are downloaded
      * for all subtasks including the primary, whereas Task resource files are downloaded only for the primary. Also
      * note that these resource files are not downloaded to the Task working directory, but instead are downloaded to
-     * the Task root directory (one directory above the working directory).  There is a maximum size for the list of
-     * resource files.  When the max size is exceeded, the request will fail and the response error code will be
+     * the Task root directory (one directory above the working directory). There is a maximum size for the list of
+     * resource files. When the max size is exceeded, the request will fail and the response error code will be
      * RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be
      * achieved using .zip files, Application Packages, or Docker Containers.
      */
@@ -84,8 +85,8 @@ public final class MultiInstanceSettings {
 
     /**
      * Get the coordinationCommandLine property: The command line to run on all the Compute Nodes to enable them to
-     * coordinate when the primary runs the main Task command. A typical coordination command line launches a background
-     * service and verifies that the service is ready to process inter-node messages.
+     * coordinate when the primary runs the main Task command. A typical coordination command line launches a
+     * background service and verifies that the service is ready to process inter-node messages.
      *
      * @return the coordinationCommandLine value.
      */
@@ -99,10 +100,10 @@ public final class MultiInstanceSettings {
      * coordination command line. The difference between common resource files and Task resource files is that common
      * resource files are downloaded for all subtasks including the primary, whereas Task resource files are downloaded
      * only for the primary. Also note that these resource files are not downloaded to the Task working directory, but
-     * instead are downloaded to the Task root directory (one directory above the working directory). There is a maximum
-     * size for the list of resource files. When the max size is exceeded, the request will fail and the response error
-     * code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This
-     * can be achieved using .zip files, Application Packages, or Docker Containers.
+     * instead are downloaded to the Task root directory (one directory above the working directory). There is a
+     * maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
+     * response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
+     * reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      *
      * @return the commonResourceFiles value.
      */
@@ -116,10 +117,10 @@ public final class MultiInstanceSettings {
      * coordination command line. The difference between common resource files and Task resource files is that common
      * resource files are downloaded for all subtasks including the primary, whereas Task resource files are downloaded
      * only for the primary. Also note that these resource files are not downloaded to the Task working directory, but
-     * instead are downloaded to the Task root directory (one directory above the working directory). There is a maximum
-     * size for the list of resource files. When the max size is exceeded, the request will fail and the response error
-     * code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This
-     * can be achieved using .zip files, Application Packages, or Docker Containers.
+     * instead are downloaded to the Task root directory (one directory above the working directory). There is a
+     * maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
+     * response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
+     * reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      *
      * @param commonResourceFiles the commonResourceFiles value to set.
      * @return the MultiInstanceSettings object itself.

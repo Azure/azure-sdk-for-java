@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The execution constraints for a Job. */
+/**
+ * The execution constraints for a Job.
+ */
 @Fluent
 public final class BatchJobConstraints {
 
@@ -34,9 +36,12 @@ public final class BatchJobConstraints {
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
-    /** Creates an instance of BatchJobConstraints class. */
+    /**
+     * Creates an instance of BatchJobConstraints class.
+     */
     @Generated
-    public BatchJobConstraints() {}
+    public BatchJobConstraints() {
+    }
 
     /**
      * Get the maxWallClockTime property: The maximum elapsed time that the Job may run, measured from the time the Job
@@ -68,11 +73,11 @@ public final class BatchJobConstraints {
 
     /**
      * Get the maxTaskRetryCount property: The maximum number of times each Task may be retried. The Batch service
-     * retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries. The
-     * Batch service will try each Task once, and may then retry up to this limit. For example, if the maximum retry
-     * count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
-     * the Batch service does not retry Tasks. If the maximum retry count is -1, the Batch service retries Tasks without
-     * limit. The default value is 0 (no retries).
+     * retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries.
+     * The Batch service will try each Task once, and may then retry up to this limit. For example, if the maximum
+     * retry count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). If the maximum retry count
+     * is 0, the Batch service does not retry Tasks. If the maximum retry count is -1, the Batch service retries Tasks
+     * without limit. The default value is 0 (no retries).
      *
      * @return the maxTaskRetryCount value.
      */
@@ -83,11 +88,11 @@ public final class BatchJobConstraints {
 
     /**
      * Set the maxTaskRetryCount property: The maximum number of times each Task may be retried. The Batch service
-     * retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries. The
-     * Batch service will try each Task once, and may then retry up to this limit. For example, if the maximum retry
-     * count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0,
-     * the Batch service does not retry Tasks. If the maximum retry count is -1, the Batch service retries Tasks without
-     * limit. The default value is 0 (no retries).
+     * retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries.
+     * The Batch service will try each Task once, and may then retry up to this limit. For example, if the maximum
+     * retry count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). If the maximum retry count
+     * is 0, the Batch service does not retry Tasks. If the maximum retry count is -1, the Batch service retries Tasks
+     * without limit. The default value is 0 (no retries).
      *
      * @param maxTaskRetryCount the maxTaskRetryCount value to set.
      * @return the BatchJobConstraints object itself.

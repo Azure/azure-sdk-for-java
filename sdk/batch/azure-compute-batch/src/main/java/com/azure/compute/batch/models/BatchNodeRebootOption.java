@@ -8,32 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchNodeRebootOption enums. */
+/**
+ * BatchNodeRebootOption enums.
+ */
 public final class BatchNodeRebootOption extends ExpandableStringEnum<BatchNodeRebootOption> {
 
     /**
      * Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute Node is
      * available. Restart the Compute Node as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeRebootOption REQUEUE = fromString("requeue");
+    @Generated
+    public static final BatchNodeRebootOption REQUEUE = fromString("requeue");
 
     /**
      * Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were terminated, and
      * will not run again. Restart the Compute Node as soon as Tasks have been terminated.
      */
-    @Generated public static final BatchNodeRebootOption TERMINATE = fromString("terminate");
+    @Generated
+    public static final BatchNodeRebootOption TERMINATE = fromString("terminate");
 
     /**
      * Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Restart the Compute Node when all
      * Tasks have completed.
      */
-    @Generated public static final BatchNodeRebootOption TASK_COMPLETION = fromString("taskcompletion");
+    @Generated
+    public static final BatchNodeRebootOption TASK_COMPLETION = fromString("taskcompletion");
 
     /**
      * Allow currently running Tasks to complete, then wait for all Task data retention periods to expire. Schedule no
      * new Tasks while waiting. Restart the Compute Node when all Task retention periods have expired.
      */
-    @Generated public static final BatchNodeRebootOption RETAINED_DATA = fromString("retaineddata");
+    @Generated
+    public static final BatchNodeRebootOption RETAINED_DATA = fromString("retaineddata");
 
     /**
      * Creates a new instance of BatchNodeRebootOption value.
@@ -42,7 +48,8 @@ public final class BatchNodeRebootOption extends ExpandableStringEnum<BatchNodeR
      */
     @Generated
     @Deprecated
-    public BatchNodeRebootOption() {}
+    public BatchNodeRebootOption() {
+    }
 
     /**
      * Creates or finds a BatchNodeRebootOption from its string representation.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The vm extension instance view. */
+/**
+ * The vm extension instance view.
+ */
 @Immutable
 public final class VMExtensionInstanceView {
 
@@ -33,9 +35,12 @@ public final class VMExtensionInstanceView {
     @JsonProperty(value = "subStatuses")
     private List<InstanceViewStatus> subStatuses;
 
-    /** Creates an instance of VMExtensionInstanceView class. */
+    /**
+     * Creates an instance of VMExtensionInstanceView class.
+     */
     @Generated
-    private VMExtensionInstanceView() {}
+    private VMExtensionInstanceView() {
+    }
 
     /**
      * Get the name property: The name of the vm extension instance view.

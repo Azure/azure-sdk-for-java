@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TaskSlot counts for a Job. */
+/**
+ * The TaskSlot counts for a Job.
+ */
 @Immutable
 public final class BatchTaskSlotCounts {
 
@@ -58,12 +60,9 @@ public final class BatchTaskSlotCounts {
      */
     @Generated
     @JsonCreator
-    private BatchTaskSlotCounts(
-            @JsonProperty(value = "active") int active,
-            @JsonProperty(value = "running") int running,
-            @JsonProperty(value = "completed") int completed,
-            @JsonProperty(value = "succeeded") int succeeded,
-            @JsonProperty(value = "failed") int failed) {
+    private BatchTaskSlotCounts(@JsonProperty(value = "active") int active,
+        @JsonProperty(value = "running") int running, @JsonProperty(value = "completed") int completed,
+        @JsonProperty(value = "succeeded") int succeeded, @JsonProperty(value = "failed") int failed) {
         this.active = active;
         this.running = running;
         this.completed = completed;

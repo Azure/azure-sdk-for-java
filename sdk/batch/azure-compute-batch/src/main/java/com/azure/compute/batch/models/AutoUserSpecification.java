@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the options for the auto user that runs an Azure Batch Task. */
+/**
+ * Specifies the options for the auto user that runs an Azure Batch Task.
+ */
 @Fluent
 public final class AutoUserSpecification {
 
@@ -28,9 +30,12 @@ public final class AutoUserSpecification {
     @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
 
-    /** Creates an instance of AutoUserSpecification class. */
+    /**
+     * Creates an instance of AutoUserSpecification class.
+     */
     @Generated
-    public AutoUserSpecification() {}
+    public AutoUserSpecification() {
+    }
 
     /**
      * Get the scope property: The scope for the auto user. The default value is pool. If the pool is running Windows a

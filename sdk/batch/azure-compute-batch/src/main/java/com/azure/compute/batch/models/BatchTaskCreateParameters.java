@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for creating an Azure Batch Task. */
+/**
+ * Parameters for creating an Azure Batch Task.
+ */
 @Fluent
 public final class BatchTaskCreateParameters {
 
@@ -66,7 +68,7 @@ public final class BatchTaskCreateParameters {
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line. For
      * multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task
-     * is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request
+     * is executed. There is a maximum size for the list of resource files. When the max size is exceeded, the request
      * will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of
      * ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker
      * Containers.
@@ -172,8 +174,8 @@ public final class BatchTaskCreateParameters {
      */
     @Generated
     @JsonCreator
-    public BatchTaskCreateParameters(
-            @JsonProperty(value = "id") String id, @JsonProperty(value = "commandLine") String commandLine) {
+    public BatchTaskCreateParameters(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "commandLine") String commandLine) {
         this.id = id;
         this.commandLine = commandLine;
     }
@@ -242,9 +244,9 @@ public final class BatchTaskCreateParameters {
      * executed as the primary Task, after the primary Task and all subtasks have finished executing the coordination
      * command line. The command line does not run under a shell, and therefore cannot take advantage of shell features
      * such as environment variable expansion. If you want to take advantage of such features, you should invoke the
-     * shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If
-     * the command line refers to file paths, it should use a relative path (relative to the Task working directory), or
-     * use the Batch provided environment variable
+     * shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
+     * If the command line refers to file paths, it should use a relative path (relative to the Task working
+     * directory), or use the Batch provided environment variable
      * (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      *
      * @return the commandLine value.
@@ -291,8 +293,8 @@ public final class BatchTaskCreateParameters {
     /**
      * Get the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
      * running the command line. For multi-instance Tasks, the resource files will only be downloaded to the Compute
-     * Node on which the primary Task is executed. There is a maximum size for the list of resource files. When the max
-     * size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
+     * Node on which the primary Task is executed. There is a maximum size for the list of resource files. When the
+     * max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
      * occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files,
      * Application Packages, or Docker Containers.
      *
@@ -306,8 +308,8 @@ public final class BatchTaskCreateParameters {
     /**
      * Set the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
      * running the command line. For multi-instance Tasks, the resource files will only be downloaded to the Compute
-     * Node on which the primary Task is executed. There is a maximum size for the list of resource files. When the max
-     * size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
+     * Node on which the primary Task is executed. There is a maximum size for the list of resource files. When the
+     * max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this
      * occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files,
      * Application Packages, or Docker Containers.
      *
@@ -419,9 +421,9 @@ public final class BatchTaskCreateParameters {
     }
 
     /**
-     * Get the requiredSlots property: The number of scheduling slots that the Task required to run. The default is 1. A
-     * Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For
-     * multi-instance Tasks, this must be 1.
+     * Get the requiredSlots property: The number of scheduling slots that the Task required to run. The default is 1.
+     * A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available.
+     * For multi-instance Tasks, this must be 1.
      *
      * @return the requiredSlots value.
      */
@@ -431,9 +433,9 @@ public final class BatchTaskCreateParameters {
     }
 
     /**
-     * Set the requiredSlots property: The number of scheduling slots that the Task required to run. The default is 1. A
-     * Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For
-     * multi-instance Tasks, this must be 1.
+     * Set the requiredSlots property: The number of scheduling slots that the Task required to run. The default is 1.
+     * A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available.
+     * For multi-instance Tasks, this must be 1.
      *
      * @param requiredSlots the requiredSlots value to set.
      * @return the BatchTaskCreateParameters object itself.
@@ -525,7 +527,8 @@ public final class BatchTaskCreateParameters {
      * Compute Node before running the command line. Application packages are downloaded and deployed to a shared
      * directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up
      * to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package
-     * cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
+     * cannot be installed, for example because the package has been deleted or because download failed, the Task
+     * fails.
      *
      * @return the applicationPackageReferences value.
      */
@@ -539,14 +542,15 @@ public final class BatchTaskCreateParameters {
      * Compute Node before running the command line. Application packages are downloaded and deployed to a shared
      * directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up
      * to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package
-     * cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
+     * cannot be installed, for example because the package has been deleted or because download failed, the Task
+     * fails.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchTaskCreateParameters object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setApplicationPackageReferences(
-            List<BatchApplicationPackageReference> applicationPackageReferences) {
+    public BatchTaskCreateParameters
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -555,9 +559,10 @@ public final class BatchTaskCreateParameters {
      * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
      * perform Batch service operations. If this property is set, the Batch service provides the Task with an
      * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
+     * that the Task can carry out using the token depend on the settings. For example, a Task can request Job
+     * permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the
+     * Job.
      *
      * @return the authenticationTokenSettings value.
      */
@@ -570,16 +575,17 @@ public final class BatchTaskCreateParameters {
      * Set the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
      * perform Batch service operations. If this property is set, the Batch service provides the Task with an
      * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
+     * that the Task can carry out using the token depend on the settings. For example, a Task can request Job
+     * permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the
+     * Job.
      *
      * @param authenticationTokenSettings the authenticationTokenSettings value to set.
      * @return the BatchTaskCreateParameters object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setAuthenticationTokenSettings(
-            AuthenticationTokenSettings authenticationTokenSettings) {
+    public BatchTaskCreateParameters
+        setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
         this.authenticationTokenSettings = authenticationTokenSettings;
         return this;
     }

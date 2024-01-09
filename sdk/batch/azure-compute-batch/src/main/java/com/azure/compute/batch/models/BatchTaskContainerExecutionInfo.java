@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about the container which a Task is executing. */
+/**
+ * Contains information about the container which a Task is executing.
+ */
 @Immutable
 public final class BatchTaskContainerExecutionInfo {
 
@@ -34,9 +36,12 @@ public final class BatchTaskContainerExecutionInfo {
     @JsonProperty(value = "error")
     private String error;
 
-    /** Creates an instance of BatchTaskContainerExecutionInfo class. */
+    /**
+     * Creates an instance of BatchTaskContainerExecutionInfo class.
+     */
     @Generated
-    private BatchTaskContainerExecutionInfo() {}
+    private BatchTaskContainerExecutionInfo() {
+    }
 
     /**
      * Get the containerId property: The ID of the container.

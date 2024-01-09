@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Parameters for changing the size of an Azure Batch Pool. */
+/**
+ * Parameters for changing the size of an Azure Batch Pool.
+ */
 @Fluent
 public final class BatchPoolResizeParameters {
 
@@ -43,9 +45,12 @@ public final class BatchPoolResizeParameters {
     @JsonProperty(value = "nodeDeallocationOption")
     private BatchNodeDeallocationOption nodeDeallocationOption;
 
-    /** Creates an instance of BatchPoolResizeParameters class. */
+    /**
+     * Creates an instance of BatchPoolResizeParameters class.
+     */
     @Generated
-    public BatchPoolResizeParameters() {}
+    public BatchPoolResizeParameters() {
+    }
 
     /**
      * Get the targetDedicatedNodes property: The desired number of dedicated Compute Nodes in the Pool.
@@ -120,8 +125,8 @@ public final class BatchPoolResizeParameters {
     }
 
     /**
-     * Get the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if the
-     * Pool size is decreasing. The default value is requeue.
+     * Get the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if
+     * the Pool size is decreasing. The default value is requeue.
      *
      * @return the nodeDeallocationOption value.
      */
@@ -131,8 +136,8 @@ public final class BatchPoolResizeParameters {
     }
 
     /**
-     * Set the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if the
-     * Pool size is decreasing. The default value is requeue.
+     * Set the nodeDeallocationOption property: Determines what to do with a Compute Node and its running task(s) if
+     * the Pool size is decreasing. The default value is requeue.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the BatchPoolResizeParameters object itself.

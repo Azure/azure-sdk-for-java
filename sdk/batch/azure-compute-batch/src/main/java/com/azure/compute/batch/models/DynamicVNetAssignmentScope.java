@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DynamicVNetAssignmentScope enums. */
+/**
+ * DynamicVNetAssignmentScope enums.
+ */
 public final class DynamicVNetAssignmentScope extends ExpandableStringEnum<DynamicVNetAssignmentScope> {
 
-    /** No dynamic VNet assignment is enabled. */
-    @Generated public static final DynamicVNetAssignmentScope NONE = fromString("none");
+    /**
+     * No dynamic VNet assignment is enabled.
+     */
+    @Generated
+    public static final DynamicVNetAssignmentScope NONE = fromString("none");
 
-    /** Dynamic VNet assignment is done per-job. */
-    @Generated public static final DynamicVNetAssignmentScope JOB = fromString("job");
+    /**
+     * Dynamic VNet assignment is done per-job.
+     */
+    @Generated
+    public static final DynamicVNetAssignmentScope JOB = fromString("job");
 
     /**
      * Creates a new instance of DynamicVNetAssignmentScope value.
@@ -24,7 +32,8 @@ public final class DynamicVNetAssignmentScope extends ExpandableStringEnum<Dynam
      */
     @Generated
     @Deprecated
-    public DynamicVNetAssignmentScope() {}
+    public DynamicVNetAssignmentScope() {
+    }
 
     /**
      * Creates or finds a DynamicVNetAssignmentScope from its string representation.

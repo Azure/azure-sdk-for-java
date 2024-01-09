@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The number of Compute Nodes in each Compute Node state. */
+/**
+ * The number of Compute Nodes in each Compute Node state.
+ */
 @Immutable
 public final class BatchNodeCounts {
 
@@ -130,21 +132,15 @@ public final class BatchNodeCounts {
      */
     @Generated
     @JsonCreator
-    private BatchNodeCounts(
-            @JsonProperty(value = "creating") int creating,
-            @JsonProperty(value = "idle") int idle,
-            @JsonProperty(value = "offline") int offline,
-            @JsonProperty(value = "preempted") int preempted,
-            @JsonProperty(value = "rebooting") int rebooting,
-            @JsonProperty(value = "reimaging") int reimaging,
-            @JsonProperty(value = "running") int running,
-            @JsonProperty(value = "starting") int starting,
-            @JsonProperty(value = "startTaskFailed") int startTaskFailed,
-            @JsonProperty(value = "leavingPool") int leavingPool,
-            @JsonProperty(value = "unknown") int unknown,
-            @JsonProperty(value = "unusable") int unusable,
-            @JsonProperty(value = "waitingForStartTask") int waitingForStartTask,
-            @JsonProperty(value = "total") int total) {
+    private BatchNodeCounts(@JsonProperty(value = "creating") int creating, @JsonProperty(value = "idle") int idle,
+        @JsonProperty(value = "offline") int offline, @JsonProperty(value = "preempted") int preempted,
+        @JsonProperty(value = "rebooting") int rebooting, @JsonProperty(value = "reimaging") int reimaging,
+        @JsonProperty(value = "running") int running, @JsonProperty(value = "starting") int starting,
+        @JsonProperty(value = "startTaskFailed") int startTaskFailed,
+        @JsonProperty(value = "leavingPool") int leavingPool, @JsonProperty(value = "unknown") int unknown,
+        @JsonProperty(value = "unusable") int unusable,
+        @JsonProperty(value = "waitingForStartTask") int waitingForStartTask,
+        @JsonProperty(value = "total") int total) {
         this.creating = creating;
         this.idle = idle;
         this.offline = offline;

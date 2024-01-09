@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SchedulingState enums. */
+/**
+ * SchedulingState enums.
+ */
 public final class SchedulingState extends ExpandableStringEnum<SchedulingState> {
 
-    /** Tasks can be scheduled on the Compute Node. */
-    @Generated public static final SchedulingState ENABLED = fromString("enabled");
+    /**
+     * Tasks can be scheduled on the Compute Node.
+     */
+    @Generated
+    public static final SchedulingState ENABLED = fromString("enabled");
 
     /**
      * No new Tasks will be scheduled on the Compute Node. Tasks already running on the Compute Node may still run to
      * completion. All Compute Nodes start with scheduling enabled.
      */
-    @Generated public static final SchedulingState DISABLED = fromString("disabled");
+    @Generated
+    public static final SchedulingState DISABLED = fromString("disabled");
 
     /**
      * Creates a new instance of SchedulingState value.
@@ -27,7 +33,8 @@ public final class SchedulingState extends ExpandableStringEnum<SchedulingState>
      */
     @Generated
     @Deprecated
-    public SchedulingState() {}
+    public SchedulingState() {
+    }
 
     /**
      * Creates or finds a SchedulingState from its string representation.

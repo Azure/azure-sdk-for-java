@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchNodePlacementPolicyType enums. */
+/**
+ * BatchNodePlacementPolicyType enums.
+ */
 public final class BatchNodePlacementPolicyType extends ExpandableStringEnum<BatchNodePlacementPolicyType> {
 
-    /** All nodes in the pool will be allocated in the same region. */
-    @Generated public static final BatchNodePlacementPolicyType REGIONAL = fromString("regional");
+    /**
+     * All nodes in the pool will be allocated in the same region.
+     */
+    @Generated
+    public static final BatchNodePlacementPolicyType REGIONAL = fromString("regional");
 
-    /** Nodes in the pool will be spread across different availability zones with best effort balancing. */
-    @Generated public static final BatchNodePlacementPolicyType ZONAL = fromString("zonal");
+    /**
+     * Nodes in the pool will be spread across different availability zones with best effort balancing.
+     */
+    @Generated
+    public static final BatchNodePlacementPolicyType ZONAL = fromString("zonal");
 
     /**
      * Creates a new instance of BatchNodePlacementPolicyType value.
@@ -24,7 +32,8 @@ public final class BatchNodePlacementPolicyType extends ExpandableStringEnum<Bat
      */
     @Generated
     @Deprecated
-    public BatchNodePlacementPolicyType() {}
+    public BatchNodePlacementPolicyType() {
+    }
 
     /**
      * Creates or finds a BatchNodePlacementPolicyType from its string representation.

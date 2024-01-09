@@ -8,7 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A range of exit codes and how the Batch service should respond to exit codes within that range. */
+/**
+ * A range of exit codes and how the Batch service should respond to exit codes
+ * within that range.
+ */
 @Immutable
 public final class ExitCodeRangeMapping {
 
@@ -42,10 +45,8 @@ public final class ExitCodeRangeMapping {
      */
     @Generated
     @JsonCreator
-    public ExitCodeRangeMapping(
-            @JsonProperty(value = "start") int start,
-            @JsonProperty(value = "end") int end,
-            @JsonProperty(value = "exitOptions") ExitOptions exitOptions) {
+    public ExitCodeRangeMapping(@JsonProperty(value = "start") int start, @JsonProperty(value = "end") int end,
+        @JsonProperty(value = "exitOptions") ExitOptions exitOptions) {
         this.start = start;
         this.end = end;
         this.exitOptions = exitOptions;

@@ -8,20 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ImageVerificationType enums. */
+/**
+ * ImageVerificationType enums.
+ */
 public final class ImageVerificationType extends ExpandableStringEnum<ImageVerificationType> {
 
     /**
      * The Image is guaranteed to be compatible with the associated Compute Node agent SKU and all Batch features have
      * been confirmed to work as expected.
      */
-    @Generated public static final ImageVerificationType VERIFIED = fromString("verified");
+    @Generated
+    public static final ImageVerificationType VERIFIED = fromString("verified");
 
     /**
      * The associated Compute Node agent SKU should have binary compatibility with the Image, but specific functionality
      * has not been verified.
      */
-    @Generated public static final ImageVerificationType UNVERIFIED = fromString("unverified");
+    @Generated
+    public static final ImageVerificationType UNVERIFIED = fromString("unverified");
 
     /**
      * Creates a new instance of ImageVerificationType value.
@@ -30,7 +34,8 @@ public final class ImageVerificationType extends ExpandableStringEnum<ImageVerif
      */
     @Generated
     @Deprecated
-    public ImageVerificationType() {}
+    public ImageVerificationType() {
+    }
 
     /**
      * Creates or finds a ImageVerificationType from its string representation.

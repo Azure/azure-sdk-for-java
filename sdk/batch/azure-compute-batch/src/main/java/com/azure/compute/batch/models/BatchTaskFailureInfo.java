@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about a Task failure. */
+/**
+ * Information about a Task failure.
+ */
 @Immutable
 public final class BatchTaskFailureInfo {
 

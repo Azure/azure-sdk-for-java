@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for terminating an Azure Batch Job. */
+/**
+ * Parameters for terminating an Azure Batch Job.
+ */
 @Fluent
 public final class BatchJobTerminateParameters {
 
@@ -18,9 +20,12 @@ public final class BatchJobTerminateParameters {
     @JsonProperty(value = "terminateReason")
     private String terminateReason;
 
-    /** Creates an instance of BatchJobTerminateParameters class. */
+    /**
+     * Creates an instance of BatchJobTerminateParameters class.
+     */
     @Generated
-    public BatchJobTerminateParameters() {}
+    public BatchJobTerminateParameters() {
+    }
 
     /**
      * Get the terminateReason property: The text you want to appear as the Job's TerminateReason. The default is

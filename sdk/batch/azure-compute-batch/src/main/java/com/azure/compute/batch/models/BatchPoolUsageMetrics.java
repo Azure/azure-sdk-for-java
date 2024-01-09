@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Usage metrics for a Pool across an aggregation interval. */
+/**
+ * Usage metrics for a Pool across an aggregation interval.
+ */
 @Immutable
 public final class BatchPoolUsageMetrics {
 
@@ -61,12 +63,10 @@ public final class BatchPoolUsageMetrics {
      */
     @Generated
     @JsonCreator
-    private BatchPoolUsageMetrics(
-            @JsonProperty(value = "poolId") String poolId,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "endTime") OffsetDateTime endTime,
-            @JsonProperty(value = "vmSize") String vmSize,
-            @JsonProperty(value = "totalCoreHours") double totalCoreHours) {
+    private BatchPoolUsageMetrics(@JsonProperty(value = "poolId") String poolId,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "endTime") OffsetDateTime endTime, @JsonProperty(value = "vmSize") String vmSize,
+        @JsonProperty(value = "totalCoreHours") double totalCoreHours) {
         this.poolId = poolId;
         this.startTime = startTime;
         this.endTime = endTime;

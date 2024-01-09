@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error response received from the Azure Batch service. */
+/**
+ * An error response received from the Azure Batch service.
+ */
 @Immutable
 public final class BatchError {
 

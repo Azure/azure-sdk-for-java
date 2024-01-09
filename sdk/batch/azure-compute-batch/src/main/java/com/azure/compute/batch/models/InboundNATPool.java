@@ -9,14 +9,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A inbound NAT Pool that can be used to address specific ports on Compute Nodes in a Batch Pool externally. */
+/**
+ * A inbound NAT Pool that can be used to address specific ports on Compute Nodes
+ * in a Batch Pool externally.
+ */
 @Fluent
 public final class InboundNATPool {
 
     /*
      * The name of the endpoint. The name must be unique within a Batch Pool, can contain letters, numbers,
      * underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or
-     * underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP
+     * underscore, and cannot exceed 77 characters. If any invalid values are provided the request fails with HTTP
      * status code 400.
      */
     @Generated
@@ -82,12 +85,11 @@ public final class InboundNATPool {
      */
     @Generated
     @JsonCreator
-    public InboundNATPool(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
-            @JsonProperty(value = "backendPort") int backendPort,
-            @JsonProperty(value = "frontendPortRangeStart") int frontendPortRangeStart,
-            @JsonProperty(value = "frontendPortRangeEnd") int frontendPortRangeEnd) {
+    public InboundNATPool(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "protocol") InboundEndpointProtocol protocol,
+        @JsonProperty(value = "backendPort") int backendPort,
+        @JsonProperty(value = "frontendPortRangeStart") int frontendPortRangeStart,
+        @JsonProperty(value = "frontendPortRangeEnd") int frontendPortRangeEnd) {
         this.name = name;
         this.protocol = protocol;
         this.backendPort = backendPort;
@@ -148,8 +150,8 @@ public final class InboundNATPool {
      * Get the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
      * provide inbound access to the backendPort on individual Compute Nodes. Acceptable values range between 1 and
      * 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a Pool must be
-     * distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are
-     * provided the request fails with HTTP status code 400.
+     * distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values
+     * are provided the request fails with HTTP status code 400.
      *
      * @return the frontendPortRangeEnd value.
      */
@@ -160,8 +162,8 @@ public final class InboundNATPool {
 
     /**
      * Get the networkSecurityGroupRules property: A list of network security group rules that will be applied to the
-     * endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If no
-     * network security group rules are specified, a default rule will be created to allow inbound access to the
+     * endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If
+     * no network security group rules are specified, a default rule will be created to allow inbound access to the
      * specified backendPort. If the maximum number of network security group rules is exceeded the request fails with
      * HTTP status code 400.
      *
@@ -174,8 +176,8 @@ public final class InboundNATPool {
 
     /**
      * Set the networkSecurityGroupRules property: A list of network security group rules that will be applied to the
-     * endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If no
-     * network security group rules are specified, a default rule will be created to allow inbound access to the
+     * endpoint. The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If
+     * no network security group rules are specified, a default rule will be created to allow inbound access to the
      * specified backendPort. If the maximum number of network security group rules is exceeded the request fails with
      * HTTP status code 400.
      *

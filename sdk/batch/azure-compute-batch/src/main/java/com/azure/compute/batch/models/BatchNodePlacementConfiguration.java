@@ -8,8 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * For regional placement, nodes in the pool will be allocated in the same region. For zonal placement, nodes in the
- * pool will be spread across different zones with best effort balancing.
+ * For regional placement, nodes in the pool will be allocated in the same region.
+ * For zonal placement, nodes in the pool will be spread across different zones
+ * with best effort balancing.
  */
 @Fluent
 public final class BatchNodePlacementConfiguration {
@@ -22,9 +23,12 @@ public final class BatchNodePlacementConfiguration {
     @JsonProperty(value = "policy")
     private BatchNodePlacementPolicyType policy;
 
-    /** Creates an instance of BatchNodePlacementConfiguration class. */
+    /**
+     * Creates an instance of BatchNodePlacementConfiguration class.
+     */
     @Generated
-    public BatchNodePlacementConfiguration() {}
+    public BatchNodePlacementConfiguration() {
+    }
 
     /**
      * Get the policy property: Node placement Policy type on Batch Pools. Allocation policy used by Batch Service to

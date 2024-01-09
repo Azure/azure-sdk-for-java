@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error encountered by the Batch service when deleting a Certificate. */
+/**
+ * An error encountered by the Batch service when deleting a Certificate.
+ */
 @Immutable
 public final class DeleteBatchCertificateError {
 
@@ -36,9 +38,12 @@ public final class DeleteBatchCertificateError {
     @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
-    /** Creates an instance of DeleteBatchCertificateError class. */
+    /**
+     * Creates an instance of DeleteBatchCertificateError class.
+     */
     @Generated
-    private DeleteBatchCertificateError() {}
+    private DeleteBatchCertificateError() {
+    }
 
     /**
      * Get the code property: An identifier for the Certificate deletion error. Codes are invariant and are intended to

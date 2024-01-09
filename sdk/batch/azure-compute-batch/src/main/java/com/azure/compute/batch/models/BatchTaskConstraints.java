@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Execution constraints to apply to a Task. */
+/**
+ * Execution constraints to apply to a Task.
+ */
 @Fluent
 public final class BatchTaskConstraints {
 
@@ -44,14 +46,17 @@ public final class BatchTaskConstraints {
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
 
-    /** Creates an instance of BatchTaskConstraints class. */
+    /**
+     * Creates an instance of BatchTaskConstraints class.
+     */
     @Generated
-    public BatchTaskConstraints() {}
+    public BatchTaskConstraints() {
+    }
 
     /**
      * Get the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
-     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
-     * specified, there is no time limit on how long the Task may run.
+     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is
+     * not specified, there is no time limit on how long the Task may run.
      *
      * @return the maxWallClockTime value.
      */
@@ -62,8 +67,8 @@ public final class BatchTaskConstraints {
 
     /**
      * Set the maxWallClockTime property: The maximum elapsed time that the Task may run, measured from the time the
-     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is not
-     * specified, there is no time limit on how long the Task may run.
+     * Task starts. If the Task does not complete within the time limit, the Batch service terminates it. If this is
+     * not specified, there is no time limit on how long the Task may run.
      *
      * @param maxWallClockTime the maxWallClockTime value to set.
      * @return the BatchTaskConstraints object itself.

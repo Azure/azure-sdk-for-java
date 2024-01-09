@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The public IP Address configuration of the networking configuration of a Pool. */
+/**
+ * The public IP Address configuration of the networking configuration of a Pool.
+ */
 @Fluent
 public final class PublicIpAddressConfiguration {
 
@@ -30,9 +32,12 @@ public final class PublicIpAddressConfiguration {
     @JsonProperty(value = "ipAddressIds")
     private List<String> ipAddressIds;
 
-    /** Creates an instance of PublicIpAddressConfiguration class. */
+    /**
+     * Creates an instance of PublicIpAddressConfiguration class.
+     */
     @Generated
-    public PublicIpAddressConfiguration() {}
+    public PublicIpAddressConfiguration() {
+    }
 
     /**
      * Get the ipAddressProvisioningType property: The provisioning type for Public IP Addresses for the Pool. The
@@ -53,8 +58,8 @@ public final class PublicIpAddressConfiguration {
      * @return the PublicIpAddressConfiguration object itself.
      */
     @Generated
-    public PublicIpAddressConfiguration setIpAddressProvisioningType(
-            IpAddressProvisioningType ipAddressProvisioningType) {
+    public PublicIpAddressConfiguration
+        setIpAddressProvisioningType(IpAddressProvisioningType ipAddressProvisioningType) {
         this.ipAddressProvisioningType = ipAddressProvisioningType;
         return this;
     }

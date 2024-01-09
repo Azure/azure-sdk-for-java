@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for creating an Azure Batch Job. */
+/**
+ * Parameters for creating an Azure Batch Job.
+ */
 @Fluent
 public final class BatchJobCreateParameters {
 
@@ -165,8 +167,8 @@ public final class BatchJobCreateParameters {
      */
     @Generated
     @JsonCreator
-    public BatchJobCreateParameters(
-            @JsonProperty(value = "id") String id, @JsonProperty(value = "poolInfo") BatchPoolInfo poolInfo) {
+    public BatchJobCreateParameters(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "poolInfo") BatchPoolInfo poolInfo) {
         this.id = id;
         this.poolInfo = poolInfo;
     }
@@ -335,15 +337,15 @@ public final class BatchJobCreateParameters {
     }
 
     /**
-     * Get the jobManagerTask property: Details of a Job Manager Task to be launched when the Job is started. If the Job
-     * does not specify a Job Manager Task, the user must explicitly add Tasks to the Job. If the Job does specify a Job
-     * Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to schedule
-     * the Job Manager Task before scheduling other Tasks in the Job. The Job Manager Task's typical purpose is to
-     * control and/or monitor Job execution, for example by deciding what additional Tasks to run, determining when the
-     * work is complete, etc. (However, a Job Manager Task is not restricted to these activities - it is a fully-fledged
-     * Task in the system and perform whatever actions are required for the Job.) For example, a Job Manager Task might
-     * download a file specified as a parameter, analyze the contents of that file and submit additional Tasks based on
-     * those contents.
+     * Get the jobManagerTask property: Details of a Job Manager Task to be launched when the Job is started. If the
+     * Job does not specify a Job Manager Task, the user must explicitly add Tasks to the Job. If the Job does specify
+     * a Job Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to
+     * schedule the Job Manager Task before scheduling other Tasks in the Job. The Job Manager Task's typical purpose
+     * is to control and/or monitor Job execution, for example by deciding what additional Tasks to run, determining
+     * when the work is complete, etc. (However, a Job Manager Task is not restricted to these activities - it is a
+     * fully-fledged Task in the system and perform whatever actions are required for the Job.) For example, a Job
+     * Manager Task might download a file specified as a parameter, analyze the contents of that file and submit
+     * additional Tasks based on those contents.
      *
      * @return the jobManagerTask value.
      */
@@ -353,15 +355,15 @@ public final class BatchJobCreateParameters {
     }
 
     /**
-     * Set the jobManagerTask property: Details of a Job Manager Task to be launched when the Job is started. If the Job
-     * does not specify a Job Manager Task, the user must explicitly add Tasks to the Job. If the Job does specify a Job
-     * Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to schedule
-     * the Job Manager Task before scheduling other Tasks in the Job. The Job Manager Task's typical purpose is to
-     * control and/or monitor Job execution, for example by deciding what additional Tasks to run, determining when the
-     * work is complete, etc. (However, a Job Manager Task is not restricted to these activities - it is a fully-fledged
-     * Task in the system and perform whatever actions are required for the Job.) For example, a Job Manager Task might
-     * download a file specified as a parameter, analyze the contents of that file and submit additional Tasks based on
-     * those contents.
+     * Set the jobManagerTask property: Details of a Job Manager Task to be launched when the Job is started. If the
+     * Job does not specify a Job Manager Task, the user must explicitly add Tasks to the Job. If the Job does specify
+     * a Job Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to
+     * schedule the Job Manager Task before scheduling other Tasks in the Job. The Job Manager Task's typical purpose
+     * is to control and/or monitor Job execution, for example by deciding what additional Tasks to run, determining
+     * when the work is complete, etc. (However, a Job Manager Task is not restricted to these activities - it is a
+     * fully-fledged Task in the system and perform whatever actions are required for the Job.) For example, a Job
+     * Manager Task might download a file specified as a parameter, analyze the contents of that file and submit
+     * additional Tasks based on those contents.
      *
      * @param jobManagerTask the jobManagerTask value to set.
      * @return the BatchJobCreateParameters object itself.
@@ -398,10 +400,10 @@ public final class BatchJobCreateParameters {
 
     /**
      * Get the jobReleaseTask property: The Job Release Task. A Job Release Task cannot be specified without also
-     * specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Nodes that have
-     * run the Job Preparation Task. The primary purpose of the Job Release Task is to undo changes to Compute Nodes
-     * made by the Job Preparation Task. Example activities include deleting local files, or shutting down services that
-     * were started as part of Job preparation.
+     * specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Nodes that
+     * have run the Job Preparation Task. The primary purpose of the Job Release Task is to undo changes to Compute
+     * Nodes made by the Job Preparation Task. Example activities include deleting local files, or shutting down
+     * services that were started as part of Job preparation.
      *
      * @return the jobReleaseTask value.
      */
@@ -412,10 +414,10 @@ public final class BatchJobCreateParameters {
 
     /**
      * Set the jobReleaseTask property: The Job Release Task. A Job Release Task cannot be specified without also
-     * specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Nodes that have
-     * run the Job Preparation Task. The primary purpose of the Job Release Task is to undo changes to Compute Nodes
-     * made by the Job Preparation Task. Example activities include deleting local files, or shutting down services that
-     * were started as part of Job preparation.
+     * specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Nodes that
+     * have run the Job Preparation Task. The primary purpose of the Job Release Task is to undo changes to Compute
+     * Nodes made by the Job Preparation Task. Example activities include deleting local files, or shutting down
+     * services that were started as part of Job preparation.
      *
      * @param jobReleaseTask the jobReleaseTask value to set.
      * @return the BatchJobCreateParameters object itself.
@@ -466,9 +468,9 @@ public final class BatchJobCreateParameters {
 
     /**
      * Get the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
-     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
-     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
+     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option
+     * is therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a
+     * Job Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
      * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
      *
      * @return the onAllTasksComplete value.
@@ -480,9 +482,9 @@ public final class BatchJobCreateParameters {
 
     /**
      * Set the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
-     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
-     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
+     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option
+     * is therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a
+     * Job Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
      * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
      *
      * @param onAllTasksComplete the onAllTasksComplete value to set.
@@ -545,8 +547,8 @@ public final class BatchJobCreateParameters {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service does
-     * not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -556,8 +558,8 @@ public final class BatchJobCreateParameters {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service does
-     * not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobCreateParameters object itself.

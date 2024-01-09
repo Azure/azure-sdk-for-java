@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the Compute Node on which a Task ran. */
+/**
+ * Information about the Compute Node on which a Task ran.
+ */
 @Immutable
 public final class BatchNodeInfo {
 
@@ -54,9 +56,12 @@ public final class BatchNodeInfo {
     @JsonProperty(value = "taskRootDirectoryUrl")
     private String taskRootDirectoryUrl;
 
-    /** Creates an instance of BatchNodeInfo class. */
+    /**
+     * Creates an instance of BatchNodeInfo class.
+     */
     @Generated
-    private BatchNodeInfo() {}
+    private BatchNodeInfo() {
+    }
 
     /**
      * Get the affinityId property: An identifier for the Node on which the Task ran, which can be passed when adding a

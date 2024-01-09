@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Information about an Azure Batch subtask. */
+/**
+ * Information about an Azure Batch subtask.
+ */
 @Immutable
 public final class BatchSubtask {
 
@@ -106,9 +108,12 @@ public final class BatchSubtask {
     @JsonProperty(value = "result")
     private BatchTaskExecutionResult result;
 
-    /** Creates an instance of BatchSubtask class. */
+    /**
+     * Creates an instance of BatchSubtask class.
+     */
     @Generated
-    private BatchSubtask() {}
+    private BatchSubtask() {
+    }
 
     /**
      * Get the id property: The ID of the subtask.
@@ -142,8 +147,8 @@ public final class BatchSubtask {
     }
 
     /**
-     * Get the endTime property: The time at which the subtask completed. This property is set only if the subtask is in
-     * the Completed state.
+     * Get the endTime property: The time at which the subtask completed. This property is set only if the subtask is
+     * in the Completed state.
      *
      * @return the endTime value.
      */

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of Azure Batch Tasks to add. */
+/**
+ * A collection of Azure Batch Tasks to add.
+ */
 @Immutable
 public final class BatchTaskCollection {
 

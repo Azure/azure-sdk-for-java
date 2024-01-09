@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to create a user Account on a Linux Compute Node. */
+/**
+ * Properties used to create a user Account on a Linux Compute Node.
+ */
 @Fluent
 public final class LinuxUserConfiguration {
 
@@ -39,9 +41,12 @@ public final class LinuxUserConfiguration {
     @JsonProperty(value = "sshPrivateKey")
     private String sshPrivateKey;
 
-    /** Creates an instance of LinuxUserConfiguration class. */
+    /**
+     * Creates an instance of LinuxUserConfiguration class.
+     */
     @Generated
-    public LinuxUserConfiguration() {}
+    public LinuxUserConfiguration() {
+    }
 
     /**
      * Get the uid property: The user ID of the user Account. The uid and gid properties must be specified together or
@@ -68,8 +73,8 @@ public final class LinuxUserConfiguration {
     }
 
     /**
-     * Get the gid property: The group ID for the user Account. The uid and gid properties must be specified together or
-     * not at all. If not specified the underlying operating system picks the gid.
+     * Get the gid property: The group ID for the user Account. The uid and gid properties must be specified together
+     * or not at all. If not specified the underlying operating system picks the gid.
      *
      * @return the gid value.
      */
@@ -79,8 +84,8 @@ public final class LinuxUserConfiguration {
     }
 
     /**
-     * Set the gid property: The group ID for the user Account. The uid and gid properties must be specified together or
-     * not at all. If not specified the underlying operating system picks the gid.
+     * Set the gid property: The group ID for the user Account. The uid and gid properties must be specified together
+     * or not at all. If not specified the underlying operating system picks the gid.
      *
      * @param gid the gid value to set.
      * @return the LinuxUserConfiguration object itself.
@@ -93,11 +98,11 @@ public final class LinuxUserConfiguration {
 
     /**
      * Get the sshPrivateKey property: The SSH private key for the user Account. The private key must not be password
-     * protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between
-     * Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is ignored if
-     * enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If
-     * not specified, password-less SSH is not configured between Compute Nodes (no modification of the user's .ssh
-     * directory is done).
+     * protected. The private key is used to automatically configure asymmetric-key based authentication for SSH
+     * between Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is
+     * ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh
+     * directory. If not specified, password-less SSH is not configured between Compute Nodes (no modification of the
+     * user's .ssh directory is done).
      *
      * @return the sshPrivateKey value.
      */
@@ -108,11 +113,11 @@ public final class LinuxUserConfiguration {
 
     /**
      * Set the sshPrivateKey property: The SSH private key for the user Account. The private key must not be password
-     * protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between
-     * Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is ignored if
-     * enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If
-     * not specified, password-less SSH is not configured between Compute Nodes (no modification of the user's .ssh
-     * directory is done).
+     * protected. The private key is used to automatically configure asymmetric-key based authentication for SSH
+     * between Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is
+     * ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh
+     * directory. If not specified, password-less SSH is not configured between Compute Nodes (no modification of the
+     * user's .ssh directory is done).
      *
      * @param sshPrivateKey the sshPrivateKey value to set.
      * @return the LinuxUserConfiguration object itself.

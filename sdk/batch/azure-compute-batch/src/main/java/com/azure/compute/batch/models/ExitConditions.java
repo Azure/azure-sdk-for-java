@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies how the Batch service should respond when the Task completes. */
+/**
+ * Specifies how the Batch service should respond when the Task completes.
+ */
 @Fluent
 public final class ExitConditions {
 
@@ -53,9 +55,12 @@ public final class ExitConditions {
     @JsonProperty(value = "default")
     private ExitOptions defaultProperty;
 
-    /** Creates an instance of ExitConditions class. */
+    /**
+     * Creates an instance of ExitConditions class.
+     */
     @Generated
-    public ExitConditions() {}
+    public ExitConditions() {
+    }
 
     /**
      * Get the exitCodes property: A list of individual Task exit codes and how the Batch service should respond to
@@ -130,9 +135,9 @@ public final class ExitConditions {
     }
 
     /**
-     * Get the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the Task
-     * exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload
-     * error, then the action specified by the exit code takes precedence.
+     * Get the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the
+     * Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file
+     * upload error, then the action specified by the exit code takes precedence.
      *
      * @return the fileUploadError value.
      */
@@ -142,9 +147,9 @@ public final class ExitConditions {
     }
 
     /**
-     * Set the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the Task
-     * exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload
-     * error, then the action specified by the exit code takes precedence.
+     * Set the fileUploadError property: How the Batch service should respond if a file upload error occurs. If the
+     * Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file
+     * upload error, then the action specified by the exit code takes precedence.
      *
      * @param fileUploadError the fileUploadError value to set.
      * @return the ExitConditions object itself.

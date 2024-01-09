@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AllocationState enums. */
+/**
+ * AllocationState enums.
+ */
 public final class AllocationState extends ExpandableStringEnum<AllocationState> {
 
     /**
@@ -16,16 +18,21 @@ public final class AllocationState extends ExpandableStringEnum<AllocationState>
      * enters this state when it is created and when no operations are being performed on the Pool to change the number
      * of Compute Nodes.
      */
-    @Generated public static final AllocationState STEADY = fromString("steady");
+    @Generated
+    public static final AllocationState STEADY = fromString("steady");
 
-    /** The Pool is resizing; that is, Compute Nodes are being added to or removed from the Pool. */
-    @Generated public static final AllocationState RESIZING = fromString("resizing");
+    /**
+     * The Pool is resizing; that is, Compute Nodes are being added to or removed from the Pool.
+     */
+    @Generated
+    public static final AllocationState RESIZING = fromString("resizing");
 
     /**
      * The Pool was resizing, but the user has requested that the resize be stopped, but the stop request has not yet
      * been completed.
      */
-    @Generated public static final AllocationState STOPPING = fromString("stopping");
+    @Generated
+    public static final AllocationState STOPPING = fromString("stopping");
 
     /**
      * Creates a new instance of AllocationState value.
@@ -34,7 +41,8 @@ public final class AllocationState extends ExpandableStringEnum<AllocationState>
      */
     @Generated
     @Deprecated
-    public AllocationState() {}
+    public AllocationState() {
+    }
 
     /**
      * Creates or finds a AllocationState from its string representation.

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The configuration for virtual machine extensions. */
+/**
+ * The configuration for virtual machine extensions.
+ */
 @Fluent
 public final class VMExtension {
 
@@ -91,10 +93,8 @@ public final class VMExtension {
      */
     @Generated
     @JsonCreator
-    public VMExtension(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "publisher") String publisher,
-            @JsonProperty(value = "type") String type) {
+    public VMExtension(@JsonProperty(value = "name") String name, @JsonProperty(value = "publisher") String publisher,
+        @JsonProperty(value = "type") String type) {
         this.name = name;
         this.publisher = publisher;
         this.type = type;
@@ -153,9 +153,9 @@ public final class VMExtension {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
+     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
+     * unless redeployed, even with this property set to true.
      *
      * @return the autoUpgradeMinorVersion value.
      */
@@ -165,9 +165,9 @@ public final class VMExtension {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
+     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
+     * unless redeployed, even with this property set to true.
      *
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VMExtension object itself.
@@ -249,8 +249,8 @@ public final class VMExtension {
     }
 
     /**
-     * Get the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
-     * which this extension needs to be provisioned.
+     * Get the provisionAfterExtensions property: The collection of extension names. Collection of extension names
+     * after which this extension needs to be provisioned.
      *
      * @return the provisionAfterExtensions value.
      */
@@ -260,8 +260,8 @@ public final class VMExtension {
     }
 
     /**
-     * Set the provisionAfterExtensions property: The collection of extension names. Collection of extension names after
-     * which this extension needs to be provisioned.
+     * Set the provisionAfterExtensions property: The collection of extension names. Collection of extension names
+     * after which this extension needs to be provisioned.
      *
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.

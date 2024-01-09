@@ -9,14 +9,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The identity of the Batch pool, if configured. */
+/**
+ * The identity of the Batch pool, if configured.
+ */
 @Immutable
 public final class BatchPoolIdentity {
 
     /*
      * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The
      * user identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     @JsonProperty(value = "type")
@@ -25,7 +28,8 @@ public final class BatchPoolIdentity {
     /*
      * The list of user identities associated with the Batch account. The user identity dictionary key references will
      * be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     @JsonProperty(value = "userAssignedIdentities")
@@ -43,8 +47,8 @@ public final class BatchPoolIdentity {
     }
 
     /**
-     * Get the type property: The identity of the Batch pool, if configured. The list of user identities associated with
-     * the Batch pool. The user identity dictionary key references will be ARM resource ids in the form:
+     * Get the type property: The identity of the Batch pool, if configured. The list of user identities associated
+     * with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      * @return the type value.

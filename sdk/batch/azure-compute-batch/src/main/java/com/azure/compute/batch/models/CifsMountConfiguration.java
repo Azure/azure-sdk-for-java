@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information used to connect to a CIFS file system. */
+/**
+ * Information used to connect to a CIFS file system.
+ */
 @Fluent
 public final class CifsMountConfiguration {
 
@@ -59,11 +61,10 @@ public final class CifsMountConfiguration {
      */
     @Generated
     @JsonCreator
-    public CifsMountConfiguration(
-            @JsonProperty(value = "username") String username,
-            @JsonProperty(value = "source") String source,
-            @JsonProperty(value = "relativeMountPath") String relativeMountPath,
-            @JsonProperty(value = "password") String password) {
+    public CifsMountConfiguration(@JsonProperty(value = "username") String username,
+        @JsonProperty(value = "source") String source,
+        @JsonProperty(value = "relativeMountPath") String relativeMountPath,
+        @JsonProperty(value = "password") String password) {
         this.username = username;
         this.source = source;
         this.relativeMountPath = relativeMountPath;

@@ -27,8 +27,14 @@ public class CreateTasksErrorException extends AzureException {
         this.pendingTaskList = unmodifiableList(pendingTaskList);
     }
 
+    /**
+     * The list of {@link BatchTaskAddResult} instances containing failure details for tasks that were not successfully created.
+     */
     private final List<BatchTaskAddResult> failureTaskList;
 
+    /**
+     * The list of {@link BatchTask} instances containing the tasks that were not added, but for which the operation can be retried.
+     */
     private final List<BatchTaskCreateParameters> pendingTaskList;
 
     /**

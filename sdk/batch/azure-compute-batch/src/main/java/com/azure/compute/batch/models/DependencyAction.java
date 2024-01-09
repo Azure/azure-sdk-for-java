@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DependencyAction enums. */
+/**
+ * DependencyAction enums.
+ */
 public final class DependencyAction extends ExpandableStringEnum<DependencyAction> {
 
-    /** Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run. */
-    @Generated public static final DependencyAction SATISFY = fromString("satisfy");
+    /**
+     * Satisfy tasks waiting on this task; once all dependencies are satisfied, the task will be scheduled to run.
+     */
+    @Generated
+    public static final DependencyAction SATISFY = fromString("satisfy");
 
-    /** Blocks tasks waiting on this task, preventing them from being scheduled. */
-    @Generated public static final DependencyAction BLOCK = fromString("block");
+    /**
+     * Blocks tasks waiting on this task, preventing them from being scheduled.
+     */
+    @Generated
+    public static final DependencyAction BLOCK = fromString("block");
 
     /**
      * Creates a new instance of DependencyAction value.
@@ -24,7 +32,8 @@ public final class DependencyAction extends ExpandableStringEnum<DependencyActio
      */
     @Generated
     @Deprecated
-    public DependencyAction() {}
+    public DependencyAction() {
+    }
 
     /**
      * Creates or finds a DependencyAction from its string representation.

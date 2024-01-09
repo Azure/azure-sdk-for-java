@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Result for a single Task added as part of an add Task collection operation. */
+/**
+ * Result for a single Task added as part of an add Task collection operation.
+ */
 @Immutable
 public final class BatchTaskAddResult {
 
@@ -65,8 +67,8 @@ public final class BatchTaskAddResult {
      */
     @Generated
     @JsonCreator
-    private BatchTaskAddResult(
-            @JsonProperty(value = "status") BatchTaskAddStatus status, @JsonProperty(value = "taskId") String taskId) {
+    private BatchTaskAddResult(@JsonProperty(value = "status") BatchTaskAddStatus status,
+        @JsonProperty(value = "taskId") String taskId) {
         this.status = status;
         this.taskId = taskId;
     }
@@ -94,7 +96,8 @@ public final class BatchTaskAddResult {
     /**
      * Get the eTag property: The ETag of the Task, if the Task was successfully added. You can use this to detect
      * whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task
-     * request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
+     * request to specify that your changes should take effect only if nobody else has modified the Job in the
+     * meantime.
      *
      * @return the eTag value.
      */

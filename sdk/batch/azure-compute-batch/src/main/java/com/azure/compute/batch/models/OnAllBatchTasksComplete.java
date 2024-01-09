@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The action the Batch service should take when all Tasks in the Job are in the completed state. */
+/**
+ * The action the Batch service should take when all Tasks in the Job are in the completed state.
+ */
 public final class OnAllBatchTasksComplete extends ExpandableStringEnum<OnAllBatchTasksComplete> {
 
-    /** Do nothing. The Job remains active unless terminated or disabled by some other means. */
-    @Generated public static final OnAllBatchTasksComplete NO_ACTION = fromString("noaction");
+    /**
+     * Do nothing. The Job remains active unless terminated or disabled by some other means.
+     */
+    @Generated
+    public static final OnAllBatchTasksComplete NO_ACTION = fromString("noaction");
 
-    /** Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'. */
-    @Generated public static final OnAllBatchTasksComplete TERMINATE_JOB = fromString("terminatejob");
+    /**
+     * Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.
+     */
+    @Generated
+    public static final OnAllBatchTasksComplete TERMINATE_JOB = fromString("terminatejob");
 
     /**
      * Creates a new instance of OnAllBatchTasksComplete value.
@@ -24,7 +32,8 @@ public final class OnAllBatchTasksComplete extends ExpandableStringEnum<OnAllBat
      */
     @Generated
     @Deprecated
-    public OnAllBatchTasksComplete() {}
+    public OnAllBatchTasksComplete() {
+    }
 
     /**
      * Creates or finds a OnAllBatchTasksComplete from its string representation.

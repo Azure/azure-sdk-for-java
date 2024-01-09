@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchJobAction enums. */
+/**
+ * BatchJobAction enums.
+ */
 public final class BatchJobAction extends ExpandableStringEnum<BatchJobAction> {
 
-    /** Take no action. */
-    @Generated public static final BatchJobAction NONE = fromString("none");
+    /**
+     * Take no action.
+     */
+    @Generated
+    public static final BatchJobAction NONE = fromString("none");
 
-    /** Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks value of requeue. */
-    @Generated public static final BatchJobAction DISABLE = fromString("disable");
+    /**
+     * Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks value of requeue.
+     */
+    @Generated
+    public static final BatchJobAction DISABLE = fromString("disable");
 
-    /** Terminate the Job. The terminateReason in the Job's executionInfo is set to "TaskFailed". */
-    @Generated public static final BatchJobAction TERMINATE = fromString("terminate");
+    /**
+     * Terminate the Job. The terminateReason in the Job's executionInfo is set to "TaskFailed".
+     */
+    @Generated
+    public static final BatchJobAction TERMINATE = fromString("terminate");
 
     /**
      * Creates a new instance of BatchJobAction value.
@@ -27,7 +38,8 @@ public final class BatchJobAction extends ExpandableStringEnum<BatchJobAction> {
      */
     @Generated
     @Deprecated
-    public BatchJobAction() {}
+    public BatchJobAction() {
+    }
 
     /**
      * Creates or finds a BatchJobAction from its string representation.

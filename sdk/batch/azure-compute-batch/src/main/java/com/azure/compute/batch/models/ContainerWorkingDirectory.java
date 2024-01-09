@@ -8,7 +8,9 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ContainerWorkingDirectory enums. */
+/**
+ * ContainerWorkingDirectory enums.
+ */
 public final class ContainerWorkingDirectory extends ExpandableStringEnum<ContainerWorkingDirectory> {
 
     /**
@@ -32,7 +34,8 @@ public final class ContainerWorkingDirectory extends ExpandableStringEnum<Contai
      */
     @Generated
     @Deprecated
-    public ContainerWorkingDirectory() {}
+    public ContainerWorkingDirectory() {
+    }
 
     /**
      * Creates or finds a ContainerWorkingDirectory from its string representation.

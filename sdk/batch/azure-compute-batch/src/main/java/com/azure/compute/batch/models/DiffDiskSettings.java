@@ -7,7 +7,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the ephemeral Disk Settings for the operating system disk used by the compute node (VM). */
+/**
+ * Specifies the ephemeral Disk Settings for the operating system disk used by the
+ * compute node (VM).
+ */
 @Fluent
 public final class DiffDiskSettings {
 
@@ -23,9 +26,12 @@ public final class DiffDiskSettings {
     @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
-    /** Creates an instance of DiffDiskSettings class. */
+    /**
+     * Creates an instance of DiffDiskSettings class.
+     */
     @Generated
-    public DiffDiskSettings() {}
+    public DiffDiskSettings() {
+    }
 
     /**
      * Get the placement property: Specifies the ephemeral disk placement for operating system disk for all VMs in the

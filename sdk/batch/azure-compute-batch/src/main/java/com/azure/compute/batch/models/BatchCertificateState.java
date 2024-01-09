@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchCertificateState enums. */
+/**
+ * BatchCertificateState enums.
+ */
 public final class BatchCertificateState extends ExpandableStringEnum<BatchCertificateState> {
 
-    /** The Certificate is available for use in Pools. */
-    @Generated public static final BatchCertificateState ACTIVE = fromString("active");
+    /**
+     * The Certificate is available for use in Pools.
+     */
+    @Generated
+    public static final BatchCertificateState ACTIVE = fromString("active");
 
     /**
      * The user has requested that the Certificate be deleted, but the delete operation has not yet completed. You may
      * not reference the Certificate when creating or updating Pools.
      */
-    @Generated public static final BatchCertificateState DELETING = fromString("deleting");
+    @Generated
+    public static final BatchCertificateState DELETING = fromString("deleting");
 
     /**
      * The user requested that the Certificate be deleted, but there are Pools that still have references to the
@@ -27,7 +33,8 @@ public final class BatchCertificateState extends ExpandableStringEnum<BatchCerti
      * when they restart.) You may use the cancel Certificate delete operation to cancel the delete, or the delete
      * Certificate operation to retry the delete.
      */
-    @Generated public static final BatchCertificateState DELETE_FAILED = fromString("deletefailed");
+    @Generated
+    public static final BatchCertificateState DELETE_FAILED = fromString("deletefailed");
 
     /**
      * Creates a new instance of BatchCertificateState value.
@@ -36,7 +43,8 @@ public final class BatchCertificateState extends ExpandableStringEnum<BatchCerti
      */
     @Generated
     @Deprecated
-    public BatchCertificateState() {}
+    public BatchCertificateState() {
+    }
 
     /**
      * Creates or finds a BatchCertificateState from its string representation.

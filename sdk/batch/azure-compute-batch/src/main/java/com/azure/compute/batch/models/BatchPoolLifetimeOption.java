@@ -8,21 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchPoolLifetimeOption enums. */
+/**
+ * BatchPoolLifetimeOption enums.
+ */
 public final class BatchPoolLifetimeOption extends ExpandableStringEnum<BatchPoolLifetimeOption> {
 
     /**
      * The Pool exists for the lifetime of the Job Schedule. The Batch Service creates the Pool when it creates the
      * first Job on the schedule. You may apply this option only to Job Schedules, not to Jobs.
      */
-    @Generated public static final BatchPoolLifetimeOption JOB_SCHEDULE = fromString("jobschedule");
+    @Generated
+    public static final BatchPoolLifetimeOption JOB_SCHEDULE = fromString("jobschedule");
 
     /**
      * The Pool exists for the lifetime of the Job to which it is dedicated. The Batch service creates the Pool when it
      * creates the Job. If the 'job' option is applied to a Job Schedule, the Batch service creates a new auto Pool for
      * every Job created on the schedule.
      */
-    @Generated public static final BatchPoolLifetimeOption JOB = fromString("job");
+    @Generated
+    public static final BatchPoolLifetimeOption JOB = fromString("job");
 
     /**
      * Creates a new instance of BatchPoolLifetimeOption value.
@@ -31,7 +35,8 @@ public final class BatchPoolLifetimeOption extends ExpandableStringEnum<BatchPoo
      */
     @Generated
     @Deprecated
-    public BatchPoolLifetimeOption() {}
+    public BatchPoolLifetimeOption() {
+    }
 
     /**
      * Creates or finds a BatchPoolLifetimeOption from its string representation.

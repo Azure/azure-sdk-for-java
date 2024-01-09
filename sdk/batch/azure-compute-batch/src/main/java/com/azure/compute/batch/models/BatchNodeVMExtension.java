@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration for virtual machine extension instance view. */
+/**
+ * The configuration for virtual machine extension instance view.
+ */
 @Immutable
 public final class BatchNodeVMExtension {
 
@@ -32,9 +34,12 @@ public final class BatchNodeVMExtension {
     @JsonProperty(value = "instanceView")
     private VMExtensionInstanceView instanceView;
 
-    /** Creates an instance of BatchNodeVMExtension class. */
+    /**
+     * Creates an instance of BatchNodeVMExtension class.
+     */
     @Generated
-    private BatchNodeVMExtension() {}
+    private BatchNodeVMExtension() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual machine extension.

@@ -8,7 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Contains information about Jobs that have been and will be run under a Job Schedule. */
+/**
+ * Contains information about Jobs that have been and will be run under a Job
+ * Schedule.
+ */
 @Immutable
 public final class BatchJobScheduleExecutionInfo {
 
@@ -36,9 +39,12 @@ public final class BatchJobScheduleExecutionInfo {
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
-    /** Creates an instance of BatchJobScheduleExecutionInfo class. */
+    /**
+     * Creates an instance of BatchJobScheduleExecutionInfo class.
+     */
     @Generated
-    private BatchJobScheduleExecutionInfo() {}
+    private BatchJobScheduleExecutionInfo() {
+    }
 
     /**
      * Get the nextRunTime property: The next time at which a Job will be created under this schedule. This property is

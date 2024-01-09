@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The endpoint configuration for the Compute Node. */
+/**
+ * The endpoint configuration for the Compute Node.
+ */
 @Immutable
 public final class BatchNodeEndpointConfiguration {
 
@@ -28,7 +30,7 @@ public final class BatchNodeEndpointConfiguration {
     @Generated
     @JsonCreator
     private BatchNodeEndpointConfiguration(
-            @JsonProperty(value = "inboundEndpoints") List<InboundEndpoint> inboundEndpoints) {
+        @JsonProperty(value = "inboundEndpoints") List<InboundEndpoint> inboundEndpoints) {
         this.inboundEndpoints = inboundEndpoints;
     }
 

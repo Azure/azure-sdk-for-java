@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Windows operating system settings to apply to the virtual machine. */
+/**
+ * Windows operating system settings to apply to the virtual machine.
+ */
 @Fluent
 public final class WindowsConfiguration {
 
@@ -18,9 +20,12 @@ public final class WindowsConfiguration {
     @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
-    /** Creates an instance of WindowsConfiguration class. */
+    /**
+     * Creates an instance of WindowsConfiguration class.
+     */
     @Generated
-    public WindowsConfiguration() {}
+    public WindowsConfiguration() {
+    }
 
     /**
      * Get the enableAutomaticUpdates property: Whether automatic updates are enabled on the virtual machine. If

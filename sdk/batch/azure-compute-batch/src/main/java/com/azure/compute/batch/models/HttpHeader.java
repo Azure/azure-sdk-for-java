@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An HTTP header name-value pair. */
+/**
+ * An HTTP header name-value pair.
+ */
 @Fluent
 public final class HttpHeader {
 

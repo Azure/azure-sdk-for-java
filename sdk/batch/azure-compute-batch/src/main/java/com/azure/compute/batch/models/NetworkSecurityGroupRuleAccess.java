@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** NetworkSecurityGroupRuleAccess enums. */
+/**
+ * NetworkSecurityGroupRuleAccess enums.
+ */
 public final class NetworkSecurityGroupRuleAccess extends ExpandableStringEnum<NetworkSecurityGroupRuleAccess> {
 
-    /** Allow access. */
-    @Generated public static final NetworkSecurityGroupRuleAccess ALLOW = fromString("allow");
+    /**
+     * Allow access.
+     */
+    @Generated
+    public static final NetworkSecurityGroupRuleAccess ALLOW = fromString("allow");
 
-    /** Deny access. */
-    @Generated public static final NetworkSecurityGroupRuleAccess DENY = fromString("deny");
+    /**
+     * Deny access.
+     */
+    @Generated
+    public static final NetworkSecurityGroupRuleAccess DENY = fromString("deny");
 
     /**
      * Creates a new instance of NetworkSecurityGroupRuleAccess value.
@@ -24,7 +32,8 @@ public final class NetworkSecurityGroupRuleAccess extends ExpandableStringEnum<N
      */
     @Generated
     @Deprecated
-    public NetworkSecurityGroupRuleAccess() {}
+    public NetworkSecurityGroupRuleAccess() {
+    }
 
     /**
      * Creates or finds a NetworkSecurityGroupRuleAccess from its string representation.

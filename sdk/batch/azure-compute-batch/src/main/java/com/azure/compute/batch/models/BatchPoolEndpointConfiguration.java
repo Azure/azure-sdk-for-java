@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The endpoint configuration for a Pool. */
+/**
+ * The endpoint configuration for a Pool.
+ */
 @Immutable
 public final class BatchPoolEndpointConfiguration {
 
@@ -31,7 +33,7 @@ public final class BatchPoolEndpointConfiguration {
     @Generated
     @JsonCreator
     public BatchPoolEndpointConfiguration(
-            @JsonProperty(value = "inboundNATPools") List<InboundNATPool> inboundNatPools) {
+        @JsonProperty(value = "inboundNATPools") List<InboundNATPool> inboundNatPools) {
         this.inboundNatPools = inboundNatPools;
     }
 

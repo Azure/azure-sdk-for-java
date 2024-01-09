@@ -11,17 +11,22 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * A Job Release Task to run on Job completion on any Compute Node where the Job has run. The Job Release Task runs when
- * the Job ends, because of one of the following: The user calls the Terminate Job API, or the Delete Job API while the
- * Job is still active, the Job's maximum wall clock time constraint is reached, and the Job is still active, or the
- * Job's Job Manager Task completed, and the Job is configured to terminate when the Job Manager completes. The Job
- * Release Task runs on each Node where Tasks of the Job have run and the Job Preparation Task ran and completed. If you
- * reimage a Node after it has run the Job Preparation Task, and the Job ends without any further Tasks of the Job
- * running on that Node (and hence the Job Preparation Task does not re-run), then the Job Release Task does not run on
- * that Compute Node. If a Node reboots while the Job Release Task is still running, the Job Release Task runs again
- * when the Compute Node starts up. The Job is not marked as complete until all Job Release Tasks have completed. The
- * Job Release Task runs in the background. It does not occupy a scheduling slot; that is, it does not count towards the
- * taskSlotsPerNode limit specified on the Pool.
+ * A Job Release Task to run on Job completion on any Compute Node where the Job has run.
+ * The Job Release Task runs when the Job ends, because of one of the following:
+ * The user calls the Terminate Job API, or the Delete Job API while the Job is
+ * still active, the Job's maximum wall clock time constraint is reached, and the
+ * Job is still active, or the Job's Job Manager Task completed, and the Job is
+ * configured to terminate when the Job Manager completes. The Job Release Task
+ * runs on each Node where Tasks of the Job have run and the Job Preparation Task
+ * ran and completed. If you reimage a Node after it has run the Job Preparation
+ * Task, and the Job ends without any further Tasks of the Job running on that
+ * Node (and hence the Job Preparation Task does not re-run), then the Job Release
+ * Task does not run on that Compute Node. If a Node reboots while the Job Release
+ * Task is still running, the Job Release Task runs again when the Compute Node
+ * starts up. The Job is not marked as complete until all Job Release Tasks have
+ * completed. The Job Release Task runs in the background. It does not occupy a
+ * scheduling slot; that is, it does not count towards the taskSlotsPerNode limit
+ * specified on the Pool.
  */
 @Fluent
 public final class BatchJobReleaseTask {
@@ -62,8 +67,8 @@ public final class BatchJobReleaseTask {
     private BatchTaskContainerSettings containerSettings;
 
     /*
-     * A list of files that the Batch service will download to the Compute Node before running the command line.  There
-     * is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the
+     * A list of files that the Batch service will download to the Compute Node before running the command line. There
+     * is a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
      * response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
      * reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers. Files listed
      * under this element are located in the Task's working directory.
@@ -121,9 +126,9 @@ public final class BatchJobReleaseTask {
      * Get the id property: A string that uniquely identifies the Job Release Task within the Job. The ID can contain
      * any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64
      * characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No
-     * other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same id,
-     * the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API
-     * directly, the HTTP status code is 409 (Conflict).
+     * other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same
+     * id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the
+     * REST API directly, the HTTP status code is 409 (Conflict).
      *
      * @return the id value.
      */
@@ -136,9 +141,9 @@ public final class BatchJobReleaseTask {
      * Set the id property: A string that uniquely identifies the Job Release Task within the Job. The ID can contain
      * any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64
      * characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No
-     * other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same id,
-     * the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API
-     * directly, the HTTP status code is 409 (Conflict).
+     * other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same
+     * id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the
+     * REST API directly, the HTTP status code is 409 (Conflict).
      *
      * @param id the id value to set.
      * @return the BatchJobReleaseTask object itself.
@@ -153,8 +158,8 @@ public final class BatchJobReleaseTask {
      * Get the commandLine property: The command line of the Job Release Task. The command line does not run under a
      * shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
      * to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c
-     * MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use
-     * a relative path (relative to the Task working directory), or use the Batch provided environment variable
+     * MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should
+     * use a relative path (relative to the Task working directory), or use the Batch provided environment variable
      * (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      *
      * @return the commandLine value.
@@ -198,10 +203,10 @@ public final class BatchJobReleaseTask {
 
     /**
      * Get the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
-     * running the command line. There is a maximum size for the list of resource files. When the max size is exceeded,
-     * the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection
-     * of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker
-     * Containers. Files listed under this element are located in the Task's working directory.
+     * running the command line. There is a maximum size for the list of resource files. When the max size is
+     * exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the
+     * collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application
+     * Packages, or Docker Containers. Files listed under this element are located in the Task's working directory.
      *
      * @return the resourceFiles value.
      */
@@ -212,10 +217,10 @@ public final class BatchJobReleaseTask {
 
     /**
      * Set the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
-     * running the command line. There is a maximum size for the list of resource files. When the max size is exceeded,
-     * the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection
-     * of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker
-     * Containers. Files listed under this element are located in the Task's working directory.
+     * running the command line. There is a maximum size for the list of resource files. When the max size is
+     * exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the
+     * collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application
+     * Packages, or Docker Containers. Files listed under this element are located in the Task's working directory.
      *
      * @param resourceFiles the resourceFiles value to set.
      * @return the BatchJobReleaseTask object itself.
@@ -307,8 +312,8 @@ public final class BatchJobReleaseTask {
     }
 
     /**
-     * Get the userIdentity property: The user identity under which the Job Release Task runs. If omitted, the Task runs
-     * as a non-administrative user unique to the Task.
+     * Get the userIdentity property: The user identity under which the Job Release Task runs. If omitted, the Task
+     * runs as a non-administrative user unique to the Task.
      *
      * @return the userIdentity value.
      */
@@ -318,8 +323,8 @@ public final class BatchJobReleaseTask {
     }
 
     /**
-     * Set the userIdentity property: The user identity under which the Job Release Task runs. If omitted, the Task runs
-     * as a non-administrative user unique to the Task.
+     * Set the userIdentity property: The user identity under which the Job Release Task runs. If omitted, the Task
+     * runs as a non-administrative user unique to the Task.
      *
      * @param userIdentity the userIdentity value to set.
      * @return the BatchJobReleaseTask object itself.

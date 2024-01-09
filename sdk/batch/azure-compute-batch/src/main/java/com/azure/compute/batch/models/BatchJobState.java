@@ -8,38 +8,55 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchJobState enums. */
+/**
+ * BatchJobState enums.
+ */
 public final class BatchJobState extends ExpandableStringEnum<BatchJobState> {
 
-    /** The Job is available to have Tasks scheduled. */
-    @Generated public static final BatchJobState ACTIVE = fromString("active");
+    /**
+     * The Job is available to have Tasks scheduled.
+     */
+    @Generated
+    public static final BatchJobState ACTIVE = fromString("active");
 
     /**
      * A user has requested that the Job be disabled, but the disable operation is still in progress (for example,
      * waiting for Tasks to terminate).
      */
-    @Generated public static final BatchJobState DISABLING = fromString("disabling");
+    @Generated
+    public static final BatchJobState DISABLING = fromString("disabling");
 
-    /** A user has disabled the Job. No Tasks are running, and no new Tasks will be scheduled. */
-    @Generated public static final BatchJobState DISABLED = fromString("disabled");
+    /**
+     * A user has disabled the Job. No Tasks are running, and no new Tasks will be scheduled.
+     */
+    @Generated
+    public static final BatchJobState DISABLED = fromString("disabled");
 
-    /** A user has requested that the Job be enabled, but the enable operation is still in progress. */
-    @Generated public static final BatchJobState ENABLING = fromString("enabling");
+    /**
+     * A user has requested that the Job be enabled, but the enable operation is still in progress.
+     */
+    @Generated
+    public static final BatchJobState ENABLING = fromString("enabling");
 
     /**
      * The Job is about to complete, either because a Job Manager Task has completed or because the user has terminated
      * the Job, but the terminate operation is still in progress (for example, because Job Release Tasks are running).
      */
-    @Generated public static final BatchJobState TERMINATING = fromString("terminating");
+    @Generated
+    public static final BatchJobState TERMINATING = fromString("terminating");
 
-    /** All Tasks have terminated, and the system will not accept any more Tasks or any further changes to the Job. */
-    @Generated public static final BatchJobState COMPLETED = fromString("completed");
+    /**
+     * All Tasks have terminated, and the system will not accept any more Tasks or any further changes to the Job.
+     */
+    @Generated
+    public static final BatchJobState COMPLETED = fromString("completed");
 
     /**
      * A user has requested that the Job be deleted, but the delete operation is still in progress (for example, because
      * the system is still terminating running Tasks).
      */
-    @Generated public static final BatchJobState DELETING = fromString("deleting");
+    @Generated
+    public static final BatchJobState DELETING = fromString("deleting");
 
     /**
      * Creates a new instance of BatchJobState value.
@@ -48,7 +65,8 @@ public final class BatchJobState extends ExpandableStringEnum<BatchJobState> {
      */
     @Generated
     @Deprecated
-    public BatchJobState() {}
+    public BatchJobState() {
+    }
 
     /**
      * Creates or finds a BatchJobState from its string representation.

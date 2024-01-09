@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error encountered by the Batch service when scheduling a Job. */
+/**
+ * An error encountered by the Batch service when scheduling a Job.
+ */
 @Immutable
 public final class BatchJobSchedulingError {
 
@@ -75,8 +77,8 @@ public final class BatchJobSchedulingError {
     }
 
     /**
-     * Get the message property: A message describing the Job scheduling error, intended to be suitable for display in a
-     * user interface.
+     * Get the message property: A message describing the Job scheduling error, intended to be suitable for display in
+     * a user interface.
      *
      * @return the message value.
      */

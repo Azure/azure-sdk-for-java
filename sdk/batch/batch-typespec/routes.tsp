@@ -1,11 +1,8 @@
-import "@typespec/rest";
 import "@typespec/versioning";
 import "@typespec/http";
 import "@azure-tools/typespec-azure-core";
-import "@typespec/rest";
-import "@azure-tools/typespec-autorest";
-import "@typespec/openapi";
 import "@azure-tools/typespec-client-generator-core";
+import "@typespec/rest";
 import "./models.tsp";
 
 using TypeSpec.Http;
@@ -13,42 +10,136 @@ using TypeSpec.Rest;
 using TypeSpec.Versioning;
 using Azure.Core;
 using Azure.Core.Traits;
-using Autorest;
-using OpenAPI;
 using Azure.ClientGenerator.Core;
 
 namespace Azure.Batch;
 
 // Templates
 
-/**
- * A remote procedure call (RPC) operation with additional response.
- * @template TParams Object describing the parameters of the operation.
- * @template TResponse Object describing the response of the operation.
- * @template TAdditionalResponse Object describing the response of the operation.
- * @template Traits Object describing the traits of the operation.
- * @template TErrorResponse Error response of the operation. If not specified, the default error response is used.
- */
-@doc("New rpc operation allowing multiple repsonses")
-@Foundations.Private.needsRoute
-op RpcOperationWithAdditionalResponse<
-  TParams,
-  TResponse extends TypeSpec.Reflection.Model,
-  TAdditionalResponse extends {},
-  Traits extends {} = {},
-  TErrorResponse = Azure.Core.Foundations.ErrorResponse
-> is Foundations.Operation<
-  TParams & Azure.Core.Traits.Private.TraitProperties<Traits, TraitLocation.Parameters>,
-  TResponse & Azure.Core.Traits.Private.TraitProperties<Traits, TraitLocation.Response> | TAdditionalResponse,
-  Traits,
-  TErrorResponse
->;
+interface Ops {
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @get ListOperation<TFilter, TResponse> is Azure.Core.RpcOperation<
+    BatchCommonListHeaders & TFilter,
+    BatchResponseHeaders & TResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @get ReadOperation<
+    TPathParams extends TypeSpec.Reflection.Model,
+    TResource
+  > is Azure.Core.RpcOperation<
+    BatchClientRequestHeaders & TPathParams,
+    BatchResponseHeaders & TResource,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @delete DeleteOperation<
+    TFilter,
+    TResponse extends TypeSpec.Reflection.Model
+  > is Azure.Core.RpcOperation<
+    BatchClientRequestHeaders & TFilter,
+    TResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @post CreateOperation<TResource, TResponse> is RpcOperation<
+    BatchClientRequestHeaders & MinimalMetadata & TResource,
+    BatchResponseHeaders & Created<TResponse>,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @patch UpdateOperation<TResource, TResponse> is RpcOperation<
+    BatchClientRequestHeaders & MinimalMetadata & TResource,
+    BatchResponseHeaders & TResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @put ReplaceOperation<TResource, TResponse> is RpcOperation<
+    BatchClientRequestHeaders & MinimalMetadata & TResource,
+    BatchResponseHeaders & TResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @head ResourceInfoOperation<TResource, TResponse> is RpcOperation<
+    BatchClientRequestHeaders & TResource,
+    BatchResponseHeaders & TResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-error-status-codes" "Azure REST API guidelines recommend using 'default' error response for all error cases. Avoid defining custom 4xx or 5xx error cases."
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @doc("New rpc operation allowing multiple repsonses")
+  @Foundations.Private.needsRoute
+  @access(Access.internal, "java")
+  @head ResourceInfoOperationWithAdditionalResponse<
+    TParams extends TypeSpec.Reflection.Model,
+    TResponse extends TypeSpec.Reflection.Model,
+    TAdditionalResponse extends {} = {}
+  > is Foundations.Operation<
+    TParams,
+    TResponse | TAdditionalResponse,
+    NoFilter,
+    BatchError
+  >;
+
+  #suppress "@azure-tools/typespec-azure-core/no-response-body" "Legacy behavior"
+  @access(Access.internal, "java")
+  @post PostOperation<TResource, TResponse> is RpcOperation<
+    BatchClientRequestHeaders & TResource,
+    BatchResponseHeaders & TResponse,
+    NoFilter,
+    BatchError
+  >;
+}
+
+alias NoFilter = {};
+alias MinimalMetadata = {
+  @doc("Type of content")
+  @header("content-type")
+  contentType: "application/json; odata=minimalmetadata";
+};
+
+alias Created<T> = {
+  @doc("A process exit code.")
+  @statusCode
+  code: "201";
+
+  @header("DataServiceId")
+  @doc("The OData ID of the resource to which the request applied.")
+  dataServiceId: string;
+
+  ...T;
+};
 
 // Interfaces ////////////////////
 
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Applications {
+#suppress "@azure-tools/typespec-azure-core/no-response-body" "The body of non-204 responses should not be empty."
+#suppress "@azure-tools/typespec-azure-core/no-error-status-codes" "Azure REST API guidelines recommend using 'default' error response for all error cases. Avoid defining custom 4xx or 5xx error cases."
+#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using BatchOperation should not have path parameters."
+#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
+#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Operation 'Exists' should be defined using a signature from the Azure.Core namespace."
+#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "BatchOperation with '@get' cannot have a body."
+interface Batch {
   @summary("Lists all of the applications available in the specified Account.")
   @doc("""
 This operation returns only Applications and versions that are available for
@@ -57,16 +148,9 @@ administrator information about applications and versions that are not yet
 available to Compute Nodes, use the Azure portal or the Azure Resource Manager
 API.
 """)
-  @example("./examples/ApplicationList.json", "List applications")
   @route("/applications")
   @projectedName("java", "listApplicationsInternal")
-  @get
-  listApplications is RpcOperation<
-    BatchApplicationListHeaders,
-    BatchResponseHeaders & BatchApplicationListResult,
-    {},
-    BatchError
-  >;
+  listApplications is Ops.ListOperation<{}, BatchApplicationListResult>;
 
   @summary("Gets information about the specified Application.")
   @doc("""
@@ -76,27 +160,17 @@ administrator information about Applications and versions that are not yet
 available to Compute Nodes, use the Azure portal or the Azure Resource Manager
 API.
 """)
-  @example("./examples/ApplicationGet.json", "Get applications")
-  @route("/applications")
+  @route("/applications/{applicationId}")
   @projectedName("java", "getApplicationInternal")
-  @get
-  getApplication is RpcOperation<
-    BatchClientRequestHeaders & {
+  getApplication is Ops.ReadOperation<
+    {
       @doc("The ID of the Application")
       @path
       applicationId: string;
     },
-    BatchResponseHeaders & BatchApplication,
-    {},
-    BatchError
+    BatchApplication
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Operation 'Exists' should be defined using a signature from the Azure.Core namespace."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Pools {
   @summary("""
 Lists the usage metrics, aggregated by Pool across individual time intervals,
 for the specified Account.
@@ -109,12 +183,10 @@ including a startTime or endTime these filters default to the start and end
 times of the last aggregation interval currently available; that is, only the
 last aggregation interval is returned.
 """)
-  @example("./examples/PoolListUsageMetrics.json", "Pool list usage metrics")
   @route("/poolusagemetrics")
   @projectedName("java", "listPoolUsageMetricsInternal")
-  @get
-  listPoolUsageMetrics is RpcOperation<
-    BatchApplicationListHeaders & {
+  listPoolUsageMetrics is Ops.ListOperation<
+    {
       @doc("""
     The earliest time from which to include metrics. This must be at least two and
     a half hours before the current time. If not specified this defaults to the
@@ -136,11 +208,10 @@ last aggregation interval is returned.
     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
     """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
     },
-    BatchResponseHeaders & BatchPoolListUsageMetricsResult,
-    {},
-    BatchError
+    BatchPoolListUsageMetricsResult
   >;
 
   @summary("Creates a Pool to the specified Account.")
@@ -149,77 +220,46 @@ When naming Pools, avoid including sensitive information such as user names or
 secret project names. This information may appear in telemetry logs accessible
 to Microsoft Support engineers.
 """)
-  @example(
-    "./examples/PoolAdd_CloudServiceConfiguration.json",
-    "Creates a CloudServiceConfiguration pool"
-  )
-  @example(
-    "./examples/PoolAdd_VirtualMachineConfiguration.json",
-    "Creates a VirtualMachineConfiguration pool"
-  )
-  @example(
-    "./examples/PoolAdd_VirtualMachineConfigurationWithContainers.json",
-    "Creates a VirtualMachineConfiguration pool with containers"
-  )
-  @example(
-    "./examples/PoolAdd_VirtualMachineConfigurationWithExtensions.json",
-    "Creates a VirtualMachineConfiguration pool with extensions"
-  )
-  @example(
-    "./examples/PoolAdd_MountConfiguration.json",
-    "Creates a pool with mount drive specified"
-  )
   @route("/pools")
   @projectedName("java", "createPoolInternal")
-  createPool is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createPool is Ops.CreateOperation<
+    {
       @body
       @doc("The Pool to be created.")
       pool: BatchPoolCreateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
   @summary("Lists all of the Pools in the specified Account.")
   @doc("Lists all of the Pools in the specified Account.")
   @route("/pools")
-  @example("./examples/PoolList_Basic.json", "Pool list")
   @projectedName("java", "listPoolsInternal")
-  @get
-  listPools is RpcOperation<
-    BatchApplicationListHeaders & {
+  listPools is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
 
       @doc("An OData $expand clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchResponseHeaders & BatchPoolListResult,
-    {},
-    BatchError
+    BatchPoolListResult
   >;
 
   @summary("Deletes a Pool from the specified Account.")
@@ -237,52 +277,39 @@ zero size before deleting the Pool. If you call an Update, Patch or Delete API
 on a Pool in the deleting state, it will fail with HTTP status code 409 with
 error code PoolBeingDeleted.
 """)
-  @example("./examples/PoolDelete.json", "Pool delete")
   @route("/pools/{poolId}")
   @projectedName("java", "deletePoolInternal")
-  @delete
-  deletePool is RpcOperation<
-    BatchClientRequestHeaders & BatchPoolHeaders,
-    DeleteResponseHeaders,
-    {},
-    BatchError
-  >;
+  deletePool is Ops.DeleteOperation<BatchPoolHeaders, DeleteResponseHeaders>;
 
   @doc("Gets basic properties of a Pool.")
-  @example("./examples/PoolExists.json", "Check Pool Exists")
   @route("/pools/{poolId}")
   @projectedName("java", "poolExistsInternal")
-  @head
-  poolExists is RpcOperationWithAdditionalResponse<
+  poolExists is Ops.ResourceInfoOperationWithAdditionalResponse<
     BatchClientRequestHeaders & BatchPoolHeaders,
-    PoolDoesntExistResponseHeaders, PoolDoesExistResponseHeaders,
-    {},
-    BatchError
+    PoolDoesNotExistResponseHeaders,
+    PoolDoesExistResponseHeaders
   >;
 
   @doc("Gets information about the specified Pool.")
-  @example("./examples/PoolGet_Basic.json", "Pool get")
-  @example(
-    "./examples/PoolGet_VirtualMachineConfigurationWithExtensions.json",
-    "Get a VirtualMachineConfiguration pool with extensions"
-  )
   @route("/pools/{poolId}")
   @projectedName("java", "getPoolInternal")
-  @get
-  getPool is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchPoolHeaders & {
-        @doc("An OData $select clause.")
-        @query({ format: "csv" })
-        $select?: string[];
+  getPool is Ops.ReadOperation<
+    BatchPoolHeaders & {
+      @doc("An OData $select clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
+      $select?: string[];
 
-        @doc("An OData $expand clause.")
-        @query({ format: "csv" })
-        $expand?: string[];
-      },
-    BatchResponseHeaders & BatchPool,
-    {},
-    BatchError
+      @doc("An OData $expand clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
+      $expand?: string[];
+    },
+    BatchPool
   >;
 
   @summary("Updates the properties of the specified Pool.")
@@ -291,57 +318,36 @@ This only replaces the Pool properties specified in the request. For example,
 if the Pool has a StartTask associated with it, and a request does not specify
 a StartTask element, then the Pool keeps the existing StartTask.
 """)
-  @example("./examples/PoolPatch.json", "Patch the Pool")
   @route("/pools/{poolId}")
   @projectedName("java", "updatePoolInternal")
-  @patch
-  updatePool is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchPoolHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
-
-        @doc("The pool properties to update.")
-        @body
-        pool : BatchPoolUpdateParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+  updatePool is Ops.UpdateOperation<
+    BatchPoolHeaders & {
+      @doc("The pool properties to update.")
+      @body
+      pool: BatchPoolUpdateParameters;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Disables automatic scaling for a Pool.")
   @doc("Disables automatic scaling for a Pool.")
-  @example("./examples/PoolDisableAutoScale.json", "Disable pool autoscale")
   @route("/pools/{poolId}/disableautoscale")
   @projectedName("java", "disablePoolAutoScaleInternal")
-  @post
-  disablePoolAutoScale is RpcOperation<
-    BatchClientRequestHeaders & {
+  disablePoolAutoScale is Ops.PostOperation<
+    {
       @doc("The ID of the Pool on which to disable automatic scaling.")
       @path
       poolId: string;
     },
-    BatchResponseHeaders & {
+    {
       @doc("A process exit code.")
       @statusCode
       code: "200";
 
-      @doc("The OData ID of the resource to which the request applied")
+      @doc("The OData ID of the resource to which the request applied.")
       @header("DataServiceId")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+      dataServiceId: string;
+    }
   >;
 
   @summary("Enables automatic scaling for a Pool.")
@@ -353,32 +359,27 @@ scaling of the Pool is already enabled, you may specify a new autoscale formula
 and/or a new evaluation interval. You cannot call this API for the same Pool
 more than once every 30 seconds.
 """)
-  @example("./examples/PoolEnableAutoscale.json", "Pool enable autoscale")
   @route("/pools/{poolId}/enableautoscale")
   @projectedName("java", "enablePoolAutoScaleInternal")
-  @post
-  enablePoolAutoScale is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchPoolHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  enablePoolAutoScale is Ops.PostOperation<
+    BatchPoolHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
 
-        @doc("The options to use for enabling automatic scaling.")
-        @body
-        parameters : BatchPoolEnableAutoScaleParameters;
-      },
-    BatchResponseHeaders & {
+      @doc("The options to use for enabling automatic scaling.")
+      @body
+      parameters: BatchPoolEnableAutoScaleParameters;
+    },
+    {
       @doc("A process exit code.")
       @statusCode
       code: "200";
 
-      @doc("The OData ID of the resource to which the request applied")
+      @doc("The OData ID of the resource to which the request applied.")
       @header("DataServiceId")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+      dataServiceId: string;
+    }
   >;
 
   @summary("Gets the result of evaluating an automatic scaling formula on the Pool.")
@@ -387,12 +388,10 @@ This API is primarily for validating an autoscale formula, as it simply returns
 the result without applying the formula to the Pool. The Pool must have auto
 scaling enabled in order to evaluate a formula.
 """)
-  @example("./examples/PoolEvaluateAutoscale.json", "Pool evaluate autoscale")
   @route("/pools/{poolId}/evaluateautoscale")
   @projectedName("java", "evaluatePoolAutoScaleInternal")
-  @post
-  evaluatePoolAutoScale is RpcOperation<
-    BatchClientRequestHeaders & {
+  evaluatePoolAutoScale is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -405,18 +404,15 @@ scaling enabled in order to evaluate a formula.
       @body
       parameters: BatchPoolEvaluateAutoScaleParameters;
     },
-    BatchResponseHeaders &
-      AutoScaleRun & {
-        @doc("A process exit code.")
-        @statusCode
-        code: "200";
+    AutoScaleRun & {
+      @doc("A process exit code.")
+      @statusCode
+      code: "200";
 
-        @doc("The OData ID of the resource to which the request applied")
-        @header("DataServiceId")
-        DataServiceId: string;
-      },
-    {},
-    BatchError
+      @doc("The OData ID of the resource to which the request applied.")
+      @header("DataServiceId")
+      dataServiceId: string;
+    }
   >;
 
   @summary("Changes the number of Compute Nodes that are assigned to a Pool.")
@@ -429,32 +425,19 @@ the Batch service returns an error 409. If you resize a Pool downwards, the
 Batch service chooses which Compute Nodes to remove. To remove specific Compute
 Nodes, use the Pool remove Compute Nodes API instead.
 """)
-  @example("./examples/PoolResize.json", "Pool resize")
   @route("/pools/{poolId}/resize")
   @projectedName("java", "resizePoolInternal")
-  @post
-  resizePool is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchPoolHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  resizePool is Ops.PostOperation<
+    BatchPoolHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
 
-        @doc("The options to use for resizing the pool.")
-        @body
-        parameters : BatchPoolResizeParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+      @doc("The options to use for resizing the pool.")
+      @body
+      parameters: BatchPoolResizeParameters;
     },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Stops an ongoing resize operation on the Pool.")
@@ -467,15 +450,11 @@ the Pool allocation state changes first to stopping and then to steady. A
 resize operation need not be an explicit resize Pool request; this API can also
 be used to halt the initial sizing of the Pool when it is created.
 """)
-  @example("./examples/PoolStopResize.json", "Pool stop resize")
   @route("/pools/{poolId}/stopresize")
   @projectedName("java", "stopPoolResizeInternal")
-  @post
-  stopPoolResize is RpcOperation<
-    BatchClientRequestHeaders & BatchPoolHeaders,
-    PoolStopResizeResponseHeaders,
-    {},
-    BatchError
+  stopPoolResize is Ops.PostOperation<
+    BatchPoolHeaders,
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Updates the properties of the specified Pool.")
@@ -484,12 +463,10 @@ This fully replaces all the updatable properties of the Pool. For example, if
 the Pool has a StartTask associated with it and if StartTask is not specified
 with this request, then the Batch service will remove the existing StartTask.
 """)
-  @example("./examples/PoolUpdate.json", "Pool update")
   @route("/pools/{poolId}/updateproperties")
   @projectedName("java", "replacePoolPropertiesInternal")
-  @post
-  replacePoolProperties is RpcOperation<
-    BatchClientRequestHeaders & {
+  replacePoolProperties is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -500,11 +477,9 @@ with this request, then the Batch service will remove the existing StartTask.
 
       @doc("The options to use for replacing properties on the pool.")
       @body
-      pool : BatchPoolReplaceParameters;
+      pool: BatchPoolReplaceParameters;
     },
-    PoolUpdatePropertiesResponseHeaders,
-    {},
-    BatchError
+    NoContentSuccesResponseHeaders
   >;
 
   @summary("Removes Compute Nodes from the specified Pool.")
@@ -513,52 +488,36 @@ This operation can only run when the allocation state of the Pool is steady.
 When this operation runs, the allocation state changes from steady to resizing.
 Each request may remove up to 100 nodes.
 """)
-  @example("./examples/PoolRemoveNodes.json", "Pool remove nodes")
   @route("/pools/{poolId}/removenodes")
   @projectedName("java", "removeNodesInternal")
-  @post
-  removeNodes is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchPoolHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  removeNodes is Ops.PostOperation<
+    BatchPoolHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
 
-        @doc("The options to use for removing the node.")
-        @body
-        parameters : BatchNodeRemoveParameters;
-      },
-    PoolRemoveNodesResponseHeaders,
-    {},
-    BatchError
+      @doc("The options to use for removing the node.")
+      @body
+      parameters: BatchNodeRemoveParameters;
+    },
+    AcceptedProcessingResponseHeaders
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Accounts {
   @summary("Lists all Virtual Machine Images supported by the Azure Batch service.")
   @doc("Lists all Virtual Machine Images supported by the Azure Batch service.")
-  @example(
-    "./examples/AccountListSupportedImages.json",
-    "Account list node agent skus"
-  )
   @route("/supportedimages")
   @projectedName("java", "listSupportedImagesInternal")
-  @get
-  listSupportedImages is RpcOperation<
-    BatchApplicationListHeaders & {
+  listSupportedImages is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
     },
-    BatchResponseHeaders & BatchAccountListSupportedImagesResult,
-    {},
-    BatchError
+    BatchAccountListSupportedImagesResult
   >;
 
   @doc("""
@@ -566,29 +525,21 @@ Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
 numbers returned may not always be up to date. If you need exact node counts,
 use a list query.
 """)
-  @example("./examples/AccountListPoolNodeCounts.json", "NodeCountsPayload")
   @route("/nodecounts")
   @projectedName("java", "listPoolNodeCountsInternal")
-  @get
-  listPoolNodeCounts is RpcOperation<
-    BatchApplicationListHeaders & {
+  listPoolNodeCounts is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-support-images.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
     },
-    BatchClientResponseHeaders & BatchPoolNodeCountsListResult,
-    {},
-    BatchError
+    BatchPoolNodeCountsListResult
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Jobs {
   @summary("Deletes a Job.")
   @doc("""
 Deleting a Job also deletes all Tasks that are part of that Job, and all Job
@@ -600,46 +551,42 @@ deleting state. All update operations on a Job that is in deleting state will
 fail with status code 409 (Conflict), with additional information indicating
 that the Job is being deleted.
 """)
-  @example("./examples/JobDelete.json", "Delete Job")
   @route("/jobs/{jobId}")
   @projectedName("java", "deleteJobInternal")
-  @delete
-  deleteJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job to delete.")
-        @path
-        jobId: string;
-      },
-    DeleteResponseHeaders,
-    {},
-    BatchError
+  deleteJob is Ops.DeleteOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job to delete.")
+      @path
+      jobId: string;
+    },
+    DeleteResponseHeaders
   >;
 
   @summary("Gets information about the specified Job.")
   @doc("Gets information about the specified Job.")
-  @example("./examples/JobGet.json", "Job get")
   @route("/jobs/{jobId}")
   @projectedName("java", "getJobInternal")
-  @get
-  getJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job.")
-        @path
-        jobId: string;
+  getJob is Ops.ReadOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job.")
+      @path
+      jobId: string;
 
-        @doc("An OData $select clause.")
-        @query({ format: "csv" })
-        $select?: string[];
+      @doc("An OData $select clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
+      $select?: string[];
 
-        @doc("An OData $expand clause.")
-        @query({ format: "csv" })
-        $expand?: string[];
-      },
-    BatchResponseHeaders & BatchJob,
-    {},
-    BatchError
+      @doc("An OData $expand clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
+      $expand?: string[];
+    },
+    BatchJob
   >;
 
   @summary("Updates the properties of the specified Job.")
@@ -648,36 +595,19 @@ This replaces only the Job properties specified in the request. For example, if
 the Job has constraints, and a request does not specify the constraints
 element, then the Job keeps the existing constraints.
 """)
-  @example("./examples/JobPatch.json", "Job patch")
   @route("/jobs/{jobId}")
   @projectedName("java", "updateJobInternal")
-  @patch
-  updateJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  updateJob is Ops.UpdateOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job whose properties you want to update.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Job whose properties you want to update.")
-        @path
-        jobId: string;
-
-        @doc("The options to use for updating the Job.")
-        @body
-        job : BatchJobUpdateParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+      @doc("The options to use for updating the Job.")
+      @body
+      job: BatchJobUpdateParameters;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Updates the properties of the specified Job.")
@@ -686,36 +616,19 @@ This fully replaces all the updatable properties of the Job. For example, if
 the Job has constraints associated with it and if constraints is not specified
 with this request, then the Batch service will remove the existing constraints.
 """)
-  @example("./examples/JobUpdate.json", "Job update")
   @route("/jobs/{jobId}")
   @projectedName("java", "replaceJobInternal")
-  @put
-  replaceJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  replaceJob is Ops.ReplaceOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job whose properties you want to update.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Job whose properties you want to update.")
-        @path
-        jobId: string;
-
-        @doc("A job with updated properties")
-        @body
-        job : BatchJob;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+      @doc("A job with updated properties")
+      @body
+      job: BatchJob;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Disables the specified Job, preventing new Tasks from running.")
@@ -729,36 +642,23 @@ are started under the Job until it moves back to active state. If you try to
 disable a Job that is in any state other than active, disabling, or disabled,
 the request fails with status code 409.
 """)
-  @example("./examples/JobDisable.json", "Job disable")
   @route("/jobs/{jobId}/disable")
   @projectedName("java", "disableJobInternal")
-  @post
-  disableJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  disableJob is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
 
-        @doc("The ID of the Job to disable.")
-        @path
-        jobId: string;
+      @doc("The ID of the Job to disable.")
+      @path
+      jobId: string;
 
-        @doc("The options to use for disabling the Job.")
-        @body
-        parameters : BatchJobDisableParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+      @doc("The options to use for disabling the Job.")
+      @body
+      parameters: BatchJobDisableParameters;
     },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Enables the specified Job, allowing new Tasks to run.")
@@ -770,28 +670,15 @@ does not allow a Task to remain in the active state for more than 180 days.
 Therefore, if you enable a Job containing active Tasks which were added more
 than 180 days ago, those Tasks will not run.
 """)
-  @example("./examples/JobEnable.json", "Job enable")
   @route("/jobs/{jobId}/enable")
   @projectedName("java", "enableJobInternal")
-  @post
-  enableJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job to enable.")
-        @path
-        jobId: string;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+  enableJob is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job to enable.")
+      @path
+      jobId: string;
     },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Terminates the specified Job, marking it as completed.")
@@ -803,36 +690,23 @@ moves into the completed state. If there are any Tasks in the Job in the active
 state, they will remain in the active state. Once a Job is terminated, new
 Tasks cannot be added and any remaining active Tasks will not be scheduled.
 """)
-  @example("./examples/JobTerminate.json", "Job terminate")
   @route("/jobs/{jobId}/terminate")
   @projectedName("java", "terminateJobInternal")
-  @post
-  terminateJob is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  terminateJob is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
 
-        @doc("The ID of the Job to terminate.")
-        @path
-        jobId: string;
+      @doc("The ID of the Job to terminate.")
+      @path
+      jobId: string;
 
-        @doc("The options to use for terminating the Job.")
-        @body
-        parameters?: BatchJobTerminateParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
+      @doc("The options to use for terminating the Job.")
+      @body
+      parameters?: BatchJobTerminateParameters;
     },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Creates a Job to the specified Account.")
@@ -847,73 +721,54 @@ including sensitive information such as user names or secret project names.
 This information may appear in telemetry logs accessible to Microsoft Support
 engineers.
 """)
-  @example("./examples/JobAdd_Basic.json", "Creates a basic job")
-  @example("./examples/JobAdd_Complex.json", "Creates a complex job")
   @route("/jobs")
   @projectedName("java", "createJobInternal")
-  @post
-  createJob is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createJob is Ops.CreateOperation<
+    {
       @doc("The Job to be created.")
       @body
       job: BatchJobCreateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @doc("The OData ID of the resource to which the request applied")
-      @header("DataServiceId")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
   @summary("Lists all of the Jobs in the specified Account.")
   @doc("Lists all of the Jobs in the specified Account.")
-  @example("./examples/JobList.json", "Job list")
   @route("/jobs")
   @projectedName("java", "listJobsInternal")
-  @get
-  listJobs is RpcOperation<
-    BatchApplicationListHeaders & {
+  listJobs is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
 
       @doc("An OData $expand clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchResponseHeaders & BatchJobListResult,
-    {},
-    BatchError
+    BatchJobListResult
   >;
 
   @summary("Lists the Jobs that have been created under the specified Job Schedule.")
   @doc("Lists the Jobs that have been created under the specified Job Schedule.")
-  @example(
-    "./examples/JobListFromJobSchedule.json",
-    "List Job Under Job Schedule"
-  )
   @route("/jobschedules/{jobScheduleId}/jobs")
   @projectedName("java", "listJobsFromScheduleInternal")
-  @get
-  listJobsFromSchedule is RpcOperation<
-    BatchApplicationListHeaders & {
+  listJobsFromSchedule is Ops.ListOperation<
+    {
       @doc("The ID of the Job Schedule from which you want to get a list of Jobs.")
       @path
       jobScheduleId: string;
@@ -923,19 +778,24 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
 
       @doc("An OData $expand clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchResponseHeaders & BatchJobListResult,
-    {},
-    BatchError
+    BatchJobListResult
   >;
 
   @summary("""
@@ -950,15 +810,10 @@ invoked on a Job which has no Job Preparation or Job Release Task, the Batch
 service returns HTTP status code 409 (Conflict) with an error code of
 JobPreparationTaskNotSpecified.
 """)
-  @example(
-    "./examples/JobListPreparationAndReleaseTaskStatus.json",
-    "Job list preparation and release task status"
-  )
   @route("/jobs/{jobId}/jobpreparationandreleasetaskstatus")
   @projectedName("java", "listJobPreparationAndReleaseTaskStatusInternal")
-  @get
-  listJobPreparationAndReleaseTaskStatus is RpcOperation<
-    BatchApplicationListHeaders & {
+  listJobPreparationAndReleaseTaskStatus is Ops.ListOperation<
+    {
       @doc("The ID of the Job.")
       @path
       jobId: string;
@@ -968,15 +823,17 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchJobPreparationAndReleaseTaskStatusListResult,
-    {},
-    BatchError
+    BatchJobPreparationAndReleaseTaskStatusListResult
   >;
 
   @summary("Gets the Task counts for the specified Job.")
@@ -986,82 +843,57 @@ state, and a count of Tasks which succeeded or failed. Tasks in the preparing
 state are counted as running. Note that the numbers returned may not always be
 up to date. If you need exact task counts, use a list query.
 """)
-  @example("./examples/JobGetTaskCounts.json", "Job get task counts")
   @route("/jobs/{jobId}/taskcounts")
   @projectedName("java", "getJobTaskCountsInternal")
-  @get
-  getJobTaskCounts is RpcOperation<
-    BatchClientRequestHeaders & {
+  getJobTaskCounts is Ops.ReadOperation<
+    {
       @doc("The ID of the Job.")
       @path
       jobId: string;
     },
-    BatchClientResponseHeaders & BatchTaskCountsResult,
-    {},
-    BatchError
+    BatchTaskCountsResult
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Certificates {
-  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
+  #deprecated "Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
   @summary("Creates a Certificate to the specified Account.")
   @doc("Creates a Certificate to the specified Account.")
-  @example("./examples/CertificateAdd.json", "Certificate Create")
   @route("/certificates")
   @projectedName("java", "createCertificateInternal")
-  @post
-  createCertificate is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createCertificate is Ops.CreateOperation<
+    {
       @doc("The Certificate to be created.")
       @body
       certificate: BatchCertificate;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
-  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
+  #deprecated "Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
   @summary("Lists all of the Certificates that have been added to the specified Account.")
   @doc("Lists all of the Certificates that have been added to the specified Account.")
-  @example("./examples/CertificateList.json", "Certificate list")
   @route("/certificates")
   @projectedName("java", "listCertificatesInternal")
-  @get
-  listCertificates is RpcOperation<
-    BatchApplicationListHeaders & {
+  listCertificates is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchCertificateListResult,
-    {},
-    BatchError
+    BatchCertificateListResult
   >;
 
-  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
+  #deprecated "Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
   @summary("Cancels a failed deletion of a Certificate from the specified Account.")
   @doc("""
 If you try to delete a Certificate that is being used by a Pool or Compute
@@ -1072,15 +904,10 @@ Certificate, you do not need to run this operation after the deletion failed.
 You must make sure that the Certificate is not being used by any resources, and
 then you can try again to delete the Certificate.
 """)
-  @example(
-    "./examples/CertificateCancelDelete.json",
-    "Certificate cancel delete"
-  )
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
   @projectedName("java", "cancelCertificateDeletionInternal")
-  @post
-  cancelCertificateDeletion is RpcOperation<
-    BatchClientRequestHeaders & {
+  cancelCertificateDeletion is Ops.PostOperation<
+    {
       @doc("The algorithm used to derive the thumbprint parameter. This must be sha1.")
       @path
       thumbprintAlgorithm: string;
@@ -1089,20 +916,10 @@ then you can try again to delete the Certificate.
       @path
       thumbprint: string;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "204";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    NoContentSuccesResponseHeaders
   >;
 
-  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
+  #deprecated "Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
   @summary("Deletes a Certificate from the specified Account.")
   @doc("""
 You cannot delete a Certificate if a resource (Pool or Compute Node) is using
@@ -1115,12 +932,10 @@ that is in use, the deletion fails. The Certificate status changes to
 deleteFailed. You can use Cancel Delete Certificate to set the status back to
 active if you decide that you want to continue using the Certificate.
 """)
-  @example("./examples/CertificateDelete.json", "Certificate delete")
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
   @projectedName("java", "deleteCertificateInternal")
-  @delete
-  deleteCertificate is RpcOperation<
-    BatchClientRequestHeaders & {
+  deleteCertificate is Ops.DeleteOperation<
+    {
       @doc("The algorithm used to derive the thumbprint parameter. This must be sha1.")
       @path
       thumbprintAlgorithm: string;
@@ -1133,19 +948,15 @@ active if you decide that you want to continue using the Certificate.
       @doc("A process exit code.")
       @statusCode
       code: "202";
-    },
-    {},
-    BatchError
+    }
   >;
 
-  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
+  #deprecated "Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead."
   @doc("Gets information about the specified Certificate.")
-  @example("./examples/CertificateGet.json", "Certificate get")
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
   @projectedName("java", "getCertificateInternal")
-  @get
-  getCertificate is RpcOperation<
-    BatchClientRequestHeaders & {
+  getCertificate is Ops.ReadOperation<
+    {
       @doc("The algorithm used to derive the thumbprint parameter. This must be sha1.")
       @path
       thumbprintAlgorithm: string;
@@ -1155,45 +966,28 @@ active if you decide that you want to continue using the Certificate.
       thumbprint: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchCertificate,
-    {},
-    BatchError
+    BatchCertificate
   >;
-}
 
-
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/use-standard-operations" "Operation 'Exists' should be defined using a signature from the Azure.Core namespace."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface JobSchedules {
   @summary("Checks the specified Job Schedule exists.")
   @doc("Checks the specified Job Schedule exists.")
-  @example("./examples/JobScheduleExists.json", "Check Job Schedule Exists")
   @route("/jobschedules/{jobScheduleId}")
   @projectedName("java", "jobScheduleExistsInternal")
-  @head
-  jobScheduleExists is RpcOperationWithAdditionalResponse<
+  jobScheduleExists is Ops.ResourceInfoOperationWithAdditionalResponse<
     BatchClientRequestHeaders &
       BatchMatchHeaders & {
         @doc("The ID of the Job Schedule which you want to check.")
         @path
         jobScheduleId: string;
       },
-    (BatchResponseHeaders & {
-      @doc("A response containing headers related to the Job Schedule, if it exists.")
-      @statusCode
-      code: "200";
-    }) , {
-      @doc("The Job Schedule does not exist.")
-      @statusCode
-      code: "404";
-    },
-    {},
-    BatchError
+    JobScheduleDoesExistResponseHeaders,
+    JobScheduleDoesNotExistResponseHeaders
   >;
 
   @summary("Deletes a Job Schedule from the specified Account.")
@@ -1204,45 +998,41 @@ the Compute Nodes are also deleted (the retention period is ignored). The Job
 Schedule statistics are no longer accessible once the Job Schedule is deleted,
 though they are still counted towards Account lifetime statistics.
 """)
-  @example("./examples/JobScheduleDelete.json", "JobSchedule delete")
   @route("/jobschedules/{jobScheduleId}")
   @projectedName("java", "deleteJobScheduleInternal")
-  @delete
-  deleteJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job Schedule to delete.")
-        @path
-        jobScheduleId: string;
-      },
-    DeleteResponseHeaders,
-    {},
-    BatchError
+  deleteJobSchedule is Ops.DeleteOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to delete.")
+      @path
+      jobScheduleId: string;
+    },
+    DeleteResponseHeaders
   >;
 
   @doc("Gets information about the specified Job Schedule.")
-  @example("./examples/JobScheduleGet.json", "JobSchedule get")
   @route("/jobschedules/{jobScheduleId}")
   @projectedName("java", "getJobScheduleInternal")
-  @get
-  getJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job Schedule to get.")
-        @path
-        jobScheduleId: string;
+  getJobSchedule is Ops.ReadOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to get.")
+      @path
+      jobScheduleId: string;
 
-        @doc("An OData $select clause.")
-        @query({ format: "csv" })
-        $select?: string[];
+      @doc("An OData $select clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
+      $select?: string[];
 
-        @doc("An OData $expand clause.")
-        @query({ format: "csv" })
-        $expand?: string[];
-      },
-    BatchResponseHeaders & BatchJobSchedule,
-    {},
-    BatchError
+      @doc("An OData $expand clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
+      $expand?: string[];
+    },
+    BatchJobSchedule
   >;
 
   @summary("Updates the properties of the specified Job Schedule.")
@@ -1253,36 +1043,19 @@ Batch service will keep the existing schedule. Changes to a Job Schedule only
 impact Jobs created by the schedule after the update has taken place; currently
 running Jobs are unaffected.
 """)
-  @example("./examples/JobSchedulePatch.json", "JobSchedule patch")
   @route("/jobschedules/{jobScheduleId}")
   @projectedName("java", "updateJobScheduleInternal")
-  @patch
-  updateJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  updateJobSchedule is Ops.UpdateOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to update.")
+      @path
+      jobScheduleId: string;
 
-        @doc("The ID of the Job Schedule to update.")
-        @path
-        jobScheduleId: string;
-
-        @doc("The options to use for updating the Job Schedule.")
-        @body
-        jobSchedule : BatchJobScheduleUpdateParameters;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+      @doc("The options to use for updating the Job Schedule.")
+      @body
+      jobSchedule: BatchJobScheduleUpdateParameters;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Updates the properties of the specified Job Schedule.")
@@ -1293,210 +1066,114 @@ Batch service will remove the existing schedule. Changes to a Job Schedule only
 impact Jobs created by the schedule after the update has taken place; currently
 running Jobs are unaffected.
 """)
-  @example("./examples/JobScheduleUpdate.json", "JobSchedule update")
   @route("/jobschedules/{jobScheduleId}")
   @projectedName("java", "replaceJobScheduleInternal")
-  @put
-  replaceJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  replaceJobSchedule is Ops.ReplaceOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to update.")
+      @path
+      jobScheduleId: string;
 
-        @doc("The ID of the Job Schedule to update.")
-        @path
-        jobScheduleId: string;
-
-        @doc("A Job Schedule with updated properties")
-        @body
-        jobSchedule : BatchJobSchedule;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+      @doc("A Job Schedule with updated properties")
+      @body
+      jobSchedule: BatchJobSchedule;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Disables a Job Schedule.")
   @doc("No new Jobs will be created until the Job Schedule is enabled again.")
-  @example("./examples/JobScheduleDisable.json", "JobSchedule disable")
   @route("/jobschedules/{jobScheduleId}/disable")
   @projectedName("java", "disableJobScheduleInternal")
-  @post
-  disableJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job Schedule to disable.")
-        @path
-        jobScheduleId: string;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "204";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+  disableJobSchedule is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to disable.")
+      @path
+      jobScheduleId: string;
     },
-    {},
-    BatchError
+    NoContentSuccesResponseHeaders
   >;
 
   @summary("Enables a Job Schedule.")
   @doc("Enables a Job Schedule.")
-  @example("./examples/JobScheduleEnable.json", "JobSchedule enable")
   @route("/jobschedules/{jobScheduleId}/enable")
   @projectedName("java", "enableJobScheduleInternal")
-  @post
-  enableJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job Schedule to enable.")
-        @path
-        jobScheduleId: string;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "204";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+  enableJobSchedule is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to enable.")
+      @path
+      jobScheduleId: string;
     },
-    {},
-    BatchError
+    NoContentSuccesResponseHeaders
   >;
 
   @summary("Terminates a Job Schedule.")
   @doc("Terminates a Job Schedule.")
-  @example("./examples/JobScheduleTerminate.json", "JobSchedule terminate")
   @route("/jobschedules/{jobScheduleId}/terminate")
   @projectedName("java", "terminateJobScheduleInternal")
-  @post
-  terminateJobSchedule is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job Schedule to terminates.")
-        @path
-        jobScheduleId: string;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+  terminateJobSchedule is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job Schedule to terminates.")
+      @path
+      jobScheduleId: string;
     },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Creates a Job Schedule to the specified Account.")
   @doc("Creates a Job Schedule to the specified Account.")
-  @example("./examples/JobScheduleAdd_Basic.json", "Creates a basic JobSchedule")
-  @example(
-    "./examples/JobScheduleAdd_Complex.json",
-    "Creates a complex JobScheduleAdd"
-  )
   @route("/jobschedules")
   @projectedName("java", "createJobScheduleInternal")
-  @post
-  createJobSchedule is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createJobSchedule is Ops.CreateOperation<
+    {
       @doc("The Job Schedule to be created.")
       @body
       jobSchedule: BatchJobScheduleCreateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
   @summary("Lists all of the Job Schedules in the specified Account.")
   @doc("Lists all of the Job Schedules in the specified Account.")
-  @example("./examples/JobScheduleList.json", "JobSchedule list")
   @route("/jobschedules")
   @projectedName("java", "listJobSchedulesInternal")
-  @get
-  listJobSchedules is RpcOperation<
-    BatchApplicationListHeaders & {
+  listJobSchedules is Ops.ListOperation<
+    {
       @doc("""
 An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
 
       @doc("An OData $expand clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchResponseHeaders & BatchJobScheduleListResult,
-    {},
-    BatchError
+    BatchJobScheduleListResult
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Tasks {
   @summary("Creates a Task to the specified Job.")
   @doc("""
 The maximum lifetime of a Task from addition to completion is 180 days. If a
 Task has not completed within 180 days of being added it will be terminated by
 the Batch service and left in whatever state it was in at that time.
 """)
-  @example("./examples/TaskAdd_Basic.json", "Creates a basic task")
-  @example(
-    "./examples/TaskAdd_ExitConditions.json",
-    "Creates a task with exit conditions"
-  )
-  @example(
-    "./examples/TaskAdd_ContainerSettings.json",
-    "Creates a task with container settings"
-  )
-  @example(
-    "./examples/TaskAdd_RequiredSlots.json",
-    "Creates a task with extra slot requirement"
-  )
   @route("/jobs/{jobId}/tasks")
   @projectedName("java", "createTaskInternal")
-  @post
-  createTask is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createTask is Ops.CreateOperation<
+    {
       @doc("The ID of the Job to which the Task is to be created.")
       @path
       jobId: string;
@@ -1505,17 +1182,7 @@ the Batch service and left in whatever state it was in at that time.
       @body
       task: BatchTaskCreateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
   @summary("Lists all of the Tasks that are associated with the specified Job.")
@@ -1524,12 +1191,10 @@ For multi-instance Tasks, information such as affinityId, executionInfo and
 nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
 information about subtasks.
 """)
-  @example("./examples/TaskList.json", "Task list")
   @route("/jobs/{jobId}/tasks")
   @projectedName("java", "listTasksInternal")
-  @get
-  listTasks is RpcOperation<
-    BatchApplicationListHeaders & {
+  listTasks is Ops.ListOperation<
+    {
       @doc("The ID of the Job.")
       @path
       jobId: string;
@@ -1539,19 +1204,24 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
 
       @doc("An OData $expand clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
       $expand?: string[];
     },
-    BatchResponseHeaders & BatchTaskListResult,
-    {},
-    BatchError
+    BatchTaskListResult
   >;
 
   @summary("Adds a collection of Tasks to the specified Job.")
@@ -1571,19 +1241,10 @@ lifetime of a Task from addition to completion is 180 days. If a Task has not
 completed within 180 days of being added it will be terminated by the Batch
 service and left in whatever state it was in at that time.
 """)
-  @example(
-    "./examples/TaskAddCollection_Basic.json",
-    "Add a basic collection of tasks"
-  )
-  @example(
-    "./examples/TaskAddCollection_Complex.json",
-    "Add a complex collection of tasks"
-  )
   @route("/jobs/{jobId}/addtaskcollection")
   @projectedName("java", "createTaskCollectionInternal")
-  @post
-  createTaskCollection is RpcOperation<
-    BatchClientRequestHeaders & {
+  createTaskCollection is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -1596,9 +1257,7 @@ service and left in whatever state it was in at that time.
       @body
       taskCollection: BatchTaskCollection;
     },
-    BatchClientResponseHeaders & BatchTaskAddCollectionResult,
-    {},
-    BatchError
+    BatchTaskAddCollectionResult
   >;
 
   @summary("Deletes a Task from the specified Job.")
@@ -1609,28 +1268,23 @@ multi-instance Tasks, the delete Task operation applies synchronously to the
 primary task; subtasks and their files are then deleted asynchronously in the
 background.
 """)
-  @example("./examples/TaskDelete.json", "Task delete")
   @route("/jobs/{jobId}/tasks/{taskId}")
   @projectedName("java", "deleteTaskInternal")
-  @delete
-  deleteTask is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job from which to delete the Task.")
-        @path
-        jobId: string;
+  deleteTask is Ops.DeleteOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job from which to delete the Task.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Task to delete.")
-        @path
-        taskId: string;
-      },
+      @doc("The ID of the Task to delete.")
+      @path
+      taskId: string;
+    },
     BatchClientResponseHeaders & {
       @doc("A process exit code.")
       @statusCode
       code: "200";
-    },
-    {},
-    BatchError
+    }
   >;
 
   @summary("Gets information about the specified Task.")
@@ -1639,74 +1293,57 @@ For multi-instance Tasks, information such as affinityId, executionInfo and
 nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
 information about subtasks.
 """)
-  @example("./examples/TaskGet.json", "Task get")
   @route("/jobs/{jobId}/tasks/{taskId}")
   @projectedName("java", "getTaskInternal")
-  @get
-  getTask is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job that contains the Task.")
-        @path
-        jobId: string;
+  getTask is Ops.ReadOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job that contains the Task.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Task to get information about.")
-        @path
-        taskId: string;
+      @doc("The ID of the Task to get information about.")
+      @path
+      taskId: string;
 
-        @doc("An OData $select clause.")
-        @query({ format: "csv" })
-        $select?: string[];
+      @doc("An OData $select clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
+      $select?: string[];
 
-        @doc("An OData $expand clause.")
-        @query({ format: "csv" })
-        $expand?: string[];
-      },
-    BatchResponseHeaders &
-      BatchTask & {
-        @header("DataServiceId")
-        @doc("The OData ID of the resource to which the request applied.")
-        DataServiceId: string;
-      },
-    {},
-    BatchError
+      @doc("An OData $expand clause.")
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "expand")
+      $expand?: string[];
+    },
+    BatchTask & {
+      @header("DataServiceId")
+      @doc("The OData ID of the resource to which the request applied.")
+      dataServiceId: string;
+    }
   >;
 
   @doc("Updates the properties of the specified Task.")
-  @example("./examples/TaskUpdate.json", "Task update")
   @route("/jobs/{jobId}/tasks/{taskId}")
   @projectedName("java", "replaceTaskInternal")
-  @put
-  replaceTask is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/json; odata=minimalmetadata";
+  replaceTask is Ops.ReplaceOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job containing the Task.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Job containing the Task.")
-        @path
-        jobId: string;
+      @doc("The ID of the Task to update.")
+      @path
+      taskId: string;
 
-        @doc("The ID of the Task to update.")
-        @path
-        taskId: string;
-
-        @doc("The Task to update.")
-        @body
-        task: BatchTask;
-      },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
+      @doc("The Task to update.")
+      @body
+      task: BatchTask;
     },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   #suppress "@azure-tools/typespec-azure-core/use-standard-names" "GET operations that return single objects should start with 'get'"
@@ -1715,12 +1352,10 @@ Lists all of the subtasks that are associated with the specified multi-instance
 Task.
 """)
   @doc("If the Task is not a multi-instance Task then this returns an empty collection.")
-  @example("./examples/TaskListSubtasks.json", "Task list subtasks")
   @route("/jobs/{jobId}/tasks/{taskId}/subtasksinfo")
   @projectedName("java", "listSubTasksInternal")
-  @get
-  listSubTasks is RpcOperation<
-    BatchClientRequestHeaders & {
+  listSubTasks is Ops.ReadOperation<
+    {
       @doc("The ID of the Job.")
       @path
       jobId: string;
@@ -1730,12 +1365,13 @@ Task.
       taskId: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchTaskListSubtasksResult,
-    {},
-    BatchError
+    BatchTaskListSubtasksResult
   >;
 
   @summary("Terminates the specified Task.")
@@ -1744,28 +1380,23 @@ When the Task has been terminated, it moves to the completed state. For
 multi-instance Tasks, the terminate Task operation applies synchronously to the
 primary task; subtasks are then terminated asynchronously in the background.
 """)
-  @example("./examples/TaskTerminate.json", "Task terminate")
   @route("/jobs/{jobId}/tasks/{taskId}/terminate")
   @projectedName("java", "terminateTaskInternal")
-  @post
-  terminateTask is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job containing the Task.")
-        @path
-        jobId: string;
+  terminateTask is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job containing the Task.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Task to terminate.")
-        @path
-        taskId: string;
-      },
-    BatchResponseHeaders & {
+      @doc("The ID of the Task to terminate.")
+      @path
+      taskId: string;
+    },
+    {
       @header("DataServiceId")
       @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+      dataServiceId: string;
+    }
   >;
 
   @summary("""
@@ -1781,37 +1412,30 @@ is reset to 0. Reactivation will fail for Tasks that are not completed or that
 previously completed successfully (with an exit code of 0). Additionally, it
 will fail if the Job has completed (or is terminating or deleting).
 """)
-  @example("./examples/TaskReactivate.json", "Task reactivate")
   @route("/jobs/{jobId}/tasks/{taskId}/reactivate")
   @projectedName("java", "reactivateTaskInternal")
-  @post
-  reactivateTask is RpcOperation<
-    BatchClientRequestHeaders &
-      BatchMatchHeaders & {
-        @doc("The ID of the Job containing the Task.")
-        @path
-        jobId: string;
+  reactivateTask is Ops.PostOperation<
+    BatchMatchHeaders & {
+      @doc("The ID of the Job containing the Task.")
+      @path
+      jobId: string;
 
-        @doc("The ID of the Task to reactivate.")
-        @path
-        taskId: string;
-      },
-    BatchResponseHeaders & {
+      @doc("The ID of the Task to reactivate.")
+      @path
+      taskId: string;
+    },
+    {
       @header("DataServiceId")
       @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+      dataServiceId: string;
+    }
   >;
 
   @summary("Deletes the specified Task file from the Compute Node where the Task ran.")
   @doc("Deletes the specified Task file from the Compute Node where the Task ran.")
-  @example("./examples/FileDeleteFromTask.json", "File delete from task")
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
   @projectedName("java", "deleteTaskFileInternal")
-  @delete
-  deleteTaskFile is RpcOperation<
+  deleteTaskFile is Ops.DeleteOperation<
     BatchTaskFileClientPathParameters & {
       @doc("""
 Whether to delete children of a directory. If the filePath parameter represents
@@ -1826,17 +1450,13 @@ then the directory must be empty or deletion will fail.
       @doc("A process exit code.")
       @statusCode
       code: "200";
-    },
-    {},
-    BatchError
+    }
   >;
 
   @doc("Returns the content of the specified Task file.")
-  @example("./examples/FileGetFromTask.json", "Get File From Task")
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
   @projectedName("java", "getTaskFileInternal")
-  @get
-  getTaskFile is RpcOperation<
+  getTaskFile is Ops.ReadOperation<
     BatchTaskFileClientPathParameters &
       BatchModifiedSinceHeaders & {
         @doc("""
@@ -1846,43 +1466,31 @@ format is bytes=startRange-endRange.
         @header
         `ocp-range`?: string;
       },
-    BatchResponseHeaders &
-      FileResponse & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/octet-stream";
+    FileResponse & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/octet-stream";
 
-        @body
-        @doc("A response containing the file content.")
-        file: bytes;
-      },
-    {},
-    BatchError
+      @body
+      @doc("A response containing the file content.")
+      file: bytes;
+    }
   >;
 
   @doc("Gets the properties of the specified Task file.")
-  @example(
-    "./examples/FileGetPropertiesFromTask.json",
-    "File get properties from task"
-  )
   @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
   @projectedName("java", "getTaskFilePropertiesInternal")
-  @head
-  getTaskFileProperties is RpcOperation<
+  getTaskFileProperties is Ops.ResourceInfoOperation<
     BatchTaskFileClientPathParameters & BatchModifiedSinceHeaders,
-    BatchResponseHeaders & FileResponse,
-    {},
-    BatchError
+    FileResponse
   >;
 
   @summary("Lists the files in a Task's directory on its Compute Node.")
   @doc("Lists the files in a Task's directory on its Compute Node.")
-  @example("./examples/FileListFromTask.json", "File list from task")
   @route("/jobs/{jobId}/tasks/{taskId}/files")
   @projectedName("java", "listTaskFilesInternal")
-  @get
-  listTaskFiles is RpcOperation<
-    BatchApplicationListHeaders & {
+  listTaskFiles is Ops.ListOperation<
+    {
       @doc("The ID of the Job that contains the Task.")
       @path
       jobId: string;
@@ -1896,6 +1504,7 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("""
@@ -1905,31 +1514,18 @@ combination with the filter parameter to list specific type of files.
       @query
       recursive?: boolean;
     },
-    BatchResponseHeaders & BatchNodeFileListResult,
-    {},
-    BatchError
+    BatchNodeFileListResult
   >;
-}
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-#suppress "@azure-tools/typespec-azure-core/rpc-operation-request-body" "RPCOperation with '@get' cannot have a body."
-interface Nodes {
   @summary("Adds a user Account to the specified Compute Node.")
   @doc("""
 You can add a user Account to a Compute Node only when it is in the idle or
 running state.
 """)
-  @example("./examples/NodeAddUser.json", "Node add user")
   @route("/pools/{poolId}/nodes/{nodeId}/users")
   @projectedName("java", "createNodeUserInternal")
-  @post
-  createNodeUser is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  createNodeUser is Ops.CreateOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1942,17 +1538,7 @@ running state.
       @body
       user: BatchNodeUserCreateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "201";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    {}
   >;
 
   @summary("Deletes a user Account from the specified Compute Node.")
@@ -1960,12 +1546,10 @@ running state.
 You can delete a user Account to a Compute Node only when it is in the idle or
 running state.
 """)
-  @example("./examples/NodeDeleteUser.json", "Node delete user")
   @route("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
   @projectedName("java", "deleteNodeUserInternal")
-  @delete
-  deleteNodeUser is RpcOperation<
-    BatchClientRequestHeaders & {
+  deleteNodeUser is Ops.DeleteOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -1982,9 +1566,7 @@ running state.
       @doc("A process exit code.")
       @statusCode
       code: "200";
-    },
-    {},
-    BatchError
+    }
   >;
 
   @summary("""
@@ -1996,16 +1578,10 @@ example, if the expiryTime element is not specified, the current value is
 replaced with the default value, not left unmodified. You can update a user
 Account on a Compute Node only when it is in the idle or running state.
 """)
-  @example("./examples/NodeUpdateUser.json", "Node update user")
   @route("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
   @projectedName("java", "replaceNodeUserInternal")
-  @put
-  replaceNodeUser is RpcOperation<
-    BatchClientRequestHeaders & {
-      @doc("Type of content")
-      @header("content-type")
-      contentType: "application/json; odata=minimalmetadata";
-
+  replaceNodeUser is Ops.ReplaceOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2020,29 +1596,17 @@ Account on a Compute Node only when it is in the idle or running state.
 
       @doc("The options to use for updating the user.")
       @body
-      parameters : BatchNodeUserUpdateParameters;
+      parameters: BatchNodeUserUpdateParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Gets information about the specified Compute Node.")
   @doc("Gets information about the specified Compute Node.")
-  @example("./examples/NodeGet_Basic.json", "Node get")
   @route("/pools/{poolId}/nodes/{nodeId}")
   @projectedName("java", "getNodeInternal")
-  @get
-  getNode is RpcOperation<
-    BatchClientRequestHeaders & {
+  getNode is Ops.ReadOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2052,22 +1616,21 @@ Account on a Compute Node only when it is in the idle or running state.
       nodeId: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchNode,
-    {},
-    BatchError
+    BatchNode
   >;
 
   @summary("Restarts the specified Compute Node.")
   @doc("You can restart a Compute Node only if it is in an idle or running state.")
-  @example("./examples/NodeReboot.json", "Node reboot")
   @route("/pools/{poolId}/nodes/{nodeId}/reboot")
   @projectedName("java", "rebootNodeInternal")
-  @post
-  rebootNode is RpcOperation<
-    BatchClientRequestHeaders & {
+  rebootNode is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -2084,17 +1647,7 @@ Account on a Compute Node only when it is in the idle or running state.
       @body
       parameters?: BatchNodeRebootParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Reinstalls the operating system on the specified Compute Node.")
@@ -2103,12 +1656,10 @@ You can reinstall the operating system on a Compute Node only if it is in an
 idle or running state. This API can be invoked only on Pools created with the
 cloud service configuration property.
 """)
-  @example("./examples/NodeReimage.json", "Node reimage")
   @route("/pools/{poolId}/nodes/{nodeId}/reimage")
   @projectedName("java", "reimageNodeInternal")
-  @post
-  reimageNode is RpcOperation<
-    BatchClientRequestHeaders & {
+  reimageNode is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -2125,17 +1676,7 @@ cloud service configuration property.
       @body
       parameters?: BatchNodeReimageParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "202";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    AcceptedProcessingResponseHeaders
   >;
 
   @summary("Disables Task scheduling on the specified Compute Node.")
@@ -2143,12 +1684,10 @@ cloud service configuration property.
 You can disable Task scheduling on a Compute Node only if its current
 scheduling state is enabled.
 """)
-  @example("./examples/NodeDisableScheduling.json", "Node disable scheduling")
   @route("/pools/{poolId}/nodes/{nodeId}/disablescheduling")
   @projectedName("java", "disableNodeSchedulingInternal")
-  @post
-  disableNodeScheduling is RpcOperation<
-    BatchClientRequestHeaders & {
+  disableNodeScheduling is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -2165,17 +1704,7 @@ scheduling state is enabled.
       @body
       parameters?: BatchNodeDisableSchedulingParameters;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Enables Task scheduling on the specified Compute Node.")
@@ -2183,12 +1712,10 @@ scheduling state is enabled.
 You can enable Task scheduling on a Compute Node only if its current scheduling
 state is disabled
 """)
-  @example("./examples/NodeEnableScheduling.json", "Node enable scheduling")
   @route("/pools/{poolId}/nodes/{nodeId}/enablescheduling")
   @projectedName("java", "enableNodeSchedulingInternal")
-  @post
-  enableNodeScheduling is RpcOperation<
-    BatchClientRequestHeaders & {
+  enableNodeScheduling is Ops.PostOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2197,17 +1724,7 @@ state is disabled
       @path
       nodeId: string;
     },
-    BatchResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-
-      @header("DataServiceId")
-      @doc("The OData ID of the resource to which the request applied.")
-      DataServiceId: string;
-    },
-    {},
-    BatchError
+    RequestSuccesResponseHeaders
   >;
 
   @summary("Gets the settings required for remote login to a Compute Node.")
@@ -2218,15 +1735,10 @@ invoked only on Pools created with the virtual machine configuration property.
 For Pools created with a cloud service configuration, see the GetRemoteDesktop
 API.
 """)
-  @example(
-    "./examples/NodeGetRemoteLoginSettings.json",
-    "Node get remote login settings"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
   @projectedName("java", "getNodeRemoteLoginSettingsInternal")
-  @get
-  getNodeRemoteLoginSettings is RpcOperation<
-    BatchClientRequestHeaders & {
+  getNodeRemoteLoginSettings is Ops.ReadOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2235,9 +1747,7 @@ API.
       @path
       nodeId: string;
     },
-    BatchResponseHeaders & BatchNodeRemoteLoginSettingsResult,
-    {},
-    BatchError
+    BatchNodeRemoteLoginSettings
   >;
 
   @summary("Gets the Remote Desktop Protocol file for the specified Compute Node.")
@@ -2247,15 +1757,10 @@ user Account on the Compute Node. This API can only be invoked on Pools created
 with a cloud service configuration. For Pools created with a virtual machine
 configuration, see the GetRemoteLoginSettings API.
 """)
-  @example(
-    "./examples/NodeGetRemoteDesktop.json",
-    "Get RDP file of the compute node"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/rdp")
   @projectedName("java", "getNodeRemoteDesktopFileInternal")
-  @get
-  getNodeRemoteDesktopFile is RpcOperation<
-    BatchClientRequestHeaders & {
+  getNodeRemoteDesktopFile is Ops.ReadOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2267,13 +1772,11 @@ Protocol file.
       @path
       nodeId: string;
     },
-    BatchResponseHeaders & {
+    {
       @body
       @doc("A response containing the file content.")
       file: bytes;
-    },
-    {},
-    BatchError
+    }
   >;
 
   @summary("""
@@ -2286,15 +1789,10 @@ from Compute Nodes if you are experiencing an error and wish to escalate to
 Azure support. The Azure Batch service log files should be shared with Azure
 support to aid in debugging issues with the Batch service.
 """)
-  @example(
-    "./examples/NodeUploadBatchServiceLogs.json",
-    "Upload BatchService Logs"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
   @projectedName("java", "uploadNodeLogsInternal")
-  @post
-  uploadNodeLogs is RpcOperation<
-    BatchClientRequestHeaders & {
+  uploadNodeLogs is Ops.PostOperation<
+    {
       @doc("Type of content")
       @header("content-type")
       contentType: "application/json; odata=minimalmetadata";
@@ -2314,19 +1812,15 @@ Protocol file.
       @body
       parameters: UploadBatchServiceLogsParameters;
     },
-    BatchClientResponseHeaders & UploadBatchServiceLogsResult,
-    {},
-    BatchError
+    UploadBatchServiceLogsResult
   >;
 
   @summary("Lists the Compute Nodes in the specified Pool.")
   @doc("Lists the Compute Nodes in the specified Pool.")
-  @example("./examples/NodeList.json", "Node list")
   @route("/pools/{poolId}/nodes")
   @projectedName("java", "listNodesInternal")
-  @get
-  listNodes is RpcOperation<
-    BatchApplicationListHeaders & {
+  listNodes is Ops.ListOperation<
+    {
       @doc("The ID of the Pool from which you want to list Compute Nodes.")
       @path
       poolId: string;
@@ -2336,28 +1830,25 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-nodes-in-a-pool.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchNodeListResult,
-    {},
-    BatchError
+    BatchNodeListResult
   >;
 
   @summary("Gets information about the specified Compute Node Extension.")
   @doc("Gets information about the specified Compute Node Extension.")
-  @example(
-    "./examples/BatchNodeExtensionGet.json",
-    "Get compute node extension"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/extensions/{extensionName}")
   @projectedName("java", "getNodeExtensionInternal")
-  @get
-  getNodeExtension is RpcOperation<
-    BatchClientRequestHeaders & {
+  getNodeExtension is Ops.ReadOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2373,25 +1864,21 @@ The name of the Compute Node Extension that you want to get information about.
       extensionName: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchNodeVMExtension,
-    {},
-    BatchError
+    BatchNodeVMExtension
   >;
 
   @summary("Lists the Compute Nodes Extensions in the specified Pool.")
   @doc("Lists the Compute Nodes Extensions in the specified Pool.")
-  @example(
-    "./examples/BatchNodeExtensionList.json",
-    "List compute node extensions"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/extensions")
   @projectedName("java", "listNodeExtensionsInternal")
-  @get
-  listNodeExtensions is RpcOperation<
-    BatchApplicationListHeaders & {
+  listNodeExtensions is Ops.ListOperation<
+    {
       @doc("The ID of the Pool that contains Compute Node.")
       @path
       poolId: string;
@@ -2401,21 +1888,20 @@ The name of the Compute Node Extension that you want to get information about.
       nodeId: string;
 
       @doc("An OData $select clause.")
-      @query({ format: "csv" })
+      @query({
+        format: "csv",
+      })
+      @projectedName("client", "select")
       $select?: string[];
     },
-    BatchResponseHeaders & BatchNodeVMExtensionListResult,
-    {},
-    BatchError
+    BatchNodeVMExtensionListResult
   >;
 
   @summary("Deletes the specified file from the Compute Node.")
   @doc("Deletes the specified file from the Compute Node.")
-  @example("./examples/FileDeleteFromNode.json", "File delete from node")
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
   @projectedName("java", "deleteNodeFileInternal")
-  @delete
-  deleteNodeFile is RpcOperation<
+  deleteNodeFile is Ops.DeleteOperation<
     BatchNodeFileClientPathParameters & {
       @doc("""
 Whether to delete children of a directory. If the filePath parameter represents
@@ -2430,17 +1916,13 @@ then the directory must be empty or deletion will fail.
       @doc("A process exit code.")
       @statusCode
       code: "200";
-    },
-    {},
-    BatchError
+    }
   >;
 
   @doc("Returns the content of the specified Compute Node file.")
-  @example("./examples/FileGetFromNode.json", "Get File From Compute Node")
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
   @projectedName("java", "getNodeFileInternal")
-  @get
-  getNodeFile is RpcOperation<
+  getNodeFile is Ops.ReadOperation<
     BatchNodeFileClientPathParameters &
       BatchModifiedSinceHeaders & {
         @doc("""
@@ -2450,39 +1932,27 @@ format is bytes=startRange-endRange.
         @header
         `ocp-range`?: string;
       },
-    BatchResponseHeaders &
-      FileResponse & {
-        @body
-        @doc("A response containing the file content.")
-        file: bytes;
-      },
-    {},
-    BatchError
+    FileResponse & {
+      @body
+      @doc("A response containing the file content.")
+      file: bytes;
+    }
   >;
 
   @doc("Gets the properties of the specified Compute Node file.")
-  @example(
-    "./examples/FileGetPropertiesFromNode.json",
-    "File get properties from node"
-  )
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
   @projectedName("java", "getNodeFilePropertiesInternal")
-  @head
-  getNodeFileProperties is RpcOperation<
+  getNodeFileProperties is Ops.ResourceInfoOperation<
     BatchNodeFileClientPathParameters & BatchModifiedSinceHeaders,
-    BatchResponseHeaders & FileResponse,
-    {},
-    BatchError
+    FileResponse
   >;
 
   @summary("Lists all of the files in Task directories on the specified Compute Node.")
   @doc("Lists all of the files in Task directories on the specified Compute Node.")
-  @example("./examples/FileListFromNode.json", "File list from node")
   @route("/pools/{poolId}/nodes/{nodeId}/files")
   @projectedName("java", "listNodeFilesInternal")
-  @get
-  listNodeFiles is RpcOperation<
-    BatchApplicationListHeaders & {
+  listNodeFiles is Ops.ListOperation<
+    {
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2496,215 +1966,199 @@ An OData $filter clause. For more information on constructing this filter, see
 https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
 """)
       @query
+      @projectedName("client", "filter")
       $filter?: string;
 
       @doc("Whether to list children of a directory.")
       @query
       recursive?: boolean;
     },
-    BatchResponseHeaders & BatchNodeFileListResult,
-    {},
-    BatchError
+    BatchNodeFileListResult
   >;
-
 }
-
 
 // headers ////////////////////
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The request to the Batch service was successful.")
-model PoolRemoveNodesResponseHeaders {
-  ...BatchResponseHeaders;
-
+alias AcceptedProcessingResponseHeaders = {
   @doc("A process exit code.")
   @statusCode
   code: "202";
 
-  @doc("The OData ID of the resource to which the request applied")
+  @doc("The OData ID of the resource to which the request applied.")
   @header("DataServiceId")
-  DataServiceId: string;
-}
+  dataServiceId: string;
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The request to the Batch service was successful.")
-model PoolUpdatePropertiesResponseHeaders {
-  ...BatchResponseHeaders;
-
+alias NoContentSuccesResponseHeaders = {
   @doc("A process exit code.")
   @statusCode
   code: "204";
 
-  @doc("The OData ID of the resource to which the request applied")
+  @doc("The OData ID of the resource to which the request applied.")
   @header("DataServiceId")
-  DataServiceId: string;
-}
+  dataServiceId: string;
+};
 
-alias PoolStopResizeResponseHeaders = PoolResizeResponseHeaders;
-
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The request to the Batch service was successful.")
-model PoolResizeResponseHeaders {
-  ...BatchResponseHeaders;
-
-  @doc("A process exit code.")
-  @statusCode
-  code: "202";
-
-  @doc("The OData ID of the resource to which the request applied")
-  @header("DataServiceId")
-  DataServiceId: string;
-}
-
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("Common header values for pool requests")
-model FileResponse {
+alias RequestSuccesResponseHeaders = {
   @doc("A process exit code.")
   @statusCode
   code: "200";
 
-  @header
+  @header("DataServiceId")
+  @doc("The OData ID of the resource to which the request applied.")
+  dataServiceId: string;
+};
+
+alias FileResponse = {
+  @doc("A process exit code.")
+  @statusCode
+  code: "200";
+
+  @header("ocp-creation-time")
   @doc("The file creation time.")
   @encode(DateTimeKnownEncoding.rfc7231)
-  `ocp-creation-time`?: utcDateTime;
+  ocpcreationtime?: utcDateTime;
 
-  @header
+  @header("ocp-batch-file-isdirectory")
   @doc("Whether the object represents a directory.")
-  `ocp-batch-file-isdirectory`: boolean;
+  ocpbatchfileisdirectory: boolean;
 
-  @header
+  @header("ocp-batch-file-url")
   @doc("The URL of the file.")
-  `ocp-batch-file-url`: string;
+  ocpbatchfileurl: string;
 
-  @header
+  @header("ocp-batch-file-mode")
   @doc("The file mode attribute in octal format.")
-  `ocp-batch-file-mode`: string;
+  ocpbatchfilemode: string;
 
-  @header
+  @header("Content-Length")
   @doc("The length of the file.")
-  `Content-Length`: int64;
-}
+  contentLength: int64;
+};
 
+alias BatchPoolHeaders = {
+  ...BatchMatchHeaders;
 
-/////////////////////////////////////  Headers models ///////////////////////////////////
-
-@doc("Common header values for pool requests")
-model BatchPoolHeaders extends BatchMatchHeaders {
   @doc("The ID of the Pool to get.")
   @path
   poolId: string;
-}
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("Common header values for pool requests")
-model BatchMatchHeaders extends BatchModifiedSinceHeaders {
+alias BatchMatchHeaders = {
+  ...BatchModifiedSinceHeaders;
+
   @doc("""
 An ETag value associated with the version of the resource known to the client.
 The operation will be performed only if the resource's current ETag on the
 service exactly matches the value specified by the client.
 """)
-  @header
+  @header("If-Match")
   @projectedName("python", "if__match")
-  `If-Match`?: string;
+  ifMatch?: string;
 
   @doc("""
 An ETag value associated with the version of the resource known to the client.
 The operation will be performed only if the resource's current ETag on the
 service does not match the value specified by the client.
 """)
-  @header
+  @header("If-None-Match")
   @projectedName("python", "if_none_match")
-  `If-None-Match`?: string;
-}
+  ifNoneMatch?: string;
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("Common header values for modified headers")
-model BatchModifiedSinceHeaders {
+alias BatchModifiedSinceHeaders = {
   @doc("""
 A timestamp indicating the last modified time of the resource known to the
 client. The operation will be performed only if the resource on the service has
 been modified since the specified time.
 """)
-  @header
+  @header("If-Modified-Since")
   @encode(DateTimeKnownEncoding.rfc7231)
   @projectedName("python", "if_modified_since")
-  `If-Modified-Since`?: utcDateTime;
+  ifModifiedSince?: utcDateTime;
 
   @doc("""
 A timestamp indicating the last modified time of the resource known to the
 client. The operation will be performed only if the resource on the service has
 not been modified since the specified time.
 """)
-  @header
+  @header("If-Unmodified-Since")
   @encode(DateTimeKnownEncoding.rfc7231)
   @projectedName("python", "if_unmodified_since")
-  `If-Unmodified-Since`?: utcDateTime;
-}
+  ifUnmodifiedSince?: utcDateTime;
+};
 
 // This is the standard set of headers that most of batch apis return
 alias BatchResponseHeaders = BatchClientResponseHeaders &
   BatchEtagResponseHeaders;
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("Etag related response header values")
-model BatchEtagResponseHeaders {
+alias BatchEtagResponseHeaders = {
   @doc("The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.")
-  @header
+  @header("ETag")
   @projectedName("python", "etag")
-  ETag?: string;
+  etag?: string;
 
   @doc("The time at which the resource was last modified.")
-  @header
+  @header("Last-Modified")
   @encode(DateTimeKnownEncoding.rfc7231)
-  `Last-Modified`?: utcDateTime;
-}
+  lastmodified?: utcDateTime;
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("Client related response header values")
-model BatchClientResponseHeaders {
+alias BatchClientResponseHeaders = {
   @doc("The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.")
-  @header
-  `client-request-id`?: string;
+  @header("client-request-id")
+  clientrequestid?: string;
 
   @doc("A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report, include the value of this request ID, the approximate time that the request was made, the Batch Account against which the request was made, and the region that Account resides in.")
-  @header
-  `request-id`?: string;
-}
+  @header("request-id")
+  requestid?: string;
+};
 
-@doc("A response containing headers related to the Pool, if it exists.")
-model PoolDoesExistResponseHeaders {
+alias PoolDoesExistResponseHeaders = {
   ...BatchResponseHeaders;
 
   @doc("A process exit code.")
   @statusCode
   code: "200";
-}
+};
 
-@doc("The Pool does not exist.")
-model PoolDoesntExistResponseHeaders {
+alias PoolDoesNotExistResponseHeaders = {
   @doc("A process exit code.")
   @statusCode
   code: "404";
-}
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The parameters for a widget status request")
-model DeleteResponseHeaders {
+alias JobScheduleDoesExistResponseHeaders = {
+  ...BatchResponseHeaders;
+
+  @doc("A response containing headers related to the Job Schedule, if it exists.")
+  @statusCode
+  code: "200";
+};
+
+alias JobScheduleDoesNotExistResponseHeaders = {
+  @doc("The Job Schedule does not exist.")
+  @statusCode
+  code: "404";
+};
+
+alias DeleteResponseHeaders = {
   @doc("A process exit code.")
   @statusCode
   code: "202";
 
   @doc("The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id parameter was set to true.")
-  @header
-  `client-request-id`?: string;
+  @header("client-request-id")
+  clientrequestid?: string;
 
   @doc("A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report, include the value of this request ID, the approximate time that the request was made, the Batch Account against which the request was made, and the region that Account resides in.")
-  @header
-  `request-id`?: string;
-}
+  @header("request-id")
+  requestid?: string;
+};
 
-@doc("The parameters for a widget status request")
-model BatchApplicationListHeaders extends BatchClientRequestHeaders {
+alias BatchCommonListHeaders = {
+  ...BatchClientRequestHeaders;
+
   @doc("""
 The maximum number of items to return in the response. A maximum of 1000
 applications can be returned.
@@ -2712,22 +2166,10 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-
   maxresults?: int32 = 1000;
+};
 
-  #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-  @doc("""
-The time the request was issued. Client libraries typically set this to the
-current system clock time; set it explicitly if you are calling the REST API
-directly.
-""")
-  @header
-  @encode(DateTimeKnownEncoding.rfc7231)
-  `ocp-date`?: utcDateTime;
-}
-
-@doc("Common path parms for Node related File operartions")
-model BatchNodeFileClientPathParameters extends BatchClientRequestHeaders {
+alias BatchNodeFileClientPathParameters = {
   @doc("The ID of the Pool that contains the Compute Node.")
   @path
   poolId: string;
@@ -2739,10 +2181,9 @@ model BatchNodeFileClientPathParameters extends BatchClientRequestHeaders {
   @doc("The path to the file or directory that you want to delete.")
   @path
   filePath: string;
-}
+};
 
-@doc("Common path parms for Task related File operartions")
-model BatchTaskFileClientPathParameters extends BatchClientRequestHeaders {
+alias BatchTaskFileClientPathParameters = {
   @doc("The ID of the Job that contains the Task.")
   @path
   jobId: string;
@@ -2754,11 +2195,9 @@ model BatchTaskFileClientPathParameters extends BatchClientRequestHeaders {
   @doc("The path to the Task file that you want to get the content of.")
   @path
   filePath: string;
-}
+};
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The parameters for a widget status request")
-model BatchClientRequestHeaders {
+alias BatchClientRequestHeaders = {
   @doc("""
 Sets the maximum time that the server can spend processing the request,
 in seconds. The default is 30 seconds.
@@ -2771,19 +2210,19 @@ in seconds. The default is 30 seconds.
 The caller-generated request identity, in the form of a GUID with no decoration
 such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.
 """)
-  @header
-  `client-request-id`?: string;
+  @header("client-request-id")
+  clientrequestid?: string;
 
   @doc("Whether the server should return the client-request-id in the response.")
-  @header
-  `return-client-request-id`?: boolean = false;
+  @header("return-client-request-id")
+  returnclientrequestid?: boolean = false;
 
   @doc("""
 The time the request was issued. Client libraries typically set this to the
 current system clock time; set it explicitly if you are calling the REST API
 directly.
 """)
-  @header
+  @header("ocp-date")
   @encode(DateTimeKnownEncoding.rfc7231)
-  `ocp-date`?: utcDateTime;
-}
+  ocpdate?: utcDateTime;
+};

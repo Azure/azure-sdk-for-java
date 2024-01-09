@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node. */
+/**
+ * Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
+ */
 @Fluent
 public final class BatchNodeUserCreateParameters {
 
@@ -124,9 +126,9 @@ public final class BatchNodeUserCreateParameters {
     }
 
     /**
-     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image
-     * reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
+     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes
+     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
+     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
      * property.
      *
      * @return the password value.
@@ -137,9 +139,9 @@ public final class BatchNodeUserCreateParameters {
     }
 
     /**
-     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image
-     * reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
+     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes
+     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
+     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
      * property.
      *
      * @param password the password value to set.

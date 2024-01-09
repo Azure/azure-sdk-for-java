@@ -8,7 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Batch service does not assign any meaning to this metadata; it is solely for the use of user code. */
+/**
+ * The Batch service does not assign any meaning to this metadata; it is solely
+ * for the use of user code.
+ */
 @Immutable
 public final class MetadataItem {
 
