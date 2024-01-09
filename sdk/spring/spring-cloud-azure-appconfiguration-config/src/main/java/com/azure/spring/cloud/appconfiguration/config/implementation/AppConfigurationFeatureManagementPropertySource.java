@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
@@ -52,7 +53,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build()
+        .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
     private final String keyFilter;
 

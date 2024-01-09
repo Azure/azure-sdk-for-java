@@ -6,15 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allocation {
 
-    @JsonProperty("default-when-enabled")
     private String defaultWhenEnabled;
 
-    @JsonProperty("default-when-disabled")
     private String defaultWhenDisabled;
 
     private Map<String, UserAllocation> users = new HashMap<>();
