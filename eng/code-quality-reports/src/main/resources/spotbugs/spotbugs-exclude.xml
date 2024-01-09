@@ -124,10 +124,6 @@
   <!-- Cases where null arrays should return null instead of empty arrays -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.Base64Url"/>
-      <Class name="com.azure.core.util.CoreUtils"/>
-      <Class name="com.azure.core.implementation.serializer.HttpResponseDecodeData"/>
-      <Class name="com.azure.core.util.serializer.JacksonAdapter"/>
       <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter"/>
       <And>
         <Class name="com.microsoft.azure.servicebus.Utils"/>
@@ -148,10 +144,6 @@
       <And>
         <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
         <Method name="getX509Thumbprint"/>
-      </And>
-      <And>
-        <Class name="com.azure.core.implementation.jackson.JacksonJsonReader"/>
-        <Method name="getBinary"/>
       </And>
       <And>
         <Class name="com.azure.json.implementation.DefaultJsonReader"/>
@@ -192,10 +184,7 @@
 
   <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
   <Match>
-    <Or>
-      <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
-      <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim"/>
-    </Or>
+    <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim"/>
     <Method name="createJsonMapper"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -204,7 +193,6 @@
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
       <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
@@ -218,22 +206,6 @@
       <Class name="com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-
-  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
-      <Method name="getBytes"/>
-    </Or>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
   <!-- These KeyVaultClientBase methods are made synchronous by blocking and waiting for a result. They do not return
@@ -278,7 +250,6 @@
     <Or>
       <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
       <Class name="~com\.azure\.(.+)Impl"/>
-      <Class name="com.azure.core.util.CoreUtils"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
@@ -430,46 +401,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- No need to implements cloneable. -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
-      <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy"/>
-      <Class name="com.azure.core.http.HttpRequest"/>
-      <Class name="com.azure.core.implementation.http.HttpPipelineCallState"/>
-    </Or>
-    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
-  </Match>
-
-  <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.util.FluxUtil"/>
-      <Class name="com.azure.core.util.FluxUtil$1"/>
-      <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
-      <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber"/>
-    </Or>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
-  <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
-  -->
-  <Match>
-    <Class
-      name="~com\.azure\.core\.implementation\.serializer\.jackson\.(AdditionalPropertiesDeserializer|AdditionalPropertiesSerializer|FlatteningDeserializer|FlatteningSerializer)"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-
-  <!-- The casting problems do not exist in Azure use cases -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.implementation.MethodHandleReflectiveInvoker"/>
-      <Class name="com.azure.core.implementation.ReflectionUtilsMethodHandle"/>
-      <Class name="com.azure.core.implementation.TypeUtil"/>
-    </Or>
-    <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
   <Match>
     <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
@@ -536,18 +467,6 @@
     <Bug pattern="MS_SHOULD_BE_FINAL"/>
   </Match>
 
-  <!-- The HttpRequest fields are serializable. Flux<T> and HttpHeaders are able to serialize and deserialize. -->
-  <Match>
-    <Class name="com.azure.core.http.HttpRequest"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Storing HttpResponseError as the Object value is not required to be serializable or transient -->
-  <Match>
-    <Class name="com.azure.core.exception.HttpResponseException"/>
-    <Bug pattern="SE_BAD_FIELD_STORE"/>
-  </Match>
-
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
@@ -580,13 +499,6 @@
     <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
     <Method name="onReceiveComplete"/>
     <Bug pattern="AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"/>
-  </Match>
-
-  <!-- Incorrect flagging, the surrounding hasValue() checks that get() isn't null -->
-  <Match>
-    <Class name="com.azure.core.implementation.http.rest.AsyncRestProxy"/>
-    <Method name="~(.*)\$endSpanWhenDone\$(.*)"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- Incorrect flagging, error will be thrown if value is null -->
@@ -624,12 +536,6 @@
     <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"/>
   </Match>
 
-  <!-- Super doesn't need to be cloned since it is Object -->
-  <Match>
-    <Class name="com.azure.core.util.Configuration"/>
-    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
-  </Match>
-
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
@@ -658,14 +564,6 @@
       <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
-      <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
-    </Or>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <!-- Field initialized by jackson property annotation -->
@@ -705,7 +603,6 @@
   <Match>
     <Or>
       <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
-      <Class name="com.azure.core.http.rest.ResponseExceptionConstructorCache"/>
       <Class name="com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper"/>
     </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
@@ -741,7 +638,6 @@
   <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
     <Or>
-      <Class name="~com\.azure\.core\.implementation\.jackson\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
       <Class name="~com\.azure\.core\.serializer\.json\.jackson\.implementation\.(FlatteningSerializer|FlatteningDeserializer|AdditionalPropertiesSerializer|AdditionalPropertiesDeserializer)"/>
       <Class name="com.azure.core.serializer.json.jackson.JacksonAdapter$GlobalSerializerAdapter"/>
     </Or>
@@ -777,7 +673,6 @@
   <!-- Implementation name confusing with public API name and non-public API -->
   <Match>
     <Or>
-      <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
       <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
@@ -804,50 +699,9 @@
     <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
-  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
   <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
-    <Method name="getFinalResult"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
-  <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
-    <Method name="poll"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
-  <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
-    <Method name="waitForCompletion"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
-  <Match>
-    <Class name="com.azure.core.util.polling.SyncOverAsyncPoller"/>
-    <Method name="waitUntil"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Incorrect flagging, there is already switchIfEmpty operator applied in the upstream to throw error on empty -->
-  <Match>
-    <Class name="com.azure.core.util.polling.PollingContext"/>
-    <Method name="clone"/>
-    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
-      <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
-    </Or>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
-    SIC_INNER_SHOULD_BE_STATIC_ANON,
-    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
-    NP_BOOLEAN_RETURN_NULL"/>
+    <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
   <!-- Disable some spotbugs rules on perf-tests -->
@@ -2291,11 +2145,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
-    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
-  </Match>
-
   <!-- Use the property to take the custom serializer from SearchClient. -->
   <Match>
     <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)"/>
@@ -2327,14 +2176,6 @@
     </Or>
   </Match>
 
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP"/>
-    <Or>
-      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
-      <Class name="com.azure.core.implementation.ByteBufferCollector"/>
-    </Or>
-  </Match>
-
   <!-- EventGrid swagger naming -->
   <Match>
     <Or>
@@ -2358,47 +2199,10 @@
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
-  <!-- Disabling false positives in azure-core -->
-  <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
-  <Match>
-    <Class name="com.azure.core.util.logging.ClientLogger"/>
-    <Bug pattern="CRLF_INJECTION_LOGS"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
-    <Bug pattern="CRLF_INJECTION_LOGS"/>
-  </Match>
-
-  <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
-  <Match>
-    <Or>
-      <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
-      <And>
-        <Class name="com.azure.core.util.CoreUtils"/>
-        <Method name="randomUuid"/>
-      </And>
-    </Or>
-    <Bug pattern="PREDICTABLE_RANDOM"/>
-  </Match>
-
-  <!-- In the default log level azure-core will not print the stack trace, but when the user opt-in for the lowest level log (DEBUG) we'll print it, which is expected. -->
-  <Match>
-    <Class name="com.azure.core.implementation.logging.DefaultLogger"/>
-    <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE"/>
-  </Match>
-
   <!-- False positives -->
   <Match>
-    <Or>
-      <And>
-        <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
-        <Method name="getFilenames"/>
-      </And>
-      <And>
-        <Class name="com.azure.core.implementation.http.rest.SwaggerMethodParser"/>
-        <Method name="serialize"/>
-      </And>
-    </Or>
+    <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore"/>
+    <Method name="getFilenames"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
   <Match>
@@ -2409,50 +2213,6 @@
   <Match>
     <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
     <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <!-- Returning a new copy of the object is not necessary for queuing system use cases.
-  Client do not change content of message once message is created. Array copy would degrade the performance.
-  https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
-  <Match>
-    <Class name="com.azure.core.amqp.models.AmqpMessageBody"/>
-    <Field name="data"/>
-    <Bug pattern="EI_EXPOSE_REP"/>
-  </Match>
-
-  <!-- The DispositionWork doesn't need to be serializable -->
-  <Match>
-    <Class
-      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <Match>
-    <Class
-      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
-    <Or>
-      <Field name="desiredState"/>
-      <Field name="mono"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-    <!--  The returned Disposable can be ignored since Scheduler is closed when Reactor closes. -->
-  <Match>
-    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
-    <Method name="start"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-  </Match>
-    <Match>
-    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
-    <Method name="run"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-  </Match>
-
-  <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
-  <Match>
-    <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
-    <Field name="content"/>
-    <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
 
@@ -2584,10 +2344,7 @@
 
   <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
   <Match>
-    <Or>
-      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
-      <Class name="com.azure.core.serializer.json.jackson.implementation.FlatteningSerializer"/>
-    </Or>
+    <Class name="com.azure.core.serializer.json.jackson.implementation.FlatteningSerializer"/>
     <Method name="propertyOnlyFlattenSerialize"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
@@ -2600,12 +2357,6 @@
     </Or>
     <Method name="writeTo"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
-    <Method name="locateExceptionConstructor"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Shaded code shouldn't run Spotbugs -->
@@ -2635,14 +2386,6 @@
                   UPM_UNCALLED_PRIVATE_METHOD,
                   DLS_DEAD_LOCAL_STORE,
                   DM_STRING_TOSTRING"/>
-  </Match>
-
-  <!-- Implementations of BinaryDataContent were transitioned from AtomicReference<byte[]> to volatile byte[] and AtomicReferenceFieldUpdater to reduce object size. -->
-  <!-- Spotbugs raises a VO_VOLATILE_REFERENCE_TO_ARRAY now but this has the same issue as before where the array elements aren't volatile. -->
-  <Match>
-    <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
-    <Class name="~com\.azure\.core\.implementation\.util\.(.*)Content"/>
-    <Field name="bytes"/>
   </Match>
 
   <!-- Test classes that create clients in setup instead of constructor. -->
@@ -2702,13 +2445,6 @@
     <Class name="com.azure.sdk.build.tool.util.logging.MojoLogger"/>
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
-  </Match>
-
-  <!-- False positive, complaining about dereference of null 'source' on some paths, which can't happen based on the null validation checks. -->
-  <Match>
-    <Class name="com.azure.core.util.io.IOUtils"/>
-    <Method name="transfer"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
    <!-- Returning a new copy of the object is not necessary -->

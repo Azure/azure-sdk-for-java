@@ -4,4 +4,5 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilder" files="com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.java" />
 </suppressions>
