@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Maps to the JSON return values from http://httpbin.org.
  */
-public class HttpBinJSON {
+public class HttpBinJson {
     @JsonProperty()
     private String url;
 
@@ -48,6 +48,12 @@ public class HttpBinJSON {
         return headers;
     }
 
+    /**
+     * Gets the value of the header with the provided name.
+     *
+     * @param name The name of the header.
+     * @return The value of the header with the provided name.
+     */
     public String getHeaderValue(String name) {
         return headers == null ? null : headers.containsKey(name) ? headers.get(name).get(0) : null;
     }
