@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
@@ -62,8 +61,6 @@ import reactor.core.publisher.Mono;
 class StorageAccountImpl
     extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager>
     implements StorageAccount, StorageAccount.Definition, StorageAccount.Update,
-    StorageAccount.DefinitionStages.WithSystemAssignedIdentityAccessOrCreate,
-    StorageAccount.UpdateStages.WithSystemAssignedIdentityAccessOrUpdate,
     StorageAccount.DefinitionStages.WithUserAssignedManagedServiceIdentityAccessOrCreate,
     StorageAccount.UpdateStages.WithUserAssignedManagedServiceIdentityAccessOrUpdate {
 
@@ -832,36 +829,6 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withoutUserAssignedManagedServiceIdentity(String identityId) {
         this.storageAccountMsiHandler.withoutExternalManagedServiceIdentity(identityId);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withSystemAssignedIdentityAccessTo(String resourceId, BuiltInRole role) {
-        this.storageAccountMsiHandler.withAccessTo(resourceId, role);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withSystemAssignedIdentityAccessToCurrentResourceGroup(BuiltInRole role) {
-        this.storageAccountMsiHandler.withAccessToCurrentResourceGroup(role);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withSystemAssignedIdentityAccessTo(String resourceId, String roleDefinitionId) {
-        this.storageAccountMsiHandler.withAccessTo(resourceId, roleDefinitionId);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withSystemAssignedIdentityAccessToCurrentResourceGroup(String roleDefinitionId) {
-        this.storageAccountMsiHandler.withAccessToCurrentResourceGroup(roleDefinitionId);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withoutSystemAssignedManagedServiceIdentity() {
-        this.storageAccountMsiHandler.withoutLocalManagedServiceIdentity();
         return this;
     }
 

@@ -37,7 +37,7 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     private BlobContainers blobContainers;
     private BlobServices blobServices;
     private ManagementPolicies managementPolicies;
-    private AuthorizationManager authorizationManager;
+    private final AuthorizationManager authorizationManager;
 
     /** @return the authorization manager */
     public AuthorizationManager authorizationManager() {

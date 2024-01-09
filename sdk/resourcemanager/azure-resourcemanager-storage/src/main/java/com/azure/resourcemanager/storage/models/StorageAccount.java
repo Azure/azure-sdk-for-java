@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -419,55 +418,7 @@ public interface StorageAccount
              *
              * @return the next stage of storage account definition
              */
-            WithSystemAssignedIdentityAccessOrCreate withSystemAssignedManagedServiceIdentity();
-        }
-
-        /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled storage account allowing to set
-         * access role for the identity.
-         */
-        interface WithSystemAssignedIdentityAccessOrCreate extends WithCreate {
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the given access (described
-             * by the role) on an ARM resource identified by the resource ID. Applications running on the virtual
-             * machine will have the same permission (role) on the ARM resource.
-             *
-             * @param resourceId the ARM identifier of the resource
-             * @param role access role to assigned to the storage account's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityAccessOrCreate withSystemAssignedIdentityAccessTo(String resourceId, BuiltInRole role);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the given access (described
-             * by the role) on the resource group that storage account resides. Applications running on the virtual
-             * machine will have the same permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the storage account's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityAccessOrCreate withSystemAssignedIdentityAccessToCurrentResourceGroup(BuiltInRole role);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the access (described by
-             * the role definition) on an ARM resource identified by the resource ID. Applications running on the
-             * storage account will have the same permission (role) on the ARM resource.
-             *
-             * @param resourceId scope of the access represented in ARM resource ID format
-             * @param roleDefinitionId access role definition to assigned to the storage account's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityAccessOrCreate withSystemAssignedIdentityAccessTo(String resourceId, String roleDefinitionId);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the access (described by
-             * the role definition) on the resource group that storage account resides. Applications running on the
-             * storage account will have the same permission (role) on the resource group.
-             *
-             * @param roleDefinitionId access role definition to assigned to the storage account's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityAccessOrCreate withSystemAssignedIdentityAccessToCurrentResourceGroup(String roleDefinitionId);
+            WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
         /**
@@ -831,69 +782,13 @@ public interface StorageAccount
              *
              * @return the next stage of storage account update
              */
-            WithSystemAssignedIdentityAccessOrUpdate withSystemAssignedManagedServiceIdentity();
-
-            /**
-             * Specifies that System Assigned (Local) Managed Service Identity needs to be disabled.
-             *
-             * @return the next stage of the update
-             */
-            Update withoutSystemAssignedManagedServiceIdentity();
-
+            Update withSystemAssignedManagedServiceIdentity();
         }
 
         /**
-         * The stage of the System Assigned (Local) Managed Service Identity enabled storage account allowing to set
+         * The stage of the User Assigned Managed Service Identity enabled storage account allowing to set
          * access role for the identity.
          */
-        interface WithSystemAssignedIdentityAccessOrUpdate extends Update {
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the given access (described
-             * by the role) on an ARM resource identified by the resource ID. Applications running on the virtual
-             * machine will have the same permission (role) on the ARM resource.
-             *
-             * @param resourceId the ARM identifier of the resource
-             * @param role access role to assigned to the storage account's local identity
-             * @return the next stage of the update
-             */
-            WithSystemAssignedIdentityAccessOrUpdate withSystemAssignedIdentityAccessTo(
-                String resourceId, BuiltInRole role);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the given access (described
-             * by the role) on the resource group that storage account resides. Applications running on the virtual
-             * machine will have the same permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the storage account's local identity
-             * @return the next stage of the update
-             */
-            WithSystemAssignedIdentityAccessOrUpdate withSystemAssignedIdentityAccessToCurrentResourceGroup(
-                BuiltInRole role);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the access (described by
-             * the role definition) on an ARM resource identified by the resource ID. Applications running on the
-             * storage account will have the same permission (role) on the ARM resource.
-             *
-             * @param resourceId scope of the access represented in ARM resource ID format
-             * @param roleDefinitionId access role definition to assigned to the storage account's local identity
-             * @return the next stage of the update
-             */
-            WithSystemAssignedIdentityAccessOrUpdate withSystemAssignedIdentityAccessTo(
-                String resourceId, String roleDefinitionId);
-
-            /**
-             * Specifies that storage account's system assigned (local) identity should have the access (described by
-             * the role definition) on the resource group that storage account resides. Applications running on the
-             * storage account will have the same permission (role) on the resource group.
-             *
-             * @param roleDefinitionId access role definition to assigned to the storage account's local identity
-             * @return the next stage of the update
-             */
-            WithSystemAssignedIdentityAccessOrUpdate withSystemAssignedIdentityAccessToCurrentResourceGroup(
-                String roleDefinitionId);
-        }
-
         interface WithUserAssignedManagedServiceIdentityAccessOrUpdate extends Update {
 
             /**
