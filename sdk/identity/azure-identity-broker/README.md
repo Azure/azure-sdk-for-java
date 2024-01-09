@@ -60,6 +60,24 @@ To take dependency on a particular version of the library that isn't present in 
 
 ## Key concepts
 
+This package enables broker support via `InteractiveBrowserCredential`, from the [Azure Identity library][azure_identity_library]. The credential is created with `InteractiveBrowserBrokerCredentialBuilder` from the `azure-identity-broker` library, as shown below.
+
+### Parent window handles
+
+When authenticating interactively via `InteractiveBrowserCredential`, a parent window handle is required to ensure that the authentication dialog is shown correctly over the requesting window. In the context of graphical user interfaces on devices, a window handle is a unique identifier that the operating system assigns to each window. For the Windows operating system, this handle is an integer value that serves as a reference to a specific window.
+
+## Microsoft account (MSA) passthrough
+
+Microsoft accounts (MSA) are personal accounts created by users to access Microsoft services. MSA passthrough is a legacy configuration which enables users to get tokens to resources which normally don't accept MSA logins. This feature is only available to first-party applications. Users authenticating with an application that is configured to use MSA passthrough can `InteractiveBrowserBrokerCredentialBuilder.enableLegacyMsaPassthrough()` to allow these personal accounts to be listed by WAM.
+
+## Redirect URIs
+
+Microsoft Entra applications rely on redirect URIs to determine where to send the authentication response after a user has logged in. To enable brokered authentication through WAM, a redirect URI matching the following pattern should be registered to the application:
+
+```
+ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
+```
+
 ### Examples
 
 #### Configure the `InteractiveBrowserCredential` to use the system authentication broker for Windows
@@ -115,6 +133,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 
 <!-- LINKS -->
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
+[azure_identity_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity
 [azure_sub]: https://azure.microsoft.com/free/java
 [entra_id_doc]: https://learn.microsoft.com/entra/identity/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/

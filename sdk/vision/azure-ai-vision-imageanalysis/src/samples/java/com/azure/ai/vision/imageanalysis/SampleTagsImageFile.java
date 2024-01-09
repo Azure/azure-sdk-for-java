@@ -59,7 +59,7 @@ public class SampleTagsImageFile {
         try {
             // Extract tags for an input image buffer. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.TAGS), // visualFeatures
                 new ImageAnalysisOptions().setLanguage("en")); // options: See https://aka.ms/cv-languages for supported languages. Or null to use the default of "en" (English).
 
