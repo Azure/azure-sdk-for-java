@@ -45,13 +45,13 @@ import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the DocumentAnalysisClient type.
+ * Initializes a new instance of the DocumentIntelligenceClient type.
  */
-public final class DocumentAnalysisClientImpl {
+public final class DocumentIntelligenceClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final DocumentAnalysisClientService service;
+    private final DocumentIntelligenceClientService service;
 
     /**
      * The Document Intelligence service endpoint.
@@ -110,53 +110,53 @@ public final class DocumentAnalysisClientImpl {
     }
 
     /**
-     * Initializes an instance of DocumentAnalysisClient client.
+     * Initializes an instance of DocumentIntelligenceClient client.
      * 
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentAnalysisClientImpl(String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentIntelligenceClientImpl(String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of DocumentAnalysisClient client.
+     * Initializes an instance of DocumentIntelligenceClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentAnalysisClientImpl(HttpPipeline httpPipeline, String endpoint,
+    public DocumentIntelligenceClientImpl(HttpPipeline httpPipeline, String endpoint,
         DocumentIntelligenceServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of DocumentAnalysisClient client.
+     * Initializes an instance of DocumentIntelligenceClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
-    public DocumentAnalysisClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentIntelligenceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, DocumentIntelligenceServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service
-            = RestProxy.create(DocumentAnalysisClientService.class, this.httpPipeline, this.getSerializerAdapter());
+            = RestProxy.create(DocumentIntelligenceClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for DocumentAnalysisClient to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for DocumentIntelligenceClient to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}/documentintelligence")
-    @ServiceInterface(name = "DocumentAnalysisClie")
-    public interface DocumentAnalysisClientService {
+    @ServiceInterface(name = "DocumentIntelligence")
+    public interface DocumentIntelligenceClientService {
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
