@@ -16,8 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
- * created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
 final class AppConfigurationSnapshotPropertySource extends AppConfigurationApplicationSettingPropertySource {

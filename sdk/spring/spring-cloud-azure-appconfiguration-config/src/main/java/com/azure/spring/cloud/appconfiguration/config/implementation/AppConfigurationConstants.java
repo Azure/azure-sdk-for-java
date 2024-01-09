@@ -51,7 +51,7 @@ public class AppConfigurationConstants {
      * Constant for tracing for Replica Count
      */
     public static final String REPLICA_COUNT = "ReplicaCount";
-    
+
     /**
      * Http Header User Agent
      */
@@ -82,11 +82,11 @@ public class AppConfigurationConstants {
     public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     public static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-    
+
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
-    
+
     public static final String REQUIREMENT_TYPE_SERVICE = "requirement_type";
-    
+
     public static final String REQUIREMENT_TYPE = "requirement-type";
 
 }

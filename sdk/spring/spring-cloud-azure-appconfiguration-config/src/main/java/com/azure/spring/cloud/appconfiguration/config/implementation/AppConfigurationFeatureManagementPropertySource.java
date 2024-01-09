@@ -46,14 +46,13 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
- * created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
 class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER =
-        JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     private final String keyFilter;
 
@@ -72,9 +71,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
      * </p>
      *
      * <p>
-     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call
-     * {@code initFeatures} to update Feature Management, but make sure its done in the last
-     * {@code AppConfigurationPropertySource} AppConfigurationPropertySource}
+     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call {@code initFeatures} to update
+     * Feature Management, but make sure its done in the last {@code AppConfigurationPropertySource}
+     * AppConfigurationPropertySource}
      * </p>
      * 
      * @throws JsonProcessingException
@@ -222,8 +221,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects =
-            CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
+            new TypeReference<List<Object>>() {
+            });
         return listObjects == null ? emptyList() : listObjects;
     }
 }
