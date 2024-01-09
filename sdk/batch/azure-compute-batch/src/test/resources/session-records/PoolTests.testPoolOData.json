@@ -1,24 +1,24 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-05-01.17.0",
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-11-01.18.0",
       "RequestMethod": "HEAD",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "887d37cc-9fe6-45e9-92e1-fc01ad47cbbb",
+        "client-request-id": "fcaf839b-322c-4051-a9cb-5ab3ee8367a3",
         "Content-Length": "0",
-        "Date": "Wed, 29 Nov 2023 10:30:27 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
+        "Date": "Tue, 09 Jan 2024 09:51:18 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 29 Nov 2023 10:30:29 GMT",
+        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "87df99ad-9793-4b60-b9b7-774a44279025",
+        "request-id": "6ee45d08-936e-4dbb-af24-26abf21e1922",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -27,25 +27,25 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-05-01.17.0",
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-11-01.18.0",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0407bd3b-5215-49a3-8855-88b1f439aeb1",
+        "client-request-id": "411e70c8-b4d8-45b7-aa3a-7d0d885a63df",
         "Content-Length": "0",
-        "Date": "Wed, 29 Nov 2023 10:30:29 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
+        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 29 Nov 2023 10:30:29 GMT",
+        "Date": "Tue, 09 Jan 2024 09:51:21 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "2a830dbe-3ed3-438c-be26-b2a268433615",
+        "request-id": "565ce191-71ff-4fad-a804-a002edca2211",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -102,23 +102,23 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/pools?api-version=2023-05-01.17.0\u0026%24select=id%2Cstate",
+      "RequestUri": "https://REDACTED/pools?api-version=2023-11-01.18.0\u0026%24select=id%2Cstate",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "74c39a7a-dc2e-4fa9-b135-ea4fb7a5b596",
+        "client-request-id": "ff895135-8c1e-46d1-b9dd-f8be6e8ee002",
         "Content-Length": "0",
-        "Date": "Wed, 29 Nov 2023 10:30:32 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
+        "Date": "Tue, 09 Jan 2024 09:51:26 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
-        "request-id": "b8a582e2-69c5-455a-8af5-b9e880084fa2",
+        "Date": "Tue, 09 Jan 2024 09:51:25 GMT",
+        "request-id": "f8ec9deb-c5eb-4070-a9b4-a05ea8d77b47",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -129,6 +129,10 @@
         "value": [
           {
             "id": "BatchUser-testpool",
+            "state": "active"
+          },
+          {
+            "id": "D709C4FE-1F0A-40AA-9B53-726166BD6249",
             "state": "active"
           },
           {
