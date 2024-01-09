@@ -33,12 +33,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
-<<<<<<< HEAD
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-=======
->>>>>>> 2003cd1caf0 (microoptimizations)
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -202,26 +198,15 @@ class DefaultHttpClient implements HttpClient {
         try {
             int responseCode = connection.getResponseCode();
 
-<<<<<<< HEAD
             Map<String, List<String>> hucHeaders = connection.getHeaderFields();
             Headers responseHeaders = new Headers((int) (hucHeaders.size() / 0.75F));
 
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
                     responseHeaders.add(HeaderName.fromString(entry.getKey()), entry.getValue());
-=======
-            Headers responseHeaders = new Headers(connection.getHeaderFields().size());
-            connection.getHeaderFields().forEach((key, value) -> {
-                if (key != null) {
-                    HeaderName headerName = HeaderName.fromString(key);
-                    for (String headerValue : value) {
-                        responseHeaders.add(headerName, headerValue);
-                    }
->>>>>>> 2003cd1caf0 (microoptimizations)
                 }
-            });
+            }
 
-<<<<<<< HEAD
             AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
 
             try (InputStream errorStream = connection.getErrorStream();
@@ -235,15 +220,6 @@ class DefaultHttpClient implements HttpClient {
 
             return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders,
                 BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
-=======
-            InputStream errorStream = connection.getErrorStream();
-
-            return new DefaultHttpClientResponse(
-                httpRequest,
-                responseCode,
-                responseHeaders,
-                errorStream == null ? connection.getInputStream() : errorStream);
->>>>>>> 2003cd1caf0 (microoptimizations)
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }

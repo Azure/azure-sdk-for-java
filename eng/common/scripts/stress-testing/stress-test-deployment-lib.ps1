@@ -249,12 +249,6 @@ function DeployStressPackage(
                 $dockerBuildDir = Split-Path $dockerFilePath
             }
 
-            Write-Host "!!!!!!!!!!!!!!!!! scenario"
-            foreach ($kvp in $scenario.GetEnumerator()) {
-                Write-Host "!!!!!!!!!!!!!!!!! scenario key '$kvp"
-            }
-
-
             $dockerBuildDir = [System.IO.Path]::GetFullPath($dockerBuildDir).Trim()
             $dockerBuildConfigs += @{"dockerFilePath"=$dockerFilePath;
                                     "dockerBuildDir"=$dockerBuildDir;
@@ -311,24 +305,18 @@ function DeployStressPackage(
             }
         }
 
-        Write-Host "???????????????????????????"
         $generatedHelmValues.scenarios = @( foreach ($scenario in $generatedHelmValues.scenarios) {
-            Write-Host "!!!!!!!!!!!!!!!!! $($scenario['image']), $( ("image" -notin $scenario))"
             $dockerPath = if ("image" -notin $scenario.keys) {
                 $dockerFilePath
             } else {
                 Join-Path $pkg.Directory $scenario.image
             }
-            Write-Host "!!!!!!!!!!!!!!!!! dockerPath '$dockerPath'"
-            Write-Host "!!!!!!!!!!!!!!!!! dockerFilePath '$dockerFilePath'"
             if ([System.IO.Path]::GetFullPath($dockerPath) -eq $dockerFilePath) {
-                Write-Host "!!!!!!!!!!!!!!!!! $($scenario['image']) = '$imageTag'"
                 $scenario.imageTag = $imageTag
             }
             $scenario
         } )
 
-        Write-Host "---------------------------------------------------"
         $generatedHelmValues | ConvertTo-Yaml | Out-File -FilePath $generatedHelmValuesFilePath
     }
 
