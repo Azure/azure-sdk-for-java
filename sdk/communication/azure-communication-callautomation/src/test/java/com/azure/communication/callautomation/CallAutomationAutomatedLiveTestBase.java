@@ -87,7 +87,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (processorStore != null) processorStore.forEach((key, value) -> value.close());
+        if (processorStore != null) {
+            processorStore.forEach((key, value) -> value.close());
+        }
 
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
         if (getTestMode() == TestMode.RECORD) {
