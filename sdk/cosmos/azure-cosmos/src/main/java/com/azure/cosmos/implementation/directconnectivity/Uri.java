@@ -229,7 +229,7 @@ public class Uri {
         }
     }
 
-    private static class HealthStatusAndDiagnosticStringTuple {
+    static class HealthStatusAndDiagnosticStringTuple {
         private final String diagnsoticString;
         private final HealthStatus status;
 
