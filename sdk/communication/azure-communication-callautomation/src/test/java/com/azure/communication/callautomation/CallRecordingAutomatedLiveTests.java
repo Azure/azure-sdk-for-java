@@ -21,9 +21,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.annotation.DoNotRecord;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

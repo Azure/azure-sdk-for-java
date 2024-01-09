@@ -89,8 +89,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
         return builder;
@@ -117,8 +117,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
         return builder;
@@ -140,8 +140,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
         return builder;
@@ -163,8 +163,8 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
         return builder;
