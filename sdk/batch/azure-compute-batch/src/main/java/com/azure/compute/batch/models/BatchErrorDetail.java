@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An item of additional information included in an Azure Batch error response. */
+/**
+ * An item of additional information included in an Azure Batch error response.
+ */
 @Immutable
 public final class BatchErrorDetail {
 
@@ -25,9 +27,12 @@ public final class BatchErrorDetail {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of BatchErrorDetail class. */
+    /**
+     * Creates an instance of BatchErrorDetail class.
+     */
     @Generated
-    private BatchErrorDetail() {}
+    private BatchErrorDetail() {
+    }
 
     /**
      * Get the key property: An identifier specifying the meaning of the Value property.

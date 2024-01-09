@@ -8,7 +8,5 @@ module com.azure.compute.batch {
     exports com.azure.compute.batch;
     exports com.azure.compute.batch.models;
 
-    opens com.azure.compute.batch.models to
-            com.azure.core,
-            com.fasterxml.jackson.databind;
+    opens com.azure.compute.batch.models to com.azure.core, com.fasterxml.jackson.databind;
 }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Resource usage statistics for a Task. */
+/**
+ * Resource usage statistics for a Task.
+ */
 @Immutable
 public final class BatchTaskStatistics {
 
@@ -113,18 +115,14 @@ public final class BatchTaskStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchTaskStatistics(
-            @JsonProperty(value = "url") String url,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-            @JsonProperty(value = "userCPUTime") Duration userCPUTime,
-            @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
-            @JsonProperty(value = "wallClockTime") Duration wallClockTime,
-            @JsonProperty(value = "readIOps") int readIOps,
-            @JsonProperty(value = "writeIOps") int writeIOps,
-            @JsonProperty(value = "readIOGiB") double readIOGiB,
-            @JsonProperty(value = "writeIOGiB") double writeIOGiB,
-            @JsonProperty(value = "waitTime") Duration waitTime) {
+    private BatchTaskStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "userCPUTime") Duration userCPUTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
+        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
+        @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
+        @JsonProperty(value = "writeIOGiB") double writeIOGiB, @JsonProperty(value = "waitTime") Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -193,9 +191,9 @@ public final class BatchTaskStatistics {
 
     /**
      * Get the wallClockTime property: The total wall clock time of the Task. The wall clock time is the elapsed time
-     * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were
-     * updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all
-     * the Task retries.
+     * from when the Task started running on a Compute Node to when it finished (or to the last time the statistics
+     * were updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time
+     * of all the Task retries.
      *
      * @return the wallClockTime value.
      */

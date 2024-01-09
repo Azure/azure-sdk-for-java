@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Resource usage statistics for a Job Schedule. */
+/**
+ * Resource usage statistics for a Job Schedule.
+ */
 @Immutable
 public final class BatchJobScheduleStatistics {
 
@@ -143,21 +145,18 @@ public final class BatchJobScheduleStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchJobScheduleStatistics(
-            @JsonProperty(value = "url") String url,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-            @JsonProperty(value = "userCPUTime") Duration userCPUTime,
-            @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
-            @JsonProperty(value = "wallClockTime") Duration wallClockTime,
-            @JsonProperty(value = "readIOps") int readIOps,
-            @JsonProperty(value = "writeIOps") int writeIOps,
-            @JsonProperty(value = "readIOGiB") double readIOGiB,
-            @JsonProperty(value = "writeIOGiB") double writeIOGiB,
-            @JsonProperty(value = "numSucceededTasks") int numSucceededTasks,
-            @JsonProperty(value = "numFailedTasks") int numFailedTasks,
-            @JsonProperty(value = "numTaskRetries") int numTaskRetries,
-            @JsonProperty(value = "waitTime") Duration waitTime) {
+    private BatchJobScheduleStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "userCPUTime") Duration userCPUTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
+        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
+        @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
+        @JsonProperty(value = "writeIOGiB") double writeIOGiB,
+        @JsonProperty(value = "numSucceededTasks") int numSucceededTasks,
+        @JsonProperty(value = "numFailedTasks") int numFailedTasks,
+        @JsonProperty(value = "numTaskRetries") int numTaskRetries,
+        @JsonProperty(value = "waitTime") Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -229,9 +228,9 @@ public final class BatchJobScheduleStatistics {
 
     /**
      * Get the wallClockTime property: The total wall clock time of all the Tasks in all the Jobs created under the
-     * schedule. The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it
-     * finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was
-     * retried, this includes the wall clock time of all the Task retries.
+     * schedule. The wall clock time is the elapsed time from when the Task started running on a Compute Node to when
+     * it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task
+     * was retried, this includes the wall clock time of all the Task retries.
      *
      * @return the wallClockTime value.
      */
@@ -252,8 +251,8 @@ public final class BatchJobScheduleStatistics {
     }
 
     /**
-     * Get the writeIOps property: The total number of disk write operations made by all Tasks in all Jobs created under
-     * the schedule.
+     * Get the writeIOps property: The total number of disk write operations made by all Tasks in all Jobs created
+     * under the schedule.
      *
      * @return the writeIOps value.
      */
@@ -307,8 +306,8 @@ public final class BatchJobScheduleStatistics {
     }
 
     /**
-     * Get the numTaskRetries property: The total number of retries during the given time range on all Tasks in all Jobs
-     * created under the schedule.
+     * Get the numTaskRetries property: The total number of retries during the given time range on all Tasks in all
+     * Jobs created under the schedule.
      *
      * @return the numTaskRetries value.
      */
@@ -318,10 +317,10 @@ public final class BatchJobScheduleStatistics {
     }
 
     /**
-     * Get the waitTime property: The total wait time of all Tasks in all Jobs created under the schedule. The wait time
-     * for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If
-     * the Task is retried due to failures, the wait time is the time to the most recent Task execution.). This value is
-     * only reported in the Account lifetime statistics; it is not included in the Job statistics.
+     * Get the waitTime property: The total wait time of all Tasks in all Jobs created under the schedule. The wait
+     * time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution.
+     * (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.). This
+     * value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
      *
      * @return the waitTime value.
      */

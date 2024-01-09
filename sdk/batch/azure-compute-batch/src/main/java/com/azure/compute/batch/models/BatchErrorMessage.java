@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An error message received in an Azure Batch error response. */
+/**
+ * An error message received in an Azure Batch error response.
+ */
 @Immutable
 public final class BatchErrorMessage {
 
@@ -25,9 +27,12 @@ public final class BatchErrorMessage {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of BatchErrorMessage class. */
+    /**
+     * Creates an instance of BatchErrorMessage class.
+     */
     @Generated
-    private BatchErrorMessage() {}
+    private BatchErrorMessage() {
+    }
 
     /**
      * Get the lang property: The language code of the error message.

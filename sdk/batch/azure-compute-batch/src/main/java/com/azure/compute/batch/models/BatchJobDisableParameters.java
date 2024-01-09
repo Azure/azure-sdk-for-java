@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for disabling an Azure Batch Job. */
+/**
+ * Parameters for disabling an Azure Batch Job.
+ */
 @Immutable
 public final class BatchJobDisableParameters {
 

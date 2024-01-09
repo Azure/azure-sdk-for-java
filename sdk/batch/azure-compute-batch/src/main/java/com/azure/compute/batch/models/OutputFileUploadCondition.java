@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** OutputFileUploadCondition enums. */
+/**
+ * OutputFileUploadCondition enums.
+ */
 public final class OutputFileUploadCondition extends ExpandableStringEnum<OutputFileUploadCondition> {
 
-    /** Upload the file(s) only after the Task process exits with an exit code of 0. */
-    @Generated public static final OutputFileUploadCondition TASK_SUCCESS = fromString("tasksuccess");
+    /**
+     * Upload the file(s) only after the Task process exits with an exit code of 0.
+     */
+    @Generated
+    public static final OutputFileUploadCondition TASK_SUCCESS = fromString("tasksuccess");
 
-    /** Upload the file(s) only after the Task process exits with a nonzero exit code. */
-    @Generated public static final OutputFileUploadCondition TASK_FAILURE = fromString("taskfailure");
+    /**
+     * Upload the file(s) only after the Task process exits with a nonzero exit code.
+     */
+    @Generated
+    public static final OutputFileUploadCondition TASK_FAILURE = fromString("taskfailure");
 
-    /** Upload the file(s) after the Task process exits, no matter what the exit code was. */
-    @Generated public static final OutputFileUploadCondition TASK_COMPLETION = fromString("taskcompletion");
+    /**
+     * Upload the file(s) after the Task process exits, no matter what the exit code was.
+     */
+    @Generated
+    public static final OutputFileUploadCondition TASK_COMPLETION = fromString("taskcompletion");
 
     /**
      * Creates a new instance of OutputFileUploadCondition value.
@@ -27,7 +38,8 @@ public final class OutputFileUploadCondition extends ExpandableStringEnum<Output
      */
     @Generated
     @Deprecated
-    public OutputFileUploadCondition() {}
+    public OutputFileUploadCondition() {
+    }
 
     /**
      * Creates or finds a OutputFileUploadCondition from its string representation.

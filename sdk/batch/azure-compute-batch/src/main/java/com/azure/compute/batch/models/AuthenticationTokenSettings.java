@@ -8,7 +8,10 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The settings for an authentication token that the Task can use to perform Batch service operations. */
+/**
+ * The settings for an authentication token that the Task can use to perform Batch
+ * service operations.
+ */
 @Fluent
 public final class AuthenticationTokenSettings {
 
@@ -21,9 +24,12 @@ public final class AuthenticationTokenSettings {
     @JsonProperty(value = "access")
     private List<AccessScope> access;
 
-    /** Creates an instance of AuthenticationTokenSettings class. */
+    /**
+     * Creates an instance of AuthenticationTokenSettings class.
+     */
     @Generated
-    public AuthenticationTokenSettings() {}
+    public AuthenticationTokenSettings() {
+    }
 
     /**
      * Get the access property: The Batch resources to which the token grants access. The authentication token grants

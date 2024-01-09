@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a name-value pair. */
+/**
+ * Represents a name-value pair.
+ */
 @Immutable
 public final class NameValuePair {
 
@@ -25,9 +27,12 @@ public final class NameValuePair {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of NameValuePair class. */
+    /**
+     * Creates an instance of NameValuePair class.
+     */
     @Generated
-    private NameValuePair() {}
+    private NameValuePair() {
+    }
 
     /**
      * Get the name property: The name in the name-value pair.

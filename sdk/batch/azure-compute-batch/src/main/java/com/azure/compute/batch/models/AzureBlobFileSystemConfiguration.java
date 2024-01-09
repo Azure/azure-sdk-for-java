@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information used to connect to an Azure Storage Container using Blobfuse. */
+/**
+ * Information used to connect to an Azure Storage Container using Blobfuse.
+ */
 @Fluent
 public final class AzureBlobFileSystemConfiguration {
 
@@ -75,10 +77,9 @@ public final class AzureBlobFileSystemConfiguration {
      */
     @Generated
     @JsonCreator
-    public AzureBlobFileSystemConfiguration(
-            @JsonProperty(value = "accountName") String accountName,
-            @JsonProperty(value = "containerName") String containerName,
-            @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
+    public AzureBlobFileSystemConfiguration(@JsonProperty(value = "accountName") String accountName,
+        @JsonProperty(value = "containerName") String containerName,
+        @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
         this.accountName = accountName;
         this.containerName = containerName;
         this.relativeMountPath = relativeMountPath;

@@ -8,24 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchNodeCommunicationMode enums. */
+/**
+ * BatchNodeCommunicationMode enums.
+ */
 public final class BatchNodeCommunicationMode extends ExpandableStringEnum<BatchNodeCommunicationMode> {
 
-    /** The node communication mode is automatically set by the Batch service. */
-    @Generated public static final BatchNodeCommunicationMode DEFAULT = fromString("default");
+    /**
+     * The node communication mode is automatically set by the Batch service.
+     */
+    @Generated
+    public static final BatchNodeCommunicationMode DEFAULT = fromString("default");
 
     /**
      * Nodes using the classic communication mode require inbound TCP communication on ports 29876 and 29877 from the
      * "BatchNodeManagement.{region}" service tag and outbound TCP communication on port 443 to the "Storage.region" and
      * "BatchNodeManagement.{region}" service tags.
      */
-    @Generated public static final BatchNodeCommunicationMode CLASSIC = fromString("classic");
+    @Generated
+    public static final BatchNodeCommunicationMode CLASSIC = fromString("classic");
 
     /**
      * Nodes using the simplified communication mode require outbound TCP communication on port 443 to the
      * "BatchNodeManagement.{region}" service tag. No open inbound ports are required.
      */
-    @Generated public static final BatchNodeCommunicationMode SIMPLIFIED = fromString("simplified");
+    @Generated
+    public static final BatchNodeCommunicationMode SIMPLIFIED = fromString("simplified");
 
     /**
      * Creates a new instance of BatchNodeCommunicationMode value.
@@ -34,7 +41,8 @@ public final class BatchNodeCommunicationMode extends ExpandableStringEnum<Batch
      */
     @Generated
     @Deprecated
-    public BatchNodeCommunicationMode() {}
+    public BatchNodeCommunicationMode() {
+    }
 
     /**
      * Creates or finds a BatchNodeCommunicationMode from its string representation.

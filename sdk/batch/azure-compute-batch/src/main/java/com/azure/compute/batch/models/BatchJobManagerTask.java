@@ -10,21 +10,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Specifies details of a Job Manager Task. The Job Manager Task is automatically started when the Job is created. The
- * Batch service tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the
- * Batch service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that is, Compute
- * Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks). When a Job Manager Task
- * fails and needs to be restarted, the system tries to schedule it at the highest priority. If there are no idle
- * Compute Nodes available, the system may terminate one of the running Tasks in the Pool and return it to the queue in
- * order to make room for the Job Manager Task to restart. Note that a Job Manager Task in one Job does not have
- * priority over Tasks in other Jobs. Across Jobs, only Job level priorities are observed. For example, if a Job Manager
- * in a priority 0 Job needs to be restarted, it will not displace Tasks of a priority 1 Job. Batch will retry Tasks
- * when a recovery operation is triggered on a Node. Examples of recovery operations include (but are not limited to)
- * when an unhealthy Node is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery
- * operations are independent of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0,
- * an internal retry due to a recovery operation may occur. Because of this, all Tasks should be idempotent. This means
- * Tasks need to tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
- * practice for long running Tasks is to use some form of checkpointing.
+ * Specifies details of a Job Manager Task.
+ * The Job Manager Task is automatically started when the Job is created. The
+ * Batch service tries to schedule the Job Manager Task before any other Tasks in
+ * the Job. When shrinking a Pool, the Batch service tries to preserve Nodes where
+ * Job Manager Tasks are running for as long as possible (that is, Compute Nodes
+ * running 'normal' Tasks are removed before Compute Nodes running Job Manager
+ * Tasks). When a Job Manager Task fails and needs to be restarted, the system
+ * tries to schedule it at the highest priority. If there are no idle Compute
+ * Nodes available, the system may terminate one of the running Tasks in the Pool
+ * and return it to the queue in order to make room for the Job Manager Task to
+ * restart. Note that a Job Manager Task in one Job does not have priority over
+ * Tasks in other Jobs. Across Jobs, only Job level priorities are observed. For
+ * example, if a Job Manager in a priority 0 Job needs to be restarted, it will
+ * not displace Tasks of a priority 1 Job. Batch will retry Tasks when a recovery
+ * operation is triggered on a Node. Examples of recovery operations include (but
+ * are not limited to) when an unhealthy Node is rebooted or a Compute Node
+ * disappeared due to host failure. Retries due to recovery operations are
+ * independent of and are not counted against the maxTaskRetryCount. Even if the
+ * maxTaskRetryCount is 0, an internal retry due to a recovery operation may
+ * occur. Because of this, all Tasks should be idempotent. This means Tasks need
+ * to tolerate being interrupted and restarted without causing any corruption or
+ * duplicate data. The best practice for long running Tasks is to use some form of
+ * checkpointing.
  */
 @Fluent
 public final class BatchJobManagerTask {
@@ -73,7 +81,7 @@ public final class BatchJobManagerTask {
     /*
      * A list of files that the Batch service will download to the Compute Node before running the command line. Files
      * listed under this element are located in the Task's working directory. There is a maximum size for the list of
-     * resource files.  When the max size is exceeded, the request will fail and the response error code will be
+     * resource files. When the max size is exceeded, the request will fail and the response error code will be
      * RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be
      * achieved using .zip files, Application Packages, or Docker Containers.
      */
@@ -188,8 +196,8 @@ public final class BatchJobManagerTask {
      */
     @Generated
     @JsonCreator
-    public BatchJobManagerTask(
-            @JsonProperty(value = "id") String id, @JsonProperty(value = "commandLine") String commandLine) {
+    public BatchJobManagerTask(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "commandLine") String commandLine) {
         this.id = id;
         this.commandLine = commandLine;
     }
@@ -207,8 +215,8 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Get the displayName property: The display name of the Job Manager Task. It need not be unique and can contain any
-     * Unicode characters up to a maximum length of 1024.
+     * Get the displayName property: The display name of the Job Manager Task. It need not be unique and can contain
+     * any Unicode characters up to a maximum length of 1024.
      *
      * @return the displayName value.
      */
@@ -218,8 +226,8 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Set the displayName property: The display name of the Job Manager Task. It need not be unique and can contain any
-     * Unicode characters up to a maximum length of 1024.
+     * Set the displayName property: The display name of the Job Manager Task. It need not be unique and can contain
+     * any Unicode characters up to a maximum length of 1024.
      *
      * @param displayName the displayName value to set.
      * @return the BatchJobManagerTask object itself.
@@ -234,8 +242,8 @@ public final class BatchJobManagerTask {
      * Get the commandLine property: The command line of the Job Manager Task. The command line does not run under a
      * shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
      * to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c
-     * MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use
-     * a relative path (relative to the Task working directory), or use the Batch provided environment variable
+     * MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should
+     * use a relative path (relative to the Task working directory), or use the Batch provided environment variable
      * (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      *
      * @return the commandLine value.
@@ -281,8 +289,8 @@ public final class BatchJobManagerTask {
 
     /**
      * Get the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
-     * running the command line. Files listed under this element are located in the Task's working directory. There is a
-     * maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
+     * running the command line. Files listed under this element are located in the Task's working directory. There is
+     * a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
      * response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
      * reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      *
@@ -295,8 +303,8 @@ public final class BatchJobManagerTask {
 
     /**
      * Set the resourceFiles property: A list of files that the Batch service will download to the Compute Node before
-     * running the command line. Files listed under this element are located in the Task's working directory. There is a
-     * maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
+     * running the command line. Files listed under this element are located in the Task's working directory. There is
+     * a maximum size for the list of resource files. When the max size is exceeded, the request will fail and the
      * response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
      * reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      *
@@ -380,9 +388,9 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Get the requiredSlots property: The number of scheduling slots that the Task requires to run. The default is 1. A
-     * Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For
-     * multi-instance Tasks, this property is not supported and must not be specified.
+     * Get the requiredSlots property: The number of scheduling slots that the Task requires to run. The default is 1.
+     * A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available.
+     * For multi-instance Tasks, this property is not supported and must not be specified.
      *
      * @return the requiredSlots value.
      */
@@ -392,9 +400,9 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Set the requiredSlots property: The number of scheduling slots that the Task requires to run. The default is 1. A
-     * Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For
-     * multi-instance Tasks, this property is not supported and must not be specified.
+     * Set the requiredSlots property: The number of scheduling slots that the Task requires to run. The default is 1.
+     * A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available.
+     * For multi-instance Tasks, this property is not supported and must not be specified.
      *
      * @param requiredSlots the requiredSlots value to set.
      * @return the BatchJobManagerTask object itself.
@@ -444,8 +452,8 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Get the userIdentity property: The user identity under which the Job Manager Task runs. If omitted, the Task runs
-     * as a non-administrative user unique to the Task.
+     * Get the userIdentity property: The user identity under which the Job Manager Task runs. If omitted, the Task
+     * runs as a non-administrative user unique to the Task.
      *
      * @return the userIdentity value.
      */
@@ -455,8 +463,8 @@ public final class BatchJobManagerTask {
     }
 
     /**
-     * Set the userIdentity property: The user identity under which the Job Manager Task runs. If omitted, the Task runs
-     * as a non-administrative user unique to the Task.
+     * Set the userIdentity property: The user identity under which the Job Manager Task runs. If omitted, the Task
+     * runs as a non-administrative user unique to the Task.
      *
      * @param userIdentity the userIdentity value to set.
      * @return the BatchJobManagerTask object itself.
@@ -499,11 +507,14 @@ public final class BatchJobManagerTask {
 
     /**
      * Get the applicationPackageReferences property: A list of Application Packages that the Batch service will deploy
-     * to the Compute Node before running the command line.Application Packages are downloaded and deployed to a shared
-     * directory, not the Task working directory. Therefore, if a referenced Application Package is already on the
-     * Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If
-     * a referenced Application Package cannot be installed, for example because the package has been deleted or because
-     * download failed, the Task fails.
+     * to the
+     * Compute Node before running the command line.Application Packages are
+     * downloaded and deployed to a shared directory, not the Task working
+     * directory. Therefore, if a referenced Application Package is already
+     * on the Compute Node, and is up to date, then it is not re-downloaded;
+     * the existing copy on the Compute Node is used. If a referenced Application
+     * Package cannot be installed, for example because the package has been deleted
+     * or because download failed, the Task fails.
      *
      * @return the applicationPackageReferences value.
      */
@@ -514,18 +525,21 @@ public final class BatchJobManagerTask {
 
     /**
      * Set the applicationPackageReferences property: A list of Application Packages that the Batch service will deploy
-     * to the Compute Node before running the command line.Application Packages are downloaded and deployed to a shared
-     * directory, not the Task working directory. Therefore, if a referenced Application Package is already on the
-     * Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If
-     * a referenced Application Package cannot be installed, for example because the package has been deleted or because
-     * download failed, the Task fails.
+     * to the
+     * Compute Node before running the command line.Application Packages are
+     * downloaded and deployed to a shared directory, not the Task working
+     * directory. Therefore, if a referenced Application Package is already
+     * on the Compute Node, and is up to date, then it is not re-downloaded;
+     * the existing copy on the Compute Node is used. If a referenced Application
+     * Package cannot be installed, for example because the package has been deleted
+     * or because download failed, the Task fails.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchJobManagerTask object itself.
      */
     @Generated
-    public BatchJobManagerTask setApplicationPackageReferences(
-            List<BatchApplicationPackageReference> applicationPackageReferences) {
+    public BatchJobManagerTask
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -534,9 +548,10 @@ public final class BatchJobManagerTask {
      * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
      * perform Batch service operations. If this property is set, the Batch service provides the Task with an
      * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
+     * that the Task can carry out using the token depend on the settings. For example, a Task can request Job
+     * permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the
+     * Job.
      *
      * @return the authenticationTokenSettings value.
      */
@@ -549,9 +564,10 @@ public final class BatchJobManagerTask {
      * Set the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
      * perform Batch service operations. If this property is set, the Batch service provides the Task with an
      * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations
+     * that the Task can carry out using the token depend on the settings. For example, a Task can request Job
+     * permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the
+     * Job.
      *
      * @param authenticationTokenSettings the authenticationTokenSettings value to set.
      * @return the BatchJobManagerTask object itself.

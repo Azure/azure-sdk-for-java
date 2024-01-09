@@ -8,16 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AutoUserScope enums. */
+/**
+ * AutoUserScope enums.
+ */
 public final class AutoUserScope extends ExpandableStringEnum<AutoUserScope> {
 
-    /** Specifies that the service should create a new user for the Task. */
-    @Generated public static final AutoUserScope TASK = fromString("task");
+    /**
+     * Specifies that the service should create a new user for the Task.
+     */
+    @Generated
+    public static final AutoUserScope TASK = fromString("task");
 
     /**
      * Specifies that the Task runs as the common auto user Account which is created on every Compute Node in a Pool.
      */
-    @Generated public static final AutoUserScope POOL = fromString("pool");
+    @Generated
+    public static final AutoUserScope POOL = fromString("pool");
 
     /**
      * Creates a new instance of AutoUserScope value.
@@ -26,7 +32,8 @@ public final class AutoUserScope extends ExpandableStringEnum<AutoUserScope> {
      */
     @Generated
     @Deprecated
-    public AutoUserScope() {}
+    public AutoUserScope() {
+    }
 
     /**
      * Creates or finds a AutoUserScope from its string representation.

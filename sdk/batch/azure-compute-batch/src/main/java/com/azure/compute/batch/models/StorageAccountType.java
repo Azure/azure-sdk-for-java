@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** StorageAccountType enums. */
+/**
+ * StorageAccountType enums.
+ */
 public final class StorageAccountType extends ExpandableStringEnum<StorageAccountType> {
 
-    /** The data disk should use standard locally redundant storage. */
-    @Generated public static final StorageAccountType STANDARD_LRS = fromString("standard_lrs");
+    /**
+     * The data disk should use standard locally redundant storage.
+     */
+    @Generated
+    public static final StorageAccountType STANDARD_LRS = fromString("standard_lrs");
 
-    /** The data disk should use premium locally redundant storage. */
-    @Generated public static final StorageAccountType PREMIUM_LRS = fromString("premium_lrs");
+    /**
+     * The data disk should use premium locally redundant storage.
+     */
+    @Generated
+    public static final StorageAccountType PREMIUM_LRS = fromString("premium_lrs");
 
     /**
      * Creates a new instance of StorageAccountType value.
@@ -24,7 +32,8 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      */
     @Generated
     @Deprecated
-    public StorageAccountType() {}
+    public StorageAccountType() {
+    }
 
     /**
      * Creates or finds a StorageAccountType from its string representation.
@@ -47,4 +56,10 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static Collection<StorageAccountType> values() {
         return values(StorageAccountType.class);
     }
+
+    /**
+     * The data disk / OS disk should use standard SSD locally redundant storage.
+     */
+    @Generated
+    public static final StorageAccountType STANDARD_SSDLRS = fromString("standardssd_lrs");
 }

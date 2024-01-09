@@ -11,7 +11,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * A Job Schedule that allows recurring Jobs by specifying when to run Jobs and a specification used to create each Job.
+ * A Job Schedule that allows recurring Jobs by specifying when to run Jobs and a
+ * specification used to create each Job.
  */
 @Fluent
 public final class BatchJobSchedule {
@@ -131,21 +132,6 @@ public final class BatchJobSchedule {
     private BatchJobScheduleStatistics stats;
 
     /**
-     * Creates an instance of BatchJobSchedule class.
-     *
-     * @param schedule the schedule value to set.
-     * @param jobSpecification the jobSpecification value to set.
-     */
-    @Generated
-    @JsonCreator
-    public BatchJobSchedule(
-            @JsonProperty(value = "schedule") Schedule schedule,
-            @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
-        this.schedule = schedule;
-        this.jobSpecification = jobSpecification;
-    }
-
-    /**
      * Get the id property: A string that uniquely identifies the schedule within the Account.
      *
      * @return the id value.
@@ -178,8 +164,8 @@ public final class BatchJobSchedule {
     /**
      * Get the eTag property: The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether
      * the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job
-     * Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in
-     * the meantime.
+     * Schedule request to specify that your changes should take effect only if nobody else has modified the schedule
+     * in the meantime.
      *
      * @return the eTag value.
      */
@@ -242,8 +228,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Get the previousStateTransitionTime property: The time at which the Job Schedule entered its previous state. This
-     * property is not present if the Job Schedule is in its initial active state.
+     * Get the previousStateTransitionTime property: The time at which the Job Schedule entered its previous state.
+     * This property is not present if the Job Schedule is in its initial active state.
      *
      * @return the previousStateTransitionTime value.
      */
@@ -284,8 +270,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
-     * does not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
+     * service does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -295,8 +281,8 @@ public final class BatchJobSchedule {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch service
-     * does not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the schedule as metadata. The Batch
+     * service does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobSchedule object itself.
@@ -317,5 +303,29 @@ public final class BatchJobSchedule {
     @Generated
     public BatchJobScheduleStatistics getStats() {
         return this.stats;
+    }
+
+    /**
+     * Creates an instance of BatchJobSchedule class.
+     *
+     * @param jobSpecification the jobSpecification value to set.
+     */
+    @Generated
+    @JsonCreator
+    public BatchJobSchedule(@JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
+        this.jobSpecification = jobSpecification;
+    }
+
+    /**
+     * Set the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
+     * to UTC and are not impacted by daylight saving time.
+     *
+     * @param schedule the schedule value to set.
+     * @return the BatchJobSchedule object itself.
+     */
+    @Generated
+    public BatchJobSchedule setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+        return this;
     }
 }

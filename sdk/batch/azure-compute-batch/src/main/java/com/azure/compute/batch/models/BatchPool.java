@@ -9,8 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
-/** A Pool in the Azure Batch service. */
+/**
+ * A Pool in the Azure Batch service.
+ */
 @Immutable
 public final class BatchPool {
 
@@ -301,7 +304,8 @@ public final class BatchPool {
     /*
      * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The
      * user identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
@@ -321,9 +325,12 @@ public final class BatchPool {
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private BatchNodeCommunicationMode currentNodeCommunicationMode;
 
-    /** Creates an instance of BatchPool class. */
+    /**
+     * Creates an instance of BatchPool class.
+     */
     @Generated
-    private BatchPool() {}
+    private BatchPool() {
+    }
 
     /**
      * Get the id property: A string that uniquely identifies the Pool within the Account. The ID can contain any
@@ -535,9 +542,9 @@ public final class BatchPool {
     }
 
     /**
-     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at least
-     * one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property
-     * is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at
+     * least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @return the enableAutoScale value.
      */
@@ -614,11 +621,12 @@ public final class BatchPool {
 
     /**
      * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
-     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
-     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value.
@@ -655,8 +663,8 @@ public final class BatchPool {
 
     /**
      * Get the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
-     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
-     * of the vmSize of the pool or 256.
+     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of
+     * cores of the vmSize of the pool or 256.
      *
      * @return the taskSlotsPerNode value.
      */
@@ -751,5 +759,28 @@ public final class BatchPool {
     @Generated
     public BatchNodeCommunicationMode getCurrentNodeCommunicationMode() {
         return this.currentNodeCommunicationMode;
+    }
+
+    /*
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    @JsonProperty(value = "resourceTags", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, String> resourceTags;
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public Map<String, String> getResourceTags() {
+        return this.resourceTags;
     }
 }

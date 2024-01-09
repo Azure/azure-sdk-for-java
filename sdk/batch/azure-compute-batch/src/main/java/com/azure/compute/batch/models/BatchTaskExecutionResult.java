@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchTaskExecutionResult enums. */
+/**
+ * BatchTaskExecutionResult enums.
+ */
 public final class BatchTaskExecutionResult extends ExpandableStringEnum<BatchTaskExecutionResult> {
 
-    /** The Task ran successfully. */
-    @Generated public static final BatchTaskExecutionResult SUCCESS = fromString("success");
+    /**
+     * The Task ran successfully.
+     */
+    @Generated
+    public static final BatchTaskExecutionResult SUCCESS = fromString("success");
 
     /**
      * There was an error during processing of the Task. The failure may have occurred before the Task process was
      * launched, while the Task process was executing, or after the Task process exited.
      */
-    @Generated public static final BatchTaskExecutionResult FAILURE = fromString("failure");
+    @Generated
+    public static final BatchTaskExecutionResult FAILURE = fromString("failure");
 
     /**
      * Creates a new instance of BatchTaskExecutionResult value.
@@ -27,7 +33,8 @@ public final class BatchTaskExecutionResult extends ExpandableStringEnum<BatchTa
      */
     @Generated
     @Deprecated
-    public BatchTaskExecutionResult() {}
+    public BatchTaskExecutionResult() {
+    }
 
     /**
      * Creates or finds a BatchTaskExecutionResult from its string representation.

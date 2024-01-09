@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies how Tasks should be distributed across Compute Nodes. */
+/**
+ * Specifies how Tasks should be distributed across Compute Nodes.
+ */
 @Immutable
 public final class BatchTaskSchedulingPolicy {
 

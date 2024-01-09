@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information used to connect to an Azure Fileshare. */
+/**
+ * Information used to connect to an Azure Fileshare.
+ */
 @Fluent
 public final class AzureFileShareConfiguration {
 
@@ -59,11 +61,10 @@ public final class AzureFileShareConfiguration {
      */
     @Generated
     @JsonCreator
-    public AzureFileShareConfiguration(
-            @JsonProperty(value = "accountName") String accountName,
-            @JsonProperty(value = "azureFileUrl") String azureFileUrl,
-            @JsonProperty(value = "accountKey") String accountKey,
-            @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
+    public AzureFileShareConfiguration(@JsonProperty(value = "accountName") String accountName,
+        @JsonProperty(value = "azureFileUrl") String azureFileUrl,
+        @JsonProperty(value = "accountKey") String accountKey,
+        @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
         this.accountName = accountName;
         this.azureFileUrl = azureFileUrl;
         this.accountKey = accountKey;

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The start and end of the range are inclusive. For example, if a range has start 9 and end 12, then it represents
- * Tasks '9', '10', '11' and '12'.
+ * The start and end of the range are inclusive. For example, if a range has start
+ * 9 and end 12, then it represents Tasks '9', '10', '11' and '12'.
  */
 @Immutable
 public final class BatchTaskIdRange {

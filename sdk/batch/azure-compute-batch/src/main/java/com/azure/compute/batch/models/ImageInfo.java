@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A reference to the Azure Virtual Machines Marketplace Image and additional information about the Image. */
+/**
+ * A reference to the Azure Virtual Machines Marketplace Image and additional
+ * information about the Image.
+ */
 @Immutable
 public final class ImageInfo {
 
@@ -69,11 +72,10 @@ public final class ImageInfo {
      */
     @Generated
     @JsonCreator
-    private ImageInfo(
-            @JsonProperty(value = "nodeAgentSKUId") String nodeAgentSkuId,
-            @JsonProperty(value = "imageReference") ImageReference imageReference,
-            @JsonProperty(value = "osType") OSType osType,
-            @JsonProperty(value = "verificationType") ImageVerificationType verificationType) {
+    private ImageInfo(@JsonProperty(value = "nodeAgentSKUId") String nodeAgentSkuId,
+        @JsonProperty(value = "imageReference") ImageReference imageReference,
+        @JsonProperty(value = "osType") OSType osType,
+        @JsonProperty(value = "verificationType") ImageVerificationType verificationType) {
         this.nodeAgentSkuId = nodeAgentSkuId;
         this.imageReference = imageReference;
         this.osType = osType;
@@ -111,8 +113,8 @@ public final class ImageInfo {
     }
 
     /**
-     * Get the capabilities property: The capabilities or features which the Image supports. Not every capability of the
-     * Image is listed. Capabilities in this list are considered of special interest and are generally related to
+     * Get the capabilities property: The capabilities or features which the Image supports. Not every capability of
+     * the Image is listed. Capabilities in this list are considered of special interest and are generally related to
      * integration with other features in the Azure Batch service.
      *
      * @return the capabilities value.
@@ -134,8 +136,8 @@ public final class ImageInfo {
     }
 
     /**
-     * Get the verificationType property: Whether the Azure Batch service actively verifies that the Image is compatible
-     * with the associated Compute Node agent SKU.
+     * Get the verificationType property: Whether the Azure Batch service actively verifies that the Image is
+     * compatible with the associated Compute Node agent SKU.
      *
      * @return the verificationType value.
      */

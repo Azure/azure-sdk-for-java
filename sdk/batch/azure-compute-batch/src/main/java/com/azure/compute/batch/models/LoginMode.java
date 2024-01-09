@@ -8,14 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** LoginMode enums. */
+/**
+ * LoginMode enums.
+ */
 public final class LoginMode extends ExpandableStringEnum<LoginMode> {
 
     /**
      * The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running parallel
      * processes.
      */
-    @Generated public static final LoginMode BATCH = fromString("batch");
+    @Generated
+    public static final LoginMode BATCH = fromString("batch");
 
     /**
      * The LOGON32_LOGON_INTERACTIVE Win32 login mode. UAC is enabled on Windows VirtualMachineConfiguration Pools. If
@@ -23,7 +26,8 @@ public final class LoginMode extends ExpandableStringEnum<LoginMode> {
      * session will not be elevated unless the application executed by the Task command line is configured to always
      * require administrative privilege or to always require maximum privilege.
      */
-    @Generated public static final LoginMode INTERACTIVE = fromString("interactive");
+    @Generated
+    public static final LoginMode INTERACTIVE = fromString("interactive");
 
     /**
      * Creates a new instance of LoginMode value.
@@ -32,7 +36,8 @@ public final class LoginMode extends ExpandableStringEnum<LoginMode> {
      */
     @Generated
     @Deprecated
-    public LoginMode() {}
+    public LoginMode() {
+    }
 
     /**
      * Creates or finds a LoginMode from its string representation.

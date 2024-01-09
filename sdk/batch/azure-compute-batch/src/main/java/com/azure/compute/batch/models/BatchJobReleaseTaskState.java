@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchJobReleaseTaskState enums. */
+/**
+ * BatchJobReleaseTaskState enums.
+ */
 public final class BatchJobReleaseTaskState extends ExpandableStringEnum<BatchJobReleaseTaskState> {
 
-    /** The Task is currently running (including retrying). */
-    @Generated public static final BatchJobReleaseTaskState RUNNING = fromString("running");
+    /**
+     * The Task is currently running (including retrying).
+     */
+    @Generated
+    public static final BatchJobReleaseTaskState RUNNING = fromString("running");
 
     /**
      * The Task has exited with exit code 0, or the Task has exhausted its retry limit, or the Batch service was unable
      * to start the Task due to Task preparation errors (such as resource file download failures).
      */
-    @Generated public static final BatchJobReleaseTaskState COMPLETED = fromString("completed");
+    @Generated
+    public static final BatchJobReleaseTaskState COMPLETED = fromString("completed");
 
     /**
      * Creates a new instance of BatchJobReleaseTaskState value.
@@ -27,7 +33,8 @@ public final class BatchJobReleaseTaskState extends ExpandableStringEnum<BatchJo
      */
     @Generated
     @Deprecated
-    public BatchJobReleaseTaskState() {}
+    public BatchJobReleaseTaskState() {
+    }
 
     /**
      * Creates or finds a BatchJobReleaseTaskState from its string representation.

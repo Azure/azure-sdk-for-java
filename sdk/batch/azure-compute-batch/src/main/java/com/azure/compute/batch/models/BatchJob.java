@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An Azure Batch Job. */
+/**
+ * An Azure Batch Job.
+ */
 @Fluent
 public final class BatchJob {
 
@@ -338,8 +340,8 @@ public final class BatchJob {
     }
 
     /**
-     * Get the previousStateTransitionTime property: The time at which the Job entered its previous state. This property
-     * is not set if the Job is in its initial Active state.
+     * Get the previousStateTransitionTime property: The time at which the Job entered its previous state. This
+     * property is not set if the Job is in its initial Active state.
      *
      * @return the previousStateTransitionTime value.
      */
@@ -564,8 +566,8 @@ public final class BatchJob {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service does
-     * not assign any meaning to metadata; it is solely for the use of user code.
+     * Get the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @return the metadata value.
      */
@@ -575,8 +577,8 @@ public final class BatchJob {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service does
-     * not assign any meaning to metadata; it is solely for the use of user code.
+     * Set the metadata property: A list of name-value pairs associated with the Job as metadata. The Batch service
+     * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJob object itself.

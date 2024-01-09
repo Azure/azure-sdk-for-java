@@ -18,24 +18,20 @@ using TypeSpec.Versioning;
     endpoint: url,
   }
 )
-@doc("A client for issuing REST requests to the Azure Batch service.")
-@useAuth(AADToken)
+@useAuth(
+  OAuth2Auth<[
+    {
+      type: OAuth2FlowType.implicit,
+      authorizationUrl: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+      scopes: ["https://batch.core.windows.net//.default"],
+    }
+  ]>
+)
 namespace Azure.Batch;
 
 @doc("The Azure Batch service version.")
 enum Versions {
-   @doc("API Version 2023-05-01.17.0")
-   @useDependency(Azure.Core.Versions.v1_0_Preview_2)
-  `2023-05-01.17.0`,
+  @doc("API Version 2023-11-01.18.0")
+  @useDependency(Azure.Core.Versions.v1_0_Preview_2)
+  `2023-11-01.18.0`,
 }
-
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-@doc("The Azure Active Directory OAuth2 Flow")
-model AADToken
-  is OAuth2Auth<[
-    {
-      type: OAuth2FlowType.implicit;
-      authorizationUrl: "https://login.microsoftonline.com/common/oauth2/authorize";
-      scopes: ["https://batch.core.windows.net//.default"];
-    }
-  ]>;

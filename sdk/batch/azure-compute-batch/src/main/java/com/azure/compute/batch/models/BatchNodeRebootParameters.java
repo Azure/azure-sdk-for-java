@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for rebooting an Azure Batch Compute Node. */
+/**
+ * Parameters for rebooting an Azure Batch Compute Node.
+ */
 @Fluent
 public final class BatchNodeRebootParameters {
 
@@ -18,9 +20,12 @@ public final class BatchNodeRebootParameters {
     @JsonProperty(value = "nodeRebootOption")
     private BatchNodeRebootOption nodeRebootOption;
 
-    /** Creates an instance of BatchNodeRebootParameters class. */
+    /**
+     * Creates an instance of BatchNodeRebootParameters class.
+     */
     @Generated
-    public BatchNodeRebootParameters() {}
+    public BatchNodeRebootParameters() {
+    }
 
     /**
      * Get the nodeRebootOption property: When to reboot the Compute Node and what to do with currently running Tasks.

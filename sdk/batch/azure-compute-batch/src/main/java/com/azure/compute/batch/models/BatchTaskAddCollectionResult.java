@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of adding a collection of Tasks to a Job. */
+/**
+ * The result of adding a collection of Tasks to a Job.
+ */
 @Immutable
 public final class BatchTaskAddCollectionResult {
 
@@ -19,9 +21,12 @@ public final class BatchTaskAddCollectionResult {
     @JsonProperty(value = "value")
     private List<BatchTaskAddResult> value;
 
-    /** Creates an instance of BatchTaskAddCollectionResult class. */
+    /**
+     * Creates an instance of BatchTaskAddCollectionResult class.
+     */
     @Generated
-    private BatchTaskAddCollectionResult() {}
+    private BatchTaskAddCollectionResult() {
+    }
 
     /**
      * Get the value property: The results of the add Task collection operation.

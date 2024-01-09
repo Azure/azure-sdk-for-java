@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The results and errors from an execution of a Pool autoscale formula. */
+/**
+ * The results and errors from an execution of a Pool autoscale formula.
+ */
 @Immutable
 public final class AutoScaleRun {
 
@@ -58,8 +60,8 @@ public final class AutoScaleRun {
     }
 
     /**
-     * Get the results property: The final values of all variables used in the evaluation of the autoscale formula. Each
-     * variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * Get the results property: The final values of all variables used in the evaluation of the autoscale formula.
+     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
      *
      * @return the results value.
      */

@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to create a user Account on a Windows Compute Node. */
+/**
+ * Properties used to create a user Account on a Windows Compute Node.
+ */
 @Fluent
 public final class WindowsUserConfiguration {
 
@@ -19,9 +21,12 @@ public final class WindowsUserConfiguration {
     @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
-    /** Creates an instance of WindowsUserConfiguration class. */
+    /**
+     * Creates an instance of WindowsUserConfiguration class.
+     */
     @Generated
-    public WindowsUserConfiguration() {}
+    public WindowsUserConfiguration() {
+    }
 
     /**
      * Get the loginMode property: The login mode for the user. The default value for VirtualMachineConfiguration Pools

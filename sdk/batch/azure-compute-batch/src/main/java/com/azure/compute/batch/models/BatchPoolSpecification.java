@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** Specification for creating a new Pool. */
+/**
+ * Specification for creating a new Pool.
+ */
 @Fluent
 public final class BatchPoolSpecification {
 
@@ -166,7 +168,8 @@ public final class BatchPoolSpecification {
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
      * application ID must be fully qualified
-     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
+     * accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
      * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
      * given Pool.
@@ -296,9 +299,9 @@ public final class BatchPoolSpecification {
 
     /**
      * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
-     * be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are
-     * mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service
-     * returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration
+     * are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch
+     * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @return the virtualMachineConfiguration value.
      */
@@ -309,24 +312,24 @@ public final class BatchPoolSpecification {
 
     /**
      * Set the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
-     * be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are
-     * mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service
-     * returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration
+     * are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch
+     * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the BatchPoolSpecification object itself.
      */
     @Generated
-    public BatchPoolSpecification setVirtualMachineConfiguration(
-            VirtualMachineConfiguration virtualMachineConfiguration) {
+    public BatchPoolSpecification
+        setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
-     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
-     * of the vmSize of the pool or 256.
+     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of
+     * cores of the vmSize of the pool or 256.
      *
      * @return the taskSlotsPerNode value.
      */
@@ -337,8 +340,8 @@ public final class BatchPoolSpecification {
 
     /**
      * Set the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
-     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
-     * of the vmSize of the pool or 256.
+     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of
+     * cores of the vmSize of the pool or 256.
      *
      * @param taskSlotsPerNode the taskSlotsPerNode value to set.
      * @return the BatchPoolSpecification object itself.
@@ -376,8 +379,8 @@ public final class BatchPoolSpecification {
     /**
      * Get the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
-     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the
+     * request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @return the resizeTimeout value.
      */
@@ -389,8 +392,8 @@ public final class BatchPoolSpecification {
     /**
      * Set the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
-     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the
+     * request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchPoolSpecification object itself.
@@ -454,9 +457,9 @@ public final class BatchPoolSpecification {
     }
 
     /**
-     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at least
-     * one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element
-     * is required. The Pool automatically resizes according to the formula. The default value is false.
+     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at
+     * least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * element is required. The Pool automatically resizes according to the formula. The default value is false.
      *
      * @return the enableAutoScale value.
      */
@@ -466,9 +469,9 @@ public final class BatchPoolSpecification {
     }
 
     /**
-     * Set the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at least
-     * one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element
-     * is required. The Pool automatically resizes according to the formula. The default value is false.
+     * Set the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at
+     * least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * element is required. The Pool automatically resizes according to the formula. The default value is false.
      *
      * @param enableAutoScale the enableAutoScale value to set.
      * @return the BatchPoolSpecification object itself.
@@ -480,10 +483,10 @@ public final class BatchPoolSpecification {
     }
 
     /**
-     * Get the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. This property
-     * must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The
-     * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
-     * rejects the request with detailed error information.
+     * Get the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. This
+     * property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to
+     * true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch
+     * service rejects the request with detailed error information.
      *
      * @return the autoScaleFormula value.
      */
@@ -493,10 +496,10 @@ public final class BatchPoolSpecification {
     }
 
     /**
-     * Set the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. This property
-     * must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The
-     * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
-     * rejects the request with detailed error information.
+     * Set the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. This
+     * property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to
+     * true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch
+     * service rejects the request with detailed error information.
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
      * @return the BatchPoolSpecification object itself.
@@ -616,8 +619,9 @@ public final class BatchPoolSpecification {
      * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
      * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
      * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024.
+     * Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value.
@@ -632,8 +636,9 @@ public final class BatchPoolSpecification {
      * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
      * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
      * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024.
+     * Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set.
@@ -650,8 +655,8 @@ public final class BatchPoolSpecification {
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
-     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given
-     * Pool.
+     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
+     * given Pool.
      *
      * @return the applicationPackageReferences value.
      */
@@ -665,15 +670,15 @@ public final class BatchPoolSpecification {
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
-     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given
-     * Pool.
+     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
+     * given Pool.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchPoolSpecification object itself.
      */
     @Generated
-    public BatchPoolSpecification setApplicationPackageReferences(
-            List<BatchApplicationPackageReference> applicationPackageReferences) {
+    public BatchPoolSpecification
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -797,9 +802,47 @@ public final class BatchPoolSpecification {
      * @return the BatchPoolSpecification object itself.
      */
     @Generated
-    public BatchPoolSpecification setTargetNodeCommunicationMode(
-            BatchNodeCommunicationMode targetNodeCommunicationMode) {
+    public BatchPoolSpecification
+        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /*
+     * The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    @JsonProperty(value = "resourceTags")
+    private String resourceTags;
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public String getResourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the resourceTags property: The user-specified tags associated with the pool.The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set.
+     * @return the BatchPoolSpecification object itself.
+     */
+    @Generated
+    public BatchPoolSpecification setResourceTags(String resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 }

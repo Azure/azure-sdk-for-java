@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A Compute Node in the Batch service. */
+/**
+ * A Compute Node in the Batch service.
+ */
 @Immutable
 public final class BatchNode {
 
@@ -199,9 +201,12 @@ public final class BatchNode {
     @JsonProperty(value = "virtualMachineInfo")
     private VirtualMachineInfo virtualMachineInfo;
 
-    /** Creates an instance of BatchNode class. */
+    /**
+     * Creates an instance of BatchNode class.
+     */
     @Generated
-    private BatchNode() {}
+    private BatchNode() {
+    }
 
     /**
      * Get the id property: The ID of the Compute Node. Every Compute Node that is added to a Pool is assigned a unique
@@ -353,8 +358,8 @@ public final class BatchNode {
 
     /**
      * Get the totalTasksSucceeded property: The total number of Job Tasks which completed successfully (with exitCode
-     * 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release or
-     * Start Tasks.
+     * 0) on the Compute Node. This includes Job Manager Tasks and normal Tasks, but not Job Preparation, Job Release
+     * or Start Tasks.
      *
      * @return the totalTasksSucceeded value.
      */
@@ -396,11 +401,12 @@ public final class BatchNode {
 
     /**
      * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
-     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
-     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value.

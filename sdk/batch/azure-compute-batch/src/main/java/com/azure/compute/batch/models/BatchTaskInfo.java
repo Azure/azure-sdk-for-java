@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about a Task running on a Compute Node. */
+/**
+ * Information about a Task running on a Compute Node.
+ */
 @Immutable
 public final class BatchTaskInfo {
 

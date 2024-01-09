@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for updating an Azure Batch Job. */
+/**
+ * Parameters for updating an Azure Batch Job.
+ */
 @Fluent
 public final class BatchJobUpdateParameters {
 
@@ -76,9 +78,12 @@ public final class BatchJobUpdateParameters {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
-    /** Creates an instance of BatchJobUpdateParameters class. */
+    /**
+     * Creates an instance of BatchJobUpdateParameters class.
+     */
     @Generated
-    public BatchJobUpdateParameters() {}
+    public BatchJobUpdateParameters() {
+    }
 
     /**
      * Get the priority property: The priority of the Job. Priority values can range from -1000 to 1000, with -1000
@@ -188,8 +193,8 @@ public final class BatchJobUpdateParameters {
 
     /**
      * Get the poolInfo property: The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for
-     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job
-     * is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
+     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the
+     * Job is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
      * autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job
      * (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
      *
@@ -202,8 +207,8 @@ public final class BatchJobUpdateParameters {
 
     /**
      * Set the poolInfo property: The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for
-     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job
-     * is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
+     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the
+     * Job is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
      * autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job
      * (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
      *

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information used to connect to an NFS file system. */
+/**
+ * Information used to connect to an NFS file system.
+ */
 @Fluent
 public final class NfsMountConfiguration {
 
@@ -43,9 +45,8 @@ public final class NfsMountConfiguration {
      */
     @Generated
     @JsonCreator
-    public NfsMountConfiguration(
-            @JsonProperty(value = "source") String source,
-            @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
+    public NfsMountConfiguration(@JsonProperty(value = "source") String source,
+        @JsonProperty(value = "relativeMountPath") String relativeMountPath) {
         this.source = source;
         this.relativeMountPath = relativeMountPath;
     }

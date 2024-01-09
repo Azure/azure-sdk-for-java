@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Parameters for enabling automatic scaling on an Azure Batch Pool. */
+/**
+ * Parameters for enabling automatic scaling on an Azure Batch Pool.
+ */
 @Fluent
 public final class BatchPoolEnableAutoScaleParameters {
 
@@ -34,9 +36,12 @@ public final class BatchPoolEnableAutoScaleParameters {
     @JsonProperty(value = "autoScaleEvaluationInterval")
     private Duration autoScaleEvaluationInterval;
 
-    /** Creates an instance of BatchPoolEnableAutoScaleParameters class. */
+    /**
+     * Creates an instance of BatchPoolEnableAutoScaleParameters class.
+     */
     @Generated
-    public BatchPoolEnableAutoScaleParameters() {}
+    public BatchPoolEnableAutoScaleParameters() {
+    }
 
     /**
      * Get the autoScaleFormula property: The formula for the desired number of Compute Nodes in the Pool. The formula

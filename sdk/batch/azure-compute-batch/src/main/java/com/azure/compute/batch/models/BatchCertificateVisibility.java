@@ -8,20 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchCertificateVisibility enums. */
+/**
+ * BatchCertificateVisibility enums.
+ */
 public final class BatchCertificateVisibility extends ExpandableStringEnum<BatchCertificateVisibility> {
 
     /**
      * The Certificate should be visible to the user account under which the StartTask is run. Note that if AutoUser
      * Scope is Pool for both the StartTask and a Task, this certificate will be visible to the Task as well.
      */
-    @Generated public static final BatchCertificateVisibility START_TASK = fromString("starttask");
+    @Generated
+    public static final BatchCertificateVisibility START_TASK = fromString("starttask");
 
-    /** The Certificate should be visible to the user accounts under which Job Tasks are run. */
-    @Generated public static final BatchCertificateVisibility TASK = fromString("task");
+    /**
+     * The Certificate should be visible to the user accounts under which Job Tasks are run.
+     */
+    @Generated
+    public static final BatchCertificateVisibility TASK = fromString("task");
 
-    /** The Certificate should be visible to the user accounts under which users remotely access the Compute Node. */
-    @Generated public static final BatchCertificateVisibility REMOTE_USER = fromString("remoteuser");
+    /**
+     * The Certificate should be visible to the user accounts under which users remotely access the Compute Node.
+     */
+    @Generated
+    public static final BatchCertificateVisibility REMOTE_USER = fromString("remoteuser");
 
     /**
      * Creates a new instance of BatchCertificateVisibility value.
@@ -30,7 +39,8 @@ public final class BatchCertificateVisibility extends ExpandableStringEnum<Batch
      */
     @Generated
     @Deprecated
-    public BatchCertificateVisibility() {}
+    public BatchCertificateVisibility() {
+    }
 
     /**
      * Creates or finds a BatchCertificateVisibility from its string representation.

@@ -8,7 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** How the Batch service should respond if a Task exits with a particular exit code. */
+/**
+ * How the Batch service should respond if a Task exits with a particular exit
+ * code.
+ */
 @Immutable
 public final class ExitCodeMapping {
 
@@ -34,8 +37,8 @@ public final class ExitCodeMapping {
      */
     @Generated
     @JsonCreator
-    public ExitCodeMapping(
-            @JsonProperty(value = "code") int code, @JsonProperty(value = "exitOptions") ExitOptions exitOptions) {
+    public ExitCodeMapping(@JsonProperty(value = "code") int code,
+        @JsonProperty(value = "exitOptions") ExitOptions exitOptions) {
         this.code = code;
         this.exitOptions = exitOptions;
     }

@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** OSType enums. */
+/**
+ * OSType enums.
+ */
 public final class OSType extends ExpandableStringEnum<OSType> {
 
-    /** The Linux operating system. */
-    @Generated public static final OSType LINUX = fromString("linux");
+    /**
+     * The Linux operating system.
+     */
+    @Generated
+    public static final OSType LINUX = fromString("linux");
 
-    /** The Windows operating system. */
-    @Generated public static final OSType WINDOWS = fromString("windows");
+    /**
+     * The Windows operating system.
+     */
+    @Generated
+    public static final OSType WINDOWS = fromString("windows");
 
     /**
      * Creates a new instance of OSType value.
@@ -24,7 +32,8 @@ public final class OSType extends ExpandableStringEnum<OSType> {
      */
     @Generated
     @Deprecated
-    public OSType() {}
+    public OSType() {
+    }
 
     /**
      * Creates or finds a OSType from its string representation.

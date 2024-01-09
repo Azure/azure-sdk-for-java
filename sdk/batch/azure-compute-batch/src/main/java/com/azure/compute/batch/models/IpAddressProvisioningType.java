@@ -8,20 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** IPAddressProvisioningType enums. */
+/**
+ * IPAddressProvisioningType enums.
+ */
 public final class IpAddressProvisioningType extends ExpandableStringEnum<IpAddressProvisioningType> {
 
     /**
      * A public IP will be created and managed by Batch. There may be multiple public IPs depending on the size of the
      * Pool.
      */
-    @Generated public static final IpAddressProvisioningType BATCH_MANAGED = fromString("batchmanaged");
+    @Generated
+    public static final IpAddressProvisioningType BATCH_MANAGED = fromString("batchmanaged");
 
-    /** Public IPs are provided by the user and will be used to provision the Compute Nodes. */
-    @Generated public static final IpAddressProvisioningType USER_MANAGED = fromString("usermanaged");
+    /**
+     * Public IPs are provided by the user and will be used to provision the Compute Nodes.
+     */
+    @Generated
+    public static final IpAddressProvisioningType USER_MANAGED = fromString("usermanaged");
 
-    /** No public IP Address will be created. */
-    @Generated public static final IpAddressProvisioningType NO_PUBLIC_IPADDRESSES = fromString("nopublicipaddresses");
+    /**
+     * No public IP Address will be created.
+     */
+    @Generated
+    public static final IpAddressProvisioningType NO_PUBLIC_IPADDRESSES = fromString("nopublicipaddresses");
 
     /**
      * Creates a new instance of IpAddressProvisioningType value.
@@ -30,7 +39,8 @@ public final class IpAddressProvisioningType extends ExpandableStringEnum<IpAddr
      */
     @Generated
     @Deprecated
-    public IpAddressProvisioningType() {}
+    public IpAddressProvisioningType() {
+    }
 
     /**
      * Creates or finds a IpAddressProvisioningType from its string representation.

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Statistics related to Pool usage information. */
+/**
+ * Statistics related to Pool usage information.
+ */
 @Immutable
 public final class BatchPoolUsageStatistics {
 
@@ -45,10 +47,9 @@ public final class BatchPoolUsageStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchPoolUsageStatistics(
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-            @JsonProperty(value = "dedicatedCoreTime") Duration dedicatedCoreTime) {
+    private BatchPoolUsageStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "dedicatedCoreTime") Duration dedicatedCoreTime) {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.dedicatedCoreTime = dedicatedCoreTime;
@@ -76,8 +77,8 @@ public final class BatchPoolUsageStatistics {
     }
 
     /**
-     * Get the dedicatedCoreTime property: The aggregated wall-clock time of the dedicated Compute Node cores being part
-     * of the Pool.
+     * Get the dedicatedCoreTime property: The aggregated wall-clock time of the dedicated Compute Node cores being
+     * part of the Pool.
      *
      * @return the dedicatedCoreTime value.
      */

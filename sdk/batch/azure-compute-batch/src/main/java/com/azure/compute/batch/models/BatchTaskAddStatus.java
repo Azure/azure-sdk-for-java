@@ -8,20 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchTaskAddStatus enums. */
+/**
+ * BatchTaskAddStatus enums.
+ */
 public final class BatchTaskAddStatus extends ExpandableStringEnum<BatchTaskAddStatus> {
 
-    /** The Task was added successfully. */
-    @Generated public static final BatchTaskAddStatus SUCCESS = fromString("Success");
+    /**
+     * The Task was added successfully.
+     */
+    @Generated
+    public static final BatchTaskAddStatus SUCCESS = fromString("success");
 
     /**
      * The Task failed to add due to a client error and should not be retried without modifying the request as
      * appropriate.
      */
-    @Generated public static final BatchTaskAddStatus CLIENT_ERROR = fromString("clienterror");
+    @Generated
+    public static final BatchTaskAddStatus CLIENT_ERROR = fromString("clienterror");
 
-    /** Task failed to add due to a server error and can be retried without modification. */
-    @Generated public static final BatchTaskAddStatus SERVER_ERROR = fromString("servererror");
+    /**
+     * Task failed to add due to a server error and can be retried without modification.
+     */
+    @Generated
+    public static final BatchTaskAddStatus SERVER_ERROR = fromString("servererror");
 
     /**
      * Creates a new instance of BatchTaskAddStatus value.
@@ -30,7 +39,8 @@ public final class BatchTaskAddStatus extends ExpandableStringEnum<BatchTaskAddS
      */
     @Generated
     @Deprecated
-    public BatchTaskAddStatus() {}
+    public BatchTaskAddStatus() {
+    }
 
     /**
      * Creates or finds a BatchTaskAddStatus from its string representation.

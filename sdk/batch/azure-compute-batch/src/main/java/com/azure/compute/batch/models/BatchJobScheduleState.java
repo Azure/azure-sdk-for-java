@@ -8,27 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchJobScheduleState enums. */
+/**
+ * BatchJobScheduleState enums.
+ */
 public final class BatchJobScheduleState extends ExpandableStringEnum<BatchJobScheduleState> {
 
-    /** The Job Schedule is active and will create Jobs as per its schedule. */
-    @Generated public static final BatchJobScheduleState ACTIVE = fromString("active");
+    /**
+     * The Job Schedule is active and will create Jobs as per its schedule.
+     */
+    @Generated
+    public static final BatchJobScheduleState ACTIVE = fromString("active");
 
-    /** The Job Schedule has terminated, either by reaching its end time or by the user terminating it explicitly. */
-    @Generated public static final BatchJobScheduleState COMPLETED = fromString("completed");
+    /**
+     * The Job Schedule has terminated, either by reaching its end time or by the user terminating it explicitly.
+     */
+    @Generated
+    public static final BatchJobScheduleState COMPLETED = fromString("completed");
 
     /**
      * The user has disabled the Job Schedule. The scheduler will not initiate any new Jobs will on this schedule, but
      * any existing active Job will continue to run.
      */
-    @Generated public static final BatchJobScheduleState DISABLED = fromString("disabled");
+    @Generated
+    public static final BatchJobScheduleState DISABLED = fromString("disabled");
 
     /**
      * The Job Schedule has no more work to do, or has been explicitly terminated by the user, but the termination
      * operation is still in progress. The scheduler will not initiate any new Jobs for this Job Schedule, nor is any
      * existing Job active.
      */
-    @Generated public static final BatchJobScheduleState TERMINATING = fromString("terminating");
+    @Generated
+    public static final BatchJobScheduleState TERMINATING = fromString("terminating");
 
     /**
      * The user has requested that the Job Schedule be deleted, but the delete operation is still in progress. The
@@ -36,7 +46,8 @@ public final class BatchJobScheduleState extends ExpandableStringEnum<BatchJobSc
      * the Job Schedule, including any active Job. The Job Schedule will be deleted when all Jobs and Tasks under the
      * Job Schedule have been deleted.
      */
-    @Generated public static final BatchJobScheduleState DELETING = fromString("deleting");
+    @Generated
+    public static final BatchJobScheduleState DELETING = fromString("deleting");
 
     /**
      * Creates a new instance of BatchJobScheduleState value.
@@ -45,7 +56,8 @@ public final class BatchJobScheduleState extends ExpandableStringEnum<BatchJobSc
      */
     @Generated
     @Deprecated
-    public BatchJobScheduleState() {}
+    public BatchJobScheduleState() {
+    }
 
     /**
      * Creates or finds a BatchJobScheduleState from its string representation.

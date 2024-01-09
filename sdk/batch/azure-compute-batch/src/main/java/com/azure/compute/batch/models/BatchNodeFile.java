@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about a file or directory on a Compute Node. */
+/**
+ * Information about a file or directory on a Compute Node.
+ */
 @Immutable
 public final class BatchNodeFile {
 
@@ -39,9 +41,12 @@ public final class BatchNodeFile {
     @JsonProperty(value = "properties")
     private FileProperties properties;
 
-    /** Creates an instance of BatchNodeFile class. */
+    /**
+     * Creates an instance of BatchNodeFile class.
+     */
     @Generated
-    private BatchNodeFile() {}
+    private BatchNodeFile() {
+    }
 
     /**
      * Get the name property: The file path.

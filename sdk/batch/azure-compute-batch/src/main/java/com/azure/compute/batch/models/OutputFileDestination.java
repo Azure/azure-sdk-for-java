@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The destination to which a file should be uploaded. */
+/**
+ * The destination to which a file should be uploaded.
+ */
 @Fluent
 public final class OutputFileDestination {
 
@@ -18,9 +20,12 @@ public final class OutputFileDestination {
     @JsonProperty(value = "container")
     private OutputFileBlobContainerDestination container;
 
-    /** Creates an instance of OutputFileDestination class. */
+    /**
+     * Creates an instance of OutputFileDestination class.
+     */
     @Generated
-    public OutputFileDestination() {}
+    public OutputFileDestination() {
+    }
 
     /**
      * Get the container property: A location in Azure blob storage to which files are uploaded.

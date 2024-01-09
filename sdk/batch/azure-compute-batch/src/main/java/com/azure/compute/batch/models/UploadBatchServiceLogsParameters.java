@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Azure Batch service log files upload parameters for a Compute Node. */
+/**
+ * The Azure Batch service log files upload parameters for a Compute Node.
+ */
 @Fluent
 public final class UploadBatchServiceLogsParameters {
 
@@ -59,9 +61,8 @@ public final class UploadBatchServiceLogsParameters {
      */
     @Generated
     @JsonCreator
-    public UploadBatchServiceLogsParameters(
-            @JsonProperty(value = "containerUrl") String containerUrl,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime) {
+    public UploadBatchServiceLogsParameters(@JsonProperty(value = "containerUrl") String containerUrl,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime) {
         this.containerUrl = containerUrl;
         this.startTime = startTime;
     }
@@ -95,8 +96,9 @@ public final class UploadBatchServiceLogsParameters {
     /**
      * Get the endTime property: The end of the time range from which to upload Batch Service log file(s). Any log file
      * containing a log message in the time range will be uploaded. This means that the operation might retrieve more
-     * logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve
-     * fewer logs than have been requested. If omitted, the default is to upload all logs available after the startTime.
+     * logs than have been requested since the entire log file is always uploaded, but the operation should not
+     * retrieve fewer logs than have been requested. If omitted, the default is to upload all logs available after the
+     * startTime.
      *
      * @return the endTime value.
      */
@@ -108,8 +110,9 @@ public final class UploadBatchServiceLogsParameters {
     /**
      * Set the endTime property: The end of the time range from which to upload Batch Service log file(s). Any log file
      * containing a log message in the time range will be uploaded. This means that the operation might retrieve more
-     * logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve
-     * fewer logs than have been requested. If omitted, the default is to upload all logs available after the startTime.
+     * logs than have been requested since the entire log file is always uploaded, but the operation should not
+     * retrieve fewer logs than have been requested. If omitted, the default is to upload all logs available after the
+     * startTime.
      *
      * @param endTime the endTime value to set.
      * @return the UploadBatchServiceLogsParameters object itself.

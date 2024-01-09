@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for updating an Azure Batch Pool. */
+/**
+ * Parameters for updating an Azure Batch Pool.
+ */
 @Fluent
 public final class BatchPoolUpdateParameters {
 
@@ -64,9 +66,12 @@ public final class BatchPoolUpdateParameters {
     @JsonProperty(value = "targetNodeCommunicationMode")
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
-    /** Creates an instance of BatchPoolUpdateParameters class. */
+    /**
+     * Creates an instance of BatchPoolUpdateParameters class.
+     */
     @Generated
-    public BatchPoolUpdateParameters() {}
+    public BatchPoolUpdateParameters() {
+    }
 
     /**
      * Get the startTask property: A Task to run on each Compute Node as it joins the Pool. The Task runs when the
@@ -96,13 +101,14 @@ public final class BatchPoolUpdateParameters {
 
     /**
      * Get the certificateReferences property: If this element is present, it replaces any existing Certificate
-     * references configured on the Pool. If omitted, any existing Certificate references are left unchanged. For
-     * Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For
-     * Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For
-     * Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
-     * /home/{user-name}/certs) and Certificates are placed in that directory. Warning: This property is deprecated and
-     * will be removed after February, 2024. Please use the [Azure KeyVault
+     * references configured on the Pool.
+     * If omitted, any existing Certificate references are left unchanged.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value.
@@ -114,13 +120,14 @@ public final class BatchPoolUpdateParameters {
 
     /**
      * Set the certificateReferences property: If this element is present, it replaces any existing Certificate
-     * references configured on the Pool. If omitted, any existing Certificate references are left unchanged. For
-     * Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For
-     * Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For
-     * Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g.,
-     * /home/{user-name}/certs) and Certificates are placed in that directory. Warning: This property is deprecated and
-     * will be removed after February, 2024. Please use the [Azure KeyVault
+     * references configured on the Pool.
+     * If omitted, any existing Certificate references are left unchanged.
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set.
@@ -135,9 +142,9 @@ public final class BatchPoolUpdateParameters {
     /**
      * Get the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
-     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
-     * omitted, any existing Package references are left unchanged.
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any
+     * existing Package references. If you specify an empty collection, then all Package references are removed from
+     * the Pool. If omitted, any existing Package references are left unchanged.
      *
      * @return the applicationPackageReferences value.
      */
@@ -149,16 +156,16 @@ public final class BatchPoolUpdateParameters {
     /**
      * Set the applicationPackageReferences property: A list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
-     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing
-     * Package references. If you specify an empty collection, then all Package references are removed from the Pool. If
-     * omitted, any existing Package references are left unchanged.
+     * are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any
+     * existing Package references. If you specify an empty collection, then all Package references are removed from
+     * the Pool. If omitted, any existing Package references are left unchanged.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchPoolUpdateParameters object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setApplicationPackageReferences(
-            List<BatchApplicationPackageReference> applicationPackageReferences) {
+    public BatchPoolUpdateParameters
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -191,8 +198,8 @@ public final class BatchPoolUpdateParameters {
 
     /**
      * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any
+     * existing metadata is left unchanged.
      *
      * @return the targetNodeCommunicationMode value.
      */
@@ -203,15 +210,15 @@ public final class BatchPoolUpdateParameters {
 
     /**
      * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If this element
-     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing
-     * metadata is left unchanged.
+     * is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any
+     * existing metadata is left unchanged.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
      * @return the BatchPoolUpdateParameters object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setTargetNodeCommunicationMode(
-            BatchNodeCommunicationMode targetNodeCommunicationMode) {
+    public BatchPoolUpdateParameters
+        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }

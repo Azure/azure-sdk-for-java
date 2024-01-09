@@ -8,7 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Options for an output file upload operation, including under what conditions to perform the upload. */
+/**
+ * Options for an output file upload operation, including under what conditions
+ * to perform the upload.
+ */
 @Immutable
 public final class OutputFileUploadOptions {
 

@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Specifies any dependencies of a Task. Any Task that is explicitly specified or within a dependency range must
- * complete before the dependant Task will be scheduled.
+ * Specifies any dependencies of a Task. Any Task that is explicitly specified or
+ * within a dependency range must complete before the dependant Task will be
+ * scheduled.
  */
 @Fluent
 public final class BatchTaskDependencies {
@@ -33,15 +34,19 @@ public final class BatchTaskDependencies {
     @JsonProperty(value = "taskIdRanges")
     private List<BatchTaskIdRange> taskIdRanges;
 
-    /** Creates an instance of BatchTaskDependencies class. */
+    /**
+     * Creates an instance of BatchTaskDependencies class.
+     */
     @Generated
-    public BatchTaskDependencies() {}
+    public BatchTaskDependencies() {
+    }
 
     /**
      * Get the taskIds property: The list of Task IDs that this Task depends on. All Tasks in this list must complete
      * successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters
      * total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add
-     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
+     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges
+     * instead.
      *
      * @return the taskIds value.
      */
@@ -54,7 +59,8 @@ public final class BatchTaskDependencies {
      * Set the taskIds property: The list of Task IDs that this Task depends on. All Tasks in this list must complete
      * successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters
      * total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add
-     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
+     * Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges
+     * instead.
      *
      * @param taskIds the taskIds value to set.
      * @return the BatchTaskDependencies object itself.
@@ -66,8 +72,8 @@ public final class BatchTaskDependencies {
     }
 
     /**
-     * Get the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges must
-     * complete successfully before the dependent Task can be scheduled.
+     * Get the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges
+     * must complete successfully before the dependent Task can be scheduled.
      *
      * @return the taskIdRanges value.
      */
@@ -77,8 +83,8 @@ public final class BatchTaskDependencies {
     }
 
     /**
-     * Set the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges must
-     * complete successfully before the dependent Task can be scheduled.
+     * Set the taskIdRanges property: The list of Task ID ranges that this Task depends on. All Tasks in all ranges
+     * must complete successfully before the dependent Task can be scheduled.
      *
      * @param taskIdRanges the taskIdRanges value to set.
      * @return the BatchTaskDependencies object itself.

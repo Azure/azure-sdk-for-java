@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for updating an Azure Batch Job Schedule. */
+/**
+ * Parameters for updating an Azure Batch Job Schedule.
+ */
 @Fluent
 public final class BatchJobScheduleUpdateParameters {
 
@@ -36,14 +38,17 @@ public final class BatchJobScheduleUpdateParameters {
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
 
-    /** Creates an instance of BatchJobScheduleUpdateParameters class. */
+    /**
+     * Creates an instance of BatchJobScheduleUpdateParameters class.
+     */
     @Generated
-    public BatchJobScheduleUpdateParameters() {}
+    public BatchJobScheduleUpdateParameters() {
+    }
 
     /**
      * Get the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
-     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is
-     * left unchanged.
+     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule
+     * is left unchanged.
      *
      * @return the schedule value.
      */
@@ -54,8 +59,8 @@ public final class BatchJobScheduleUpdateParameters {
 
     /**
      * Set the schedule property: The schedule according to which Jobs will be created. All times are fixed respective
-     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is
-     * left unchanged.
+     * to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule
+     * is left unchanged.
      *
      * @param schedule the schedule value to set.
      * @return the BatchJobScheduleUpdateParameters object itself.
@@ -93,8 +98,8 @@ public final class BatchJobScheduleUpdateParameters {
     }
 
     /**
-     * Get the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do not
-     * specify this element, existing metadata is left unchanged.
+     * Get the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do
+     * not specify this element, existing metadata is left unchanged.
      *
      * @return the metadata value.
      */
@@ -104,8 +109,8 @@ public final class BatchJobScheduleUpdateParameters {
     }
 
     /**
-     * Set the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do not
-     * specify this element, existing metadata is left unchanged.
+     * Set the metadata property: A list of name-value pairs associated with the Job Schedule as metadata. If you do
+     * not specify this element, existing metadata is left unchanged.
      *
      * @param metadata the metadata value to set.
      * @return the BatchJobScheduleUpdateParameters object itself.

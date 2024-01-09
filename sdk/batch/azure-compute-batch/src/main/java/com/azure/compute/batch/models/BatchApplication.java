@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains information about an application in an Azure Batch Account. */
+/**
+ * Contains information about an application in an Azure Batch Account.
+ */
 @Immutable
 public final class BatchApplication {
 
@@ -43,10 +45,9 @@ public final class BatchApplication {
      */
     @Generated
     @JsonCreator
-    private BatchApplication(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "displayName") String displayName,
-            @JsonProperty(value = "versions") List<String> versions) {
+    private BatchApplication(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "displayName") String displayName,
+        @JsonProperty(value = "versions") List<String> versions) {
         this.id = id;
         this.displayName = displayName;
         this.versions = versions;

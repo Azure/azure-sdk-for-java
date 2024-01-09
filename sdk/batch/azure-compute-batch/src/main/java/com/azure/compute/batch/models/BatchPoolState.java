@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchPoolState enums. */
+/**
+ * BatchPoolState enums.
+ */
 public final class BatchPoolState extends ExpandableStringEnum<BatchPoolState> {
 
-    /** The Pool is available to run Tasks subject to the availability of Compute Nodes. */
-    @Generated public static final BatchPoolState ACTIVE = fromString("active");
+    /**
+     * The Pool is available to run Tasks subject to the availability of Compute Nodes.
+     */
+    @Generated
+    public static final BatchPoolState ACTIVE = fromString("active");
 
-    /** The user has requested that the Pool be deleted, but the delete operation has not yet completed. */
-    @Generated public static final BatchPoolState DELETING = fromString("deleting");
+    /**
+     * The user has requested that the Pool be deleted, but the delete operation has not yet completed.
+     */
+    @Generated
+    public static final BatchPoolState DELETING = fromString("deleting");
 
     /**
      * Creates a new instance of BatchPoolState value.
@@ -24,7 +32,8 @@ public final class BatchPoolState extends ExpandableStringEnum<BatchPoolState> {
      */
     @Generated
     @Deprecated
-    public BatchPoolState() {}
+    public BatchPoolState() {
+    }
 
     /**
      * Creates or finds a BatchPoolState from its string representation.

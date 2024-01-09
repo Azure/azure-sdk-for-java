@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchPoolIdentityType enums. */
+/**
+ * BatchPoolIdentityType enums.
+ */
 public final class BatchPoolIdentityType extends ExpandableStringEnum<BatchPoolIdentityType> {
 
-    /** Batch pool has user assigned identities with it. */
-    @Generated public static final BatchPoolIdentityType USER_ASSIGNED = fromString("UserAssigned");
+    /**
+     * Batch pool has user assigned identities with it.
+     */
+    @Generated
+    public static final BatchPoolIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Batch pool has no identity associated with it. Setting `None` in update pool will remove existing identities. */
-    @Generated public static final BatchPoolIdentityType NONE = fromString("None");
+    /**
+     * Batch pool has no identity associated with it. Setting `None` in update pool will remove existing identities.
+     */
+    @Generated
+    public static final BatchPoolIdentityType NONE = fromString("None");
 
     /**
      * Creates a new instance of BatchPoolIdentityType value.
@@ -24,7 +32,8 @@ public final class BatchPoolIdentityType extends ExpandableStringEnum<BatchPoolI
      */
     @Generated
     @Deprecated
-    public BatchPoolIdentityType() {}
+    public BatchPoolIdentityType() {
+    }
 
     /**
      * Creates or finds a BatchPoolIdentityType from its string representation.

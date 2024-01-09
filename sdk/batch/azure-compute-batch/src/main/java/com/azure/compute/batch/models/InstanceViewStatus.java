@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view status. */
+/**
+ * The instance view status.
+ */
 @Immutable
 public final class InstanceViewStatus {
 
@@ -46,9 +48,12 @@ public final class InstanceViewStatus {
     @JsonProperty(value = "time")
     private String time;
 
-    /** Creates an instance of InstanceViewStatus class. */
+    /**
+     * Creates an instance of InstanceViewStatus class.
+     */
     @Generated
-    private InstanceViewStatus() {}
+    private InstanceViewStatus() {
+    }
 
     /**
      * Get the code property: The status code.

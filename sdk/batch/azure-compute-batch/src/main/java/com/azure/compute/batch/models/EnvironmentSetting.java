@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An environment variable to be set on a Task process. */
+/**
+ * An environment variable to be set on a Task process.
+ */
 @Fluent
 public final class EnvironmentSetting {
 

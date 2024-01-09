@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The number of Compute Nodes in each state for a Pool. */
+/**
+ * The number of Compute Nodes in each state for a Pool.
+ */
 @Immutable
 public final class BatchPoolNodeCounts {
 

@@ -9,8 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
-/** Parameters for creating an Azure Batch Pool. */
+/**
+ * Parameters for creating an Azure Batch Pool.
+ */
 @Fluent
 public final class BatchPoolCreateParameters {
 
@@ -163,7 +166,8 @@ public final class BatchPoolCreateParameters {
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
      * application ID must be fully qualified
-     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
+     * accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
      * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
      * given Pool.
@@ -235,8 +239,8 @@ public final class BatchPoolCreateParameters {
      */
     @Generated
     @JsonCreator
-    public BatchPoolCreateParameters(
-            @JsonProperty(value = "id") String id, @JsonProperty(value = "vmSize") String vmSize) {
+    public BatchPoolCreateParameters(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "vmSize") String vmSize) {
         this.id = id;
         this.vmSize = vmSize;
     }
@@ -287,8 +291,8 @@ public final class BatchPoolCreateParameters {
      * Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for
      * Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or
      * Sizes for Virtual Machines (Windows)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM
-     * sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure
+     * VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value.
      */
@@ -344,8 +348,8 @@ public final class BatchPoolCreateParameters {
      * @return the BatchPoolCreateParameters object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setVirtualMachineConfiguration(
-            VirtualMachineConfiguration virtualMachineConfiguration) {
+    public BatchPoolCreateParameters
+        setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -431,9 +435,9 @@ public final class BatchPoolCreateParameters {
     }
 
     /**
-     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at least
-     * one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property
-     * is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Get the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at
+     * least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @return the enableAutoScale value.
      */
@@ -443,9 +447,9 @@ public final class BatchPoolCreateParameters {
     }
 
     /**
-     * Set the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at least
-     * one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property
-     * is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Set the enableAutoScale property: Whether the Pool size should automatically adjust over time. If false, at
+     * least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @param enableAutoScale the enableAutoScale value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -567,8 +571,8 @@ public final class BatchPoolCreateParameters {
     }
 
     /**
-     * Get the startTask property: A Task specified to run on each Compute Node as it joins the Pool. The Task runs when
-     * the Compute Node is added to the Pool or when the Compute Node is restarted.
+     * Get the startTask property: A Task specified to run on each Compute Node as it joins the Pool. The Task runs
+     * when the Compute Node is added to the Pool or when the Compute Node is restarted.
      *
      * @return the startTask value.
      */
@@ -578,8 +582,8 @@ public final class BatchPoolCreateParameters {
     }
 
     /**
-     * Set the startTask property: A Task specified to run on each Compute Node as it joins the Pool. The Task runs when
-     * the Compute Node is added to the Pool or when the Compute Node is restarted.
+     * Set the startTask property: A Task specified to run on each Compute Node as it joins the Pool. The Task runs
+     * when the Compute Node is added to the Pool or when the Compute Node is restarted.
      *
      * @param startTask the startTask value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -592,11 +596,12 @@ public final class BatchPoolCreateParameters {
 
     /**
      * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
-     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
-     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value.
@@ -608,11 +613,12 @@ public final class BatchPoolCreateParameters {
 
     /**
      * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory
-     * inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task
-     * to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in
-     * the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Warning:
-     * This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set.
@@ -629,8 +635,8 @@ public final class BatchPoolCreateParameters {
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
-     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given
-     * Pool.
+     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
+     * given Pool.
      *
      * @return the applicationPackageReferences value.
      */
@@ -644,15 +650,15 @@ public final class BatchPoolCreateParameters {
      * Pool. When creating a pool, the package's application ID must be fully qualified
      * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      * Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are
-     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given
-     * Pool.
+     * already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
+     * given Pool.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
      * @return the BatchPoolCreateParameters object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setApplicationPackageReferences(
-            List<BatchApplicationPackageReference> applicationPackageReferences) {
+    public BatchPoolCreateParameters
+        setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
     }
@@ -685,8 +691,8 @@ public final class BatchPoolCreateParameters {
 
     /**
      * Get the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
-     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
-     * of the vmSize of the pool or 256.
+     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of
+     * cores of the vmSize of the pool or 256.
      *
      * @return the taskSlotsPerNode value.
      */
@@ -697,8 +703,8 @@ public final class BatchPoolCreateParameters {
 
     /**
      * Set the taskSlotsPerNode property: The number of task slots that can be used to run concurrent tasks on a single
-     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores
-     * of the vmSize of the pool or 256.
+     * compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of
+     * cores of the vmSize of the pool or 256.
      *
      * @param taskSlotsPerNode the taskSlotsPerNode value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -822,9 +828,47 @@ public final class BatchPoolCreateParameters {
      * @return the BatchPoolCreateParameters object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setTargetNodeCommunicationMode(
-            BatchNodeCommunicationMode targetNodeCommunicationMode) {
+    public BatchPoolCreateParameters
+        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
+        return this;
+    }
+
+    /*
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public Map<String, String> getResourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set.
+     * @return the BatchPoolCreateParameters object itself.
+     */
+    @Generated
+    public BatchPoolCreateParameters setResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 }

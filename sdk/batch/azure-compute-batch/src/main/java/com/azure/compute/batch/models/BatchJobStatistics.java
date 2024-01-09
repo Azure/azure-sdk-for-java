@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Resource usage statistics for a Job. */
+/**
+ * Resource usage statistics for a Job.
+ */
 @Immutable
 public final class BatchJobStatistics {
 
@@ -51,7 +53,7 @@ public final class BatchJobStatistics {
     private Duration kernelCPUTime;
 
     /*
-     * The total wall clock time of all Tasks in the Job.  The wall clock time is the elapsed time from when the Task
+     * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
      * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
      * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task
      * retries.
@@ -141,21 +143,18 @@ public final class BatchJobStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchJobStatistics(
-            @JsonProperty(value = "url") String url,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-            @JsonProperty(value = "userCPUTime") Duration userCPUTime,
-            @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
-            @JsonProperty(value = "wallClockTime") Duration wallClockTime,
-            @JsonProperty(value = "readIOps") int readIOps,
-            @JsonProperty(value = "writeIOps") int writeIOps,
-            @JsonProperty(value = "readIOGiB") double readIOGiB,
-            @JsonProperty(value = "writeIOGiB") double writeIOGiB,
-            @JsonProperty(value = "numSucceededTasks") int numSucceededTasks,
-            @JsonProperty(value = "numFailedTasks") int numFailedTasks,
-            @JsonProperty(value = "numTaskRetries") int numTaskRetries,
-            @JsonProperty(value = "waitTime") Duration waitTime) {
+    private BatchJobStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "userCPUTime") Duration userCPUTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCPUTime,
+        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
+        @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
+        @JsonProperty(value = "writeIOGiB") double writeIOGiB,
+        @JsonProperty(value = "numSucceededTasks") int numSucceededTasks,
+        @JsonProperty(value = "numFailedTasks") int numFailedTasks,
+        @JsonProperty(value = "numTaskRetries") int numTaskRetries,
+        @JsonProperty(value = "waitTime") Duration waitTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -313,8 +312,8 @@ public final class BatchJobStatistics {
 
     /**
      * Get the waitTime property: The total wait time of all Tasks in the Job. The wait time for a Task is defined as
-     * the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to
-     * failures, the wait time is the time to the most recent Task execution.) This value is only reported in the
+     * the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due
+     * to failures, the wait time is the time to the most recent Task execution.) This value is only reported in the
      * Account lifetime statistics; it is not included in the Job statistics.
      *
      * @return the waitTime value.

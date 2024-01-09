@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error that occurred when executing or evaluating a Pool autoscale formula. */
+/**
+ * An error that occurred when executing or evaluating a Pool autoscale formula.
+ */
 @Immutable
 public final class AutoScaleRunError {
 
@@ -33,13 +35,16 @@ public final class AutoScaleRunError {
     @JsonProperty(value = "values")
     private List<NameValuePair> values;
 
-    /** Creates an instance of AutoScaleRunError class. */
+    /**
+     * Creates an instance of AutoScaleRunError class.
+     */
     @Generated
-    private AutoScaleRunError() {}
+    private AutoScaleRunError() {
+    }
 
     /**
-     * Get the code property: An identifier for the autoscale error. Codes are invariant and are intended to be consumed
-     * programmatically.
+     * Get the code property: An identifier for the autoscale error. Codes are invariant and are intended to be
+     * consumed programmatically.
      *
      * @return the code value.
      */
@@ -49,8 +54,8 @@ public final class AutoScaleRunError {
     }
 
     /**
-     * Get the message property: A message describing the autoscale error, intended to be suitable for display in a user
-     * interface.
+     * Get the message property: A message describing the autoscale error, intended to be suitable for display in a
+     * user interface.
      *
      * @return the message value.
      */

@@ -8,13 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** OnTaskFailure enums. */
+/**
+ * OnTaskFailure enums.
+ */
 public final class OnBatchTaskFailure extends ExpandableStringEnum<OnBatchTaskFailure> {
 
-    /** Do nothing. The Job remains active unless terminated or disabled by some other means. */
-    @Generated public static final OnBatchTaskFailure NO_ACTION = fromString("noaction");
+    /**
+     * Do nothing. The Job remains active unless terminated or disabled by some other means.
+     */
+    @Generated
+    public static final OnBatchTaskFailure NO_ACTION = fromString("noaction");
 
-    /** Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'. */
+    /**
+     * Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.
+     */
     @Generated
     public static final OnBatchTaskFailure PERFORM_EXIT_OPTIONS_JOB_ACTION = fromString("performexitoptionsjobaction");
 
@@ -25,7 +32,8 @@ public final class OnBatchTaskFailure extends ExpandableStringEnum<OnBatchTaskFa
      */
     @Generated
     @Deprecated
-    public OnBatchTaskFailure() {}
+    public OnBatchTaskFailure() {
+    }
 
     /**
      * Creates or finds a OnBatchTaskFailure from its string representation.

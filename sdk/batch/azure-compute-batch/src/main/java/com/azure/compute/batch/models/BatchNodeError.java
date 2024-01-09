@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An error encountered by a Compute Node. */
+/**
+ * An error encountered by a Compute Node.
+ */
 @Immutable
 public final class BatchNodeError {
 
@@ -33,9 +35,12 @@ public final class BatchNodeError {
     @JsonProperty(value = "errorDetails")
     private List<NameValuePair> errorDetails;
 
-    /** Creates an instance of BatchNodeError class. */
+    /**
+     * Creates an instance of BatchNodeError class.
+     */
     @Generated
-    private BatchNodeError() {}
+    private BatchNodeError() {
+    }
 
     /**
      * Get the code property: An identifier for the Compute Node error. Codes are invariant and are intended to be

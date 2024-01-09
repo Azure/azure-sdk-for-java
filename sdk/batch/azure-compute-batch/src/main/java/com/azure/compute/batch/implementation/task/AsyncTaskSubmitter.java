@@ -32,6 +32,6 @@ public class AsyncTaskSubmitter implements TaskSubmitter {
      */
     @Override
     public BatchTaskAddCollectionResult submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception {
-        return client.createTaskCollectionInternal(jobId, taskCollection).block();
+        return client.createTaskCollection(jobId, taskCollection).block();
     }
 }

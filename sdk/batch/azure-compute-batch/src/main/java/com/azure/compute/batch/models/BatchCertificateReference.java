@@ -71,9 +71,8 @@ public final class BatchCertificateReference {
      */
     @Generated
     @JsonCreator
-    public BatchCertificateReference(
-            @JsonProperty(value = "thumbprint") String thumbprint,
-            @JsonProperty(value = "thumbprintAlgorithm") String thumbprintAlgorithm) {
+    public BatchCertificateReference(@JsonProperty(value = "thumbprint") String thumbprint,
+        @JsonProperty(value = "thumbprintAlgorithm") String thumbprintAlgorithm) {
         this.thumbprint = thumbprint;
         this.thumbprintAlgorithm = thumbprintAlgorithm;
     }
@@ -101,11 +100,11 @@ public final class BatchCertificateReference {
     /**
      * Get the storeLocation property: The location of the Certificate store on the Compute Node into which to install
      * the Certificate. The default value is currentuser. This property is applicable only for Pools configured with
-     * Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using
-     * a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the Task
-     * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-     * location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration
+     * using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the
+     * Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query
+     * for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the
+     * user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
      *
      * @return the storeLocation value.
      */
@@ -117,11 +116,11 @@ public final class BatchCertificateReference {
     /**
      * Set the storeLocation property: The location of the Certificate store on the Compute Node into which to install
      * the Certificate. The default value is currentuser. This property is applicable only for Pools configured with
-     * Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using
-     * a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the Task
-     * working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-     * location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home
-     * directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration
+     * using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the
+     * Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query
+     * for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the
+     * user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
      *
      * @param storeLocation the storeLocation value to set.
      * @return the BatchCertificateReference object itself.
@@ -136,8 +135,8 @@ public final class BatchCertificateReference {
      * Get the storeName property: The name of the Certificate store on the Compute Node into which to install the
      * Certificate. This property is applicable only for Pools configured with Windows Compute Nodes (that is, created
      * with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). Common
-     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but
-     * any custom store name can also be used. The default value is My.
+     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook,
+     * but any custom store name can also be used. The default value is My.
      *
      * @return the storeName value.
      */
@@ -150,8 +149,8 @@ public final class BatchCertificateReference {
      * Set the storeName property: The name of the Certificate store on the Compute Node into which to install the
      * Certificate. This property is applicable only for Pools configured with Windows Compute Nodes (that is, created
      * with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). Common
-     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but
-     * any custom store name can also be used. The default value is My.
+     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook,
+     * but any custom store name can also be used. The default value is My.
      *
      * @param storeName the storeName value to set.
      * @return the BatchCertificateReference object itself.

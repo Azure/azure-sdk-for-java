@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchCertificateStoreLocation enums. */
+/**
+ * BatchCertificateStoreLocation enums.
+ */
 public final class BatchCertificateStoreLocation extends ExpandableStringEnum<BatchCertificateStoreLocation> {
 
-    /** Certificates should be installed to the CurrentUser Certificate store. */
-    @Generated public static final BatchCertificateStoreLocation CURRENT_USER = fromString("currentuser");
+    /**
+     * Certificates should be installed to the CurrentUser Certificate store.
+     */
+    @Generated
+    public static final BatchCertificateStoreLocation CURRENT_USER = fromString("currentuser");
 
-    /** Certificates should be installed to the LocalMachine Certificate store. */
-    @Generated public static final BatchCertificateStoreLocation LOCAL_MACHINE = fromString("localmachine");
+    /**
+     * Certificates should be installed to the LocalMachine Certificate store.
+     */
+    @Generated
+    public static final BatchCertificateStoreLocation LOCAL_MACHINE = fromString("localmachine");
 
     /**
      * Creates a new instance of BatchCertificateStoreLocation value.
@@ -24,7 +32,8 @@ public final class BatchCertificateStoreLocation extends ExpandableStringEnum<Ba
      */
     @Generated
     @Deprecated
-    public BatchCertificateStoreLocation() {}
+    public BatchCertificateStoreLocation() {
+    }
 
     /**
      * Creates or finds a BatchCertificateStoreLocation from its string representation.

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** BatchStartTaskState enums. */
+/**
+ * BatchStartTaskState enums.
+ */
 public final class BatchStartTaskState extends ExpandableStringEnum<BatchStartTaskState> {
 
-    /** The StartTask is currently running. */
-    @Generated public static final BatchStartTaskState RUNNING = fromString("running");
+    /**
+     * The StartTask is currently running.
+     */
+    @Generated
+    public static final BatchStartTaskState RUNNING = fromString("running");
 
     /**
      * The StartTask has exited with exit code 0, or the StartTask has failed and the retry limit has reached, or the
      * StartTask process did not run due to Task preparation errors (such as resource file download failures).
      */
-    @Generated public static final BatchStartTaskState COMPLETED = fromString("completed");
+    @Generated
+    public static final BatchStartTaskState COMPLETED = fromString("completed");
 
     /**
      * Creates a new instance of BatchStartTaskState value.
@@ -27,7 +33,8 @@ public final class BatchStartTaskState extends ExpandableStringEnum<BatchStartTa
      */
     @Generated
     @Deprecated
-    public BatchStartTaskState() {}
+    public BatchStartTaskState() {
+    }
 
     /**
      * Creates or finds a BatchStartTaskState from its string representation.

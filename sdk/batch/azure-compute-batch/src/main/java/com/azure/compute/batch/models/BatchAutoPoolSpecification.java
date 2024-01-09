@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies characteristics for a temporary 'auto pool'. The Batch service will create this auto Pool when the Job is
- * submitted.
+ * Specifies characteristics for a temporary 'auto pool'. The Batch service will
+ * create this auto Pool when the Job is submitted.
  */
 @Fluent
 public final class BatchAutoPoolSpecification {
@@ -56,7 +56,7 @@ public final class BatchAutoPoolSpecification {
     @Generated
     @JsonCreator
     public BatchAutoPoolSpecification(
-            @JsonProperty(value = "poolLifetimeOption") BatchPoolLifetimeOption poolLifetimeOption) {
+        @JsonProperty(value = "poolLifetimeOption") BatchPoolLifetimeOption poolLifetimeOption) {
         this.poolLifetimeOption = poolLifetimeOption;
     }
 

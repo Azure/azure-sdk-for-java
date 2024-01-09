@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node. */
+/**
+ * Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
+ */
 @Fluent
 public final class BatchNodeUserUpdateParameters {
 
@@ -41,14 +43,17 @@ public final class BatchNodeUserUpdateParameters {
     @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
-    /** Creates an instance of BatchNodeUserUpdateParameters class. */
+    /**
+     * Creates an instance of BatchNodeUserUpdateParameters class.
+     */
     @Generated
-    public BatchNodeUserUpdateParameters() {}
+    public BatchNodeUserUpdateParameters() {
+    }
 
     /**
-     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image
-     * reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
+     * Get the password property: The password of the Account. The password is required for Windows Compute Nodes
+     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
+     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
      * property. If omitted, any existing password is removed.
      *
      * @return the password value.
@@ -59,9 +64,9 @@ public final class BatchNodeUserUpdateParameters {
     }
 
     /**
-     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes (those
-     * created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image
-     * reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
+     * Set the password property: The password of the Account. The password is required for Windows Compute Nodes
+     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
+     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
      * property. If omitted, any existing password is removed.
      *
      * @param password the password value to set.

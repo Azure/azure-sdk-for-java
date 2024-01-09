@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Information about a StartTask running on a Compute Node. */
+/**
+ * Information about a StartTask running on a Compute Node.
+ */
 @Immutable
 public final class BatchStartTaskInfo {
 
@@ -101,10 +103,9 @@ public final class BatchStartTaskInfo {
      */
     @Generated
     @JsonCreator
-    private BatchStartTaskInfo(
-            @JsonProperty(value = "state") BatchStartTaskState state,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "retryCount") int retryCount) {
+    private BatchStartTaskInfo(@JsonProperty(value = "state") BatchStartTaskState state,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "retryCount") int retryCount) {
         this.state = state;
         this.startTime = startTime;
         this.retryCount = retryCount;
@@ -144,8 +145,8 @@ public final class BatchStartTaskInfo {
     }
 
     /**
-     * Get the exitCode property: The exit code of the program specified on the StartTask command line. This property is
-     * set only if the StartTask is in the completed state. In general, the exit code for a process reflects the
+     * Get the exitCode property: The exit code of the program specified on the StartTask command line. This property
+     * is set only if the StartTask is in the completed state. In general, the exit code for a process reflects the
      * specific convention implemented by the application developer for that process. If you use the exit code value to
      * make decisions in your code, be sure that you know the exit code convention used by the application process.
      * However, if the Batch service terminates the StartTask (due to timeout, or user termination via the API) you may
@@ -181,9 +182,10 @@ public final class BatchStartTaskInfo {
     }
 
     /**
-     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task application
-     * failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload
-     * errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
+     * Get the retryCount property: The number of times the Task has been retried by the Batch service. Task
+     * application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and
+     * file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the
+     * constraints.
      *
      * @return the retryCount value.
      */

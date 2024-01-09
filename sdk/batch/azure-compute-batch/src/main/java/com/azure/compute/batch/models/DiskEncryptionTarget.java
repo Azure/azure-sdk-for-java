@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DiskEncryptionTarget enums. */
+/**
+ * DiskEncryptionTarget enums.
+ */
 public final class DiskEncryptionTarget extends ExpandableStringEnum<DiskEncryptionTarget> {
 
-    /** The OS Disk on the compute node is encrypted. */
-    @Generated public static final DiskEncryptionTarget OS_DISK = fromString("osdisk");
+    /**
+     * The OS Disk on the compute node is encrypted.
+     */
+    @Generated
+    public static final DiskEncryptionTarget OS_DISK = fromString("osdisk");
 
     /**
      * The temporary disk on the compute node is encrypted. On Linux this encryption applies to other partitions (such
      * as those on mounted data disks) when encryption occurs at boot time.
      */
-    @Generated public static final DiskEncryptionTarget TEMPORARY_DISK = fromString("temporarydisk");
+    @Generated
+    public static final DiskEncryptionTarget TEMPORARY_DISK = fromString("temporarydisk");
 
     /**
      * Creates a new instance of DiskEncryptionTarget value.
@@ -27,7 +33,8 @@ public final class DiskEncryptionTarget extends ExpandableStringEnum<DiskEncrypt
      */
     @Generated
     @Deprecated
-    public DiskEncryptionTarget() {}
+    public DiskEncryptionTarget() {
+    }
 
     /**
      * Creates or finds a DiskEncryptionTarget from its string representation.

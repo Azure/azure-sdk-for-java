@@ -8,14 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** ElevationLevel enums. */
+/**
+ * ElevationLevel enums.
+ */
 public final class ElevationLevel extends ExpandableStringEnum<ElevationLevel> {
 
-    /** The user is a standard user without elevated access. */
-    @Generated public static final ElevationLevel NON_ADMIN = fromString("nonadmin");
+    /**
+     * The user is a standard user without elevated access.
+     */
+    @Generated
+    public static final ElevationLevel NON_ADMIN = fromString("nonadmin");
 
-    /** The user is a user with elevated access and operates with full Administrator permissions. */
-    @Generated public static final ElevationLevel ADMIN = fromString("admin");
+    /**
+     * The user is a user with elevated access and operates with full Administrator permissions.
+     */
+    @Generated
+    public static final ElevationLevel ADMIN = fromString("admin");
 
     /**
      * Creates a new instance of ElevationLevel value.
@@ -24,7 +32,8 @@ public final class ElevationLevel extends ExpandableStringEnum<ElevationLevel> {
      */
     @Generated
     @Deprecated
-    public ElevationLevel() {}
+    public ElevationLevel() {
+    }
 
     /**
      * Creates or finds a ElevationLevel from its string representation.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The container settings for a Task. */
+/**
+ * The container settings for a Task.
+ */
 @Fluent
 public final class BatchTaskContainerSettings {
 
@@ -82,9 +84,9 @@ public final class BatchTaskContainerSettings {
     }
 
     /**
-     * Get the imageName property: The Image to use to create the container in which the Task will run. This is the full
-     * Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag
-     * ":latest" is used as a default.
+     * Get the imageName property: The Image to use to create the container in which the Task will run. This is the
+     * full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name,
+     * the tag ":latest" is used as a default.
      *
      * @return the imageName value.
      */

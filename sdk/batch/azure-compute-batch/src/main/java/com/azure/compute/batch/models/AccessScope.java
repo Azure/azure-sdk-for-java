@@ -8,11 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AccessScope enums. */
+/**
+ * AccessScope enums.
+ */
 public final class AccessScope extends ExpandableStringEnum<AccessScope> {
 
-    /** Grants access to perform all operations on the Job containing the Task. */
-    @Generated public static final AccessScope JOB = fromString("job");
+    /**
+     * Grants access to perform all operations on the Job containing the Task.
+     */
+    @Generated
+    public static final AccessScope JOB = fromString("job");
 
     /**
      * Creates a new instance of AccessScope value.
@@ -21,7 +26,8 @@ public final class AccessScope extends ExpandableStringEnum<AccessScope> {
      */
     @Generated
     @Deprecated
-    public AccessScope() {}
+    public AccessScope() {
+    }
 
     /**
      * Creates or finds a AccessScope from its string representation.

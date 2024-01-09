@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Contains utilization and resource usage statistics for the lifetime of a Pool. */
+/**
+ * Contains utilization and resource usage statistics for the lifetime of a Pool.
+ */
 @Immutable
 public final class BatchPoolStatistics {
 
@@ -58,10 +60,9 @@ public final class BatchPoolStatistics {
      */
     @Generated
     @JsonCreator
-    private BatchPoolStatistics(
-            @JsonProperty(value = "url") String url,
-            @JsonProperty(value = "startTime") OffsetDateTime startTime,
-            @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
+    private BatchPoolStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime) {
         this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
