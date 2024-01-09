@@ -191,7 +191,7 @@ public final class BatchClient {
     public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchClientParallelOptions batchClientParallelOptions) throws InterruptedException {
         TaskSubmitter taskSubmitter = new SyncTaskSubmitter(this);
-        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
+        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions).block();
     }
 
     /**

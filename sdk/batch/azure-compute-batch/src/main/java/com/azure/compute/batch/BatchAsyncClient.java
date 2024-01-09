@@ -166,9 +166,10 @@ public final class BatchAsyncClient {
      * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
      * network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
-    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) throws InterruptedException {
-        createTasks(jobId, taskList, null);
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList) throws InterruptedException {
+        return createTasks(jobId, taskList, null);
     }
 
     /**
@@ -192,11 +193,12 @@ public final class BatchAsyncClient {
      * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
      * network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
-    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchClientParallelOptions batchClientParallelOptions) throws InterruptedException {
         TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
-        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
+        return TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
     }
 
     /**

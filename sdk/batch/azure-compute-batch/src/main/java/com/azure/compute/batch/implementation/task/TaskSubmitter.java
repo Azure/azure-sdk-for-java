@@ -4,6 +4,7 @@ package com.azure.compute.batch.implementation.task;
 
 import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCollection;
+import reactor.core.publisher.Mono;
 
 /**
  * Interface that provides an abstraction for submitting tasks to a Batch job.
@@ -18,5 +19,5 @@ public interface TaskSubmitter {
      * @return A BatchTaskAddCollectionResult representing the result of the task submission.
      * @throws Exception if there is an error during task submission.
      */
-    BatchTaskAddCollectionResult submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception;
+    Mono<BatchTaskAddCollectionResult> submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception;
 }
