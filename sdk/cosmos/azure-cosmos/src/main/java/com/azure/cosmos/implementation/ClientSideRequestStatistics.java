@@ -49,7 +49,7 @@ public class ClientSideRequestStatistics {
     private Instant requestEndTimeUTC;
     private Set<String> regionsContacted;
     private Set<URI> locationEndpointsContacted;
-    private Map<String, String> sessionTokenToRegionContactedMapping;
+    private Map<String, String> sessionTokenToRegionMappings;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
     private List<GatewayStatistics> gatewayStatisticsList;
@@ -77,7 +77,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
-        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>();
+        this.sessionTokenToRegionMappings = new ConcurrentHashMap<>();
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -100,7 +100,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
-        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>(toBeCloned.sessionTokenToRegionContactedMapping);
+        this.sessionTokenToRegionMappings = new ConcurrentHashMap<>(toBeCloned.sessionTokenToRegionMappings);
     }
 
     @JsonIgnore
@@ -189,7 +189,7 @@ public class ClientSideRequestStatistics {
 
                     if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
                         String regionLowerCased = storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).replace(" ", "");
-                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionLowerCased);
+                        this.sessionTokenToRegionMappings.put(sessionTokenAsStringInner, regionLowerCased);
                     }
                 }
             }
@@ -234,7 +234,7 @@ public class ClientSideRequestStatistics {
 
                     if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
                         String regionContactedInnerLowerCased = regionContactedInner.toLowerCase(Locale.ROOT).replace(" ", "");
-                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInnerLowerCased);
+                        this.sessionTokenToRegionMappings.put(sessionTokenAsStringInner, regionContactedInnerLowerCased);
                     }
                 }
             }
@@ -396,18 +396,18 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private void mergeSessionTokenToRegionContactedMappings(Map<String, String> otherSessionTokenToRegionMapping) {
-        if (otherSessionTokenToRegionMapping == null) {
+    private void mergeSessionTokenToRegionMappings(Map<String, String> otherSessionTokenToRegionMappings) {
+        if (otherSessionTokenToRegionMappings == null) {
             return;
         }
 
-        if (this.sessionTokenToRegionContactedMapping == null || this.sessionTokenToRegionContactedMapping.isEmpty()) {
-            this.sessionTokenToRegionContactedMapping = otherSessionTokenToRegionMapping;
+        if (this.sessionTokenToRegionMappings == null || this.sessionTokenToRegionMappings.isEmpty()) {
+            this.sessionTokenToRegionMappings = otherSessionTokenToRegionMappings;
             return;
         }
 
-        for (Map.Entry<String, String> pair : otherSessionTokenToRegionMapping.entrySet()) {
-            this.sessionTokenToRegionContactedMapping.putIfAbsent(
+        for (Map.Entry<String, String> pair : otherSessionTokenToRegionMappings.entrySet()) {
+            this.sessionTokenToRegionMappings.putIfAbsent(
                 pair.getKey(),
                 pair.getValue());
         }
@@ -500,7 +500,7 @@ public class ClientSideRequestStatistics {
         }
 
         this.mergeAddressResolutionStatistics(other.addressResolutionStatistics);
-        this.mergeSessionTokenToRegionContactedMappings(other.sessionTokenToRegionContactedMapping);
+        this.mergeSessionTokenToRegionMappings(other.sessionTokenToRegionMappings);
         this.mergeContactedReplicas(other.contactedReplicas);
         this.mergeFailedReplica(other.failedReplicas);
         this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
@@ -621,12 +621,12 @@ public class ClientSideRequestStatistics {
         return addressResolutionStatistics;
     }
 
-    public Map<String, String> getSessionTokenToRegionContactedMapping() {
-        return this.sessionTokenToRegionContactedMapping;
+    public Map<String, String> getSessionTokenToRegionMappings() {
+        return this.sessionTokenToRegionMappings;
     }
 
-    public void setSessionTokenToRegionContactedMapping(Map<String, String> sessionTokenToRegionContactedMapping) {
-        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>(sessionTokenToRegionContactedMapping);
+    public void setSessionTokenToRegionMappings(Map<String, String> sessionTokenToRegionContactedMapping) {
+        this.sessionTokenToRegionMappings = new ConcurrentHashMap<>(sessionTokenToRegionContactedMapping);
     }
 
     public List<GatewayStatistics> getGatewayStatisticsList() {

@@ -760,7 +760,7 @@ public class ImplementationBridgeHelpers {
 
             Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics);
 
-            void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMapping);
+            void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMappings);
         }
     }
 

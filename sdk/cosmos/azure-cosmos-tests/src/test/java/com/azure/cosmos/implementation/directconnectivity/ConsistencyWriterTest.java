@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
@@ -105,7 +104,6 @@ public class ConsistencyWriterTest {
                 authorizationTokenProvider,
                 serviceConfigReader,
                 false,
-                null,
                 null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -155,7 +153,6 @@ public class ConsistencyWriterTest {
             authorizationTokenProvider,
             serviceConfigReader,
             false,
-            null,
             null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -304,7 +301,6 @@ public class ConsistencyWriterTest {
             authorizationTokenProvider,
             serviceConfigReader,
             false,
-            null,
             null);
 
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
@@ -387,8 +383,7 @@ public class ConsistencyWriterTest {
                 authorizationTokenProvider,
                 serviceConfigReader,
                 useMultipleWriteLocation,
-                null,
-                SessionConsistencyOptions.getDefaultOptions());
+                null);
     }
 
     public static <T> void validateError(Mono<T> single,

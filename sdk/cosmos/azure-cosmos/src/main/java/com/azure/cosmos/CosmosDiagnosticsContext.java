@@ -311,7 +311,8 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
+    // todo (abhmohanty): revert public API change
+    public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
         DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
             new DistinctClientSideRequestStatisticsCollection();
         for (CosmosDiagnostics diagnostics: this.getDiagnostics()) {

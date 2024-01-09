@@ -58,11 +58,10 @@ public interface ISessionContainer {
 
     /**
      * Adds responseHeaders[HttpConstants.HttpHeaders.SessionToken] session token to the (collectionFullName, collectionRid)'s partitionKeyRangeId  token map.
+     * @param request request
      * @param collectionRid collectionRid
      * @param collectionFullName collectionFullName
      * @param responseHeaders responseHeaders
      */
-//    void setSessionToken(String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
-
     void setSessionToken(RxDocumentServiceRequest request, String collectionRid, String collectionFullName, Map<String, String> responseHeaders);
 }

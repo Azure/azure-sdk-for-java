@@ -8,7 +8,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
@@ -21,7 +20,6 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
 import com.azure.cosmos.implementation.Strings;
@@ -81,7 +79,6 @@ public class ConsistencyWriter {
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final StoreReader storeReader;
     private final SessionRetryOptions sessionRetryOptions;
-    private final SessionConsistencyOptions sessionConsistencyOptions;
 
     public ConsistencyWriter(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -91,8 +88,7 @@ public class ConsistencyWriter {
         IAuthorizationTokenProvider authorizationTokenProvider,
         GatewayServiceConfigurationReader serviceConfigReader,
         boolean useMultipleWriteLocations,
-        SessionRetryOptions sessionRetryOptions,
-        SessionConsistencyOptions sessionConsistencyOptions) {
+        SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
@@ -102,7 +98,6 @@ public class ConsistencyWriter {
         this.serviceConfigReader = serviceConfigReader;
         this.storeReader = new StoreReader(transportClient, addressSelector, null /*we need store reader only for global strong, no session is needed*/);
         this.sessionRetryOptions = sessionRetryOptions;
-        this.sessionConsistencyOptions = sessionConsistencyOptions;
     }
 
     public Mono<StoreResponse> writeAsync(
@@ -191,11 +186,7 @@ public class ConsistencyWriter {
                         // Set session token to ensure session consistency for write requests
                         // 1. when writes can be issued to multiple locations
                         // 2. When we have Batch requests, since it can have Reads in it.
-                        if (sessionConsistencyOptions.isSessionConsistencyDisabledForWrites()) {
-                            SessionTokenHelper.validateAndRemoveSessionToken(request);
-                        } else {
-                            SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
-                        }
+                        SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
                     } else {
                         // When writes can only go to single location, there is no reason
                         // to session session token to the server.

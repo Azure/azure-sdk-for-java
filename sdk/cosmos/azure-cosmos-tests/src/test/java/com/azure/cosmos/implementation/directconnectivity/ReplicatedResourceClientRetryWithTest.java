@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -116,8 +115,7 @@ public class ReplicatedResourceClientRetryWithTest {
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
             authorizationTokenProvider,
             false,
-            null,
-            SessionConsistencyOptions.getDefaultOptions());
+            null);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs", ResourceType.Document);

@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import com.azure.cosmos.implementation.SessionConsistencyOptions;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
@@ -66,8 +65,7 @@ public class StoreClient implements IStoreClient {
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
             boolean useMultipleWriteLocations,
-            SessionRetryOptions sessionRetryOptions,
-            SessionConsistencyOptions sessionConsistencyOptions) {
+            SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
@@ -81,8 +79,7 @@ public class StoreClient implements IStoreClient {
             serviceConfigurationReader,
             userTokenProvider,
             useMultipleWriteLocations,
-            sessionRetryOptions,
-            sessionConsistencyOptions);
+            sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
     }

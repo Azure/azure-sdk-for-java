@@ -155,8 +155,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withConnectionPolicy(this.connectionPolicy)
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
                                        .withSessionCapturingOverride(sessionCapturingOverride)
-                                       .withPartitionKeyScopedSessionCapturingEnabled(partitionKeyScopedSessionCapturingEnabled)
-                                       .withSessionConsistencyForWritesDisabled(sessionConsistencyDisabledForWrites)
                                        .withConfigs(configs)
                                        .withTokenResolver(cosmosAuthorizationTokenResolver)
                                        .withCredential(this.credential)

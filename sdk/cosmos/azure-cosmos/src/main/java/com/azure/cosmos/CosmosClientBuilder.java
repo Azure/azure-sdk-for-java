@@ -185,32 +185,6 @@ public class CosmosClientBuilder implements
     ApiType apiType(){ return this.apiType; }
 
     /**
-     * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
-     * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
-     * Consistency while the client is not configured in session.
-     * <p>
-     * enabling Session capturing for Session mode has no effect.
-     * @param sessionCapturingOverrideEnabled session capturing override
-     * @return current cosmosClientBuilder
-     */
-    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
-        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
-        return this;
-    }
-
-    /**
-     * Indicates whether partition keys are to be tracked for session consistency purposes.
-     *
-     * @param partitionKeyScopedSessionCapturingEnabled a boolean
-     * @return this CosmosClientBuilder
-     * */
-    public CosmosClientBuilder partitionKeyScopedSessionCapturingEnabled(boolean partitionKeyScopedSessionCapturingEnabled) {
-        this.partitionKeyScopedSessionCapturingEnabled = partitionKeyScopedSessionCapturingEnabled;
-        return this;
-    }
-
-
-    /**
      * Indicates whether session token is used for "write" operations.
      *
      * @param sessionConsistencyDisabledForWrites a boolean

@@ -51,8 +51,6 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 null,
                 false,
                 false,
-                false,
-                false,
                 contentResponseOnWriteEnabled,
                 null,
                 apiType,

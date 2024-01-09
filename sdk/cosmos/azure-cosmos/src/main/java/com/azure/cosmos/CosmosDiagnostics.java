@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -324,12 +323,12 @@ public final class CosmosDiagnostics {
         return this;
     }
 
-    Map<String, String> getSessionTokenToRegionMapping() {
-        return this.clientSideRequestStatistics.getSessionTokenToRegionContactedMapping();
+    Map<String, String> getSessionTokenToRegionMappings() {
+        return this.clientSideRequestStatistics.getSessionTokenToRegionMappings();
     }
 
-    void setSessionTokenToRegionMapping(Map<String, String> sessionTokenToRegionMapping) {
-        this.clientSideRequestStatistics.setSessionTokenToRegionContactedMapping(sessionTokenToRegionMapping);
+    void setSessionTokenToRegionMappings(Map<String, String> sessionTokenToRegionMapping) {
+        this.clientSideRequestStatistics.setSessionTokenToRegionMappings(sessionTokenToRegionMapping);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -478,16 +477,16 @@ public final class CosmosDiagnostics {
                 @Override
                 public Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics) {
                     if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getSessionTokenToRegionMapping();
+                        return cosmosDiagnostics.getSessionTokenToRegionMappings();
                     }
 
                     return null;
                 }
 
                 @Override
-                public void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMapping) {
+                public void setSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics, Map<String, String> sessionTokenToRegionMappings) {
                     if (cosmosDiagnostics != null) {
-                        cosmosDiagnostics.setSessionTokenToRegionMapping(sessionTokenToRegionMapping);
+                        cosmosDiagnostics.setSessionTokenToRegionMappings(sessionTokenToRegionMappings);
                     }
                 }
             });
