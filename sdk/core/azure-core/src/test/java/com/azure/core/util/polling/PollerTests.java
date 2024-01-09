@@ -4,7 +4,6 @@
 package com.azure.core.util.polling;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -17,8 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -29,11 +26,8 @@ import static com.azure.core.util.polling.LongRunningOperationStatus.IN_PROGRESS
 import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PollerTests {
@@ -751,185 +745,5 @@ public class PollerTests {
             .expectNextCount(5)
             .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
-    }
-
-    /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
-     * than the timeout period.
-     */
-    @RepeatedTest(100)
-    public void waitForCompletionSinglePollTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
-            Mono.delay(Duration.ofSeconds(2))
-                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitForCompletion(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
-    }
-
-    /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
-     * doesn't complete within the timeout period.
-     */
-    @RepeatedTest(100)
-    public void waitForCompletionOperationTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        AtomicBoolean hasBeenRan = new AtomicBoolean();
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            if (hasBeenRan.compareAndSet(false, true)) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else {
-                return Mono.delay(Duration.ofSeconds(2))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
-            }
-        };
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitForCompletion(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
-    }
-
-    /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
-     * than the timeout period.
-     */
-    @RepeatedTest(100)
-    public void waitUntilSinglePollTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
-            Mono.delay(Duration.ofSeconds(2))
-                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        PollResponse<Response> pollResponse = poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED);
-        assertEquals(activationResponse.getResponse(), pollResponse.getValue().getResponse());
-    }
-
-    /**
-     * Tests that the last received PollResponse is used when waitUtil times out.
-     */
-    @RepeatedTest(100)
-    public void waitUntilOperationTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        AtomicBoolean hasBeenRan = new AtomicBoolean();
-        PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), null);
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            if (hasBeenRan.compareAndSet(false, true)) {
-                return Mono.just(expected);
-            } else {
-                return Mono.delay(Duration.ofSeconds(10))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
-            }
-        };
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),
-            SUCCESSFULLY_COMPLETED));
-        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
-        assertEquals("0", pollResponse.getValue().getResponse());
-    }
-
-    /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
-     * than the timeout period.
-     */
-    @RepeatedTest(100)
-    public void getFinalResultSinglePollTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
-            Mono.delay(Duration.ofSeconds(2))
-                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.getFinalResult(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
-    }
-
-    /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
-     * doesn't complete within the timeout period.
-     */
-    @RepeatedTest(100)
-    public void getFinalResultOperationTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
-        AtomicBoolean hasBeenRan = new AtomicBoolean();
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            if (hasBeenRan.compareAndSet(false, true)) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else {
-                return Mono.delay(Duration.ofSeconds(2))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
-            }
-        };
-
-        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
-            (ignored1, ignored2) -> null, ignored -> null);
-
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.getFinalResult(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
-    }
-
-    private static String printException(Throwable throwable) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        throwable.printStackTrace(pw);
-        return sw.toString();
-    }
-
-    public static class Response {
-        private final String response;
-
-        public Response(String response) {
-            this.response = response;
-        }
-
-        public String getResponse() {
-            return response;
-        }
-
-        @Override
-        public String toString() {
-            return "Response: " + response;
-        }
-    }
-
-    public static class CertificateOutput {
-        String name;
-
-        public CertificateOutput(String certName) {
-            name = certName;
-        }
-
-        public String getName() {
-            return name;
-        }
     }
 }

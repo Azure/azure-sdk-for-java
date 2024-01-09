@@ -11,13 +11,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -32,8 +31,6 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  */
 class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
-    private static final ScheduledExecutorService THREAD_POOL = ImplUtils.createThreadPoolWithShutdownHook();
-    private static final Scheduler SCHEDULER = Schedulers.fromExecutorService(THREAD_POOL);
 
     static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
         LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>, PollResponse<T>> pollOperation,
@@ -44,44 +41,49 @@ class PollingUtil {
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
 
         boolean firstPoll = true;
-        while (!intermediatePollResponse.getStatus().isComplete()) {
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            if (timeBound && elapsedTime >= timeoutInMillis) {
-                if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        try {
+            while (!intermediatePollResponse.getStatus().isComplete()) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                if (timeBound && elapsedTime >= timeoutInMillis) {
+                    if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
+                        return intermediatePollResponse;
+                    } else {
+                        throw LOGGER.logExceptionAsError(new RuntimeException(
+                            new TimeoutException("Polling didn't complete before the timeout period.")));
+                    }
+                }
+
+                if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
                     return intermediatePollResponse;
+                }
+
+                final Future<PollResponse<T>> pollOp;
+                if (firstPoll) {
+                    firstPoll = false;
+                    pollOp = scheduler.submit(() -> pollOperation.apply(pollingContext));
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        new TimeoutException("Polling didn't complete before the timeout period.")));
+                    pollOp = scheduler.schedule(() -> pollOperation.apply(pollingContext),
+                        getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+                }
+
+                try {
+                    Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
+                    intermediatePollResponse = CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
+                    pollingContext.setLatestResponse(intermediatePollResponse);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    // waitUntil should not throw when timeout is reached.
+                    if (isWaitForStatus) {
+                        return intermediatePollResponse;
+                    }
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
             }
 
-            if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
-                return intermediatePollResponse;
-            }
-
-            final Future<PollResponse<T>> pollOp;
-            if (firstPoll) {
-                firstPoll = false;
-                pollOp = THREAD_POOL.submit(() -> pollOperation.apply(pollingContext));
-            } else {
-                pollOp = THREAD_POOL.schedule(() -> pollOperation.apply(pollingContext),
-                    getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
-            }
-
-            try {
-                Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
-                intermediatePollResponse = CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
-                pollingContext.setLatestResponse(intermediatePollResponse);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                // waitUntil should not throw when timeout is reached.
-                if (isWaitForStatus) {
-                    return intermediatePollResponse;
-                }
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+            return intermediatePollResponse;
+        } finally {
+            scheduler.shutdown();
         }
-
-        return intermediatePollResponse;
     }
 
     static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(PollingContext<T> pollingContext,
@@ -94,7 +96,6 @@ class PollingUtil {
             // Do polling
             // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
-                .subscribeOn(SCHEDULER)
                 .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
                 .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
