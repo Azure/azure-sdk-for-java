@@ -258,7 +258,7 @@ public class BlobAsyncClientBase {
      *
      * @return the encryption scope used for encryption.
      */
-    protected String getEncryptionScope() {
+    public String getEncryptionScope() {
         if (encryptionScope == null) {
             return null;
         }
