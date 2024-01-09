@@ -185,7 +185,7 @@ In any case, you may need to adjust the workbook to accomodate those changes and
 
 In addition to `test.run_duration`, we're also collecting:
 - [reactor schedulers metrics](https://github.com/reactor/reactor-core/blob/main/docs/asciidoc/metrics.adoc)
-- JVM metrics measured by ApplicationInsights agent:
+- [JVM metrics](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/runtime/jvm-metrics.md) measured by OpenTelemetry:
     - Normalized CPU percentage (based on [OperatingSystemMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/OperatingSystemMXBean.html) and [RuntimeMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/RuntimeMXBean.html)))
       Note: if 0.5 CPU is configured for pod, maximum normalized CPU percentage for it would be 50%.
     - GC time (based on [GarbageCollectorMXBean](https://docs.oracle.com/javase/8/docs/api/java/lang/management/GarbageCollectorMXBean.html))

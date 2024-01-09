@@ -29,33 +29,26 @@
       <artifactId>perf-test-core</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
-
-    <!-- HTTP clients -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.17</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-    </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.3.12</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.15</version>
     </dependency>
     <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-api</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-telemetry-java8</artifactId> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+      <version>1.32.0-alpha</version>
     </dependency>
     <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-core</artifactId>
-      <version>1.9.17</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-appender-1.0</artifactId> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+      <version>1.32.0-alpha</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-micrometer-1.5</artifactId>
+      <version>1.32.0-alpha</version>
     </dependency>
   </dependencies>
 
@@ -69,10 +62,10 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.micrometer:micrometer-core:[1.9.17]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
-              </includes>
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-micrometer-1.5;external_dependency} -->
+                <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->              </includes>
             </bannedDependencies>
           </rules>
         </configuration>

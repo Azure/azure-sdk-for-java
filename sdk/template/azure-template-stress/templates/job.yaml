@@ -30,12 +30,13 @@ spec:
         - |
           set -a &&
           source $ENV_FILE &&
-          export APPLICATIONINSIGHTS_ROLE_NAME={{ .Release.Name }}-{{ .Stress.BaseName }} &&
-          java -javaagent:applicationinsights-agent.jar \
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ max 20 .Stress.concurrency }} \
-          -Dotel.instrumentation.okhttp.enabled=false \
-          -Dotel.instrumentation.http-url-connection.enabled=false \
-          -Dotel.instrumentation.reactor.enabled=false \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.concurrency }} \
