@@ -65,7 +65,7 @@ public class SampleSmartCropsImageFile {
         try {
             // Smart cropping for an input image buffer. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.SMART_CROPS), // visualFeatures
                 new ImageAnalysisOptions().setSmartCropsAspectRatios(Arrays.asList(0.9, 1.33))); // options: Set one or more aspect ratios, or null for default.
 

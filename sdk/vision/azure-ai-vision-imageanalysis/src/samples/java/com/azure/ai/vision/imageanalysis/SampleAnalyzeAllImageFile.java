@@ -81,7 +81,7 @@ public class SampleAnalyzeAllImageFile {
 
             // Analyze all visual features from an image stream. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: the image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: the image file loaded into memory as BinaryData
                 Arrays.asList(
                     VisualFeatures.SMART_CROPS,
                     VisualFeatures.CAPTION,

@@ -149,7 +149,7 @@ import java.util.Arrays;
 ```
 ```java caption-file-snippet
 ImageAnalysisResult result = client.analyze(
-    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -203,7 +203,7 @@ import java.util.Arrays;
 ```
 ```java ocr-file-snippet
 ImageAnalysisResult result = client.analyze(
-    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 

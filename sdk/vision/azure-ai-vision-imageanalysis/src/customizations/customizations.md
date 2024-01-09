@@ -75,7 +75,7 @@ import java.net.URL;
     /**
      * Performs a single Image Analysis operation on a give image buffer.
      *
-     * @param imageBuffer The image to analyze.
+     * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -90,12 +90,12 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
-    public ImageAnalysisResult analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+    public ImageAnalysisResult analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
+            return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
                 options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
@@ -139,7 +139,7 @@ import java.net.URL;
     /**
      * Performs a single Image Analysis operation on a give image buffer.
      *
-     * @param imageBuffer The image to analyze.
+     * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -154,12 +154,12 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+    public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
+            return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
                 options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }

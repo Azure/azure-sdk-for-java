@@ -67,7 +67,7 @@ public class SampleOcrImageUrl {
         // Extract text from an input image URL. This is a synchronous (blocking) call.
         // BEGIN: ocr-url-snippet
         ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageContent: the URL of the image to analyze
+            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.READ), // visualFeatures
             null); // options: There are no options for READ visual feature
 
