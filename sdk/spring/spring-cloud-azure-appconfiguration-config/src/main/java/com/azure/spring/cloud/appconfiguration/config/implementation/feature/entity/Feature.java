@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,35 +31,15 @@ public final class Feature {
     private Map<String, FeatureFlagFilter> enabledFor;
 
     @JsonProperty("allocation")
-    private Allocation allocation = new Allocation();
+    private Allocation allocation;
 
     @JsonProperty("variants")
     private Map<String, VariantReference> variants;
-    
+
     /**
      * Feature Flag object.
      */
-    public Feature() {
-    }
-    
-    /**
-     * Feature Flag object.
-     * 
-     * @param key Name of the Feature Flag
-     * @param featureItem Configurations of the Feature Flag.
-     */
-    public Feature(String key, FeatureFlagConfigurationSetting featureItem, String requirementType) {
-        this.key = key;
-        List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();
-
-        enabledFor = new HashMap<>();
-
-        for (int i = 0; i < filterMapper.size(); i++) {
-            enabledFor.put(String.valueOf(i), filterMapper.get(i));
-        }
-        this.requirementType = requirementType;
-    }
-
+    public Feature() {}
 
     /**
      * @return the key
@@ -126,12 +105,12 @@ public final class Feature {
     }
 
     /**
-     * @param enabledFor the enabledFor to set
+     * @param featureFlagFilters the enabledFor to set
      */
-    public void setEnabledFor(List<FeatureFlagFilter> enabledFor) {
-        this.enabledFor = new HashMap<>();
-        for (int i = 0; i < enabledFor.size(); i++) {
-            this.enabledFor.put(String.valueOf(i), enabledFor.get(i));
+    public void setEnabledFor(List<FeatureFlagFilter> featureFlagFilters) {
+        enabledFor = new HashMap<>();
+        for (int i = 0; i < featureFlagFilters.size(); i++) {
+            enabledFor.put(String.valueOf(i), featureFlagFilters.get(i));
         }
     }
 
