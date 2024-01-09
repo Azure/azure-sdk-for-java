@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PollerTests {
@@ -844,6 +845,7 @@ public class PollerTests {
 
         PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),
             SUCCESSFULLY_COMPLETED));
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
         assertEquals("0", pollResponse.getValue().getResponse());
     }
 

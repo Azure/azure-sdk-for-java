@@ -402,6 +402,7 @@ public class SimpleSyncPollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitForCompletion(Duration.ofMillis(100)));
+        assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
         assertInstanceOf(TimeoutException.class, exception.getCause());
     }
 
@@ -437,8 +438,6 @@ public class SimpleSyncPollerTests {
      */
     @RepeatedTest(100)
     public void waitUntilOperationTimesOut() {
-        final Response activationResponse = new Response("Activated");
-
         AtomicBoolean hasBeenRan = new AtomicBoolean();
         PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), null);
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
@@ -456,7 +455,7 @@ public class SimpleSyncPollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new SimpleSyncPoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new Response("Activated")), pollOperation,
             (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),

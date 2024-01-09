@@ -43,11 +43,6 @@ class PollingUtil {
         long startTime = System.currentTimeMillis();
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
 
-        Runnable pollOpRunnable = () -> {
-            PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
-            pollingContext.setLatestResponse(pollResponse1);
-        };
-
         boolean firstPoll = true;
         while (!intermediatePollResponse.getStatus().isComplete()) {
             long elapsedTime = System.currentTimeMillis() - startTime;
@@ -64,18 +59,19 @@ class PollingUtil {
                 return intermediatePollResponse;
             }
 
-            final Future<?> pollOp;
+            final Future<PollResponse<T>> pollOp;
             if (firstPoll) {
                 firstPoll = false;
-                pollOp = THREAD_POOL.submit(pollOpRunnable);
+                pollOp = THREAD_POOL.submit(() -> pollOperation.apply(pollingContext));
             } else {
-                pollOp = THREAD_POOL.schedule(pollOpRunnable,
+                pollOp = THREAD_POOL.schedule(() -> pollOperation.apply(pollingContext),
                     getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
             }
 
             try {
                 Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
-                CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
+                intermediatePollResponse = CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
+                pollingContext.setLatestResponse(intermediatePollResponse);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 // waitUntil should not throw when timeout is reached.
                 if (isWaitForStatus) {
@@ -83,8 +79,6 @@ class PollingUtil {
                 }
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-
-            intermediatePollResponse = pollingContext.getLatestResponse();
         }
 
         return intermediatePollResponse;
