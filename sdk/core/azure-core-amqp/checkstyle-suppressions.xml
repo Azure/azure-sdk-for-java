@@ -6,6 +6,7 @@
 <suppressions>
   <!-- Apache QPID Proton-J is an allowed external dependency. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpLinkProvider.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpReceiveLink.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpLoggingUtils.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpMetricsProvider.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.MessageFlux.java" />
