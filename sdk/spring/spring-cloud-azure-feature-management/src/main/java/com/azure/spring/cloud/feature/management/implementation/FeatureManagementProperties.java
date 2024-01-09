@@ -91,7 +91,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureValue.toString());
             }
             // When coming from a file "feature.flag" is not a possible flag name
-            if (feature != null && (feature.getEnabledFor() == null || feature.getAllocation() == null)) {
+            if (feature != null && (feature.getEnabledFor() != null && feature.getAllocation() != null && feature.getEvaluate() != null)) {
                 if (Map.class.isAssignableFrom(featureValue.getClass())) {
                     features = (Map<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {

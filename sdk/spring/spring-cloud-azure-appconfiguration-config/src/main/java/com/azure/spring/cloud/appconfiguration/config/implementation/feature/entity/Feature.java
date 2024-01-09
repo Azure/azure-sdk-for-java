@@ -32,7 +32,7 @@ public final class Feature {
     private Map<String, FeatureFlagFilter> enabledFor;
 
     @JsonProperty("allocation")
-    private Allocation allocation;
+    private Allocation allocation = new Allocation();
 
     @JsonProperty("variants")
     private Map<String, VariantReference> variants;
