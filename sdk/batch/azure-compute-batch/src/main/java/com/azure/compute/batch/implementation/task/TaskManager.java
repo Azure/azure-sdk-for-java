@@ -11,10 +11,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskAddResult;
 import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchTaskCollection;
@@ -22,6 +20,7 @@ import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.CreateTasksErrorException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 /**
  * The TaskManager class is responsible for managing the task submission process for a Batch job.
@@ -76,33 +75,41 @@ public class TaskManager {
          */
         private void submitChunk(List<BatchTaskCreateParameters> taskList) {
             try {
-                BatchTaskAddCollectionResult response = taskSubmitter.submitTasks(jobId, new BatchTaskCollection(taskList));
-                if (response != null && response.getValue() != null) {
-                    for (BatchTaskAddResult result : response.getValue()) {
-                        if (result.getError() != null) {
-                            if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
-                                // Server error will be retried
-                                for (BatchTaskCreateParameters batchTaskToCreate : taskList) {
-                                    if (batchTaskToCreate.getId().equals(result.getTaskId())) {
-                                        pendingList.add(batchTaskToCreate);
-                                        break;
+                taskSubmitter.submitTasks(jobId, new BatchTaskCollection(taskList))
+                    .doOnError(e -> {
+                        if (e instanceof HttpResponseException) {
+                            // Handle HttpResponseException
+                            handleException((HttpResponseException) e, taskList);
+                        } else {
+                            // Handle generic exceptions
+                            exception = (Exception) e;
+                            pendingList.addAll(taskList);
+                        }
+                    })
+                    .subscribe(response -> {
+                        if (response != null && response.getValue() != null) {
+                            for (BatchTaskAddResult result : response.getValue()) {
+                                if (result.getError() != null) {
+                                    if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
+                                        // Server error will be retried
+                                        for (BatchTaskCreateParameters batchTaskToCreate : taskList) {
+                                            if (batchTaskToCreate.getId().equals(result.getTaskId())) {
+                                                pendingList.add(batchTaskToCreate);
+                                                break;
+                                            }
+                                        }
+                                    } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
+                                        && !result.getError().getMessage().getValue().contains("Status code 409")) {
+                                        // Client error will be recorded
+                                        failures.add(result);
                                     }
                                 }
-                            } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
-                                && !result.getError().getMessage().getValue().contains("Status code 409")) {
-                                // Client error will be recorded
-                                failures.add(result);
                             }
                         }
-                    }
-                }
-            } catch (HttpResponseException e) {
-                // Handle HttpResponseException
-                handleException(e, taskList);
+                    });
             } catch (Exception e) {
-                // Handle generic exceptions
-                exception = e;
-                pendingList.addAll(taskList);
+                // TODO (catch): Auto-generated catch block
+                e.printStackTrace();
             }
         }
 
@@ -171,7 +178,7 @@ public class TaskManager {
      * @param batchClientParallelOptions Options for configuring the parallelism of task submissions.
      * @throws InterruptedException if the thread is interrupted while waiting.
      */
-    public static void createTasks(
+    public static Mono<Void> createTasks(
         TaskSubmitter taskSubmitter,
         String jobId,
         List<BatchTaskCreateParameters> taskList,
@@ -179,86 +186,103 @@ public class TaskManager {
 
         final ClientLogger logger = new ClientLogger(BatchClient.class);
 
-        int threadNumber = 1;
-        // Get user defined thread number
-        if (batchClientParallelOptions != null) {
-            threadNumber = batchClientParallelOptions.maxDegreeOfParallelism();
-        }
-        final Object lock = new Object();
-        ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
-        CopyOnWriteArrayList<BatchTaskAddResult> failures = new CopyOnWriteArrayList<>();
-        Map<Thread, WorkingThread> threads = new HashMap<>();
-        Exception innerException = null;
+        return Mono.create(sink -> {
+            int threadNumber = 1;
+            // Get user defined thread number
+            if (batchClientParallelOptions != null) {
+                threadNumber = batchClientParallelOptions.maxDegreeOfParallelism();
+            }
+            final Object lock = new Object();
+            ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
+            CopyOnWriteArrayList<BatchTaskAddResult> failures = new CopyOnWriteArrayList<>();
+            Map<Thread, WorkingThread> threads = new HashMap<>();
+            Exception innerException = null;
 
-        synchronized (lock) {
-            while (!pendingList.isEmpty()) {
-                if (threads.size() < threadNumber) {
-                    // Kick as many as possible add tasks requests by max allowed threads
-                    WorkingThread worker = new WorkingThread(taskSubmitter, jobId, pendingList, failures, lock);
-                    Thread thread = new Thread(worker);
-                    thread.start();
-                    threads.put(thread, worker);
-                } else {
-                    lock.wait();
-                    List<Thread> finishedThreads = new ArrayList<>();
-                    for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                        if (entry.getKey().getState() == Thread.State.TERMINATED) {
-                            finishedThreads.add(entry.getKey());
-                            // If any exception is encountered, then stop immediately without waiting for
-                            // remaining active threads.
-                            innerException = entry.getValue().getException();
-                            if (innerException != null) {
-                                break;
+            synchronized (lock) {
+                while (!pendingList.isEmpty()) {
+                    if (threads.size() < threadNumber) {
+                        // Kick as many as possible add tasks requests by max allowed threads
+                        WorkingThread worker = new WorkingThread(taskSubmitter, jobId, pendingList, failures, lock);
+                        Thread thread = new Thread(worker);
+                        thread.start();
+                        threads.put(thread, worker);
+                    } else {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            sink.error(e);
+                            return;
+                        }
+                        List<Thread> finishedThreads = new ArrayList<>();
+                        for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                            if (entry.getKey().getState() == Thread.State.TERMINATED) {
+                                finishedThreads.add(entry.getKey());
+                                // If any exception is encountered, then stop immediately without waiting for
+                                // remaining active threads.
+                                innerException = entry.getValue().getException();
+                                if (innerException != null) {
+                                    sink.error(innerException);
+                                    return;
+                                }
                             }
                         }
+                        // Free the thread pool so we can start more threads to send the remaining add
+                        // tasks requests.
+                        threads.keySet().removeAll(finishedThreads);
+                        // Any errors happened, we stop.
+                        if (innerException != null || !failures.isEmpty()) {
+                            break;
+                        }
                     }
-                    // Free the thread pool so we can start more threads to send the remaining add
-                    // tasks requests.
-                    threads.keySet().removeAll(finishedThreads);
-                    // Any errors happened, we stop.
-                    if (innerException != null || !failures.isEmpty()) {
+                }
+            }
+
+            // Wait for all remaining threads to finish.
+            for (Thread t : threads.keySet()) {
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    sink.error(e);
+                    return;
+                }
+            }
+
+            if (innerException == null) {
+                // Check for errors in any of the threads.
+                for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
+                    innerException = entry.getValue().getException();
+                    if (innerException != null) {
                         break;
                     }
                 }
             }
-        }
 
-        // Wait for all remaining threads to finish.
-        for (Thread t : threads.keySet()) {
-            t.join();
-        }
-        if (innerException == null) {
-            // Check for errors in any of the threads.
-            for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                innerException = entry.getValue().getException();
-                if (innerException != null) {
-                    break;
+            // Handle exceptions and failures
+            if (innerException != null) {
+                // If an exception happened in any of the threads, throw it.
+                if (innerException instanceof HttpResponseException) {
+                    throw logger.logExceptionAsError((HttpResponseException) innerException);
+                } else if (innerException instanceof RuntimeException) {
+                    // WorkingThread will only catch and store a BatchErrorException or a
+                    // RuntimeException in its run() method.
+                    // WorkingThread.getException() should therefore only return one of these two
+                    // types, making the cast safe.
+                    throw logger.logExceptionAsError((RuntimeException) innerException);
                 }
             }
-        }
 
-        // Handle exceptions and failures
-        if (innerException != null) {
-            // If an exception happened in any of the threads, throw it.
-            if (innerException instanceof HttpResponseException) {
-                throw logger.logExceptionAsError((HttpResponseException) innerException);
-            } else if (innerException instanceof RuntimeException) {
-                // WorkingThread will only catch and store a BatchErrorException or a
-                // RuntimeException in its run() method.
-                // WorkingThread.getException() should therefore only return one of these two
-                // types, making the cast safe.
-                throw logger.logExceptionAsError((RuntimeException) innerException);
+            if (!failures.isEmpty()) {
+                List<BatchTaskCreateParameters> notFinished = new ArrayList<>(pendingList);
+                for (BatchTaskCreateParameters param : pendingList) {
+                    notFinished.add(param);
+                }
+                sink.error(new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished));
+            } else {
+                sink.success();
             }
-        }
-
-        if (!failures.isEmpty()) {
-            // Report any client error with leftover request
-            List<BatchTaskCreateParameters> notFinished = new ArrayList<>();
-            for (BatchTaskCreateParameters param : pendingList) {
-                notFinished.add(param);
-            }
-            throw logger.logExceptionAsError(new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished));
-        }
+        });
         // We succeed here
     }
 

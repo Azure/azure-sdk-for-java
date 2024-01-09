@@ -5,6 +5,7 @@ package com.azure.compute.batch.implementation.task;
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCollection;
+import reactor.core.publisher.Mono;
 
 /**
  * A synchronous implementation of {@link TaskSubmitter} for submitting batch tasks.
@@ -30,7 +31,7 @@ public class SyncTaskSubmitter implements TaskSubmitter {
      * @throws Exception if the task submission fails.
      */
     @Override
-    public BatchTaskAddCollectionResult submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception {
-        return client.createTaskCollection(jobId, taskCollection);
+    public Mono<BatchTaskAddCollectionResult>  submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception {
+        return Mono.fromCallable(() -> client.createTaskCollection(jobId, taskCollection));
     }
 }
