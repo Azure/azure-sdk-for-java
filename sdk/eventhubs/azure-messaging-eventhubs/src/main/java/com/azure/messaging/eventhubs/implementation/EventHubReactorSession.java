@@ -46,8 +46,13 @@ import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
  */
 class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME
-        = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
+        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol GEO_REPLICATION = Symbol.valueOf(VENDOR + ":georeplication");
+    /**
+     * Default value when geo-replication is not enabled for that Event Hub namespace.
+     */
+    private static final String DEFAULT_REPLICATION_SEGMENT = "-1";
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
     private final boolean isV2;
@@ -110,10 +115,11 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         }
         properties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
 
+        // Regardless of whether they are tracking event properties, want to advertise geo-replication support.
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME }
-            : null;
-
+            ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME, GEO_REPLICATION}
+            : new Symbol[]{GEO_REPLICATION};
+ 
         final ConsumerFactory consumerFactory;
         if (isV2) {
             consumerFactory = new ConsumerFactory(DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false);
@@ -130,14 +136,24 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
+        // Sequence number is preferred when geo-replication is enabled.
+        // Different from older client library where offset is used first.
+        if (eventPosition.getSequenceNumber() != null) {
+            final String replicationSegment = eventPosition.getReplicationSegment() != null
+                ? eventPosition.getReplicationSegment().toString()
+                : DEFAULT_REPLICATION_SEGMENT;
+            final String position = replicationSegment + ":" + eventPosition.getSequenceNumber();
+
+            return String.format(
+                AmqpConstants.AMQP_ANNOTATION_FORMAT,
+                SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag,
+                position);
+        }
+
         if (eventPosition.getOffset() != null) {
             return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag, eventPosition.getOffset());
-        }
-
-        if (eventPosition.getSequenceNumber() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag, eventPosition.getSequenceNumber());
         }
 
         if (eventPosition.getEnqueuedDateTime() != null) {
