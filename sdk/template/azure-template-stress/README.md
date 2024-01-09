@@ -21,7 +21,7 @@ Check out [Azure SDK Stress Test Wiki][azure_sdk_stress_test] for general inform
 cd into `azure-sdk-for-java` root folder and run command to deploy the package to cluster:
 
 ```shell
-.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\<you service directory>
+.\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -MatrixSelection all -SearchDirectory .\sdk\<you service directory>
 ```
 
 ### Check Status

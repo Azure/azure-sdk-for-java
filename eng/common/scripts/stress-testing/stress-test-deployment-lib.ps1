@@ -248,6 +248,13 @@ function DeployStressPackage(
             } else {
                 $dockerBuildDir = Split-Path $dockerFilePath
             }
+
+            Write-Host "!!!!!!!!!!!!!!!!! scenario"
+            foreach ($kvp in $scenario.GetEnumerator()) {
+                Write-Host "!!!!!!!!!!!!!!!!! scenario key '$kvp"
+            }
+
+
             $dockerBuildDir = [System.IO.Path]::GetFullPath($dockerBuildDir).Trim()
             $dockerBuildConfigs += @{"dockerFilePath"=$dockerFilePath;
                                     "dockerBuildDir"=$dockerBuildDir;
@@ -257,7 +264,7 @@ function DeployStressPackage(
     if ($pkg.Dockerfile -or $pkg.DockerBuildDir) {
         throw "The chart.yaml docker config is deprecated, please use the scenarios matrix instead."
     }
-    
+
 
     foreach ($dockerBuildConfig in $dockerBuildConfigs) {
         $dockerFilePath = $dockerBuildConfig.dockerFilePath
@@ -268,7 +275,9 @@ function DeployStressPackage(
         if (!(Test-Path $dockerBuildFolder)) {
             throw "Invalid docker build directory, cannot find directory ${dockerBuildFolder}"
         }
+
         $dockerfileName = ($dockerFilePath -split { $_ -in '\', '/' })[-1].ToLower()
+
         $imageTag = $imageTagBase + "/${dockerfileName}:${deployId}"
         if (!$skipPushImages) {
             Write-Host "Building and pushing stress test docker image '$imageTag'"
@@ -285,7 +294,7 @@ function DeployStressPackage(
             $dockerBuildCmd += $dockerBuildFolder
 
             Run @dockerBuildCmd
-            
+
             Write-Host "`nContainer image '$imageTag' successfully built. To run commands on the container locally:" -ForegroundColor Blue
             Write-Host "  docker run -it $imageTag" -ForegroundColor DarkBlue
             Write-Host "  docker run -it $imageTag <shell, e.g. 'bash' 'pwsh' 'sh'>" -ForegroundColor DarkBlue
@@ -301,18 +310,25 @@ function DeployStressPackage(
                 }
             }
         }
+
+        Write-Host "???????????????????????????"
         $generatedHelmValues.scenarios = @( foreach ($scenario in $generatedHelmValues.scenarios) {
-            $dockerPath = if ("image" -notin $scenario) {
+            Write-Host "!!!!!!!!!!!!!!!!! $($scenario['image']), $( ("image" -notin $scenario))"
+            $dockerPath = if ("image" -notin $scenario.keys) {
                 $dockerFilePath
             } else {
                 Join-Path $pkg.Directory $scenario.image
             }
+            Write-Host "!!!!!!!!!!!!!!!!! dockerPath '$dockerPath'"
+            Write-Host "!!!!!!!!!!!!!!!!! dockerFilePath '$dockerFilePath'"
             if ([System.IO.Path]::GetFullPath($dockerPath) -eq $dockerFilePath) {
+                Write-Host "!!!!!!!!!!!!!!!!! $($scenario['image']) = '$imageTag'"
                 $scenario.imageTag = $imageTag
             }
             $scenario
         } )
 
+        Write-Host "---------------------------------------------------"
         $generatedHelmValues | ConvertTo-Yaml | Out-File -FilePath $generatedHelmValuesFilePath
     }
 
@@ -476,7 +492,7 @@ function generateRetryTestsHelmValues ($pkg, $releaseName, $generatedHelmValues)
             $failedJobsScenario += $job.split("-$($pkg.ReleaseName)")[0]
         }
     }
-    
+
     $releaseName = "$($pkg.ReleaseName)-$revision-retry"
 
     $retryTestsHelmVal = @{"scenarios"=@()}

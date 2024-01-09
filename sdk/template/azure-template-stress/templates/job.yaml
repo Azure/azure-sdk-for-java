@@ -1,5 +1,5 @@
-{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template") -}}
-{{- define "stress.java-template" -}}
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template2") -}}
+{{- define "stress.java-template2" -}}
 metadata:
   labels:
     testName: "{{ .Release.Name }}"
@@ -19,8 +19,8 @@ spec:
           dotnet /app/dotnet_simple.dll
       resources:
         limits:
-          memory: "200Mi"
-          cpu: "1"
+          memory: "400Mi"
+          cpu: "2"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: test
       image: {{ .Stress.imageTag }}
@@ -30,10 +30,12 @@ spec:
         - |
           set -a &&
           source $ENV_FILE &&
-          export APPLICATIONINSIGHTS_ROLE_NAME={{ .Release.Name }}-{{ .Stress.BaseName }} &&
-          java -javaagent:applicationinsights-agent.jar \
-          -Dotel.instrumentation.okhttp.enabled=false \
-          -Dotel.instrumentation.http-url-connection.enabled=false \
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -Xms500m \
+          -XX:MaxRAMPercentage=75.0 \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.concurrency }} \

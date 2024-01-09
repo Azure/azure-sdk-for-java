@@ -1,5 +1,5 @@
 apiVersion: v2
-name: java-template
+name: java-template2
 description: An example stress test chart for performing azure resource deployments
 version: 0.1.1
 appVersion: v0.1

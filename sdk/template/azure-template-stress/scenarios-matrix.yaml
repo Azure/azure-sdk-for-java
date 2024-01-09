@@ -1,12 +1,15 @@
 matrix:
+  image:
+    - dockerfiles/java11
+    - dockerfiles/java21
   scenarios:
-    default-sync-get:
+    default-get:
       imageBuildDir: ..\..\..\
       testDurationMin: 480
       testScenario: httpget
       concurrency: 75
       sync: true
-    okhttp-sync-get:
+    okhttp-get:
       imageBuildDir: ..\..\..\
       testDurationMin: 480
       testScenario: httpget

@@ -5,10 +5,12 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
+  <appender name="OpenTelemetry"
+            class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+  </appender>
 
   <root level="WARN">
     <appender-ref ref="STDOUT" />
+    <appender-ref ref="OpenTelemetry"/>
   </root>
-
-  <logger name="com.azure.template.stress" level="INFO" />
 </configuration>
