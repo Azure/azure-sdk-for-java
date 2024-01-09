@@ -164,7 +164,7 @@ To generate captions for additional images, simply call `analyze` multiple times
 
 ### Generate an image caption for an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
+This example is similar to the above, except it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-caption-url-snippet
 import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
@@ -226,7 +226,7 @@ To extract text for additional images, simply call the `analyze` multiple times.
 
 ### Extract text from an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
+This example is similar to the above, except it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-ocr-url-snippet
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
@@ -238,7 +238,7 @@ import java.util.Arrays;
 ```
 ```java ocr-url-snippet
 ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageContent: the URL of the image to analyze
+    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 
@@ -260,7 +260,7 @@ for (DetectedTextLine line : result.getRead().getBlocks().get(0).getLines()) {
 
 ### Exceptions
 
-The `analyze` methods throw exception [HttpResponseException](https://learn.microsoft.com/java/api/com.azure.core.exception) when the service responds with a non-success HTTP status code. The exception's `getResponse().getStatusCode()` will hold the HTTP response status code. The exception's `getMessage()` contains a detailed message that will allow you to diagnose the issue:
+The `analyze` methods throw [HttpResponseException](https://learn.microsoft.com/java/api/com.azure.core.exception) when the service responds with a non-success HTTP status code. The exception's `getResponse().getStatusCode()` will hold the HTTP response status code. The exception's `getMessage()` contains a detailed message that will allow you to diagnose the issue:
 
 ```java
 try {
@@ -296,7 +296,7 @@ The sections below discusses enabling console logging using the built-in framewo
 
 #### By setting environment variables
 
-You can enable console logging of HTTP request and respons for your entire application by setting the following two environment variables. Note that this change will affect every Azure client that supports logging HTTP request and response.
+You can enable console logging of HTTP request and response for your entire application by setting the following two environment variables. Note that this change will affect every Azure client that supports logging HTTP request and response.
 
 * Set environment variable `AZURE_LOG_LEVEL` to `debug`
 * Set environment variable `AZURE_HTTP_LOG_DETAIL_LEVEL` to one of the following values:
