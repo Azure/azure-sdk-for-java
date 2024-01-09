@@ -4,11 +4,8 @@ package com.azure.resourcemanager.compute.models;
 
 /** The popular Azure Windows images. */
 public enum KnownWindowsVirtualMachineImage {
-    /** Windows 10 2020 H1 Pro
-     * @deprecated use WINDOWS_DESKTOP_10_20H1_PRO.
-     */
-    @Deprecated
-    WINDOWS_DESKTOP_10_20H1_PRO("MicrosoftWindowsDesktop", "Windows-10", "20h1-pro"),
+    /** Windows 10 2020 H1 Pro */
+    WINDOWS_DESKTOP_10_20H1_PRO("MicrosoftWindowsDesktop", "Windows-10", "win10-22h2-pro"),
     /** Windows Server 2019 Data center. */
     WINDOWS_SERVER_2019_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2019-Datacenter"),
     /**
