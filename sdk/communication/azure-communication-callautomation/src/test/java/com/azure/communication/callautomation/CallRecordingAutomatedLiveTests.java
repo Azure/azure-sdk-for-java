@@ -36,8 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
 
-    @Disabled("Disabled for now until live test fixed against live service")
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallAndUnmixedAudioTest(HttpClient httpClient) {
@@ -122,8 +120,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
         }
     }
 
-    @Disabled("Disabled for now until live test fixed against live service")
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallUnmixedAudioAffinityTest(HttpClient httpClient) {
