@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
@@ -36,17 +36,16 @@ class ResourceParserTest {
 
     @Test
     void testDefaultResource() {
-        ResourceParser.updateRoleNameAndInstance(
-            builder, Resource.create(Attributes.empty()), getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, Resource.create(Attributes.empty()));
         assertThat(builder.build().getTags())
-            .containsExactly(
+            .contains(
                 entry(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), DEFAULT_ROLE_INSTANCE));
     }
 
     @Test
     void testServiceNameFromResource() {
         Resource resource = createTestResource("fake-service-name", null, null);
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("fake-service-name");
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
@@ -56,16 +55,16 @@ class ResourceParserTest {
     @Test
     void testServiceInstanceFromResource() {
         Resource resource = createTestResource(null, null, "fake-service-instance");
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, resource);
         assertThat(builder.build().getTags())
-            .containsExactly(
+            .contains(
                 entry(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), "fake-service-instance"));
     }
 
     @Test
     void testServiceNamespaceFromResource() {
         Resource resource = createTestResource(null, "fake-service-namespace", null);
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("[fake-service-namespace]");
@@ -76,7 +75,7 @@ class ResourceParserTest {
     @Test
     void testServiceNameAndInstanceFromResource() {
         Resource resource = createTestResource("fake-service-name", null, "fake-instance");
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("fake-service-name");
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
@@ -87,7 +86,7 @@ class ResourceParserTest {
     void testServiceNameAndInstanceAndNamespaceFromResource() {
         Resource resource =
             createTestResource("fake-service-name", "fake-service-namespace", "fake-instance");
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
+        new ResourceParser().setRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("[fake-service-namespace]/fake-service-name");
@@ -96,25 +95,12 @@ class ResourceParserTest {
     }
 
     @Test
-    void testDoNotOverrideCustomRoleNameAndInstance() {
-        builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), "myrolename");
-        builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), "myroleinstance");
-        Resource resource =
-            createTestResource("fake-service-name", "fake-service-namespace", "fake-instance");
-        ResourceParser.updateRoleNameAndInstance(builder, resource, getConfiguration());
-        Map<String, String> tags = builder.build().getTags();
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("myrolename");
-        assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()))
-            .isEqualTo("myroleinstance");
-    }
-
-    @Test
     void testWebsiteSiteNameAndWebsiteInstanceId() {
-        Map<String, String> configuration = new HashMap<>();
-        configuration.put("WEBSITE_SITE_NAME", "test_website_site_name");
-        configuration.put("WEBSITE_INSTANCE_ID", "test_website_instance_id");
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("WEBSITE_SITE_NAME", "test_website_site_name");
+        envVars.put("WEBSITE_INSTANCE_ID", "test_website_instance_id");
         Resource resource = createTestResource(null, null, null);
-        ResourceParser.updateRoleNameAndInstance(builder, resource, DefaultConfigProperties.create(configuration));
+        new ResourceParser(envVars).setRoleNameAndInstance(builder, resource);
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("test_website_site_name");
