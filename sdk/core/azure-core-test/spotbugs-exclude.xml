@@ -174,4 +174,10 @@
     <Bug pattern="SE_BAD_FIELD,SE_NO_SERIALVERSIONID" />
     <Class name="com.azure.core.test.http.LocalTestServer$AzureTestHttpServlet" />
   </Match>
+
+  <Match>
+    <Bug pattern="DE_MIGHT_IGNORE" />
+    <Class name="com.azure.core.test.utils.TestProxyManager" />
+    <Method name="checkAlive" />
+  </Match>
 </FindBugsFilter>
