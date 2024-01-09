@@ -7,6 +7,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.SkuName;
@@ -246,6 +250,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
         Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
     }
+
     @Test
     public void canDisableDefaultToOAuthAuthenticationOnStorageAccount() {
         StorageAccount storageAccount =
@@ -265,5 +270,123 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             .apply();
 
         Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+    }
+
+    @Test
+    public void createAndUpdateStorageAccountWithSystemAssignedAccessToCurrentResourceGroup() {
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityAccessToCurrentResourceGroup(BuiltInRole.READER)
+            .create();
+
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+
+        storageAccount.update()
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void createAndUpdateStorageAccountWithSystemAssignedAccessTo() {
+        ResourceGroup rg = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rg)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityAccessTo(rg.id(), BuiltInRole.READER)
+            .create();
+
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+
+        storageAccount.update()
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityAccessTo(rg.id(), BuiltInRole.CONTRIBUTOR)
+            .apply();
+
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+    }
+
+    @Test
+    public void createAndUpdateStorageAccountWithNewUserAssigned() {
+
+        ResourceGroup rg = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+
+        Creatable<com.azure.resourcemanager.msi.models.Identity> identityCreatable =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withAccessTo(rg, BuiltInRole.CONTRIBUTOR);
+
+        // default
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withUserAssignedManagedServiceIdentity()
+            .withNewUserAssignedManagedServiceIdentity(identityCreatable)
+            .create();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+    }
+
+    @Test
+    public void createAndUpdateStorageAccountWithExistUserAssigned() {
+
+        ResourceGroup rg = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withAccessTo(rg, BuiltInRole.READER)
+                .create();
+
+        // default
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withUserAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.userAssignedManagedServiceIdentityIds());
+
+        storageAccount
+            .update()
+            .withoutUserAssignedManagedServiceIdentity(defaultIdentity.id())
+            .apply();
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 }

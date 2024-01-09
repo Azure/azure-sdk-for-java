@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported user-assigned service identity for `StorageAccount` in create and update. 
 
 ## 2.34.0 (2023-12-22)
 
