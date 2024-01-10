@@ -12,7 +12,7 @@ import java.time.LocalDate;
 /**
  * A date range.
  *
- * <p>For example, between '2022-12-23' and '2023-01-05'.
+ * For example, between '2022-12-23' and '2023-01-05'.
  */
 @Fluent
 public final class DateSpan {
@@ -28,7 +28,9 @@ public final class DateSpan {
     @JsonProperty(value = "end", required = true)
     private LocalDate end;
 
-    /** Creates an instance of DateSpan class. */
+    /**
+     * Creates an instance of DateSpan class.
+     */
     public DateSpan() {
     }
 

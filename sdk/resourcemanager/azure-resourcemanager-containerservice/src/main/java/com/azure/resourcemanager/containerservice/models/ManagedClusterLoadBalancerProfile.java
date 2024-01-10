@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of the managed cluster load balancer. */
+/**
+ * Profile of the managed cluster load balancer.
+ */
 @Fluent
 public final class ManagedClusterLoadBalancerProfile {
     /*
@@ -61,7 +63,9 @@ public final class ManagedClusterLoadBalancerProfile {
     @JsonProperty(value = "backendPoolType")
     private BackendPoolType backendPoolType;
 
-    /** Creates an instance of ManagedClusterLoadBalancerProfile class. */
+    /**
+     * Creates an instance of ManagedClusterLoadBalancerProfile class.
+     */
     public ManagedClusterLoadBalancerProfile() {
     }
 
@@ -80,8 +84,8 @@ public final class ManagedClusterLoadBalancerProfile {
      * @param managedOutboundIPs the managedOutboundIPs value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
-    public ManagedClusterLoadBalancerProfile withManagedOutboundIPs(
-        ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs) {
+    public ManagedClusterLoadBalancerProfile
+        withManagedOutboundIPs(ManagedClusterLoadBalancerProfileManagedOutboundIPs managedOutboundIPs) {
         this.managedOutboundIPs = managedOutboundIPs;
         return this;
     }
@@ -101,8 +105,8 @@ public final class ManagedClusterLoadBalancerProfile {
      * @param outboundIpPrefixes the outboundIpPrefixes value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
-    public ManagedClusterLoadBalancerProfile withOutboundIpPrefixes(
-        ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes) {
+    public ManagedClusterLoadBalancerProfile
+        withOutboundIpPrefixes(ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes) {
         this.outboundIpPrefixes = outboundIpPrefixes;
         return this;
     }
@@ -148,8 +152,9 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
-     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
+     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
+     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
+     * ports.
      *
      * @return the allocatedOutboundPorts value.
      */
@@ -158,8 +163,9 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
-     * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
+     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are
+     * in the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating
+     * ports.
      *
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
@@ -208,8 +214,8 @@ public final class ManagedClusterLoadBalancerProfile {
      * @param enableMultipleStandardLoadBalancers the enableMultipleStandardLoadBalancers value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
-    public ManagedClusterLoadBalancerProfile withEnableMultipleStandardLoadBalancers(
-        Boolean enableMultipleStandardLoadBalancers) {
+    public ManagedClusterLoadBalancerProfile
+        withEnableMultipleStandardLoadBalancers(Boolean enableMultipleStandardLoadBalancers) {
         this.enableMultipleStandardLoadBalancers = enableMultipleStandardLoadBalancers;
         return this;
     }

@@ -4,10 +4,14 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-/** Samples for ManagedClusters AbortLatestOperation. */
+/**
+ * Samples for ManagedClusters AbortLatestOperation.
+ */
 public final class ManagedClustersAbortLatestOperationSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/ManagedClustersAbortOperation.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * ManagedClustersAbortOperation.json
      */
     /**
      * Sample code: Abort operation on managed cluster.
@@ -15,11 +19,7 @@ public final class ManagedClustersAbortLatestOperationSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void abortOperationOnManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getManagedClusters()
-            .abortLatestOperation("rg1", "clustername1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters().manager().serviceClient().getManagedClusters().abortLatestOperation("rg1",
+            "clustername1", com.azure.core.util.Context.NONE);
     }
 }

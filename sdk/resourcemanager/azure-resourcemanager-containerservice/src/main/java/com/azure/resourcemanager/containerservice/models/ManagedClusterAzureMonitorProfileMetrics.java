@@ -29,7 +29,9 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
     @JsonProperty(value = "kubeStateMetrics")
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;
 
-    /** Creates an instance of ManagedClusterAzureMonitorProfileMetrics class. */
+    /**
+     * Creates an instance of ManagedClusterAzureMonitorProfileMetrics class.
+     */
     public ManagedClusterAzureMonitorProfileMetrics() {
     }
 
@@ -74,8 +76,8 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
      * @param kubeStateMetrics the kubeStateMetrics value to set.
      * @return the ManagedClusterAzureMonitorProfileMetrics object itself.
      */
-    public ManagedClusterAzureMonitorProfileMetrics withKubeStateMetrics(
-        ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics) {
+    public ManagedClusterAzureMonitorProfileMetrics
+        withKubeStateMetrics(ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics) {
         this.kubeStateMetrics = kubeStateMetrics;
         return this;
     }

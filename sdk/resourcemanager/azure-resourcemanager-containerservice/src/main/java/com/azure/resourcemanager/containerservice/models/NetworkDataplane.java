@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Network dataplane used in the Kubernetes cluster. */
+/**
+ * Network dataplane used in the Kubernetes cluster.
+ */
 public final class NetworkDataplane extends ExpandableStringEnum<NetworkDataplane> {
-    /** Static value azure for NetworkDataplane. */
+    /**
+     * Static value azure for NetworkDataplane.
+     */
     public static final NetworkDataplane AZURE = fromString("azure");
 
-    /** Static value cilium for NetworkDataplane. */
+    /**
+     * Static value cilium for NetworkDataplane.
+     */
     public static final NetworkDataplane CILIUM = fromString("cilium");
 
     /**

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage profile for the container service cluster. */
+/**
+ * Storage profile for the container service cluster.
+ */
 @Fluent
 public final class ManagedClusterStorageProfile {
     /*
@@ -34,7 +36,9 @@ public final class ManagedClusterStorageProfile {
     @JsonProperty(value = "blobCSIDriver")
     private ManagedClusterStorageProfileBlobCsiDriver blobCsiDriver;
 
-    /** Creates an instance of ManagedClusterStorageProfile class. */
+    /**
+     * Creates an instance of ManagedClusterStorageProfile class.
+     */
     public ManagedClusterStorageProfile() {
     }
 
@@ -93,8 +97,8 @@ public final class ManagedClusterStorageProfile {
      * @param snapshotController the snapshotController value to set.
      * @return the ManagedClusterStorageProfile object itself.
      */
-    public ManagedClusterStorageProfile withSnapshotController(
-        ManagedClusterStorageProfileSnapshotController snapshotController) {
+    public ManagedClusterStorageProfile
+        withSnapshotController(ManagedClusterStorageProfileSnapshotController snapshotController) {
         this.snapshotController = snapshotController;
         return this;
     }

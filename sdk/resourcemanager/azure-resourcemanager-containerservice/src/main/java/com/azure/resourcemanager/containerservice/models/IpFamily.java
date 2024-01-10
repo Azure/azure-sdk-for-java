@@ -8,12 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The IP version to use for cluster networking and IP assignment. */
+/**
+ * The IP version to use for cluster networking and IP assignment.
+ */
 public final class IpFamily extends ExpandableStringEnum<IpFamily> {
-    /** Static value IPv4 for IpFamily. */
+    /**
+     * Static value IPv4 for IpFamily.
+     */
     public static final IpFamily IPV4 = fromString("IPv4");
 
-    /** Static value IPv6 for IpFamily. */
+    /**
+     * Static value IPv6 for IpFamily.
+     */
     public static final IpFamily IPV6 = fromString("IPv6");
 
     /**

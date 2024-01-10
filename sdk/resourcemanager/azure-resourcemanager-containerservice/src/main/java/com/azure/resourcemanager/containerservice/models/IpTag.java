@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the IPTag associated with the object. */
+/**
+ * Contains the IPTag associated with the object.
+ */
 @Fluent
 public final class IpTag {
     /*
@@ -22,7 +24,9 @@ public final class IpTag {
     @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of IpTag class. */
+    /**
+     * Creates an instance of IpTag class.
+     */
     public IpTag() {
     }
 
