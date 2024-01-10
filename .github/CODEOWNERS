@@ -160,7 +160,7 @@
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
-# PRLabel: %Open AI - Assistants
+# PRLabel: %Open AI
 /sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Image Analysis
