@@ -37,6 +37,13 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
             AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
     private volatile Operation pendingOperation = null;
 
+    /**
+     * Creates an instance of {@link AsynchronousFileChannelAdapter} that adapts {@link AsynchronousFileChannel} to
+     * {@link AsynchronousByteChannel}.
+     *
+     * @param fileChannel The {@link AsynchronousFileChannel} to adapt.
+     * @param position The position to start reading from or writing to.
+     */
     public AsynchronousFileChannelAdapter(AsynchronousFileChannel fileChannel, long position) {
         this.fileChannel = Objects.requireNonNull(fileChannel);
         this.position = position;
@@ -103,7 +110,7 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     private void endOperation(Operation operation) {
         if (!PENDING_OPERATION_ATOMIC_UPDATER.compareAndSet(this, operation, null)) {
-            throw new IllegalStateException("There's no pending " + operation);
+            throw LOGGER.logExceptionAsError(new IllegalStateException("There's no pending " + operation));
         }
     }
 

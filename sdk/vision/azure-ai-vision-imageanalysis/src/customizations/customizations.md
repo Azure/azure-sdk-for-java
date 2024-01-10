@@ -4,7 +4,7 @@ This document specifies the hand-customization done to the auto-generated Java I
 
 ## Add ImageBoundingBox.toString()
 
-Add the following method to the class ImageBoundingBox in file ImageBoundingBox.java:
+The following method was added to the class `ImageBoundingBox` (file `ImageBoundingBox.java`):
 ```java
     /**
      * Returns a compact string containing the bounding box values in a style suitable for printing.
@@ -20,7 +20,7 @@ Add the following method to the class ImageBoundingBox in file ImageBoundingBox.
 
 ## Add ImagePoint.toString()
 
-Add the following method to the bottom of the class ImagePoint in file ImagePoint.java
+The following method was added to the class `ImagePoint` (file `ImagePoint.java`):
 
 ```Java
     /**
@@ -35,11 +35,11 @@ Add the following method to the bottom of the class ImagePoint in file ImagePoin
 
 ## Add new class ImageAnalysisOptions
 
-Copy the new file ImageAnalysisOptions.java in to the folder: `src\main\java\com\azure\ai\vision\imageanalysis`
+A new Java file `ImageAnalysisOptions.java` was written and placed in the folder `src\main\java\com\azure\ai\vision\imageanalysis`.
 
-## Updates to ImageAnalysisClient.java
+## Updates to class ImageAnalysisClient
 
-Add the following two methods at the bottom of the source file:
+The following two public methods were added to the class `ImageAnalysisClient` (file `ImageAnalysisClient.java`):
 
 ```java
 import java.net.URL;
@@ -75,7 +75,7 @@ import java.net.URL;
     /**
      * Performs a single Image Analysis operation on a give image buffer.
      *
-     * @param imageBuffer The image to analyze.
+     * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -90,20 +90,20 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation.
      */
-    public ImageAnalysisResult analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+    public ImageAnalysisResult analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
+            return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
                 options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 ```
 
-## Updates to ImageAnalysisAsyncClient.java
+## Updates to class ImageAnalysisAsyncClient
 
-Add the following two methods at the bottom of the source file:
+The following two public methods were added to the class `ImageAnalysisAsyncClient` (file `ImageAnalysisAsyncClient.java`):
 
 ```java
 import java.net.URL;
@@ -139,7 +139,7 @@ import java.net.URL;
     /**
      * Performs a single Image Analysis operation on a give image buffer.
      *
-     * @param imageBuffer The image to analyze.
+     * @param imageData The image to analyze.
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
@@ -154,12 +154,12 @@ import java.net.URL;
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+    public Mono<ImageAnalysisResult> analyze(BinaryData imageData, List<VisualFeatures> visualFeatures,
         ImageAnalysisOptions options) {
         if (options == null) {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
+            return analyzeFromBuffer(visualFeatures, imageData, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+            return analyzeFromBuffer(visualFeatures, imageData, options.getLanguage(),
                 options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }

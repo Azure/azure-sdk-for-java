@@ -62,7 +62,7 @@ public class SampleCaptionImageUrl {
         // Generate a caption for an input image buffer. This is a synchronous (blocking) call.
         // BEGIN: caption-url-snippet
         ImageAnalysisResult result = client.analyze(
-            new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
+            new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
             Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
             new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
