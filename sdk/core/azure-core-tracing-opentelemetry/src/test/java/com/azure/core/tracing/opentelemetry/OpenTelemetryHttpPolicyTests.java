@@ -386,7 +386,7 @@ public class OpenTelemetryHttpPolicyTests {
         Map<String, Object> httpAttributesTimeout = getAttributes(tryTimeout);
         assertNull(httpAttributesTimeout.get("http.status_code"));
         assertEquals(StatusCode.ERROR, tryTimeout.getStatus().getStatusCode());
-        assertEquals("", tryTimeout.getStatus().getDescription());
+        assertEquals("timeout", tryTimeout.getStatus().getDescription());
 
         List<EventData> events = tryTimeout.getEvents();
         assertEquals(1, events.size());
@@ -423,8 +423,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("boom", partialContent.getStatus().getDescription());
 
         Map<String, Object> attributes = getAttributes(partialContent);
-        assertEquals(200L, attributes.get("http.response.status_code"));
-        assertEquals(IOException.class.getName(), attributes.get("error.type"));
+        assertEquals(200L, attributes.get("http.status_code"));
     }
 
     @Test
@@ -508,7 +507,7 @@ public class OpenTelemetryHttpPolicyTests {
     private class ThrowingHttpResponse extends MockHttpResponse {
         private final int throwAfterBytes;
         private final Throwable toThrow;
-        public ThrowingHttpResponse(HttpRequest request, int statusCode, int throwAfterBytes, Throwable toThrow) {
+        ThrowingHttpResponse(HttpRequest request, int statusCode, int throwAfterBytes, Throwable toThrow) {
             super(request, statusCode, new byte[throwAfterBytes + 1]);
             this.throwAfterBytes = throwAfterBytes;
             this.toThrow = toThrow;

@@ -88,7 +88,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return Mono.defer(() -> {
             Context span = startSpan(context);
             return next.process()
-                .doOnSuccess(response -> updateSpan(response, span))
+                .doOnSuccess(response -> onResponseCode(response, span))
                 // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
                 .map(response -> new TraceableResponse(response, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
@@ -106,7 +106,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         Context span = startSpan(context);
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
             HttpResponse response = next.processSync();
-            updateSpan(response, span);
+            onResponseCode(response, span);
             // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
             return new TraceableResponse(response, span);
         } catch (RuntimeException ex) {
@@ -148,7 +148,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private void updateSpan(HttpResponse response, Context span) {
+    private void onResponseCode(HttpResponse response, Context span) {
         if (response != null) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
@@ -156,11 +156,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             if (requestId != null) {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
-
-            tracer.end((statusCode >= 400) ? "error" : null, null, span);
         }
-
-        tracer.end("", null, span);
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {

@@ -225,7 +225,7 @@ public final class IOUtils {
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
                     .addKeyValue("maxRetries", maxRetries)
                     .addKeyValue("bytesWritten", bytesWritten)
-                    .log("Attempt failed. Scheduling new try.", exception);
+                    .log("Attempt failed. Scheduling retry.", exception);
                 return onErrorResume.apply(exception, bytesWritten)
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
                         newResponse, onErrorResume, maxRetries, updatedRetryCount));
