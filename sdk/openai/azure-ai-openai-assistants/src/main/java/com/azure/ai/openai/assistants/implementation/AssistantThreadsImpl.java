@@ -168,12 +168,12 @@ public final class AssistantThreadsImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -186,7 +186,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -232,12 +232,12 @@ public final class AssistantThreadsImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -250,7 +250,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -282,7 +282,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -314,7 +314,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -341,7 +341,7 @@ public final class AssistantThreadsImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -354,7 +354,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -385,7 +385,7 @@ public final class AssistantThreadsImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -398,7 +398,7 @@ public final class AssistantThreadsImpl {
      *     object: String (Required)
      *     created_at: long (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>

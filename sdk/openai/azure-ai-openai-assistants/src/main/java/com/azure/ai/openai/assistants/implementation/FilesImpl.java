@@ -276,7 +276,8 @@ public final class FilesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      *     filename: String (Optional)
      * }
@@ -319,7 +320,8 @@ public final class FilesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      *     filename: String (Optional)
      * }

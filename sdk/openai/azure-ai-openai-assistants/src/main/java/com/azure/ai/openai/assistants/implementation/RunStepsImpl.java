@@ -126,7 +126,7 @@ public final class RunStepsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -175,7 +175,7 @@ public final class RunStepsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -270,7 +270,7 @@ public final class RunStepsImpl {
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -370,7 +370,7 @@ public final class RunStepsImpl {
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]

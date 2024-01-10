@@ -261,7 +261,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -285,7 +285,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -326,7 +326,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -350,7 +350,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -439,7 +439,7 @@ public final class AssistantsImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -532,7 +532,7 @@ public final class AssistantsImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -577,7 +577,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -621,7 +621,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -660,7 +660,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -684,7 +684,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -726,7 +726,7 @@ public final class AssistantsImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -750,7 +750,7 @@ public final class AssistantsImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>

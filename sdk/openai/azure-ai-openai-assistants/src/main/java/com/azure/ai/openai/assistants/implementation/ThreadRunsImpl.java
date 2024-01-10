@@ -220,7 +220,7 @@ public final class ThreadRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -256,7 +256,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -294,7 +294,7 @@ public final class ThreadRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -330,7 +330,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -432,7 +432,7 @@ public final class ThreadRunsImpl {
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -538,7 +538,7 @@ public final class ThreadRunsImpl {
      *             cancelled_at: OffsetDateTime (Required)
      *             failed_at: OffsetDateTime (Required)
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -596,7 +596,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -653,7 +653,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -682,7 +682,7 @@ public final class ThreadRunsImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -718,7 +718,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -750,7 +750,7 @@ public final class ThreadRunsImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -786,7 +786,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -857,7 +857,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -929,7 +929,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -986,7 +986,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1043,7 +1043,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1089,12 +1089,12 @@ public final class ThreadRunsImpl {
      *                     String (Required)
      *                 ]
      *                 metadata (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *             }
      *         ]
      *         metadata (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *     }
      *     model: String (Optional)
@@ -1104,7 +1104,7 @@ public final class ThreadRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1140,7 +1140,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1188,12 +1188,12 @@ public final class ThreadRunsImpl {
      *                     String (Required)
      *                 ]
      *                 metadata (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *             }
      *         ]
      *         metadata (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *     }
      *     model: String (Optional)
@@ -1203,7 +1203,7 @@ public final class ThreadRunsImpl {
      *         }
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -1239,7 +1239,7 @@ public final class ThreadRunsImpl {
      *     cancelled_at: OffsetDateTime (Required)
      *     failed_at: OffsetDateTime (Required)
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>

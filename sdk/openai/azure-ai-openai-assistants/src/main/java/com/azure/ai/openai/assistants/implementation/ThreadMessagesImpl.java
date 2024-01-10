@@ -198,7 +198,7 @@ public final class ThreadMessagesImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -222,7 +222,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -258,7 +258,7 @@ public final class ThreadMessagesImpl {
      *         String (Optional)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -282,7 +282,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -372,7 +372,7 @@ public final class ThreadMessagesImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -466,7 +466,7 @@ public final class ThreadMessagesImpl {
      *                 String (Required)
      *             ]
      *             metadata (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *         }
      *     ]
@@ -512,7 +512,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -557,7 +557,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -587,7 +587,7 @@ public final class ThreadMessagesImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -611,7 +611,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -643,7 +643,7 @@ public final class ThreadMessagesImpl {
      * <pre>{@code
      * {
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
@@ -667,7 +667,7 @@ public final class ThreadMessagesImpl {
      *         String (Required)
      *     ]
      *     metadata (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      * }
      * }</pre>
