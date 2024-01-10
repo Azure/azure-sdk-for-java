@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.util.polling;
 
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Mono;
 
@@ -28,26 +28,26 @@ public class PollingWithTimeoutTests {
     private static final Duration TEN_MILLIS = Duration.ofMillis(10);
     private static final Duration HUNDRED_MILLIS = Duration.ofMillis(100);
 
-    private static final PollResponse<Response> ACTIVATION_RESPONSE
-        = new PollResponse<>(NOT_STARTED, new Response("Activated"));
-    private static final PollResponse<Response> RESPONSE_ZERO = new PollResponse<>(IN_PROGRESS, new Response("0"));
-    private static final PollResponse<Response> RESPONSE_ONE = new PollResponse<>(IN_PROGRESS, new Response("1"));
+    private static final PollResponse<TestResponse> ACTIVATION_RESPONSE
+        = new PollResponse<>(NOT_STARTED, new TestResponse("Activated"));
+    private static final PollResponse<TestResponse> RESPONSE_ZERO = new PollResponse<>(IN_PROGRESS, new TestResponse("0"));
+    private static final PollResponse<TestResponse> RESPONSE_ONE = new PollResponse<>(IN_PROGRESS, new TestResponse("1"));
 
-    private static final Function<PollingContext<Response>, PollResponse<Response>> SYNC_NEVER_COMPLETES = ignored -> {
+    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>> SYNC_NEVER_COMPLETES = ignored -> {
         sleep();
         return RESPONSE_ZERO;
     };
 
-    private static final Function<PollingContext<Response>, Mono<PollResponse<Response>>> ASYNC_NEVER_COMPLETES
+    private static final Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> ASYNC_NEVER_COMPLETES
         = ignored -> Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ZERO);
 
     /**
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncWaitForCompletionSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
 
         assertTimeoutException(poller::waitForCompletion);
     }
@@ -56,10 +56,10 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncWaitForCompletionOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
 
         assertTimeoutException(poller::waitForCompletion, hasBeenRan);
     }
@@ -68,9 +68,9 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncWaitUntilSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
 
         assertReturns(timeout -> poller.waitUntil(timeout, SUCCESSFULLY_COMPLETED), ACTIVATION_RESPONSE.getValue());
     }
@@ -79,10 +79,10 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't reach the {@code statusToWaitFor} within the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncWaitUntilOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
 
         assertReturns(timeout -> poller.waitUntil(timeout, SUCCESSFULLY_COMPLETED), hasBeenRan,
             RESPONSE_ZERO.getValue());
@@ -92,9 +92,9 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncGetFinalResultSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(SYNC_NEVER_COMPLETES);
 
         assertTimeoutException(poller::getFinalResult);
     }
@@ -103,10 +103,10 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void simpleSyncGetFinalResultOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSimplePoller(syncRunsOnce(hasBeenRan));
 
         assertTimeoutException(poller::getFinalResult, hasBeenRan);
     }
@@ -115,9 +115,9 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncWaitForCompletionSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
 
         assertTimeoutException(poller::waitForCompletion);
     }
@@ -126,10 +126,10 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncWaitForCompletionOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
 
         assertTimeoutException(poller::waitForCompletion, hasBeenRan);
     }
@@ -138,9 +138,9 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncWaitUntilSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
 
         assertReturns(timeout -> poller.waitUntil(timeout, SUCCESSFULLY_COMPLETED), ACTIVATION_RESPONSE.getValue());
     }
@@ -148,10 +148,10 @@ public class PollingWithTimeoutTests {
     /**
      * Tests that the last received PollResponse is used when waitUtil times out.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncWaitUntilOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
 
         assertReturns(timeout -> poller.waitUntil(timeout, SUCCESSFULLY_COMPLETED), hasBeenRan,
             RESPONSE_ZERO.getValue());
@@ -161,9 +161,9 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
      * than the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncGetFinalResultSinglePollTimesOut() {
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(ASYNC_NEVER_COMPLETES);
 
         assertTimeoutException(poller::getFinalResult);
     }
@@ -172,22 +172,22 @@ public class PollingWithTimeoutTests {
      * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
      * doesn't complete within the timeout period.
      */
-    @RepeatedTest(100)
+    @Test
     public void syncOverAsyncGetFinalResultOperationTimesOut() {
         AtomicBoolean hasBeenRan = new AtomicBoolean();
-        SyncPoller<Response, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
+        SyncPoller<TestResponse, CertificateOutput> poller = createSyncOverAsyncPoller(asyncRunsOnce(hasBeenRan));
 
         assertTimeoutException(poller::getFinalResult, hasBeenRan);
     }
 
-    private static SyncPoller<Response, CertificateOutput> createSimplePoller(
-        Function<PollingContext<Response>, PollResponse<Response>> pollOperation) {
+    private static SyncPoller<TestResponse, CertificateOutput> createSimplePoller(
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation) {
         return new SimpleSyncPoller<>(TEN_MILLIS, cxt -> ACTIVATION_RESPONSE, pollOperation,
             (ignored1, ignored2) -> null, ignored -> null);
     }
 
-    private static SyncPoller<Response, CertificateOutput> createSyncOverAsyncPoller(
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation) {
+    private static SyncPoller<TestResponse, CertificateOutput> createSyncOverAsyncPoller(
+        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation) {
         return new SyncOverAsyncPoller<>(TEN_MILLIS, cxt -> ACTIVATION_RESPONSE, pollOperation,
             (ignored1, ignored2) -> null, ignored -> null);
     }
@@ -206,13 +206,13 @@ public class PollingWithTimeoutTests {
         assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
-    private static void assertReturns(Function<Duration, PollResponse<Response>> polling, Response expected) {
+    private static void assertReturns(Function<Duration, PollResponse<TestResponse>> polling, TestResponse expected) {
         assertReturns(polling, null, expected);
     }
 
-    private static void assertReturns(Function<Duration, PollResponse<Response>> polling, AtomicBoolean hasBeenRan,
-        Response expected) {
-        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> polling.apply(HUNDRED_MILLIS));
+    private static void assertReturns(Function<Duration, PollResponse<TestResponse>> polling, AtomicBoolean hasBeenRan,
+        TestResponse expected) {
+        PollResponse<TestResponse> pollResponse = assertDoesNotThrow(() -> polling.apply(HUNDRED_MILLIS));
 
         if (hasBeenRan != null) {
             assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -221,7 +221,8 @@ public class PollingWithTimeoutTests {
         assertEquals(expected.getResponse(), pollResponse.getValue().getResponse());
     }
 
-    private static Function<PollingContext<Response>, PollResponse<Response>> syncRunsOnce(AtomicBoolean hasBeenRan) {
+    private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>> syncRunsOnce(
+        AtomicBoolean hasBeenRan) {
         return ignored -> {
             if (hasBeenRan.compareAndSet(false, true)) {
                 return RESPONSE_ZERO;
@@ -232,7 +233,7 @@ public class PollingWithTimeoutTests {
         };
     }
 
-    private static Function<PollingContext<Response>, Mono<PollResponse<Response>>> asyncRunsOnce(
+    private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> asyncRunsOnce(
         AtomicBoolean hasBeenRan) {
         return ignored -> (hasBeenRan.compareAndSet(false, true))
             ? Mono.just(RESPONSE_ZERO) : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);

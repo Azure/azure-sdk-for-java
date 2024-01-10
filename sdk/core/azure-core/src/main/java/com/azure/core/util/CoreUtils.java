@@ -568,22 +568,7 @@ public final class CoreUtils {
             return future.get();
         }
 
-        try {
-            return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
-        } catch (TimeoutException e) {
-            future.cancel(true);
-            throw e;
-        } catch (ExecutionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof Error) {
-                throw (Error) cause;
-            } else if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            } else {
-                ImplUtils.sneakyThrows(cause);
-                throw e;
-            }
-        }
+        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
     }
 
     /**

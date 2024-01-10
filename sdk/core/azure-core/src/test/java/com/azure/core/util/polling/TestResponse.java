@@ -5,7 +5,7 @@ package com.azure.core.util.polling;
 /**
  * A test response type for testing polling.
  */
-public class Response {
+public class TestResponse {
     private final String response;
 
     /**
@@ -13,7 +13,7 @@ public class Response {
      *
      * @param response The response string.
      */
-    public Response(String response) {
+    public TestResponse(String response) {
         this.response = response;
     }
 
