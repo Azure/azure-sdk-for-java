@@ -41,9 +41,13 @@ public final class ResourceParser {
             return;
         }
 
-        builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), getRoleName(resource));
+        if (!builder.build().getTags().containsKey(ContextTagKeys.AI_CLOUD_ROLE.toString())) {
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), getRoleName(resource));
+        }
 
-        builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), getRoleInstance(resource));
+        if (!builder.build().getTags().containsKey(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())) {
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), getRoleInstance(resource));
+        }
     }
 
     private String getRoleName(Resource resource) {
