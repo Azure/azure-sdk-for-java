@@ -5,8 +5,12 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,24 +19,21 @@ import java.util.List;
  * Contains the columns and rows for one table in a query response.
  */
 @Immutable
-public final class Table {
+public final class Table implements JsonSerializable<Table> {
     /*
      * The name of the table.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The list of columns in this table.
      */
-    @JsonProperty(value = "columns", required = true)
-    private List<Column> columns;
+    private final List<Column> columns;
 
     /*
      * The resulting rows from this query.
      */
-    @JsonProperty(value = "rows", required = true)
-    private List<List<Object>> rows;
+    private final List<List<Object>> rows;
 
     /**
      * Creates an instance of Table class.
@@ -41,10 +42,7 @@ public final class Table {
      * @param columns the columns value to set.
      * @param rows the rows value to set.
      */
-    @JsonCreator
-    public Table(@JsonProperty(value = "name", required = true) String name,
-        @JsonProperty(value = "columns", required = true) List<Column> columns,
-        @JsonProperty(value = "rows", required = true) List<List<Object>> rows) {
+    public Table(String name, List<Column> columns, List<List<Object>> rows) {
         this.name = name;
         this.columns = columns;
         this.rows = rows;
@@ -75,5 +73,68 @@ public final class Table {
      */
     public List<List<Object>> getRows() {
         return this.rows;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Table from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Table if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Table.
+     */
+    public static Table fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean columnsFound = false;
+            List<Column> columns = null;
+            boolean rowsFound = false;
+            List<List<Object>> rows = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("columns".equals(fieldName)) {
+                    columns = reader.readArray(reader1 -> Column.fromJson(reader1));
+                    columnsFound = true;
+                } else if ("rows".equals(fieldName)) {
+                    rows = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.readUntyped()));
+                    rowsFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && columnsFound && rowsFound) {
+                return new Table(name, columns, rows);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!columnsFound) {
+                missingProperties.add("columns");
+            }
+            if (!rowsFound) {
+                missingProperties.add("rows");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

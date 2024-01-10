@@ -5,23 +5,26 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AdditionalInfoErrorResponseErrorAdditionalInfoItem model.
  */
 @Fluent
-public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
+public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem
+    implements JsonSerializable<AdditionalInfoErrorResponseErrorAdditionalInfoItem> {
     /*
      * The type of the info property (e.g. string).
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Additional information related to the error.
      */
-    @JsonProperty(value = "info")
     private String info;
 
     /**
@@ -68,5 +71,43 @@ public final class AdditionalInfoErrorResponseErrorAdditionalInfoItem {
     public AdditionalInfoErrorResponseErrorAdditionalInfoItem setInfo(String info) {
         this.info = info;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("info", this.info);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalInfoErrorResponseErrorAdditionalInfoItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalInfoErrorResponseErrorAdditionalInfoItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdditionalInfoErrorResponseErrorAdditionalInfoItem.
+     */
+    public static AdditionalInfoErrorResponseErrorAdditionalInfoItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalInfoErrorResponseErrorAdditionalInfoItem deserializedAdditionalInfoErrorResponseErrorAdditionalInfoItem
+                = new AdditionalInfoErrorResponseErrorAdditionalInfoItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAdditionalInfoErrorResponseErrorAdditionalInfoItem.type = reader.getString();
+                } else if ("info".equals(fieldName)) {
+                    deserializedAdditionalInfoErrorResponseErrorAdditionalInfoItem.info = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalInfoErrorResponseErrorAdditionalInfoItem;
+        });
     }
 }

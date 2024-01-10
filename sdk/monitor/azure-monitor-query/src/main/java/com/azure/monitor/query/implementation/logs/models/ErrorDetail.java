@@ -5,49 +5,47 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Error details.
  */
 @Fluent
-public final class ErrorDetail {
+public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /*
      * The error's code.
      */
-    @JsonProperty(value = "code", required = true)
-    private String code;
+    private final String code;
 
     /*
      * A human readable error message.
      */
-    @JsonProperty(value = "message", required = true)
-    private String message;
+    private final String message;
 
     /*
      * Indicates which property in the request is responsible for the error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Indicates which value in 'target' is responsible for the error.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Indicates resources which were responsible for the error.
      */
-    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /*
      * Additional properties that can be provided on the error details object
      */
-    @JsonProperty(value = "additionalProperties")
     private Object additionalProperties;
 
     /**
@@ -56,9 +54,7 @@ public final class ErrorDetail {
      * @param code the code value to set.
      * @param message the message value to set.
      */
-    @JsonCreator
-    public ErrorDetail(@JsonProperty(value = "code", required = true) String code,
-        @JsonProperty(value = "message", required = true) String message) {
+    public ErrorDetail(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -159,5 +155,80 @@ public final class ErrorDetail {
     public ErrorDetail setAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeUntypedField("additionalProperties", this.additionalProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ErrorDetail.
+     */
+    public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean codeFound = false;
+            String code = null;
+            boolean messageFound = false;
+            String message = null;
+            String target = null;
+            String value = null;
+            List<String> resources = null;
+            Object additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                    codeFound = true;
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                    messageFound = true;
+                } else if ("target".equals(fieldName)) {
+                    target = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    value = reader.getString();
+                } else if ("resources".equals(fieldName)) {
+                    resources = reader.readArray(reader1 -> reader1.getString());
+                } else if ("additionalProperties".equals(fieldName)) {
+                    additionalProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (codeFound && messageFound) {
+                ErrorDetail deserializedErrorDetail = new ErrorDetail(code, message);
+                deserializedErrorDetail.target = target;
+                deserializedErrorDetail.value = value;
+                deserializedErrorDetail.resources = resources;
+                deserializedErrorDetail.additionalProperties = additionalProperties;
+
+                return deserializedErrorDetail;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!codeFound) {
+                missingProperties.add("code");
+            }
+            if (!messageFound) {
+                missingProperties.add("message");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }
