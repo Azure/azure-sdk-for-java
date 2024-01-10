@@ -15,34 +15,25 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyParameters model =
-            BinaryData
-                .fromString(
-                    "{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}")
-                .toObject(PolicyParameters.class);
-        Assertions
-            .assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreParametersList().get(0).dataStoreType());
+        PolicyParameters model = BinaryData.fromString(
+            "{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}")
+            .toObject(PolicyParameters.class);
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
+            model.dataStoreParametersList().get(0).dataStoreType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyParameters model =
-            new PolicyParameters()
-                .withDataStoreParametersList(
-                    Arrays
-                        .asList(
-                            new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
-                            new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
-                            new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE),
-                            new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE)))
-                .withBackupDatasourceParametersList(
-                    Arrays
-                        .asList(
-                            new BackupDatasourceParameters(),
-                            new BackupDatasourceParameters(),
-                            new BackupDatasourceParameters()));
+        PolicyParameters model = new PolicyParameters()
+            .withDataStoreParametersList(
+                Arrays.asList(new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
+                    new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
+                    new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE),
+                    new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE)))
+            .withBackupDatasourceParametersList(Arrays.asList(new BackupDatasourceParameters(),
+                new BackupDatasourceParameters(), new BackupDatasourceParameters()));
         model = BinaryData.fromObject(model).toObject(PolicyParameters.class);
-        Assertions
-            .assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.dataStoreParametersList().get(0).dataStoreType());
+        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE,
+            model.dataStoreParametersList().get(0).dataStoreType());
     }
 }

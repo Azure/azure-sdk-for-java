@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VideoGroup video detail. */
+/**
+ * VideoGroup video detail.
+ */
 @Fluent
 public class VideoGroupVideo {
     /*
@@ -22,13 +24,15 @@ public class VideoGroupVideo {
     @JsonProperty(value = "title")
     private String title;
 
-    /** Creates an instance of VideoGroupVideo class. */
+    /**
+     * Creates an instance of VideoGroupVideo class.
+     */
     public VideoGroupVideo() {
     }
 
     /**
      * Get the src property: Link to the video.
-     *
+     * 
      * @return the src value.
      */
     public String src() {
@@ -37,7 +41,7 @@ public class VideoGroupVideo {
 
     /**
      * Set the src property: Link to the video.
-     *
+     * 
      * @param src the src value to set.
      * @return the VideoGroupVideo object itself.
      */
@@ -48,7 +52,7 @@ public class VideoGroupVideo {
 
     /**
      * Get the title property: Title of the video.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -57,7 +61,7 @@ public class VideoGroupVideo {
 
     /**
      * Set the title property: Title of the video.
-     *
+     * 
      * @param title the title value to set.
      * @return the VideoGroupVideo object itself.
      */
@@ -68,7 +72,7 @@ public class VideoGroupVideo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

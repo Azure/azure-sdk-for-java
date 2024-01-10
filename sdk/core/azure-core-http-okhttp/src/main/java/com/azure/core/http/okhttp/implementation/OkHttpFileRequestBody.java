@@ -16,6 +16,13 @@ import java.nio.file.StandardOpenOption;
  */
 public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileContent> {
 
+    /**
+     * Creates an OkHttpFileRequestBody.
+     *
+     * @param content The content to send.
+     * @param effectiveContentLength The length of the content to send.
+     * @param mediaType The content type of the content to send.
+     */
     public OkHttpFileRequestBody(FileContent content, long effectiveContentLength, MediaType mediaType) {
         super(content, effectiveContentLength, mediaType);
     }

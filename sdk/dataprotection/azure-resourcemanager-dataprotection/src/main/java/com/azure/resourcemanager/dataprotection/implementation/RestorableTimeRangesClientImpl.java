@@ -27,23 +27,28 @@ import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupFindRes
 import com.azure.resourcemanager.dataprotection.models.AzureBackupFindRestorableTimeRangesRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableTimeRangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableTimeRangesClient.
+ */
 public final class RestorableTimeRangesClientImpl implements RestorableTimeRangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableTimeRangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of RestorableTimeRangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableTimeRangesClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy
-                .create(RestorableTimeRangesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RestorableTimeRangesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,26 +59,22 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface RestorableTimeRangesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> find(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
             @BodyParam("application/json") AzureBackupFindRestorableTimeRangesRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -85,21 +86,15 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> findWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+        String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupFindRestorableTimeRangesRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -119,25 +114,15 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .find(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.find(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -150,22 +135,15 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureBackupFindRestorableTimeRangesResponseResourceInner>> findWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
-        Context context) {
+        String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupFindRestorableTimeRangesRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,22 +163,13 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .find(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.find(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, backupInstanceName, parameters, accept, context);
     }
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -211,18 +180,15 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      * @return list Restore Ranges Response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureBackupFindRestorableTimeRangesResponseResourceInner> findAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters) {
+    private Mono<AzureBackupFindRestorableTimeRangesResponseResourceInner> findAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters) {
         return findWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -234,18 +200,15 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      * @return list Restore Ranges Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
+    public Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> findWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters,
         Context context) {
         return findWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -256,11 +219,8 @@ public final class RestorableTimeRangesClientImpl implements RestorableTimeRange
      * @return list Restore Ranges Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureBackupFindRestorableTimeRangesResponseResourceInner find(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters) {
+    public AzureBackupFindRestorableTimeRangesResponseResourceInner find(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters) {
         return findWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, Context.NONE).getValue();
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Solutions metrics based chart. */
+/**
+ * Solutions metrics based chart.
+ */
 @Fluent
 public final class MetricsBasedChart {
     /*
@@ -46,13 +48,15 @@ public final class MetricsBasedChart {
     @JsonProperty(value = "replacementKey")
     private String replacementKey;
 
-    /** Creates an instance of MetricsBasedChart class. */
+    /**
+     * Creates an instance of MetricsBasedChart class.
+     */
     public MetricsBasedChart() {
     }
 
     /**
      * Get the name property: Chart name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the name property: Chart name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -72,7 +76,7 @@ public final class MetricsBasedChart {
 
     /**
      * Get the aggregationType property: Allowed values are Sum, Avg, Count, Min, Max. Default is Sum.
-     *
+     * 
      * @return the aggregationType value.
      */
     public AggregationType aggregationType() {
@@ -81,7 +85,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the aggregationType property: Allowed values are Sum, Avg, Count, Min, Max. Default is Sum.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -92,7 +96,7 @@ public final class MetricsBasedChart {
 
     /**
      * Get the timeSpanDuration property: Time span duration.
-     *
+     * 
      * @return the timeSpanDuration value.
      */
     public String timeSpanDuration() {
@@ -101,7 +105,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the timeSpanDuration property: Time span duration.
-     *
+     * 
      * @param timeSpanDuration the timeSpanDuration value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -112,7 +116,7 @@ public final class MetricsBasedChart {
 
     /**
      * Get the title property: Chart title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -121,7 +125,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the title property: Chart title.
-     *
+     * 
      * @param title the title value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -132,7 +136,7 @@ public final class MetricsBasedChart {
 
     /**
      * Get the filterGroup property: Filter group.
-     *
+     * 
      * @return the filterGroup value.
      */
     public FilterGroup filterGroup() {
@@ -141,7 +145,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the filterGroup property: Filter group.
-     *
+     * 
      * @param filterGroup the filterGroup value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -152,7 +156,7 @@ public final class MetricsBasedChart {
 
     /**
      * Get the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @return the replacementKey value.
      */
     public String replacementKey() {
@@ -161,7 +165,7 @@ public final class MetricsBasedChart {
 
     /**
      * Set the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @param replacementKey the replacementKey value to set.
      * @return the MetricsBasedChart object itself.
      */
@@ -172,7 +176,7 @@ public final class MetricsBasedChart {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

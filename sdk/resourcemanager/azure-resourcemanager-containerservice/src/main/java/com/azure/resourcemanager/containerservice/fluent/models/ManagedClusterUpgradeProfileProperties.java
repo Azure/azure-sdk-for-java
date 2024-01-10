@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgra
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Control plane and agent pool upgrade profiles. */
+/**
+ * Control plane and agent pool upgrade profiles.
+ */
 @Fluent
 public final class ManagedClusterUpgradeProfileProperties {
     /*
@@ -25,7 +27,9 @@ public final class ManagedClusterUpgradeProfileProperties {
     @JsonProperty(value = "agentPoolProfiles", required = true)
     private List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles;
 
-    /** Creates an instance of ManagedClusterUpgradeProfileProperties class. */
+    /**
+     * Creates an instance of ManagedClusterUpgradeProfileProperties class.
+     */
     public ManagedClusterUpgradeProfileProperties() {
     }
 
@@ -44,8 +48,8 @@ public final class ManagedClusterUpgradeProfileProperties {
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
-    public ManagedClusterUpgradeProfileProperties withControlPlaneProfile(
-        ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
+    public ManagedClusterUpgradeProfileProperties
+        withControlPlaneProfile(ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
         this.controlPlaneProfile = controlPlaneProfile;
         return this;
     }
@@ -65,8 +69,8 @@ public final class ManagedClusterUpgradeProfileProperties {
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
-    public ManagedClusterUpgradeProfileProperties withAgentPoolProfiles(
-        List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
+    public ManagedClusterUpgradeProfileProperties
+        withAgentPoolProfiles(List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
         this.agentPoolProfiles = agentPoolProfiles;
         return this;
     }
@@ -78,19 +82,14 @@ public final class ManagedClusterUpgradeProfileProperties {
      */
     public void validate() {
         if (controlPlaneProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property controlPlaneProfile in model"
-                            + " ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileProperties"));
         } else {
             controlPlaneProfile().validate();
         }
         if (agentPoolProfiles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
         } else {
             agentPoolProfiles().forEach(e -> e.validate());
         }

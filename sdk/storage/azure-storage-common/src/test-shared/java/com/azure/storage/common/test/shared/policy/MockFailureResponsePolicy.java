@@ -19,6 +19,7 @@ public class MockFailureResponsePolicy implements HttpPipelinePolicy {
     public MockFailureResponsePolicy(int tries) {
         this.tries = tries;
     }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process().flatMap(response -> {
@@ -26,8 +27,7 @@ public class MockFailureResponsePolicy implements HttpPipelinePolicy {
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
-                return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206,
-                    Flux.error(new IOException())));
+                return Mono.just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())));
             }
         });
     }

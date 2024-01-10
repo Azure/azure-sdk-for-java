@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the OpenShift networking configuration. */
+/**
+ * Represents the OpenShift networking configuration.
+ */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -28,7 +30,9 @@ public final class NetworkProfile {
     @JsonProperty(value = "vnetId")
     private String vnetId;
 
-    /** Creates an instance of NetworkProfile class. */
+    /**
+     * Creates an instance of NetworkProfile class.
+     */
     public NetworkProfile() {
     }
 

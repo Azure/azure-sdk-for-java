@@ -20,12 +20,14 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -36,7 +38,6 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,6 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel {
-    private final static byte[] EMPTY_BYTE_ARRAY = {};
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
@@ -349,9 +349,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable = httpResponse
-                .bodyAsByteArray()
-                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
+            Mono<ByteBuf> contentObservable = httpResponse
+                .body()
+                .switchIfEmpty(Mono.just(Unpooled.EMPTY_BUFFER));
 
             return contentObservable
                 .map(content -> {
@@ -364,9 +364,20 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     // If there is any error in the header response this throws exception
                     validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
-                    StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                        HttpUtils.unescape(httpResponseHeaders.toMap()),
-                        content);
+                    StoreResponse rsp;
+
+                    int size;
+                    if ((size = content.readableBytes()) > 0) {
+                        rsp = new StoreResponse(httpResponseStatus,
+                            HttpUtils.unescape(httpResponseHeaders.toMap()),
+                            new ByteBufInputStream(content, true),
+                            size);
+                    } else {
+                        rsp = new StoreResponse(httpResponseStatus,
+                            HttpUtils.unescape(httpResponseHeaders.toMap()),
+                            null,
+                            0);
+                    }
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
@@ -474,7 +485,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
                                  HttpHeaders headers,
-                                 byte[] bodyAsBytes) {
+                                 ByteBuf bodyAsByteBuf) {
 
         int statusCode = status.code();
 
@@ -483,7 +494,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 ? status.reasonPhrase().replace(" ", "")
                 : "";
 
-            String body = bodyAsBytes != null ? new String(bodyAsBytes, StandardCharsets.UTF_8) : null;
+            String body = bodyAsByteBuf != null ?bodyAsByteBuf.toString(StandardCharsets.UTF_8) : null;
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,

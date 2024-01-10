@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Istio service mesh configuration. */
+/**
+ * Istio service mesh configuration.
+ */
 @Fluent
 public final class IstioServiceMesh {
     /*
@@ -32,7 +34,9 @@ public final class IstioServiceMesh {
     @JsonProperty(value = "revisions")
     private List<String> revisions;
 
-    /** Creates an instance of IstioServiceMesh class. */
+    /**
+     * Creates an instance of IstioServiceMesh class.
+     */
     public IstioServiceMesh() {
     }
 
@@ -79,9 +83,9 @@ public final class IstioServiceMesh {
     }
 
     /**
-     * Get the revisions property: The list of revisions of the Istio control plane. When an upgrade is not in progress,
-     * this holds one value. When canary upgrade is in progress, this can only hold two consecutive values. For more
-     * information, see: https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
+     * Get the revisions property: The list of revisions of the Istio control plane. When an upgrade is not in
+     * progress, this holds one value. When canary upgrade is in progress, this can only hold two consecutive values.
+     * For more information, see: https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
      *
      * @return the revisions value.
      */
@@ -90,9 +94,9 @@ public final class IstioServiceMesh {
     }
 
     /**
-     * Set the revisions property: The list of revisions of the Istio control plane. When an upgrade is not in progress,
-     * this holds one value. When canary upgrade is in progress, this can only hold two consecutive values. For more
-     * information, see: https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
+     * Set the revisions property: The list of revisions of the Istio control plane. When an upgrade is not in
+     * progress, this holds one value. When canary upgrade is in progress, this can only hold two consecutive values.
+     * For more information, see: https://learn.microsoft.com/en-us/azure/aks/istio-upgrade.
      *
      * @param revisions the revisions value to set.
      * @return the IstioServiceMesh object itself.

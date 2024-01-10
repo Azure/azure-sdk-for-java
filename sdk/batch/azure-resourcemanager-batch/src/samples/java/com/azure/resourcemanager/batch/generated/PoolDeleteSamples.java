@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-/** Samples for Pool Delete. */
+/**
+ * Samples for Pool Delete.
+ */
 public final class PoolDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolDelete.json
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PoolDelete.json
      */
     /**
      * Sample code: DeletePool.
-     *
+     * 
      * @param manager Entry point to BatchManager.
      */
     public static void deletePool(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager
-            .pools()
-            .delete("default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
+        manager.pools().delete("default-azurebatch-japaneast", "sampleacct", "testpool",
+            com.azure.core.util.Context.NONE);
     }
 }

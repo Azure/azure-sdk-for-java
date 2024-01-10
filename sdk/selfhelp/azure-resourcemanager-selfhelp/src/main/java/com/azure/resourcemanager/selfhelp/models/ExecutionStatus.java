@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of Troubleshooter Step execution. */
+/**
+ * Status of Troubleshooter Step execution.
+ */
 public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus> {
-    /** Static value Success for ExecutionStatus. */
+    /**
+     * Static value Success for ExecutionStatus.
+     */
     public static final ExecutionStatus SUCCESS = fromString("Success");
 
-    /** Static value Running for ExecutionStatus. */
+    /**
+     * Static value Running for ExecutionStatus.
+     */
     public static final ExecutionStatus RUNNING = fromString("Running");
 
-    /** Static value Failed for ExecutionStatus. */
+    /**
+     * Static value Failed for ExecutionStatus.
+     */
     public static final ExecutionStatus FAILED = fromString("Failed");
 
-    /** Static value Warning for ExecutionStatus. */
+    /**
+     * Static value Warning for ExecutionStatus.
+     */
     public static final ExecutionStatus WARNING = fromString("Warning");
 
     /**
      * Creates a new instance of ExecutionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus>
 
     /**
      * Creates or finds a ExecutionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExecutionStatus.
      */
@@ -44,7 +54,7 @@ public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus>
 
     /**
      * Gets known ExecutionStatus values.
-     *
+     * 
      * @return known ExecutionStatus values.
      */
     public static Collection<ExecutionStatus> values() {

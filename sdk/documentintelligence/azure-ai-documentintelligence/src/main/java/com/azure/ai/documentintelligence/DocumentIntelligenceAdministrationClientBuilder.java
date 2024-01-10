@@ -4,7 +4,7 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.implementation.DocumentModelAdministrationClientImpl;
+import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -45,12 +45,15 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the DocumentModelAdministrationClient type.
+ * A builder for creating a new instance of the DocumentIntelligenceAdministrationClient type.
  */
 @ServiceClientBuilder(
-    serviceClients = { DocumentIntelligenceAdministrationClient.class, DocumentIntelligenceAdministrationAsyncClient.class })
-public final class DocumentIntelligenceAdministrationClientBuilder implements
-    HttpTrait<DocumentIntelligenceAdministrationClientBuilder>, ConfigurationTrait<DocumentIntelligenceAdministrationClientBuilder>,
+    serviceClients = {
+        DocumentIntelligenceAdministrationClient.class,
+        DocumentIntelligenceAdministrationAsyncClient.class })
+public final class DocumentIntelligenceAdministrationClientBuilder
+    implements HttpTrait<DocumentIntelligenceAdministrationClientBuilder>,
+    ConfigurationTrait<DocumentIntelligenceAdministrationClientBuilder>,
     TokenCredentialTrait<DocumentIntelligenceAdministrationClientBuilder>,
     KeyCredentialTrait<DocumentIntelligenceAdministrationClientBuilder>,
     EndpointTrait<DocumentIntelligenceAdministrationClientBuilder> {
@@ -71,7 +74,7 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the DocumentModelAdministrationClientBuilder.
+     * Create an instance of the DocumentIntelligenceAdministrationClientBuilder.
      */
     @Generated
     public DocumentIntelligenceAdministrationClientBuilder() {
@@ -244,12 +247,13 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
 
     /**
      * Sets Service version.
-     *
+     * 
      * @param serviceVersion the serviceVersion value.
-     * @return the DocumentModelAdministrationClientBuilder.
+     * @return the DocumentIntelligenceAdministrationClientBuilder.
      */
     @Generated
-    public DocumentIntelligenceAdministrationClientBuilder serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
+    public DocumentIntelligenceAdministrationClientBuilder
+        serviceVersion(DocumentIntelligenceServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -262,9 +266,9 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
-     * @return the DocumentModelAdministrationClientBuilder.
+     * @return the DocumentIntelligenceAdministrationClientBuilder.
      */
     @Generated
     public DocumentIntelligenceAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
@@ -273,17 +277,17 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationClientImpl with the provided parameters.
-     *
-     * @return an instance of DocumentModelAdministrationClientImpl.
+     * Builds an instance of DocumentIntelligenceAdministrationClientImpl with the provided parameters.
+     * 
+     * @return an instance of DocumentIntelligenceAdministrationClientImpl.
      */
     @Generated
-    private DocumentModelAdministrationClientImpl buildInnerClient() {
+    private DocumentIntelligenceAdministrationClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         DocumentIntelligenceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : DocumentIntelligenceServiceVersion.getLatest();
-        DocumentModelAdministrationClientImpl client = new DocumentModelAdministrationClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
+        DocumentIntelligenceAdministrationClientImpl client = new DocumentIntelligenceAdministrationClientImpl(
+            localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -327,9 +331,9 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationAsyncClient class.
-     *
-     * @return an instance of DocumentModelAdministrationAsyncClient.
+     * Builds an instance of DocumentIntelligenceAdministrationAsyncClient class.
+     * 
+     * @return an instance of DocumentIntelligenceAdministrationAsyncClient.
      */
     @Generated
     public DocumentIntelligenceAdministrationAsyncClient buildAsyncClient() {
@@ -337,9 +341,9 @@ public final class DocumentIntelligenceAdministrationClientBuilder implements
     }
 
     /**
-     * Builds an instance of DocumentModelAdministrationClient class.
-     *
-     * @return an instance of DocumentModelAdministrationClient.
+     * Builds an instance of DocumentIntelligenceAdministrationClient class.
+     * 
+     * @return an instance of DocumentIntelligenceAdministrationClient.
      */
     @Generated
     public DocumentIntelligenceAdministrationClient buildClient() {

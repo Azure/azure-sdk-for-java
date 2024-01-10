@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * DeleteOption
- *
- * <p>Delete Option.
+ * 
+ * Delete Option.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "objectType",
     defaultImpl = DeleteOption.class)
 @JsonTypeName("DeleteOption")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AbsoluteDeleteOption", value = AbsoluteDeleteOption.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AbsoluteDeleteOption", value = AbsoluteDeleteOption.class) })
 @Fluent
 public class DeleteOption {
     /*
@@ -31,13 +31,15 @@ public class DeleteOption {
     @JsonProperty(value = "duration", required = true)
     private String duration;
 
-    /** Creates an instance of DeleteOption class. */
+    /**
+     * Creates an instance of DeleteOption class.
+     */
     public DeleteOption() {
     }
 
     /**
      * Get the duration property: Duration of deletion after given timespan.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -46,7 +48,7 @@ public class DeleteOption {
 
     /**
      * Set the duration property: Duration of deletion after given timespan.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DeleteOption object itself.
      */
@@ -57,14 +59,13 @@ public class DeleteOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model DeleteOption"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property duration in model DeleteOption"));
         }
     }
 

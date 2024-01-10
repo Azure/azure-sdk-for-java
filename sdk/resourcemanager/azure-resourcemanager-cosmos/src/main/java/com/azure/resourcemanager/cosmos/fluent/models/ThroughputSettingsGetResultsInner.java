@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB resource throughput. */
+/**
+ * An Azure Cosmos DB resource throughput.
+ */
 @Fluent
 public final class ThroughputSettingsGetResultsInner extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private ThroughputSettingsGetProperties innerProperties;
 
-    /** Creates an instance of ThroughputSettingsGetResultsInner class. */
+    /**
+     * Creates an instance of ThroughputSettingsGetResultsInner class.
+     */
     public ThroughputSettingsGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB resource throughput.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ThroughputSettingsGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public ThroughputSettingsGetPropertiesResource resource() {
@@ -57,7 +65,7 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ThroughputSettingsGetResultsInner object itself.
      */
@@ -71,7 +79,7 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

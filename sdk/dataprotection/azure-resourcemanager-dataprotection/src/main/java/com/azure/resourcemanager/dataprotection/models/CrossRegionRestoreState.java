@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** CrossRegionRestore state. */
+/**
+ * CrossRegionRestore state.
+ */
 public final class CrossRegionRestoreState extends ExpandableStringEnum<CrossRegionRestoreState> {
-    /** Static value Disabled for CrossRegionRestoreState. */
+    /**
+     * Static value Disabled for CrossRegionRestoreState.
+     */
     public static final CrossRegionRestoreState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for CrossRegionRestoreState. */
+    /**
+     * Static value Enabled for CrossRegionRestoreState.
+     */
     public static final CrossRegionRestoreState ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of CrossRegionRestoreState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CrossRegionRestoreState extends ExpandableStringEnum<CrossReg
 
     /**
      * Creates or finds a CrossRegionRestoreState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CrossRegionRestoreState.
      */
@@ -38,7 +44,7 @@ public final class CrossRegionRestoreState extends ExpandableStringEnum<CrossReg
 
     /**
      * Gets known CrossRegionRestoreState values.
-     *
+     * 
      * @return known CrossRegionRestoreState values.
      */
     public static Collection<CrossRegionRestoreState> values() {

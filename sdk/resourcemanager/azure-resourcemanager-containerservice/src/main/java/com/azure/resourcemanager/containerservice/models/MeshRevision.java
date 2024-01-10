@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Holds information on upgrades and compatibility for given major.minor mesh release. */
+/**
+ * Holds information on upgrades and compatibility for given major.minor mesh release.
+ */
 @Fluent
 public class MeshRevision {
     /*
@@ -29,7 +31,9 @@ public class MeshRevision {
     @JsonProperty(value = "compatibleWith")
     private List<CompatibleVersions> compatibleWith;
 
-    /** Creates an instance of MeshRevision class. */
+    /**
+     * Creates an instance of MeshRevision class.
+     */
     public MeshRevision() {
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Filter group. */
+/**
+ * Filter group.
+ */
 @Fluent
 public final class FilterGroup {
     /*
@@ -17,13 +19,15 @@ public final class FilterGroup {
     @JsonProperty(value = "filter")
     private List<Filter> filter;
 
-    /** Creates an instance of FilterGroup class. */
+    /**
+     * Creates an instance of FilterGroup class.
+     */
     public FilterGroup() {
     }
 
     /**
      * Get the filter property: List of filters.
-     *
+     * 
      * @return the filter value.
      */
     public List<Filter> filter() {
@@ -32,7 +36,7 @@ public final class FilterGroup {
 
     /**
      * Set the filter property: List of filters.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the FilterGroup object itself.
      */
@@ -43,7 +47,7 @@ public final class FilterGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

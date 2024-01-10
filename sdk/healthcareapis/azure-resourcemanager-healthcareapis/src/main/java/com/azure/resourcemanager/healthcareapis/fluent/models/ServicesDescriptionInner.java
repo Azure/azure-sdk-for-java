@@ -13,7 +13,9 @@ import com.azure.resourcemanager.healthcareapis.models.ServicesResourceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The description of the service. */
+/**
+ * The description of the service.
+ */
 @Fluent
 public final class ServicesDescriptionInner extends ServicesResource {
     /*
@@ -29,8 +31,14 @@ public final class ServicesDescriptionInner extends ServicesResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of ServicesDescriptionInner class.
+     */
+    public ServicesDescriptionInner() {
+    }
+
+    /**
      * Get the properties property: The common properties of a service.
-     *
+     * 
      * @return the properties value.
      */
     public ServicesProperties properties() {
@@ -39,7 +47,7 @@ public final class ServicesDescriptionInner extends ServicesResource {
 
     /**
      * Set the properties property: The common properties of a service.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ServicesDescriptionInner object itself.
      */
@@ -50,42 +58,52 @@ public final class ServicesDescriptionInner extends ServicesResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesDescriptionInner withKind(Kind kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesDescriptionInner withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesDescriptionInner withIdentity(ServicesResourceIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesDescriptionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServicesDescriptionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -94,7 +112,7 @@ public final class ServicesDescriptionInner extends ServicesResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

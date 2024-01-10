@@ -8,47 +8,73 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Month. */
+/**
+ * Defines values for Month.
+ */
 public final class Month extends ExpandableStringEnum<Month> {
-    /** Static value April for Month. */
+    /**
+     * Static value April for Month.
+     */
     public static final Month APRIL = fromString("April");
 
-    /** Static value August for Month. */
+    /**
+     * Static value August for Month.
+     */
     public static final Month AUGUST = fromString("August");
 
-    /** Static value December for Month. */
+    /**
+     * Static value December for Month.
+     */
     public static final Month DECEMBER = fromString("December");
 
-    /** Static value February for Month. */
+    /**
+     * Static value February for Month.
+     */
     public static final Month FEBRUARY = fromString("February");
 
-    /** Static value January for Month. */
+    /**
+     * Static value January for Month.
+     */
     public static final Month JANUARY = fromString("January");
 
-    /** Static value July for Month. */
+    /**
+     * Static value July for Month.
+     */
     public static final Month JULY = fromString("July");
 
-    /** Static value June for Month. */
+    /**
+     * Static value June for Month.
+     */
     public static final Month JUNE = fromString("June");
 
-    /** Static value March for Month. */
+    /**
+     * Static value March for Month.
+     */
     public static final Month MARCH = fromString("March");
 
-    /** Static value May for Month. */
+    /**
+     * Static value May for Month.
+     */
     public static final Month MAY = fromString("May");
 
-    /** Static value November for Month. */
+    /**
+     * Static value November for Month.
+     */
     public static final Month NOVEMBER = fromString("November");
 
-    /** Static value October for Month. */
+    /**
+     * Static value October for Month.
+     */
     public static final Month OCTOBER = fromString("October");
 
-    /** Static value September for Month. */
+    /**
+     * Static value September for Month.
+     */
     public static final Month SEPTEMBER = fromString("September");
 
     /**
      * Creates a new instance of Month value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -57,7 +83,7 @@ public final class Month extends ExpandableStringEnum<Month> {
 
     /**
      * Creates or finds a Month from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Month.
      */
@@ -68,7 +94,7 @@ public final class Month extends ExpandableStringEnum<Month> {
 
     /**
      * Gets known Month values.
-     *
+     * 
      * @return known Month values.
      */
     public static Collection<Month> values() {

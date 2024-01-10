@@ -5,30 +5,38 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
-/** The EnrichmentStatusQueryOption model. */
+/**
+ * The EnrichmentStatusQueryOption model.
+ */
 @Fluent
-public final class EnrichmentStatusQueryOption {
+public final class EnrichmentStatusQueryOption implements JsonSerializable<EnrichmentStatusQueryOption> {
     /*
      * the start point of time range to query anomaly detection status.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * the end point of time range to query anomaly detection status.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
-    /** Creates an instance of EnrichmentStatusQueryOption class. */
-    public EnrichmentStatusQueryOption() {}
+    /**
+     * Creates an instance of EnrichmentStatusQueryOption class.
+     */
+    public EnrichmentStatusQueryOption() {
+    }
 
     /**
      * Get the startTime property: the start point of time range to query anomaly detection status.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -37,7 +45,7 @@ public final class EnrichmentStatusQueryOption {
 
     /**
      * Set the startTime property: the start point of time range to query anomaly detection status.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the EnrichmentStatusQueryOption object itself.
      */
@@ -48,7 +56,7 @@ public final class EnrichmentStatusQueryOption {
 
     /**
      * Get the endTime property: the end point of time range to query anomaly detection status.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -57,12 +65,51 @@ public final class EnrichmentStatusQueryOption {
 
     /**
      * Set the endTime property: the end point of time range to query anomaly detection status.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the EnrichmentStatusQueryOption object itself.
      */
     public EnrichmentStatusQueryOption setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
+        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentStatusQueryOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentStatusQueryOption if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EnrichmentStatusQueryOption.
+     */
+    public static EnrichmentStatusQueryOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentStatusQueryOption deserializedEnrichmentStatusQueryOption = new EnrichmentStatusQueryOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedEnrichmentStatusQueryOption.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedEnrichmentStatusQueryOption.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentStatusQueryOption;
+        });
     }
 }

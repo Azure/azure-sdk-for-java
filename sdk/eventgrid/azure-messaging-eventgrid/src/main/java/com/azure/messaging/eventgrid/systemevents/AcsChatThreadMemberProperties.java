@@ -23,6 +23,13 @@ public final class AcsChatThreadMemberProperties {
     private String memberId;
 
     /**
+     * Creates an instance of AcsChatThreadEventBaseProperties class
+     */
+    public AcsChatThreadMemberProperties() {
+
+    }
+
+    /**
      * Get the displayName property: The name of the user.
      *
      * @return the displayName value.

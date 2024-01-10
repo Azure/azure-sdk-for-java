@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a section in the fabric settings of the cluster. */
+/**
+ * Describes a section in the fabric settings of the cluster.
+ */
 @Fluent
 public final class SettingsSectionDescription {
     /*
@@ -24,13 +26,15 @@ public final class SettingsSectionDescription {
     @JsonProperty(value = "parameters", required = true)
     private List<SettingsParameterDescription> parameters;
 
-    /** Creates an instance of SettingsSectionDescription class. */
+    /**
+     * Creates an instance of SettingsSectionDescription class.
+     */
     public SettingsSectionDescription() {
     }
 
     /**
      * Get the name property: The section name of the fabric settings.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class SettingsSectionDescription {
 
     /**
      * Set the name property: The section name of the fabric settings.
-     *
+     * 
      * @param name the name value to set.
      * @return the SettingsSectionDescription object itself.
      */
@@ -50,7 +54,7 @@ public final class SettingsSectionDescription {
 
     /**
      * Get the parameters property: The collection of parameters in the section.
-     *
+     * 
      * @return the parameters value.
      */
     public List<SettingsParameterDescription> parameters() {
@@ -59,7 +63,7 @@ public final class SettingsSectionDescription {
 
     /**
      * Set the parameters property: The collection of parameters in the section.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SettingsSectionDescription object itself.
      */
@@ -70,20 +74,17 @@ public final class SettingsSectionDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SettingsSectionDescription"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SettingsSectionDescription"));
         }
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model SettingsSectionDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model SettingsSectionDescription"));
         } else {
             parameters().forEach(e -> e.validate());
         }

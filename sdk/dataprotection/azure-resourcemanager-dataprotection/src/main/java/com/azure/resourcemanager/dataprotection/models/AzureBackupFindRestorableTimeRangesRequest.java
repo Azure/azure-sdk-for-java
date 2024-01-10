@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List Restore Ranges Request. */
+/**
+ * List Restore Ranges Request.
+ */
 @Fluent
 public final class AzureBackupFindRestorableTimeRangesRequest {
     /*
@@ -29,13 +31,15 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
     @JsonProperty(value = "endTime")
     private String endTime;
 
-    /** Creates an instance of AzureBackupFindRestorableTimeRangesRequest class. */
+    /**
+     * Creates an instance of AzureBackupFindRestorableTimeRangesRequest class.
+     */
     public AzureBackupFindRestorableTimeRangesRequest() {
     }
 
     /**
      * Get the sourceDataStoreType property: Gets or sets the type of the source data store.
-     *
+     * 
      * @return the sourceDataStoreType value.
      */
     public RestoreSourceDataStoreType sourceDataStoreType() {
@@ -44,19 +48,19 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the sourceDataStoreType property: Gets or sets the type of the source data store.
-     *
+     * 
      * @param sourceDataStoreType the sourceDataStoreType value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
-    public AzureBackupFindRestorableTimeRangesRequest withSourceDataStoreType(
-        RestoreSourceDataStoreType sourceDataStoreType) {
+    public AzureBackupFindRestorableTimeRangesRequest
+        withSourceDataStoreType(RestoreSourceDataStoreType sourceDataStoreType) {
         this.sourceDataStoreType = sourceDataStoreType;
         return this;
     }
 
     /**
      * Get the startTime property: Start time for the List Restore Ranges request. ISO 8601 format.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -65,7 +69,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the startTime property: Start time for the List Restore Ranges request. ISO 8601 format.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
@@ -76,7 +80,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Get the endTime property: End time for the List Restore Ranges request. ISO 8601 format.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -85,7 +89,7 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Set the endTime property: End time for the List Restore Ranges request. ISO 8601 format.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AzureBackupFindRestorableTimeRangesRequest object itself.
      */
@@ -96,16 +100,13 @@ public final class AzureBackupFindRestorableTimeRangesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceDataStoreType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceDataStoreType in model"
-                            + " AzureBackupFindRestorableTimeRangesRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceDataStoreType in model AzureBackupFindRestorableTimeRangesRequest"));
         }
     }
 

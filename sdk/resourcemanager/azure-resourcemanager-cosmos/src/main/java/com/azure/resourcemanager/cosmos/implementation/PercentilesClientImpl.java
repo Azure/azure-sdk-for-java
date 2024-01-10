@@ -30,22 +30,28 @@ import com.azure.resourcemanager.cosmos.fluent.models.PercentileMetricInner;
 import com.azure.resourcemanager.cosmos.models.PercentileMetricListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PercentilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PercentilesClient.
+ */
 public final class PercentilesClientImpl implements PercentilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PercentilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PercentilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PercentilesClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PercentilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PercentilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,51 +62,42 @@ public final class PercentilesClientImpl implements PercentilesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface PercentilesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/percentile/metrics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/percentile/metrics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PercentileMetricListResult>> listMetrics(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PercentileMetricListResult>> listMetrics(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list percentile metrics request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
-        String resourceGroupName, String accountName, String filter) {
+    private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(String resourceGroupName,
+        String accountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -114,55 +111,39 @@ public final class PercentilesClientImpl implements PercentilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMetrics(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<PercentileMetricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<PercentileMetricInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list percentile metrics request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Context context) {
+    private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(String resourceGroupName,
+        String accountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,50 +158,41 @@ public final class PercentilesClientImpl implements PercentilesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listMetrics(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PercentileMetricInner> listMetricsAsync(
-        String resourceGroupName, String accountName, String filter) {
+    public PagedFlux<PercentileMetricInner> listMetricsAsync(String resourceGroupName, String accountName,
+        String filter) {
         return new PagedFlux<>(() -> listMetricsSinglePageAsync(resourceGroupName, accountName, filter));
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,40 +200,40 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PercentileMetricInner> listMetricsAsync(
-        String resourceGroupName, String accountName, String filter, Context context) {
+    private PagedFlux<PercentileMetricInner> listMetricsAsync(String resourceGroupName, String accountName,
+        String filter, Context context) {
         return new PagedFlux<>(() -> listMetricsSinglePageAsync(resourceGroupName, accountName, filter, context));
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PercentileMetricInner> listMetrics(
-        String resourceGroupName, String accountName, String filter) {
+    public PagedIterable<PercentileMetricInner> listMetrics(String resourceGroupName, String accountName,
+        String filter) {
         return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, filter));
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and
      * Replication Latency data.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     * timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,8 +241,8 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PercentileMetricInner> listMetrics(
-        String resourceGroupName, String accountName, String filter, Context context) {
+    public PagedIterable<PercentileMetricInner> listMetrics(String resourceGroupName, String accountName, String filter,
+        Context context) {
         return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, filter, context));
     }
 }

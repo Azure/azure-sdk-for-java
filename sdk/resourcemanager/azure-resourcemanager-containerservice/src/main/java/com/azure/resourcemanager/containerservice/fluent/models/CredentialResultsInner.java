@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list credential result response. */
+/**
+ * The list credential result response.
+ */
 @Immutable
 public final class CredentialResultsInner {
     /*
@@ -18,7 +20,9 @@ public final class CredentialResultsInner {
     @JsonProperty(value = "kubeconfigs", access = JsonProperty.Access.WRITE_ONLY)
     private List<CredentialResult> kubeconfigs;
 
-    /** Creates an instance of CredentialResultsInner class. */
+    /**
+     * Creates an instance of CredentialResultsInner class.
+     */
     public CredentialResultsInner() {
     }
 

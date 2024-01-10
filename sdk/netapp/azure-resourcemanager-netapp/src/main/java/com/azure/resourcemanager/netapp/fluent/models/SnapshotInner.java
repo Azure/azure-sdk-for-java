@@ -11,7 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Snapshot of a Volume. */
+/**
+ * Snapshot of a Volume.
+ */
 @Fluent
 public final class SnapshotInner extends ProxyResource {
     /*
@@ -32,13 +34,15 @@ public final class SnapshotInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SnapshotInner class. */
+    /**
+     * Creates an instance of SnapshotInner class.
+     */
     public SnapshotInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -47,7 +51,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the SnapshotInner object itself.
      */
@@ -58,7 +62,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Snapshot Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotProperties innerProperties() {
@@ -67,7 +71,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -76,9 +80,9 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the snapshotId property: snapshotId
-     *
-     * <p>UUID v4 used to identify the Snapshot.
-     *
+     * 
+     * UUID v4 used to identify the Snapshot.
+     * 
      * @return the snapshotId value.
      */
     public String snapshotId() {
@@ -87,9 +91,9 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the created property: name
-     *
-     * <p>The creation date of the snapshot.
-     *
+     * 
+     * The creation date of the snapshot.
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -98,7 +102,7 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -107,14 +111,13 @@ public final class SnapshotInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model SnapshotInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model SnapshotInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

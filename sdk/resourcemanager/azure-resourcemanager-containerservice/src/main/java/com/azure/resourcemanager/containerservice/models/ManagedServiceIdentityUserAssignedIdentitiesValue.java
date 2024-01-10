@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedServiceIdentityUserAssignedIdentitiesValue model. */
+/**
+ * The ManagedServiceIdentityUserAssignedIdentitiesValue model.
+ */
 @Immutable
 public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
     /*
@@ -22,7 +24,9 @@ public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of ManagedServiceIdentityUserAssignedIdentitiesValue class. */
+    /**
+     * Creates an instance of ManagedServiceIdentityUserAssignedIdentitiesValue class.
+     */
     public ManagedServiceIdentityUserAssignedIdentitiesValue() {
     }
 

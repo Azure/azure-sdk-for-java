@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BreakReplicationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BreakReplicationRequest model =
-            BinaryData.fromString("{\"forceBreakReplication\":true}").toObject(BreakReplicationRequest.class);
+        BreakReplicationRequest model
+            = BinaryData.fromString("{\"forceBreakReplication\":true}").toObject(BreakReplicationRequest.class);
         Assertions.assertEquals(true, model.forceBreakReplication());
     }
 

@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>azure.ai.vision.imageanalysis.samples</groupId>
+  <artifactId>image-analysis-quickstart</artifactId>
+  <version>0.0</version>
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-ai-vision-imageanalysis</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+    <!-- Optional: provide a slf4j implementation. Here we use a no-op implementation
+    just to make the slf4j console spew warning go away. We can still use the internal
+    logger in azure.core library. See
+    https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis#enable-http-requestresponse-logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+    </dependency>
+  </dependencies>
+</project>

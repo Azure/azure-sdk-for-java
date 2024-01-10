@@ -24,62 +24,45 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchBackupVaultInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchBackupVaultInput model =
-            BinaryData
-                .fromString(
-                    "{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"Off\",\"retentionDurationInDays\":59.897839624628624},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}}}")
-                .toObject(PatchBackupVaultInput.class);
-        Assertions
-            .assertEquals(
-                AlertsState.ENABLED, model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions.assertEquals(SoftDeleteState.OFF, model.securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(59.897839624628624D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.ENABLED, model.featureSettings().crossRegionRestoreSettings().state());
+        PatchBackupVaultInput model = BinaryData.fromString(
+            "{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":0.2668989084102735},\"immutabilitySettings\":{\"state\":\"Disabled\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}}}")
+            .toObject(PatchBackupVaultInput.class);
+        Assertions.assertEquals(AlertsState.DISABLED,
+            model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON, model.securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(0.2668989084102735D,
+            model.securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.DISABLED, model.securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.featureSettings().crossRegionRestoreSettings().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchBackupVaultInput model =
-            new PatchBackupVaultInput()
-                .withMonitoringSettings(
-                    new MonitoringSettings()
-                        .withAzureMonitorAlertSettings(
-                            new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                .withSecuritySettings(
-                    new SecuritySettings()
-                        .withSoftDeleteSettings(
-                            new SoftDeleteSettings()
-                                .withState(SoftDeleteState.OFF)
-                                .withRetentionDurationInDays(59.897839624628624D))
-                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
-                .withFeatureSettings(
-                    new FeatureSettings()
-                        .withCrossSubscriptionRestoreSettings(
-                            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
-                        .withCrossRegionRestoreSettings(
-                            new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)));
+        PatchBackupVaultInput model = new PatchBackupVaultInput()
+            .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+            .withSecuritySettings(new SecuritySettings()
+                .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                    .withRetentionDurationInDays(0.2668989084102735D))
+                .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
+            .withFeatureSettings(new FeatureSettings()
+                .withCrossSubscriptionRestoreSettings(
+                    new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
+                .withCrossRegionRestoreSettings(
+                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(PatchBackupVaultInput.class);
-        Assertions
-            .assertEquals(
-                AlertsState.ENABLED, model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions.assertEquals(SoftDeleteState.OFF, model.securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(59.897839624628624D, model.securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.ENABLED, model.featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals(AlertsState.DISABLED,
+            model.monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON, model.securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(0.2668989084102735D,
+            model.securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.DISABLED, model.securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.featureSettings().crossRegionRestoreSettings().state());
     }
 }

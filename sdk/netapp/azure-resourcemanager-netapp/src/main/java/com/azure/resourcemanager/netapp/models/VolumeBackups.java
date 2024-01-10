@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume details using the backup policy. */
+/**
+ * Volume details using the backup policy.
+ */
 @Fluent
 public final class VolumeBackups {
     /*
@@ -28,13 +30,15 @@ public final class VolumeBackups {
     @JsonProperty(value = "policyEnabled")
     private Boolean policyEnabled;
 
-    /** Creates an instance of VolumeBackups class. */
+    /**
+     * Creates an instance of VolumeBackups class.
+     */
     public VolumeBackups() {
     }
 
     /**
      * Get the volumeName property: Volume name.
-     *
+     * 
      * @return the volumeName value.
      */
     public String volumeName() {
@@ -43,7 +47,7 @@ public final class VolumeBackups {
 
     /**
      * Set the volumeName property: Volume name.
-     *
+     * 
      * @param volumeName the volumeName value to set.
      * @return the VolumeBackups object itself.
      */
@@ -54,7 +58,7 @@ public final class VolumeBackups {
 
     /**
      * Get the backupsCount property: Total count of backups for volume.
-     *
+     * 
      * @return the backupsCount value.
      */
     public Integer backupsCount() {
@@ -63,7 +67,7 @@ public final class VolumeBackups {
 
     /**
      * Set the backupsCount property: Total count of backups for volume.
-     *
+     * 
      * @param backupsCount the backupsCount value to set.
      * @return the VolumeBackups object itself.
      */
@@ -74,7 +78,7 @@ public final class VolumeBackups {
 
     /**
      * Get the policyEnabled property: Policy enabled.
-     *
+     * 
      * @return the policyEnabled value.
      */
     public Boolean policyEnabled() {
@@ -83,7 +87,7 @@ public final class VolumeBackups {
 
     /**
      * Set the policyEnabled property: Policy enabled.
-     *
+     * 
      * @param policyEnabled the policyEnabled value to set.
      * @return the VolumeBackups object itself.
      */
@@ -94,7 +98,7 @@ public final class VolumeBackups {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
