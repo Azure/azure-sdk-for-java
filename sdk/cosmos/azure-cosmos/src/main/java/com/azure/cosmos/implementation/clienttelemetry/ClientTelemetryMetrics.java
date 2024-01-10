@@ -286,6 +286,9 @@ public final class ClientTelemetryMetrics {
             // so using most intuitive compromise - last meter options wins
             ClientTelemetryMetrics.cpuOptions = cpuOptions;
             ClientTelemetryMetrics.memoryOptions = memoryOptions;
+
+            // reset the cached flag whether any actual meter registry is available
+            lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
         }
     }
 
@@ -304,6 +307,9 @@ public final class ClientTelemetryMetrics {
             if (ClientTelemetryMetrics.compositeRegistry.getRegistries().isEmpty()) {
                 ClientTelemetryMetrics.compositeRegistry = createFreshRegistry();
             }
+
+            // reset the cached flag whether any actual meter registry is available
+            lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
         }
     }
 
