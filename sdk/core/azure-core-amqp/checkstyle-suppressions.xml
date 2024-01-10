@@ -4,33 +4,6 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <!-- Apache QPID Proton-J is an allowed external dependency. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpLinkProvider.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpReceiveLink.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpLoggingUtils.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.AmqpMetricsProvider.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.MessageFlux.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.ReactorConnection.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.ReactorProvider.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.ReactorReceiver.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.ReactorSession.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.RequestResponseChannel.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.RequestResponseUtils.java" />
-
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.ConnectionHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.DispatchHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.GlobalIOHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.Handler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.ReactorHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.ReceiveLinkHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.ReceiverUnsettledDeliveries.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.SendLinkHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.SessionHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler.java" />
-
   <!-- Exception is logged in another spot. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.amqp.implementation.handler.ReceiverDeliveryHandler.java" />
 
