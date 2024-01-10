@@ -241,7 +241,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public String getPartitionKeyPath() {
         if (partitionKeyField == null) {
-            return partitionKeyPath == null ? "/null" : partitionKeyPath;
+            return partitionKeyPath == null ? "/null" : partitionKeyPath; //"/" + partitionKeyPath.substring(1).replace("/", ".");
         } else {
             final PartitionKey partitionKey = partitionKeyField.getAnnotation(PartitionKey.class);
             return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
@@ -266,14 +266,35 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return partition key field
      */
     public Object getPartitionKeyFieldValue(T entity) {
-        return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
+        if (partitionKeyField == null && partitionKeyPath != null) {
+            List<String> parts = Arrays.stream(partitionKeyPath.split("/")).toList();
+            final Object[] currentObject = {entity};
+            parts.forEach(part -> {
+                try {
+                    if (!part.isEmpty()) {
+                        Field f = currentObject[0].getClass().getDeclaredField(part);
+                        ReflectionUtils.makeAccessible(f);
+                        currentObject[0] = ReflectionUtils.getField(f, currentObject[0]);
+                    }
+                } catch (NoSuchFieldException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return currentObject[0];
+        } else {
+            return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
+        }
     }
 
     /**
      * @return the partition key field name
      */
     public String getPartitionKeyFieldName() {
-        return partitionKeyField == null ? null : partitionKeyField.getName();
+        if (partitionKeyField == null && partitionKeyPath != null) {
+            return partitionKeyPath.substring(1).replace("/", ".");
+        } else {
+            return partitionKeyField == null ? null : partitionKeyField.getName();
+        }
     }
 
     /**
