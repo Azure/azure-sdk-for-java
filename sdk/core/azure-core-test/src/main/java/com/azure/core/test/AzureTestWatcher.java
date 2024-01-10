@@ -34,7 +34,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
             return;
         }
 
-        String testName = getTestName(context.getTestMethod(), context.getDisplayName());
+        String testName = getTestName(context.getTestMethod(), context.getDisplayName(), context.getTestClass());
         System.out.println("Starting test " + testName + ".");
 
         getStore(context).put(context.getRequiredTestMethod(), System.currentTimeMillis());
@@ -57,7 +57,7 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
         long startMillis = getStore(context).remove(context.getRequiredTestMethod(), long.class);
         long duration = System.currentTimeMillis() - startMillis;
 
-        String testName = getTestName(context.getTestMethod(), context.getDisplayName());
+        String testName = getTestName(context.getTestMethod(), context.getDisplayName(), context.getTestClass());
         System.out.println("Finished test " + testName + " in " + duration + " ms.");
     }
 

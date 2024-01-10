@@ -36,18 +36,18 @@ It includes the following main features:
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
-| SDK version  |Supported API version of service
-|--------------|-
-| 1.0.0-beta.1 | 2023-10-31-preview
+| SDK version  | Supported API version of service |
+|--------------|----------------------------------|
+| 1.0.0-beta.1 | 2023-10-31-preview               |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
-| API version        |Supported clients
-|--------------------|-
-| 2023-10-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient
-| 2023-07-31         | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK
+| API version        | Supported clients                                                                             |
+|--------------------|-----------------------------------------------------------------------------------------------|
+| 2023-10-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient                                |
+| 2023-07-31         | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK |
 
 Please see the [Migration Guide][migration_guide] for more information about migrating from `azure-ai-formrecognizer` to `azure-ai-documentintelligence`.
 
@@ -94,7 +94,7 @@ Authentication with AAD requires some initial setup:
 ```
 [//]: # ({x-version-update-end})
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
 As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
 `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
@@ -148,7 +148,7 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 
 The following section provides several code snippets covering some of the most common Document Intelligence tasks, including:
 
-* [Analyze Layout](#extract-layout "Analyze Layout")
+* [Analyze Layout](#analyze-layout "Analyze Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
 * [Build a Document Model](#build-a-document-model "Build a Document Model")
 * [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
@@ -434,10 +434,10 @@ reduce the dependency size, refer to the [performance tuning][performance_tuning
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
@@ -462,13 +462,15 @@ For details on contributing to this repository, see the [contributing guide](htt
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-documentintelligence
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr-studio]: https://aka.ms/azsdk/formrecognizer/documentintelligencestudio
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#examples
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#readme
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/MIGRATION_GUIDE.md
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/CHANGELOG.md
 

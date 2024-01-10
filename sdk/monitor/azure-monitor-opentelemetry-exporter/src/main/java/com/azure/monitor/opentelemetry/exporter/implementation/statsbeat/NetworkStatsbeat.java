@@ -6,8 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import io.opentelemetry.api.internal.GuardedBy;
+import reactor.util.annotation.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

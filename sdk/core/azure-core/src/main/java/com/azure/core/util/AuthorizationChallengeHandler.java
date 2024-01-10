@@ -103,6 +103,7 @@ public class AuthorizationChallengeHandler {
     private final Map<String, AtomicInteger> nonceTracker = new ConcurrentHashMap<>();
     private final AtomicReference<String> authorizationPipeliningType = new AtomicReference<>();
     private final AtomicReference<ConcurrentHashMap<String, String>> lastChallenge = new AtomicReference<>();
+    private final SecureRandom nonceGenerator = new SecureRandom();
 
     /**
      * Creates an {@link AuthorizationChallengeHandler} using the {@code username} and {@code password} to respond to
@@ -463,7 +464,7 @@ public class AuthorizationChallengeHandler {
      */
     String generateNonce() {
         byte[] nonce = new byte[16];
-        new SecureRandom().nextBytes(nonce);
+        nonceGenerator.nextBytes(nonce);
         return bytesToHexString(nonce);
     }
 

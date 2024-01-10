@@ -485,7 +485,7 @@ public class SimpleSyncPollerTests {
                 return expected;
             } else if (invocationCount[0] == 1) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -500,7 +500,7 @@ public class SimpleSyncPollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt)),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(500),
+        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(1000),
             SUCCESSFULLY_COMPLETED));
         assertEquals(expected.getValue().getResponse(), pollResponse.getValue().getResponse());
     }

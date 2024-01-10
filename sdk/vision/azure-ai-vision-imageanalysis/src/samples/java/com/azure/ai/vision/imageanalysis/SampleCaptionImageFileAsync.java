@@ -61,7 +61,7 @@ public class SampleCaptionImageFileAsync {
         try {
             // Generate a caption for an input image buffer. This is an synchronous (non-blocking) call, but here we block until the service responds.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
                 Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
                 new ImageAnalysisOptions().setGenderNeutralCaption(true)) // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
                 .block(); 
