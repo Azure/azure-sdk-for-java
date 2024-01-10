@@ -4,7 +4,6 @@ package com.azure.resourcemanager.compute.models;
 
 /** The popular Azure Windows images. */
 public enum KnownWindowsVirtualMachineImage {
-    WINDOWS_DESKTOP_10_PRO("MicrosoftWindowsDesktop", "Windows-10", "win10-22h2-pro"),
     /**
      * Windows 10 2020 H1 Pro
      * @deprecated The image for Windows 10 2020 H1 Pro has been removed form Azure image gallery.
@@ -36,7 +35,9 @@ public enum KnownWindowsVirtualMachineImage {
     /** Windows Server 2016 Data center gen2. */
     WINDOWS_SERVER_2016_DATACENTER_GEN2("MicrosoftWindowsServer", "WindowsServer", "2016-datacenter-gensecond"),
     /** Windows 10 2021 H2 Pro gen2. */
-    WINDOWS_DESKTOP_10_21H2_PRO_GEN2("MicrosoftWindowsDesktop", "Windows-10", "win10-21h2-pro-g2");
+    WINDOWS_DESKTOP_10_21H2_PRO_GEN2("MicrosoftWindowsDesktop", "Windows-10", "win10-21h2-pro-g2"),
+    /** Windows desktop 10 pro. */
+    WINDOWS_DESKTOP_10_PRO("MicrosoftWindowsDesktop", "Windows-10", "win10-22h2-pro");
 
     private final String publisher;
     private final String offer;
