@@ -6,7 +6,6 @@ package com.azure.perf.test.core;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -14,7 +13,6 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
 import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
-import com.azure.core.util.HttpClientOptions;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -25,7 +23,6 @@ import reactor.core.publisher.Mono;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.X509TrustManager;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -121,7 +118,8 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                 // can't configure JDK HttpClient for insecure mode with source set to Java 8
                 throw new UnsupportedOperationException("Can't configure JDK HttpClient for insecure mode.");
             } else {
-                httpClientProvider = JdkHttpClientProvider.class;
+                // we want to support friendly name for jdk, but can't use JdkHttpClientProvider on Java 8
+                httpClientType = PerfStressOptions.HttpClientType.fromString("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
             }
         } else if (httpClientType.equals(VERTX)) {
             if (options.isInsecure()) {
