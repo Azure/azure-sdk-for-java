@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Holds an array of MeshUpgradeProfiles. */
+/**
+ * Holds an array of MeshUpgradeProfiles.
+ */
 @Fluent
 public final class MeshUpgradeProfileList {
     /*
@@ -24,7 +26,9 @@ public final class MeshUpgradeProfileList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MeshUpgradeProfileList class. */
+    /**
+     * Creates an instance of MeshUpgradeProfileList class.
+     */
     public MeshUpgradeProfileList() {
     }
 

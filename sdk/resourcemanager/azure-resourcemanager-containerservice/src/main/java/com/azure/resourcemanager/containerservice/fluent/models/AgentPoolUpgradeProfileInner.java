@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerservice.models.OSType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of available upgrades for an agent pool. */
+/**
+ * The list of available upgrades for an agent pool.
+ */
 @Fluent
 public final class AgentPoolUpgradeProfileInner {
     /*
@@ -38,7 +40,9 @@ public final class AgentPoolUpgradeProfileInner {
     @JsonProperty(value = "properties", required = true)
     private AgentPoolUpgradeProfileProperties innerProperties = new AgentPoolUpgradeProfileProperties();
 
-    /** Creates an instance of AgentPoolUpgradeProfileInner class. */
+    /**
+     * Creates an instance of AgentPoolUpgradeProfileInner class.
+     */
     public AgentPoolUpgradeProfileInner() {
     }
 
@@ -177,10 +181,8 @@ public final class AgentPoolUpgradeProfileInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AgentPoolUpgradeProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AgentPoolUpgradeProfileInner"));
         } else {
             innerProperties().validate();
         }

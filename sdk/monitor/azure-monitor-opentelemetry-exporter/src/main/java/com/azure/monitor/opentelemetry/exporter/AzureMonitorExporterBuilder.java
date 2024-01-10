@@ -404,13 +404,14 @@ public final class AzureMonitorExporterBuilder {
 
     private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
         ConnectionString connectionString = getConnectionString(configProperties);
+        ResourceParser resourceParser = new ResourceParser();
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
             builder.setResource(resource);
             builder.addTag(
                 ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
             // TODO (trask) unify these
-            ResourceParser.updateRoleNameAndInstance(builder, resource, configProperties);
+            resourceParser.setRoleNameAndInstance(builder, resource);
         };
     }
 

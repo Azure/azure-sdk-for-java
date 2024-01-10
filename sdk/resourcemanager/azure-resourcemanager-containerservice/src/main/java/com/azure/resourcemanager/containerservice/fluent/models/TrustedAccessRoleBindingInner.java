@@ -12,7 +12,9 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleBindin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines binding between a resource and role. */
+/**
+ * Defines binding between a resource and role.
+ */
 @Fluent
 public final class TrustedAccessRoleBindingInner extends ProxyResource {
     /*
@@ -27,7 +29,9 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TrustedAccessRoleBindingInner class. */
+    /**
+     * Creates an instance of TrustedAccessRoleBindingInner class.
+     */
     public TrustedAccessRoleBindingInner() {
     }
 
@@ -113,10 +117,8 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
         } else {
             innerProperties().validate();
         }

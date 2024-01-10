@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The profile of an orchestrator and its available versions. */
+/**
+ * The profile of an orchestrator and its available versions.
+ */
 @Fluent
 public final class OrchestratorVersionProfile {
     /*
@@ -42,7 +44,9 @@ public final class OrchestratorVersionProfile {
     @JsonProperty(value = "upgrades")
     private List<OrchestratorProfile> upgrades;
 
-    /** Creates an instance of OrchestratorVersionProfile class. */
+    /**
+     * Creates an instance of OrchestratorVersionProfile class.
+     */
     public OrchestratorVersionProfile() {
     }
 
@@ -153,16 +157,12 @@ public final class OrchestratorVersionProfile {
      */
     public void validate() {
         if (orchestratorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorType in model OrchestratorVersionProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property orchestratorType in model OrchestratorVersionProfile"));
         }
         if (orchestratorVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
